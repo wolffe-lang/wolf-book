@@ -1,0 +1,237 @@
+/* The Wolf Book — navigation chrome (bs00, DESIGN.md §3).
+ * Every page: prev/next at top and bottom, a home link, and the ToC
+ * rail with the reader's position marked. Nothing decorative. */
+
+/* ---- Top bar ---- */
+
+#menu-bar-hover-placeholder {
+    height: 0;
+}
+
+#menu-bar {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    max-width: calc(var(--measure) + 8rem);
+    margin: 0 auto;
+    padding: 0.6rem 0.5rem 0.4rem;
+    border-bottom: 1px solid var(--rule);
+    background-color: var(--bg);
+}
+
+#menu-bar.sticky {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.menu-title {
+    font-size: 1em;
+    font-weight: 400;
+    font-style: italic;
+    margin: 0;
+    text-align: center;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.menu-title .home-link {
+    color: var(--fg);
+    text-decoration: none;
+}
+.menu-title .home-link:hover {
+    text-decoration: underline;
+}
+
+.icon-button {
+    font-family: var(--serif);
+    font-size: 0.85em;
+    color: var(--fg-muted);
+    background: none;
+    border: none;
+    padding: 0 0.4em;
+    cursor: pointer;
+    text-decoration: none;
+}
+.icon-button:hover {
+    color: var(--fg);
+    text-decoration: underline;
+}
+
+/* ---- Prev/next/home rows (top and bottom of every page) ---- */
+
+.nav-inline {
+    display: flex;
+    justify-content: space-between;
+    gap: 1em;
+    max-width: var(--measure);
+    margin: 0 auto;
+    padding: 0.75em 0.5rem;
+    font-style: italic;
+}
+.nav-top { border-bottom: 1px solid var(--rule); margin-bottom: 1em; }
+.nav-bottom { border-top: 1px solid var(--rule); margin-top: 2em; }
+
+.nav-inline .nav-link {
+    color: var(--fg-muted);
+    text-decoration: none;
+}
+.nav-inline .nav-link:hover {
+    color: var(--fg);
+    text-decoration: underline;
+}
+.nav-inline .home { text-align: center; flex: 1; }
+.nav-inline .previous { min-width: 6em; }
+.nav-inline .next { min-width: 6em; text-align: right; }
+
+/* ---- The ToC rail ---- */
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: var(--sidebar-width);
+    overflow-y: auto;
+    background-color: var(--sidebar-bg);
+    border-right: 1px solid var(--rule);
+    font-size: 0.85em;
+    z-index: 200;
+    transform: translateX(calc(-1 * var(--sidebar-width)));
+    transition: transform 0.15s ease;
+}
+
+#sidebar-toggle-anchor:checked ~ #sidebar {
+    transform: none;
+}
+
+#sidebar-toggle-anchor:checked ~ #page-wrapper {
+    margin-left: var(--sidebar-width);
+}
+
+@media (max-width: 1079px) {
+    #sidebar-toggle-anchor:checked ~ #page-wrapper {
+        margin-left: 0;
+    }
+}
+
+.sidebar-scrollbox {
+    display: block;
+    padding: 1rem 1rem 2rem;
+}
+
+.sidebar-iframe-outer {
+    border: none;
+    height: 100%;
+    width: 100%;
+}
+
+.sidebar .sidebar-resize-handle {
+    display: none; /* fixed-width rail; no resize chrome */
+}
+
+/* toc.js markup: ol.chapter > li.chapter-item; li.part-title */
+.sidebar ol.chapter, .sidebar ol.section {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.sidebar ol.section {
+    padding-left: 1em;
+}
+.sidebar li.chapter-item {
+    margin: 0.25em 0;
+}
+.sidebar li.part-title {
+    margin: 1em 0 0.25em;
+    font-weight: 700;
+}
+.sidebar li.spacer {
+    height: 0.75em;
+}
+.sidebar a {
+    color: var(--fg);
+    text-decoration: none;
+}
+.sidebar a:hover {
+    text-decoration: underline;
+}
+/* The reader's position, marked. */
+.sidebar a.active {
+    color: var(--sidebar-active);
+    font-weight: 700;
+}
+
+/* The active chapter's in-page sections (book.js appends them). */
+.sidebar ol.rail-sections {
+    list-style: none;
+    margin: 0.15em 0 0.15em;
+    padding-left: 1.2em;
+    font-weight: 400;
+}
+.sidebar ol.rail-sections a.rail-current {
+    color: var(--sidebar-active);
+}
+
+/* ---- Search ---- */
+
+#search-wrapper {
+    max-width: var(--measure);
+    margin: 0 auto;
+    padding: 0.5em 0.5rem;
+}
+
+#searchbar {
+    width: 100%;
+    font-family: var(--serif);
+    font-size: 1em;
+    padding: 0.4em 0.6em;
+    border: 1px solid var(--searchbar-border-color);
+    background-color: var(--searchbar-bg);
+    color: var(--searchbar-fg);
+}
+
+.searchresults-header {
+    color: var(--searchresults-header-fg);
+    font-style: italic;
+    padding: 0.75em 0 0.25em;
+}
+
+#searchresults {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+#searchresults li {
+    padding: 0.5em 0;
+    border-bottom: 1px solid var(--searchresults-border-color);
+}
+#searchresults li.focus {
+    background-color: var(--code-bg);
+}
+mark {
+    background-color: var(--search-mark-bg);
+    color: inherit;
+}
+
+/* ---- Content region ---- */
+
+.page {
+    outline: none;
+}
+
+.content {
+    overflow-y: auto;
+    padding-bottom: 4rem;
+}
+
+@media only print {
+    #menu-bar, .nav-inline, #sidebar, #search-wrapper {
+        display: none;
+    }
+    #sidebar-toggle-anchor:checked ~ #page-wrapper {
+        margin-left: 0;
+    }
+}

@@ -1,0 +1,9 @@
+/* Browser-print fallback only. The real print artifact is wolf-book.pdf
+   via the typst converter (PRINT.md); this file keeps accidental
+   browser printing legible. */
+#menu-bar, .nav-inline, #sidebar, #search-wrapper { display: none !important; }
+#page-wrapper { margin-left: 0 !important; }
+a { color: inherit; text-decoration: none; }
+pre { white-space: pre-wrap; }
+details { display: block; }
+details > summary { list-style: none; }

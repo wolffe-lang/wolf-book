@@ -1,0 +1,53 @@
+/* The Wolf Book — theme tokens (bs00, DESIGN.md §1–2).
+ * One theme, "wolf": white ground, near-black serif text, no dark mode
+ * at v1. Color is for meaning only. */
+
+:root,
+html.wolf {
+    /* Ground and ink */
+    --bg: #ffffff;
+    --fg: #1a1a1a;              /* near-black, never gray */
+    --fg-muted: #444444;        /* chrome only, never body text */
+    --rule: #dddddd;
+
+    /* Faces (DESIGN.md §1–2) */
+    --serif: "Charter", "Bitstream Charter", "Sitka Text",
+             "Iowan Old Style", "Palatino Linotype", Palatino,
+             Georgia, serif;
+    --mono: "Source Code Pro", ui-monospace, "Cascadia Mono",
+            Consolas, Menlo, "DejaVu Sans Mono", monospace;
+
+    /* Measure and leading */
+    --measure: 68ch;            /* 65–70ch, centered, one column */
+    --leading: 1.5;             /* 1.45–1.55 */
+
+    /* Code blocks: very light warm gray ground, no border */
+    --code-bg: #faf8f4;
+
+    /* Links: color for meaning only */
+    --link: #1a4f8a;
+
+    /* Sidebar / chrome */
+    --sidebar-bg: #ffffff;
+    --sidebar-width: 18rem;
+    --sidebar-resize-indicator-width: 8px;
+    --sidebar-resize-indicator-space: 2px;
+    --sidebar-active: #1a4f8a;
+
+    --menu-bar-height: 3rem;
+
+    /* Search */
+    --searchbar-border-color: #cccccc;
+    --searchbar-bg: #ffffff;
+    --searchbar-fg: #1a1a1a;
+    --searchresults-header-fg: #444444;
+    --searchresults-border-color: #dddddd;
+    --searchresults-li-bg: #ffffff;
+    --search-mark-bg: #fff2b2;
+
+    /* mdBook variables some shared CSS expects */
+    --content-max-width: var(--measure);
+    --page-padding: 15px;
+    --mono-font: var(--mono);
+    --code-font-size: 0.875em;
+}

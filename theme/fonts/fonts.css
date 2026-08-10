@@ -1,0 +1,23 @@
+/* Self-hosted Source Code Pro (OFL) — DESIGN.md §2: web and PDF set
+   code identically; the stack tail exists for readers who block fonts. */
+@font-face {
+    font-family: "Source Code Pro";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("SourceCodePro-Regular.ttf.woff2") format("woff2");
+}
+@font-face {
+    font-family: "Source Code Pro";
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url("SourceCodePro-Bold.ttf.woff2") format("woff2");
+}
+@font-face {
+    font-family: "Source Code Pro";
+    font-style: italic;
+    font-weight: 400;
+    font-display: swap;
+    src: url("SourceCodePro-It.ttf.woff2") format("woff2");
+}
