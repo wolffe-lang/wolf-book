@@ -1,0 +1,26 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 12-6 solution: a router — one inbox, two sinks, and close
+// flowing downstream.
+fn main() -> !int {
+    let src = channel[int](8)
+    let evens = channel[int](8)
+    let odds = channel[int](8)
+    scope s {
+        s.spawn(fn() {
+            for v in src {
+                if v % 2 == 0 { evens.send(v) } else { odds.send(v) }
+            }
+            evens.close()
+            odds.close()
+        })
+        for i in 1..=8 { src.send(i) }
+        src.close()
+    }
+    var esum = 0
+    var osum = 0
+    for v in evens { esum += v }
+    for v in odds { osum += v }
+    print("evens {esum}, odds {osum}")
+    0
+}

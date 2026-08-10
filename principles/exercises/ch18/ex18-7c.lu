@@ -1,0 +1,10 @@
+//! check: fail(E0701)
+//! phase: typecheck
+// Exercise 18-7, tile five: a network fetch at compile time.
+comptime fn fetch_schema(url: str) -> str {
+    net_fetch(url)
+}
+fn main() -> !int {
+    const SCHEMA = fetch_schema("https://example.test/schema.json")
+    if SCHEMA == "" { 1 } else { 0 }
+}

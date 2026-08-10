@@ -1,0 +1,11 @@
+//! check: fail(E0706)
+//! phase: typecheck
+// Exercise 18-2: the ceiling exists at compile time too.
+comptime fn brim() -> i32 {
+    let big: i32 = 2147483647
+    big + 1
+}
+fn main() -> !int {
+    const B = brim()
+    if B == 0 { 1 } else { 0 }
+}

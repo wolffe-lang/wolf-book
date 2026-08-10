@@ -1,0 +1,38 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 13-5 solution: grep, wolfished — matching is a pure
+// function over line views, and the empty pattern is an error, not a
+// convention.
+fn contains(hay: str, needle: str) -> bool {
+    if hay.len < needle.len { return false }
+    var i = 0
+    while i + needle.len <= hay.len {
+        if hay[i..i + needle.len] == needle { return true }
+        i += 1
+    }
+    false
+}
+fn grep(text: str, pattern: str) -> List[str] ! {EmptyPattern} {
+    if pattern.is_empty() { return EmptyPattern }
+    var hits = List[str]()
+    for line in text.lines() {
+        if contains(line, pattern) { hits.push(line) }
+    }
+    hits
+}
+fn main() -> !int {
+    let doc = """
+        the wolf runs at dusk
+        the marmot sleeps
+        a lone wolf watches
+        the elk drift north
+        """
+    let hits = grep(doc, "wolf") else |_| { return 1 }
+    for h in hits { print(h) }
+    print("{hits.len} match(es)")
+    let none = grep(doc, "") else |_| {
+        print("empty pattern refused")
+        List[str]()
+    }
+    0
+}

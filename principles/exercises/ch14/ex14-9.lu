@@ -1,0 +1,31 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 14-9 solution: the mailbox serializes — every schedule
+// delivers all four increments before the report is answered? No:
+// it delivers all four because the scope joins first. The total is
+// schedule-independent; arrival ORDER is not.
+fn counter(cmds: channel[int], replies: channel[int]) -> int {
+    var total = 0
+    for c in cmds {
+        if c == 0 { replies.send(total) } else { total += c }
+    }
+    total
+}
+fn client(cmds: channel[int]) {
+    cmds.send(1)
+    cmds.send(1)
+}
+fn main() -> !int {
+    let cmds = channel[int](8)
+    let replies = channel[int](1)
+    let w = spawn proc counter(cmds, replies)
+    scope s {
+        s.spawn(fn() { client(cmds) })
+        s.spawn(fn() { client(cmds) })
+    }
+    cmds.send(0)
+    let t = replies.recv() else |_| { return 1 }
+    print("total={t}")
+    cmds.close()
+    0
+}

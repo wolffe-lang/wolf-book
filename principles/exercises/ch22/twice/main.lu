@@ -1,0 +1,9 @@
+//! check: fail(E0302)
+//! phase: parse
+// Exercise 22-3: two files, one module, one name too many.
+fn describe() -> str { "from main" }
+
+fn main() -> !int {
+    print(describe())
+    0
+}

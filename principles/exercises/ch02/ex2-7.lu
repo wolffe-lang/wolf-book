@@ -1,0 +1,19 @@
+//! check: run(exit=0, stdout="a3b1c2")
+//! phase: run
+// Exercise 2-7 solution: run-length encoding over bytes.
+fn encode(s: str) -> str {
+    var out = ""
+    var i = 0
+    while i < s.len {
+        let ch = s[i..i + 1]
+        var n = 1
+        while i + n < s.len && s[i + n..i + n + 1] == ch { n += 1 }
+        out += "{ch}{n}"
+        i += n
+    }
+    out
+}
+fn main() -> !int {
+    print(encode("aaabcc"))
+    0
+}

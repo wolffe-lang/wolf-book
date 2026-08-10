@@ -1,0 +1,12 @@
+//! check: fail(E1002)
+//! phase: mem
+// Exercise 7-7: one place, claimed exclusively twice in one call.
+fn bump2(mut a: int, mut b: int) {
+    a += 1
+    b += 1
+}
+fn main() -> !int {
+    var n = 0
+    bump2(mut n, mut n)
+    n
+}

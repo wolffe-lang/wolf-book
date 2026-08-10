@@ -1,0 +1,17 @@
+//! check: run(exit=0, stdout="4950")
+//! phase: run
+// Exercise 8-2 solution: a scratch region — allocate ambiently, walk away.
+fn fill(n: int) -> List[int] {
+    var xs = List[int]()
+    for i in 0..n { xs.push(i) }
+    xs
+}
+fn main() -> !int {
+    var total = 0
+    region tmp {
+        let xs = fill(100)
+        for x in xs { total += x }
+    }
+    print("{total}")
+    0
+}

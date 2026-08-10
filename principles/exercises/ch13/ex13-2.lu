@@ -1,0 +1,14 @@
+//! check: run(exit=0, stdout="285")
+//! phase: run
+// Exercise 13-2 solution: the sequential spelling of 13-1 — the call
+// that will change is the loop that builds `sq`.
+fn main() -> !int {
+    var xs = List[int]()
+    for i in 1..=9 { xs.push(i) }
+    var sq = List[int]()
+    for x in xs { sq.push(x * x) }
+    var sum = 0
+    for v in sq { sum += v }
+    print("{sum}")
+    0
+}

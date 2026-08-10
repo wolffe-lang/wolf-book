@@ -1,0 +1,17 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 18-5: a function over a type.
+// PENDING: reflection at comptime (typeinfo) — owner s16-ctfe.
+struct Howl {
+    pitch: int,
+    length: int,
+    at_moon: bool,
+}
+comptime fn field_count(T: type) -> int {
+    typeinfo(T).fields.len
+}
+fn main() -> !int {
+    const N = field_count(Howl)
+    print("{N}")
+    0
+}

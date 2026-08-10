@@ -1,0 +1,13 @@
+//! check: fail(E0203)
+//! phase: parse
+// Exercise 12-9: the classic AB-BA deadlock, attempted. The grammar
+// refuses the first ingredient.
+fn main() -> !int {
+    let a = Mutex(0)
+    let b = Mutex(0)
+    scope s {
+        s.spawn(fn() { when (a) { when (b) { a += 1 } } })
+        s.spawn(fn() { when (b) { when (a) { b += 1 } } })
+    }
+    0
+}

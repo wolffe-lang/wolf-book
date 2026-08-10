@@ -1,0 +1,11 @@
+//! check: run(exit=trap(region-fault))
+//! phase: run
+// Appendix B, exercise B-6: region-fault — allocation into frozen data.
+struct Node { value: int }
+fn main() -> !int {
+    let r = region(pool(Node))
+    let p = in r { Pool[Node]() }
+    let frozen = freeze r
+    let h = p.reserve()
+    0
+}

@@ -1,0 +1,11 @@
+//! check: run(exit=trap(region-fault))
+//! phase: run
+// Exercise 8-10: the dynamic half of the freeze contract.
+struct Node { value: int }
+fn main() -> !int {
+    let r = region(pool(Node))
+    let p = in r { Pool[Node]() }
+    let frozen = freeze r
+    let h = p.reserve()
+    0
+}

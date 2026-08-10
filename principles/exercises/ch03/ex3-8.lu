@@ -1,0 +1,10 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 3-8 solution: rebinding a var hands the old value away.
+fn main() -> !int {
+    var name = "ada"
+    let first = name
+    name = "grace"
+    print("{first} {name}")
+    0
+}

@@ -1,0 +1,24 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 16-1 solution: the message-passing litmus — every write
+// before the move is visible after it, because the graph moved whole.
+fn main() -> !int {
+    let ch = channel[region](1)
+    var got = 0
+    scope s {
+        s.spawn(fn() {
+            let r = region()
+            let xs = in r {
+                var v = List[int]()
+                v.push(41)
+                v.push(1)
+                v
+            }
+            ch.send(move r)
+        })
+        let r2 = ch.recv() else |_| { return 1 }
+        got = in r2 { 42 }
+    }
+    if got == 42 { print("received") }
+    0
+}

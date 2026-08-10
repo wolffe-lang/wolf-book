@@ -1,0 +1,9 @@
+//! check: fail(E0304)
+//! phase: parse
+// Exercise 22-2: `total` exists and is not yours to call.
+use vault
+
+fn main() -> !int {
+    print("{vault.total()}")
+    0
+}

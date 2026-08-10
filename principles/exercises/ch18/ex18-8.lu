@@ -1,0 +1,11 @@
+//! check: fail(E0709)
+//! phase: typecheck
+// Exercise 18-8: a zero-fuel budget on a trivial call.
+comptime fn ten() -> int {
+    10
+}
+fn main() -> !int {
+    #[budget(fuel = 0)]
+    const N = ten()
+    if N == 10 { 0 } else { 1 }
+}

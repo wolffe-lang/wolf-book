@@ -1,0 +1,29 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 17-1: the lost update — an ordering bug that typechecks.
+// Two deposits of 50 into balance 0; the composite get-then-set is not atomic.
+fn deposit(getreq: channel[int], getrep: channel[int], setch: channel[int]) {
+    getreq.send(1)
+    let v = getrep.recv() else |_| { return }
+    setch.send(v + 50)
+}
+fn main() -> !int {
+    let getreq = channel[int](0)
+    let getrep = channel[int](0)
+    let setch = channel[int](0)
+    var balance = 0
+    scope s {
+        s.spawn(fn() { deposit(getreq, getrep, setch) })
+        s.spawn(fn() { deposit(getreq, getrep, setch) })
+        var served = 0
+        while served < 4 {
+            select {
+                _ from getreq => { getrep.send(balance) },
+                v from setch => { balance = v },
+            }
+            served += 1
+        }
+    }
+    print("balance={balance}")
+    0
+}

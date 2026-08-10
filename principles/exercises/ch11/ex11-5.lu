@@ -1,0 +1,20 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 11-5 solution: which worker takes which job is the seed's
+// business; what the pool computes is not.
+fn main() -> !int {
+    let jobs = channel[int](8)
+    let results = channel[str](8)
+    scope s {
+        for w in 0..2 {
+            s.spawn(fn() {
+                for j in jobs { results.send("worker {w} took job {j}") }
+            })
+        }
+        for j in 1..=4 { jobs.send(j) }
+        jobs.close()
+    }
+    results.close()
+    for line in results { print(line) }
+    0
+}

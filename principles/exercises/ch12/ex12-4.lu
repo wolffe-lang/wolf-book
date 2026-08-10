@@ -1,0 +1,17 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 12-4 solution: two ready arms — the pick is the seed's, and
+// both picks are conforming.
+fn main() -> !int {
+    let a = channel[int](1)
+    let b = channel[int](1)
+    a.send(1)
+    b.send(2)
+    var got = 0
+    select {
+        v from a => { got = v },
+        v from b => { got = v },
+    }
+    print("{got}")
+    0
+}

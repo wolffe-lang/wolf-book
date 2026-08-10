@@ -1,0 +1,11 @@
+//! check: fail(E1001)
+//! phase: mem
+// Appendix C, exercise C-2: one rule, two tools, two moments.
+struct Den { name: str }
+fn claim(take s: str) -> str { s }
+fn main() -> !int {
+    var d = Den { name: "howl" }
+    let a = claim(take d.name)
+    print(d.name)
+    0
+}

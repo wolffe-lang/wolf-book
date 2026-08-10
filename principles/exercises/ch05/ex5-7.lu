@@ -1,0 +1,30 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 5-7 solution: an RPN evaluator — the stack is a List.
+fn eval_rpn(tokens: List[str]) -> int ! {Underflow, BadToken} {
+    var stack = List[int]()
+    for t in tokens {
+        if t == "+" || t == "-" || t == "*" || t == "/" {
+            if stack.len < 2 { return Underflow }
+            let b = stack.pop()
+            let a = stack.pop()
+            if t == "+" { stack.push(a + b) } else if t == "-" { stack.push(a - b) } else if t == "*" { stack.push(a * b) } else { stack.push(a / b) }
+        } else {
+            let n = t.to_int() else { return BadToken }
+            stack.push(n)
+        }
+    }
+    if stack.len != 1 { return Underflow }
+    stack.pop()
+}
+fn main() -> !int {
+    var tokens = List[str]()
+    tokens.push("3")
+    tokens.push("4")
+    tokens.push("+")
+    tokens.push("2")
+    tokens.push("*")
+    let v = eval_rpn(tokens) else |_| { return 1 }
+    print("{v}")
+    0
+}

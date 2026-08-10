@@ -1,0 +1,15 @@
+//! check: run(exit=trap(ub))
+//! phase: run
+// Exercise 9-9: the pointer outlives the region that owned its bytes.
+import c "stdlib.h"
+fn main() -> !int {
+    unsafe {
+        let p = region r {
+            let inner = c.malloc(8) as *u8
+            c.memset(inner, 5, 8)
+            inner
+        }
+        let v = p[0] as int
+        v
+    }
+}

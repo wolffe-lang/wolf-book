@@ -1,0 +1,6 @@
+//! member: true
+// The extracted interface: what `store` and `index` needed from each
+// other, and nothing else.
+pub fn classify(n: int) -> int {
+    if n == 0 { 1 } else { 0 }
+}

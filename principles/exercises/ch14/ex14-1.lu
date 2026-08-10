@@ -1,0 +1,15 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 14-1 solution: a nonzero return is a result, not a failure.
+fn worker() -> int { 3 }
+fn main() -> !int {
+    let w = spawn proc worker()
+    let m = w.monitor()
+    select {
+        exit(reason) from m => {
+            print("normal={reason.is_normal()} killed={reason.is_killed()}")
+        },
+        timeout(1.s) => { return 1 },
+    }
+    0
+}

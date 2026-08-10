@@ -1,0 +1,14 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 9-8: a real C call through a real header.
+// PENDING: the interpreter models only its documented host-intrinsic
+// set (approximation-contract §8); real libc calls land with the
+// importer. Expected: prints 2 and exits 0.
+import c "math.h"
+fn main() -> !int {
+    unsafe {
+        let v = c.sqrt(4.0)
+        print("{v}")
+    }
+    0
+}

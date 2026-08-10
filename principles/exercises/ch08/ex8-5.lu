@@ -1,0 +1,13 @@
+//! check: run(exit=trap(region-fault))
+//! phase: run
+// Exercise 8-5: a region moves as a closed subtree, or not at all.
+fn main() -> !int {
+    let ch = channel[region](1)
+    let r = region()
+    in r {
+        var xs = List[int]()
+        xs.push(1)
+        ch.send(move r)
+        0
+    }
+}

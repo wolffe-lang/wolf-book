@@ -1,0 +1,12 @@
+//! check: fail(E1001)
+//! phase: mem
+// Exercise 7-3: the smallest use-after-move through a field.
+struct S { a: str }
+fn eat(take w: str) -> str { w }
+fn main() -> !int {
+    var s = S { a: "x" }
+    let t = eat(take s.a)
+    let u = s.a
+    print("{t} {u}")
+    0
+}

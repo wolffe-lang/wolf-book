@@ -1,0 +1,27 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 16-2 solution: the receiver reads what the sender built —
+// both pushes, no copies, one owner at a time.
+fn main() -> !int {
+    let ch = channel[region](1)
+    let r = region()
+    let xs = in r {
+        var v = List[int]()
+        v.push(41)
+        v.push(1)
+        v
+    }
+    scope s {
+        s.spawn(fn() {
+            let r2 = ch.recv() else |_| { return }
+            let total = in r2 {
+                var t = 0
+                for x in xs { t += x }
+                t
+            }
+            print("sum={total}")
+        })
+        ch.send(move r)
+    }
+    0
+}

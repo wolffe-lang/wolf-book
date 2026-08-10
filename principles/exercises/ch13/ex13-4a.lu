@@ -1,0 +1,14 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 13-4, first observation: print the arrival order.
+fn main() -> !int {
+    let ch = channel[int](2)
+    scope s {
+        s.spawn(fn() { ch.send(1) })
+        s.spawn(fn() { ch.send(2) })
+    }
+    let a = ch.recv() else |_| { return 1 }
+    let b = ch.recv() else |_| { return 1 }
+    print("{a} then {b}, sum {a + b}")
+    0
+}

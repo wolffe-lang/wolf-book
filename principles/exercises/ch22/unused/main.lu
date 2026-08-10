@@ -1,0 +1,9 @@
+//! check: fail(E0305)
+//! phase: parse
+// Exercise 22-4: an import with no uses is an error, not a warning.
+use tools
+
+fn main() -> !int {
+    print("no tools needed")
+    0
+}

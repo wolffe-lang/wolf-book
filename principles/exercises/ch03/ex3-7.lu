@@ -1,0 +1,10 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 3-7 solution: truncating division, and the invariant that holds it up.
+fn main() -> !int {
+    let a = 0 - 7
+    let b = 2
+    print("{a / b} {a % b}")
+    print("{(a / b) * b + a % b}")
+    0
+}

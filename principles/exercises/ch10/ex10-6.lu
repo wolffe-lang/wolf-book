@@ -1,0 +1,21 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 10-6 solution: a child's error arrives at the join, not at a log.
+fn risky(n: int) -> int ! {Torn} {
+    if n == 3 { return Torn }
+    n * 100
+}
+fn gather() -> !int {
+    let ch = channel[int](4)
+    scope s {
+        s.spawn(fn() { ch.send(risky(1)?) })
+        s.spawn(fn() { ch.send(risky(3)?) })
+        s.spawn(fn() { ch.send(risky(2)?) })
+    }
+    0
+}
+fn main() -> !int {
+    let r = gather() else |_| { print("join surfaced the error"); 7 }
+    print("{r}")
+    0
+}

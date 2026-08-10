@@ -1,0 +1,12 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 9-10: the audit surface — a trusted membrane, declared.
+// PENDING: `wolf audit` and capability manifests land with the package
+// manager (s51); `#[trusted]` is parsed today, enforced then.
+#[trusted]
+fn c_strlen_wrapped(s: str) -> int {
+    s.len
+}
+fn main() -> !int {
+    if c_strlen_wrapped("wolf") == 4 { 0 } else { 1 }
+}

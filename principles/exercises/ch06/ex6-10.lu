@@ -1,0 +1,16 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 6-10 solution: the wordcount loop grows a filter.
+fn main() -> !int {
+    let text = """
+        the wolf runs and the moon watches over
+        """
+    var words = 0
+    var long_words = 0
+    for w in text.words() {
+        words += 1
+        if w.len >= 4 { long_words += 1 }
+    }
+    print("{words} words, {long_words} of length 4+")
+    0
+}

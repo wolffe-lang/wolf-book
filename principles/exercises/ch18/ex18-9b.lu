@@ -1,0 +1,11 @@
+//! check: fail(E0702)
+//! phase: typecheck
+// Exercise 18-9, program B: a loop without a ceiling.
+comptime fn spin() -> int {
+    while true {}
+    0
+}
+fn main() -> !int {
+    const N = spin()
+    if N == 0 { 0 } else { 1 }
+}

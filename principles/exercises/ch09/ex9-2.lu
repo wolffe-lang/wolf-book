@@ -1,0 +1,14 @@
+//! check: run(exit=0, stdout="5")
+//! phase: run
+// Exercise 9-2 solution: a legal unsafe block — C's rules, kept.
+import c "stdlib.h"
+fn main() -> !int {
+    unsafe {
+        let p = c.malloc(8) as *u8
+        c.memset(p, 5, 8)
+        let v = p[3] as int
+        c.free(p)
+        print("{v}")
+    }
+    0
+}

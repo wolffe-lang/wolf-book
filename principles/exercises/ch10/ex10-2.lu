@@ -1,0 +1,10 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 10-2 solution: the join orders these lines, not the scheduler.
+fn main() -> !int {
+    scope s {
+        s.spawn(fn() { print("child speaks") })
+    }
+    print("main speaks")
+    0
+}

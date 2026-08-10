@@ -1,0 +1,17 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 12-1 solution: close ends the loop; the drain is part of the
+// contract.
+fn main() -> !int {
+    let ch = channel[int](4)
+    var total = 0
+    scope s {
+        s.spawn(fn() {
+            for i in 1..=4 { ch.send(i * i) }
+            ch.close()
+        })
+        for v in ch { total += v }
+    }
+    print("total={total}")
+    0
+}

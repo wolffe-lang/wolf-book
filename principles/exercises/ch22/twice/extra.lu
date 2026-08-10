@@ -1,0 +1,2 @@
+//! member: true
+fn describe() -> str { "from extra" }

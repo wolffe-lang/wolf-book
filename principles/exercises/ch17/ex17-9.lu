@@ -1,0 +1,18 @@
+//! check: run(exit=trap(deadlock))
+//! phase: run
+// Exercise 17-9: a deadlock by construction — two rendezvous, both recv first.
+fn main() -> !int {
+    let a = channel[int](0)
+    let b = channel[int](0)
+    scope s {
+        s.spawn(fn() {
+            let x = a.recv() else |_| { return }
+            b.send(x)
+        })
+        s.spawn(fn() {
+            let y = b.recv() else |_| { return }
+            a.send(y)
+        })
+    }
+    0
+}

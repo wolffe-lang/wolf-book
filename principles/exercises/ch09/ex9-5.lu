@@ -1,0 +1,13 @@
+//! check: run(exit=trap(ub))
+//! phase: run
+// Exercise 9-5: the injected use-after-free the oracle catches, every run.
+import c "stdlib.h"
+fn main() -> !int {
+    unsafe {
+        let p = c.malloc(8) as *u8
+        p[0] = 7
+        c.free(p)
+        let v = p[0]
+        v as int
+    }
+}

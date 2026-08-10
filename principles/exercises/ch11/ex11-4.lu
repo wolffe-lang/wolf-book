@@ -1,0 +1,22 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 11-4 solution: a worker pool — three workers drain one jobs
+// channel; the pool is the scope.
+fn main() -> !int {
+    let jobs = channel[int](8)
+    let results = channel[int](8)
+    scope s {
+        for w in 0..3 {
+            s.spawn(fn() {
+                for j in jobs { results.send(j * j) }
+            })
+        }
+        for j in 1..=6 { jobs.send(j) }
+        jobs.close()
+    }
+    results.close()
+    var total = 0
+    for r in results { total += r }
+    print("total={total}")
+    0
+}

@@ -1,0 +1,23 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 13-7 solution: one Euler step for two bodies on a line —
+// equal and opposite, and exactly so.
+fn absf(x: f64) -> f64 { if x < 0.0 { 0.0 - x } else { x } }
+fn main() -> !int {
+    var x1 = 0.0
+    var v1 = 0.0
+    var x2 = 10.0
+    var v2 = 0.0
+    let dt = 1.0
+    let g = 100.0
+    let r = absf(x2 - x1)
+    let a = g / (r * r)
+    v1 += a * dt
+    v2 -= a * dt
+    x1 += v1 * dt
+    x2 += v2 * dt
+    print("x1={x1} v1={v1}")
+    print("x2={x2} v2={v2}")
+    print("momentum {v1 + v2}")
+    0
+}

@@ -1,0 +1,13 @@
+//! check: fail(E1101)
+//! phase: resolve
+// Exercise 13-3: the race that does not compile — two tasks capture
+// plain mutable state. PENDING: capture checking (E1101) is the
+// compiler's s32/s33 concurrency sprints; lupin runs this today.
+fn main() -> !int {
+    var hits = 0
+    scope s {
+        s.spawn(fn() { hits += 1 })
+        s.spawn(fn() { hits += 1 })
+    }
+    hits
+}

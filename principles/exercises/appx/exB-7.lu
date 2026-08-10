@@ -1,0 +1,13 @@
+//! check: run(exit=trap(stale-handle))
+//! phase: run
+// Appendix B, exercise B-7: stale-handle — the slot moved on.
+struct Node { value: int }
+fn main() -> !int {
+    region r: pool(Node) {
+        var pool = Pool[Node]()
+        let h = pool.reserve()
+        pool.init(h, Node { value: 1 })
+        pool.remove(h)
+        pool[h].value
+    }
+}

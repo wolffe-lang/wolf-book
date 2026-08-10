@@ -1,0 +1,27 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 4-7 solution: day-of-year, one match and one loop.
+fn days_in(month: int, leap: bool) -> int {
+    match month {
+        2 => if leap { 29 } else { 28 },
+        4 => 30,
+        6 => 30,
+        9 => 30,
+        11 => 30,
+        _ => 31,
+    }
+}
+fn day_of_year(month: int, day: int, leap: bool) -> int {
+    var total = 0
+    var m = 1
+    while m < month {
+        total += days_in(m, leap)
+        m += 1
+    }
+    total + day
+}
+fn main() -> !int {
+    print("{day_of_year(3, 1, false)} {day_of_year(3, 1, true)}")
+    print("{day_of_year(12, 31, false)} {day_of_year(12, 31, true)}")
+    0
+}

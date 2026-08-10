@@ -1,0 +1,26 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 8-15 solution: a room graph — cycles by construction, walked by name.
+struct Room { name: str, north: handle Room, south: handle Room, east: handle Room, west: handle Room }
+fn main() -> !int {
+    region world: pool(Room) {
+        var pool = Pool[Room]()
+        let den = pool.reserve()
+        let ridge = pool.reserve()
+        let river = pool.reserve()
+        pool.init(den, Room { name: "den", north: ridge, south: den, east: river, west: den })
+        pool.init(ridge, Room { name: "ridge", north: ridge, south: den, east: river, west: ridge })
+        pool.init(river, Room { name: "river bank", north: ridge, south: river, east: river, west: den })
+        var here = den
+        var path = List[str]()
+        path.push("north")
+        path.push("east")
+        path.push("west")
+        path.push("south")
+        for step in path {
+            if step == "north" { here = pool[here].north } else if step == "south" { here = pool[here].south } else if step == "east" { here = pool[here].east } else { here = pool[here].west }
+            print("you are at the {pool[here].name}")
+        }
+        0
+    }
+}

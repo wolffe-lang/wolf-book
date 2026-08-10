@@ -1,0 +1,15 @@
+//! check: run(exit=trap(ub))
+//! phase: run
+// Exercise 9-13: an aliasing promise, broken on the next line.
+import c "stdlib.h"
+fn main() -> !int {
+    unsafe {
+        let p = c.malloc(8) as *u8
+        let q = p
+        assume noalias p, q
+        p[0] = 1
+        q[0] = 2
+        c.free(p)
+        0
+    }
+}

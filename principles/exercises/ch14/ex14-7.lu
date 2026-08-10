@@ -1,0 +1,27 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 14-7 solution: the reset command joins the protocol —
+// -1 resets, 0 reports, anything else adds.
+fn counter(cmds: channel[int], replies: channel[int]) -> int {
+    var total = 0
+    for c in cmds {
+        if c == 0 { replies.send(total) } else if c == 0 - 1 { total = 0 } else { total += c }
+    }
+    total
+}
+fn main() -> !int {
+    let cmds = channel[int](8)
+    let replies = channel[int](1)
+    let w = spawn proc counter(cmds, replies)
+    cmds.send(5)
+    cmds.send(2)
+    cmds.send(0)
+    let before = replies.recv() else |_| { return 1 }
+    cmds.send(0 - 1)
+    cmds.send(3)
+    cmds.send(0)
+    let after = replies.recv() else |_| { return 1 }
+    print("before={before} after={after}")
+    cmds.close()
+    0
+}

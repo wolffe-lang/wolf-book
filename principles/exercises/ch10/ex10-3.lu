@@ -1,0 +1,9 @@
+//! check: run(exit=7)
+//! phase: run
+// Exercise 10-3 solution: a child's value is discarded at the join.
+fn main() -> !int {
+    scope s {
+        s.spawn(fn() { 42 })
+    }
+    7
+}

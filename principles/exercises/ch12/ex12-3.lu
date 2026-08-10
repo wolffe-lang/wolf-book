@@ -1,0 +1,18 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 12-3 solution: a timeout arm is the select's answer to
+// "nothing is ready" — and it stops being the answer the moment
+// something is.
+fn main() -> !int {
+    let a = channel[int](1)
+    select {
+        v from a => { print("got {v}") },
+        timeout(5.ms) => { print("timed out") },
+    }
+    a.send(9)
+    select {
+        v from a => { print("got {v}") },
+        timeout(5.ms) => { print("timed out") },
+    }
+    0
+}

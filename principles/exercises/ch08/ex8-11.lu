@@ -1,0 +1,21 @@
+//! check: run(exit=0, stdout="6")
+//! phase: run
+// Exercise 8-11 solution: two regions, both open, provably disjoint.
+fn main() -> !int {
+    let a = region()
+    let b = region()
+    var total = 0
+    in a {
+        var xs = List[int]()
+        xs.push(1)
+        in b {
+            var ys = List[int]()
+            ys.push(2)
+            total += xs[0] + ys[0]
+        }
+        xs.push(3)
+        total += xs[1]
+    }
+    print("{total}")
+    0
+}

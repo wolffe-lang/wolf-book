@@ -1,0 +1,21 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 6-6 solution: an open row — the `..` admits tags the signature
+// never lists, and the rest arm is what keeps the caller compiling.
+fn probe(n: int) -> int ! {Io(int), ..} {
+    if n < 0 { return Weird }
+    if n == 0 { return Io(4) }
+    n
+}
+fn code_for(n: int) -> int {
+    probe(n) else |err| {
+        match err {
+            Io(code) => 0 - code,
+            _ => 0 - 99,
+        }
+    }
+}
+fn main() -> !int {
+    print("{code_for(7)} {code_for(0)} {code_for(0 - 1)}")
+    0
+}

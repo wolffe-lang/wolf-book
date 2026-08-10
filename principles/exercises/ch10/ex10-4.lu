@@ -1,0 +1,13 @@
+//! check: run(exit=trap(deadlock))
+//! phase: run
+// Exercise 10-4: Go's leaked goroutine, ported. Wolf refuses to lose it.
+fn main() -> !int {
+    let ch = channel[int](0)
+    scope s {
+        s.spawn(fn() {
+            let v = ch.recv() else |_| { return 0 }
+            print("{v}")
+        })
+    }
+    0
+}

@@ -1,0 +1,10 @@
+//! check: run(exit=0, stdout="1 2")
+//! phase: run
+// Exercise 7-4 solution, fixed: the duplication is spelled where it happens.
+struct P { x: int, y: int }
+fn main() -> !int {
+    let a = P { x: 1, y: 2 }
+    let b = copy a
+    print("{a.x} {b.y}")
+    0
+}

@@ -1,0 +1,12 @@
+//! check: fail(E0701)
+//! phase: typecheck
+// Exercise 24-4: the dependency that phones home at build time — as
+// close as wolf syntax can spell it.
+comptime fn latest_ad() -> str {
+    net_fetch("https://deps.example.test/banner")
+}
+fn main() -> !int {
+    const AD = latest_ad()
+    print(AD)
+    0
+}

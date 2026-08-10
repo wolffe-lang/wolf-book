@@ -1,0 +1,22 @@
+//! check: run(exit=0, stdout="released")
+//! phase: run
+// Exercise 14-4 solution: kill skips defers — the decided rule.
+// The proc's defer print must NOT appear; only the owner's release does.
+fn sleeper() -> int {
+    defer print_raw("defer-skipped")
+    let ch = channel[int](0)
+    let v = ch.recv() else |_| { return 1 }
+    v
+}
+fn main() -> !int {
+    let w = spawn proc sleeper()
+    let m = w.monitor()
+    w.kill()
+    select {
+        exit(reason) from m => {
+            if reason.is_killed() { print_raw("released") } else { print_raw("wrong") }
+        },
+        timeout(1.s) => { print_raw("timeout") },
+    }
+    0
+}

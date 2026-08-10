@@ -1,0 +1,10 @@
+//! check: fail(E0701)
+//! phase: typecheck
+// Exercise 18-7, tile three: a file read at compile time.
+comptime fn embed(path: str) -> str {
+    read_text(path)
+}
+fn main() -> !int {
+    const BANNER = embed("banner.txt")
+    if BANNER == "" { 1 } else { 0 }
+}

@@ -1,0 +1,6 @@
+//! member: true
+pub fn count() -> int { secrets() }
+
+fn secrets() -> int { 3 }
+
+fn total() -> int { secrets() + 1 }

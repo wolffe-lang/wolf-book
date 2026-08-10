@@ -1,0 +1,10 @@
+//! check: fail(E0701)
+//! phase: typecheck
+// Exercise 18-7, tile four: a clock read at compile time.
+comptime fn build_stamp() -> int {
+    clock_ms()
+}
+fn main() -> !int {
+    const STAMP = build_stamp()
+    if STAMP == 0 { 1 } else { 0 }
+}

@@ -1,0 +1,11 @@
+//! check: run(exit=trap(use-after-move))
+//! phase: run
+// Exercise 16-3: the sender keeps a name for what it gave away.
+fn main() -> !int {
+    let ch = channel[region](1)
+    let r = region()
+    let n = in r { 41 }
+    ch.send(move r)
+    let m = in r { 1 }
+    m
+}

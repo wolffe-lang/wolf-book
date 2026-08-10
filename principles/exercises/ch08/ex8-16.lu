@@ -1,0 +1,23 @@
+//! check: run(exit=0, stdout="3 lines, 11 words")
+//! phase: run
+// Exercise 8-16 solution: wc, wolfished — the lines live in a scratch
+// region; the counts are the only survivors.
+fn main() -> !int {
+    let text = """
+        the wolf runs at dusk
+        the moon rises
+        the pack answers
+        """
+    var lines = 0
+    var words = 0
+    region scratch {
+        var stored = List[str]()
+        for line in text.lines() { stored.push(line) }
+        lines = stored.len
+        for line in stored {
+            for _ in line.words() { words += 1 }
+        }
+    }
+    print("{lines} lines, {words} words")
+    0
+}

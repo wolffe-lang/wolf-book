@@ -1,0 +1,16 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 7-2 solution: moving a leaf leaves the rest of the tree alive.
+struct Wolf { name: str, call: str }
+struct Den { alpha: Wolf, beta: Wolf }
+fn main() -> !int {
+    var den = Den {
+        alpha: Wolf { name: "ada", call: "awoo" },
+        beta: Wolf { name: "grace", call: "yip" },
+    }
+    let promoted = move den.alpha.name
+    print("{promoted} leads")
+    print("{den.alpha.call} still works")
+    print("{den.beta.name} still here")
+    0
+}

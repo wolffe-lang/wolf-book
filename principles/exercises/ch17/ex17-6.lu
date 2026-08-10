@@ -1,0 +1,17 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 17-6: chaos at the effect point — the recv that sometimes
+// fails. PENDING: --chaos fault injection is not in the interpreter
+// yet (owner: s36-deterministic-scheduler). The program is the fixture;
+// the header pins the no-chaos baseline.
+fn fetch(ch: channel[int]) -> int ! {Lost} {
+    let v = ch.recv() else |_| { return Lost }
+    v
+}
+fn main() -> !int {
+    let ch = channel[int](1)
+    ch.send(41)
+    let v = fetch(ch) else |_| { 0 - 1 }
+    print("v={v}")
+    if v == 41 || v == 0 - 1 { 0 } else { 1 }
+}

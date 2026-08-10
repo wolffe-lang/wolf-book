@@ -1,0 +1,14 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 4-6 solution: a defer is registered by reaching it, not by existing.
+fn work(n: int) -> int {
+    defer print("one")
+    if n == 0 { return 10 }
+    defer print("two")
+    20
+}
+fn main() -> !int {
+    print("{work(0)}")
+    print("{work(1)}")
+    0
+}

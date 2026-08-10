@@ -1,0 +1,78 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 16-8 solution: a maze carved in a region, moved to a solver
+// proc, solved in place. Walls are per-cell bitmasks: 1=N 2=E 4=S 8=W.
+fn rnd(state: int) -> int {
+    (state * 33 + 17) % 251
+}
+fn carve(w: int, h: int, seed: int) -> List[int] {
+    var walls = List[int]()
+    var visited = List[int]()
+    for _ in 0..w * h { walls.push(15) }
+    for _ in 0..w * h { visited.push(0) }
+    var stack = List[int]()
+    stack.push(0)
+    visited[0] = 1
+    var s = seed
+    while stack.len > 0 {
+        let c = stack[stack.len - 1]
+        let cx = c % w
+        let cy = c / w
+        var open = List[int]()
+        if cy > 0 && visited[c - w] == 0 { open.push(0) }
+        if cx < w - 1 && visited[c + 1] == 0 { open.push(1) }
+        if cy < h - 1 && visited[c + w] == 0 { open.push(2) }
+        if cx > 0 && visited[c - 1] == 0 { open.push(3) }
+        if open.len == 0 {
+            let _ = stack.pop()
+        } else {
+            s = rnd(s)
+            let dir = open[s % open.len]
+            var n = c
+            if dir == 0 { n = c - w }
+            if dir == 1 { n = c + 1 }
+            if dir == 2 { n = c + w }
+            if dir == 3 { n = c - 1 }
+            if dir == 0 { walls[c] = walls[c] & 14; walls[n] = walls[n] & 11 }
+            if dir == 1 { walls[c] = walls[c] & 13; walls[n] = walls[n] & 7 }
+            if dir == 2 { walls[c] = walls[c] & 11; walls[n] = walls[n] & 14 }
+            if dir == 3 { walls[c] = walls[c] & 7; walls[n] = walls[n] & 13 }
+            visited[n] = 1
+            stack.push(n)
+        }
+    }
+    walls
+}
+fn solve(walls: List[int], w: int, h: int) -> int {
+    var dist = List[int]()
+    for _ in 0..w * h { dist.push(0 - 1) }
+    var queue = List[int]()
+    queue.push(0)
+    dist[0] = 0
+    var head = 0
+    while head < queue.len {
+        let c = queue[head]
+        head += 1
+        let cx = c % w
+        let cy = c / w
+        if cy > 0 && (walls[c] & 1) == 0 && dist[c - w] < 0 { dist[c - w] = dist[c] + 1; queue.push(c - w) }
+        if cx < w - 1 && (walls[c] & 2) == 0 && dist[c + 1] < 0 { dist[c + 1] = dist[c] + 1; queue.push(c + 1) }
+        if cy < h - 1 && (walls[c] & 4) == 0 && dist[c + w] < 0 { dist[c + w] = dist[c] + 1; queue.push(c + w) }
+        if cx > 0 && (walls[c] & 8) == 0 && dist[c - 1] < 0 { dist[c - 1] = dist[c] + 1; queue.push(c - 1) }
+    }
+    dist[w * h - 1]
+}
+fn main() -> !int {
+    let ch = channel[region](1)
+    let r = region()
+    let walls = in r { carve(5, 5, 2) }
+    scope s {
+        s.spawn(fn() {
+            let r2 = ch.recv() else |_| { return }
+            let d = in r2 { solve(walls, 5, 5) }
+            print("distance={d}")
+        })
+        ch.send(move r)
+    }
+    0
+}

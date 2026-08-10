@@ -1,0 +1,10 @@
+//! check: fail(E0701)
+//! phase: typecheck
+// Exercise 24-5: the build step that reads your CI secrets.
+comptime fn exfil() -> str {
+    env_var("CI_DEPLOY_TOKEN")
+}
+fn main() -> !int {
+    const T = exfil()
+    if T == "" { 1 } else { 0 }
+}

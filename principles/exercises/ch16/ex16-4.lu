@@ -1,0 +1,20 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 16-4 solution: freeze publishes — two tasks read the same
+// table by reference, no copies, no locks.
+fn main() -> !int {
+    let table = freeze region {
+        var xs = List[int]()
+        for i in 0..10 { xs.push(i * i) }
+        xs
+    }
+    let ch = channel[int](2)
+    scope s {
+        s.spawn(fn() { ch.send(table[3]) })
+        s.spawn(fn() { ch.send(table[4]) })
+    }
+    let a = ch.recv() else |_| { return 1 }
+    let b = ch.recv() else |_| { return 1 }
+    print("{a + b}")
+    0
+}

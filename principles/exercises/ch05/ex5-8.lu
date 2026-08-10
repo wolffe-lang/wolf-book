@@ -1,0 +1,13 @@
+//! check: run(exit=0, stdout="marmot 5")
+//! phase: run
+// Exercise 5-8: the combinator chain, awaiting the std surface.
+fn main() -> !int {
+    var scores = Map[str, int]()
+    scores["wolf"] = 4
+    scores["marmot"] = 5
+    scores["elk"] = 2
+    for (name, n) in scores.pairs().sorted_by(fn(a, b) b.1 <=> a.1).take(1) {
+        print("{name} {n}")
+    }
+    0
+}

@@ -1,0 +1,19 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 11-1 solution: the scope travels as a value; the signature
+// says so.
+fn launch(s: Scope, ch: channel[int], n: int) {
+    s.spawn(fn() { ch.send(n * 10) })
+}
+fn main() -> !int {
+    let ch = channel[int](3)
+    var total = 0
+    scope s {
+        launch(s, ch, 1)
+        launch(s, ch, 2)
+        launch(s, ch, 3)
+    }
+    for _ in 0..3 { total += ch.recv() else |_| { return 1 } }
+    print("{total}")
+    0
+}

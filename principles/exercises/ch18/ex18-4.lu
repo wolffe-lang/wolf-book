@@ -1,0 +1,11 @@
+//! check: fail(E0708)
+//! phase: typecheck
+// Exercise 18-4: layout is a backend fact, not a comptime value.
+struct Vec2 {
+    x: f64,
+    y: f64,
+}
+fn main() -> !int {
+    const S = size_of(Vec2)
+    if S == 16 { 0 } else { 1 }
+}

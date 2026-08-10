@@ -1,0 +1,9 @@
+//! check: fail(E1012)
+//! phase: typecheck
+// Exercise 8-9: one write after the freeze.
+struct Config { limit: int }
+fn main() -> !int {
+    var cfg = freeze region { Config { limit: 42 } }
+    cfg.limit = 7
+    cfg.limit
+}

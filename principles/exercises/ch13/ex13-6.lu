@@ -1,0 +1,29 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 13-6: grep's parallel twin — the matching loop becomes one
+// par call over the lines. PENDING: `par` is not in the interpreter's
+// std subset yet (owner: s32-tasks-scheduler / s37-core-types).
+fn contains(hay: str, needle: str) -> bool {
+    if hay.len < needle.len { return false }
+    var i = 0
+    while i + needle.len <= hay.len {
+        if hay[i..i + needle.len] == needle { return true }
+        i += 1
+    }
+    false
+}
+fn main() -> !int {
+    let doc = """
+        the wolf runs at dusk
+        the marmot sleeps
+        a lone wolf watches
+        the elk drift north
+        """
+    var lines = List[str]()
+    for line in doc.lines() { lines.push(line) }
+    let flags = lines.par(fn(line) contains(line, "wolf"))
+    var n = 0
+    for f in flags { if f { n += 1 } }
+    print("{n} match(es)")
+    0
+}

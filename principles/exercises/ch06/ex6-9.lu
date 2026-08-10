@@ -1,0 +1,18 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 6-9 solution: three postures toward the same bad input.
+fn parse_or_zero(s: str) -> int {
+    s.to_int() else 0
+}
+fn parse(s: str) -> int ! {NotAnInt} {
+    s.to_int() else { return NotAnInt }
+}
+fn main() -> !int {
+    print("{parse_or_zero("7x")}")
+    let v = parse("7x") else |_| {
+        print("refused: not a number")
+        0 - 1
+    }
+    print("{v}")
+    0
+}

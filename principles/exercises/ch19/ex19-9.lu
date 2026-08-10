@@ -1,0 +1,22 @@
+//! check: run(exit=0, stdout="45")
+//! phase: run
+// Exercise 19-9: the rewrite that could keep the promise — one List
+// allocated by the caller, reused across every call.
+fn tally_into(mut acc: List[int], base: int) {
+    var i = 0
+    while i < acc.len {
+        acc[i] = acc[i] + base
+        i += 1
+    }
+}
+fn main() -> !int {
+    var acc = List[int]()
+    var i = 0
+    while i < 5 { acc.push(i); i += 1 }
+    tally_into(mut acc, 3)
+    tally_into(mut acc, 4)
+    var sum = 0
+    for v in acc { sum += v }
+    print("{sum}")
+    0
+}

@@ -32,10 +32,18 @@ earned; chapters end with a batch that mixes the chapter's sections.
 ## 2. Density
 
 Every section that teaches something ends with at least one exercise. A
-chapter ends with three to six more. The book-wide target is
-order-of-150+ and is a floor, not a cap: chapters 1–6 alone carry 26 in
-the exemplar batch below, and the memory and concurrency parts are
-denser material, not thinner.
+chapter ends with three to six more. The book-wide target was
+order-of-150+ as a floor; the bs00x corpus filled it at full scale:
+**246 exercises** across parts 1–4 plus the appendix-adjacent sets —
+48 in part 1, 43 in part 2, 71 in part 3, 70 in part 4, 14 on the
+appendices. The per-chapter sets live in
+`principles/exercises/chNN/EXERCISES.md` (this file's §5 remains the
+chapters 1–6 exemplar batch, folded in unchanged; the chapter files
+continue its numbering); `EXERCISES-INDEX.md` maps section → exercise →
+tier, and `EXERCISES-PENDING.md` is the honest list of the 20 whose
+blocking features have not landed, each named with its blocker and
+owning sprint. 165 solutions were executed against the real tools at
+authoring time; 61 are discussion solutions by design.
 
 ## 3. Taxonomy
 
@@ -757,3 +765,46 @@ the REPL exercise), 3 under wolf conform-run (3-2 and 4-4 under both).
 All 23 solution programs on disk ran with the outputs shown; the REPL
 exercise (2-1) lives in its transcript, and the two design exercises have
 discussion solutions and no program.
+
+---
+
+## 8. Appendix — the veins
+
+Where exercises come from. The taxonomy (§3) says what an exercise asks
+of the reader; the vein says what the exercise is *made of*. Authors
+draw from all of them; the imagination mandate holds — no two adjacent
+chapters lean on the same vein, and repetition of a domain across
+chapters is a defect.
+
+- **Predict-the-outcome** — given a program, name the verdict before
+  running: the exit code, the trap kind, or the E-code, and why. lupin
+  makes it checkable; wolf's specialty when the answer is static.
+- **Differential pairs** — unique to this book: predict both lupin's
+  dynamic outcome and wolf's static verdict for one program, and
+  explain a case where they legitimately differ (conservatism). Part 2
+  is their home turf.
+- **Break-it-on-purpose** — construct the program that earns a named
+  diagnostic using only the constructs given; the smallest program
+  that traps a given kind.
+- **Region thinking** — refactor to zero annotations, predict
+  wholesale-free points, the disjoint-open antichain puzzles.
+- **Schedule play** — seeded interleaving predictions, defer order
+  under kill vs cancel, construct-a-deadlock and let the trap explain,
+  `--explore` findings.
+- **Build-a-thing minis** — small programs spread deliberately across
+  domains, at most one domain per chapter: temperature table (ch1),
+  run-length coder (ch2), calendar arithmetic (ch4), RPN calculator
+  (ch5), head-style row handling (ch6), LCS diff (ch7), LRU cache and
+  room graph (ch8), pipeline (ch10), worker pool (ch11), message
+  router (ch12), grep-lite and n-body step (ch13), mailbox service
+  (ch14), supervisor-in-miniature (ch15), maze in a region (ch16),
+  L-system table (ch18), saxpy kernel (ch21).
+- **The coreutils vein** — used sparingly and made wolfish, budget
+  four for the whole book, all four spent: uniq (5-6, order plus
+  tally), head (6-7, error rows), wc (8-16, regions for line storage),
+  grep-lite (13-2, line views and rows). No further coreutils mimics.
+- **Spelunking** — read a primary source (a diagnostic, a trap line, a
+  `--explain` entry, a directive header) and explain it back, citing
+  the source by identifier.
+- **Design** — no single answer; solutions discuss and, where wolf
+  took a side, say why.

@@ -1,0 +1,16 @@
+//! check: run(exit=0, stdout="6 8")
+//! phase: run
+// Exercise 7-8 solution: the two legal shapes — disjoint fields, and
+// disjoint leaves of disjoint subtrees.
+struct Q { n: int }
+struct P { a: Q, b: Q }
+fn bump(mut u: int, mut v: int) {
+    u += 1
+    v += 1
+}
+fn main() -> !int {
+    var p = P { a: Q { n: 5 }, b: Q { n: 7 } }
+    bump(mut p.a.n, mut p.b.n)
+    print("{p.a.n} {p.b.n}")
+    0
+}

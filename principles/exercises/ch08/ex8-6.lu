@@ -1,0 +1,25 @@
+//! check: run(exit=0, stdout="10 40")
+//! phase: run
+// Exercise 8-6 solution: the doubly-linked ring — cycles are fine here.
+struct Node { value: int, next: handle Node, prev: handle Node }
+fn main() -> !int {
+    region r: pool(Node) {
+        var pool = Pool[Node]()
+        var hs = List[handle Node]()
+        for _ in 0..5 { hs.push(pool.reserve()) }
+        for i in 0..5 {
+            pool.init(hs[i], Node {
+                value: (i + 1) * 10,
+                next: hs[(i + 1) % 5],
+                prev: hs[(i + 4) % 5],
+            })
+        }
+        var cur = hs[0]
+        for _ in 0..5 { cur = pool[cur].next }
+        let around = pool[cur].value
+        for _ in 0..2 { cur = pool[cur].prev }
+        let back = pool[cur].value
+        print("{around} {back}")
+        0
+    }
+}

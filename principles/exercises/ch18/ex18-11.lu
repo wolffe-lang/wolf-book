@@ -1,0 +1,25 @@
+//! check: run(exit=0, stdout="A-B--A--A-B")
+//! phase: run
+// Exercise 18-11: an L-system expanded at compile time.
+// PENDING: positive comptime evaluation (CTFE engine) — owner s16-ctfe.
+comptime fn expand(axiom: str, steps: int) -> str {
+    var cur = axiom
+    var step = 0
+    while step < steps {
+        var next = ""
+        var i = 0
+        while i < cur.len {
+            let ch = cur[i..i + 1]
+            if ch == "A" { next += "A-B" } else if ch == "B" { next += "-A" } else { next += ch }
+            i += 1
+        }
+        cur = next
+        step += 1
+    }
+    cur
+}
+fn main() -> !int {
+    const CURVE = expand("A", 3)
+    print(CURVE)
+    0
+}

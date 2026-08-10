@@ -1,0 +1,15 @@
+//! check: run(exit=0, stdout="285")
+//! phase: run
+// Exercise 13-1: the promise — parallelism by changing one call.
+// PENDING: `par` is not in the interpreter's std subset yet (owner:
+// s32-tasks-scheduler / s37-core-types); CI verifies this file the day
+// it lands.
+fn main() -> !int {
+    var xs = List[int]()
+    for i in 1..=9 { xs.push(i) }
+    let sq = xs.par(fn(x) x * x)
+    var sum = 0
+    for v in sq { sum += v }
+    print("{sum}")
+    0
+}

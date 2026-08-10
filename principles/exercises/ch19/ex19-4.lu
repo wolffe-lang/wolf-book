@@ -1,0 +1,15 @@
+//! check: run(exit=0, stdout="13.0")
+//! phase: run
+// Exercise 19-4: a promise the body keeps — arithmetic on fields, no
+// allocation anywhere. Verification of the attribute is pending (I15);
+// the program's behavior is not.
+struct Vec3 { x: f64, y: f64, z: f64 }
+#[noalloc]
+fn dot(a: Vec3, b: Vec3) -> f64 {
+    a.x * b.x + a.y * b.y + a.z * b.z
+}
+fn main() -> !int {
+    let d = dot(Vec3 { x: 1.0, y: 2.0, z: 3.0 }, Vec3 { x: 3.0, y: 2.0, z: 2.0 })
+    print("{d}")
+    0
+}

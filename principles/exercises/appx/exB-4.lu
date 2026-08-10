@@ -1,0 +1,9 @@
+//! check: run(exit=trap(use-after-move))
+//! phase: run
+// Appendix B, exercise B-4: use-after-move.
+fn main() -> !int {
+    let s = "howl"
+    let t = move s
+    print(s)
+    0
+}

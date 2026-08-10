@@ -1,0 +1,20 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 12-8 solution: when acquires the set whole; spelling the set
+// backward performs the same acquisitions.
+fn main() -> !int {
+    let a = Mutex(1)
+    let b = Mutex(2)
+    var total = 0
+    scope s {
+        s.spawn(fn() {
+            when (a, b) { a += 10; b += 10 }
+        })
+        s.spawn(fn() {
+            when (b, a) { b += 100; a += 100 }
+        })
+    }
+    when (a, b) { total = a + b }
+    print("{total}")
+    0
+}

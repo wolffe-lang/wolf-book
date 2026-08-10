@@ -1,0 +1,10 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 4-5 solution: Euclid, in three lines.
+fn gcd(a: int, b: int) -> int {
+    if b == 0 { a } else { gcd(b, a % b) }
+}
+fn main() -> !int {
+    print("{gcd(1071, 462)}")
+    0
+}

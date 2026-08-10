@@ -1,0 +1,10 @@
+//! check: fail(E0704)
+//! phase: typecheck
+// Exercise 18-9, program A: recursion without a floor.
+comptime fn dive(n: int) -> int {
+    dive(n + 1)
+}
+fn main() -> !int {
+    const D = dive(0)
+    if D == 0 { 1 } else { 0 }
+}

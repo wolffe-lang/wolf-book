@@ -1,0 +1,25 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 10-7 solution: when every child succeeds, close after the join
+// is safe — the join already proved every send happened.
+fn risky(n: int) -> int ! {Torn} {
+    if n == 3 { return Torn }
+    n * 100
+}
+fn gather_all() -> !int {
+    let ch = channel[int](4)
+    scope s {
+        s.spawn(fn() { ch.send(risky(1)?) })
+        s.spawn(fn() { ch.send(risky(2)?) })
+        s.spawn(fn() { ch.send(risky(4)?) })
+    }
+    ch.close()
+    var total = 0
+    for v in ch { total += v }
+    total
+}
+fn main() -> !int {
+    let total = gather_all() else |_| { return 1 }
+    print("total={total}")
+    0
+}

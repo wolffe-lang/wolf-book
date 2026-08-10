@@ -1,0 +1,34 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 6-7 solution: head, wolfished — the short file is an error,
+// and the error carries how many lines actually existed.
+fn head(text: str, n: int) -> str ! {TooFew(int)} {
+    var out = ""
+    var got = 0
+    for line in text.lines() {
+        if got < n {
+            out += "{line}\n"
+            got += 1
+        }
+    }
+    if got < n { return TooFew(got) }
+    out
+}
+fn main() -> !int {
+    let log = """
+        alpha
+        beta
+        gamma
+        """
+    let two = head(log, 2) else |_| { return 1 }
+    print_raw(two)
+    let five = head(log, 5) else |err| {
+        match err {
+            TooFew(have) => {
+                print("wanted 5, file has {have}")
+                ""
+            },
+        }
+    }
+    0
+}

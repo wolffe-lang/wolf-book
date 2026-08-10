@@ -1,0 +1,5 @@
+//! check: fail(E1006)
+//! phase: typecheck
+// Exercise 8-8: a strong `shared` cycle, rejected by type shape.
+struct Node { value: int, next: shared Node }
+fn main() -> !int { 0 }

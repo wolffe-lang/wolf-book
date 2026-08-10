@@ -1,0 +1,15 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 10-1 solution: the first scope — two children, one join.
+fn main() -> !int {
+    let ch = channel[int](2)
+    var total = 0
+    scope s {
+        s.spawn(fn() { ch.send(20) })
+        s.spawn(fn() { ch.send(22) })
+    }
+    total += ch.recv() else |_| { return 1 }
+    total += ch.recv() else |_| { return 1 }
+    print("total={total}")
+    0
+}

@@ -1,0 +1,10 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 22-5, after: the shared vocabulary moved into `kinds`, which
+// imports nothing; both former combatants point at it, and the arrows
+// form a DAG.
+use store
+
+fn main() -> !int {
+    store.put(3)
+}

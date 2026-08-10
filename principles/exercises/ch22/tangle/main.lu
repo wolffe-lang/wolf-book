@@ -1,0 +1,9 @@
+//! check: fail(E0303)
+//! phase: parse
+// Exercise 22-5, before: `store` needs `index` to publish, `index` needs
+// `store` to validate — a cycle with a plausible excuse, like most.
+use store
+
+fn main() -> !int {
+    store.put(3)
+}

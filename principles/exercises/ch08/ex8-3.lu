@@ -1,0 +1,11 @@
+//! check: fail(E1010)
+//! phase: typecheck
+// Exercise 8-3: a scratch value tries to outlive its region.
+struct Node { value: int }
+fn main() -> !int {
+    var keep = Node { value: 0 }
+    region tmp {
+        keep = Node { value: 7 }
+    }
+    if keep.value == 7 { 0 } else { 1 }
+}

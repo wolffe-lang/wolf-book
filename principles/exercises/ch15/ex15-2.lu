@@ -1,0 +1,13 @@
+//! check: run(exit=1)
+//! phase: run
+// Exercise 15-2: link is shared fate. Neither print runs; the linked
+// failure takes main down at its blocking point. Exit 1, silence.
+fn boom() -> !int { Bad }
+fn main() -> !int {
+    let w = spawn proc boom()
+    w.link()
+    let ch = channel[int](0)
+    let v = ch.recv() else |err| { print("recv failed"); return 7 }
+    print("got {v}")
+    0
+}

@@ -1,0 +1,22 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 14-5 solution: cancellation is polite — the cancelled
+// sibling's defer runs before the scope re-raises the error.
+fn fail_fast() -> !int { Boom }
+fn race_them() -> !int {
+    let ch = channel[int](0)
+    scope s {
+        s.spawn(fn() {
+            defer print("sibling cleanup ran")
+            let v = ch.recv()?
+            v
+        })
+        s.spawn(fn() { fail_fast() })
+    }
+    0
+}
+fn main() -> !int {
+    let r = race_them() else |_| { 42 }
+    if r == 42 { print("caught") }
+    0
+}

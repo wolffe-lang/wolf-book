@@ -1,0 +1,14 @@
+//! check: run(exit=trap(stale-handle))
+//! phase: run
+// Exercise 8-12: a handle outlives its slot, and says so.
+struct Node { value: int }
+fn main() -> !int {
+    region r: pool(Node) {
+        var pool = Pool[Node]()
+        let h = pool.reserve()
+        pool.init(h, Node { value: 1 })
+        pool.remove(h)
+        let v = pool[h].value
+        v
+    }
+}

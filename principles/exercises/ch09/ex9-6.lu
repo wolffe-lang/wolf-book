@@ -1,0 +1,10 @@
+//! check: run(exit=trap(ub))
+//! phase: run
+// Exercise 9-6: a bool that is neither true nor false.
+fn main() -> !int {
+    unsafe {
+        let n = 7
+        let b = n as bool
+        if b { 0 } else { 1 }
+    }
+}

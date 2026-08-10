@@ -1,0 +1,15 @@
+//! check: fail(E0703)
+//! phase: typecheck
+// Exercise 18-10: enough fuel to run, not enough heap to finish.
+comptime fn flood() -> int {
+    var n = 0
+    while n < 100000000 {
+        n = n + 1
+    }
+    n
+}
+fn main() -> !int {
+    #[budget(fuel = 100000000)]
+    const N = flood()
+    if N == 0 { 1 } else { 0 }
+}

@@ -1,0 +1,7 @@
+//! check: run(exit=trap(overflow))
+//! phase: run
+// Exercise 3-6: the smallest square that leaves i32.
+fn main() -> !int {
+    print("{46341 * 46341}")
+    0
+}

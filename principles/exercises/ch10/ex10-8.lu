@@ -1,0 +1,22 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 10-8 solution: cancellation is polite — the cancelled task's
+// defers run. Contrast the killed proc in chapter 14.
+fn fail_fast() -> !int { Boom }
+fn race_them() -> !int {
+    let ch = channel[int](0)
+    scope s {
+        s.spawn(fn() {
+            defer print("sibling cleanup ran")
+            let v = ch.recv()?
+            v
+        })
+        s.spawn(fn() { fail_fast() })
+    }
+    0
+}
+fn main() -> !int {
+    let r = race_them() else |_| { 42 }
+    print("{r}")
+    0
+}

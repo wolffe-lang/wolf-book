@@ -1,0 +1,9 @@
+//! check: run(exit=trap(div-zero))
+//! phase: run
+// Appendix B, exercise B-2: div-zero — remainder counts.
+fn main() -> !int {
+    let n = 10
+    let d = n - n
+    print("{7 % d}")
+    0
+}

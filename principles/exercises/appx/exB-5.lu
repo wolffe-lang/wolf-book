@@ -1,0 +1,11 @@
+//! check: run(exit=trap(exclusivity))
+//! phase: run
+// Appendix B, exercise B-5: exclusivity — a path and its prefix.
+struct Inner { n: int }
+struct P { a: Inner, b: Inner }
+fn wide(mut i: Inner, mut n: int) { n += 1 }
+fn main() -> !int {
+    var p = P { a: Inner { n: 1 }, b: Inner { n: 2 } }
+    wide(mut p.a, mut p.a.n)
+    0
+}

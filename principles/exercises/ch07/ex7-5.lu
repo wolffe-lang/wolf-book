@@ -1,0 +1,13 @@
+//! check: fail(E1003)
+//! phase: mem
+// Exercise 7-5: a local borrow tries to outlive its activation.
+// The static tier's E1003 claim is pending in wolfc (channel resolution
+// lands with s33); lupin runs the program — see the solution for why
+// both behaviors are telling the truth.
+fn main() -> !int {
+    let ch = channel[int](1)
+    let x = 41
+    let p = &x
+    ch.send(p)
+    0
+}

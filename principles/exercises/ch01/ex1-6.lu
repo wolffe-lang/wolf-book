@@ -1,0 +1,6 @@
+//! check: fail(E0202)
+//! phase: parse
+// Exercise 1-6: a missing brace, on purpose. The diagnostic is the reading.
+fn main() -> !int {
+    print("almost")
+    0

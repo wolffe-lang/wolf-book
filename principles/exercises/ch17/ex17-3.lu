@@ -1,0 +1,15 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 17-3: first arrival — two sends race into one channel.
+fn main() -> !int {
+    let ch = channel[int](2)
+    var order = ""
+    scope s {
+        s.spawn(fn() { ch.send(1) })
+        s.spawn(fn() { ch.send(2) })
+    }
+    let a = ch.recv() else |_| { return 1 }
+    let b = ch.recv() else |_| { return 1 }
+    print("{a}{b}")
+    0
+}

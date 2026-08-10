@@ -1,0 +1,55 @@
+//! check: run(exit=0, stdout="c a")
+//! phase: run
+// Exercise 8-7: the LRU cache proper — relinking through pool handles.
+// PENDING: a field write through a pool index (`pool[h].next = k`) does
+// not yet denote a place in lupin's std subset; this is the expected
+// program, to be verified the day the feature lands.
+struct Node { key: str, value: int, prev: handle Node, next: handle Node }
+fn unlink(mut pool: Pool[Node], h: handle Node) {
+    let p = pool[h].prev
+    let n = pool[h].next
+    pool[p].next = n
+    pool[n].prev = p
+}
+fn push_front(mut pool: Pool[Node], head: handle Node, h: handle Node) {
+    let first = pool[head].next
+    pool[h].prev = head
+    pool[h].next = first
+    pool[first].prev = h
+    pool[head].next = h
+}
+fn main() -> !int {
+    region cache: pool(Node) {
+        var pool = Pool[Node]()
+        let head = pool.reserve()
+        let tail = pool.reserve()
+        pool.init(head, Node { key: "", value: 0, prev: head, next: tail })
+        pool.init(tail, Node { key: "", value: 0, prev: head, next: tail })
+
+        let a = pool.reserve()
+        pool.init(a, Node { key: "a", value: 1, prev: head, next: tail })
+        push_front(mut pool, head, a)
+        let b = pool.reserve()
+        pool.init(b, Node { key: "b", value: 2, prev: head, next: tail })
+        push_front(mut pool, head, b)          // order: b a
+
+        unlink(mut pool, a)                    // get "a": promote
+        push_front(mut pool, head, a)          // order: a b
+
+        let victim = pool[tail].prev           // capacity 2: evict "b"
+        unlink(mut pool, victim)
+        pool.remove(victim)
+        let c = pool.reserve()
+        pool.init(c, Node { key: "c", value: 3, prev: head, next: tail })
+        push_front(mut pool, head, c)          // order: c a
+
+        var line = ""
+        var cur = pool[head].next
+        while cur != tail {
+            if line == "" { line = pool[cur].key } else { line += " {pool[cur].key}" }
+            cur = pool[cur].next
+        }
+        print(line)
+        0
+    }
+}

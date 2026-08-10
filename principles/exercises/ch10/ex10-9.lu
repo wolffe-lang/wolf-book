@@ -1,0 +1,22 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 10-9 solution: a two-stage pipeline — each stage owns one
+// channel's sending side and closes it when its input runs dry.
+fn main() -> !int {
+    let raw = channel[int](8)
+    let squared = channel[int](8)
+    var produced = 0
+    scope s {
+        s.spawn(fn() {
+            for i in 1..=5 { raw.send(i) }
+            raw.close()
+        })
+        s.spawn(fn() {
+            for v in raw { squared.send(v * v) }
+            squared.close()
+        })
+        for v in squared { produced += 1 }
+    }
+    print("{produced} values through the pipeline")
+    0
+}

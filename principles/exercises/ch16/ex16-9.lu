@@ -1,0 +1,9 @@
+//! check: fail(E1102)
+//! phase: resolve
+// Exercise 16-9: a bare List cannot cross a channel — the payload
+// must be Copy, imm, a moved region, or a sync type. Expected: E1102.
+// PENDING: the sendability check is not enforced by either tool today.
+fn main() -> !int {
+    let ch = channel[List[int]](1)
+    0
+}
