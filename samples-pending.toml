@@ -1,0 +1,64 @@
+# The pending manifest — the runner's twin of EXERCISES-PENDING.md.
+# Every row names a corpus sample whose directive is EXPECTED to fail
+# against today's pinned tools: the runner executes it report-only and
+# treats a pass as a FLIP (hard error) so a landing feature is noticed
+# in the same commit that bumps the pin. Rows are removed, never
+# silently absorbed. Workflow-only pending exercises (20-6, 21-8, 22-7,
+# 23-7, 24-6, B-10) have no .lu file and no row; 19-1's program runs
+# green today (its pending-ness is the unverified #[noalloc], not the
+# run) so it carries no row either.
+
+[[pending]]
+id = "ch05/ex5-8"
+blocker = "`sorted_by` / `take` absent from the interp std subset"
+owner = "s37-core-types (std surface pinning)"
+
+[[pending]]
+id = "ch07/ex7-5"
+blocker = "borrow-escape checking reaches no static verdict; wolfc leaves `channel` unresolved"
+owner = "s33-channels-select, then s18-tier0-exclusivity"
+
+[[pending]]
+id = "ch08/ex8-7"
+blocker = "field writes through a pool index do not denote a place in the interp std subset"
+owner = "s37-core-types (std surface pinning)"
+
+[[pending]]
+id = "ch09/ex9-8"
+blocker = "real libc calls; the interpreter models only its documented host-intrinsic set"
+owner = "s46-libclang-importer over s29-abi-v0"
+
+[[pending]]
+id = "ch13/ex13-1"
+blocker = "`par` absent from the interp std subset"
+owner = "s32-tasks-scheduler / s37-core-types"
+
+[[pending]]
+id = "ch13/ex13-3"
+blocker = "unsynchronized-capture checking (E1101) does not exist"
+owner = "s32-tasks-scheduler / s33-channels-select"
+
+[[pending]]
+id = "ch13/ex13-6"
+blocker = "`par` absent from the interp std subset"
+owner = "s32-tasks-scheduler / s37-core-types"
+
+[[pending]]
+id = "ch16/ex16-9"
+blocker = "channel payload sendability checking (E1102) does not exist"
+owner = "s33-channels-select"
+
+[[pending]]
+id = "ch18/ex18-3"
+blocker = "positive comptime evaluation (CTFE engine)"
+owner = "s16-ctfe"
+
+[[pending]]
+id = "ch18/ex18-5"
+blocker = "comptime reflection (`typeinfo`)"
+owner = "s16-ctfe"
+
+[[pending]]
+id = "ch18/ex18-11"
+blocker = "positive comptime evaluation (CTFE engine)"
+owner = "s16-ctfe"
