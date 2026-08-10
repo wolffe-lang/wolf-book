@@ -1,10 +1,5 @@
 # Notation
 
-<!-- STUB (bs00): the full dialect walkthrough lands with bs01. The five
-     block kinds below are live so the sample pipeline and the theme have
-     real cargo from day one; each carries its real directive and is
-     extracted and executed by `cargo xtask samples`. -->
-
 The book sets code in five dialects. Programs are complete and executed
 by CI; the blocks below are the pipeline's smoke test as much as the
 reader's legend.
@@ -70,5 +65,39 @@ help: to keep the original, copy it at the move
    |
 ```
 
+## Reading the dialects
+
+The distinction that matters is who is speaking. Program and part blocks
+are the book's; console runs, transcripts, and diagnostics are the
+tools'. Tool output is pasted from real runs and never edited — no
+elisions, no retyped error messages, no tidied spans. When a diagnostic
+looks longer than the program that earned it, that is the compiler's
+editorial decision and the book keeps it.
+
+Two tools appear at the prompt, for the reason chapter 1 gives: `lupin`
+runs programs and `wolf` checks them. A `$ lupin …` line is a run; a
+`$ wolf …` line is a check. Both cite specification clauses in square
+brackets (`[mem.ub.defined]`) and stable error codes (`E0202`), and both
+identifiers are indexed: a code or a clause you meet in your own terminal
+is findable in this book.
+
+Exit codes recur often enough to be worth memorizing early. `0` and
+whatever else your `main` returns are the program's own; `2` is a static
+rejection, so the program never started; `3` is a trap, so it started and
+hit a rule; `4` is `unsupported`, the young implementation declining work
+it will do later.
+
+## Exercises and solutions
+
 Exercise numbering is K&R style: Exercise 3-2 is the second exercise of
-chapter 3. Numbers are stable; a retired exercise leaves a tombstone.
+chapter 3. Numbers are stable; a retired exercise leaves a tombstone
+rather than renumbering its neighbors. Stems end the section whose
+material they exercise, and each carries its kind and its checker —
+*(comprehension · lupin)* means predict the outcome, then let the
+interpreter settle it; *(spelunking · wolf)* means read what the compiler
+says and explain it back.
+
+Every exercise has a solution, and every solution program is a sample
+like any other: extracted, executed, and snapshot-checked in the same CI
+run as the chapters. A solution that stops compiling fails the book's
+build.

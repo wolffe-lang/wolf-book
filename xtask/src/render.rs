@@ -238,6 +238,7 @@ fn typst_preamble() -> String {
   width: 100%,
   breakable: true,
 )[#set text(font: "Source Code Pro", size: 8.8pt); #set par(justify: false, leading: 0.55em); #body]
+#let epigraph(body) = block(above: 1.2em, below: 1.6em, width: 100%)[#body]
 #let partpage(title) = {
   v(2.5in)
   align(center)[#text(size: 20pt, weight: "bold")[#title]]
@@ -314,7 +315,27 @@ fn strip_html_comments(text: &str) -> String {
 
 fn typst_prose(text: &str) -> String {
     let mut out = String::new();
-    for line in text.lines() {
+    let lines: Vec<&str> = text.lines().collect();
+    let mut i = 0usize;
+    while i < lines.len() {
+        let line = lines[i];
+        i += 1;
+        // Epigraphs are the one raw-HTML construct the chapters use
+        // (DESIGN.md §1, TONE.md §4): the web edition styles
+        // `<p class="epigraph">` from the theme, and the print path has
+        // to build the same shape instead of escaping the tags onto the
+        // page. Collect the paragraph, then set it italic with the
+        // attribution flush right.
+        if line.trim_start().starts_with("<p class=\"epigraph\">") {
+            let mut block = line.trim_start().to_string();
+            while !block.contains("</p>") && i < lines.len() {
+                block.push('\n');
+                block.push_str(lines[i]);
+                i += 1;
+            }
+            out.push_str(&typst_epigraph(&block));
+            continue;
+        }
         let trimmed = line.trim_start();
         let hashes = trimmed.chars().take_while(|&c| c == '#').count();
         if (1..=6).contains(&hashes) && trimmed[hashes..].starts_with(' ') {
@@ -342,6 +363,31 @@ fn typst_prose(text: &str) -> String {
         }
     }
     out
+}
+
+/// One `<p class="epigraph">…</p>` block → typst. An inner
+/// `<span class="attribution">…</span>` becomes the flush-right line the
+/// web edition's CSS produces; everything else is the italic epigraph
+/// body. Whitespace collapses, because the source wraps for the 68ch
+/// measure and typst reflows on its own.
+fn typst_epigraph(block: &str) -> String {
+    let inner = block
+        .trim()
+        .trim_start_matches("<p class=\"epigraph\">")
+        .trim_end_matches("</p>");
+    let (body, source) = match inner.split_once("<span class=\"attribution\">") {
+        Some((b, s)) => (b, Some(s.trim_end_matches("</span>"))),
+        None => (inner, None),
+    };
+    let collapse = |s: &str| s.split_whitespace().collect::<Vec<_>>().join(" ");
+    let body = typst_inline(&collapse(body));
+    match source {
+        Some(s) => format!(
+            "#epigraph[#emph[{body}]#v(0.2em)#align(right)[{}]]\n",
+            typst_inline(&collapse(s))
+        ),
+        None => format!("#epigraph[#emph[{body}]]\n"),
+    }
 }
 
 /// Inline markdown → typst: code spans pass through as typst raw
@@ -493,6 +539,28 @@ mod tests {
         let inline = typst_inline("use `wolf run` on *day one*");
         assert!(inline.contains("#raw(\"wolf run\")"));
         assert!(inline.contains("#emph[day one]"));
+    }
+
+    #[test]
+    fn typst_epigraph_sets_italic_and_flush_right_attribution() {
+        // Chapter 2's epigraph, wrapped for the measure as the source is.
+        let md = "<p class=\"epigraph\">\"Skin and Bones.\"<span class=\"attribution\">— Cage the\nElephant</span></p>\n\nprose follows\n";
+        let out = typst_prose(md);
+        assert!(out.contains("#epigraph[#emph["), "got: {out}");
+        assert!(out.contains("#align(right)["), "got: {out}");
+        // No raw HTML reaches the page, escaped or otherwise.
+        assert!(!out.contains("<p"), "got: {out}");
+        assert!(!out.contains("class=\\\"epigraph"), "got: {out}");
+        assert!(!out.contains("span"), "got: {out}");
+        assert!(out.contains("prose follows"));
+    }
+
+    #[test]
+    fn typst_epigraph_without_attribution() {
+        let md = "<p class=\"epigraph\">Bruckner's Fourth opens with one horn call.</p>\n";
+        let out = typst_prose(md);
+        assert!(out.starts_with("#epigraph[#emph["), "got: {out}");
+        assert!(!out.contains("#align(right)"), "got: {out}");
     }
 
     #[test]
