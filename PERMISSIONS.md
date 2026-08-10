@@ -31,6 +31,15 @@ Chapter 1's epigraph is Bruckner (dark-Romantic register, untracked
 below by design). Part 1 therefore spends one Cage placement and one
 public-domain allusion, and neither chapter carries both.
 
+bs02 (chapters 3–6) adds no row: Part 1's single Cage placement is
+spent on chapter 2, and TONE.md §4.2 allows one per part. Chapters 3, 4,
+and 5 carry no epigraph and no in-prose simile at all; chapter 6 carries
+one dark-Romantic epigraph (Mahler's Ninth, public domain, untracked
+here by design), which is Part 1's second and last placement in that
+register. Chapters 7 and 8 inherit TONE.md §4.1's two worked placements
+(the Mahler Sixth hammer at chapter 7's head, the Tristan simile in the
+freeze section), so bs03 should place one of them, not both.
+
 The dark-Romantic register (TONE.md §4.1 — Mahler, Bruckner, Wagner
 allusions) is public domain and is deliberately *not* tracked here;
 this ledger is for material with a rights holder.
