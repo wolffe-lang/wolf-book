@@ -145,17 +145,29 @@ jobs:
         run: |
           rev() { awk -v s="[$1]" '$0==s{f=1} f&&/^rev = /{gsub(/"/,"",$3); print $3; exit}' wolf-toolchain.toml; }
           echo "lsp=$(rev wolf-lsp)" >> "$GITHUB_OUTPUT"
-      - uses: actions/checkout@v4
-        with:
-          repository: tenseleyFlow/wolf-lsp
-          ref: ${{ steps.pins.outputs.lsp }}
-          path: wolf-lsp
-          token: ${{ secrets.WOLF_CI_TOKEN || github.token }}
+      # wolf-lsp is private: the drift check runs only with WOLF_CI_TOKEN;
+      # rendering always runs — the grammar is vendored in-repo.
+      - name: acquire wolf-lsp for the drift check
+        id: lsp
+        shell: bash
+        env:
+          TOKEN: ${{ secrets.WOLF_CI_TOKEN }}
+        run: |
+          set -uo pipefail
+          if [ -z "${TOKEN:-}" ]; then
+            echo "::notice::WOLF_CI_TOKEN absent — grammar drift check skips (vendored grammar still renders)"
+            echo "have=none" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          git clone --quiet "https://x-access-token:${TOKEN}@github.com/tenseleyFlow/wolf-lsp" wolf-lsp \
+            && git -C wolf-lsp checkout --quiet "${{ steps.pins.outputs.lsp }}" \
+            && echo "have=full" >> "$GITHUB_OUTPUT" \
+            || { echo "::error::token present but wolf-lsp acquisition failed"; exit 1; }
       - uses: Swatinem/rust-cache@v2
         with:
           workspaces: wolf-book
       - uses: typst-community/setup-typst@v4
       - name: grammar drift check (the book-side arrow)
+        if: steps.lsp.outputs.have == 'full'
         shell: bash
         working-directory: wolf-book
         run: cargo xtask grammar-sync --check --lsp-path ../wolf-lsp
