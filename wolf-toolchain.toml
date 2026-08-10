@@ -7,13 +7,13 @@
 # wolf-lang: `wolf conform-run` is the static checker of record until
 # the full `wolf build|run` driver lands (s31).
 repo = "tenseleyFlow/wolf-lang"
-rev = "b4f1e2cbf228b1cb25e3a322010fa139f88d22e3"
+rev = "a0c4564f246e46dd14d66f82e7d106059b9d076a"
 impl_version = "0.0.1"
 
 [lupin]
 # wolf-interp: runs programs, reports traps, evaluates REPL snippets.
 repo = "tenseleyFlow/wolf-interp"
-rev = "1fffe4da484b775a32154076e225cdec62420efd"
+rev = "68638bbb9a8df9a6f93286ab5502a19c61e86d77"
 version = "lupin 0.1.0 (wolf-interp, pin cbde620)"
 
 [wolf-lsp]
