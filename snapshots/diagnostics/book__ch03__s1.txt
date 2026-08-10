@@ -1,0 +1,14 @@
+error[E0410]: `width` is bound with `let`, so it cannot be assigned again
+ --> ./s1.lu:6:5
+  |
+5 |     let width = 10
+  |     --- the binding is made immutable here
+6 |     width = 12
+  |     ^^^^^ this assignment needs a mutable binding
+  |
+  = note: `let` names a value once. Declare the binding with `var` to update it in place, or
+    shadow it with a second `let` if the next value is really a new thing.
+help: make the binding mutable: `var`
+  |
+5 |     var width = 10
+  |

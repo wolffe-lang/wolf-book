@@ -131,7 +131,7 @@ pub fn run(root: &Path, args: &[String]) -> Result<()> {
 
     // ---- Collect ----
     let (corpus, member_count) = collect_corpus(root)?;
-    let (book, repl_blocks, diag_checks) = collect_book(root)?;
+    let (book, repl_blocks, diag_checks, lint_failures) = collect_book(root)?;
     let mut samples = corpus;
     samples.extend(book);
     if let Some(f) = &filter {
@@ -139,7 +139,7 @@ pub fn run(root: &Path, args: &[String]) -> Result<()> {
     }
 
     // ---- Execute ----
-    let mut failures: Vec<String> = Vec::new();
+    let mut failures: Vec<String> = lint_failures;
     let mut flips: Vec<String> = Vec::new();
     let mut pass = 0usize;
     let mut pending_seen = 0usize;
@@ -322,8 +322,62 @@ fn collect_corpus(root: &Path) -> Result<(Vec<Sample>, usize)> {
 
 type DiagCheck = (PathBuf, String, String);
 
-fn collect_book(root: &Path) -> Result<(Vec<Sample>, usize, Vec<DiagCheck>)> {
+/// What one pass over `book/**/*.md` yields: the executable samples, the
+/// count of REPL transcripts (counted, replayed at is08), the
+/// `diagnostic,from(…)` cross-checks, and the Part-1 lint's complaints.
+type BookScan = (Vec<Sample>, usize, Vec<DiagCheck>, Vec<String>);
+
+/// The ownership vocabulary Part 1 does not teach (bs02 acceptance 4).
+/// A reader finishes Part 1 writing real single-threaded wolf without
+/// having met any of these; the extractor is what keeps that promise
+/// honest, because prose can drift and a sample cannot.
+const OWNERSHIP_TOKENS: [&str; 4] = ["mut", "take", "region", "shared"];
+
+/// Which book files belong to Part 1, read from SUMMARY.md so the rule
+/// follows the structure rather than a hardcoded chapter range.
+fn part1_files(root: &Path) -> Result<std::collections::BTreeSet<PathBuf>> {
+    Ok(crate::render::parse_summary(root)?
+        .into_iter()
+        .filter(|e| e.part.as_deref().is_some_and(|p| p.starts_with("Part 1")))
+        .map(|e| e.path)
+        .collect())
+}
+
+/// Ownership annotations in a block. Matched as whole tokens, so `taken`
+/// and `mutation` stay ordinary identifiers, and never after a `.`:
+/// an ownership annotation is a prefix keyword (`take p.lead`), while
+/// `xs.take(3)` is the iterator combinator that happens to share the
+/// word. The two are distinguishable only by position — a collision
+/// worth knowing about, since it is also what a human grepping for a
+/// codebase's move surface has to filter by hand.
+fn ownership_annotations(program: &str) -> Vec<&'static str> {
+    let bytes = program.as_bytes();
+    let is_word = |b: u8| b.is_ascii_alphanumeric() || b == b'_';
+    let mut hits: Vec<&'static str> = Vec::new();
+    for tok in OWNERSHIP_TOKENS {
+        let mut from = 0usize;
+        while let Some(rel) = program[from..].find(tok) {
+            let at = from + rel;
+            from = at + tok.len();
+            let before = at.checked_sub(1).map(|i| bytes[i]);
+            let after = bytes.get(at + tok.len()).copied();
+            if before.is_some_and(is_word) || after.is_some_and(is_word) {
+                continue; // part of a longer identifier
+            }
+            if before == Some(b'.') {
+                continue; // a method call, not an annotation
+            }
+            hits.push(tok);
+            break;
+        }
+    }
+    hits
+}
+
+fn collect_book(root: &Path) -> Result<BookScan> {
     let base = root.join("book");
+    let part1 = part1_files(root)?;
+    let mut lint_failures: Vec<String> = Vec::new();
     let mut md_files = Vec::new();
     walk(&base, &mut |p| {
         let name = p.file_name().and_then(|n| n.to_str()).unwrap_or("");
@@ -373,6 +427,20 @@ fn collect_book(root: &Path) -> Result<(Vec<Sample>, usize, Vec<DiagCheck>)> {
                 }
                 "wolf" => {}
                 _ => continue,
+            }
+            // Part-1 blocks carry no ownership annotations. Checked on the
+            // block as written, so the failure names the block the author
+            // has to fix rather than a stitched whole.
+            if part1.contains(md) {
+                for tok in ownership_annotations(&f.content) {
+                    lint_failures.push(format!(
+                        "{}:{}: Part-1 sample carries the ownership annotation `{tok}` — \
+                         Part 1 teaches none of `mut`/`take`/`region`/`shared` (bs02 \
+                         acceptance 4); reshape the sample or move the material",
+                        md.display(),
+                        f.open_line + 1,
+                    ));
+                }
             }
             // wolf block: stitch parts, then decide whether it runs.
             let (program, name) = match &fi.part {
@@ -424,7 +492,7 @@ fn collect_book(root: &Path) -> Result<(Vec<Sample>, usize, Vec<DiagCheck>)> {
             });
         }
     }
-    Ok((samples, repl_blocks, diag_checks))
+    Ok((samples, repl_blocks, diag_checks, lint_failures))
 }
 
 fn walk(dir: &Path, f: &mut impl FnMut(&Path)) -> Result<()> {
@@ -757,4 +825,56 @@ fn selftest(root: &Path, tools: &Tools) -> Result<()> {
     }
     println!("samples: self-test ok — {broken_caught}/3 deliberate breakages caught");
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn ownership_lint_catches_each_annotation() {
+        assert_eq!(
+            ownership_annotations("fn grow(mut xs: List[int]) { xs.push(7) }\n"),
+            vec!["mut"]
+        );
+        assert_eq!(
+            ownership_annotations("let a = adopt(take p.lead)\n"),
+            vec!["take"]
+        );
+        assert_eq!(
+            ownership_annotations("region scratch { }\n"),
+            vec!["region"]
+        );
+        assert_eq!(
+            ownership_annotations("let s = shared[Doc](d)\n"),
+            vec!["shared"]
+        );
+    }
+
+    #[test]
+    fn ownership_lint_ignores_lookalike_identifiers() {
+        // `taken` is a live identifier in chapter 5's top-2 scan, and a
+        // substring match would fail the chapter for spelling.
+        let program =
+            "var taken = List[str]()\nlet mutation = 1\nlet regions = 2\nlet sharedness = 3\n";
+        assert!(ownership_annotations(program).is_empty());
+    }
+
+    #[test]
+    fn ownership_lint_reports_every_token_present() {
+        let hits = ownership_annotations("fn f(mut x: int) { take y }\n");
+        assert_eq!(hits, vec!["mut", "take"]);
+    }
+
+    #[test]
+    fn ownership_lint_allows_the_take_combinator() {
+        // Chapter 5 prints reports/05's combinator chain, where `take` is
+        // an iterator method. Position is what tells the two apart.
+        let chain = "for (k, n) in totals.pairs().sorted_by(fn(a, b) b.1 <=> a.1).take(1) {}\n";
+        assert!(ownership_annotations(chain).is_empty());
+        assert_eq!(
+            ownership_annotations("let a = adopt(take p.lead)\n"),
+            vec!["take"]
+        );
+    }
 }

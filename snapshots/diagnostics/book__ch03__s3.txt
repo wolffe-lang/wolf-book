@@ -1,0 +1,15 @@
+error[E1001]: `names.len` is used here after its value moved away
+ --> ./s3.lu:8:26
+  |
+7 |     let roster = names
+  |                  ----- `names` moved here
+8 |     print("{roster.len} {names.len}")
+  |                          ^^^^^^^^^ used after the move
+  |
+  = note: `names.len` is part of `names`; moving one empties the other. Disjoint fields stay
+    usable.
+  = note: re-initializing the place (assigning to it) also makes it usable again.
+help: to keep the original, copy it at the move
+  |
+7 |     let roster = copy names
+  |

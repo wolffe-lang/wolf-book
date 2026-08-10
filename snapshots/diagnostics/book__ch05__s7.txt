@@ -1,0 +1,8 @@
+error[E0501]: the bounds on `T` say nothing about `+`
+ --> ./s7.lu:5:5
+  |
+5 |     xs[0] + 1
+  |     ^^^^^ `T` could be any type here
+  |
+  = note: bounds grant trait members only, and no trait covers this operator yet (operator traits
+    are a later sprint); take a concrete type here, or dispatch through a trait method.

@@ -1,0 +1,10 @@
+error[E0401]: the arms of this `match` disagree about its type
+ --> ./s7.lu:8:14
+  |
+7 |         0 => "none",
+  |              ------ but this one is `str`
+8 |         _ => 7,
+  |              ^ this arm is `{integer}`
+  |
+  = note: a `match` used as a value produces one type; neither arm is more "right" — make both
+    `str`, or both `{integer}`, or move the `match` into statement position.

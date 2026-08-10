@@ -1,0 +1,6 @@
+error[E0201]: expected `:` and a type after the parameter name
+ --> ./s3.lu:4:16
+  |
+4 | fn cents_of(row) -> int { 0 }
+  |                ^
+  |

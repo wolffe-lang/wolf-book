@@ -1,0 +1,10 @@
+error[E0401]: this is `str`, but `tax` needs its 1st argument to be `int`
+ --> ./s4.lu:6:17
+  |
+4 | fn tax(cents: int) -> int { cents + cents / 20 }
+  |        ----- the parameter is declared here
+5 | fn main() -> !int {
+6 |     print("{tax("340")}")
+  |                 ^^^^^ found `str` here
+  |
+  = note: expected `int`, found `str`
