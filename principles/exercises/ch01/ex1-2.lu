@@ -1,0 +1,7 @@
+//! check: run(exit=3)
+//! phase: run
+// Exercise 1-2: predict the output AND the process exit code.
+fn main() -> !int {
+    print("working")
+    3
+}

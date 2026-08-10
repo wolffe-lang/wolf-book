@@ -1,0 +1,13 @@
+//! check: fail(E1002)
+//! phase: mem
+// Exercise 4-4: one call is legal, one is not. Say which, then say why.
+struct Inner { n: int }
+struct P { a: Inner, b: Inner }
+fn bump(mut x: int, mut y: int) { x += 1; y += 1 }
+fn wide(mut i: Inner, mut n: int) { n += 1 }
+fn main() -> !int {
+    var p = P { a: Inner { n: 1 }, b: Inner { n: 2 } }
+    bump(mut p.a.n, mut p.b.n)
+    wide(mut p.a, mut p.a.n)
+    0
+}

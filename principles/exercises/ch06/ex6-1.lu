@@ -1,0 +1,13 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 6-1 solution: an error is a value; `else` gives it a default.
+fn parse(s: str) -> int ! {Empty} {
+    if s.is_empty() { return Empty }
+    s.to_int() else 0
+}
+fn main() -> !int {
+    let a = parse("42") else 0
+    let b = parse("") else 7
+    print("a={a} b={b}")
+    0
+}

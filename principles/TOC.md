@@ -1,0 +1,401 @@
+# TOC.md — the table of contents
+
+The full structure of *The Wolf Book*, owned here. It is derived from the
+chapter plans in the bs01–bs11 sprint files, but where a sprint file and
+this document disagree, this document wins and the delta is recorded in
+§Deltas for that sprint's future author. Each section carries a one-line
+promise: what the reader can *do* after it that they could not before.
+
+Numbering: parts are numbered 1–5; chapters run continuously 1–26;
+sections are `N.M` and their numbers are the stable anchors of the web
+edition (see DESIGN.md §Navigation).
+
+---
+
+## Front matter
+
+- **How to read this book** — pick the on-ramp for your background
+  (Python, Go, Rust, C), and learn the one promise: every sample in this
+  book was executed by CI against the toolchain version printed in the
+  colophon.
+- **Notation** — read the code-block dialects (program, part, REPL
+  transcript, console run, diagnostic) and the exercise numbering.
+
+## Part 1 — Foundations
+
+*The reader goes from nothing installed to writing real single-threaded
+wolf, without hearing the word "lifetime."*
+
+### Chapter 1 — Hello, Wolf
+- 1.1 A program worth keeping — run a complete 15-line script that does
+  something you would keep, before any installation ceremony.
+- 1.2 Installing the one tool — install `wolf` on your platform and
+  verify it; the book never asks for a second tool.
+- 1.3 Scripts before projects — run `.lu` files directly with
+  `wolf run`, with dependencies declared in the file itself: no venv, no
+  requirements.txt, no drift.
+- 1.4 The REPL: a spec you can interrogate — start the interpreter's
+  session, try expressions, and learn `:mem` exists before you need it.
+- 1.5 What `run` was doing for you — meet `wolf build` and the shape of
+  a compiled artifact.
+- Exercises 1-1 … 1-3.
+
+### Chapter 2 — Strings, honestly
+- 2.1 Literals, methods, interpolation — write `"{x}"` in any literal
+  and format anything with `"{total:>8.2}"`.
+- 2.2 Multiline and raw — use `"""` dedented blocks and `r"…"` without
+  escape archaeology.
+- 2.3 Bytes, honestly — predict `"é".len`, slice by byte offset with
+  checked ranges, and say why there is no `s[i]`.
+- 2.4 Iterating meaning — walk `words()` and `lines()` and pick the
+  iterator that spells its unit.
+- 2.5 What the machine does — know what a slice costs (two words) and
+  what an f-string compiles to.
+- Exercises 2-1 … 2-4.
+
+### Chapter 3 — Values and expressions
+- 3.1 `let`, `var`, and handing values over — declare, rebind, and read
+  "assignment hands the value over" without the deep story (deferred,
+  explicitly, to chapter 7).
+- 3.2 Everything is an expression — get values out of `if`, `match`, and
+  blocks; live without a ternary.
+- 3.3 Arithmetic that traps — predict overflow and division by zero in
+  every build profile, and spell intentional wrapping.
+- 3.4 `match`, exhaustively — write a match the compiler proves total.
+- Exercises 3-1 … 3-5.
+
+### Chapter 4 — Functions
+- 4.1 Signatures are the contract — write signatures on items, nothing
+  in bodies, and read a definition as its own documentation.
+- 4.2 Functions as values — pass closures with `fn(a, b) expr`, compose
+  them, return them.
+- 4.3 `defer` — put cleanup next to acquisition and predict LIFO order.
+- 4.4 Borrow by default — pass parameters with no sigils, return by
+  move, and state the rule in one sentence.
+- Exercises 4-1 … 4-4.
+
+### Chapter 5 — Collections and generics without fear
+- 5.1 `List`, `Map`, `Set`, tuples — build and index the workhorses.
+- 5.2 The combinator style — chain `.pairs().sorted_by(…).take(n)` and
+  then see what it desugars to.
+- 5.3 Generics in square brackets — write `fn top[T](…)`, get errors at
+  the definition site, and never type a turbofish.
+- 5.4 Indexing that traps — predict `xs[10]` on a one-element list.
+- Exercises 5-1 … 5-5.
+
+### Chapter 6 — Errors are values
+- 6.1 `!T` and the row — read `int ! {Empty, NotDigit(Bad)}` as the
+  complete list of what can go wrong.
+- 6.2 `?`, `else`, `else |err|` — propagate with one character, default
+  with one keyword, handle with a match on the row.
+- 6.3 `errdefer` — run cleanup only on the error path, and predict both
+  paths.
+- 6.4 Hardening by refactor — take chapter 1's panicky script to
+  production honesty one construct at a time.
+- 6.5 Capstone: wordcount — build Part 1's whole toolkit into one real
+  program, with a boxed promise: in Part 3 this loop parallelizes by
+  changing one call.
+- Exercises 6-1 … 6-5.
+
+## Part 2 — Memory
+
+*The reader holds wolf's entire memory model as one question — "who owns
+this, and how big is the granule?" — asked at four sizes.*
+
+### Chapter 7 — Who owns this?
+- 7.1 The error we owed you — re-read chapter 3's use-after-move with
+  its full explanation.
+- 7.2 Values are trees — draw an ownership tree, move a subtree with
+  `take`, copy only on purpose.
+- 7.3 Borrowing without the word — state the parameter rule in one
+  sentence and see why it needs no syntax.
+- 7.4 `mut` at both ends — write `grow(mut list)` and grep a codebase
+  for its entire mutation surface.
+- 7.5 Field-granular exclusivity — pass `mut p.x, mut p.y` legally, and
+  read the diagnostic when paths overlap.
+- 7.6 Why there are no lifetimes — judge the trade with both sides
+  shown, including the zero-copy parser wolf loses and what it does
+  instead.
+- 7.7 What the machine does — connect `mut`/`read`/moves to `noalias`,
+  freezing, and memcpy-and-forget.
+- Exercises 7-1 ….
+
+### Chapter 8 — Regions: memory in the shape you meant
+- 8.1 You already think in regions — name the three arenas in programs
+  you have already written.
+- 8.2 The block form — open `region scratch { }`, allocate ambiently,
+  walk away.
+- 8.3 Regions are values — create, pass, and open regions as ordinary
+  values.
+- 8.4 Cycles are fine here — build the doubly-linked LRU Rust folklore
+  says you cannot, and say what is checked at the border instead.
+- 8.5 Freeze — publish an immutable snapshot with one verb and no copy.
+- 8.6 Open, and open again — hold two regions open, checked disjoint.
+- 8.7 `shared` and `handle` — choose an escape type by its failure
+  contract, from the half-page decision table.
+- 8.8 What the machine does — see bump allocation, wholesale free, and
+  the aliasing fact C cannot state.
+- Exercises 8-1 ….
+
+### Chapter 9 — The escape hatch is a door, not a cliff
+- 9.1 The three rings — grep a codebase for its complete unsafe surface.
+- 9.2 Raw-tier rules — use C's pointer rules inside `unsafe`, with an
+  oracle instead of an aliasing exam.
+- 9.3 The oracle you actually run — inject a use-after-free and watch
+  the checker fault it deterministically.
+- 9.4 The one door back — re-enter safe code at the single sanctioned
+  crossing.
+- 9.5 `#include`-grade C — import a real header, call it, and wrap it in
+  twenty safe lines.
+- 9.6 FFI and regions — know what C may hold and for how long.
+- 9.7 Auditing: `#[trusted]` and `wolf audit` — read a dependency's
+  capabilities and catch an upgrade that wants more.
+- 9.8 The four-tier picture — close Part 2 with the whole model on one
+  page.
+- Exercises 9-1 ….
+
+## Part 3 — Concurrency
+
+*The reader writes concurrent programs where leaks are structural
+impossibilities, races do not compile, and a failing schedule is a seed
+you can replay.*
+
+### Chapter 10 — Spawning is a scope
+- 10.1 The task tree — one arrow in, one arrow out; scope exit joins all
+  children.
+- 10.2 The leaked goroutine, retired — port Go's own leak example and
+  watch the wolf version fail to compile.
+- 10.3 The dropped error, surfaced — see a child's error arrive at the
+  scope join, handled or propagated.
+- 10.4 Cancellation — reason about cooperative cancellation points,
+  including the FFI boundary.
+- Exercises 10-1 ….
+
+### Chapter 11 — Scopes as values
+- 11.1 The scope as a capability — spawn into a caller's scope, visibly.
+- 11.2 The background refresher — build the connection-pool pattern
+  without a detached anything.
+- 11.3 The structured dump — read the task tree the debugger shows.
+- Exercises 11-1 ….
+
+### Chapter 12 — Channels and select
+- 12.1 Typed channels — synchronize with send/recv and one paragraph of
+  happens-before.
+- 12.2 `select` with timeouts — multiplex completion-based I/O without
+  a task per idle connection.
+- 12.3 When channels are the wrong queue — cite the numbers, reach for
+  `std` queues.
+- 12.4 `when (a, b)` — acquire lock sets whole, without ordering
+  folklore.
+- Exercises 12-1 ….
+
+### Chapter 13 — Parallel iterators
+- 13.1 `par` — parallelize Part 1's wordcount by changing one call (the
+  promise, kept).
+- 13.2 The race that does not compile — introduce a real race and read
+  the rejection with its three suggested fixes.
+- Exercises 13-1 ….
+
+### Chapter 14 — Procs: the unit of failure
+- 14.1 Armstrong's argument, one page — align service, failure, and
+  ownership on one boundary.
+- 14.2 Crash means bulk-free — see a proc's death free its regions.
+- 14.3 Mailboxes — build on typed channels; know why selective receive
+  is absent.
+- Exercises 14-1 ….
+
+### Chapter 15 — Link, monitor, supervision
+- 15.1 Two primitives — wire `link` for shared fate, `monitor` for exit
+  reasons.
+- 15.2 A supervisor in forty lines — build one before being handed the
+  stdlib's.
+- 15.3 The root supervisor — give the daemon shape a name and a tree.
+- Exercises 15-1 ….
+
+### Chapter 16 — Region transfer: fearless messaging
+- 16.1 `ch.send(move r)` — move a cyclic object graph across procs with
+  one word and zero copies.
+- 16.2 Freeze, then share — pick transfer or sharing by shape.
+- 16.3 The honest lineup — run the same program against Erlang's copy,
+  Go's share, and Rust's `Arc<Mutex>`.
+- Exercises 16-1 ….
+
+### Chapter 17 — The failing schedule, replayed
+- 17.1 The bug that typechecks — meet an ordering bug that survives the
+  type system, and hear the book say so plainly.
+- 17.2 `--schedules`, `--replay` — hunt the heisenbug, pin its seed,
+  reproduce it deterministically.
+- 17.3 `--chaos` — harden the fix under injected faults at declared
+  effect points.
+- 17.4 Scope honesty — know what exploration cannot see and what v1
+  does not promise.
+- Exercises 17-1 ….
+
+## Part 4 — Systems
+
+*The reader makes wolf fast and keeps it fast: comptime as the mechanism,
+contracts as the promise, benchmarks as the referee — and ships code into
+an ecosystem with no build scripts to fear.*
+
+### Chapter 18 — Comptime: one tier, no macros
+- 18.1 Wolf at compile time — evaluate ordinary wolf in the sandbox;
+  inputs are hashed, not forbidden.
+- 18.2 Types as values — build `Soa[T]` on the page with reflection.
+- 18.3 Where comptime already touched your code — recognize f-strings,
+  const generics, and test tables as the same mechanism.
+- 18.4 What it refuses to do — trace each refusal to caching,
+  auditability, or the build story.
+- Exercises 18-1 ….
+
+### Chapter 19 — Perf contracts
+- 19.1 Four promises — break `#[noalloc]`, `#[inplace]`, `#[nopanic]`,
+  `#[bounded_stack]` one at a time and read the errors.
+- 19.2 Contracts are API — see a dependency lose `#[noalloc]` and semver
+  notice.
+- 19.3 When not to — smell contract noise.
+- Exercises 19-1 ….
+
+### Chapter 20 — Reading `wolf bench diff`
+- 20.1 The format — read ns/op, allocs, and metadata; trust medians and
+  MAD.
+- 20.2 The variance gate — watch a "3% win" get correctly called noise.
+- 20.3 Your own baseline — run the `--baseline` workflow in your repo.
+- Exercises 20-1 ….
+
+### Chapter 21 — Beating C honestly
+- 21.1 Aliasing — compare safe wolf against hand-`restrict` C on the
+  same kernel.
+- 21.2 Arenas — measure region allocation against malloc discipline.
+- 21.3 Layout — win a traversal benchmark with `Soa[T]` legally.
+- 21.4 Checked arithmetic's bill — see the real post-optimization cost,
+  from CI, dated.
+- 21.5 Where C wins today — read the current losses with tracking
+  issues, regenerated each release.
+- Exercises 21-1 ….
+
+### Chapter 22 — Modules: the shape of a wolf project
+- 22.1 Directory = module — structure a project where files are
+  invisible to importers.
+- 22.2 No cycles — hit the error, do the interface-extraction refactor,
+  and name what the rule buys.
+- 22.3 No life before main — replace `init()` registration with comptime
+  registries.
+- Exercises 22-1 ….
+
+### Chapter 23 — Packages and dependencies
+- 23.1 `wolf.pkg` is data — read a manifest as the whole truth.
+- 23.2 MVS in one page — get the same versions forever from the same
+  manifest.
+- 23.3 `wolf.sum` and the log — verify even the author cannot swap bits
+  under a tag.
+- 23.4 Script mode, demystified — see chapter 1's frontmatter deps as
+  the same machinery.
+- Exercises 23-1 ….
+
+### Chapter 24 — The covenant: no build scripts
+- 24.1 The threat, from history — event-stream, left-pad, build.rs; one
+  paragraph each, sourced.
+- 24.2 What replaces scripts — declarative recipes plus the sandboxed
+  comptime you already trust.
+- 24.3 Capabilities and `wolf audit` — catch the dependency that
+  suddenly wants `net`.
+- 24.4 What the covenant costs — name the autotools-shaped things v1
+  cannot vendor, and why the line holds.
+- Exercises 24-1 ….
+
+### Chapter 25 — Editions, stability, publishing
+- 25.1 Editions per package — upgrade on your clock; no wolf 2.0, ever.
+- 25.2 The stdlib posture — depend on core, penumbra, or `std.x` with
+  eyes open.
+- 25.3 Publishing — ship `owner/pkg` with capabilities declared and
+  semver with teeth.
+- Exercises 25-1 ….
+
+## Part 5 — Capstone: `logden`
+
+*The reader builds a concurrent log-search service end to end, spending
+every skill the book taught and learning nothing new — that is the
+point.*
+
+### Chapter 26 — The capstone
+- 26.1 Architecture — recall which chapter taught each decision in the
+  target design.
+- 26.2 Milestone 1: single-shot search — ship the walking skeleton with
+  Parts 1–2 skills only.
+- 26.3 Milestone 2: a region per request — serve HTTP with request
+  arenas and structured shutdown.
+- 26.4 Milestone 3: shards as procs — supervise crashing shards into
+  degraded-but-correct service.
+- 26.5 Milestone 4: the C membrane — decompress shards through an
+  audited twenty-line wrapper.
+- 26.6 Milestone 5: deterministic tests — find a real ordering bug with
+  a seed, fix it, chaos-harden it.
+- 26.7 Milestone 6: the profiling pass — execute measure → constrain →
+  restructure → re-measure, and publish v1.0.
+- Milestones publish checkpoints, not solutions (see EXERCISES.md
+  §Solutions policy).
+
+## Back matter
+
+- **Appendix A — Grammar summary** — the surface grammar in one place,
+  generated from the spec's `grammar.ebnf`, never hand-maintained.
+- **Appendix B — Traps** — the twelve trap kinds, closed by
+  `[conf.trap.set]`, each with kind, fault, and clause.
+- **Appendix C — Diagnostics** — every stable error code the book shows,
+  cross-checked against the compiler's catalog in CI.
+- **Appendix D — Spec cross-reference** — book section → spec clause,
+  for readers who want the normative text.
+- **Solutions** — every exercise in chapters 1–25, collapsed by default
+  in the web edition, extracted and CI-run like all samples. The
+  capstone publishes milestone checkpoints instead (the one exception,
+  by design).
+- **Glossary** — one term per concept, the copyedit enforcement list.
+- **Index** — hand-curated entries plus every error code, trap kind,
+  and flag; section numbers, not page numbers, in the web edition.
+- **Colophon** — the toolchain version this printing is true for, the
+  CI-verified-samples guarantee, and the errata address.
+
+---
+
+## Deltas (per-sprint, for future authors)
+
+Recorded where this ToC deliberately departs from the sprint files. The
+sprint files remain the implementation contracts for everything else.
+
+- **bs01:** the REPL moves from chapter 2 into chapter 1 (§1.4). The
+  reader gets the lab bench before the strings chapter uses it; chapter
+  2 then opens already holding the tool. bs01's "REPL as the chapter's
+  lab bench" framing transfers to §1.4 intact.
+- **bs01:** `wolf build` is a one-section chapter closer (§1.5), not a
+  chapter-end aside; the promise "the book never asks for a second tool"
+  is stated in §1.2 where installation happens.
+- **bs02:** the hardening-by-refactor arc (sprint: chapter 6's teaching
+  spine) is a named section (§6.4) distinct from the wordcount capstone
+  (§6.5), so the capstone stays a build, not a rescue.
+- **bs03:** the sprint's single chapter 7 keeps all its sections; the
+  running-example seed (`shelf` value types) lives inside §7.2 and §7.6
+  rather than as its own section — two forward-gestures to chapter 8 are
+  the counted maximum.
+- **bs06:** the sprint's four chapters map to chapters 10–13 unchanged;
+  the `when (a, b)` material stays in the channels chapter (§12.4)
+  rather than the parallel-iterators chapter its subject might suggest,
+  because deadlock-freedom is a synchronization story.
+- **bs07:** the sprint's four chapters map to 14–17 unchanged. §17.1's
+  obligation — saying plainly that the heisenbug is an *ordering* bug,
+  not a data race — is promoted to the section promise, since that
+  honesty is the pitch's credibility.
+- **bs08:** the sprint's four chapters map to 18–21 unchanged; §21.5
+  ("where C wins today") is a first-class section, not a caveat box, and
+  its regenerated-from-CI requirement is inherited from the sprint file.
+- **bs10:** the sprint's "part intro + six milestone chapters + closing"
+  compresses to one chapter with seven numbered sections plus a closing
+  discussion inside §26.7. Rationale: milestone chapters share one
+  running repo and one architecture; section-level structure keeps
+  checkpoint tags (`m1`–`m6`) as the real units. If drafting shows the
+  milestones need chapter-scale room, bs10's author may split them back
+  out — this delta records the default, not a straitjacket.
+- **bs11:** back matter gains an explicit Appendix D (spec
+  cross-reference), which bs11's checklist implies ("claims traced to
+  spec clauses") but never lists as an artifact. The index doctrine
+  (section numbers as anchors) is stated here and in DESIGN.md so bs11
+  inherits it rather than deciding it.

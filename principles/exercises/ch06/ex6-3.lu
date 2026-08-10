@@ -1,0 +1,23 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 6-3 solution: the row grew a variant; the match grew an arm.
+// (Arm order note: see the audit ledger in EXERCISES.md — lupin currently
+// dispatches bare variant patterns first-arm-wins, so the new arm leads.)
+struct Bad { at: int }
+fn parse(s: str) -> int ! {Empty, NotDigit(Bad), TooLong} {
+    if s.is_empty() { return Empty }
+    if s.len > 4 { return TooLong }
+    if !s.starts_with("4") { return NotDigit(Bad { at: 0 }) }
+    s.to_int() else 0
+}
+fn main() -> !int {
+    let v = parse("40000") else |err| {
+        match err {
+            TooLong => -4,
+            NotDigit(e) => 0 - e.at - 3,
+            Empty => -2,
+        }
+    }
+    print("v={v}")
+    0
+}

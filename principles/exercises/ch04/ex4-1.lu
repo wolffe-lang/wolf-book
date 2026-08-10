@@ -1,0 +1,10 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 4-1 solution: functions are values; composition is a one-liner.
+fn main() -> !int {
+    let double = fn(n) n * 2
+    let compose = fn(f, g) fn(x) f(g(x))
+    let quad = compose(double, double)
+    print("{quad(10)}")
+    0
+}

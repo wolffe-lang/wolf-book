@@ -1,0 +1,21 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 6-4 solution: the payload rides inside the variant.
+struct Bad { at: int, found: str }
+fn digit(s: str, i: int) -> int ! {NotDigit(Bad)} {
+    let c = s[i..i + 1]
+    if c < "0" || c > "9" { return NotDigit(Bad { at: i, found: c }) }
+    c.to_int() else 0
+}
+fn main() -> !int {
+    let v = digit("4x", 1) else |err| {
+        match err {
+            NotDigit(e) => {
+                print("bad digit `{e.found}` at byte {e.at}")
+                -1
+            },
+        }
+    }
+    print("v={v}")
+    0
+}

@@ -1,0 +1,8 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 1-3 solution: braces interpolate expressions, not just names.
+fn main() -> !int {
+    let name = "reader"
+    print("hello, {name} — {6 * 7} is still {6 * 7}")
+    0
+}

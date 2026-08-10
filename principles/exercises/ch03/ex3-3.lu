@@ -1,0 +1,9 @@
+//! check: run(exit=trap(overflow))
+//! phase: run
+// Exercise 3-3: predict what happens at the boundary of i32.
+fn main() -> !int {
+    let big: i32 = 2147483647
+    let boom = big + 1
+    print("{boom}")
+    0
+}

@@ -1,0 +1,13 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 5-2 solution: index writes, index reads, pairs to walk.
+fn main() -> !int {
+    var scores = Map[str, int]()
+    scores["wolf"] = 3
+    scores["marmot"] = 5
+    scores["wolf"] = scores["wolf"] + 1
+    for (name, n) in scores.pairs() {
+        print("{name:<8}{n:>3}")
+    }
+    0
+}

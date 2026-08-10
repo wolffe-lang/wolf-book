@@ -1,0 +1,9 @@
+//! check: run(exit=trap(div-zero))
+//! phase: run
+// Exercise 3-4: the divisor is computed. Predict the outcome anyway.
+fn main() -> !int {
+    let n = 10
+    let d = n - 10
+    print("{n / d}")
+    0
+}

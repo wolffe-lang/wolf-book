@@ -1,0 +1,24 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 6-2: predict a and b. Which error row does chain() surface?
+struct Bad { at: int }
+fn parse(s: str) -> int ! {Empty, NotDigit(Bad)} {
+    if s.is_empty() { return Empty }
+    if !s.starts_with("4") { return NotDigit(Bad { at: 0 }) }
+    s.to_int() else 0
+}
+fn chain(s: str) -> int ! {Empty, NotDigit(Bad)} {
+    let v = parse(s)?
+    v + 1
+}
+fn main() -> !int {
+    let a = chain("42") else |_| -1
+    let b = chain("") else |err| {
+        match err {
+            Empty => -2,
+            NotDigit(e) => -3,
+        }
+    }
+    print("a={a} b={b}")
+    0
+}

@@ -1,0 +1,14 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 2-4 solution: words, lines, bytes — note which one is bytes.
+fn main() -> !int {
+    let text = """
+        the wolf runs
+        the moon watches
+        """
+    var words = 0
+    for _ in text.words() { words += 1 }
+    let lines = text.lines().count()
+    print("{words} words, {lines} lines, {text.len} bytes")
+    0
+}

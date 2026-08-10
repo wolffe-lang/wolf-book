@@ -1,0 +1,9 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 4-2: predict the order of the three lines.
+fn main() -> !int {
+    defer print("first registered")
+    defer print("second registered")
+    print("body")
+    0
+}

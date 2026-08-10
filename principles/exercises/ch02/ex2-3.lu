@@ -1,0 +1,9 @@
+//! check: run(exit=trap(bounds))
+//! phase: run
+// Exercise 2-3: predict the verdict before you run it.
+fn main() -> !int {
+    let s = "wolf"
+    let t = s[2..9]
+    print("{t}")
+    0
+}

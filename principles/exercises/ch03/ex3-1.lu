@@ -1,0 +1,14 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 3-1: predict the output. Everything here is an expression.
+fn main() -> !int {
+    let n = 3
+    let kind = match n {
+        0 => "none",
+        1 => "one",
+        _ => "many",
+    }
+    let parity = if n % 2 == 0 { "even" } else { "odd" }
+    print("{kind} and {parity}")
+    0
+}

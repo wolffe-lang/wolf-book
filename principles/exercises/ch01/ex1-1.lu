@@ -1,0 +1,8 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 1-1 solution: hello, then a second line.
+fn main() -> !int {
+    print("hello, wolf")
+    print("the moon is up")
+    0
+}

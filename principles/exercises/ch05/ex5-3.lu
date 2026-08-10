@@ -1,0 +1,14 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 5-3 solution: one definition, checked at the definition;
+// the call site may name the type or let inference do it.
+fn first[T](xs: List[T], fallback: T) -> T {
+    if xs.is_empty() { fallback } else { xs[0] }
+}
+fn main() -> !int {
+    var howls = List[str]()
+    howls.push("awoo")
+    let empty = List[int]()
+    print("{first[str](howls, "silence")} {first(empty, -1)}")
+    0
+}

@@ -1,0 +1,21 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 6-5: errdefer runs only on the error path. Predict both runs.
+struct Res { n: int }
+fn get(ok: bool) -> Res ! {Fail} {
+    if !ok { return Fail }
+    Res { n: 1 }
+}
+fn work(ok: bool) -> int ! {Fail} {
+    var r = get(true)?
+    errdefer print("cleanup ran")
+    let v = get(ok)?
+    r.n + v.n
+}
+fn main() -> !int {
+    let a = work(true) else -1
+    print("a={a}")
+    let b = work(false) else -1
+    print("b={b}")
+    0
+}
