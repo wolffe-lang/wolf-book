@@ -1,0 +1,13 @@
+error[E0302]: the name `describe` is defined twice in this module
+ --> ./main.lu:4:4
+  |
+4 | fn describe() -> str { "from main" }
+  |    ^^^^^^^^ defined again here
+  |
+ ::: ./extra.lu:2:4
+  |
+2 | fn describe() -> str { "from extra" }
+  |    -------- first defined here
+  |
+  = note: every `.lu` file in a directory is one module (D32), so a top-level name may be defined
+    only once across all of them; rename or remove one of the definitions.

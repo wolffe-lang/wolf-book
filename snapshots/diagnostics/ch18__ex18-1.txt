@@ -1,0 +1,9 @@
+error[E0705]: `x` is a runtime value, so this cannot evaluate at compile time
+ --> ./ex18-1.lu:9:22
+  |
+9 |     const Y = double(x)
+  |               --------- while evaluating `main`, entered here
+  |                      ^ must be comptime-known
+  |
+  = note: a `comptime fn` runs during compilation: every argument must be a literal, a `const`, a
+    type, or the result of another comptime call.

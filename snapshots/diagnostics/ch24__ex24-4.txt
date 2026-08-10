@@ -1,0 +1,16 @@
+error[E0701]: `net_fetch` reaches the network, which comptime code can never touch
+ --> ./ex24-4.lu:6:5
+  |
+6 |     net_fetch("https://deps.example.test/banner")
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ ambient IO at compile time
+...
+9 |     const AD = latest_ad()
+  |                ----------- while evaluating `latest_ad`, entered here
+  |                ----------- while evaluating `main`, entered here
+  |
+  = note: why it is refused — confinement: `wolf add` must never mean arbitrary code talks to the
+    network with your credentials.
+  = note: the comptime sandbox is hermetic (D33): the intrinsics available at compile time are an
+    explicit allowlist, and nothing ambient is on it. Compute this value at runtime instead;
+    file contents will arrive later as declared build inputs (s51), never as an evaluator
+    capability.

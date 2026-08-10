@@ -1,0 +1,17 @@
+error[E0704]: comptime evaluation recursed past 256 call frames
+ --> ./ex18-9a.lu:5:5
+  |
+5 |     dive(n + 1)
+  |     ^^^^^^^^^^^ the call that went over the limit
+  |     ----------- while evaluating `dive` — 254 recursive frames
+...
+8 |     const D = dive(0)
+  |               ------- while evaluating `dive`, entered here
+  |               ------- while evaluating `main`, entered here
+  |
+  = note: call depth is a resource limit, not a host stack: deep recursion is refused with this
+    report instead of crashing the compiler (D33).
+help: raise the budget here: `#[budget(depth = 512)]`
+  |
+8 |     #[budget(depth = 512)]
+  |

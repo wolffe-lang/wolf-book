@@ -1,0 +1,14 @@
+error[E1001]: `p.lead` is used here after its value moved away
+  --> ./ex3-2.lu:11:13
+   |
+ 9 |     let a = adopt(take p.lead)
+   |                        ------ `p.lead` moved here
+10 |     let b = p.tail
+11 |     let c = p.lead
+   |             ^^^^^^ used after the move
+   |
+   = note: re-initializing the place (assigning to it) also makes it usable again.
+help: to keep the original, copy it at the move
+   |
+ 9 |     let a = adopt(take copy p.lead)
+   |

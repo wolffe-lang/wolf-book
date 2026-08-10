@@ -1,0 +1,8 @@
+error[E0709]: a comptime budget cannot be turned off — `fuel = 0` would disable the limit
+ --> ./ex18-8.lu:8:14
+  |
+8 |     #[budget(fuel = 0)]
+  |              ^^^^^^^^ budgets are raised, never removed
+  |
+  = note: the sandbox guarantee (D33) includes bounded evaluation: every budget has a default, a
+    per-site override, and a hard ceiling — there is no spelling that removes one.

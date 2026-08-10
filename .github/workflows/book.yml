@@ -1,0 +1,163 @@
+# The Wolf Book — CI (bs00). The book cannot rot: every code sample is
+# executed on every commit against the pinned toolchain, the docs are
+# held to their claims, and all three render artifacts must build.
+# House rules: explicit `shell: bash` everywhere (windows runners),
+# timeout ceilings on every job, loud SKIPs — a lane that cannot run
+# says so in the log; it never passes silently.
+
+name: book
+
+on:
+  push:
+    branches: [main, trunk]
+  pull_request:
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  # Lane 1 — the rig itself: fmt, clippy -D warnings, unit tests. 3-OS.
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: Swatinem/rust-cache@v2
+      - name: fmt
+        shell: bash
+        run: cargo fmt --check
+      - name: clippy
+        shell: bash
+        run: cargo clippy --all-targets -- -D warnings
+      - name: tests
+        shell: bash
+        run: cargo test
+
+  # Lane 2 — sample execution: build wolf (debug, per the pin note) and
+  # lupin (release) at the wolf-toolchain.toml revs, run every sample,
+  # then prove the rig catches deliberate breakage. 3-OS.
+  samples:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: wolf-book
+      - name: read pins
+        id: pins
+        shell: bash
+        working-directory: wolf-book
+        run: |
+          rev() { awk -v s="[$1]" '$0==s{f=1} f&&/^rev = /{gsub(/"/,"",$3); print $3; exit}' wolf-toolchain.toml; }
+          echo "wolf=$(rev wolf)" >> "$GITHUB_OUTPUT"
+          echo "lupin=$(rev lupin)" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        with:
+          repository: tenseleyFlow/wolf-lang
+          ref: ${{ steps.pins.outputs.wolf }}
+          path: wolf-lang
+          token: ${{ secrets.WOLF_CI_TOKEN || github.token }}
+      - uses: actions/checkout@v4
+        with:
+          repository: tenseleyFlow/wolf-interp
+          ref: ${{ steps.pins.outputs.lupin }}
+          path: wolf-interp
+          token: ${{ secrets.WOLF_CI_TOKEN || github.token }}
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: |
+            wolf-book
+            wolf-lang
+            wolf-interp
+      - name: build pinned wolf (debug)
+        shell: bash
+        working-directory: wolf-lang
+        run: cargo build --bin wolf
+      - name: build pinned lupin (release)
+        shell: bash
+        working-directory: wolf-interp
+        run: cargo build --release --bin lupin
+      - name: run every sample
+        shell: bash
+        working-directory: wolf-book
+        env:
+          WOLF: ${{ github.workspace }}/wolf-lang/target/debug/wolf${{ runner.os == 'Windows' && '.exe' || '' }}
+          LUPIN: ${{ github.workspace }}/wolf-interp/target/release/lupin${{ runner.os == 'Windows' && '.exe' || '' }}
+        run: cargo xtask samples
+      - name: self-test (a deliberately-broken sample must fail)
+        shell: bash
+        working-directory: wolf-book
+        env:
+          WOLF: ${{ github.workspace }}/wolf-lang/target/debug/wolf${{ runner.os == 'Windows' && '.exe' || '' }}
+          LUPIN: ${{ github.workspace }}/wolf-interp/target/release/lupin${{ runner.os == 'Windows' && '.exe' || '' }}
+        run: cargo xtask samples --self-test
+      - name: doc truth
+        shell: bash
+        working-directory: wolf-book
+        run: cargo xtask verify-docs
+      - name: corpus export artifact (sync PR input for wolf-lang corpus/book/)
+        if: matrix.os == 'ubuntu-latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: corpus-book-export
+          path: wolf-book/samples/export/corpus/book/
+          retention-days: 14
+
+  # Lane 3 — render: grammar drift against the wolf-lsp pin, then all
+  # three artifacts. The PDF is required here — its absence fails the
+  # build (DESIGN.md §4); typst comes from the release binary.
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: wolf-book
+      - name: read wolf-lsp pin
+        id: pins
+        shell: bash
+        working-directory: wolf-book
+        run: |
+          rev() { awk -v s="[$1]" '$0==s{f=1} f&&/^rev = /{gsub(/"/,"",$3); print $3; exit}' wolf-toolchain.toml; }
+          echo "lsp=$(rev wolf-lsp)" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        with:
+          repository: tenseleyFlow/wolf-lsp
+          ref: ${{ steps.pins.outputs.lsp }}
+          path: wolf-lsp
+          token: ${{ secrets.WOLF_CI_TOKEN || github.token }}
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: wolf-book
+      - uses: typst-community/setup-typst@v4
+      - name: grammar drift check (the book-side arrow)
+        shell: bash
+        working-directory: wolf-book
+        run: cargo xtask grammar-sync --check --lsp-path ../wolf-lsp
+      - name: render web + wolf-book.md + wolf-book.pdf
+        shell: bash
+        working-directory: wolf-book
+        run: cargo xtask render all --require-pdf
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wolf-book-artifacts
+          path: |
+            wolf-book/target/render/wolf-book.md
+            wolf-book/target/render/wolf-book.pdf
+          retention-days: 14
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wolf-book-web
+          path: wolf-book/target/render/web/
+          retention-days: 14

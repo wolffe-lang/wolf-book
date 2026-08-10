@@ -1,0 +1,13 @@
+error[E1001]: `d.name` is used here after its value moved away
+ --> ./exC-2.lu:9:11
+  |
+8 |     let a = claim(take d.name)
+  |                        ------ `d.name` moved here
+9 |     print(d.name)
+  |           ^^^^^^ used after the move
+  |
+  = note: re-initializing the place (assigning to it) also makes it usable again.
+help: to keep the original, copy it at the move
+  |
+8 |     let a = claim(take copy d.name)
+  |

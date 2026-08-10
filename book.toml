@@ -1,0 +1,46 @@
+# The Wolf Book — mdBook configuration (bs00).
+# The canonical build path is `cargo xtask render` (web + wolf-book.md +
+# wolf-book.pdf). A bare `mdbook build` also works because the wolf
+# preprocessor is declared here; it shells back into xtask.
+
+[book]
+title = "The Wolf Book"
+authors = ["The wolf-book authors"]
+language = "en"
+src = "book"
+description = "The Wolf Book — every sample executed by CI against the pinned toolchain."
+
+[build]
+build-dir = "target/render/web"
+create-missing = false
+
+# Build-time highlighting + section-number anchors + directive stripping.
+# DESIGN.md §5 obligations 2 and 3 live in this preprocessor.
+[preprocessor.wolf]
+command = "cargo run -q -p xtask -- mdbook-preprocess"
+renderer = ["html"]
+
+[output.html]
+theme = "theme"
+default-theme = "wolf"
+preferred-dark-theme = "wolf" # no dark mode at v1 (DESIGN.md §1)
+no-section-label = false
+smart-punctuation = true
+mathjax-support = false
+copy-fonts = true
+
+[output.html.playground]
+runnable = false
+
+[output.html.search]
+enable = true
+limit-results = 20
+use-boolean-and = true
+boost-title = 2
+boost-hierarchy = 2
+boost-paragraph = 1
+expand = true
+heading-split-level = 2
+
+[output.html.print]
+enable = false # the PDF comes from the typst converter, not the browser

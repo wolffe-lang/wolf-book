@@ -1,0 +1,12 @@
+error[E0305]: the import `tools` is never used
+ --> ./main.lu:4:5
+  |
+4 | use tools
+  |     ^^^^^ imported here, used nowhere in this file
+  |
+  = note: imports are file-scoped (D32): a name used only in a sibling file must be imported there
+    instead.
+help: delete the unused import
+  |
+4 |
+  |

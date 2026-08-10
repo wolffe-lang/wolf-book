@@ -1,0 +1,11 @@
+[workspace]
+resolver = "2"
+members = ["xtask"]
+
+[workspace.package]
+edition = "2021"
+license = "MIT OR Apache-2.0"
+
+[profile.dev]
+# The preprocessor runs on every build; keep it quick without a release wall.
+opt-level = 1

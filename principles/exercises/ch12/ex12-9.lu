@@ -1,7 +1,12 @@
-//! check: fail(E0203)
+//! check: fail(E0201)
 //! phase: parse
 // Exercise 12-9: the classic AB-BA deadlock, attempted. The grammar
 // refuses the first ingredient.
+// Drift note (bs00): authored against E0203; at pin b4f1e2cb the
+// single-operand `when (a)` rejection is E0201 ("`when` requires at
+// least two operands") and E0203 now names the stray-closure parse
+// error. The rig caught the renumbering; the chapter file must quote
+// E0201 when bs06 writes it.
 fn main() -> !int {
     let a = Mutex(0)
     let b = Mutex(0)

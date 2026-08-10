@@ -1,0 +1,11 @@
+error[E1012]: `cfg.limit` is frozen, so it cannot be assigned through
+ --> ./ex8-9.lu:7:5
+  |
+6 |     var cfg = freeze region { Config { limit: 42 } }
+  |               -------------------------------------- the freeze happens here — the promotion to `imm` is deep and permanent
+7 |     cfg.limit = 7
+  |     ^^^^^^^^^ this needs the data to be mutable
+  |
+  = note: `freeze` promotes the whole graph to `imm`: shareable from anywhere, forever, and never
+    writable again. Build the value completely before freezing it, or keep a mutable copy
+    (`copy`) alongside the frozen one.

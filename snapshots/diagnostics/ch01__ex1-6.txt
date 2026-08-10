@@ -1,0 +1,9 @@
+error[E0202]: this `{` is never closed
+ --> ./ex1-6.lu:4:19
+  |
+4 | fn main() -> !int {
+  |                   ^ opened here
+...
+7 |
+  | - the parser expected the closing `}` by here
+  |

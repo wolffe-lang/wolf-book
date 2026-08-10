@@ -1,0 +1,13 @@
+error[E1001]: `s.a` is used here after its value moved away
+ --> ./ex7-3.lu:9:13
+  |
+8 |     let t = eat(take s.a)
+  |                      --- `s.a` moved here
+9 |     let u = s.a
+  |             ^^^ used after the move
+  |
+  = note: re-initializing the place (assigning to it) also makes it usable again.
+help: to keep the original, copy it at the move
+  |
+8 |     let t = eat(take copy s.a)
+  |

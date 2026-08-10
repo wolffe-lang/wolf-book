@@ -1,0 +1,8 @@
+error[E1002]: `n` cannot go `mut` here: it overlaps `n`, already passed `mut` in this call
+  --> ./ex7-7.lu:10:22
+   |
+10 |     bump2(mut n, mut n)
+   |               - `n` is passed `mut` here
+   |                      ^ second exclusive claim on the same place
+   |
+   = note: the same place twice is never disjoint.

@@ -1,0 +1,29 @@
+# The pinned toolchain the book is true for (bs00 contract, target 2).
+# Bumps are deliberate, in their own commit, CI-green — same policy as
+# wolf-lang s00's rust-toolchain. The colophon repeats these values; the
+# doc-truth CI job compares them.
+
+[wolf]
+# wolf-lang: `wolf conform-run` is the static checker of record until
+# the full `wolf build|run` driver lands (s31).
+repo = "tenseleyFlow/wolf-lang"
+rev = "b4f1e2cbf228b1cb25e3a322010fa139f88d22e3"
+impl_version = "0.0.1"
+
+[lupin]
+# wolf-interp: runs programs, reports traps, evaluates REPL snippets.
+repo = "tenseleyFlow/wolf-interp"
+rev = "1fffe4da484b775a32154076e225cdec62420efd"
+version = "lupin 0.1.0 (wolf-interp, pin cbde620)"
+
+[wolf-lsp]
+# Source of the vendored tmLanguage grammars under highlight/.
+# `cargo xtask grammar-sync --check` fails on drift against this pin.
+repo = "tenseleyFlow/wolf-lsp"
+rev = "dc05c271b683d1c8b544ab5fae74e66a4a034af7"
+
+[wolf-repl]
+# REPL transcript replay is pending(is08): wolf-repl blocks are counted
+# and reported, never silently unchecked. Flip this to a rev when is08
+# ships.
+pending = "is08"

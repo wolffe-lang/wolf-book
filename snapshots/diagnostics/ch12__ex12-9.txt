@@ -1,0 +1,27 @@
+error[E0201]: `when` requires at least two operands (one operand is a method on the sync type)
+  --> ./ex12-9.lu:14:33
+   |
+14 |         s.spawn(fn() { when (a) { when (b) { a += 1 } } })
+   |                                 ^
+   |
+
+error[E0201]: `when` requires at least two operands (one operand is a method on the sync type)
+  --> ./ex12-9.lu:14:44
+   |
+14 |         s.spawn(fn() { when (a) { when (b) { a += 1 } } })
+   |                                            ^
+   |
+
+error[E0201]: `when` requires at least two operands (one operand is a method on the sync type)
+  --> ./ex12-9.lu:15:33
+   |
+15 |         s.spawn(fn() { when (b) { when (a) { b += 1 } } })
+   |                                 ^
+   |
+
+error[E0201]: `when` requires at least two operands (one operand is a method on the sync type)
+  --> ./ex12-9.lu:15:44
+   |
+15 |         s.spawn(fn() { when (b) { when (a) { b += 1 } } })
+   |                                            ^
+   |

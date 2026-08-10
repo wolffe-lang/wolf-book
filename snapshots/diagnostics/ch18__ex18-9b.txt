@@ -1,0 +1,14 @@
+error[E0702]: comptime evaluation ran out of fuel after 1000000 steps
+ --> ./ex18-9b.lu:9:15
+  |
+9 |     const N = spin()
+  |               ^^^^^^ evaluation stopped here
+  |               ------ while evaluating `spin`, entered here
+  |               ------ while evaluating `main`, entered here
+  |
+  = note: fuel bounds how long the compiler will evaluate before concluding the computation is
+    runaway — a build can be slow, never hung (D33).
+help: raise the budget here: `#[budget(fuel = 2000000)]`
+  |
+9 |     #[budget(fuel = 2000000)]
+  |
