@@ -25,6 +25,11 @@ for the print edition) · `cut`.
 | 1 | "Ain't no rest for the wicked." | Cage the Elephant, "Ain't No Rest for the Wicked" | title fragment, epigraph | Part 3, scheduler chapter (ch17) | planned | TONE.md §4.2 worked placement 1; title-only quotation |
 | 2 | "Trouble" | Cage the Elephant, "Trouble" | near-title allusion, set-off line | Appendix C intro (diagnostics) | planned | TONE.md §4.2 worked placement 2; allusion, no verse quoted |
 | 3 | "Come a little closer." | Cage the Elephant, "Come a Little Closer" | title fragment, epigraph | Part 2, C-membrane chapter (ch9) | planned | TONE.md §4.2 worked placement 3; title-only quotation |
+| 4 | "Skin and Bones." | Cage the Elephant, "Skin and Bones" (*Social Cues*, 2019) | title fragment, epigraph | Part 1, chapter 2 head (`book/ch02.md`) | placed | bs01. Title only, no verse; epigraph position, attribution flush right, and the first prose sentence pays the double-take off ("a wolf string is skin and bones: bytes, and a length"). Part 1's single placement in this register; delete it and the chapter still teaches |
+
+Chapter 1's epigraph is Bruckner (dark-Romantic register, untracked
+below by design). Part 1 therefore spends one Cage placement and one
+public-domain allusion, and neither chapter carries both.
 
 The dark-Romantic register (TONE.md §4.1 — Mahler, Bruckner, Wagner
 allusions) is public domain and is deliberately *not* tracked here;
