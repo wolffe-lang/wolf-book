@@ -24,11 +24,6 @@ blocker = "field writes through a pool index do not denote a place in the interp
 owner = "s37-core-types (std surface pinning)"
 
 [[pending]]
-id = "ch09/ex9-8"
-blocker = "real libc calls; the interpreter models only its documented host-intrinsic set"
-owner = "s46-libclang-importer over s29-abi-v0"
-
-[[pending]]
 id = "ch13/ex13-1"
 blocker = "`par` absent from the interp std subset"
 owner = "s32-tasks-scheduler / s37-core-types"

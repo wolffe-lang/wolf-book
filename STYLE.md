@@ -15,6 +15,13 @@ the overlap here is a pointer, not a second rule.
   we extract from prose). Directives on the fence say how:
   `wolf,run(exit=0, stdout="…")`, `wolf,fail(E1001)`,
   `wolf,part(name)` / `part(name, cont)`, `wolf-repl`.
+- **Undefined behavior needs both machines.** `wolf,ub(P1)` runs the
+  sample under the interpreter's oracle *and* the compiler's checked
+  build, and passes only if lupin faults and the checked build names
+  that `[mem.ub]` row — a UB claim one implementation makes alone is
+  not evidence. `wolf,audit(E1303)` runs `wolf audit-surface` and
+  holds the manifest rule to its diagnostic. Both snapshot the
+  compiler's text like any `fail(…)` sample.
 - **Tool output is verbatim from CI runs, never hand-typed.** Console
   blocks keep their `$`; transcripts keep their `wolf>` prompts;
   diagnostics keep the compiler's exact text and layout, shown in
