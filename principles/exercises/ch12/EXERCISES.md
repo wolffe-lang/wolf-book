@@ -1,7 +1,8 @@
 # Chapter 12 — Channels and select: exercises
 
 Commands run from this directory; outputs are pasted from real runs.
-Every checker in this chapter is lupin; seeded runs use
+Every checker in this chapter is lupin except 12-9, whose rejection is
+a parse-rung error both implementations report; seeded runs use
 `lupin run FILE --seed=N` and exploration uses
 `lupin conform-run FILE --explore=N`.
 
@@ -298,21 +299,23 @@ fn main() -> !int {
 
 ```console
 $ lupin ex12-9.lu
-ex12-9.lu: E0203: `when` acquires a set, so it needs at least two operands; for one, call the method on the sync type [gram.expr.conc] at 241..249
+ex12-9.lu: E0201: `when` acquires a set, so it needs at least two operands; for one, call the method on the sync type [gram.expr.conc] at 544..552
 $ echo $?
 2
 ```
 
 It dies in the parser. The AB-BA deadlock needs *incremental*
 acquisition — hold one lock while asking for another — and `when`'s
-grammar has no one-lock form to nest: E0203 says take the set whole or
+grammar has no one-lock form to nest: E0201 says take the set whole or
 do not use `when`. The bug is not detected; it is unspellable, which
 is a stronger guarantee than any detector. (Deadlock through channels
 remains constructible — exercise 12-2 — because waiting for *data* is
 a program's own business; acquiring *locks* piecemeal was never
 anything but a bug factory.)
 
-Audit note (authoring-time finding): wolf rejects this program with
-the same sentence but a different code — `error[E0201]` where lupin
-says `E0203`. Two implementations, one rule, two codes; the directive
-header follows lupin here and the divergence is filed for the differ.
+Audit note (resolved at the bs06 pin): the divergence this solution
+used to record — wolf rejecting the program as `E0201` where lupin
+said `E0203` — is gone. Both implementations now report E0201, with
+the same rule in their own words, one at the parse rung and one before
+the first line runs. The transcript above is lupin's at the current
+pin; §12.4 prints the compiler's half beside it.

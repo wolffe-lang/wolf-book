@@ -1,0 +1,6 @@
+error[E0201]: `when` requires at least two operands (one operand is a method on the sync type)
+ --> ./s11.lu:7:19
+  |
+7 |     when (served) {
+  |                   ^
+  |

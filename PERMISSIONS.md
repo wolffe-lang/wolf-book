@@ -67,6 +67,17 @@ placements — the Mahler Sixth hammer, the Tristan simile, and this one
 — and no placement in this register is left unspent before Part 3,
 whose reservation is row 1.
 
+bs06 (chapters 10–12) adds no row, and leaves row 1 unspent. It places
+one reference in total, and it is the third of TONE.md §4.1's worked
+placements: the Bruckner pause at chapter 10's head (`book/ch10.md`),
+public domain, untracked here by design, with the two sentences of prose
+§4.1 specifies tying the image to the scoped join. Chapters 11 and 12
+carry no epigraph and no in-prose simile at all. Part 3's single Cage
+placement stays reserved for the scheduler chapter (row 1, chapter 17),
+which is where TONE.md §4.2's worked placement 1 puts it and which bs07
+owns; bs06 deliberately does not spend it, because a part has one and
+chapter 17's material is what the quotation was chosen for.
+
 The dark-Romantic register (TONE.md §4.1 — Mahler, Bruckner, Wagner
 allusions) is public domain and is deliberately *not* tracked here;
 this ledger is for material with a rights holder.

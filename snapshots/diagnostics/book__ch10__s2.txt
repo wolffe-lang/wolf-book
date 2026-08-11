@@ -1,0 +1,6 @@
+error[E0301]: nothing named `readers` is in scope
+ --> ./s2.lu:5:5
+  |
+5 |     readers.spawn(fn() { print("nobody's child") })
+  |     ^^^^^^^ not found
+  |

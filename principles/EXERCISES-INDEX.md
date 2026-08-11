@@ -12,7 +12,7 @@ see `EXERCISES-PENDING.md` for each blocker and owner. Chapter 26
 (the capstone) is absent by design: it publishes milestone
 checkpoints, not exercises (EXERCISES.md §4, bs10's contract).
 
-Tier totals: 131 run (lupin) · 9 run (lupin REPL) · 19 run (wolf) · 9 run (wolf + lupin) · 61 prose · 18 pending.
+Tier totals: 130 run (lupin) · 9 run (lupin REPL) · 19 run (wolf) · 10 run (wolf + lupin) · 61 prose · 18 pending.
 Taxonomy spread (tags, hybrids counted once per kind): fingers 33 · comprehension 136 · extension 40 · spelunking 21 · design 27.
 
 ## ch01 — 8 exercises
@@ -192,7 +192,7 @@ Taxonomy spread (tags, hybrids counted once per kind): fingers 33 · comprehensi
 | §12.3 — When channels are the wrong queue | 12-6 | extension · lupin | run (lupin) |
 | §12.3 — When channels are the wrong queue | 12-7 | design | prose |
 | §12.4 — `when (a, b)` | 12-8 | comprehension · lupin | run (lupin) |
-| §12.4 — `when (a, b)` | 12-9 | extension (break-it-on-purpose) · lupin | run (lupin) |
+| §12.4 — `when (a, b)` | 12-9 | extension (break-it-on-purpose) · wolf + lupin | run (wolf + lupin) |
 
 ## ch13 — 8 exercises
 
