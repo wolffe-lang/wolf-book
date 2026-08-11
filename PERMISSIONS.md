@@ -1,11 +1,21 @@
-# PERMISSIONS.md — the lyric-quotation ledger
+# PERMISSIONS.md — the rights ledger
 
-Mandated by TONE.md §4.2: song lyrics are copyrighted and lyric
-quotation is litigious even at short length. Every quotation in the
-Cage the Elephant register is logged here the same commit it enters a
-chapter, and this ledger is reviewed in full before any print edition.
+Two registers are tracked here, both for the same reason: they touch
+material with a rights holder. §1 is the lyric-quotation ledger
+mandated by TONE.md §4.2. §2 is the K&R attribution ledger mandated by
+bs10, which sets three of the book's projects beside their C ancestors.
+
+Everything in this file is reviewed in full before any print edition.
 The web edition carries the same discipline; "it's only online" is not
 a legal theory we test.
+
+---
+
+## 1. Lyric quotations (TONE.md §4.2)
+
+Song lyrics are copyrighted and lyric quotation is litigious even at
+short length. Every quotation in the Cage the Elephant register is
+logged here the same commit it enters a chapter.
 
 Policy, restated from TONE.md so this file stands alone:
 
@@ -78,6 +88,56 @@ which is where TONE.md §4.2's worked placement 1 puts it and which bs07
 owns; bs06 deliberately does not spend it, because a part has one and
 chapter 17's material is what the quotation was chosen for.
 
+bs10 (Part 5, the projects) adds no row and spends nothing. No chapter
+prose landed — the three side-by-side chapters wait on their gates
+(`principles/TOC.md` §Deltas) — so Part 5's whole reference allocation
+is still unspent and reserved as the sprint contract sets it: **at most
+two dark-Romantic placements** across the part's seven chapters (the
+intended homes are chapter 28 or the solo, plus the coda's, which is
+the natural site of the book's final such epigraph) and **at most one
+Cage placement** for the entire part. Part openers are prose at the head
+of a part's first chapter (chapter 7 is the model), so Part 5's opener —
+and any epigraph on it — lands with chapter 26.
+
 The dark-Romantic register (TONE.md §4.1 — Mahler, Bruckner, Wagner
 allusions) is public domain and is deliberately *not* tracked here;
 this ledger is for material with a rights holder.
+
+---
+
+## 2. K&R attributions (bs10)
+
+Three of the projects part's builds are set beside the C programs they
+descend from. The programs are folklore; **the listings in K&R are
+copyrighted**, so the rule is absolute and has no exceptions:
+
+- **No verbatim K&R code, ever.** Each C twin is an ORIGINAL
+  implementation written *in the manner of* the named section — its own
+  identifiers, its own comments, its own structure decisions.
+- **Attributed twice:** in the chapter prose ("after K&R §x.y") and in
+  the header comment of the vendored `.c` file, which also points back
+  at this ledger.
+- **Executed, not quoted:** every twin is compiled `-std=c99 -Wall
+  -Werror` and run against declared cases by `cargo xtask contrast`
+  (`samples/contrast/cases.toml`). A twin nobody runs is a paraphrase
+  of a listing, which is the thing this section forbids.
+- The book's side-by-side honesty rule applies to the comparison
+  itself: line counts are measured with `wc`, and where wolf is not
+  shorter the text says so.
+
+Status values as in §1: `planned` (the twin is vendored and asserted,
+its chapter not yet written) · `placed` (live in a chapter) ·
+`cleared` (reviewed for the print edition) · `cut`.
+
+| # | source | our twin | project | status | notes |
+|---|--------|----------|---------|--------|-------|
+| K1 | Kernighan & Ritchie, *The C Programming Language*, 2nd ed., §1.5–1.6 (character counting, the word-state machine) | `samples/contrast/count.c` | P1 `count` | planned | Original. The IN/OUT state machine and the `getc` loop are the teaching shape; identifiers, the per-file/total row structure, the `struct tally`, and the sentinel-int failure convention are ours. Compiled `-Werror`, four asserted cases (two files with a total, stdin with no total, one file, a file that will not open) |
+| K2 | Kernighan & Ritchie, *The C Programming Language*, 2nd ed., §4.3 (the reverse-Polish calculator) | `samples/contrast/rpn.c` | P2 `rpn` | planned | Original. The getop/push/pop division of labor and the getch/ungetch pushback pair are the teaching shape; the `broken` error flag, the operator set, and the end-of-expression handling are ours. Compiled `-Werror`, four asserted cases (nested expression, division by zero, a pushed zero indistinguishable from an underflow, negative operands) |
+| K3 | Kernighan & Ritchie, *The C Programming Language*, 2nd ed., §6.5 (the word-frequency binary tree) | `samples/contrast/wordtree.c` | P3 `wordtree` | planned | Original. The addtree/treeprint/talloc division of labor and the recursive in-order walk are the teaching shape; `dupstr` (not POSIX `strdup`), the `nomem` flag, the half-built-node cleanup, and `treefree` are ours. Compiled `-Werror`, three asserted cases (alphabetized walk with repeats, case folding, the empty tree) |
+
+The three chapters that will print these twins are not written: their
+wolf halves do not build at the pins (see the bs10 gate note in
+`principles/TOC.md`). The twins are vendored and asserted now because
+the C half of each side-by-side is buildable today, and because a
+vendored twin is what keeps this ledger's attribution checkable rather
+than promissory. No `.md` file quotes them yet, so no row is `placed`.
