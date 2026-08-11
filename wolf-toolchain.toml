@@ -8,8 +8,12 @@
 # `wolf test`, the warning system, the lived lint corpus, and
 # deterministic checked-lane verdicts: `wolf build`/`wolf run` compile
 # and execute real programs, and the runtime carries tasks, channels,
-# select, `when`, and procs. Trunk moved four times while bs07 was
-# drafting; this is the latest sha with green CI at the bump.
+# select, `when`, and procs. This bump is the wave-four close: native
+# lowering now carries the `str` method set, `List` operations,
+# value-position interpolation with format specs, and the nine `fs_*`
+# builtins, which is what makes Part 5's first three chapters
+# buildable — a compiled `count` needs all four at once. It is the
+# latest trunk sha with green CI at the bump.
 # `wolf conform-run` remains the sample runner's checker rung, because
 # it reports a machine-readable verdict for every phase — and for the
 # concurrency surface that verdict is `unsupported` at `resolve`, so
@@ -17,7 +21,7 @@
 # reach (the `when`-arity and `spawn proc`-arity rejections are two)
 # and its runs from lupin.
 repo = "tenseleyFlow/wolf-lang"
-rev = "592135587c571e9de085038aef5e55dedd3b65b2"
+rev = "13b811ffc03092c78873bed1cc9b400d166f04fd"
 impl_version = "0.0.1"
 
 [lupin]
