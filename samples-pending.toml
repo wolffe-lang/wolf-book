@@ -43,17 +43,26 @@ id = "ch16/ex16-9"
 blocker = "channel payload sendability checking (E1102) does not exist"
 owner = "s33-channels-select"
 
+# The three ch18 rows are re-blockered at the bs08 pin. The comptime
+# evaluator computes all three of these programs — that is what chapter
+# 18's E0705/E0706/E0710 verdicts prove — so "positive comptime
+# evaluation" is no longer the blocker. What is missing is a lane that
+# executes the *result*: `wolf build`/`wolf run` decline any module
+# holding a `comptime fn`, the folded value is not handed to the lane
+# that runs the program, and lupin declines `comptime fn` outright. Each
+# row's directive is a `run(…)`, which the runner checks under lupin.
+
 [[pending]]
 id = "ch18/ex18-3"
-blocker = "positive comptime evaluation (CTFE engine)"
-owner = "s16-ctfe"
+blocker = "no lane executes a comptime fold's result: comptime-fn lowering refused natively, `comptime fn` declined by lupin"
+owner = "c05-codegen (comptime-fn lowering) / wolf-interp std subset"
 
 [[pending]]
 id = "ch18/ex18-5"
-blocker = "comptime reflection (`typeinfo`)"
-owner = "s16-ctfe"
+blocker = "the same lane gap, plus a `typeinfo` result reaching a runtime const is `calls outside the modelled surface` in the checked lane"
+owner = "c05-codegen (comptime-fn lowering) / wolf-interp std subset"
 
 [[pending]]
 id = "ch18/ex18-11"
-blocker = "positive comptime evaluation (CTFE engine)"
-owner = "s16-ctfe"
+blocker = "no lane executes a comptime fold's result: comptime-fn lowering refused natively, `comptime fn` declined by lupin"
+owner = "c05-codegen (comptime-fn lowering) / wolf-interp std subset"
