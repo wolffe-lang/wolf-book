@@ -8,38 +8,51 @@
 # `wolf test`, the warning system, the lived lint corpus, and
 # deterministic checked-lane verdicts: `wolf build`/`wolf run` compile
 # and execute real programs, and the runtime carries tasks, channels,
-# select, `when`, and procs. This bump is the wave-four close: native
-# lowering now carries the `str` method set, `List` operations,
-# value-position interpolation with format specs, and the nine `fs_*`
-# builtins, which is what makes Part 5's first three chapters
-# buildable — a compiled `count` needs all four at once. It is the
-# latest trunk sha with green CI at the bump.
+# select, `when`, and procs. The wave-four close put the `str` method
+# set, `List` operations, value-position interpolation with format
+# specs, and the nine `fs_*` builtins into native lowering, which is
+# what makes Part 5's first three chapters buildable. This bump adds
+# wave five's first lane — the deterministic scheduler behind
+# `wolf test --schedules`/`--replay` — and is the latest trunk sha with
+# green CI at the bump (the two shas above it are red).
 # `wolf conform-run` remains the sample runner's checker rung, because
 # it reports a machine-readable verdict for every phase — and for the
 # concurrency surface that verdict is `unsupported` at `resolve`, so
 # Part 3 takes its static verdicts from the rungs the compiler does
-# reach (the `when`-arity and `spawn proc`-arity rejections are two)
-# and its runs from lupin.
-repo = "tenseleyFlow/wolf-lang"
-rev = "13b811ffc03092c78873bed1cc9b400d166f04fd"
+# reach and its runs from lupin. Three of those rungs are the E11xx
+# capture rules (E1101 mutable capture, E1102 channel payload, E1103
+# nested `when`), which reach a real verdict at `typecheck`; chapter 13
+# is written on them.
+repo = "wolffe-lang/wolf-lang"
+rev = "8321aba4e77d16f598a77e7934c146700cbcfa46"
 impl_version = "0.0.1"
 
 [lupin]
-# wolf-interp at the v0.1.5 tag: runs programs, reports traps,
+# wolf-interp at the v0.1.6 tag: runs programs, reports traps,
 # evaluates REPL snippets, and is the implementation that executes
 # Part 3 — the scheduler, the seeded decision stream, and the schedule
-# explorer are all its. 0.1.5 brings the str/fmt parity batch (format
-# specs to `[[fill]align][+][0][width][.precision][type]`, shortest
-# round-trip floats) and the enforced unsafe ring; its procs and
-# scheduler surface is unchanged from 0.1.4.
-repo = "tenseleyFlow/wolf-interp"
-rev = "9046faaf8678d1a281067fc22d60c47e460b7a09"
-version = "lupin 0.1.5 (wolf-interp, pin f0da6e6)"
+# explorer are all its. 0.1.6 brings the E11xx parity rejections: the
+# three capture rules are refused at the resolve rung with the codes,
+# the clause tags, and the byte spans wolfc reports, which is the pin
+# chapter 13 is written on. Its `conform-run` record grew an additive
+# `warnings` array (`[proto.record.warn]`); the str/fmt parity batch and
+# the enforced unsafe ring arrived at 0.1.5, and the procs and scheduler
+# surface is unchanged from it.
+# The rev is the annotated tag object (commit `3a10f40`), matching the
+# convention this file has used since 0.1.5. The tag's own CI run is
+# red for a reason outside the interpreter — the release rung's greps
+# asserted diagnostic/verdict adjacency and the new `warnings` array
+# sits between them — and the three commits above the tag are that
+# harness catching up, green at the last of them. The book pins the
+# tag, and the whole book suite is green on it.
+repo = "wolffe-lang/wolf-interp"
+rev = "35cd4ecb37b957b5e8315aa5ed49330401511bdc"
+version = "lupin 0.1.6 (wolf-interp, pin 13b811f)"
 
 [wolf-lsp]
 # Source of the vendored tmLanguage grammars under highlight/.
 # `cargo xtask grammar-sync --check` fails on drift against this pin.
-repo = "tenseleyFlow/wolf-lsp"
+repo = "wolffe-lang/wolf-lsp"
 rev = "dc05c271b683d1c8b544ab5fae74e66a4a034af7"
 
 [wolf-repl]
