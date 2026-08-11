@@ -1,25 +1,25 @@
-error[E0201]: `when` requires at least two operands (one operand is a method on the sync type)
+error[E0201]: `when` requires at least two operands — it acquires its whole set at once, so name every sync object the body touches in one `when` list
   --> ./ex12-9.lu:14:33
    |
 14 |         s.spawn(fn() { when (a) { when (b) { a += 1 } } })
    |                                 ^
    |
 
-error[E0201]: `when` requires at least two operands (one operand is a method on the sync type)
+error[E0201]: `when` requires at least two operands — it acquires its whole set at once, so name every sync object the body touches in one `when` list
   --> ./ex12-9.lu:14:44
    |
 14 |         s.spawn(fn() { when (a) { when (b) { a += 1 } } })
    |                                            ^
    |
 
-error[E0201]: `when` requires at least two operands (one operand is a method on the sync type)
+error[E0201]: `when` requires at least two operands — it acquires its whole set at once, so name every sync object the body touches in one `when` list
   --> ./ex12-9.lu:15:33
    |
 15 |         s.spawn(fn() { when (b) { when (a) { b += 1 } } })
    |                                 ^
    |
 
-error[E0201]: `when` requires at least two operands (one operand is a method on the sync type)
+error[E0201]: `when` requires at least two operands — it acquires its whole set at once, so name every sync object the body touches in one `when` list
   --> ./ex12-9.lu:15:44
    |
 15 |         s.spawn(fn() { when (b) { when (a) { b += 1 } } })

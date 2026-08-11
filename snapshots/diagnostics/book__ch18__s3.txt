@@ -1,0 +1,9 @@
+error[E0705]: `shards` is a runtime value, so this cannot evaluate at compile time
+  --> ./s3.lu:13:29
+   |
+13 |     const MASK = shard_mask(shards)
+   |                  ------------------ while evaluating `main`, entered here
+   |                             ^^^^^^ must be comptime-known
+   |
+   = note: a `comptime fn` runs during compilation: every argument must be a literal, a `const`, a
+     type, or the result of another comptime call.

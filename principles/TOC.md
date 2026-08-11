@@ -237,13 +237,15 @@ contracts as the promise, benchmarks as the referee — and ships code into
 an ecosystem with no build scripts to fear.*
 
 ### Chapter 18 — Comptime: one tier, no macros
-- 18.1 Wolf at compile time — evaluate ordinary wolf in the sandbox;
-  inputs are hashed, not forbidden.
-- 18.2 Types as values — build `Soa[T]` on the page with reflection.
-- 18.3 Where comptime already touched your code — recognize f-strings,
-  const generics, and test tables as the same mechanism.
+- 18.1 Wolf at compile time — evaluate ordinary wolf during
+  compilation, and know from the compiler's own refusals that it
+  happened there.
+- 18.2 Types as values — pass a type as an argument, reflect its fields
+  and its traits, and make the answer a build-stopping witness.
+- 18.3 Where comptime already touched your code — recognize f-string
+  compilation and const-generic normalization as the same mechanism.
 - 18.4 What it refuses to do — trace each refusal to caching,
-  auditability, or the build story.
+  auditability, or the audit surface of a dependency.
 - Exercises 18-1 ….
 
 ### Chapter 19 — Perf contracts
@@ -493,6 +495,38 @@ sprint files remain the implementation contracts for everything else.
 - **bs08:** the sprint's four chapters map to 18–21 unchanged; §21.5
   ("where C wins today") is a first-class section, not a caveat box, and
   its regenerated-from-CI requirement is inherited from the sprint file.
+- **bs08 (what shipped, 2026-08-11):** chapter 18 ships with all four
+  sections and the Part 4 opener at its head; chapters 19, 20 and 21 are
+  **held whole**, with the measured reasons in HOLD notes in their stubs
+  and in `book/ch18.md`'s ledger. The one-line version: the comptime
+  engine is real and the reader can run every verdict in chapter 18,
+  while the perf half of the part has no instrument — the four I15
+  contract attributes parse and are verified by nothing, `wolf bench`
+  answers `not yet`, and `wolf build --release` answers that v0 has
+  exactly one tier. Three sections' promises are reworded above, all in
+  chapter 18, which has never shipped and whose anchors have never been
+  published (the licence bs07 and bs10 took):
+  - §18.1's promise loses "inputs are hashed, not forbidden" — the
+    declared-build-inputs half of hermeticity is the package manifest's
+    story and belongs to chapter 24 — and gains the honest source of the
+    reader's confidence: the compiler's refusals are what prove the
+    evaluation happened at compile time. There is no positive witness for
+    a fold at this pin, because the folded value is not handed to the
+    lane that executes the program (ledger, third row).
+  - §18.2's promise loses `Soa[T]`. `typebuild` exists in the evaluator
+    with no surface spelling for the `(name, type)` pairs it consumes,
+    and there is no place projection, so the I9 worked example cannot be
+    written; the section teaches types-as-values through `typeinfo`,
+    `implements`, and the comptime `assert` witness instead. The same
+    gap holds §21.3.
+  - §18.3's promise loses test-table expansion — `wolf test` discovers
+    zero-parameter `fn test_*` and expands nothing — and keeps the two
+    mechanisms that are real: the f-string spec is read during
+    compilation (E0412 on a misspelled one) and const-generic equality
+    ring-normalizes at a documented line (E0707 at its boundary).
+  Exercise 18-6 is printed in §18.4 rather than the §18.3 the generated
+  index assigns it; §18.3 prints no exercise, and the two stems it wants
+  are named in the ledger for the editing pass.
 - **bs10 (superseded):** the earlier delta compressed a capstone into
   one chapter (26) with seven milestone sections. The single-capstone
   plan is retired at the sprint's own instruction (2026-08-11 user

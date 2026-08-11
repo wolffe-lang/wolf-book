@@ -10,11 +10,16 @@ pasted from the run; `prose`: the solution is discussion, no program;
 `pending`: the stem and expected outcome exist, the feature does not —
 see `EXERCISES-PENDING.md` for each blocker and owner.
 
-Two batches are written and **not printed in their chapters**: ch13's
-eight (the chapter is held whole — see `book/ch13.md`) and ch17's
-17-6, whose section is held for want of fault injection (TOC.md
-§Deltas, bs07). Both stay in the corpus so the day their surface lands
-the stems and the sections arrive together.
+Batches written and **not printed in their chapters**: ch13's eight
+(the chapter is held whole — see `book/ch13.md`); ch17's 17-6, whose
+section is held for want of fault injection (TOC.md §Deltas, bs07);
+ch19's nine, ch20's eight and ch21's nine, whose three chapters are
+held whole (`book/ch19.md`, `book/ch20.md`, `book/ch21.md` carry the
+measured reasons); and ch18's 18-3, 18-5 and 18-11, the three whose
+deliverable is a printed folded value, which no lane executes at the
+pin. Everything else in ch18 — nine stems of twelve — is printed.
+All of them stay in the corpus so the day their surface lands the stems
+and the sections arrive together.
 
 Part 5 (the projects, chapters 26–32) is absent from the totals below.
 Chapter 31 — the solo — is absent *by design*: it publishes milestone
@@ -280,15 +285,15 @@ Taxonomy spread (tags, hybrids counted once per kind): fingers 33 · comprehensi
 |---|---|---|---|
 | §18.1 — Wolf at compile time | 18-1 | comprehension · wolf | run (wolf) |
 | §18.1 — Wolf at compile time | 18-2 | comprehension · wolf | run (wolf) |
-| §18.1 — Wolf at compile time | 18-3 | fingers · pending | pending |
+| §18.1 — Wolf at compile time (held, not printed) | 18-3 | fingers · pending | pending |
 | §18.2 — Types as values | 18-4 | comprehension · wolf | run (wolf) |
-| §18.2 — Types as values | 18-5 | extension · pending | pending |
-| §18.3 — Where comptime already touched your code | 18-6 | spelunking · wolf | run (wolf) |
+| §18.2 — Types as values (held, not printed) | 18-5 | extension · pending | pending |
+| §18.4 — What it refuses to do (printed there, not §18.3) | 18-6 | spelunking · wolf | run (wolf) |
 | §18.4 — What it refuses to do | 18-7 | comprehension · wolf | run (wolf) |
 | §18.4 — What it refuses to do | 18-8 | comprehension · wolf | run (wolf) |
 | §18.4 — What it refuses to do | 18-9 | comprehension · wolf | run (wolf) |
 | §18.4 — What it refuses to do | 18-10 | extension (break-it-on-purpose) · wolf | run (wolf) |
-| Chapter batch | 18-11 | extension · pending | pending |
+| Chapter batch (held, not printed) | 18-11 | extension · pending | pending |
 | Chapter batch | 18-12 | design | prose |
 
 ## ch19 — 9 exercises

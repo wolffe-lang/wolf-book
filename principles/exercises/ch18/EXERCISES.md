@@ -2,12 +2,15 @@
 
 Commands run from this directory; outputs are pasted from real runs.
 lupin is the interpreter `wolf-toolchain.toml` pins; wolf is the wolf-lang debug build
-at `impl_version 0.0.1`. The comptime *sandbox and budget* verdicts are
-live in wolf today and every one below is a real run. Positive comptime
-evaluation — a `const` actually computing a value — is not yet
-executable under either tool; those exercises are marked pending with
-their blocker, and their expected outcomes ride in their directive
-headers for the day s16 lands.
+at `impl_version 0.0.1`. The comptime engine is wolf's, and every
+verdict below is a real run of it: the sandbox refusals, the budget
+meters, the comptime-known rule, checked arithmetic at compile time, and
+the reflected witnesses all evaluate today. What no lane does yet is
+execute a fold's *result* — `wolf build`/`wolf run` decline a module
+holding a `comptime fn`, and lupin declines one outright — so the three
+exercises whose deliverable is a printed folded value stay pending with
+that blocker, and their expected outcomes ride in their directive
+headers. They are also the three the chapter does not print.
 
 ## §18.1 — Wolf at compile time
 
@@ -77,15 +80,18 @@ error[E0706]: this `+` on `i32` faults at compile time: 2147483647 + 1 leaves `i
     error at comptime — intended wraparound is spelled `wrapping[T]`, never a mode.
 ```
 
-**Exercise 18-3** *(fingers · pending — blocker: positive comptime
-evaluation (CTFE engine); owner: s16-ctfe)* — Write `sum_squares(n)` as
+**Exercise 18-3** *(fingers · pending — blocker: no lane executes a
+comptime fold's result; owner: c05-codegen / wolf-interp std subset)*
+— Write `sum_squares(n)` as
 a `comptime fn` and bind `const T = sum_squares(9)`. The folded value
 is 285, and after s16 the program prints it having computed nothing at
 runtime.
 
 Solution — `ch18/ex18-3.lu` carries the program with its expected
-directive header (`run(exit=0, stdout="285")`). Today both tools
-decline it honestly; this is what pending looks like:
+directive header (`run(exit=0, stdout="285")`). The evaluator computes
+this fold; what is missing is a lane that runs a program holding the
+`comptime fn` afterward. Both reader-facing tools decline the module,
+and this is what pending looks like:
 
 ```console
 $ lupin ex18-3.lu
@@ -95,7 +101,8 @@ $ echo $?
 ```
 
 Under `wolf conform-run` the observation is `verdict=unsupported` at
-`phase_reached=mem`. The exit code is 4, not 2 and not 3: outside
+`phase_reached=mem`, and `wolf run` declines with the lowering gap
+named. The interpreter's exit code is 4, not 2 and not 3: outside
 scope, stated, rather than rejected or trapped.
 
 ## §18.2 — Types as values
@@ -124,15 +131,19 @@ error[E0708]: the size of `Vec2` is not resolved until codegen lays it out
     can answer for fixed-width primitives today and for aggregates once c05 lands.
 ```
 
-**Exercise 18-5** *(extension · pending — blocker: comptime reflection
-(`typeinfo`); owner: s16-ctfe)* — Write `field_count(T: type)` using
+**Exercise 18-5** *(extension · pending — blocker: a `typeinfo` result
+reaching a runtime `const` is `calls outside the modelled surface` in
+the checked lane, on top of the comptime-fn lowering gap; owner:
+c05-codegen / wolf-interp std subset)* — Write `field_count(T: type)` using
 `typeinfo`, and apply it to a struct of your own. State what the
 program will print for a three-field struct once s16 lands.
 
 Solution — `ch18/ex18-5.lu` (expected `run(exit=0)`, printing `3`).
 The signature `fn field_count(T: type) -> int` is the section's whole
 point in four tokens: a type arrives as an argument, like any other
-value. Today:
+value. The reflection itself runs today — §18.2's witness proves the
+field count at compile time and E0710 reports a wrong one — but the
+count cannot be printed by a program. Today:
 
 ```console
 $ lupin ex18-5.lu
@@ -169,9 +180,9 @@ reason: confinement (compiling a package must never act on or read
 the machine that compiles it — `wolf add` must never mean arbitrary
 code runs with your credentials) or determinism (the same program and
 target must produce bit-identical comptime results on every host).
-Compute the value at runtime instead; file contents will later arrive
-as *declared build inputs* through the build system (s51), never as
-an evaluator capability.
+Compute the value at runtime instead; file contents belong in
+*declared build inputs* through the package manifest, never in an
+evaluator capability.
 ```
 
 ## §18.4 — What it refuses to do
@@ -301,8 +312,9 @@ meters, and the first one exhausted names the failure.
 
 ## Chapter batch
 
-**Exercise 18-11** *(extension · pending — blocker: positive comptime
-evaluation (CTFE engine); owner: s16-ctfe)* — An L-system is a string
+**Exercise 18-11** *(extension · pending — blocker: no lane executes a
+comptime fold's result; owner: c05-codegen / wolf-interp std subset)*
+— An L-system is a string
 rewriting rule applied in rounds: here `A → A-B` and `B → -A`, with
 `-` carried through. Write `expand(axiom, steps)` as a `comptime fn`
 and fold `expand("A", 3)` into a `const`. Compute the expected string
@@ -311,14 +323,18 @@ by hand before reading the header.
 Solution — `ch18/ex18-11.lu` (expected `run(exit=0,
 stdout="A-B--A--A-B")`; the hand expansion is `A` → `A-B` → `A-B--A` →
 `A-B--A--A-B`). The expected stdout was verified by running the same
-function as a runtime `fn` under lupin today — the algorithm is
-ordinary wolf, which is the tier's whole pitch: nothing about the
-language changes at compile time, only the clock it runs on. Today the
-comptime spelling reports `unsupported` under both tools.
+function as a runtime `fn` under lupin, which prints `A-B--A--A-B` —
+the algorithm is ordinary wolf, which is the tier's whole pitch:
+nothing about the language changes at compile time, only the clock it
+runs on. Note the two spellings the language actually has: strings are
+joined by interpolation (`next = "{next}A-B"`) and not by `+=`, which
+`wolf` rejects with E0409; and the recoverable slice is
+`cur.get(i..i + 1)` with an `else`. Today the comptime spelling reports
+`unsupported` under both tools.
 
 **Exercise 18-12** *(design)* — The sandbox refuses a file read
-(E0701) but the roadmap promises file contents will arrive as
-*declared build inputs* (s51). Draw the line between the two designs:
+(E0701) but the catalog entry points at *declared build inputs* through
+the package manifest instead. Draw the line between the two designs:
 what exactly does declaring an input buy that an ambient read does not
 have? Name the failure the ambient read permits in each of: caching,
 cross-machine reproducibility, and auditing a dependency you did not
@@ -335,6 +351,6 @@ must now treat every comptime expression as a potential filesystem
 probe, which is the exact posture chapter 24 spends a chapter
 dismantling. The refusal is not a missing feature; it is the load-
 bearing wall of the caching, reproducibility, and audit stories, and
-s51's design threads the need through the manifest instead of through
+the package manifest is where the need is threaded instead of through
 the evaluator. The distinction to hold onto: *what* is read can be
 data; *that* it was read must be declaration.

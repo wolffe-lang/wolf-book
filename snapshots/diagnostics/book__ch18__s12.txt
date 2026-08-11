@@ -1,0 +1,6 @@
+error[E0412]: `z` has no place in a format spec — the grammar is `[[fill]align][+][0][width][.precision][type]` with type one of `b o x X e E f`
+ --> ./s12.lu:6:18
+  |
+6 |     print("{total:>zz}")
+  |                  ^^^^ in this format spec
+  |

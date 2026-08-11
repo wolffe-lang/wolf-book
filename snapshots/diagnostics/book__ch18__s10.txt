@@ -1,0 +1,12 @@
+error[E0710]: this comptime assertion failed
+  --> ./s10.lu:11:5
+   |
+11 |     assert(implements(T, Eq))
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^ evaluated to `false` at compile time
+...
+16 | const POINT_IS_EQ_READY: bool = eq_ready(Point)
+   |                                 --------------- while evaluating `eq_ready`, entered here
+   |                                 --------------- while evaluating `POINT_IS_EQ_READY`, entered here
+   |
+   = note: a failed comptime `assert` stops compilation — it is the witness mechanism for facts the
+     checker cannot see on its own.

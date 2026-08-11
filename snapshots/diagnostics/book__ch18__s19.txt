@@ -1,0 +1,17 @@
+error[E0704]: comptime evaluation recursed past 256 call frames
+ --> ./s19.lu:5:32
+  |
+5 |     if n == 0 { 0 } else { 1 + shelves(n - 1) }
+  |                                ^^^^^^^^^^^^^^ the call that went over the limit
+  |                                -------------- while evaluating `shelves` — 254 recursive frames
+...
+8 |     const N = shelves(300)
+  |               ------------ while evaluating `shelves`, entered here
+  |               ------------ while evaluating `main`, entered here
+  |
+  = note: call depth is a resource limit, not a host stack: deep recursion is refused with this
+    report instead of crashing the compiler (D33).
+help: raise the budget here: `#[budget(depth = 512)]`
+  |
+8 |     #[budget(depth = 512)]
+  |

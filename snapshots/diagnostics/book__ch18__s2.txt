@@ -1,0 +1,12 @@
+error[E0710]: this comptime assertion failed
+  --> ./s2.lu:13:5
+   |
+13 |     assert(shard_mask(shards) == want)
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluated to `false` at compile time
+...
+17 | const SIXTEEN_SHARDS: bool = expect_mask(16, 14)
+   |                              ------------------- while evaluating `expect_mask`, entered here
+   |                              ------------------- while evaluating `SIXTEEN_SHARDS`, entered here
+   |
+   = note: a failed comptime `assert` stops compilation — it is the witness mechanism for facts the
+     checker cannot see on its own.

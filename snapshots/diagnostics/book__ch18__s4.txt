@@ -1,0 +1,12 @@
+error[E0706]: this `*` on `i32` faults at compile time: 100000 * 30000 leaves `i32`'s range
+ --> ./s4.lu:5:5
+  |
+5 |     docs * per_doc
+  |     ^^^^^^^^^^^^^^ checked arithmetic, comptime included
+...
+8 |     const BYTES = index_bytes(100000, 30000)
+  |                   -------------------------- while evaluating `index_bytes`, entered here
+  |                   -------------------------- while evaluating `main`, entered here
+  |
+  = note: checked arithmetic has one semantics everywhere (X3): what would trap at runtime is an
+    error at comptime — intended wraparound is spelled `wrapping[T]`, never a mode.

@@ -26,9 +26,9 @@ verdict for a feature that does not exist yet.
 | 5-8 | `run(exit=0, stdout="marmot 5")` | `sorted_by` / `take` absent from the interp std subset | s37-core-types (std surface pinning) |
 | 16-9 | `fail(E1102)` | channel payload sendability checking | s33-channels-select |
 | 17-6 | `run(exit=0)` | `--chaos` fault injection at declared effect points — and with it §17.3 of chapter 17, which is why this stem is written and **not printed** (TOC.md §Deltas, bs07) | s36-deterministic-scheduler |
-| 18-3 | `run(exit=0, stdout="285")` | positive comptime evaluation (CTFE engine) | s16-ctfe |
-| 18-5 | `run(exit=0)` | comptime reflection (`typeinfo`) | s16-ctfe |
-| 18-11 | `run(exit=0, stdout="A-B--A--A-B")` | positive comptime evaluation (CTFE engine) | s16-ctfe |
+| 18-3 | `run(exit=0, stdout="285")` | no lane executes a comptime fold's *result* — comptime-fn lowering is refused natively, lupin declines `comptime fn`; the evaluator itself computes it, which is why this stem is written and **not printed** (TOC.md §Deltas, bs08) | c05-codegen / wolf-interp std subset |
+| 18-5 | `run(exit=0)` | the same lane gap, plus a `typeinfo` result reaching a runtime `const` is `calls outside the modelled surface` in the checked lane; written and **not printed** | c05-codegen / wolf-interp std subset |
+| 18-11 | `run(exit=0, stdout="A-B--A--A-B")` | the same lane gap; written and **not printed** | c05-codegen / wolf-interp std subset |
 | 19-1 | `run(exit=0, stdout="3")` | perf-contract verification (I15) | s24–s26 WIR fact sprints |
 | 20-6 | none — workflow exercise | `wolf bench` harness and `--baseline` workflow | s01-test-and-bench-infrastructure / s44-perf-validation |
 | 21-8 | none — measurement exercise | bench rigs and CI perf gates | s44-perf-validation |
@@ -41,11 +41,13 @@ verdict for a feature that does not exist yet.
 
 Recorded at authoring time (lupin 0.1.0, wolfc 0.0.1 debug), so the
 flip is detectable: 5-8, 8-7, 13-1, 13-6, 18-3, 18-5, 18-11 exit
-4 `unsupported` with the reason on stderr. 13-3 and 16-9 *run to exit 0*
-under lupin — the store-buffer and sendability programs execute today
-because closures capture by copy and no sendability check exists; their
-chapter files show the current behavior and say why it is not the
-specified one. 17-6: the flag is rejected. 19-1: `#[noalloc]` parses
+4 `unsupported` with the reason on stderr. 13-3 and 16-9 were *running
+to exit 0* under lupin when this was written — the store-buffer and
+sendability programs executed because closures capture by copy and no
+sendability check existed; at the bs08 pin both are rejected statically
+with the codes their headers name, so both rows are flips waiting for
+the Part 3 sprint that prints them (bs08 observed them and left them
+standing). 17-6: the flag is rejected. 19-1: `#[noalloc]` parses
 and is not verified. 7-5: lupin reaches its dynamic verdict; wolfc
 reports `unsupported` at resolve. The workflow entries (20-6, 21-8,
 22-7, 23-7, 24-6) have no tool to run at all. Exercises whose stems

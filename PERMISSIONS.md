@@ -104,6 +104,26 @@ the Bruckner pause at chapter 10's head (bs06, dark-Romantic,
 untracked here) and this one — and **no placement in either register is
 left unspent in Parts 1 through 3.**
 
+bs08 (chapters 18–21) adds no row and leaves Part 4's single Cage
+placement unspent. It places one reference in total: a dark-Romantic
+epigraph at chapter 18's head — Brahms and the twenty-one years his
+First Symphony spent unfinished, public domain, untracked here by
+design — which is also the Part 4 opener's position, since a part
+opener is prose at the head of the part's first chapter (chapter 7 is
+the model). The image carries one structural idea and no technical
+load: the work is done before the downbeat, which is what compile-time
+evaluation is. Chapter 18 carries no in-prose simile, so it spends one
+reference placement in total, as chapters 7, 8 and 9 each did.
+Chapters 19, 20 and 21 ship no prose at all (their gates have not
+opened — `principles/TOC.md` §Deltas, bs08), so they spend nothing.
+**Part 4's one Cage placement is deliberately left for bs09**, whose
+chapter 24 — the no-build-scripts covenant, the supply-chain chapter —
+is the material a placement in that register would be chosen for, and a
+part has one. With chapter 2's row, chapter 9's, and chapter 17's
+placed and Appendix C's planned, spending Part 4's on chapter 24 and
+Part 5's per the paragraph below puts the book at six placements in
+that register, which is the ceiling TONE.md §4.2 sets.
+
 bs10 (Part 5, the projects) adds no row and spends nothing. No chapter
 prose landed — the three side-by-side chapters wait on their gates
 (`principles/TOC.md` §Deltas) — so Part 5's whole reference allocation

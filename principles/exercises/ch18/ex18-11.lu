@@ -1,7 +1,9 @@
 //! check: run(exit=0, stdout="A-B--A--A-B")
 //! phase: run
 // Exercise 18-11: an L-system expanded at compile time.
-// PENDING: positive comptime evaluation (CTFE engine) — owner s16-ctfe.
+// PENDING: no lane executes a comptime fold's result — comptime-fn
+// lowering is refused natively and lupin declines `comptime fn`.
+// Owner: c05-codegen / wolf-interp std subset.
 comptime fn expand(axiom: str, steps: int) -> str {
     var cur = axiom
     var step = 0
@@ -9,8 +11,14 @@ comptime fn expand(axiom: str, steps: int) -> str {
         var next = ""
         var i = 0
         while i < cur.len {
-            let ch = cur[i..i + 1]
-            if ch == "A" { next += "A-B" } else if ch == "B" { next += "-A" } else { next += ch }
+            let ch = cur.get(i..i + 1) else |_| { "" }
+            if ch == "A" {
+                next = "{next}A-B"
+            } else if ch == "B" {
+                next = "{next}-A"
+            } else {
+                next = "{next}{ch}"
+            }
             i += 1
         }
         cur = next
