@@ -1,0 +1,10 @@
+error[E1102]: `List[Doc]` cannot be sent through a channel
+ --> ./s4.lu:7:25
+  |
+7 |     let inbox = channel[List[Doc]](1)
+  |                         ^^^^^^^^^ not a sendable payload type
+  |
+  = note: channel payloads must be `Copy` data, `imm` data, a region value (the send is its affine
+    move), or a `sync` type ([conc.chan.type]) — sending anything else would give two tasks
+    one mutable value. D14's verbs are the ways out: `move` the data into a region and send
+    the region, `freeze` it into shareable `imm` data, or guard it with a `Mutex`.

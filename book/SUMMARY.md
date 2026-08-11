@@ -23,7 +23,7 @@
 - [Spawning is a scope](ch10.md)
 - [Scopes as values](ch11.md)
 - [Channels and select](ch12.md)
-- [Parallel iterators](ch13.md)
+- [Dividing one job](ch13.md)
 - [Procs: the unit of failure](ch14.md)
 - [Link, monitor, supervision](ch15.md)
 - [Region transfer: fearless messaging](ch16.md)

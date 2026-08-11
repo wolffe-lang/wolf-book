@@ -10,8 +10,9 @@ pasted from the run; `prose`: the solution is discussion, no program;
 `pending`: the stem and expected outcome exist, the feature does not —
 see `EXERCISES-PENDING.md` for each blocker and owner.
 
-Batches written and **not printed in their chapters**: ch13's eight
-(the chapter is held whole — see `book/ch13.md`); ch17's 17-6, whose
+Batches written and **not printed in their chapters**: ch13's 13-1,
+13-6 and 13-8 — all three `par`'s, whose section §13.1 is held while
+the rest of that chapter ships (`book/ch13.md`); ch17's 17-6, whose
 section is held for want of fault injection (TOC.md §Deltas, bs07);
 ch19's nine, ch20's eight and ch21's nine, whose three chapters are
 held whole (`book/ch19.md`, `book/ch20.md`, `book/ch21.md` carry the
@@ -220,14 +221,14 @@ Taxonomy spread (tags, hybrids counted once per kind): fingers 36 · comprehensi
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
-| §13.1 — `par` | 13-1 | comprehension · pending | pending |
-| §13.1 — `par` | 13-2 | fingers · lupin | run (lupin) |
+| §13.1 — `par` (held) | 13-1 | comprehension · pending | pending |
+| §13.1 — `par` (held) | 13-2 → printed in §13.2 | fingers · lupin | run (lupin) |
 | §13.2 — The race that does not compile | 13-3 | comprehension · wolf + lupin | run (wolf + lupin) |
 | §13.2 — The race that does not compile | 13-4 | spelunking · lupin | run (lupin) |
 | Chapter batch | 13-5 | extension · lupin | run (lupin) |
-| Chapter batch | 13-6 | extension · pending | pending |
+| Chapter batch (held with §13.1) | 13-6 | extension · pending | pending |
 | Chapter batch | 13-7 | comprehension · lupin | run (lupin) |
-| Chapter batch | 13-8 | design | prose |
+| Chapter batch (held with §13.1) | 13-8 | design | prose |
 
 ## ch14 — 9 exercises
 

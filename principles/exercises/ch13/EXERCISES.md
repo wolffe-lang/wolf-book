@@ -1,10 +1,16 @@
-# Chapter 13 — Parallel iterators: exercises
+# Chapter 13 — Dividing one job: exercises
 
 Commands run from this directory; outputs are pasted from real runs.
 Two exercises in this chapter are Tier-PENDING: their programs are on
 disk with the outcome their directive headers claim, and the manifest
 names what blocks them. Nothing below shows an output that was not
 produced.
+
+Five of the eight are printed in the chapter: 13-2, 13-3 and 13-4 in
+§13.2, and 13-5 and 13-7 in the chapter batch. The other three are
+`par`'s — 13-1 and 13-6 hold pending rows, and 13-8's subject is
+`par`'s decomposition contract — so all three are written, on file, and
+not printed. They land with §13.1.
 
 ## §13.1 — `par`
 
@@ -47,10 +53,17 @@ $ echo $?
 4
 ```
 
-**Exercise 13-2** *(fingers · lupin)* — Write 13-1's sequential twin:
-same program, squaring loop spelled by hand. Run it. This is the
-"before" photograph — keep it; the chapter's promise is that the diff
-between these two programs stays at one line.
+**Exercise 13-2** *(fingers · lupin)* — Nine numbers, squared and
+summed, on one core: build the list, square each into a second list, add
+them up, print the total. Run it and keep the program. The number it
+prints is the number every divided version of this job has to agree
+with, and a divided job that does not reproduce its sequential answer is
+not faster — it is wrong.
+
+(Printed in §13.2, not the §13.1 the index assigns it: §13.1 is held,
+and the sequential baseline is what §13.2 opens on. The one-line-diff
+framing this stem used to carry is 13-1's and travels back to it when
+`par` lands.)
 
 Solution — `ch13/ex13-2.lu`:
 
@@ -88,16 +101,18 @@ fn main() -> !int {
 }
 ```
 
-The compiler rejects this with E1101: two tasks capturing plain mutable
-state is the race, caught at the capture. Before running it, predict the
-three fixes the diagnostic offers. Then run the same program under lupin
-and explain the exit code you get — it is neither a race nor a
-rejection, and it is still wrong.
+Before running it, predict the three fixes the note offers and which two
+apply here. Then run it under both tools and account for the difference
+in what they print — the codes and the spans agree, and the amount of
+output does not. Which tool tells you about the second `spawn`, and what
+does the extra warning on it say that `W1101` did not?
 
 Solution: the three fixes are a channel (each task sends, one owner
 adds), a `Mutex` acquired in a `when` (for state that is genuinely
 shared), and `par` with a reduction (for the loop-shaped cases). The
-diagnostic names all three, once per spawn:
+first two apply here; the third wants a loop over a collection, and this
+program has two hand-written tasks. The compiler names all three, once
+per spawn:
 
 ```console
 $ wolf conform-run ./ex13-3.lu
@@ -116,25 +131,35 @@ error[E1101]: this task writes to `hits`, which it captures from the enclosing f
 ```
 
 The second `s.spawn` earns the same error at line 10, and two warnings
-ride along with each rejection: W1101 ("this write to `hits` stays
-inside the task") and W1102 ("the closure above captured `hits` by
-value, so it will not see this assignment"). The warnings are the
-*dynamic* half of the same fact, and they are what the second half of
-the exercise is about:
+ride along: W1101 ("this write to `hits` stays inside the task") and,
+on the second spawn only, W1102 ("the closure above captured `hits` by
+value, so it will not see this assignment"). W1102 is the one the
+question asks about — it is not about this closure's write but about
+the *previous* closure, which took its copy of `hits` before this line
+ran and will never see it. Five diagnostics for one mistake with two
+instances.
+
+The interpreter refuses the same program, and says it once:
 
 ```console
 $ lupin ex13-3.lu
+ex13-3.lu: E1101: this task writes to `hits`, which it captures from the enclosing function: unsynchronized mutable capture across tasks (D14 — copy, share `imm`, or `move`; a `sync` type mediates shared writes) [conc.task.spawn] at 318..322
 $ echo $?
-0
+2
 ```
 
-Exit 0 — the interpreter captures by value, so each task incremented a
-private copy and both increments were *lost*: `hits` is still 0, which
-happens to be a clean exit code. One program, two enforcement points:
-the compiler never lets it start, and the interpreter runs it to a
-silently wrong answer. That contrast is the argument for making the
-capture a compile error, and it is why W1101 exists for the code paths
-where the copy is what you meant.
+Same code, same headline, same span as the compiler's first error —
+`318..322` is the `hits` at line 9. What differs is volume, not verdict:
+the compiler reports every offending spawn and both warnings, the
+interpreter reports the first refusal and stops. Neither runs it.
+
+Worth knowing what this exercise used to be. Until lupin 0.1.6 the
+second half was a *differential*: the interpreter ran this program to
+exit 0, having captured by value, so both increments landed on private
+copies and were lost and `hits` printed as 0 — a silently wrong answer
+from a clean exit code. That contrast was the argument for making the
+capture a compile error. The argument won; the demonstration is gone,
+and W1101's note is where the lost-update story now lives.
 
 **Exercise 13-4** *(spelunking · lupin)* — Two programs differ in one
 `print`. Explore both and read the verdicts:

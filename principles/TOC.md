@@ -164,7 +164,7 @@ you can replay.*
 - 10.1 The task tree — one arrow in, one arrow out; scope exit joins all
   children.
 - 10.2 The leaked goroutine, retired — port Go's own leak example and
-  watch the wolf version fail to compile.
+  watch the wolf version die honestly.
 - 10.3 The dropped error, surfaced — see a child's error arrive at the
   scope join, handled or propagated.
 - 10.4 Cancellation — reason about cooperative cancellation points,
@@ -175,7 +175,7 @@ you can replay.*
 - 11.1 The scope as a capability — spawn into a caller's scope, visibly.
 - 11.2 The background refresher — build the connection-pool pattern
   without a detached anything.
-- 11.3 The structured dump — read the task tree the debugger shows.
+- 11.3 The structured dump — read the task tree the interpreter shows.
 - Exercises 11-1 ….
 
 ### Chapter 12 — Channels and select
@@ -189,9 +189,13 @@ you can replay.*
   folklore.
 - Exercises 12-1 ….
 
-### Chapter 13 — Parallel iterators
-- 13.1 `par` — parallelize Part 1's wordcount by changing one call (the
-  promise, kept).
+### Chapter 13 — Dividing one job
+- (held) 13.1 `par` — parallelize Part 1's wordcount by changing one
+  call (the promise, kept). Held at rp01: `par` has no surface in
+  either implementation. The `(held)` prefix is what stops
+  `verify-docs` demanding the heading in a shipped chapter; drop it
+  when the section is written. The number stays reserved (§Deltas,
+  rp01).
 - 13.2 The race that does not compile — introduce a real race and read
   the rejection with its three suggested fixes.
 - Exercises 13-1 ….
@@ -207,8 +211,8 @@ you can replay.*
 ### Chapter 15 — Link, monitor, supervision
 - 15.1 Two primitives — wire `link` for shared fate, `monitor` for exit
   reasons.
-- 15.2 A supervisor in forty lines — build one before being handed the
-  stdlib's.
+- 15.2 A supervisor in forty lines — build the one the language does not
+  ship.
 - 15.3 The root supervisor — give the daemon shape a name and a tree.
 - Exercises 15-1 ….
 
@@ -216,8 +220,9 @@ you can replay.*
 - 16.1 `ch.send(move r)` — move a cyclic object graph across procs with
   one word and zero copies.
 - 16.2 Freeze, then share — pick transfer or sharing by shape.
-- 16.3 The honest lineup — run the same program against Erlang's copy,
-  Go's share, and Rust's `Arc<Mutex>`.
+- 16.3 The honest lineup — run the same workload against Rust's
+  `Arc<Mutex>`, and weigh it against what Erlang's copy and Go's share
+  permit.
 - Exercises 16-1 ….
 
 ### Chapter 17 — The failing schedule, replayed
@@ -483,7 +488,9 @@ sprint files remain the implementation contracts for everything else.
   at the pin, so the section builds the supervisor, names the four
   decisions every supervisor makes, and gives the restart strategies as
   a design table — claiming no library. The promise wants rewording to
-  "build the one the language does not ship"; left for bs11.
+  "build the one the language does not ship"; left for bs11. **Reworded
+  at rp01** to exactly that, since the row proposed the wording and the
+  section has not moved.
 - **bs07 (§16.3, recorded not edited):** the TOC promise reads "run the
   same program against Erlang's copy, Go's share, and Rust's
   `Arc<Mutex>`." The Rust half runs — vendored, compiled with warnings
@@ -491,7 +498,10 @@ sprint files remain the implementation contracts for everything else.
   Erlang and Go halves are credited prose boxes, for the reason
   chapter 10's Go boxes are: there is no Erlang or Go toolchain in the
   contrast lane, and what is being contrasted is what those runtimes
-  permit rather than what a program of theirs prints.
+  permit rather than what a program of theirs prints. **Reworded at
+  rp01** to "run the same workload against Rust's `Arc<Mutex>`, and
+  weigh it against what Erlang's copy and Go's share permit" — the old
+  wording promised three programs running and one runs.
 - **bs08:** the sprint's four chapters map to 18–21 unchanged; §21.5
   ("where C wins today") is a first-class section, not a caveat box, and
   its regenerated-from-CI requirement is inherited from the sprint file.
@@ -644,6 +654,48 @@ sprint files remain the implementation contracts for everything else.
   in-prose simile. The part's one Cage placement and its second
   dark-Romantic placement are unspent and reserved for the solo and the
   coda, as the sprint contract sets them.
+- **rp01 (chapter 13 ships one section of two, 2026-08-11):** the
+  chapter's gate opened halfway. E1101, E1102 and E1103 all exist now,
+  in **both** implementations, with the same codes, clause tags and byte
+  spans — so §13.2 is writable and is written. `par` still has no
+  surface in either tool, so §13.1 is held.
+  - **The numbering does not close up**, which is the opposite of the
+    licence bs07 took for ch17's chaos section. It cannot: `book/ch06.md`
+    §6.5's boxed promise names §13.1 as the place the wordcount's
+    one-call diff gets checked, and that box is shipped, reader-facing
+    text. So §13.2 keeps its number, §13.1 stays vacant, and `par`
+    arrives in the slot ch06 already points at. Nothing is renumbered
+    and no shipped page is edited to make room. The held row above
+    carries a `(held)` prefix because `verify-docs` matches TOC rows
+    beginning with a dotted number against `## N.M` headings, and a
+    shipped chapter must not render an empty section; dropping the
+    prefix and writing the heading is one edit when the surface lands.
+  - **The chapter is retitled** from "Parallel iterators" to "Dividing
+    one job". A title naming a construct the chapter does not contain
+    is a promise by another spelling, and the new title is true both
+    now and after §13.1 lands. The chapter had never shipped, so the
+    title was free (the licence bs07 and bs10 took).
+  - **Exercises:** five of eight printed — 13-2, 13-3, 13-4 in §13.2 and
+    13-5, 13-7 in the chapter batch. 13-1 and 13-6 hold their
+    `samples-pending.toml` rows on `par`; 13-8 is a design stem about
+    `par`'s decomposition contract and is written, on file, and not
+    printed. 13-2 is printed in §13.2 while the generated index assigns
+    it to §13.1 — the ch18 precedent (18-6).
+  - **13-3 was rewritten at this pin, not re-blessed.** Its second half
+    used to turn on lupin *running* the racy program to a silently wrong
+    exit 0; lupin now rejects it statically, so the exercise's subject
+    changed from a differential to an agreement, and the stem asks about
+    the one thing that still differs (how much output each tool gives
+    for two offending spawns).
+- **rp01 (the promise ledger):** four recorded TOC rewordings landed —
+  §10.2 and §11.3 (bs06's rows, named by the contract) and §15.2 and
+  §16.3 (bs07's, which the contract did not name; taken because the
+  sprint goal is a clean ledger for bs11 and both rows were pure
+  wording reconciliations still true at this pin). Not closed, and why:
+  ch06 §6.5's box (audit row 26) is untouched — it is `par`'s, its
+  pointer is correct, and rp01's gate did not open on `par`; and bs08's
+  reword-not-edited row, ch10 §10.1's "Part 4 asks it", stays
+  outstanding because chapters 19–21 are still held.
 - **bs11:** back matter gains an explicit Appendix D (spec
   cross-reference), which bs11's checklist implies ("claims traced to
   spec clauses") but never lists as an artifact. The index doctrine

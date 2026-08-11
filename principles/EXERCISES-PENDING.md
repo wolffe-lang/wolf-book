@@ -63,3 +63,10 @@ a history rather than a snapshot:
   their solution transcripts in `principles/exercises/ch13/` and
   `principles/exercises/ch16/` show the real rejections instead of the
   honest-today runs they used to carry.
+  At the rp01 bump the interpreter caught up: E1101, E1102 and E1103 are
+  static rejections in *both* tools now, same codes, same spans. 13-3's
+  second half was rewritten rather than re-blessed, because its subject
+  was the differential — lupin used to run the racy program to exit 0
+  with both increments lost — and the differential is gone. Its stem now
+  asks about the one thing that still differs, which is how much output
+  each tool gives for two offending spawns.
