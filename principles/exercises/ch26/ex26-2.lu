@@ -1,0 +1,28 @@
+//! check: run(exit=0, stdout="       2       3       7 -")
+//! phase: run
+// Exercise 26-2: two spaces, a blank line, and no trailing newline.
+// The number people get wrong is `lines`.
+struct Tally { lines: int, words: int, bytes: int }
+fn tally(text: str) -> Tally {
+    var t = Tally { lines: 0, words: 0, bytes: 0 }
+    var inword = false
+    for b in text.bytes() {
+        t.bytes += 1
+        if b == 10 { t.lines += 1 }
+        match b {
+            32 | 9 | 10 => { inword = false },
+            _ => {
+                if !inword {
+                    inword = true
+                    t.words += 1
+                }
+            },
+        }
+    }
+    t
+}
+fn main() -> !int {
+    let t = tally("a  b\n\nc")
+    print("{t.lines:>8}{t.words:>8}{t.bytes:>8} -")
+    0
+}

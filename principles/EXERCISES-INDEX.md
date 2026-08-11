@@ -1,6 +1,6 @@
 # EXERCISES-INDEX.md — the corpus ledger
 
-Generated view of every exercise in the corpus: 247 total. Sources:
+Generated view of every exercise in the corpus: 268 total. Sources:
 the exemplar batch in `principles/EXERCISES.md` §5 (26 exercises,
 folded in unchanged) and the per-chapter files
 `principles/exercises/chNN/EXERCISES.md` (+ `appx/` for the
@@ -16,15 +16,21 @@ eight (the chapter is held whole — see `book/ch13.md`) and ch17's
 §Deltas, bs07). Both stay in the corpus so the day their surface lands
 the stems and the sections arrive together.
 
-Part 5 (the projects, chapters 26–32) is absent from the totals below.
-Chapter 31 — the solo — is absent *by design*: it publishes milestone
-checkpoints, not exercises (EXERCISES.md §4). Chapter 32, the coda,
-carries no batch. The five guided projects (26–30) each end with an
-extension batch, and those batches land with their chapters, which wait
-on the gates recorded in `TOC.md` §Deltas.
+Part 5's first three chapters are in the totals below; 29 and 30 are not,
+and land with their chapters. Chapter 31 — the solo — is absent *by
+design*: it publishes milestone checkpoints, not exercises (EXERCISES.md
+§4). Chapter 32, the coda, carries no batch.
 
-Tier totals: 130 run (lupin) · 9 run (lupin REPL) · 19 run (wolf) · 10 run (wolf + lupin) · 61 prose · 18 pending.
-Taxonomy spread (tags, hybrids counted once per kind): fingers 33 · comprehension 136 · extension 40 · spelunking 21 · design 27.
+One reading note for chapters 26–28. Elsewhere the checker tag and the
+tier agree; here they can differ, because a project's *chapter* and a
+project's *solution program* are not always run by the same tool.
+Chapter 26's `count` is compiled (the interpreter has no filesystem), so
+several of its stems are tagged `· wolf` while the distilled solution
+program on disk runs under lupin — the tier column says what CI
+executed, and the exercise file says which is which and why.
+
+Tier totals: 143 run (lupin) · 9 run (lupin REPL) · 20 run (wolf) · 12 run (wolf + lupin) · 68 prose · 16 pending.
+Taxonomy spread (tags, hybrids counted once per kind): fingers 36 · comprehension 142 · extension 45 · spelunking 24 · design 31.
 
 ## ch01 — 8 exercises
 
@@ -211,7 +217,7 @@ Taxonomy spread (tags, hybrids counted once per kind): fingers 33 · comprehensi
 |---|---|---|---|
 | §13.1 — `par` | 13-1 | comprehension · pending | pending |
 | §13.1 — `par` | 13-2 | fingers · lupin | run (lupin) |
-| §13.2 — The race that does not compile | 13-3 | comprehension · pending | pending |
+| §13.2 — The race that does not compile | 13-3 | comprehension · wolf + lupin | run (wolf + lupin) |
 | §13.2 — The race that does not compile | 13-4 | spelunking · lupin | run (lupin) |
 | Chapter batch | 13-5 | extension · lupin | run (lupin) |
 | Chapter batch | 13-6 | extension · pending | pending |
@@ -258,7 +264,7 @@ Taxonomy spread (tags, hybrids counted once per kind): fingers 33 · comprehensi
 | §16.3 — The honest lineup | 16-6 | design | prose |
 | Chapter batch | 16-7 | extension · lupin | run (lupin) |
 | Chapter batch | 16-8 | comprehension + schedule play · lupin | run (lupin) |
-| Chapter batch | 16-9 | comprehension · pending | pending |
+| Chapter batch | 16-9 | comprehension · wolf + lupin | run (wolf + lupin) |
 
 ## ch17 — 9 exercises
 
@@ -383,6 +389,42 @@ Taxonomy spread (tags, hybrids counted once per kind): fingers 33 · comprehensi
 | §25.3 — Publishing | 25-6 | design | prose |
 | §25.3 — Publishing | 25-7 | comprehension · prose | prose |
 | Chapter batch | 25-8 | design | prose |
+
+## ch26 — 6 exercises
+
+| section | exercise | type · checker | tier |
+|---|---|---|---|
+| §26.3 — The same machine as a `match` | 26-1 | fingers · wolf | run (lupin) |
+| §26.3 — The same machine as a `match` | 26-2 | comprehension · lupin | run (lupin) |
+| §26.4 — Per file, and a total | 26-3 | extension · wolf | run (lupin) |
+| §26.4 — Per file, and a total | 26-4 | comprehension · wolf | run (wolf) |
+| §26.5 — Where wolf is not shorter | 26-5 | spelunking · wolf | prose |
+| §26.5 — Where wolf is not shorter | 26-6 | design | prose |
+
+## ch27 — 8 exercises
+
+| section | exercise | type · checker | tier |
+|---|---|---|---|
+| Chapter batch | 27-1 | fingers · lupin | run (lupin) |
+| Chapter batch | 27-2 | comprehension · lupin | run (lupin) |
+| Chapter batch | 27-3 | extension · lupin | run (lupin) |
+| Chapter batch | 27-4 | comprehension · lupin | run (lupin) |
+| Chapter batch | 27-5 | spelunking · the C twin | prose |
+| Chapter batch | 27-6 | extension · lupin | run (lupin) |
+| Chapter batch | 27-7 | design | prose |
+| Chapter batch | 27-8 | design | prose |
+
+## ch28 — 7 exercises
+
+| section | exercise | type · checker | tier |
+|---|---|---|---|
+| Chapter batch | 28-1 | fingers · lupin | run (lupin) |
+| Chapter batch | 28-2 | comprehension · lupin | run (lupin) |
+| Chapter batch | 28-3 | extension · lupin | run (lupin) |
+| Chapter batch | 28-4 | comprehension · lupin | run (lupin) |
+| Chapter batch | 28-5 | spelunking · the C twin | prose |
+| Chapter batch | 28-6 | extension · lupin | run (lupin) |
+| Chapter batch | 28-7 | design | prose |
 
 ## appx — 14 exercises
 

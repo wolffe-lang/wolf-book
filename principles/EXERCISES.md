@@ -36,7 +36,9 @@ chapter ends with three to six more. The book-wide target was
 order-of-150+ as a floor; the bs00x corpus filled it at full scale:
 **246 exercises** across parts 1–4 plus the appendix-adjacent sets —
 48 in part 1, 43 in part 2, 71 in part 3, 70 in part 4, 14 on the
-appendices. The per-chapter sets live in
+appendices. Part 5's guided projects add their batches as they ship;
+chapters 26–28 brought 21 (6, 8 and 7), which is where the corpus total
+of 268 comes from. The per-chapter sets live in
 `principles/exercises/chNN/EXERCISES.md` (this file's §5 remains the
 chapters 1–6 exemplar batch, folded in unchanged; the chapter files
 continue its numbering); `EXERCISES-INDEX.md` maps section → exercise →
@@ -82,11 +84,12 @@ one. It now covers exactly one chapter, and the narrowing matters in
 both directions. The five *guided* projects (chapters 26–30) are
 walkthroughs, so they end with an extension batch numbered and solved
 like every other chapter's — a walkthrough that withholds answers is
-just a slower lecture. The solo withholds them on purpose, because the
-chapter's whole claim is that the reader can now stand up: everything it
-needs was taught, and it says only that. No community-solutions link, no
-"if stuck, see the appendix" — the hints in the milestone ladder are the
-entire safety net, one per milestone.
+just a slower lecture. Chapters 26, 27 and 28 have theirs, in
+`principles/exercises/ch26/`, `ch27/` and `ch28/`. The solo withholds
+them on purpose, because the chapter's whole claim is that the reader can
+now stand up: everything it needs was taught, and it says only that. No
+community-solutions link, no "if stuck, see the appendix" — the hints in
+the milestone ladder are the entire safety net, one per milestone.
 
 The coda (chapter 32) carries no exercise batch: it is a page of reading
 about the allocator the reader never needed, not a build.

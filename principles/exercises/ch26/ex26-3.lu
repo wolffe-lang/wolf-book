@@ -1,0 +1,34 @@
+//! check: run(exit=0, stdout="      31 one.txt")
+//! phase: run
+// Exercise 26-3: a bytes-only row, chosen by a bool.
+struct Tally { lines: int, words: int, bytes: int }
+fn tally(text: str) -> Tally {
+    var t = Tally { lines: 0, words: 0, bytes: 0 }
+    var inword = false
+    for b in text.bytes() {
+        t.bytes += 1
+        if b == 10 { t.lines += 1 }
+        match b {
+            32 | 9 | 10 => { inword = false },
+            _ => {
+                if !inword {
+                    inword = true
+                    t.words += 1
+                }
+            },
+        }
+    }
+    t
+}
+fn row(t: Tally, name: str) {
+    print("{t.lines:>8}{t.words:>8}{t.bytes:>8} {name}")
+}
+fn bytes_row(t: Tally, name: str) {
+    print("{t.bytes:>8} {name}")
+}
+fn main() -> !int {
+    let bytes_only = true
+    let t = tally("the wolf runs\nthe moon watches\n")
+    if bytes_only { bytes_row(t, "one.txt") } else { row(t, "one.txt") }
+    0
+}

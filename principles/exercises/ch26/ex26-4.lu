@@ -1,0 +1,15 @@
+//! check: fail(E0602)
+//! phase: typecheck
+// Exercise 26-4: a row two tags short of the truth.
+struct Tally { lines: int, words: int, bytes: int }
+
+fn count_file(name: str) -> Tally ! {not_found, denied} {
+    let text = fs_read_text(name)?
+    Tally { lines: 0, words: 0, bytes: text.len }
+}
+
+fn main() -> !int {
+    let t = count_file("one.txt") else |_| { return 1 }
+    print("{t.bytes}")
+    0
+}

@@ -1,0 +1,57 @@
+struct Tally { lines: int, words: int, bytes: int }
+
+fn tally(text: str) -> Tally {
+    var t = Tally { lines: 0, words: 0, bytes: 0 }
+    var inword = false
+    for b in text.bytes() {
+        t.bytes += 1
+        if b == 10 { t.lines += 1 }
+        match b {
+            32 | 9 | 10 => { inword = false },
+            _ => {
+                if !inword {
+                    inword = true
+                    t.words += 1
+                }
+            },
+        }
+    }
+    t
+}
+
+fn count_file(name: str) -> !Tally {
+    tally(fs_read_text(name)?)
+}
+
+fn row(t: Tally, name: str) {
+    print("{t.lines:>8}{t.words:>8}{t.bytes:>8} {name}")
+}
+
+fn main() -> !int {
+    fs_write_text("one.txt", "the wolf runs\nthe moon watches\n")?
+    fs_write_text("two.txt", "alone\n")?
+    var names = List[str]()
+    (mut names).push("one.txt")
+    (mut names).push("two.txt")
+
+    var total = Tally { lines: 0, words: 0, bytes: 0 }
+    var files = 0
+    var failed = 0
+    var i = 0
+    while i < names.len {
+        let name = names[i]
+        i += 1
+        let t = count_file(name) else |_| {
+            eprint("count: cannot open {name}")
+            failed = 1
+            continue
+        }
+        row(t, name)
+        total.lines += t.lines
+        total.words += t.words
+        total.bytes += t.bytes
+        files += 1
+    }
+    if files > 1 { row(total, "total") }
+    failed
+}

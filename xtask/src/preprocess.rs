@@ -141,6 +141,11 @@ fn render_one_fence(grammars: &Grammars, f: &Fence) -> Result<Option<String>> {
         "wolf-pkg" => ("program", render_code_html(&grammars.wolf_pkg, &f.content)?),
         "wolf-repl" => ("repl", render_output_html("repl", &f.content)),
         "console" => ("console", render_output_html("console", &f.content)),
+        // A C twin's run (bs10). It reads as a console transcript and it is
+        // a checked claim: `cargo xtask contrast` derives every line of it
+        // from the named case in `samples/contrast/cases.toml`. It renders
+        // as the console dialect, and its `from(…)` never reaches the page.
+        "c-run" => ("console", render_output_html("console", &f.content)),
         "diagnostic" => ("diagnostic", render_output_html("diagnostic", &f.content)),
         _ => return Ok(None), // text, mermaid, … — not ours
     };
@@ -267,5 +272,17 @@ mod tests {
         let out = render_fences(&grammars, md).unwrap();
         assert!(out.contains("dialect-console"));
         assert!(out.contains("hl-prompt"));
+    }
+
+    #[test]
+    fn a_twin_run_renders_as_a_console_and_keeps_its_case_name_off_the_page() {
+        let root = crate::repo_root().unwrap();
+        let grammars = load_grammars(&root).unwrap();
+        let md = "```c-run,from(the alphabetized walk)\n$ ./wordtree\n   3 wolf\n```\n";
+        let out = render_fences(&grammars, md).unwrap();
+        assert!(out.contains("dialect-console"));
+        assert!(out.contains("hl-prompt"));
+        // The binding to `cases.toml` is CI's business, not the reader's.
+        assert!(!out.contains("the alphabetized walk"));
     }
 }

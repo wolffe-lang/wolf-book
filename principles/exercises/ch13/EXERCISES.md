@@ -74,9 +74,8 @@ $ lupin ex13-2.lu
 
 ## §13.2 — The race that does not compile
 
-**Exercise 13-3** *(comprehension · pending — blocker: unsynchronized-
-capture checking (E1101); owner: s32-tasks-scheduler /
-s33-channels-select)* — Two tasks increment a captured `var`:
+**Exercise 13-3** *(comprehension · wolf + lupin)* — Two tasks
+increment a captured `var`:
 
 ```wolf
 fn main() -> !int {
@@ -89,17 +88,39 @@ fn main() -> !int {
 }
 ```
 
-The finished compiler rejects this with E1101: two tasks capturing
-plain mutable state is the race, caught at the capture. Predict the
-three fixes the diagnostic will offer (the chapter names them). Then
-run it under today's lupin and explain the exit code you get — it is
-neither a race nor a rejection, and it is still wrong.
+The compiler rejects this with E1101: two tasks capturing plain mutable
+state is the race, caught at the capture. Before running it, predict the
+three fixes the diagnostic offers. Then run the same program under lupin
+and explain the exit code you get — it is neither a race nor a
+rejection, and it is still wrong.
 
-Solution (prose): the three fixes are a `Mutex` (`when` for the
-increments), a channel (each task sends, one owner adds), or `par`
-with a reduction (the loop-shaped cases). The directive header pins
-`fail(E1101)` for the day capture checking lands. Today's honest
-transcript:
+Solution: the three fixes are a channel (each task sends, one owner
+adds), a `Mutex` acquired in a `when` (for state that is genuinely
+shared), and `par` with a reduction (for the loop-shaped cases). The
+diagnostic names all three, once per spawn:
+
+```console
+$ wolf conform-run ./ex13-3.lu
+error[E1101]: this task writes to `hits`, which it captures from the enclosing function
+ --> ./ex13-3.lu:9:24
+  |
+9 |         s.spawn(fn() { hits += 1 })
+  |         --------------------------- the task's closure captures it at this spawn
+  |                        ^^^^ tasks cannot mutate captured state
+  |
+  = note: task captures are copies, `imm` shares, or region moves (D14) — never mutable windows
+    onto the parent's locals; two tasks writing one binding is the data race the memory
+    model forbids. Three ways out: send results over a `channel` and let one owner mutate;
+    guard truly shared state with a `Mutex` acquired in a `when` block; or, for loop-shaped
+    work, use `par` with a reduction.
+```
+
+The second `s.spawn` earns the same error at line 10, and two warnings
+ride along with each rejection: W1101 ("this write to `hits` stays
+inside the task") and W1102 ("the closure above captured `hits` by
+value, so it will not see this assignment"). The warnings are the
+*dynamic* half of the same fact, and they are what the second half of
+the exercise is about:
 
 ```console
 $ lupin ex13-3.lu
@@ -107,11 +128,13 @@ $ echo $?
 0
 ```
 
-Exit 0 — because today's interpreter captures by value, each task
-incremented a private copy and both increments were *lost*: `hits` is
-still 0, which happens to be a clean exit code. The program is wrong
-twice at once and silent about both, which is the strongest argument
-on this page for making E1101 a compile error.
+Exit 0 — the interpreter captures by value, so each task incremented a
+private copy and both increments were *lost*: `hits` is still 0, which
+happens to be a clean exit code. One program, two enforcement points:
+the compiler never lets it start, and the interpreter runs it to a
+silently wrong answer. That contrast is the argument for making the
+capture a compile error, and it is why W1101 exists for the code paths
+where the copy is what you meant.
 
 **Exercise 13-4** *(spelunking · lupin)* — Two programs differ in one
 `print`. Explore both and read the verdicts:

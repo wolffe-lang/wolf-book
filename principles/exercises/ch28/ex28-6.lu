@@ -1,0 +1,66 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 28-6: the tree's own census.
+struct Node { word: str, count: int, left: List[Node], right: List[Node] }
+
+fn leaf(w: str) -> Node {
+    Node { word: w, count: 1, left: List[Node](), right: List[Node]() }
+}
+
+fn add(mut n: Node, w: str) {
+    if w == n.word {
+        n.count += 1
+    } else if w < n.word {
+        if n.left.is_empty() {
+            (mut n.left).push(leaf(w))
+        } else {
+            add(mut n.left[0], w)
+        }
+    } else {
+        if n.right.is_empty() {
+            (mut n.right).push(leaf(w))
+        } else {
+            add(mut n.right[0], w)
+        }
+    }
+}
+
+fn walk(n: Node) {
+    if !n.left.is_empty() { walk(n.left[0]) }
+    print("{n.count:>4} {n.word}")
+    if !n.right.is_empty() { walk(n.right[0]) }
+}
+
+fn nodes(n: Node) -> int {
+    var c = 1
+    if !n.left.is_empty() { c += nodes(n.left[0]) }
+    if !n.right.is_empty() { c += nodes(n.right[0]) }
+    c
+}
+
+fn depth(n: Node) -> int {
+    var l = 0
+    var r = 0
+    if !n.left.is_empty() { l = depth(n.left[0]) }
+    if !n.right.is_empty() { r = depth(n.right[0]) }
+    if l > r { l + 1 } else { r + 1 }
+}
+
+fn main() -> !int {
+    let text = "The wolf runs\nthe moon watches the Wolf\n"
+    region words {
+        var forest = List[Node]()
+        for w in text.lower().words() {
+            if forest.is_empty() {
+                (mut forest).push(leaf(w))
+            } else {
+                add(mut forest[0], w)
+            }
+        }
+        if !forest.is_empty() {
+            walk(forest[0])
+            print("{nodes(forest[0])} nodes, depth {depth(forest[0])}")
+        }
+    }
+    0
+}

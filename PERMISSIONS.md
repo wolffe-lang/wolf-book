@@ -104,16 +104,25 @@ the Bruckner pause at chapter 10's head (bs06, dark-Romantic,
 untracked here) and this one — and **no placement in either register is
 left unspent in Parts 1 through 3.**
 
-bs10 (Part 5, the projects) adds no row and spends nothing. No chapter
-prose landed — the three side-by-side chapters wait on their gates
-(`principles/TOC.md` §Deltas) — so Part 5's whole reference allocation
-is still unspent and reserved as the sprint contract sets it: **at most
-two dark-Romantic placements** across the part's seven chapters (the
-intended homes are chapter 28 or the solo, plus the coda's, which is
-the natural site of the book's final such epigraph) and **at most one
-Cage placement** for the entire part. Part openers are prose at the head
-of a part's first chapter (chapter 7 is the model), so Part 5's opener —
-and any epigraph on it — lands with chapter 26.
+bs10 (Part 5, chapters 26–28) adds no row and leaves the part's Cage
+placement unspent. It spends **one** reference placement in total, and it
+is dark-Romantic and therefore untracked below by design: Mahler's Ninth
+at the head of chapter 28 (`book/ch28.md`), public domain, with the two
+sentences of prose §4.1 requires tying the image to the section it
+belongs to — §28.5, where a program's last act is to take everything
+away. Chapters 26 and 27 carry no epigraph and no in-prose simile at all.
+Part 5's opener is prose at the head of chapter 26 (chapter 7 is the
+model) and carries no epigraph, deliberately: the part's opening page is
+the honesty rule, and an allusion above it would be the first thing a
+reader had to read past.
+
+What is left unspent for the part's remaining four chapters, as the
+sprint contract sets it: **one** dark-Romantic placement, whose intended
+home is the coda (chapter 32) — the natural site of the book's final such
+epigraph — and **one** Cage placement for the entire part, which is
+therefore the last one in either register. The solo (chapter 31) is the
+only other candidate for either; a future author should spend at most one
+of them there and never both.
 
 The dark-Romantic register (TONE.md §4.1 — Mahler, Bruckner, Wagner
 allusions) is public domain and is deliberately *not* tracked here;
@@ -147,13 +156,31 @@ its chapter not yet written) · `placed` (live in a chapter) ·
 
 | # | source | our twin | project | status | notes |
 |---|--------|----------|---------|--------|-------|
-| K1 | Kernighan & Ritchie, *The C Programming Language*, 2nd ed., §1.5–1.6 (character counting, the word-state machine) | `samples/contrast/count.c` | P1 `count` | planned | Original. The IN/OUT state machine and the `getc` loop are the teaching shape; identifiers, the per-file/total row structure, the `struct tally`, and the sentinel-int failure convention are ours. Compiled `-Werror`, four asserted cases (two files with a total, stdin with no total, one file, a file that will not open) |
-| K2 | Kernighan & Ritchie, *The C Programming Language*, 2nd ed., §4.3 (the reverse-Polish calculator) | `samples/contrast/rpn.c` | P2 `rpn` | planned | Original. The getop/push/pop division of labor and the getch/ungetch pushback pair are the teaching shape; the `broken` error flag, the operator set, and the end-of-expression handling are ours. Compiled `-Werror`, four asserted cases (nested expression, division by zero, a pushed zero indistinguishable from an underflow, negative operands) |
-| K3 | Kernighan & Ritchie, *The C Programming Language*, 2nd ed., §6.5 (the word-frequency binary tree) | `samples/contrast/wordtree.c` | P3 `wordtree` | planned | Original. The addtree/treeprint/talloc division of labor and the recursive in-order walk are the teaching shape; `dupstr` (not POSIX `strdup`), the `nomem` flag, the half-built-node cleanup, and `treefree` are ours. Compiled `-Werror`, three asserted cases (alphabetized walk with repeats, case folding, the empty tree) |
+| K1 | Kernighan & Ritchie, *The C Programming Language*, 2nd ed., §1.5–1.6 (character counting, the word-state machine) | `samples/contrast/count.c` | P1 `count` | placed | Original. The IN/OUT state machine and the `getc` loop are the teaching shape; identifiers, the per-file/total row structure, the `struct tally`, and the sentinel-int failure convention are ours. Compiled `-Werror`, four asserted cases (two files with a total, stdin with no total, one file, a file that will not open) |
+| K2 | Kernighan & Ritchie, *The C Programming Language*, 2nd ed., §4.3 (the reverse-Polish calculator) | `samples/contrast/rpn.c` | P2 `rpn` | placed | Original. The getop/push/pop division of labor and the getch/ungetch pushback pair are the teaching shape; the `broken` error flag, the operator set, and the end-of-expression handling are ours. Compiled `-Werror`, four asserted cases (nested expression, division by zero, a pushed zero indistinguishable from an underflow, negative operands) |
+| K3 | Kernighan & Ritchie, *The C Programming Language*, 2nd ed., §6.5 (the word-frequency binary tree) | `samples/contrast/wordtree.c` | P3 `wordtree` | placed | Original. The addtree/treeprint/talloc division of labor and the recursive in-order walk are the teaching shape; `dupstr` (not POSIX `strdup`), the `nomem` flag, the half-built-node cleanup, and `treefree` are ours. Compiled `-Werror`, three asserted cases (alphabetized walk with repeats, case folding, the empty tree) |
 
-The three chapters that will print these twins are not written: their
-wolf halves do not build at the pins (see the bs10 gate note in
-`principles/TOC.md`). The twins are vendored and asserted now because
-the C half of each side-by-side is buildable today, and because a
-vendored twin is what keeps this ledger's attribution checkable rather
-than promissory. No `.md` file quotes them yet, so no row is `placed`.
+All three rows are `placed` as of the bs10 pin bump: chapters 26, 27 and
+28 print their twins, and the printing is machine-checked in both
+directions.
+
+- Every ```` ```c ```` block in the book must appear **verbatim** in a
+  vendored `.c` file, or `cargo xtask contrast` fails. Nine blocks
+  currently match, and between them they cover all three twins whole:
+  `count.c` in three slices, `rpn.c` in two, `wordtree.c` in four.
+- Every printed *run* of a twin is a ```` ```c-run,from(<case name>)
+  ```` block, and `cargo xtask contrast` derives the expected transcript
+  from the named case in `cases.toml` — prompt from the file stem and
+  argv, body from the asserted streams, exit status when it is nonzero —
+  and compares byte for byte. Six such transcripts are checked.
+
+So a twin cannot drift from its chapter, a chapter cannot misquote a
+twin, and neither can print output the twin does not produce. The
+attribution in prose ("after K&R §x.y") appears in the section that opens
+each side-by-side, and the attribution in each `.c` header points back
+here, which is the two-places rule this section requires.
+
+The line-count claims those chapters make are also checked rather than
+remembered: each carries a `<!-- WC (verify-docs): … -->` comment that
+`cargo xtask verify-docs` recomputes, so the honesty rule's "line counts
+come from `wc`" is a build failure when it stops being true.

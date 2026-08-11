@@ -1,3 +1,11 @@
 /target
 /samples/*
 !/samples/contrast/
+# The projects part's finished programs (bs10). Tracked, because a reader
+# can take the whole file and because `cargo xtask verify-docs` measures
+# them: each must appear verbatim in the chapter that prints it, and the
+# chapter's `wc` claims are recomputed against them. Everything else
+# under samples/ is generated (extracted, export, selftest).
+!/samples/projects/
+# Compiler-side build caches, wherever a `wolf build` was run.
+.lu-cache/

@@ -1,0 +1,56 @@
+error[E1101]: this task writes to `hits`, which it captures from the enclosing function
+ --> ./ex13-3.lu:9:24
+  |
+9 |         s.spawn(fn() { hits += 1 })
+  |         --------------------------- the task's closure captures it at this spawn
+  |                        ^^^^ tasks cannot mutate captured state
+  |
+  = note: task captures are copies, `imm` shares, or region moves (D14) — never mutable windows
+    onto the parent's locals; two tasks writing one binding is the data race the memory
+    model forbids. Three ways out: send results over a `channel` and let one owner mutate;
+    guard truly shared state with a `Mutex` acquired in a `when` block; or, for loop-shaped
+    work, use `par` with a reduction.
+
+warning[W1101]: this write to `hits` stays inside the task
+ --> ./ex13-3.lu:9:24
+  |
+9 |         s.spawn(fn() { hits += 1 })
+  |                 ------------------ the closure captured it at spawn
+  |                        ^^^^ lands on the task's own copy
+  |
+  = note: task captures copy (or move); the enclosing binding never sees this assignment. Send the
+    result over a channel, or return it through the scope's join.
+
+error[E1101]: this task writes to `hits`, which it captures from the enclosing function
+  --> ./ex13-3.lu:10:24
+   |
+10 |         s.spawn(fn() { hits += 1 })
+   |         --------------------------- the task's closure captures it at this spawn
+   |                        ^^^^ tasks cannot mutate captured state
+   |
+   = note: task captures are copies, `imm` shares, or region moves (D14) — never mutable windows
+     onto the parent's locals; two tasks writing one binding is the data race the memory
+     model forbids. Three ways out: send results over a `channel` and let one owner mutate;
+     guard truly shared state with a `Mutex` acquired in a `when` block; or, for loop-shaped
+     work, use `par` with a reduction.
+
+warning[W1101]: this write to `hits` stays inside the task
+  --> ./ex13-3.lu:10:24
+   |
+10 |         s.spawn(fn() { hits += 1 })
+   |                 ------------------ the closure captured it at spawn
+   |                        ^^^^ lands on the task's own copy
+   |
+   = note: task captures copy (or move); the enclosing binding never sees this assignment. Send the
+     result over a channel, or return it through the scope's join.
+
+warning[W1102]: the closure above captured `hits` by value, so it will not see this assignment
+  --> ./ex13-3.lu:10:24
+   |
+ 9 |         s.spawn(fn() { hits += 1 })
+   |                 ------------------ captured by value when this was created
+10 |         s.spawn(fn() { hits += 1 })
+   |                        ^^^^^^^^^ invisible to the closure
+   |
+   = note: closures copy their captures at creation; create the closure after the last assignment,
+     or pass the value as a call argument instead.

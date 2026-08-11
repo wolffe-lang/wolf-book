@@ -1,0 +1,30 @@
+//! check: run(exit=0, stdout="       2       6      31 one.txt")
+//! phase: run
+// Exercise 26-1: a tab is a word separator like a space, so replacing
+// one with the other moves no number at all.
+struct Tally { lines: int, words: int, bytes: int }
+fn tally(text: str) -> Tally {
+    var t = Tally { lines: 0, words: 0, bytes: 0 }
+    var inword = false
+    for b in text.bytes() {
+        t.bytes += 1
+        if b == 10 { t.lines += 1 }
+        match b {
+            32 | 9 | 10 => { inword = false },
+            _ => {
+                if !inword {
+                    inword = true
+                    t.words += 1
+                }
+            },
+        }
+    }
+    t
+}
+fn row(t: Tally, name: str) {
+    print("{t.lines:>8}{t.words:>8}{t.bytes:>8} {name}")
+}
+fn main() -> !int {
+    row(tally("the\twolf runs\nthe moon watches\n"), "one.txt")
+    0
+}
