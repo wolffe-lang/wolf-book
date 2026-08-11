@@ -4,17 +4,18 @@
 # doc-truth CI job compares them.
 
 [wolf]
-# wolf-lang: `wolf conform-run` is the static checker of record until
-# the full `wolf build|run` driver lands (s31).
+# wolf-lang at M1: `wolf build` and `wolf run` compile and execute real
+# programs; `wolf conform-run` remains the sample runner's checker rung,
+# because it reports a machine-readable verdict for every phase.
 repo = "tenseleyFlow/wolf-lang"
-rev = "6bfff9ac0f0198203cdf072e13d88cb6655953a7"
+rev = "29a9d9c79334d708905aa8065b24b09855ccbe91"
 impl_version = "0.0.1"
 
 [lupin]
 # wolf-interp: runs programs, reports traps, evaluates REPL snippets.
 repo = "tenseleyFlow/wolf-interp"
-rev = "b8e4dc2e6b581e63378668f4eb1aff558fe8fcc3"
-version = "lupin 0.1.3 (wolf-interp, pin d147a54)"
+rev = "5f1e58d0a297957004f642efe954c694a8561fd1"
+version = "lupin 0.1.4 (wolf-interp, pin ad6cef7)"
 
 [wolf-lsp]
 # Source of the vendored tmLanguage grammars under highlight/.
