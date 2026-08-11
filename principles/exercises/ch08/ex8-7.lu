@@ -21,16 +21,16 @@ fn push_front(mut pool: Pool[Node], head: handle Node, h: handle Node) {
 fn main() -> !int {
     region cache: pool(Node) {
         var pool = Pool[Node]()
-        let head = pool.reserve()
-        let tail = pool.reserve()
-        pool.init(head, Node { key: "", value: 0, prev: head, next: tail })
-        pool.init(tail, Node { key: "", value: 0, prev: head, next: tail })
+        let head = (mut pool).reserve()
+        let tail = (mut pool).reserve()
+        (mut pool).init(head, Node { key: "", value: 0, prev: head, next: tail })
+        (mut pool).init(tail, Node { key: "", value: 0, prev: head, next: tail })
 
-        let a = pool.reserve()
-        pool.init(a, Node { key: "a", value: 1, prev: head, next: tail })
+        let a = (mut pool).reserve()
+        (mut pool).init(a, Node { key: "a", value: 1, prev: head, next: tail })
         push_front(mut pool, head, a)
-        let b = pool.reserve()
-        pool.init(b, Node { key: "b", value: 2, prev: head, next: tail })
+        let b = (mut pool).reserve()
+        (mut pool).init(b, Node { key: "b", value: 2, prev: head, next: tail })
         push_front(mut pool, head, b)          // order: b a
 
         unlink(mut pool, a)                    // get "a": promote
@@ -38,9 +38,9 @@ fn main() -> !int {
 
         let victim = pool[tail].prev           // capacity 2: evict "b"
         unlink(mut pool, victim)
-        pool.remove(victim)
-        let c = pool.reserve()
-        pool.init(c, Node { key: "c", value: 3, prev: head, next: tail })
+        (mut pool).remove(victim)
+        let c = (mut pool).reserve()
+        (mut pool).init(c, Node { key: "c", value: 3, prev: head, next: tail })
         push_front(mut pool, head, c)          // order: c a
 
         var line = ""

@@ -1,0 +1,11 @@
+error[E1012]: `snapshot.words` is frozen, so it cannot be assigned through
+ --> ./s10.lu:7:5
+  |
+6 |     var snapshot = freeze region { Doc { title: "regions", words: 900 } }
+  |                    ------------------------------------------------------ the freeze happens here — the promotion to `imm` is deep and permanent
+7 |     snapshot.words = 1200
+  |     ^^^^^^^^^^^^^^ this needs the data to be mutable
+  |
+  = note: `freeze` promotes the whole graph to `imm`: shareable from anywhere, forever, and never
+    writable again. Build the value completely before freezing it, or keep a mutable copy
+    (`copy`) alongside the frozen one.

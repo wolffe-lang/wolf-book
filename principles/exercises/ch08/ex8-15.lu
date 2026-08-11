@@ -5,18 +5,18 @@ struct Room { name: str, north: handle Room, south: handle Room, east: handle Ro
 fn main() -> !int {
     region world: pool(Room) {
         var pool = Pool[Room]()
-        let den = pool.reserve()
-        let ridge = pool.reserve()
-        let river = pool.reserve()
-        pool.init(den, Room { name: "den", north: ridge, south: den, east: river, west: den })
-        pool.init(ridge, Room { name: "ridge", north: ridge, south: den, east: river, west: ridge })
-        pool.init(river, Room { name: "river bank", north: ridge, south: river, east: river, west: den })
+        let den = (mut pool).reserve()
+        let ridge = (mut pool).reserve()
+        let river = (mut pool).reserve()
+        (mut pool).init(den, Room { name: "den", north: ridge, south: den, east: river, west: den })
+        (mut pool).init(ridge, Room { name: "ridge", north: ridge, south: den, east: river, west: ridge })
+        (mut pool).init(river, Room { name: "river bank", north: ridge, south: river, east: river, west: den })
         var here = den
         var path = List[str]()
-        path.push("north")
-        path.push("east")
-        path.push("west")
-        path.push("south")
+        (mut path).push("north")
+        (mut path).push("east")
+        (mut path).push("west")
+        (mut path).push("south")
         for step in path {
             if step == "north" { here = pool[here].north } else if step == "south" { here = pool[here].south } else if step == "east" { here = pool[here].east } else { here = pool[here].west }
             print("you are at the {pool[here].name}")

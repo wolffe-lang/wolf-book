@@ -1,0 +1,13 @@
+error[E1011]: this would open region `s` while region `store` is still open
+ --> ./s14.lu:9:17
+  |
+7 |     region store {
+  |            ----- region `store` is opened here, and is still open
+8 |         let shelf = Shelf { scratch: move s }
+9 |         let n = in shelf.scratch { 1 }
+  |                 ^^^^^^^^^^^^^^^^^^^^^^ the second open window starts here
+  |
+  = note: region `store` owns region `s`, so its open window already reaches this data. Two
+    regions may be open at once only when neither owns the other (they are siblings in the
+    region forest) — close the first block before opening this one, or open the child
+    through its own scope after the owner's window ends.

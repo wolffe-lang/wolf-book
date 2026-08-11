@@ -38,7 +38,7 @@ Solution — `ch08/ex8-2.lu`:
 ```wolf
 fn fill(n: int) -> List[int] {
     var xs = List[int]()
-    for i in 0..n { xs.push(i) }
+    for i in 0..n { (mut xs).push(i) }
     xs
 }
 fn main() -> !int {
@@ -100,8 +100,8 @@ error[E1010]: `keep` still holds a value allocated in region `tmp` when the regi
   = note: to keep the value, allocate it where it must live: build it outside the region block, or
     aim the allocation at a longer-lived region explicitly (`let r = region()` … `in r { …
     }`); widening the region block to cover every use also works. Two keep-alive
-    escapes exist for values that must leave a region: `shared` (refcount)
-    and `handle` (generational) — §8.7's subject.
+    alternatives change the ownership instead: `freeze` the region (immutable forever) or
+    make the value a `shared` cell (reference-counted, never dangles).
 ```
 
 The checker speaks in allocation, escape, and free — the word
@@ -154,7 +154,7 @@ fn main() -> !int {
     let r = region()
     in r {
         var xs = List[int]()
-        xs.push(1)
+        (mut xs).push(1)
         ch.send(move r)
         0
     }
@@ -169,7 +169,7 @@ this one is open at the send:
 
 ```console
 $ lupin ex8-5.lu
-ex8-5.lu: trap(region-fault): region #1 is open here and cannot be transferred; a region moves as a closed subtree (the compiler's E1005) [mem.region.freeze.3] at 271..277
+ex8-5.lu: trap(region-fault): region #1 is open here and cannot be transferred; a region moves as a closed subtree (the compiler's E1005) [mem.region.freeze.3] at 277..283
 $ echo $?
 3
 ```
@@ -193,9 +193,9 @@ Solution — `ch08/ex8-6.lu` (core):
 struct Node { value: int, next: handle Node, prev: handle Node }
 var pool = Pool[Node]()
 var hs = List[handle Node]()
-for _ in 0..5 { hs.push(pool.reserve()) }
+for _ in 0..5 { (mut hs).push((mut pool).reserve()) }
 for i in 0..5 {
-    pool.init(hs[i], Node {
+    (mut pool).init(hs[i], Node {
         value: (i + 1) * 10,
         next: hs[(i + 1) % 5],
         prev: hs[(i + 4) % 5],
@@ -270,6 +270,7 @@ error[E1006]: `Node` holds a strong `shared` path back to itself
     the value without keeping it alive) or `handle Node` (a generational index that faults
     if the target is gone). If the structure is genuinely cyclic, keep the whole graph in
     one region instead — intra-region cycles are safe and freed wholesale
+    ([mem.region.intra.1]).
 ```
 
 ```console
@@ -317,10 +318,16 @@ error[E1012]: `cfg.limit` is frozen, so it cannot be assigned through
 
 The repairs: finish building before freezing, or `copy` a mutable
 twin. There is no third repair, because there is no unfreeze —
-`freeze` is a cadence, not a lock. (lupin currently runs this program
-to exit 7 — the write lands; its enforcement of freeze on value paths
-is a divergence the corpus ledger tracks. The directive header
-carries the static expectation.)
+`freeze` is a cadence, not a lock. lupin reaches the same verdict from
+the other side, trapping `region-fault` at `[mem.region.freeze.1]` —
+the clause E1012 enforces statically:
+
+```console
+$ lupin ex8-9.lu
+ex8-9.lu: trap(region-fault): region #1 is frozen: `imm` data is immutable forever [mem.region.freeze.1] at 195..208
+$ echo $?
+3
+```
 
 **Exercise 8-10** *(comprehension · lupin)* — The dynamic half of the
 same contract: create a pool region, freeze the region value, then
@@ -360,13 +367,13 @@ let a = region()
 let b = region()
 in a {
     var xs = List[int]()
-    xs.push(1)
+    (mut xs).push(1)
     in b {
         var ys = List[int]()
-        ys.push(2)
+        (mut ys).push(2)
         total += xs[0] + ys[0]
     }
-    xs.push(3)
+    (mut xs).push(3)
     total += xs[1]
 }
 ```
@@ -397,9 +404,9 @@ its slot is gone:
 ```wolf
 region r: pool(Node) {
     var pool = Pool[Node]()
-    let h = pool.reserve()
-    pool.init(h, Node { value: 1 })
-    pool.remove(h)
+    let h = (mut pool).reserve()
+    (mut pool).init(h, Node { value: 1 })
+    (mut pool).remove(h)
     let v = pool[h].value
     v
 }
@@ -412,7 +419,7 @@ Solution:
 
 ```console
 $ lupin ex8-12.lu
-ex8-12.lu: trap(stale-handle): handle into pool#0 slot 0 carries generation 0, the slot is at generation 1; a stale handle is a deterministic fault in every profile, never UB [mem.shared.handle.2] at 330..337
+ex8-12.lu: trap(stale-handle): handle into pool#0 slot 0 carries generation 0, the slot is at generation 1; a stale handle is a deterministic fault in every profile, never UB [mem.shared.handle.2] at 348..355
 $ echo $?
 3
 ```
@@ -536,7 +543,7 @@ fn main() -> !int {
     var words = 0
     region scratch {
         var stored = List[str]()
-        for line in text.lines() { stored.push(line) }
+        for line in text.lines() { (mut stored).push(line) }
         lines = stored.len
         for line in stored {
             for _ in line.words() { words += 1 }

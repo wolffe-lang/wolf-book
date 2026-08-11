@@ -6,9 +6,9 @@ fn main() -> !int {
     region r: pool(Node) {
         var pool = Pool[Node]()
         var hs = List[handle Node]()
-        for _ in 0..5 { hs.push(pool.reserve()) }
+        for _ in 0..5 { (mut hs).push((mut pool).reserve()) }
         for i in 0..5 {
-            pool.init(hs[i], Node {
+            (mut pool).init(hs[i], Node {
                 value: (i + 1) * 10,
                 next: hs[(i + 1) % 5],
                 prev: hs[(i + 4) % 5],

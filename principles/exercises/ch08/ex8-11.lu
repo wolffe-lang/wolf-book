@@ -7,13 +7,13 @@ fn main() -> !int {
     var total = 0
     in a {
         var xs = List[int]()
-        xs.push(1)
+        (mut xs).push(1)
         in b {
             var ys = List[int]()
-            ys.push(2)
+            (mut ys).push(2)
             total += xs[0] + ys[0]
         }
-        xs.push(3)
+        (mut xs).push(3)
         total += xs[1]
     }
     print("{total}")

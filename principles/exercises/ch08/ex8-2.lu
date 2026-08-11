@@ -3,7 +3,7 @@
 // Exercise 8-2 solution: a scratch region — allocate ambiently, walk away.
 fn fill(n: int) -> List[int] {
     var xs = List[int]()
-    for i in 0..n { xs.push(i) }
+    for i in 0..n { (mut xs).push(i) }
     xs
 }
 fn main() -> !int {

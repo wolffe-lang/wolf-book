@@ -47,6 +47,15 @@ Part 2's single Cage placement stays reserved for chapter 9 (row 3
 above), which is where TONE.md §4.2's worked placement puts it; the
 Tristan simile stays available to bs04's freeze section.
 
+bs04 (chapter 8) adds no row. It places the second of TONE.md §4.1's
+two worked placements — the Tristan simile in the freeze section
+(`book/ch08.md` §8.5) — and nothing else: no chapter epigraph, no
+second simile. Chapter 8 therefore spends one reference placement in
+total, as chapter 7 did, and the allocation this ledger anticipated
+above (the hammer to chapter 7, Tristan to chapter 8) is now spent in
+full. Part 2's single Cage placement stays reserved for chapter 9
+(row 3), the only unspent placement left in this part.
+
 The dark-Romantic register (TONE.md §4.1 — Mahler, Bruckner, Wagner
 allusions) is public domain and is deliberately *not* tracked here;
 this ledger is for material with a rights holder.

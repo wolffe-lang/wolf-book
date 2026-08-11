@@ -1,0 +1,11 @@
+error[E1005]: region `store` is open, so its handle cannot move or freeze
+ --> ./s6.lu:9:32
+  |
+6 |     region store {
+  |            ----- region `store` is open here, until its block ends
+...
+9 |         let published = freeze store
+  |                                ^^^^^ the transfer happens inside the open window
+  |
+  = note: a region transfers or freezes as a closed subtree only — the open window pins its
+    handle. End the `region`/`in` block first, or move the value before opening the region.

@@ -12,7 +12,7 @@ fn main() -> !int {
     var words = 0
     region scratch {
         var stored = List[str]()
-        for line in text.lines() { stored.push(line) }
+        for line in text.lines() { (mut stored).push(line) }
         lines = stored.len
         for line in stored {
             for _ in line.words() { words += 1 }

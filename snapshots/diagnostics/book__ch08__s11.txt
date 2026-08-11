@@ -1,0 +1,13 @@
+error[E1006]: `Node` holds a strong `shared` path back to itself
+ --> ./s11.lu:4:27
+  |
+4 | struct Node { value: int, next: shared Node }
+  |                           ^^^^ this `shared` edge closes the cycle Node → Node
+  |
+  = note: strong `shared` references drop their target when the last count drops, so a strong
+    cycle would keep itself alive forever — and wolf has no cycle collector
+    ([mem.shared.rc.2]). Break the back-edge: make this field `weak Node` (upgrade to reach
+    the value without keeping it alive) or `handle Node` (a generational index that faults
+    if the target is gone). If the structure is genuinely cyclic, keep the whole graph in
+    one region instead — intra-region cycles are safe and freed wholesale
+    ([mem.region.intra.1]).
