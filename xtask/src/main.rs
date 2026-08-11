@@ -8,6 +8,7 @@
 //!   mdbook-preprocess  the mdBook preprocessor protocol (highlight + anchors)
 //!   verify-docs        doc-truth checks (counts, pins, TOC↔stub numbering)
 
+mod console;
 mod contrast;
 mod directives;
 mod fence;

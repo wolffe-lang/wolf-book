@@ -11,6 +11,7 @@
 //! flip — a hard error until the manifest row is removed, so a feature
 //! landing is noticed, never silently absorbed.
 
+use crate::console::ConsoleBlock;
 use crate::directives::{parse_fence_info, parse_lu_header, Check};
 use crate::fence::{segments, Segment};
 use anyhow::{bail, Context, Result};
@@ -131,15 +132,18 @@ pub fn run(root: &Path, args: &[String]) -> Result<()> {
 
     // ---- Collect ----
     let (corpus, member_count) = collect_corpus(root)?;
-    let (book, repl_blocks, diag_checks, lint_failures) = collect_book(root)?;
+    let book = collect_book(root)?;
+    let (repl_blocks, diag_checks) = (book.repl_blocks, book.diag_checks);
+    let console_blocks = book.console_blocks;
+    let programs = book.programs;
     let mut samples = corpus;
-    samples.extend(book);
+    samples.extend(book.samples);
     if let Some(f) = &filter {
         samples.retain(|s| s.id.contains(f.as_str()));
     }
 
     // ---- Execute ----
-    let mut failures: Vec<String> = lint_failures;
+    let mut failures: Vec<String> = book.lint_failures;
     let mut flips: Vec<String> = Vec::new();
     let mut pass = 0usize;
     let mut pending_seen = 0usize;
@@ -223,6 +227,18 @@ pub fn run(root: &Path, args: &[String]) -> Result<()> {
         }
     }
 
+    // ---- Console blocks (the prompt lines are output too) ----
+    let console = if filter.is_none() {
+        crate::console::check(root, &tools, &console_blocks, &programs)?
+    } else {
+        crate::console::Report {
+            checked: 0,
+            skipped: Vec::new(),
+            failures: Vec::new(),
+        }
+    };
+    failures.extend(console.failures.iter().cloned());
+
     // ---- Corpus export (the rot-proofing running both ways) ----
     let exported = export_corpus(root, &samples, &phases)?;
 
@@ -248,6 +264,14 @@ pub fn run(root: &Path, args: &[String]) -> Result<()> {
         flips.len(),
         elapsed.as_secs_f64()
     );
+    println!(
+        "samples: {} of {} console block(s) replayed against the pinned tools",
+        console.checked,
+        console_blocks.len(),
+    );
+    for s in &console.skipped {
+        println!("samples: SKIP console {s}");
+    }
     if repl_blocks > 0 {
         println!(
             "samples: SKIP pending(is08): {repl_blocks} wolf-repl block(s) counted, \
@@ -324,8 +348,17 @@ type DiagCheck = (PathBuf, String, String);
 
 /// What one pass over `book/**/*.md` yields: the executable samples, the
 /// count of REPL transcripts (counted, replayed at is08), the
-/// `diagnostic,from(…)` cross-checks, and the Part-1 lint's complaints.
-type BookScan = (Vec<Sample>, usize, Vec<DiagCheck>, Vec<String>);
+/// `diagnostic,from(…)` cross-checks, the console blocks (replayed
+/// against the pinned tools), and the Part-1 lint's complaints.
+struct BookScan {
+    samples: Vec<Sample>,
+    repl_blocks: usize,
+    diag_checks: Vec<DiagCheck>,
+    console_blocks: Vec<ConsoleBlock>,
+    /// Sample id → the program as printed, for `console,from(id)`.
+    programs: BTreeMap<String, String>,
+    lint_failures: Vec<String>,
+}
 
 /// The ownership vocabulary Part 1 does not teach (bs02 acceptance 4).
 /// A reader finishes Part 1 writing real single-threaded wolf without
@@ -398,6 +431,8 @@ fn collect_book(root: &Path) -> Result<BookScan> {
     let mut samples = Vec::new();
     let mut repl_blocks = 0usize;
     let mut diag_checks = Vec::new();
+    let mut console_blocks = Vec::new();
+    let mut programs: BTreeMap<String, String> = BTreeMap::new();
 
     for md in &md_files {
         let source = std::fs::read_to_string(md)?;
@@ -407,6 +442,9 @@ fn collect_book(root: &Path) -> Result<BookScan> {
         // Parts accumulate per markdown file.
         let mut parts: BTreeMap<String, String> = BTreeMap::new();
         let mut counter = 0usize;
+        // The program a console block below is talking about: the last
+        // wolf block on the page, which is how the chapters read.
+        let mut last_program: Option<String> = None;
         for seg in segments(&source) {
             let Segment::Fence(f) = seg else { continue };
             if f.info.trim().is_empty() {
@@ -423,6 +461,17 @@ fn collect_book(root: &Path) -> Result<BookScan> {
                     if let Some(from) = fi.from {
                         diag_checks.push((md.clone(), from, f.content.clone()));
                     }
+                    continue;
+                }
+                "console" => {
+                    console_blocks.push(ConsoleBlock {
+                        stem: stem.clone(),
+                        md: md.clone(),
+                        line: f.open_line + 1,
+                        text: f.content.clone(),
+                        program: last_program.clone(),
+                        from: fi.from.clone(),
+                    });
                     continue;
                 }
                 "wolf" => {}
@@ -471,6 +520,7 @@ fn collect_book(root: &Path) -> Result<BookScan> {
                     Check::Compile
                 }
             };
+            last_program = Some(program.clone());
             // One directory per sample. Files in one directory are one
             // module (D32), so two extracted blocks side by side collide
             // on `main` the moment either declares a `struct` — which is
@@ -490,6 +540,7 @@ fn collect_book(root: &Path) -> Result<BookScan> {
             ));
             headed.push_str(&program);
             std::fs::write(sample_dir.join(&file_name), &headed)?;
+            programs.insert(format!("book/{stem}/{name}"), program.clone());
             samples.push(Sample {
                 id: format!("book/{stem}/{name}"),
                 dir: sample_dir,
@@ -499,7 +550,14 @@ fn collect_book(root: &Path) -> Result<BookScan> {
             });
         }
     }
-    Ok((samples, repl_blocks, diag_checks, lint_failures))
+    Ok(BookScan {
+        samples,
+        repl_blocks,
+        diag_checks,
+        console_blocks,
+        programs,
+        lint_failures,
+    })
 }
 
 fn walk(dir: &Path, f: &mut impl FnMut(&Path)) -> Result<()> {
