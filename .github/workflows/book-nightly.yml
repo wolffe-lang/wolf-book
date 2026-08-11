@@ -28,13 +28,13 @@ jobs:
           path: wolf-book
       - uses: actions/checkout@v4
         with:
-          repository: tenseleyFlow/wolf-lang
+          repository: wolffe-lang/wolf-lang
           ref: main
           path: wolf-lang
           token: ${{ secrets.WOLF_CI_TOKEN || github.token }}
       - uses: actions/checkout@v4
         with:
-          repository: tenseleyFlow/wolf-interp
+          repository: wolffe-lang/wolf-interp
           ref: main
           path: wolf-interp
           token: ${{ secrets.WOLF_CI_TOKEN || github.token }}

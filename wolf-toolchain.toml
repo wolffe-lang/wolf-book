@@ -5,19 +5,29 @@
 
 [wolf]
 # wolf-lang at M1 plus the concurrency runtime, the std unblock,
-# `wolf test`, the warning system, the lived lint corpus, and
-# deterministic checked-lane verdicts: `wolf build`/`wolf run` compile
-# and execute real programs, and the runtime carries tasks, channels,
-# select, `when`, and procs. Trunk moved four times while bs07 was
-# drafting; this is the latest sha with green CI at the bump.
+# `wolf test`, the warning system, the lived lint corpus, the
+# deterministic checked-lane verdicts, the io reactor, and the native
+# str/List/fs lowering that closed wave four: `wolf build`/`wolf run`
+# compile and execute real programs, and the runtime carries tasks,
+# channels, select, `when`, and procs. This is the wave-four close, the
+# latest sha with green CI at the bump.
 # `wolf conform-run` remains the sample runner's checker rung, because
 # it reports a machine-readable verdict for every phase — and for the
 # concurrency surface that verdict is `unsupported` at `resolve`, so
 # Part 3 takes its static verdicts from the rungs the compiler does
 # reach (the `when`-arity and `spawn proc`-arity rejections are two)
 # and its runs from lupin.
-repo = "tenseleyFlow/wolf-lang"
-rev = "592135587c571e9de085038aef5e55dedd3b65b2"
+# Part 4 inverts that split: the comptime engine is the compiler's, so
+# chapter 18's static verdicts and its green `wolf test` runs are all
+# wolf's, and lupin declines any module holding a `comptime fn`.
+# Two things moved at this bump and are handled here: E0201's
+# `when`-arity wording gained its acquire-the-whole-set sentence, so
+# ch12's diagnostic block and ex12-9's snapshot are re-captured; and
+# two banked rejections landed, E1101 and E1102, which flip
+# ch13/ex13-3 and ch16/ex16-9 off the pending manifest. Those two rows
+# are Part 3's material and are deliberately left standing.
+repo = "wolffe-lang/wolf-lang"
+rev = "13b811ffc03092c78873bed1cc9b400d166f04fd"
 impl_version = "0.0.1"
 
 [lupin]
@@ -28,14 +38,14 @@ impl_version = "0.0.1"
 # specs to `[[fill]align][+][0][width][.precision][type]`, shortest
 # round-trip floats) and the enforced unsafe ring; its procs and
 # scheduler surface is unchanged from 0.1.4.
-repo = "tenseleyFlow/wolf-interp"
+repo = "wolffe-lang/wolf-interp"
 rev = "9046faaf8678d1a281067fc22d60c47e460b7a09"
 version = "lupin 0.1.5 (wolf-interp, pin f0da6e6)"
 
 [wolf-lsp]
 # Source of the vendored tmLanguage grammars under highlight/.
 # `cargo xtask grammar-sync --check` fails on drift against this pin.
-repo = "tenseleyFlow/wolf-lsp"
+repo = "wolffe-lang/wolf-lsp"
 rev = "dc05c271b683d1c8b544ab5fae74e66a4a034af7"
 
 [wolf-repl]

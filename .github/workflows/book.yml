@@ -78,9 +78,9 @@ jobs:
             echo "toolchain=none" >> "$GITHUB_OUTPUT"; exit 0
           fi
           ok=1
-          git clone --quiet "https://x-access-token:${TOKEN}@github.com/tenseleyFlow/wolf-lang" wolf-lang \
+          git clone --quiet "https://x-access-token:${TOKEN}@github.com/wolffe-lang/wolf-lang" wolf-lang \
             && git -C wolf-lang checkout --quiet "${{ steps.pins.outputs.wolf }}" || ok=0
-          git clone --quiet "https://x-access-token:${TOKEN}@github.com/tenseleyFlow/wolf-interp" wolf-interp \
+          git clone --quiet "https://x-access-token:${TOKEN}@github.com/wolffe-lang/wolf-interp" wolf-interp \
             && git -C wolf-interp checkout --quiet "${{ steps.pins.outputs.lupin }}" || ok=0
           if [ "$ok" = 1 ]; then echo "toolchain=full" >> "$GITHUB_OUTPUT"
           else echo "::error::token present but sibling acquisition failed"; exit 1; fi
@@ -170,7 +170,7 @@ jobs:
             echo "::notice::WOLF_CI_TOKEN absent — grammar drift check skips (vendored grammar still renders)"
             echo "have=none" >> "$GITHUB_OUTPUT"; exit 0
           fi
-          git clone --quiet "https://x-access-token:${TOKEN}@github.com/tenseleyFlow/wolf-lsp" wolf-lsp \
+          git clone --quiet "https://x-access-token:${TOKEN}@github.com/wolffe-lang/wolf-lsp" wolf-lsp \
             && git -C wolf-lsp checkout --quiet "${{ steps.pins.outputs.lsp }}" \
             && echo "have=full" >> "$GITHUB_OUTPUT" \
             || { echo "::error::token present but wolf-lsp acquisition failed"; exit 1; }
