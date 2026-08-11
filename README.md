@@ -14,9 +14,13 @@ MIT or Apache-2.0, matching the language.
 Everything is cargo (D34's spirit: one tool):
 
 - `cargo xtask samples` — extracts and executes **every** code sample:
-  the 170 directive-headed exercise programs under
-  `principles/exercises/` and every fenced wolf block in `book/`, run
-  against the pinned tools (`wolf-toolchain.toml`). Diagnostics from
+  the directive-headed exercise programs under `principles/exercises/`
+  and every fenced wolf block in `book/`, run against the pinned tools
+  (`wolf-toolchain.toml`). Every ```` ```console ```` block whose
+  commands are all pinned tools is replayed as well, against the
+  program printed above it, and the pasted output byte-compared; a
+  block needing a shell is reported as skipped by name, never silently
+  trusted. Diagnostics from
   `fail(…)` samples are snapshot-checked under `snapshots/`;
   `samples-pending.toml` lists the samples whose directives await a
   named feature — report-only, and a pass there is a FLIP error so a

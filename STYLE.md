@@ -19,8 +19,19 @@ the overlap here is a pointer, not a second rule.
   blocks keep their `$`; transcripts keep their `wolf>` prompts;
   diagnostics keep the compiler's exact text and layout, shown in
   full, never elided with `...` (TONE.md §1).
-- **Diagnostic blocks name their source**: ```` ```diagnostic,from(id) ````
-  ties the shown text to a captured run; the doc-truth job diffs them.
+- **Console blocks are replayed, not trusted.** A ```` ```console ````
+  block whose commands are all pinned tools (`lupin …`, `wolf …`,
+  `./binary`, `echo $?`, joined by `&&`) is re-run by
+  `cargo xtask samples` against the program printed above it, and its
+  output is byte-compared. A block that needs a shell, or a command
+  that is not one of ours, is reported as skipped by name on every run
+  — never silently unchecked. Prefer a replayable block: if the command
+  cannot be replayed, the output on the page cannot be defended.
+- **Blocks name their source when the page cannot**:
+  ```` ```diagnostic,from(id) ```` ties shown text to a captured run,
+  and ```` ```console,from(id) ```` points a console block at a sample
+  other than the one immediately above it. The doc-truth and samples
+  jobs diff both.
 
 ## The running example
 
