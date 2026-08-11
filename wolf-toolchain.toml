@@ -7,14 +7,14 @@
 # wolf-lang: `wolf conform-run` is the static checker of record until
 # the full `wolf build|run` driver lands (s31).
 repo = "tenseleyFlow/wolf-lang"
-rev = "a0c4564f246e46dd14d66f82e7d106059b9d076a"
+rev = "6bfff9ac0f0198203cdf072e13d88cb6655953a7"
 impl_version = "0.0.1"
 
 [lupin]
 # wolf-interp: runs programs, reports traps, evaluates REPL snippets.
 repo = "tenseleyFlow/wolf-interp"
-rev = "68638bbb9a8df9a6f93286ab5502a19c61e86d77"
-version = "lupin 0.1.0 (wolf-interp, pin cbde620)"
+rev = "b8e4dc2e6b581e63378668f4eb1aff558fe8fcc3"
+version = "lupin 0.1.3 (wolf-interp, pin d147a54)"
 
 [wolf-lsp]
 # Source of the vendored tmLanguage grammars under highlight/.
