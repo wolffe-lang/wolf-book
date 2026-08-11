@@ -4,15 +4,25 @@
 # doc-truth CI job compares them.
 
 [wolf]
-# wolf-lang at M1: `wolf build` and `wolf run` compile and execute real
-# programs; `wolf conform-run` remains the sample runner's checker rung,
-# because it reports a machine-readable verdict for every phase.
+# wolf-lang at M1 plus the concurrency runtime, the std unblock, and
+# `wolf test`: `wolf build`/`wolf run` compile and execute real
+# programs, the runtime carries tasks, channels, select and `when`, and
+# the driver reports warnings. Trunk moved twice while bs06 was
+# drafting; the whole suite was re-verified at each sha and did not
+# move, which is recorded in bs06's closeout.
+# `wolf conform-run` remains the sample runner's checker rung, because
+# it reports a machine-readable verdict for every phase — and for the
+# concurrency surface that verdict is `unsupported` at `resolve`, so
+# Part 3 takes its static verdicts from the rungs the compiler does
+# reach (the `when`-arity rejection is one) and its runs from lupin.
 repo = "tenseleyFlow/wolf-lang"
-rev = "29a9d9c79334d708905aa8065b24b09855ccbe91"
+rev = "dae8ea034f06f8ce7be88fc1bf41149713548614"
 impl_version = "0.0.1"
 
 [lupin]
-# wolf-interp: runs programs, reports traps, evaluates REPL snippets.
+# wolf-interp: runs programs, reports traps, evaluates REPL snippets,
+# and is the implementation that executes Part 3 — the scheduler, the
+# seeded decision stream, and the schedule explorer are all its.
 repo = "tenseleyFlow/wolf-interp"
 rev = "5f1e58d0a297957004f642efe954c694a8561fd1"
 version = "lupin 0.1.4 (wolf-interp, pin ad6cef7)"
