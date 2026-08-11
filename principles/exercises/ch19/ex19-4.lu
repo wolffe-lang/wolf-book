@@ -1,4 +1,4 @@
-//! check: run(exit=0, stdout="13.0")
+//! check: run(exit=0, stdout="13")
 //! phase: run
 // Exercise 19-4: a promise the body keeps — arithmetic on fields, no
 // allocation anywhere. Verification of the attribute is pending (I15);

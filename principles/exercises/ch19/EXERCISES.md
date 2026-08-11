@@ -88,7 +88,7 @@ fn main() -> !int {
 
 ```console
 $ lupin ex19-4.lu
-13.0
+13
 ```
 
 Today's toolchain claimed nothing. The run proves the body computes a

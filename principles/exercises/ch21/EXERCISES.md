@@ -51,11 +51,12 @@ fn saxpy(a: f64, xs: List[f64], mut ys: List[f64]) {
 
 ```console
 $ lupin ex21-2.lu
-12.0 20.0
+12 20
 ```
 
-2·1 + 10 and 2·5 + 10. The kernel is deliberately the same one as
-21-1: what runs here is the semantics; what s44 measures later is
+2·1 + 10 and 2·5 + 10, printed the way a whole-valued `f64` prints —
+shortest round-trip, so `12` rather than `12.0`. The kernel is
+deliberately the same one as 21-1: what runs here is the semantics; what s44 measures later is
 this exact shape against `clang -O2` with and without `restrict`.
 
 ## §21.2 — Arenas

@@ -1,3 +1,12 @@
+warning[W1001]: the region `command` never allocates
+ --> ./s11.lu:9:24
+  |
+9 |         let p = region command {
+  |                        ^^^^^^^ nothing lives here
+  |
+  = note: no allocation is attributed to this region and its handle stays in this frame; delete
+    the region, or move the allocation it was written for inside it.
+
 error[E1401]: undefined behavior: [mem.ub] row P4 — a raw pointer read into an allocation whose region was already freed
   --> ./s11.lu:14:17
    |

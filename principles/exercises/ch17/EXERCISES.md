@@ -3,7 +3,9 @@
 Commands run from this directory; outputs are pasted from real runs.
 lupin is the interpreter `wolf-toolchain.toml` pins; scheduler controls are
 `lupin run FILE --seed=N | --schedule=…` and
-`lupin conform-run FILE --explore=N`.
+`lupin conform-run FILE --explore=N`. The compiler answers
+`unsupported` at `resolve` for every program here, so every verdict
+below is lupin's.
 
 ## §17.1 — The bug that typechecks
 
@@ -84,14 +86,29 @@ writes 100. The failing outcome is not rare — it is the *common* one
 here, which inverts the usual heisenbug story: in production this bug
 would look like a test that occasionally passes.
 
-A finding, recorded per the corpus's honesty model: on this program
-`lupin conform-run ex17-1.lu --explore=500` reports "16 schedules,
-frontier closed, observably deterministic, balance=50" — while
-`--seed=1` above prints 100. The explorer's frontier claim is wrong
-for this program; the divergence is filed with wolf-interp rather than
-smoothed over, and this exercise's evidence is the seeded runs.
+The explorer agrees, and says which schedules do it:
 
-## §17.2 — `--schedules`, `--replay`
+```console
+$ lupin conform-run ex17-1.lu --explore=500
+ex17-1.lu: explored 20 schedule(s) in 20 execution(s) (DPOR; 0 slept, 6 pruned), frontier closed
+  outcomes: 2 distinct — SCHEDULE-DEPENDENT
+    exit(0) ×16 stdout=balance=50\n leaks=0 forest=ok — replay: --seed=0
+      decision stream: ev:0,0,0,0,0,0,0,0,0,0,0,0
+    exit(0) ×4 stdout=balance=100\n leaks=0 forest=ok — replay: --seed=4611686018427387910
+      decision stream: ev:0,1,1,0,0,0,0,0,0,0,0
+  deadlocks: 0 · races: 0 · max depth: 12 decision(s)
+$ echo $?
+1
+```
+
+(bs06 recorded the opposite here: at lupin v0.1.4 this program
+explored 16 schedules and reported `observably deterministic` while
+`--seed=1` printed 100 — a wrong frontier claim, filed rather than
+smoothed over. At v0.1.5 the claim is sound, which is why §17.2 of the
+chapter can rest its whole argument on it. The finding is retired with
+the commit that ships chapter 17.)
+
+## §17.2 — The seed, the schedule, and the frontier
 
 **Exercise 17-3** *(fingers · lupin)* — Two sends race into one
 channel; main prints the arrival order. Run it twice with `--seed=0`,
@@ -176,7 +193,12 @@ though every individual run exited 0. Each outcome carries a
 `replay:` seed — the finding arrives with its own reproduction
 command, which is the difference between a bug report and an anecdote.
 
-## §17.3 — `--chaos`
+## §17.3 (held) — `--chaos`
+
+The chapter ships three sections and this is not one of them: fault
+injection has no surface at the pin, so the stem below is written,
+its baseline program runs in the corpus, and neither is printed in
+`book/ch17.md`. See TOC.md §Deltas, bs07 (ch17's sections).
 
 **Exercise 17-6** *(comprehension · pending — blocker: `--chaos`
 fault injection at declared effect points; owner:
@@ -222,7 +244,7 @@ v=41
 The baseline runs and is pinned by the directive header; the
 injection half waits on s36.
 
-## §17.4 — Scope honesty (what exploration cannot see)
+## §17.3 — Scope honesty (what exploration cannot see)
 
 **Exercise 17-7** *(comprehension · lupin)* — Rerun 17-3's exploration
 with `--explore-preemptions=0`. Predict what the report will claim
@@ -302,7 +324,7 @@ fn main() -> !int {
 
 ```console
 $ lupin ex17-9.lu
-ex17-9.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0), `task@149` (task 1), `task@254` (task 2) [conc.deadlock.trap] at 131..356
+ex17-9.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0), `task@231` (task 1), `task@336` (task 2) [conc.deadlock.trap] at 213..438
 $ echo $?
 3
 ```

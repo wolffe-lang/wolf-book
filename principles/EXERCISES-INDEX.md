@@ -10,6 +10,12 @@ pasted from the run; `prose`: the solution is discussion, no program;
 `pending`: the stem and expected outcome exist, the feature does not —
 see `EXERCISES-PENDING.md` for each blocker and owner.
 
+Two batches are written and **not printed in their chapters**: ch13's
+eight (the chapter is held whole — see `book/ch13.md`) and ch17's
+17-6, whose section is held for want of fault injection (TOC.md
+§Deltas, bs07). Both stay in the corpus so the day their surface lands
+the stems and the sections arrive together.
+
 Part 5 (the projects, chapters 26–32) is absent from the totals below.
 Chapter 31 — the solo — is absent *by design*: it publishes milestone
 checkpoints, not exercises (EXERCISES.md §4). Chapter 32, the coda,
@@ -260,12 +266,12 @@ Taxonomy spread (tags, hybrids counted once per kind): fingers 33 · comprehensi
 |---|---|---|---|
 | §17.1 — The bug that typechecks | 17-1 | comprehension · lupin | run (lupin) |
 | §17.1 — The bug that typechecks | 17-2 | comprehension (schedule play) · lupin | run (lupin) |
-| §17.2 — `--schedules`, `--replay` | 17-3 | fingers · lupin | run (lupin) |
-| §17.2 — `--schedules`, `--replay` | 17-4 | comprehension · lupin | run (lupin) |
-| §17.2 — `--schedules`, `--replay` | 17-5 | spelunking · lupin | run (lupin) |
-| §17.3 — `--chaos` | 17-6 | comprehension · pending | pending |
-| §17.4 — Scope honesty (what exploration cannot see) | 17-7 | comprehension · lupin | run (lupin) |
-| §17.4 — Scope honesty (what exploration cannot see) | 17-8 | design | prose |
+| §17.2 — The seed, the schedule, and the frontier | 17-3 | fingers · lupin | run (lupin) |
+| §17.2 — The seed, the schedule, and the frontier | 17-4 | comprehension · lupin | run (lupin) |
+| §17.2 — The seed, the schedule, and the frontier | 17-5 | spelunking · lupin | run (lupin) |
+| §17.3 (held, not printed) — `--chaos` | 17-6 | comprehension · pending | pending |
+| §17.3 — Scope honesty (what exploration cannot see) | 17-7 | comprehension · lupin | run (lupin) |
+| §17.3 — Scope honesty (what exploration cannot see) | 17-8 | design | prose |
 | Chapter batch | 17-9 | extension (break-it-on-purpose) · lupin | run (lupin) |
 
 ## ch18 — 12 exercises

@@ -223,11 +223,10 @@ you can replay.*
 ### Chapter 17 — The failing schedule, replayed
 - 17.1 The bug that typechecks — meet an ordering bug that survives the
   type system, and hear the book say so plainly.
-- 17.2 `--schedules`, `--replay` — hunt the heisenbug, pin its seed,
-  reproduce it deterministically.
-- 17.3 `--chaos` — harden the fix under injected faults at declared
-  effect points.
-- 17.4 Scope honesty — know what exploration cannot see and what v1
+- 17.2 The seed, the schedule, and the frontier — hunt the heisenbug
+  with `--seed`, `--explore` and `--schedule`, pin its counterexample,
+  reproduce it deterministically, and watch the fix close the frontier.
+- 17.3 Scope honesty — know what exploration cannot see and what v1
   does not promise.
 - Exercises 17-1 ….
 
@@ -459,6 +458,38 @@ sprint files remain the implementation contracts for everything else.
   obligation — saying plainly that the heisenbug is an *ordering* bug,
   not a data race — is promoted to the section promise, since that
   honesty is the pitch's credibility.
+- **bs07 (ch17's sections, 2026-08-11):** chapter 17 ships **three**
+  sections, not four. The chaos section has no surface: `lupin run FILE
+  --chaos` is `error: unexpected argument '--chaos' found`, and nothing
+  in either implementation injects faults at effect points, so a
+  section whose whole subject is injection cannot be written. The
+  numbering closes up — the old 17.4 (scope honesty) is 17.3 — because
+  chapter 17 had never shipped and its anchors were never published,
+  which is the licence bs10 took when it restructured Part 5. Exercise
+  17-6 (the chaos stem) is written, its baseline program runs green in
+  the corpus, and it is **not printed** in the chapter; the day
+  injection lands, the section and the exercise arrive together and the
+  numbering grows a 17.4 at the end rather than renumbering anything.
+  §17.2's title also changes: the contract, X12 and D23 name the flags
+  `--schedules`/`--replay`/`--chaos`, and what ships is
+  `--seed`/`--schedule`/`--explore`, so the section is titled for the
+  instrument rather than for a spelling. The flag-branding feedback the
+  contract asks be delivered before the naming decision closes is in
+  `book/ch17.md`'s ledger, row 2.
+- **bs07 (§15.2, recorded not edited):** the TOC promise reads "build
+  one before being handed the stdlib's." There is no stdlib supervisor
+  at the pin, so the section builds the supervisor, names the four
+  decisions every supervisor makes, and gives the restart strategies as
+  a design table — claiming no library. The promise wants rewording to
+  "build the one the language does not ship"; left for bs11.
+- **bs07 (§16.3, recorded not edited):** the TOC promise reads "run the
+  same program against Erlang's copy, Go's share, and Rust's
+  `Arc<Mutex>`." The Rust half runs — vendored, compiled with warnings
+  denied, asserted, and printed verbatim by the contrast rig. The
+  Erlang and Go halves are credited prose boxes, for the reason
+  chapter 10's Go boxes are: there is no Erlang or Go toolchain in the
+  contrast lane, and what is being contrasted is what those runtimes
+  permit rather than what a program of theirs prints.
 - **bs08:** the sprint's four chapters map to 18–21 unchanged; §21.5
   ("where C wins today") is a first-class section, not a caveat box, and
   its regenerated-from-CI requirement is inherited from the sprint file.

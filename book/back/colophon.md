@@ -9,7 +9,7 @@ This printing is true for one toolchain, and these two lines are it:
 $ wolf --version
 wolf 0.0.1 (wolfgang)
 $ lupin --version
-lupin 0.1.4 (wolf-interp, pin ad6cef7)
+lupin 0.1.5 (wolf-interp, pin f0da6e6)
 ```
 
 The exact revisions — the compiler, the interpreter, and the wolf

@@ -25,7 +25,7 @@ verdict for a feature that does not exist yet.
 | 13-6 | `run(exit=0)` | `par` absent from the interp std subset | s32-tasks-scheduler / s37-core-types |
 | 5-8 | `run(exit=0, stdout="marmot 5")` | `sorted_by` / `take` absent from the interp std subset | s37-core-types (std surface pinning) |
 | 16-9 | `fail(E1102)` | channel payload sendability checking | s33-channels-select |
-| 17-6 | `run(exit=0)` | `--chaos` fault injection at declared effect points | s36-deterministic-scheduler |
+| 17-6 | `run(exit=0)` | `--chaos` fault injection at declared effect points — and with it §17.3 of chapter 17, which is why this stem is written and **not printed** (TOC.md §Deltas, bs07) | s36-deterministic-scheduler |
 | 18-3 | `run(exit=0, stdout="285")` | positive comptime evaluation (CTFE engine) | s16-ctfe |
 | 18-5 | `run(exit=0)` | comptime reflection (`typeinfo`) | s16-ctfe |
 | 18-11 | `run(exit=0, stdout="A-B--A--A-B")` | positive comptime evaluation (CTFE engine) | s16-ctfe |

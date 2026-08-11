@@ -1,0 +1,6 @@
+error[E0201]: expected `(…)` proc arguments
+ --> ./s3.lu:6:33
+  |
+6 |     let index = spawn proc shard
+  |                                 ^
+  |

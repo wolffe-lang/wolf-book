@@ -32,7 +32,7 @@ for the print edition) · `cut`.
 
 | # | quotation | artist / work | form | placement | status | notes |
 |---|-----------|---------------|------|-----------|--------|-------|
-| 1 | "Ain't no rest for the wicked." | Cage the Elephant, "Ain't No Rest for the Wicked" | title fragment, epigraph | Part 3, scheduler chapter (ch17) | planned | TONE.md §4.2 worked placement 1; title-only quotation |
+| 1 | "Ain't no rest for the wicked." | Cage the Elephant, "Ain't No Rest for the Wicked" | title fragment, epigraph | Part 3, chapter 17 head (`book/ch17.md`) | placed | bs07. TONE.md §4.2 worked placement 1. Title only, no verse; epigraph position, attribution flush right, and the two sentences of prose §4.2 specifies pay the double-take off ("the scheduler agrees … exists precisely to deny your program a quiet moment it did not order"). Part 3's single placement in this register; delete it and the chapter still teaches |
 | 2 | "Trouble" | Cage the Elephant, "Trouble" | near-title allusion, set-off line | Appendix C intro (diagnostics) | planned | TONE.md §4.2 worked placement 2; allusion, no verse quoted |
 | 3 | "Come a little closer." | Cage the Elephant, "Come a Little Closer" | title fragment, epigraph | Part 2, chapter 9 head (`book/ch09.md`) | placed | bs05. Title only, no verse; epigraph position, attribution flush right, and the first prose sentence pays the double-take off ("this chapter is about exactly how close we let it come"). Part 2's single placement in this register; delete it and the chapter still teaches |
 | 4 | "Skin and Bones." | Cage the Elephant, "Skin and Bones" (*Social Cues*, 2019) | title fragment, epigraph | Part 1, chapter 2 head (`book/ch02.md`) | placed | bs01. Title only, no verse; epigraph position, attribution flush right, and the first prose sentence pays the double-take off ("a wolf string is skin and bones: bytes, and a length"). Part 1's single placement in this register; delete it and the chapter still teaches |
@@ -87,6 +87,22 @@ placement stays reserved for the scheduler chapter (row 1, chapter 17),
 which is where TONE.md §4.2's worked placement 1 puts it and which bs07
 owns; bs06 deliberately does not spend it, because a part has one and
 chapter 17's material is what the quotation was chosen for.
+
+bs07 (chapters 14–17) adds no row and spends row 1, the placement
+this ledger has held for Part 3 since bs01: the title fragment "Ain't
+no rest for the wicked." at chapter 17's head, attributed, with the
+payoff in the two sentences of prose immediately under it. TONE.md
+§4.2's worked placement names the scheduler chapter and that is
+chapter 17, whose subject — a deterministic scheduler that denies the
+program any interleaving it did not ask for — is what the quotation
+was chosen for. The prose adapts §4.2's wording in one respect: the
+worked placement says "the deterministic scheduler in `--schedules`
+mode", and the shipped flag is `--explore`, so the sentence names the
+explorer. Chapters 14, 15 and 16 carry no epigraph and no in-prose
+simile at all, so Part 3 closes at two reference placements in total —
+the Bruckner pause at chapter 10's head (bs06, dark-Romantic,
+untracked here) and this one — and **no placement in either register is
+left unspent in Parts 1 through 3.**
 
 bs10 (Part 5, the projects) adds no row and spends nothing. No chapter
 prose landed — the three side-by-side chapters wait on their gates
