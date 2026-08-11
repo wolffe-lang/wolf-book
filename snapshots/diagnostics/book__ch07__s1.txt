@@ -1,5 +1,5 @@
 error[E1001]: `names.len` is used here after its value moved away
- --> ./s3.lu:7:26
+ --> ./s1.lu:7:26
   |
 6 |     let roster = names
   |                  ----- `names` moved here

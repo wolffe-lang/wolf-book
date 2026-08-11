@@ -1,0 +1,11 @@
+error[E1008]: this method declares a view of `self.{title, subtitle}`, but touches `self.words`
+ --> ./s15.lu:8:9
+  |
+6 |     fn retitle(mut self.{title, subtitle}, t: str) {
+  |                -------------------------- the view set is declared here
+7 |         self.title = t
+8 |         self.words += 1
+  |         ^^^^^^^^^^ outside the declared view
+  |
+  = note: callers rely on the view: they may use the other fields while this method runs. Add the
+    field to the view set, or take plain `mut self`.

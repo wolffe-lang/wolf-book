@@ -2,11 +2,13 @@
 //!
 //! Commands, per DESIGN.md §4:
 //!   samples            extract + execute every code sample (corpus + book)
+//!   contrast           compile + run the vendored other-language contrast code
 //!   grammar-sync       vendor the tmLanguage grammars, regenerate highlight.css
 //!   render [target]    web | md | pdf | all (default all)
 //!   mdbook-preprocess  the mdBook preprocessor protocol (highlight + anchors)
 //!   verify-docs        doc-truth checks (counts, pins, TOC↔stub numbering)
 
+mod contrast;
 mod directives;
 mod fence;
 mod highlight;
@@ -36,6 +38,7 @@ fn dispatch(args: &[String]) -> Result<()> {
     let rest = if args.is_empty() { &[][..] } else { &args[1..] };
     match cmd {
         Some("samples") => samples::run(&repo_root()?, rest),
+        Some("contrast") => contrast::run(&repo_root()?),
         Some("grammar-sync") => highlight::grammar_sync(&repo_root()?, rest),
         Some("render") => render::run(&repo_root()?, rest),
         Some("mdbook-preprocess") => preprocess::cmd_preprocess(&repo_root()?, rest),
@@ -54,6 +57,7 @@ fn print_help() {
          commands:\n\
          \x20 samples [--bless]     extract and execute every code sample; \n\
          \x20                       --bless updates diagnostic snapshots\n\
+         \x20 contrast              compile and assert the vendored contrast code\n\
          \x20 grammar-sync [--check] re-vendor grammars from wolf-lsp at the pin;\n\
          \x20                       --check fails on drift without writing\n\
          \x20 render [web|md|pdf|all]\n\

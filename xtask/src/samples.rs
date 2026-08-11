@@ -471,7 +471,14 @@ fn collect_book(root: &Path) -> Result<BookScan> {
                     Check::Compile
                 }
             };
-            std::fs::create_dir_all(&out_dir)?;
+            // One directory per sample. Files in one directory are one
+            // module (D32), so two extracted blocks side by side collide
+            // on `main` the moment either declares a `struct` — which is
+            // every chapter from Part 2 on. The selftest has always
+            // isolated its cases for this reason; book blocks need the
+            // same isolation.
+            let sample_dir = out_dir.join(&name);
+            std::fs::create_dir_all(&sample_dir)?;
             let file_name = format!("{name}.lu");
             let mut headed = format!("//! check: {check}\n");
             headed.push_str("//! phase: run\n");
@@ -482,10 +489,10 @@ fn collect_book(root: &Path) -> Result<BookScan> {
                     .display()
             ));
             headed.push_str(&program);
-            std::fs::write(out_dir.join(&file_name), &headed)?;
+            std::fs::write(sample_dir.join(&file_name), &headed)?;
             samples.push(Sample {
                 id: format!("book/{stem}/{name}"),
-                dir: out_dir.clone(),
+                dir: sample_dir,
                 file_name,
                 check,
                 origin: Origin::Book { md: md.clone() },

@@ -1,0 +1,13 @@
+error[E1007]: `add` declares `s` as `mut`, but the call site does not say so
+  --> ./s11.lu:11:9
+   |
+ 6 | fn add(mut s: Shelf, d: Doc) {
+   |            - the parameter is declared here
+...
+11 |     add(shelf, Doc { title: "regions", words: 900 })
+   |         ^^^^^ this argument
+   |
+help: write the argument's mode: `mut …`
+   |
+11 |     add(mut shelf, Doc { title: "regions", words: 900 })
+   |

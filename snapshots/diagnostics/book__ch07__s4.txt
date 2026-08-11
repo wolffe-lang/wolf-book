@@ -1,0 +1,14 @@
+error[E1001]: `d.title` is used here after its value moved away
+  --> ./s4.lu:10:13
+   |
+ 8 |     let out = publish(take d.title)
+   |                            ------- `d.title` moved here
+ 9 |     print("{out} {d.body}")
+10 |     print("{d.title}")
+   |             ^^^^^^^ used after the move
+   |
+   = note: re-initializing the place (assigning to it) also makes it usable again.
+help: to keep the original, copy it at the move
+   |
+ 8 |     let out = publish(take copy d.title)
+   |

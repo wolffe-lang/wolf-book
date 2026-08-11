@@ -1,0 +1,14 @@
+error[E1001]: `a.words` is used here after its value moved away
+ --> ./s6.lu:8:13
+  |
+7 |     let b = a
+  |             - `a` moved here
+8 |     print("{a.words} {b.words}")
+  |             ^^^^^^^ used after the move
+  |
+  = note: `a.words` is part of `a`; moving one empties the other. Disjoint fields stay usable.
+  = note: re-initializing the place (assigning to it) also makes it usable again.
+help: to keep the original, copy it at the move
+  |
+7 |     let b = copy a
+  |

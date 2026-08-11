@@ -1,6 +1,6 @@
 # Notation
 
-The book sets code in five dialects. Programs are complete and executed
+The book sets code in six dialects. Programs are complete and executed
 by CI; the blocks below are the pipeline's smoke test as much as the
 reader's legend.
 
@@ -64,6 +64,25 @@ help: to keep the original, copy it at the move
  9 |     let a = adopt(take copy p.lead)
    |
 ```
+
+A *contrast* block is another language's code, shown where the honest
+comparison needs the program rather than a description of it. It is
+vendored under `samples/contrast/`, compiled and run by CI with warnings
+denied, and checked character-for-character against the block on the
+page:
+
+```rust
+pub fn tokens(input: &str) -> Vec<Token<'_>> {
+    input
+        .split_whitespace()
+        .map(|text| Token { text })
+        .collect()
+}
+```
+
+Figures — ownership trees, tables of boxes and arrows — are set in the
+same monospaced ground with no dialect label. They are drawings, not
+code, and nothing runs them.
 
 ## Reading the dialects
 

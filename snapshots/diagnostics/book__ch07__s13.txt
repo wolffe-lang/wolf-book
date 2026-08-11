@@ -1,0 +1,8 @@
+error[E1002]: `d.title` cannot go `mut` here: it overlaps `d.title`, already passed `mut` in this call
+  --> ./s13.lu:12:27
+   |
+12 |     swap(mut d.title, mut d.title)
+   |              ------- `d.title` is passed `mut` here
+   |                           ^^^^^^^ second exclusive claim on the same place
+   |
+   = note: the same place twice is never disjoint.
