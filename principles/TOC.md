@@ -325,10 +325,11 @@ come from `wc`, not from vibes.
 
 Gate notes below are CI vocabulary and stay out of reader text (TONE.md
 §Tense discipline). A chapter waits for its gate *whole*: no project
-ships partially.
+ships partially. Chapters 26–28 shipped at the bs10 pin bump; 29–32 wait,
+and their notes say on what.
 
 ### Chapter 26 — `count`, twice
-*after K&R §1.5–1.6 · gate: an executable str surface — see §Deltas bs10*
+*after K&R §1.5–1.6 · shipped (bs10) · Part 5's opener lands at this chapter's head*
 - 26.1 The tool, twice — read the two-column form, and the honesty rule
   it runs on.
 - 26.2 Ritchie's state machine — read the C twin whole, and name the two
@@ -342,7 +343,7 @@ ships partially.
 - Exercises 26-1 ….
 
 ### Chapter 27 — `rpn`, twice
-*after K&R §4.3 · gate: an executable str + fmt surface, `List`*
+*after K&R §4.3 · shipped (bs10) · the part's one both-implementations project*
 - 27.1 A stack and a switch — read the C twin, and find the value that
   means both "zero" and "empty".
 - 27.2 The operand stack as a `List` — build the stack, push, pop.
@@ -354,8 +355,7 @@ ships partially.
 - Exercises 27-1 ….
 
 ### Chapter 28 — `wordtree`, twice
-*after K&R §6.5 · gate: an executable str surface, user structs in a
-region (structs and recursion already build)*
+*after K&R §6.5 · shipped (bs10) · interpreted, for the reason in §Deltas*
 - 28.1 The malloc showpiece — read the C twin, and count its allocations
   and its frees.
 - 28.2 The tree in a region — allocate nodes ambiently and link them
@@ -533,45 +533,117 @@ sprint files remain the implementation contracts for everything else.
   decisions): Part 5 is now **Projects** — five guided builds, the solo,
   and the coda, chapters 26–32 — and the monolith survives as chapter
   31, the one project the reader builds with no walkthrough.
-- **bs10 (gates, 2026-08-11):** P1–P3 (chapters 26–28) are drafted
-  against a surface that does not execute at the pins, so **no chapter
-  prose landed** and the three stubs stay stubs. The finding, measured
-  at wolf-lang `f0da6e6` and lupin 0.1.4 and reproducible with
-  `wolf build`:
-  - The s37 `str` method surface is **typed in sema only**. Native
-    lowering refuses every one of the twenty-one methods; `s.get(a..b)`
-    — the load-bearing recoverable slice — additionally does not exist
-    in lupin's std subset, so it executes in *neither* reader-facing
-    tool. `find`, `count`, `split`, `bytes`, `replace` and
-    `strip_prefix` are likewise absent from lupin.
-  - `fs_read_text` (P1's file reading) is refused in native lowering
-    ("checked lane only") and does not resolve in lupin at all.
-  - `List` does not lower natively, so P2's operand stack has no
-    compiled spelling.
-  - Interpolating a `str` *value* is refused natively, so even a
-    one-line program that prints a word it read cannot be built.
-  - What does build natively today: integer and float arithmetic,
-    format specs on primitives, user structs with `str` fields,
-    recursion, and `region` blocks. That is P3's skeleton and none of
-    P3's subject.
-  Everything above executes cleanly in the compiler's *checked* lane
-  (`conform-run --checked`), which is CI's rung and not a tool the book
-  may teach a reader to run their program with. The three gates
-  therefore read "an executable str surface", not "s37 landed", and the
-  chapters wait for whichever comes first: native lowering for the str
-  surface, or lupin's std subset completing it. Per the sprint's own
-  non-target — a chapter waits for its gate whole — waiting was the only
-  option that did not require inventing console output.
-- **bs10 (what did land):** the C contrast dialect the sprint's
-  Mechanics section calls for (`cargo xtask contrast` now compiles
-  `samples/contrast/*.c` with `-std=c99 -Wall -Werror` and executes
-  every case in `samples/contrast/cases.toml`, asserting stdout, stderr
-  and exit status), the three C twins for P1–P3 as original K&R-idiom
-  implementations with eleven asserted cases between them, their
-  PERMISSIONS.md rows (§2, K1–K3), this restructure, and the solutions
-  exception narrowed to chapter 31. The C half of each side-by-side is
-  buildable today and is therefore built and asserted today; the wolf
-  half is what waits.
+- **bs10 (gates, 2026-08-11 — SUPERSEDED at the bs10 pin bump):** the
+  earlier note recorded P1–P3 as undraftable, because at wolf-lang
+  `f0da6e6` and lupin 0.1.4 the `str` method surface was typed in sema
+  only, `fs_read_text` was refused in native lowering, `List` did not
+  lower, and interpolating a `str` *value* was refused — so a one-line
+  program that printed a word it had read could not be built. That
+  finding was correct and it is now history: the wave-four close
+  (wolf-lang `13b811f`) lands all 21 `str` methods, the `List`
+  operations, value-position interpolation with format specs, and the
+  nine `fs_*` builtins in native lowering. Chapters 26, 27 and 28 ship.
+  The note is kept rather than deleted because it is the record of a
+  gate holding, which is the mechanism the sprint contract depends on.
+- **bs10 (what landed with the scaffolding pass):** the C contrast
+  dialect the sprint's Mechanics section calls for (`cargo xtask
+  contrast` compiles `samples/contrast/*.c` with `-std=c99 -Wall -Werror`
+  and executes every case in `samples/contrast/cases.toml`, asserting
+  stdout, stderr and exit status), the three C twins for P1–P3 as
+  original K&R-idiom implementations with eleven asserted cases between
+  them, their PERMISSIONS.md rows (§2, K1–K3 — `planned` until the
+  chapters printed them, `placed` since), the Part-5 restructure, and the
+  solutions exception narrowed to chapter 31.
+- **bs10 (what shipped, and on which implementation):** the three
+  side-by-sides do not all run on the same tool, and the chapters say so
+  where a reader can see it (a console block names its command) without
+  ever naming a schedule.
+  - **Chapter 26, `count`: compiled.** `wolf build count.lu && ./count`
+    is the chapter's transcript. It has to be: `fs_read_text` and
+    `read_line` are the compiled column's, and the reference interpreter
+    has no filesystem *by design* — it declines the effect rather than
+    mocking one. The chapter's `wolf` fences therefore carry no `run`
+    directive (the runner's `run(…)` lane is lupin's); they are checked
+    by `conform-run`, and the console blocks are what assert the output.
+  - **Chapter 27, `rpn`: both.** Identical five-line output under
+    `lupin rpn.lu` and `wolf build rpn.lu && ./rpn`, both replayed by CI.
+    §27.5 is built on that fact, and the reason it is available is that
+    `rpn` has no effects.
+  - **Chapter 28, `wordtree`: interpreted.** The recursive mutating
+    insert passes `mut` through a nested place (`add(mut n.left[0], w)`),
+    which native lowering refuses ("`mut` arguments beyond local places",
+    c06). Everything else in the program lowers natively. The chapter's
+    ledger carries the row.
+- **bs10 (the tree's shape, recorded because it was not a free choice):**
+  chapter 28's node is `struct Node { word: str, count: int, left:
+  List[Node], right: List[Node] }`, with an absent child spelled as an
+  empty list. That reads well — it is `NULL` without a null, and §28.2
+  makes it the section's first point — and it was also the only shape
+  available. `l[i] = v` is `NotYetCheckable` on **every** lane
+  ("assignment through this place", s17), so an index-linked arena cannot
+  patch a parent's child index after the child is pushed; and `Pool[T]` +
+  `handle T`, the language's designed answer and the one chapter 8
+  teaches, is refused by native lowering and, under lupin, a field write
+  through a pool index "does not denote a place at run time" (the blocker
+  exercise 8-7 has held on since bs04). Three spellings of one structure,
+  none complete. A future author with any of the three closed should
+  re-read §28.2 before assuming the list-child shape is load-bearing.
+- **bs10 (no argv — the part's largest honest cost):** there is no way
+  for a wolf program to read its command line at this pin. `fn
+  main(args: …)` is rejected at the entry-signature check, `env_var` is
+  typed and implemented by neither lane, and no `argv` name exists in
+  the prelude. All three projects therefore hold their input as data:
+  `count` writes and reads the two files it counts, `rpn` and `wordtree`
+  carry theirs as literals. §26.5 charges the reader for it in the
+  honesty section — as a property of the two listings, never as a
+  schedule — and chapter 26's ledger carries it as the part's
+  highest-priority row. The sprint's acceptance sentence ("every project
+  produces a useful, self-contained binary") is met on
+  *self-contained* and strained on *useful*.
+- **bs10 (§27.4's dispatch, and a compiler bug):** the TOC promise reads
+  "the operator dispatch as a `match`", and it is a `match` — over the
+  operator's **byte**, with the character in a comment, because `match`
+  on `str` literal patterns is broken: the reachability analysis reports
+  every string arm after the first as unreachable (`warning[E0802]`,
+  naming the first arm as already covering them) and native lowering
+  then refuses the construct. Under lupin the same program evaluates
+  correctly. §27.4 states on the page that the C's `case '+':` is the
+  better spelling, which is the honesty rule doing its job; chapter 27's
+  ledger carries the defect as its top row. Fixing E0802's string case
+  would let the section be rewritten with `"+" =>` arms and would remove
+  the ugliest four lines in the part.
+- **bs10 (two extensions the contract names and this sprint could not
+  set):** P2's "variables" extension wants a name-to-value table, and
+  `Map` is a prelude name with no signature on either lane, so exercise
+  27-8 is a *design* exercise that sketches it and says what a reader can
+  build today. P2's "REPL loop" is buildable — `read_line()` lowers
+  natively — and is not *showable*: a ```console block is replayed by
+  `xtask` with stdin null, and an interactive transcript interleaves the
+  reader's typing with the program's output in a way a replay rig cannot
+  separate. P3's `-n` extension is set (exercise 28-3) without the
+  contract's `std.sort`, which does not exist; `List` has no
+  `sorted`/`sorted_by` on either lane, so the solution is a selection
+  walk.
+- **bs10 (machinery added, so a future author does not rebuild it):**
+  two doc-truth checks landed with these chapters. `cargo xtask
+  contrast` now checks a new fence dialect, ```` ```c-run,from(<case
+  name>) ````, against `samples/contrast/cases.toml`: the printed
+  transcript is derived from the case alone — the prompt from the file
+  stem and argv, the body from the asserted streams, the exit status when
+  it is nonzero — so a side-by-side's C half is as rot-proof as its wolf
+  half. `cargo xtask verify-docs` now (a) recomputes every `<!-- WC
+  (verify-docs): path=N … -->` claim, which is how "line counts come
+  from `wc`, not from vibes" is enforced rather than promised, and (b)
+  requires each `samples/projects/<name>/<name>.lu` to appear verbatim
+  in the concatenation of its chapter's wolf listings, so the on-disk
+  program and the printed program cannot drift.
+- **bs10 (Part 5's reference budget, spent one of three):** chapter 28
+  carries the part's single dark-Romantic placement for chapters 26–28
+  (Mahler's Ninth, at the head, public domain and untracked in
+  PERMISSIONS.md by design). Chapters 26 and 27 carry no epigraph and no
+  in-prose simile. The part's one Cage placement and its second
+  dark-Romantic placement are unspent and reserved for the solo and the
+  coda, as the sprint contract sets them.
 - **bs11:** back matter gains an explicit Appendix D (spec
   cross-reference), which bs11's checklist implies ("claims traced to
   spec clauses") but never lists as an artifact. The index doctrine

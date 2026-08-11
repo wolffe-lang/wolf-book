@@ -1,6 +1,6 @@
 # Notation
 
-The book sets code in six dialects. Programs are complete and executed
+The book sets code in seven dialects. Programs are complete and executed
 by CI; the blocks below are the pipeline's smoke test as much as the
 reader's legend.
 
@@ -41,6 +41,16 @@ A *console run* shows a command and its output, prompt kept:
 ```console,from(book/front-notation/s1)
 $ lupin hello.lu
 hello, wolf
+```
+
+A *twin run* shows a C program from the projects part being run. It sets
+the same way a console run does, and CI derives every line of it — the
+command, the output, the exit status — from that program's declared case,
+so it is a measurement rather than a recollection:
+
+```c-run,from(case is folded, so one word is one node)
+$ ./wordtree
+   3 wolf
 ```
 
 A *diagnostic* block is the compiler's exact text and layout, never

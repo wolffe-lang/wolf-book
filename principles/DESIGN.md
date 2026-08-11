@@ -129,6 +129,11 @@ xtask convention:
     each naming argv, input files, stdin, and the exact stdout, stderr,
     and exit status. Both streams default to empty, so an unexpected
     diagnostic fails the case; a `.c` file with no case fails the lane.
+    A twin's printed *run* is a ```` ```c-run,from(<case name>) ````
+    fence, and the lane derives its whole expected transcript from the
+    named case — prompt from the file stem and argv, body from the
+    asserted streams, exit status when nonzero — so the C half of a
+    side-by-side page cannot drift from the program it describes.
     Where no C compiler exists the lane skips *loudly*, by name and
     count, per the house rule.
 - **`cargo xtask grammar-sync`** — vendors the generated tmLanguage

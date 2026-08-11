@@ -149,6 +149,88 @@ fn blocks(root: &Path, lang: &str) -> Result<Vec<(std::path::PathBuf, String)>> 
     Ok(out)
 }
 
+/// One ```` ```c-run,from(case name) ```` block: the transcript the book
+/// prints for a declared C case, with where it was printed.
+struct CRunBlock {
+    md: PathBuf,
+    line: usize,
+    case: String,
+    text: String,
+}
+
+/// The `c-run` dialect (bs10): a C twin's run, printed in the book's
+/// console shape and bound by name to a case in `cases.toml`. The
+/// transcript is entirely derivable from the case — the prompt from the
+/// file stem and argv, the body from the asserted streams — so the book's
+/// copy is checked rather than trusted, exactly as a ```` ```console ````
+/// block is replayed. The C half of a side-by-side page is then as
+/// rot-proof as the wolf half.
+fn c_run_blocks(root: &Path) -> Result<Vec<CRunBlock>> {
+    let base = root.join("book");
+    let mut out = Vec::new();
+    let mut mds: Vec<PathBuf> = Vec::new();
+    collect_md(&base, &mut mds)?;
+    mds.sort();
+    for md in mds {
+        let text = std::fs::read_to_string(&md)?;
+        for seg in crate::fence::segments(&text) {
+            let crate::fence::Segment::Fence(f) = seg else {
+                continue;
+            };
+            let info = f.info.trim();
+            let Some(rest) = info.strip_prefix("c-run") else {
+                continue;
+            };
+            let case = rest
+                .trim_start()
+                .strip_prefix(',')
+                .map(str::trim)
+                .and_then(|r| r.strip_prefix("from("))
+                .and_then(|r| r.strip_suffix(')'))
+                .map(str::to_string);
+            let Some(case) = case else {
+                bail!(
+                    "{}:{}: a `c-run` fence needs `from(<case name>)` — got `{info}`",
+                    md.display(),
+                    f.open_line + 1
+                );
+            };
+            out.push(CRunBlock {
+                md: md.clone(),
+                line: f.open_line + 1,
+                case,
+                text: f.content.clone(),
+            });
+        }
+    }
+    Ok(out)
+}
+
+/// The transcript a case must print, derived from the case alone.
+fn expected_transcript(case: &CCase) -> Vec<String> {
+    let stem = case.file.trim_end_matches(".c");
+    let mut lines = vec![format!(
+        "$ ./{stem}{}",
+        case.argv
+            .iter()
+            .map(|a| format!(" {a}"))
+            .collect::<String>()
+    )];
+    for stream in [&case.stdout, &case.stderr] {
+        lines.extend(
+            trim_end(stream)
+                .lines()
+                .filter(|l| !l.is_empty())
+                .map(str::to_string),
+        );
+    }
+    if case.exit != 0 {
+        lines.push("$ echo $?".to_string());
+        lines.push(case.exit.to_string());
+    }
+    lines
+}
+
 // ------------------------------------------------------------------- C
 //
 // The projects part's side-by-sides (bs10). A C twin is an ORIGINAL
@@ -277,6 +359,39 @@ fn c_lane(root: &Path) -> Result<Vec<String>> {
             ));
         }
     }
+
+    // The printed transcripts: every `c-run` block against its case. This
+    // needs no compiler — the case file is the source of truth — so it runs
+    // before the toolchain check and holds on every machine.
+    let transcripts = c_run_blocks(root)?;
+    for block in &transcripts {
+        let Some(case) = manifest.case.iter().find(|c| c.name == block.case) else {
+            failures.push(format!(
+                "{}:{}: c-run,from({}) names no case in cases.toml",
+                block.md.display(),
+                block.line,
+                block.case
+            ));
+            continue;
+        };
+        let want = expected_transcript(case);
+        let got: Vec<String> = trim_end(&block.text).lines().map(str::to_string).collect();
+        if got != want {
+            failures.push(format!(
+                "{}:{}: the printed transcript for case \"{}\" is not what the case \
+                 asserts\n     expected:\n{}\n     actual:\n{}",
+                block.md.display(),
+                block.line,
+                block.case,
+                indent(&want.join("\n")),
+                indent(&got.join("\n")),
+            ));
+        }
+    }
+    println!(
+        "contrast: c — {} printed transcript(s) checked against their cases",
+        transcripts.len()
+    );
 
     let Some(cc) = c_compiler() else {
         println!(
@@ -474,6 +589,67 @@ stdout = """
         assert_eq!(trim_end("a  \nb\t\n"), trim_end("a\nb"));
         assert_ne!(trim_end("a\nb"), trim_end("a\nc"));
         assert_ne!(trim_end("a\nb"), trim_end("a\n\nb"));
+    }
+
+    #[test]
+    fn a_transcript_is_derived_from_its_case_and_nothing_else() {
+        let manifest: CaseManifest = toml::from_str(
+            r#"
+[[case]]
+file = "count.c"
+name = "rows"
+argv = ["one.txt", "two.txt"]
+exit = 0
+stdout = """
+       2       6      31 one.txt
+"""
+"#,
+        )
+        .expect("parses");
+        assert_eq!(
+            expected_transcript(&manifest.case[0]),
+            vec![
+                "$ ./count one.txt two.txt",
+                "       2       6      31 one.txt"
+            ]
+        );
+    }
+
+    #[test]
+    fn a_failing_case_carries_its_exit_status_into_the_transcript() {
+        let manifest: CaseManifest = toml::from_str(
+            r#"
+[[case]]
+file = "count.c"
+name = "missing"
+argv = ["nope.txt"]
+exit = 1
+stderr = """
+count: cannot open nope.txt
+"""
+"#,
+        )
+        .expect("parses");
+        // Both streams in declared order, then the status, because a
+        // nonzero exit is part of what the page is claiming.
+        assert_eq!(
+            expected_transcript(&manifest.case[0]),
+            vec![
+                "$ ./count nope.txt",
+                "count: cannot open nope.txt",
+                "$ echo $?",
+                "1"
+            ]
+        );
+    }
+
+    #[test]
+    fn a_stdin_case_prints_a_bare_prompt() {
+        let manifest: CaseManifest = toml::from_str(
+            "[[case]]\nfile = \"rpn.c\"\nname = \"n\"\nstdin = \"2 3 +\\n\"\nexit = 0\nstdout = \"5\\n\"\n",
+        )
+        .expect("parses");
+        assert_eq!(expected_transcript(&manifest.case[0]), vec!["$ ./rpn", "5"]);
     }
 
     #[test]

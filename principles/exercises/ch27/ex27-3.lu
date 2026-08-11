@@ -1,0 +1,69 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 27-3: `Empty` grows a payload.
+struct Bad { token: str }
+struct Short { op: str, found: int }
+
+fn number(tok: str) -> int ! {NotNumber(Bad)} {
+    let body = tok.strip_prefix("-") else tok
+    if body.is_empty() { return NotNumber(Bad { token: tok }) }
+    var n = 0
+    for b in body.bytes() {
+        if b < 48 || b > 57 { return NotNumber(Bad { token: tok }) }
+        n = n * 10 + (b - 48)
+    }
+    if tok.starts_with("-") { 0 - n } else { n }
+}
+
+fn is_operator(tok: str) -> bool {
+    if tok.len != 1 { return false }
+    let b = tok.bytes()[0]
+    b == 43 || b == 45 || b == 42 || b == 47
+}
+
+fn eval(line: str) -> int ! {NotNumber(Bad), Unknown(Bad), Empty(Short), DivZero} {
+    var stack = List[int]()
+    for tok in line.words() {
+        if !is_operator(tok) {
+            (mut stack).push(number(tok)?)
+        } else {
+            if stack.len < 2 { return Empty(Short { op: tok, found: stack.len }) }
+            let b = (mut stack).pop() else { return Empty(Short { op: tok, found: 0 }) }
+            let a = (mut stack).pop() else { return Empty(Short { op: tok, found: 1 }) }
+            let r = match tok.bytes()[0] {
+                43 => a + b,
+                45 => a - b,
+                42 => a * b,
+                47 => {
+                    if b == 0 { return DivZero }
+                    a / b
+                },
+                _ => return Unknown(Bad { token: tok }),
+            }
+            (mut stack).push(r)
+        }
+    }
+    if stack.len != 1 { return Empty(Short { op: "end of line", found: stack.len }) }
+    (mut stack).pop() else { return Empty(Short { op: "end of line", found: 0 }) }
+}
+
+fn main() -> !int {
+    let script = """
+        3 +
+        3 4
+        2 3 +
+        """
+    for line in script.lines() {
+        let v = eval(line) else |err| {
+            match err {
+                NotNumber(e) => print("error: `{e.token}` is not a number"),
+                Unknown(e) => print("error: `{e.token}` is not an operator"),
+                Empty(s) => print("error: `{s.op}` wanted two operands and found {s.found}"),
+                DivZero => print("error: division by zero"),
+            }
+            continue
+        }
+        print("{v}")
+    }
+    0
+}

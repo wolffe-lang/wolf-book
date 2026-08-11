@@ -1,0 +1,14 @@
+error[E0602]: this can also fail with `denied`, `io`, `utf8`, which `count_file`'s row does not include
+ --> ./s2.lu:7:16
+  |
+6 | fn count_file(name: str) -> Tally ! {not_found} {
+  |                          ---------------------- the receiving row is declared here
+7 |     let text = fs_read_text(name)?
+  |                ^^^^^^^^^^^^^^^^^^^ the missing tags escape here
+  |
+  = note: rows compose by union: `?` re-tags errors into the wider row by injection — there is no
+    conversion to write, only tags to admit.
+help: extend the row with `denied`, `io`, `utf8`
+  |
+6 | fn count_file(name: str) -> Tally ! {not_found, denied, io, utf8} {
+  |

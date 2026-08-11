@@ -7,6 +7,12 @@
 # 23-7, 24-6, B-10) have no .lu file and no row; 19-1's program runs
 # green today (its pending-ness is the unverified #[noalloc], not the
 # run) so it carries no row either.
+#
+# Removed at the bs10 pin bump, both as reported FLIPs: `ch13/ex13-3`
+# (E1101, unsynchronized mutable capture across tasks) and `ch16/ex16-9`
+# (E1102, unsendable channel payload). Both codes exist in the compiler
+# at this pin and both exercises are ordinary green samples with
+# reviewed snapshots.
 
 [[pending]]
 id = "ch05/ex5-8"
@@ -29,19 +35,10 @@ blocker = "`par` absent from the interp std subset"
 owner = "s32-tasks-scheduler / s37-core-types"
 
 [[pending]]
-id = "ch13/ex13-3"
-blocker = "unsynchronized-capture checking (E1101) does not exist"
-owner = "s32-tasks-scheduler / s33-channels-select"
-
-[[pending]]
 id = "ch13/ex13-6"
 blocker = "`par` absent from the interp std subset"
 owner = "s32-tasks-scheduler / s37-core-types"
 
-[[pending]]
-id = "ch16/ex16-9"
-blocker = "channel payload sendability checking (E1102) does not exist"
-owner = "s33-channels-select"
 
 # The three ch18 rows are re-blockered at the bs08 pin. The comptime
 # evaluator computes all three of these programs — that is what chapter

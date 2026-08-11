@@ -247,8 +247,7 @@ construction. Determinism you can argue from the program's shape is
 worth more than determinism you observed in three runs — chapter 17
 is about the programs where you cannot argue it.
 
-**Exercise 16-9** *(comprehension · pending — blocker: channel payload
-sendability check (E1102); owner: s33-channels-select)* — This program
+**Exercise 16-9** *(comprehension · wolf + lupin)* — This program
 declares a channel of bare `List[int]` — not `Copy`, not imm, not a
 region, not sync:
 
@@ -259,31 +258,48 @@ fn main() -> !int {
 }
 ```
 
-State the verdict the compiler owes this program and the rule behind
-it, and explain why each of the four admitted payload classes is safe
-where a bare `List` is not.
+Predict the verdict this program earns and the rule behind it, and
+explain why each of the four admitted payload classes is safe where a
+bare `List` is not.
 
-Solution (prose): the owed verdict is `fail(E1102)` — channel payloads
-must be `Copy` (the receiver gets its own bits), imm (nobody can
-write), a moved region (exactly one owner), or a sync type (its own
-synchronization). A bare `List` is none of these: sending it would
-give two tasks live access to one mutable buffer with no coordination,
-which is the store-buffer program of chapter 13 wearing a channel as a
-disguise. The directive-headed solution file pins `fail(E1102)` so CI
-turns green the day the check lands.
+Solution: the verdict is `fail(E1102)`, and the note names all four
+classes:
 
-Today, honestly:
+```console
+$ wolf conform-run ./ex16-9.lu
+error[E1102]: `List[int]` cannot be sent through a channel
+ --> ./ex16-9.lu:7:22
+  |
+7 |     let ch = channel[List[int]](1)
+  |                      ^^^^^^^^^ not a sendable payload type
+  |
+  = note: channel payloads must be `Copy` data, `imm` data, a region value (the send is its affine
+    move), or a `sync` type ([conc.chan.type]) — sending anything else would give two tasks
+    one mutable value. D14's verbs are the ways out: `move` the data into a region and send
+    the region, `freeze` it into shareable `imm` data, or guard it with a `Mutex`.
+```
+
+Each admitted class removes one half of the race. `Copy` data: the
+receiver gets its own bits, so there is no shared location. `imm` data:
+there is a shared location and nobody may write it. A region value: the
+send is a move, so exactly one task owns it at any instant. A `sync`
+type: the sharing is real and the coordination is the type's own job. A
+bare `List` is none of these — sending it would give two tasks live
+access to one mutable buffer with no coordination, which is chapter 13's
+store-buffer program wearing a channel as a disguise.
+
+Note that the rejection is a property of the *declaration*: no `send`
+appears in the program, and none is needed. The type of the channel is
+already the claim, and E1102 is the compiler declining it. The
+interpreter takes the other route and constructs the channel — its
+dynamic machine catches an actual cross-task mutation rather than the
+declaration — so this is one more program the compiler stops and lupin
+runs:
 
 ```console
 $ lupin ex16-9.lu
 $ echo $?
 0
-$ wolf conform-run ./ex16-9.lu
-(verdict: unsupported — channel surface not yet in the compiler)
 ```
 
-Neither tool enforces the rule yet: lupin runs the program (its
-dynamic machine would catch an actual cross-task mutation, but the
-declaration alone slips through), and the compiler has no channel
-surface. The corpus carries the same expectation in
-`conc/chan_unsendable.lu`; this exercise inherits its honesty model.
+The corpus carries the same expectation in `conc/chan_unsendable.lu`.
