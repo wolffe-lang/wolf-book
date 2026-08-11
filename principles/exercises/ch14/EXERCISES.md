@@ -1,7 +1,7 @@
 # Chapter 14 — Procs: the unit of failure: exercises
 
 Commands run from this directory; outputs are pasted from real runs.
-lupin is `lupin 0.1.0 (wolf-interp)`. The compiler's `conform-run`
+lupin is the interpreter `wolf-toolchain.toml` pins. The compiler's `conform-run`
 reports `unsupported` for proc programs today; this chapter is lupin
 territory until s34 lands.
 

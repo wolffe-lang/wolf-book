@@ -1,7 +1,7 @@
 # Chapter 8 — Regions: memory in the shape you meant: exercises
 
 Commands run from this directory; outputs are pasted from real runs.
-lupin is `lupin 0.1.0 (wolf-interp)`; wolf is the wolf-lang debug build
+lupin is the interpreter `wolf-toolchain.toml` pins; wolf is the wolf-lang debug build
 at `impl_version 0.0.1`.
 
 ## §8.1 — You already think in regions

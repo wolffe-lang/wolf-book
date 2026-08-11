@@ -68,22 +68,29 @@ weather.
 
 ## §20.2 — The variance gate
 
-**Exercise 20-4** *(spelunking · wolf)* — Ask today's binary for a
-benchmark and read what comes back. Which sprint owns the gap, and
-where else in this book have you seen this exact reporting posture?
+**Exercise 20-4** *(spelunking · wolf)* — Ask the binary for a
+benchmark and read what comes back. Which half of the toolchain owns
+the gap, and where else in this book have you seen this exact
+reporting posture?
 
 Solution — a real run, the only one in this chapter:
 
 ```console
 $ wolf bench
-wolf: pre-alpha scaffold; `wolf build|run` lands at sprint s31
+wolf bench: not yet (grows at its own campaign; D34's single binary)
 ```
 
-The scaffold names its own missing pieces by sprint — the same ledger
-posture as the pending exercises in chapters 18 and 19, and the same
-one this chapter's worked examples adopt: state the expected shape,
-mark what does not exist, never render green early. (The bench harness
-itself is s01's; the driver door it hangs on is s31's.)
+The binary declines rather than guessing — the same posture as the
+pending exercises in chapters 18 and 19, and the same one this
+chapter's worked examples adopt: state the expected shape, mark what
+does not exist, never render green early. D34's single binary is why
+the refusal is `wolf`'s to make: there is no second executable that
+could have answered instead.
+
+*(Filed for the chapter sprint that publishes this material: a
+scaffold refusal is not product output, so this exercise's subject
+does not survive TONE.md's tense discipline. It waits for `wolf
+bench`.)*
 
 **Exercise 20-5** *(comprehension · prose)* — The variance gate fails
 a CI run when the delta is within the noise band, in either direction.

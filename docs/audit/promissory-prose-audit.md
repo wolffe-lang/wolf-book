@@ -18,35 +18,54 @@ Severity key:
   M1 (or at s37–s38 for std surface); the section is rewritten, not
   patched.
 
+**Status (updated 2026-08-11).** **rp-M1 is done**: pins bumped to
+wolf-lang `29a9d9c` (M1 — `wolf build|run` real, 31 native programs)
+and lupin `v0.1.4`, and every Pass-A row below is closed. **13 of 28
+findings closed** (F1, F2, F3, 1–10) — the whole front matter and all
+of chapter 1. **15 remain, every one of them rp-std's** (11–25, ch02's
+three std-surface paragraphs, ch03's one, ch04's two, ch05's five,
+ch06's four), gated on s37–s38. Closed rows carry a RESOLVED note
+naming what replaced them.
+
 ---
 
 ## 1. Catalog
 
 28 findings: **7 FOUNDATIONAL rows (4 section-level units) · 17
-STRUCTURAL · 4 COSMETIC.**
+STRUCTURAL · 4 COSMETIC.** Thirteen closed at rp-M1; fifteen open,
+all rp-std.
 
 ### Front matter
 
-| # | Where | Quote | Severity |
-|---|-------|-------|----------|
-| F1 | `book/front/how-to-read.md:9–11` | "Stub — this page's prose lands with the chapter sprints. The promise it will carry: …" | STRUCTURAL — a shipped placeholder page whose entire content is a promise. |
-| F2 | `book/front/notation.md:33–34` | "replay waits on wolf-interp's REPL (is08) and is counted, not skipped silently" | COSMETIC — internal sprint id (is08) in reader-facing text. |
-| F3 | `book/front/notation.md:87–89` | "`4` is `unsupported`, the young implementation declining work it will do later." | STRUCTURAL — readers are told to *memorize* a scaffold-era verdict as part of the exit-code contract. At the ultimate product, exit 4 is at most a footnote. |
+| # | Where | Quote | Severity | Status |
+|---|-------|-------|----------|--------|
+| F1 | `book/front/how-to-read.md:9–11` | "Stub — this page's prose lands with the chapter sprints. The promise it will carry: …" | STRUCTURAL — a shipped placeholder page whose entire content is a promise. | **RESOLVED rp-M1** — page written: the executed-by-CI promise stated as fact, four background on-ramps (Python/Go/Rust/C), what the parts do, the hurry path. No stub marker, no forward reference to a sprint. |
+| F2 | `book/front/notation.md:33–34` | "replay waits on wolf-interp's REPL (is08) and is counted, not skipped silently" | COSMETIC — internal sprint id (is08) in reader-facing text. | **RESOLVED rp-M1** — clause deleted; the REPL-transcript legend is one sentence about what a transcript is. The counting still happens and still reports, in CI's voice, where it belongs. |
+| F3 | `book/front/notation.md:87–89` | "`4` is `unsupported`, the young implementation declining work it will do later." | STRUCTURAL — readers are told to *memorize* a scaffold-era verdict as part of the exit-code contract. At the ultimate product, exit 4 is at most a footnote. | **RESOLVED rp-M1** — exit 4 struck from the list; exit 1 (`main` handed back an error) takes its place, demonstrated in ch01 §1.5. The list is scoped to the runs the book prints, because the compiled and interpreted verdict codes still differ — filed as a `[conf.exit]` blocker in ch01's ledger. |
 
 ### Chapter 1 — Hello, Wolf
 
-| # | Where | Quote | Severity |
-|---|-------|-------|----------|
-| 1 | `book/ch01.md:95–100` | "It is also not true yet, and this book does not pretend otherwise. Today the toolchain is two programs … It cannot yet produce an executable." | FOUNDATIONAL — §1.2's opening move is a retraction of §1.2's own first paragraph. |
-| 2 | `book/ch01.md:114–117` | Console block: "`wolf: pre-alpha scaffold; \`wolf build\|run\` lands at sprint s31`" | FOUNDATIONAL — a tool-scaffold message, with an internal sprint number, taught as product output. The single worst offender in Part 1. |
-| 3 | `book/ch01.md:119–124` | "Two tools for now, then; one when that line comes true … the promise stands as a promise." | FOUNDATIONAL — prose that names itself a promise. |
-| 4 | `book/ch01.md:126–139` | Install = `cargo build` from two source repos; "Given a Rust toolchain and the two repositories …" | FOUNDATIONAL — the install workflow is the bootstrap dev workflow, obsolete the day there is a release channel. |
-| 5 | `book/ch01.md:151` | "For you, today, the useful consequence is that wolf programs run." | COSMETIC — "today" framing. |
-| 6 | `book/ch01.md:156–159` | Exercise 1-7 — run both `--version` lines, "why a book would print them at all." | STRUCTURAL — an exercise whose subject is the two-tool scaffold. |
-| 7 | `book/ch01.md:186–189` | "That machinery is not in the toolchain yet, and this book prints no sample it cannot run; when it lands, this section grows the four lines it takes." | STRUCTURAL — the chapter's own ledger admits the script-mode thesis is "one third demonstrated and two thirds promised" (s53 frontmatter deps). |
-| 8 | `book/ch01.md:289–291` | "Having no artifact is what makes a script convenient; producing one is what a compiler is for, and this section is named after the day wolf does both." | FOUNDATIONAL — §1.5 is named for a capability that does not exist. |
-| 9 | `book/ch01.md:364–371` | "**The implementation has not got there yet (exit 4).** A young toolchain also declines work it will do later … you will see it a few times in chapter 2." | STRUCTURAL — a whole verdict class exists in the pedagogy because the pin is incomplete; prose pre-apologizes for chapter 2. |
-| 10 | `book/ch01.md:373–378` | "What is missing from this section is `wolf build`. There is no compiled artifact today, no `--release`, no binary to hand somebody. When the compiler's driver lands … this section gains the artifact it is named for." | FOUNDATIONAL — half of §1.5 is a deferral paragraph. |
+| # | Where | Quote | Severity | Status |
+|---|-------|-------|----------|--------|
+| 1 | `book/ch01.md:95–100` | "It is also not true yet, and this book does not pretend otherwise. Today the toolchain is two programs … It cannot yet produce an executable." | FOUNDATIONAL — §1.2's opening move is a retraction of §1.2's own first paragraph. | **RESOLVED rp-M1** — §1.2 rewritten as "Two implementations, one language". The retraction is gone because there is nothing to retract: the section's first console block is `wolf build hello.lu && ./hello`. |
+| 2 | `book/ch01.md:114–117` | Console block: "`wolf: pre-alpha scaffold; \`wolf build\|run\` lands at sprint s31`" | FOUNDATIONAL — a tool-scaffold message, with an internal sprint number, taught as product output. The single worst offender in Part 1. | **RESOLVED rp-M1** — block deleted. Nothing in the book now prints a scaffold banner or a sprint number. |
+| 3 | `book/ch01.md:119–124` | "Two tools for now, then; one when that line comes true … the promise stands as a promise." | FOUNDATIONAL — prose that names itself a promise. | **RESOLVED rp-M1** — replaced by the demonstrated claim: three console blocks (`wolf build` + `./hello`, `wolf run`, `lupin`) printing the same bytes, then "the specification is wolf, and these are two readings of it that have to keep matching." |
+| 4 | `book/ch01.md:126–139` | Install = `cargo build` from two source repos; "Given a Rust toolchain and the two repositories …" | FOUNDATIONAL — the install workflow is the bootstrap dev workflow, obsolete the day there is a release channel. | **PARTLY RESOLVED rp-M1** — the promissory frame around it is gone and the one-binary story is demonstrated rather than promised, but the two cargo lines stay: there is no release channel to print instead, and inventing one would be the failure this audit exists to prevent. Re-files as a `ba:papercut` in ch01's ledger, owner c13/s66. |
+| 5 | `book/ch01.md:151` | "For you, today, the useful consequence is that wolf programs run." | COSMETIC — "today" framing. | **RESOLVED rp-M1** — sentence cut. |
+| 6 | `book/ch01.md:156–159` | Exercise 1-7 — run both `--version` lines, "why a book would print them at all." | STRUCTURAL — an exercise whose subject is the two-tool scaffold. | **RESOLVED rp-M1** — 1-7 reshaped into the differential: build the binary, run the source under the interpreter, `diff` the two, say what a difference would mean. Its subject is now the thesis, not the scaffold. New 1-8 (the warm rebuild) joins it. |
+| 7 | `book/ch01.md:186–189` | "That machinery is not in the toolchain yet, and this book prints no sample it cannot run; when it lands, this section grows the four lines it takes." | STRUCTURAL — the chapter's own ledger admits the script-mode thesis is "one third demonstrated and two thirds promised" (s53 frontmatter deps). | **RESOLVED rp-M1** — the deferral and the dependency-declaration claim both cut. The Coming-from-Python box now contrasts only what exists: an interpreter the script needs at run time versus a compile that produces one artifact. §1.3 is fronted by `wolf run`, which is the thesis it was written for. |
+| 8 | `book/ch01.md:289–291` | "Having no artifact is what makes a script convenient; producing one is what a compiler is for, and this section is named after the day wolf does both." | FOUNDATIONAL — §1.5 is named for a capability that does not exist. | **RESOLVED rp-M1** — §1.5 opens on `wolf run hello.lu` as six phases, names where the two implementations part company, and its closing subsection ("The thing you can keep") is the artifact the section is named for. |
+| 9 | `book/ch01.md:364–371` | "**The implementation has not got there yet (exit 4).** A young toolchain also declines work it will do later … you will see it a few times in chapter 2." | STRUCTURAL — a whole verdict class exists in the pedagogy because the pin is incomplete; prose pre-apologizes for chapter 2. | **RESOLVED rp-M1** — the exit-4 verdict class and its pre-apology are deleted. The third verdict is now exit 1: `main` handing back an error, shown on a four-line program that `?`s a bad `to_int`. |
+| 10 | `book/ch01.md:373–378` | "What is missing from this section is `wolf build`. There is no compiled artifact today, no `--release`, no binary to hand somebody. When the compiler's driver lands … this section gains the artifact it is named for." | FOUNDATIONAL — half of §1.5 is a deferral paragraph. | **RESOLVED rp-M1** — paragraph replaced by the artifact itself: `wolf build hello.lu`, `./hello`, `echo $?`, and one sentence on debug information. `--release` is not mentioned, because a tier that does not exist is not a thing the book withholds. |
+
+**Rows 11–25 below are rp-std's** (s37–s38). rp-M1 deliberately left
+every one of them: they are std-surface findings, and a pass that
+rewrote them at the M1 pin would be reshaping prose around gaps that
+are still there. They were re-verified as still-accurate at the M1
+bump, not edited. The one ch02 change rp-M1 did make is outside the
+catalog and recorded in ch02's ledger: §2.3's `s[i]` refusal block was
+deleted, because a permanent design decision (D25) was being taught
+through the same `unsupported` channel a temporary absence uses.
 
 ### Chapter 2 — Strings, honestly
 
@@ -375,6 +394,56 @@ Reasoning, from the counts:
    fold rp-std into the first post-s38 book sprint. Part 1's
    already-shipped deferral prose is quarantined by being enumerated
    here — every finding has a file:line and a pass that deletes it.
+
+---
+
+## 6. rp-M1 closeout (2026-08-11)
+
+**Pins.** wolf-lang `29a9d9c79334d708905aa8065b24b09855ccbe91` (M1:
+`wolf build|run` real, 31 corpus programs compiled and executed
+natively, `hello.lu` printing bit-for-bit with the interpreter) and
+wolf-interp `5f1e58d0a297957004f642efe954c694a8561fd1` (lupin v0.1.4).
+wolf-lsp unchanged.
+
+**Suite movement at the bump.** One sample moved, and it was lupin
+0.1.4's literal-typing change (#14: literals stay unconstrained through
+literal-only arithmetic): `ch03/ex3-6`, which asked for the smallest
+`i32` overflow "using only integer literals and one `*`", stopped
+trapping — `46341 * 46341` is now computed wide. Reshaped rather than
+re-blessed: the stem asks for one `i32` binding, the solution is `let
+n: i32 = 46341` / `print("{n * n}")`, and the trap is back with a new
+span. Nothing else moved: no snapshot drift, no flips, all eight REPL
+transcripts replay byte-identically, and every ch02 console block was
+already correct. Counts, before → after: 271 → 272 samples, 259 → 261
+passing, 11 pending unchanged, 1 → 0 failures, 0 flips throughout.
+
+**What the pass added to the rig.** `console` blocks are now executed.
+The runner replays any block whose commands are all pinned tools
+(`lupin`, `wolf`, `./binary`, `echo $?`, `&&` between them), writing
+the program printed above the block — or the one named by
+`console,from(id)` — and byte-comparing the output. 92 of 94 blocks
+replay; the two that do not (a `cd`-and-cargo line, a `grep`) are named
+in the log on every run. This closes the ch01 ledger's standing ask and
+is what makes "re-captured against the M1 binaries" a checkable claim
+rather than a report.
+
+**Tense self-audit.** The grep set over `book/front/*.md` and
+`book/ch01.md`–`book/ch02.md` returns zero reader-facing hits for
+deferral prose ("not yet", "when it lands", "at this pin", "for now",
+"a feature away", "will land", "does not exist yet"), zero sprint or
+milestone identifiers (`s\d\d`, `is\d\d`, `bs\d\d`, M1), and zero
+scaffold output. The remaining hits in those files are inside the
+unpublished `AUDIT LEDGER` comments, which is where the standard puts
+them.
+
+**Left deliberately.** Rows 11–25 (rp-std, s37–s38) and the
+`ba:papercut` half of row 4 (no release channel exists to print). Two
+new findings were opened by the pass and live in ch01's ledger: the
+implementations disagree on process exit codes for static rejections
+(1 vs 2) and traps (134 vs 3), which wants a `[conf.exit]` clause; and
+the debuggable binary, though real, opens under gdb with an inherited
+`.debug_gdb_scripts` warning and breaks twice on `main`, so §1.5 states
+the capability and prints no transcript.
 
 ---
 

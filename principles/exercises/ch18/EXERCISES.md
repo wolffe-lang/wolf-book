@@ -1,7 +1,7 @@
 # Chapter 18 — Comptime: one tier, no macros: exercises
 
 Commands run from this directory; outputs are pasted from real runs.
-lupin is `lupin 0.1.0 (wolf-interp)`; wolf is the wolf-lang debug build
+lupin is the interpreter `wolf-toolchain.toml` pins; wolf is the wolf-lang debug build
 at `impl_version 0.0.1`. The comptime *sandbox and budget* verdicts are
 live in wolf today and every one below is a real run. Positive comptime
 evaluation — a `const` actually computing a value — is not yet

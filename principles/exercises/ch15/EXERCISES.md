@@ -1,7 +1,7 @@
 # Chapter 15 — Link, monitor, supervision: exercises
 
 Commands run from this directory; outputs are pasted from real runs.
-lupin is `lupin 0.1.0 (wolf-interp)`; proc programs are `unsupported`
+lupin is the interpreter `wolf-toolchain.toml` pins; proc programs are `unsupported`
 under the compiler's `conform-run` until s34.
 
 ## §15.1 — Two primitives

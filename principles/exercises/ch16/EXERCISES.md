@@ -1,7 +1,7 @@
 # Chapter 16 — Region transfer: fearless messaging: exercises
 
 Commands run from this directory; outputs are pasted from real runs.
-lupin is `lupin 0.1.0 (wolf-interp)`; the compiler's `conform-run`
+lupin is the interpreter `wolf-toolchain.toml` pins; the compiler's `conform-run`
 reports `unsupported` for channel programs today, so verdicts below are
 lupin's except where marked pending.
 

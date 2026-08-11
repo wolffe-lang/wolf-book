@@ -1,7 +1,7 @@
 # Chapter 9 — The escape hatch is a door, not a cliff: exercises
 
 Commands run from this directory; outputs are pasted from real runs.
-lupin is `lupin 0.1.0 (wolf-interp)`; the UB oracle's reports are shown
+lupin is the interpreter `wolf-toolchain.toml` pins; the UB oracle's reports are shown
 in full — reading them is most of this chapter's homework.
 
 ## §9.1 — The three rings
@@ -297,14 +297,14 @@ or capability-bearing; source review answers one file, the audit
 answers the closure. Second, *drift* — whether the next release of a
 dependency widens its capability set (`net`, `fs`, a new trusted
 block) relative to what was reviewed; the audit is a diffable fact,
-review is a memory. Today:
+review is a memory. As run:
 
 ```console
 $ lupin ex9-10.lu
 $ echo $?
 0
 $ wolf audit
-wolf: pre-alpha scaffold; `wolf build|run` lands at sprint s31
+wolf audit: not yet (grows at its own campaign; D34's single binary)
 ```
 
 ## §9.8 — The four-tier picture

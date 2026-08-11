@@ -2,6 +2,7 @@
 //! phase: run
 // Exercise 3-6: the smallest square that leaves i32.
 fn main() -> !int {
-    print("{46341 * 46341}")
+    let n: i32 = 46341
+    print("{n * n}")
     0
 }

@@ -29,11 +29,11 @@ wolf, without hearing the word "lifetime."*
 ### Chapter 1 — Hello, Wolf
 - 1.1 A program worth keeping — run a complete 15-line script that does
   something you would keep, before any installation ceremony.
-- 1.2 Installing the one tool — install `wolf` on your platform and
-  verify it; the book never asks for a second tool.
+- 1.2 Two implementations, one language — `wolf build` produces a
+  binary, `wolf run` produces one and runs it, `lupin` interprets the
+  same source; install both and watch them agree.
 - 1.3 Scripts before projects — run `.lu` files directly with
-  `wolf run`, with dependencies declared in the file itself: no venv, no
-  requirements.txt, no drift.
+  `wolf run`: no project, no venv, no lockfile to drift.
 - 1.4 The REPL: a spec you can interrogate — start the interpreter's
   session, try expressions, and learn `:mem` exists before you need it.
 - 1.5 What `run` was doing for you — meet `wolf build` and the shape of
@@ -367,8 +367,14 @@ sprint files remain the implementation contracts for everything else.
   2 then opens already holding the tool. bs01's "REPL as the chapter's
   lab bench" framing transfers to §1.4 intact.
 - **bs01:** `wolf build` is a one-section chapter closer (§1.5), not a
-  chapter-end aside; the promise "the book never asks for a second tool"
-  is stated in §1.2 where installation happens.
+  chapter-end aside; §1.2 is where installation happens.
+- **rp-M1:** the "the book never asks for a second tool" promise is
+  retired, not moved. It was never demonstrable — the book runs most of
+  its programs under the reference interpreter and says so — and
+  bs01's own amendment says a one-binary story is demonstrated or not
+  told. §1.2 demonstrates the part that is true (`wolf` alone builds,
+  runs, and ships a program) under its new title, "Two implementations,
+  one language", which is also the front matter's framing.
 - **bs02:** the hardening-by-refactor arc (sprint: chapter 6's teaching
   spine) is a named section (§6.4) distinct from the wordcount capstone
   (§6.5), so the capstone stays a build, not a rescue.

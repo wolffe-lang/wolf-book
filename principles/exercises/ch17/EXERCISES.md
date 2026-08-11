@@ -1,7 +1,7 @@
 # Chapter 17 — The failing schedule, replayed: exercises
 
 Commands run from this directory; outputs are pasted from real runs.
-lupin is `lupin 0.1.0 (wolf-interp)`; scheduler controls are
+lupin is the interpreter `wolf-toolchain.toml` pins; scheduler controls are
 `lupin run FILE --seed=N | --schedule=…` and
 `lupin conform-run FILE --explore=N`.
 

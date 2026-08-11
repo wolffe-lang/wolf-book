@@ -29,8 +29,7 @@ fn main() -> !int {
 }
 ```
 
-A *REPL transcript* shows a session with the interpreter; replay waits on
-wolf-interp's REPL (is08) and is counted, not skipped silently:
+A *REPL transcript* shows a session with the interpreter:
 
 ```wolf-repl
 wolf> "é".len
@@ -39,7 +38,7 @@ wolf> "é".len
 
 A *console run* shows a command and its output, prompt kept:
 
-```console
+```console,from(book/front-notation/s1)
 $ lupin hello.lu
 hello, wolf
 ```
@@ -93,18 +92,27 @@ elisions, no retyped error messages, no tidied spans. When a diagnostic
 looks longer than the program that earned it, that is the compiler's
 editorial decision and the book keeps it.
 
-Two tools appear at the prompt, for the reason chapter 1 gives: `lupin`
-runs programs and `wolf` checks them. A `$ lupin …` line is a run; a
-`$ wolf …` line is a check. Both cite specification clauses in square
-brackets (`[mem.ub.defined]`) and stable error codes (`E0202`), and both
-identifiers are indexed: a code or a clause you meet in your own terminal
-is findable in this book.
+Two programs appear at the prompt, for the reason chapter 1 gives: one
+language, two implementations of it, one of which compiles. A
+`$ wolf …` line is the compiler — `wolf build` produces a binary,
+`wolf run` produces one and executes it, and either may refuse the
+program first. A `$ lupin …` line is the reference interpreter running
+the same source without compiling it. Both cite specification clauses
+in square brackets (`[mem.ub.defined]`) and stable error codes
+(`E0202`), and both identifiers are indexed: a code or a clause you
+meet in your own terminal is findable in this book.
 
-Exit codes recur often enough to be worth memorizing early. `0` and
-whatever else your `main` returns are the program's own; `2` is a static
-rejection, so the program never started; `3` is a trap, so it started and
-hit a rule; `4` is `unsupported`, the young implementation declining work
-it will do later.
+Most of the book's runs are the interpreter's, because the book is
+usually asking what a program *means* rather than what it costs, and
+that is the question the reference implementation answers. Where the
+compiler has something of its own to say — a diagnostic, a binary, a
+measurement — it says it under its own prompt.
+
+Exit codes recur often enough to be worth memorizing early — these are
+the ones behind the book's `$ echo $?` lines. `0` and whatever else
+your `main` returns are the program's own; `1` means `main` handed back
+an error; `2` is a static rejection, so the program never started; `3`
+is a trap, so it started and hit a rule.
 
 ## Exercises and solutions
 

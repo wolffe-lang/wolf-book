@@ -1,6 +1,6 @@
 # EXERCISES-INDEX.md — the corpus ledger
 
-Generated view of every exercise in the corpus: 246 total. Sources:
+Generated view of every exercise in the corpus: 247 total. Sources:
 the exemplar batch in `principles/EXERCISES.md` §5 (26 exercises,
 folded in unchanged) and the per-chapter files
 `principles/exercises/chNN/EXERCISES.md` (+ `appx/` for the
@@ -12,10 +12,10 @@ see `EXERCISES-PENDING.md` for each blocker and owner. Chapter 26
 (the capstone) is absent by design: it publishes milestone
 checkpoints, not exercises (EXERCISES.md §4, bs10's contract).
 
-Tier totals: 131 run (lupin) · 9 run (lupin REPL) · 19 run (wolf) · 6 run (wolf + lupin) · 61 prose · 20 pending.
-Taxonomy spread (tags, hybrids counted once per kind): fingers 33 · comprehension 135 · extension 40 · spelunking 21 · design 27.
+Tier totals: 130 run (lupin) · 9 run (lupin REPL) · 19 run (wolf) · 8 run (wolf + lupin) · 61 prose · 20 pending.
+Taxonomy spread (tags, hybrids counted once per kind): fingers 33 · comprehension 136 · extension 40 · spelunking 21 · design 27.
 
-## ch01 — 7 exercises
+## ch01 — 8 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
@@ -25,7 +25,8 @@ Taxonomy spread (tags, hybrids counted once per kind): fingers 33 · comprehensi
 | §1.4 — The REPL: a spec you can interrogate | 1-4 | fingers · lupin REPL | run (lupin REPL) |
 | §1.3 — Scripts before projects | 1-5 | fingers + extension · lupin | run (lupin) |
 | §1.5 — What `run` was doing for you | 1-6 | spelunking · lupin | run (lupin) |
-| §1.2 — Installing the one tool | 1-7 | fingers · lupin | run (lupin) |
+| §1.5 — What `run` was doing for you | 1-8 | comprehension · wolf + lupin | run (wolf + lupin) |
+| §1.2 — Two implementations, one language | 1-7 | fingers · wolf + lupin | run (wolf + lupin) |
 
 ## ch02 — 8 exercises
 

@@ -3,8 +3,8 @@
 Exercises 1-1 through 1-3 are the doctrine's exemplar batch and live in
 `principles/EXERCISES.md` §5; their numbering is stable and this file
 continues from it. Commands run from this directory; outputs are pasted
-from real runs. lupin is `lupin 0.1.0 (wolf-interp)`; wolf is the
-wolf-lang debug build at `impl_version 0.0.1`.
+from real runs against the tools `wolf-toolchain.toml` pins: `lupin
+0.1.4 (wolf-interp, pin ad6cef7)` and `wolf 0.0.1 (wolfgang)`.
 
 ## §1.4 — The REPL: a spec you can interrogate
 
@@ -97,24 +97,47 @@ rule." The clause tag `[gram.expr.block]` names the grammar rule the
 file broke, and the span points at the end of the file, which is where
 the absence lives.
 
-## §1.2 — Installing the one tool
-
-**Exercise 1-7** *(fingers · lupin)* — Ask both tools who they are:
-`lupin --version` and `wolf --version`. Write down which parts of each
-line will appear in this book's colophon, and why a book would print
-them at all.
+**Exercise 1-8** *(comprehension · wolf + lupin)* — Build the greeting,
+then run `wolf build hello.lu` a second time without editing the file.
+Predict what the second build does before you run it, and where it put
+what it kept.
 
 Solution:
 
 ```console
-$ lupin --version
-lupin 0.1.0 (wolf-interp, pin cbde620)
-$ wolf --version
-wolf 0.0.1 (pre-alpha)
+$ wolf build hello.lu --verbose
+wolf build: root: reused object (key a476d75665e8c37a)
 ```
 
-The version and the pin are the colophon's material: every sample in
-this book is CI-verified against a specific toolchain, and these lines
-are how you check that your tools are the ones the book's claims are
-true for. Output that differs from a book's printed output is a
-version question before it is a bug.
+The second build compiles nothing. `.lu-cache/` beside the source holds
+the object file keyed by everything that could change its contents —
+the module's source, the compiler's own build id, the profile, and the
+interface surfaces of what it depends on — so an unchanged key is an
+answer already on disk. The key in your terminal will differ from the
+one above; what will not differ is the word `reused`.
+
+## §1.2 — Two implementations, one language
+
+**Exercise 1-7** *(fingers · wolf + lupin)* — Compile the greeting with
+`wolf build`, run the binary, then run the source under `lupin`.
+Compare the two outputs byte for byte — `diff <(./hello) <(lupin
+hello.lu)` will do it. Then say which of the two runs could have
+printed something different, and what it would mean about the language
+if it had.
+
+Solution:
+
+```console
+$ wolf build hello.lu
+$ diff <(./hello) <(lupin hello.lu)
+$ echo $?
+0
+```
+
+`diff` printing nothing is the whole result. Either run could have
+disagreed: the compiler lowered the f-string to a sequence of writes
+against the runtime's print shims, and the interpreter evaluated it
+against its own string model — two separate pieces of code, written
+from the specification rather than from each other. A byte of
+disagreement between them is a bug in one implementation or a hole in
+the specification, and it is found here rather than in your program.

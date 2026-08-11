@@ -1,7 +1,7 @@
 # Chapter 10 — Spawning is a scope: exercises
 
 Commands run from this directory; outputs are pasted from real runs.
-lupin is `lupin 0.1.0 (wolf-interp)`; wolf conform-run reports
+lupin is the interpreter `wolf-toolchain.toml` pins; wolf conform-run reports
 `unsupported` for this chapter's surface, so every checker here is
 lupin. Seeded runs use `lupin run FILE --seed=N`.
 

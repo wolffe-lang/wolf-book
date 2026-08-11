@@ -86,7 +86,7 @@ show it; it may not say "obviously."
 
 Programs live in `principles/exercises/chNN/`. Commands are as run from
 each chapter's directory; outputs are pasted from the runs, unedited.
-lupin is `lupin 0.1.0 (wolf-interp, pin cbde620)`; wolf is the wolf-lang
+lupin is the interpreter `wolf-toolchain.toml` pins; wolf is the wolf-lang
 debug build at `impl_version 0.0.1`.
 
 ### Chapter 1 — Hello, Wolf

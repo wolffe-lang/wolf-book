@@ -6,8 +6,8 @@ run from this directory; outputs are pasted from real runs.
 
 ## §3.3 — Arithmetic that traps
 
-**Exercise 3-6** *(extension (break-it-on-purpose) · lupin)* — Using only integer
-literals and one `*`, write the smallest program that traps with
+**Exercise 3-6** *(extension (break-it-on-purpose) · lupin)* — Using one
+`i32` binding and one `*`, write the smallest program that traps with
 `overflow` on `i32`. State, before running it, why the number you chose
 is the smallest one that works, and what the trap line will say the
 product was.
@@ -16,14 +16,15 @@ Solution — `ch03/ex3-6.lu`:
 
 ```wolf
 fn main() -> !int {
-    print("{46341 * 46341}")
+    let n: i32 = 46341
+    print("{n * n}")
     0
 }
 ```
 
 ```console
 $ lupin ex3-6.lu
-ex3-6.lu: trap(overflow): `*` produced 2147488281, outside `i32` — checked arithmetic traps in every profile (X3); spell intended overflow `wrapping[i32]` [arith.checked] at 137..150
+ex3-6.lu: trap(overflow): `*` produced 2147488281, outside `i32` — checked arithmetic traps in every profile (X3); spell intended overflow `wrapping[i32]` [arith.checked] at 160..165
 $ echo $?
 3
 ```
@@ -32,7 +33,9 @@ $ echo $?
 46341 is the smallest integer whose square leaves the type: 46340²
 is 2147395600 and fits. The trap reports the true product — the
 machine computed it, checked it against the type, and refused to
-pretend it fit.
+pretend it fit. The annotation is what makes the multiplication an
+`i32` multiplication: a bare literal is unconstrained until something
+gives it a type, and `let n: i32` is that something.
 
 **Exercise 3-7** *(comprehension · lupin)* — Predict both lines. If you
 arrived from Python, predict them twice:

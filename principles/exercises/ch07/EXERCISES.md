@@ -1,7 +1,7 @@
 # Chapter 7 — Who owns this?: exercises
 
 Commands run from this directory; outputs are pasted from real runs.
-lupin is `lupin 0.1.0 (wolf-interp)`; wolf is the wolf-lang debug build
+lupin is the interpreter `wolf-toolchain.toml` pins; wolf is the wolf-lang debug build
 at `impl_version 0.0.1`. Where the compiler cannot yet observe a
 program (its runner lands at s31), the solution shows the observation
 record it emits instead, and says so.

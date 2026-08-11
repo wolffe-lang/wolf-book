@@ -99,7 +99,7 @@ project from change; the log protects everyone from a lie agreed to
 early — "even the author cannot swap bits under a tag" is the log's
 sentence, not the lockfile's.
 
-**Exercise 23-6** *(spelunking · wolf)* — Ask today's binary to add a
+**Exercise 23-6** *(spelunking · wolf)* — Ask the binary to add a
 dependency and to audit one. Read what comes back, and reconcile it
 with this chapter's existence.
 
@@ -107,16 +107,20 @@ Solution — real runs, both:
 
 ```console
 $ wolf add example/pkg
-wolf: pre-alpha scaffold; `wolf build|run` lands at sprint s31
+wolf add: not yet (grows at its own campaign; D34's single binary)
 $ wolf audit
-wolf: pre-alpha scaffold; `wolf build|run` lands at sprint s31
+wolf audit: not yet (grows at its own campaign; D34's single binary)
 ```
 
-The scaffold names its blocking sprint rather than guessing at
-behavior — the ledger posture again. The chapter can exist because
-the *decisions* (D33, MVS, the sum-and-log design) are locked and the
-formats pinned; the exercises that need the tool say so and wait
-(23-8), and the ones you can do by hand, you did.
+The binary declines rather than guessing at behavior — the ledger
+posture again. The chapter can exist because the *decisions* (D33,
+MVS, the sum-and-log design) are locked and the formats pinned; the
+exercises that need the tool say so and wait (23-8), and the ones you
+can do by hand, you did.
+
+*(Filed for the chapter sprint that publishes this material: same
+finding as exercise 20-4 — a refusal is not product output, and this
+stem waits for `wolf add`/`wolf audit`.)*
 
 ## §23.4 — Script mode, demystified
 
