@@ -18,14 +18,16 @@ Severity key:
   M1 (or at s37–s38 for std surface); the section is rewritten, not
   patched.
 
-**Status (updated 2026-08-11).** **rp-M1 is done**: pins bumped to
-wolf-lang `29a9d9c` (M1 — `wolf build|run` real, 31 native programs)
-and lupin `v0.1.4`, and every Pass-A row below is closed. **13 of 28
-findings closed** (F1, F2, F3, 1–10) — the whole front matter and all
-of chapter 1. **15 remain, every one of them rp-std's** (11–25, ch02's
-three std-surface paragraphs, ch03's one, ch04's two, ch05's five,
-ch06's four), gated on s37–s38. Closed rows carry a RESOLVED note
-naming what replaced them.
+**Status (updated 2026-08-11, rp01).** **rp-M1 is done** (see §6) and
+**rp01 has closed chapter 2's three rows**, which the string surface now
+serves. **16 of 28 findings closed** (F1, F2, F3, 1–13) — the whole
+front matter, all of chapter 1, all of chapter 2. **12 remain: 11 are
+rp-std's** (14–25 less the three closed — ch03's one, ch04's two,
+ch05's five, ch06's three), still gated on the collection and
+diagnostics surface, **and one is `par`'s** (26, ch06 §6.5's box, which
+rp01 deliberately did not touch: its pointer at §13.1 is correct and
+the section is held). Closed rows carry a RESOLVED note naming what
+replaced them and the pass that verified it.
 
 ---
 
@@ -58,7 +60,8 @@ all rp-std.
 | 9 | `book/ch01.md:364–371` | "**The implementation has not got there yet (exit 4).** A young toolchain also declines work it will do later … you will see it a few times in chapter 2." | STRUCTURAL — a whole verdict class exists in the pedagogy because the pin is incomplete; prose pre-apologizes for chapter 2. | **RESOLVED rp-M1** — the exit-4 verdict class and its pre-apology are deleted. The third verdict is now exit 1: `main` handing back an error, shown on a four-line program that `?`s a bad `to_int`. |
 | 10 | `book/ch01.md:373–378` | "What is missing from this section is `wolf build`. There is no compiled artifact today, no `--release`, no binary to hand somebody. When the compiler's driver lands … this section gains the artifact it is named for." | FOUNDATIONAL — half of §1.5 is a deferral paragraph. | **RESOLVED rp-M1** — paragraph replaced by the artifact itself: `wolf build hello.lu`, `./hello`, `echo $?`, and one sentence on debug information. `--release` is not mentioned, because a tier that does not exist is not a thing the book withholds. |
 
-**Rows 11–25 below are rp-std's** (s37–s38). rp-M1 deliberately left
+**Rows 14–25 below are rp-std's** (rows 11–13 were too, and closed at
+rp01 when the string surface arrived). rp-M1 deliberately left
 every one of them: they are std-surface findings, and a pass that
 rewrote them at the M1 pin would be reshaping prose around gaps that
 are still there. They were re-verified as still-accurate at the M1
@@ -69,11 +72,11 @@ through the same `unsupported` channel a temporary absence uses.
 
 ### Chapter 2 — Strings, honestly
 
-| # | Where | Quote | Severity |
-|---|-------|-------|----------|
-| 11 | `book/ch02.md:87–99` | "One honest gap. A precision spec … is not implemented in the pinned interpreter … So every table in this book counts in whole numbers … When the spec lands in the implementation, that exercise gets its float column." | STRUCTURAL — a *book-wide* formatting constraint (integer tables everywhere) shaped by one missing feature. |
-| 12 | `book/ch02.md:121–123` | "Two you will reach for and not find yet are `split` and `find` — the interpreter's string surface is a documented subset … §2.4 shows the scan that does the same work today." | STRUCTURAL. |
-| 13 | `book/ch02.md:326–331` | "Splitting on a separator you choose is the method §2.1 does not have, so until it lands the spelling is a scan." | STRUCTURAL — the comma-scan workaround. Note the blast radius: `comma()` and the byte-scan idiom recur in ch03, ch04 (`comma`/`name_of`/`cents_of`), ch05, and ch06 (§6.1, §6.4). The scan has real pedagogical value (byte-honest slicing) and can *survive* as pedagogy — but today it is taught as the *only* spelling, and one sentence per site says so. |
+| # | Where | Quote | Severity | Status |
+|---|-------|-------|----------|--------|
+| 11 | `book/ch02.md:87–99` | "One honest gap. A precision spec … is not implemented in the pinned interpreter … So every table in this book counts in whole numbers … When the spec lands in the implementation, that exercise gets its float column." | STRUCTURAL — a *book-wide* formatting constraint (integer tables everywhere) shaped by one missing feature. | **RESOLVED rp01** — the surface landed at lupin 0.1.5 and the prose landed with it at the bs10 bump; rp01 re-verified at its own pin and closed the row. `"{3.14159:>8.2}"` renders `    3.14`, §2.2 teaches the whole spec, and the honest-gap paragraph is gone. |
+| 12 | `book/ch02.md:121–123` | "Two you will reach for and not find yet are `split` and `find` — the interpreter's string surface is a documented subset … §2.4 shows the scan that does the same work today." | STRUCTURAL. | **RESOLVED rp01** — both exist and were run at this pin: `"a,b,c".split(",")` yields three pieces, `.find("b")` is `2`. §2.3 lists `split`, `find`, `rfind` and `replace` as ordinary methods with no subset apology. |
+| 13 | `book/ch02.md:326–331` | "Splitting on a separator you choose is the method §2.1 does not have, so until it lands the spelling is a scan." | STRUCTURAL — the comma-scan workaround. Note the blast radius: `comma()` and the byte-scan idiom recur in ch03, ch04 (`comma`/`name_of`/`cents_of`), ch05, and ch06 (§6.1, §6.4). The scan has real pedagogical value (byte-honest slicing) and can *survive* as pedagogy — but today it is taught as the *only* spelling, and one sentence per site says so. | **RESOLVED rp01** — the "until it lands" sentence is gone, and the scan survived on exactly the merit the row predicted: it teaches byte-honest slicing and is no longer the only spelling. The deferral grep over `book/ch02.md` returns zero hits. |
 
 ### Chapter 3 — Values and expressions
 
@@ -444,6 +447,78 @@ implementations disagree on process exit codes for static rejections
 the debuggable binary, though real, opens under gdb with an inherited
 `.debug_gdb_scripts` warning and breaks twice on `main`, so §1.5 states
 the capability and prints no transcript.
+
+---
+
+## 7. rp01 closeout (2026-08-11)
+
+**Pins.** wolf-lang `8321aba4e77d16f598a77e7934c146700cbcfa46` (latest
+trunk with green CI; the two shas below it are red) and wolf-interp
+`v0.1.6` (tag object `35cd4ec`, commit `3a10f40`). wolf-lsp unchanged.
+The tag's own CI run is red for a reason outside the interpreter — the
+release rung's greps asserted diagnostic/verdict adjacency and 0.1.6's
+record grew an additive `warnings` array between them — and the three
+commits above the tag are that harness catching up, green at the last.
+The book pins the tag; the whole book suite is green on it.
+
+**Suite movement at the bump.** Two console blocks, and nothing else:
+the `lupin --version` transcripts in `book/ch01.md` §1.2 and the
+colophon, re-captured from `lupin 0.1.5 (wolf-interp, pin f0da6e6)` to
+`lupin 0.1.6 (wolf-interp, pin 13b811f)`. Zero diagnostic-snapshot
+drift across all 75 reviewed snapshots, zero flips, zero pending-row
+changes (chapter 13 adds three more snapshots, for 78). The banked E0201 `when`-arity flip did **not** fire: lupin
+0.1.6's wording realignment left that diagnostic byte-identical in both
+tools, so §12.4's paired blocks replay unchanged and the half-open row
+stays open on its own terms. Counts before → after, at the same book
+content: 372 → 372 samples, 364 passing, 8 pending, 2 → 0 failures.
+With chapter 13 added the run is 377 samples, 369 passing, 8 pending, 0
+failed, 0 flips, 158 of 160 console blocks replayed.
+
+**What the pin served.** Rows 11, 12 and 13 close: precision specs,
+`split` and `find` are all real, verified by run at this pin, and
+chapter 2's prose was already rewritten around them at the bs10 bump —
+this pass verified and closed the paperwork. The deferral grep over
+`book/ch02.md` returns zero reader-facing hits.
+
+**What the pin did not serve, re-verified rather than assumed.** `Set`
+is still not constructible (`Set[int]()` is `unsupported: \`int\` does
+not resolve`, exit 4); no combinator exists (`sorted_by` is
+`unsupported`); `m["a"] += 1` is still `does not denote a place at run
+time`. Rows 18, 19, 20, 22 and 24 therefore stand as written. One
+correction to row 25's wording for whoever takes it: `fn main(args:
+List[str])` is no longer rejected — lupin accepts the signature and
+hands it an empty list, and wolf reaches `wir` before answering
+`unsupported` — but there is still no argv, because the CLI itself
+refuses trailing arguments (`lupin args.lu foo` is `error: unexpected
+argument 'foo' found`). An always-empty list is not an argument list;
+the row stays, with a sharper blocker.
+
+**Row 26 left deliberately.** ch06 §6.5's boxed `par` promise is
+untouched. rp01's gate did not open on `par`, the box's pointer at
+§13.1 is *correct* — that is the slot chapter 13 reserves for the
+section — and editing a shipped falsifiable promise whose claim has not
+been tested either way is not a pin-bump decision. The box's two
+apparatus words ("the sprint that writes chapter 13") remain a live
+tense-discipline finding for whoever cashes it.
+
+**Tense self-audit.** The grep set over the new prose
+(`book/ch13.md`) and every file this pass edited returns zero
+reader-facing hits for deferral language ("not yet", "when it lands",
+"at this pin", "for now", "a feature away", "does not exist yet",
+"will land"), zero sprint or milestone identifiers, and zero scaffold
+output taught. Chapter 13 names no schedule and does not mention `par`
+in reader-facing text at all — the one forward reference it would
+naturally make is exactly the one the discipline forbids, so the
+section that would receive it is absent from the page rather than
+promised on it. The remaining hits in those files are inside the
+unpublished HOLD and AUDIT LEDGER comments, which is where the standard
+puts them.
+
+**Opened by this pass.** One blocker, in `book/ch13.md`'s ledger and
+loud: lupin's `--explore` path does not run the E11xx static checks, so
+all three programs chapter 13 rejects are explored by the same binary
+that refuses to run them — and the racy one is certified `observably
+deterministic` on the lost-update run. `--seed` is unaffected.
 
 ---
 

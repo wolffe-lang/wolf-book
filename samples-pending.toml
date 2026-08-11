@@ -13,6 +13,15 @@
 # (E1102, unsendable channel payload). Both codes exist in the compiler
 # at this pin and both exercises are ordinary green samples with
 # reviewed snapshots.
+#
+# At the rp01 bump (lupin v0.1.6) the *interpreter* grew the same three
+# checks — E1101, E1102, E1103 — refusing at the resolve rung with
+# byte-identical codes and spans. No row moved, because none was waiting
+# on it: both exercises had already flipped on the compiler's half.
+# Recorded because it is what makes chapter 13 writable, and because a
+# differential those rows rested on is gone — lupin no longer runs a
+# racy capture to a silently wrong exit 0. The two ch13 rows left below
+# are `par`'s, and they are what holds §13.1.
 
 [[pending]]
 id = "ch05/ex5-8"
