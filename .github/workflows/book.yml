@@ -120,6 +120,13 @@ jobs:
         shell: bash
         working-directory: wolf-book
         run: cargo xtask verify-docs
+      # Contrast code rots too: the Rust the book prints in ch07 §7.6 is
+      # vendored, compiled with warnings denied, asserted, and diffed
+      # against the printed block. Runs without the wolf toolchain.
+      - name: contrast code (other languages the book quotes)
+        shell: bash
+        working-directory: wolf-book
+        run: cargo xtask contrast
       - name: corpus export artifact (sync PR input for wolf-lang corpus/book/)
         if: matrix.os == 'ubuntu-latest'
         uses: actions/upload-artifact@v4

@@ -40,6 +40,13 @@ register. Chapters 7 and 8 inherit TONE.md §4.1's two worked placements
 (the Mahler Sixth hammer at chapter 7's head, the Tristan simile in the
 freeze section), so bs03 should place one of them, not both.
 
+bs03 (chapter 7) adds no row. It places the Mahler Sixth hammer at the
+chapter head — dark-Romantic, public domain, untracked here — and no
+in-prose simile, so chapter 7 spends one reference placement in total.
+Part 2's single Cage placement stays reserved for chapter 9 (row 3
+above), which is where TONE.md §4.2's worked placement puts it; the
+Tristan simile stays available to bs04's freeze section.
+
 The dark-Romantic register (TONE.md §4.1 — Mahler, Bruckner, Wagner
 allusions) is public domain and is deliberately *not* tracked here;
 this ledger is for material with a rights holder.

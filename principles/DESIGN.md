@@ -117,6 +117,10 @@ xtask convention:
   against the pinned toolchain (wolf) and pinned interpreter (lupin),
   snapshot-checks diagnostics, and exports the corpus tree. Defined in
   bs00's sprint file; unchanged here.
+- **`cargo xtask contrast`** — compiles, with warnings denied, and runs
+  the other-language programs the book quotes for honest contrast
+  (`samples/contrast/`), and diffs each against the block printed on the
+  page. The executed-truth invariant does not stop at wolf's border.
 - **`cargo xtask grammar-sync`** — vendors the generated tmLanguage
   files from the pinned wolf-lsp revision and regenerates the one
   highlight CSS; drift between the vendored grammar and the pin fails

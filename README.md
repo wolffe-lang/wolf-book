@@ -22,6 +22,10 @@ Everything is cargo (D34's spirit: one tool):
   named feature — report-only, and a pass there is a FLIP error so a
   landing feature is noticed. `--self-test` proves the rig catches
   deliberately-broken samples; `--bless` updates snapshots for review.
+- `cargo xtask contrast` — compiles and runs the vendored other-language
+  code the book quotes (`samples/contrast/`), with warnings denied, and
+  checks that every ```` ```rust ```` block in `book/` appears there
+  verbatim. Contrast code rots too.
 - `cargo xtask grammar-sync` — re-vendors the wolf tmLanguage grammars
   from wolf-lsp at the pin into `highlight/` and regenerates the one
   highlight stylesheet (`theme/highlight.css`); `--check` fails on any
