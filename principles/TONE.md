@@ -29,7 +29,8 @@ The is10 register rules (wolf-interp's manual holds to them; so do we):
   "seamless" — deleted on sight. A claim of merit is made by a program
   and a measurement or it is not made.
 - **Honest failure output is part of the product.** Errors and traps are
-  shown in full, never elided with `...`, never retyped by hand.
+  shown in full, never elided with `...`, never retyped by hand — traps
+  and diagnostics, not scaffold refusals (see Tense discipline).
 
 The book-specific rules:
 
@@ -47,8 +48,9 @@ The book-specific rules:
   *trap*, *row*. Synonym drift is a copyedit defect.
 - **Comparisons to other languages are ones we would defend to that
   language's designers.** Honest contrast, credited lineage, no strawmen.
-- **No feature is promised before its campaign shipped.** Deferrals are
-  stated plainly ("v1 does not do this").
+- **No feature is promised before its campaign shipped.** Scope is
+  stated plainly ("v1 does not do this"); schedule is never stated
+  (see Tense discipline).
 - **Second person, American spelling, no rhetorical questions as section
   glue** (one per chapter, if the material genuinely poses it).
 
@@ -69,6 +71,54 @@ builds on it. The diagnostic is a primary source, treated with the same
 respect as a spec clause.
 
 ---
+
+## Tense discipline
+
+The book speaks in the present tense about what exists. Not what is
+scheduled, landing, or promised — what a reader with the pinned
+toolchain observes today, described as the product it is.
+
+The operative rule: **where the toolchain and the book disagree, the
+book waits or the toolchain hurries. There is no third option.** The
+third option — prose that teaches the gap — is what this section
+exists to forbid. Specifically:
+
+- **No deferral prose.** "Does not exist yet", "when X lands", "at
+  this pin", "for now", "a feature away", "the day wolf does both" —
+  none of these appear in reader-facing text. A chapter that needs
+  them is a chapter whose gate has not opened; it stays a draft.
+- **No sprint numbers, milestone names, or pin apparatus in the
+  reader's text.** s31, s37, is08, "the pinned interpreter" — these
+  are CI's vocabulary and the colophon's, never a section's. The
+  reader is told which toolchain version the book is true for
+  exactly once, in the colophon.
+- **Scaffold output is not product output.** The honest-failure rule
+  (§1) covers traps and diagnostics — the product's real voice. It
+  does not cover `unsupported` refusals or pre-alpha banners, which
+  are the *absence* of product. They are never taught, never made
+  into exercises, and never used as a section's load-bearing sample.
+- **No workaround taught as the way.** When the designed surface is
+  missing, the section that teaches it waits for the surface. A
+  longer spelling may be taught *beside* the designed one when it
+  earns its page on pedagogy alone (a byte-scan that teaches
+  slicing), and the test is: would this passage survive, unedited,
+  the day the feature lands? If not, it is deferral prose in
+  disguise.
+- **Language-scope statements are not deferrals.** "v1 has no
+  macros" is a fact about the product and belongs in the book,
+  present tense, no apology. The line between scope and schedule:
+  scope is a decision with a D-number; schedule is a sprint. The
+  book states decisions and never states schedules.
+- **Falsifiable cross-references within the book** ("in Part 3 this
+  loop parallelizes by changing one call") are permitted only when a
+  named later chapter is contractually bound to cash them, and are
+  budgeted like sass: rare, deliberate, and each one signed off in
+  review.
+
+Where drafting hits a gap, the finding goes to the audit ledger and
+the `book-audit` loop — at full volume, with the same honesty this
+section removes from the prose. The ledger is where "not yet" lives.
+The reader never sees it.
 
 ## 2. The sass budget
 
