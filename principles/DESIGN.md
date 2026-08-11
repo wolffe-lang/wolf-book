@@ -120,7 +120,17 @@ xtask convention:
 - **`cargo xtask contrast`** — compiles, with warnings denied, and runs
   the other-language programs the book quotes for honest contrast
   (`samples/contrast/`), and diffs each against the block printed on the
-  page. The executed-truth invariant does not stop at wolf's border.
+  page. The executed-truth invariant does not stop at wolf's border. Two
+  dialects, because the two languages carry assertions differently:
+  - **Rust** (`.rs`) — built by `rustc --test --deny warnings` and run,
+    so the file's own `#[test]` assertions are the proof.
+  - **C** (`.c`, bs10) — compiled `cc -std=c99 -Wall -Werror` and
+    executed against the declared cases in `samples/contrast/cases.toml`,
+    each naming argv, input files, stdin, and the exact stdout, stderr,
+    and exit status. Both streams default to empty, so an unexpected
+    diagnostic fails the case; a `.c` file with no case fails the lane.
+    Where no C compiler exists the lane skips *loudly*, by name and
+    count, per the house rule.
 - **`cargo xtask grammar-sync`** — vendors the generated tmLanguage
   files from the pinned wolf-lsp revision and regenerates the one
   highlight CSS; drift between the vendored grammar and the pin fails

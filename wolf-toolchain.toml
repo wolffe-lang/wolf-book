@@ -7,8 +7,13 @@
 # wolf-lang at M1: `wolf build` and `wolf run` compile and execute real
 # programs; `wolf conform-run` remains the sample runner's checker rung,
 # because it reports a machine-readable verdict for every phase.
+#
+# bs10 bumped this from 29a9d9c (M1) to trunk's tip at s33 — the latest
+# green trunk at the bump. The whole suite was re-verified at the new
+# rev before the bump landed: 274 passed, 10 pending, 0 failed, 0 flips,
+# 101 of 103 console blocks replayed. No sample was reshaped.
 repo = "tenseleyFlow/wolf-lang"
-rev = "29a9d9c79334d708905aa8065b24b09855ccbe91"
+rev = "f0da6e67158292e962c93268973d9e927fe703a0"
 impl_version = "0.0.1"
 
 [lupin]

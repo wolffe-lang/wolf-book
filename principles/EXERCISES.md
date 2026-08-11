@@ -72,9 +72,24 @@ where they show diagnostics. A solution that stops compiling fails the
 book's build — solutions rot first, so they are wired to the same alarm
 as everything else.
 
-The one exception: the capstone (chapter 26) publishes milestone
-checkpoints, not solutions. A capstone with an answer key is a tutorial;
-the milestones give the reader diffable safety nets instead.
+The one exception, narrowed (bs10): **the solo — chapter 31, `logden`**
+— publishes milestone checkpoints, not solutions. A project with an
+answer key is a tutorial; the checkpoints give the reader diffable
+safety nets instead.
+
+The exception used to cover "the capstone", when the book closed with
+one. It now covers exactly one chapter, and the narrowing matters in
+both directions. The five *guided* projects (chapters 26–30) are
+walkthroughs, so they end with an extension batch numbered and solved
+like every other chapter's — a walkthrough that withholds answers is
+just a slower lecture. The solo withholds them on purpose, because the
+chapter's whole claim is that the reader can now stand up: everything it
+needs was taught, and it says only that. No community-solutions link, no
+"if stuck, see the appendix" — the hints in the milestone ladder are the
+entire safety net, one per milestone.
+
+The coda (chapter 32) carries no exercise batch: it is a page of reading
+about the allocator the reader never needed, not a build.
 
 Solution register per TONE.md: deadpan for fingers and comprehension,
 discursive for design. A solution may say "we chose the boring way" and

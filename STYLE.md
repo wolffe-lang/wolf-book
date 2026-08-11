@@ -8,8 +8,9 @@ the overlap here is a pointer, not a second rule.
 ## Samples
 
 - **≤ 25 lines on the main path.** A longer program is split into
-  `part(name)` blocks threaded through prose, or it belongs in the
-  capstone.
+  `part(name)` blocks threaded through prose, or it belongs in a
+  projects chapter, where the walkthrough form grows one program across
+  numbered stages.
 - **Every sample is executed by CI.** No code appears in the book that
   CI did not execute (the Crafting Interpreters invariant, inverted:
   we extract from prose). Directives on the fence say how:

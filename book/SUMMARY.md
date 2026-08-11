@@ -40,9 +40,15 @@
 - [The covenant: no build scripts](ch24.md)
 - [Editions, stability, publishing](ch25.md)
 
-# Part 5 — Capstone: `logden`
+# Part 5 — Projects
 
-- [The capstone](ch26.md)
+- [`count`, twice](ch26.md)
+- [`rpn`, twice](ch27.md)
+- [`wordtree`, twice](ch28.md)
+- [`tinyvm`](ch29.md)
+- [`pargrep`](ch30.md)
+- [`logden`, alone](ch31.md)
+- [Coda: the allocator you never needed](ch32.md)
 
 ---
 

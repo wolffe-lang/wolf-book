@@ -6,7 +6,7 @@ this document disagree, this document wins and the delta is recorded in
 §Deltas for that sprint's future author. Each section carries a one-line
 promise: what the reader can *do* after it that they could not before.
 
-Numbering: parts are numbered 1–5; chapters run continuously 1–26;
+Numbering: parts are numbered 1–5; chapters run continuously 1–32;
 sections are `N.M` and their numbers are the stable anchors of the web
 edition (see DESIGN.md §Navigation).
 
@@ -311,29 +311,98 @@ an ecosystem with no build scripts to fear.*
   semver with teeth.
 - Exercises 25-1 ….
 
-## Part 5 — Capstone: `logden`
+## Part 5 — Projects
 
-*The reader builds a concurrent log-search service end to end, spending
-every skill the book taught and learning nothing new — that is the
-point.*
+*The reader builds five programs guided, one alone, and reads the
+allocator they never needed — spending every skill the book taught and
+learning nothing new, which is the point.*
 
-### Chapter 26 — The capstone
-- 26.1 Architecture — recall which chapter taught each decision in the
-  target design.
-- 26.2 Milestone 1: single-shot search — ship the walking skeleton with
-  Parts 1–2 skills only.
-- 26.3 Milestone 2: a region per request — serve HTTP with request
-  arenas and structured shutdown.
-- 26.4 Milestone 3: shards as procs — supervise crashing shards into
-  degraded-but-correct service.
-- 26.5 Milestone 4: the C membrane — decompress shards through an
-  audited twenty-line wrapper.
-- 26.6 Milestone 5: deterministic tests — find a real ordering bug with
-  a seed, fix it, chaos-harden it.
-- 26.7 Milestone 6: the profiling pass — execute measure → constrain →
-  restructure → re-measure, and publish v1.0.
-- Milestones publish checkpoints, not solutions (see EXERCISES.md
-  §Solutions policy).
+The part's opening page states the **side-by-side honesty rule**: three
+of these builds stand beside the C programs they descend from, wolf
+wins are shown, and wolf non-wins are admitted in the text. Line counts
+come from `wc`, not from vibes.
+
+Gate notes below are CI vocabulary and stay out of reader text (TONE.md
+§Tense discipline). A chapter waits for its gate *whole*: no project
+ships partially.
+
+### Chapter 26 — `count`, twice
+*after K&R §1.5–1.6 · gate: an executable str surface — see §Deltas bs10*
+- 26.1 The tool, twice — read the two-column form, and the honesty rule
+  it runs on.
+- 26.2 Ritchie's state machine — read the C twin whole, and name the two
+  conventions it is built from.
+- 26.3 The same machine as a `match` — write the wolf loop and say which
+  column is shorter, from `wc`.
+- 26.4 Per file, and a total — grow the program to many inputs, reading
+  each through `fs_read_text` over rows.
+- 26.5 Where wolf is not shorter — read the places the C wins, with the
+  measurement.
+- Exercises 26-1 ….
+
+### Chapter 27 — `rpn`, twice
+*after K&R §4.3 · gate: an executable str + fmt surface, `List`*
+- 27.1 A stack and a switch — read the C twin, and find the value that
+  means both "zero" and "empty".
+- 27.2 The operand stack as a `List` — build the stack, push, pop.
+- 27.3 Parse errors as payload-carrying tags — replace the error flag
+  with a row, and propagate it with `?`.
+- 27.4 The operator dispatch as a `match` — complete the calculator.
+- 27.5 Develop interpreted, ship compiled — run the same source under
+  lupin while writing it and `wolf build` it when done.
+- Exercises 27-1 ….
+
+### Chapter 28 — `wordtree`, twice
+*after K&R §6.5 · gate: an executable str surface, user structs in a
+region (structs and recursion already build)*
+- 28.1 The malloc showpiece — read the C twin, and count its allocations
+  and its frees.
+- 28.2 The tree in a region — allocate nodes ambiently and link them
+  freely.
+- 28.3 Counting words — grow the tree from real input.
+- 28.4 The alphabetized walk — print both programs' output side by side
+  and diff them.
+- 28.5 The closing brace — replace `treefree` with a brace, and read the
+  line counts for both programs.
+- Exercises 28-1 ….
+
+### Chapter 29 — `tinyvm`
+*wolf-native · gate: pools/match native*
+- 29.1 Fetch, decode, execute — build the dispatch loop as one `match`.
+- 29.2 Registers as a fixed `List` — give the machine its state.
+- 29.3 The heap as a `Pool` — allocate VM objects behind generational
+  handles.
+- 29.4 A dangling reference is a stale handle — inject one and read the
+  trap, not the exploit.
+- Exercises 29-1 ….
+
+### Chapter 30 — `pargrep`
+*wolf-native · gate: c07 native concurrency*
+- 30.1 Sharding the input — split the work before spawning anything.
+- 30.2 A task per shard — search slices inside one scope.
+- 30.3 Results through a channel — collect matches without a lock.
+- 30.4 The frozen pattern table — share one table across every task with
+  no copy.
+- 30.5 Testing with a seed — reproduce a parallel run exactly (X12).
+- Exercises 30-1 ….
+
+### Chapter 31 — `logden`, alone
+*the solo · gate: c07 native concurrency (+ c10 optional §)*
+- 31.1 The problem — read the whole specification of the program, and
+  nothing else.
+- 31.2 The milestone ladder — check your own work against six tagged
+  checkpoints, each with one hint.
+- No walkthrough, and no solutions: checkpoints are published, answers
+  are not (EXERCISES.md §Solutions policy — the one exception, and this
+  chapter is now all of it).
+
+### Chapter 32 — Coda: the allocator you never needed
+*after K&R §8.7 · gate: unsafe-tier surface (chapter 9's material)*
+- 32.1 Why C ends here — read why allocation is where K&R had to finish.
+- 32.2 A free-list allocator in a page — build one in the unsafe tier,
+  because the floor is simpler-ruled than the safe tier.
+- 32.3 The brace you already had — look back at chapter 28, where this
+  entire job was one closing brace.
 
 ## Back matter
 
@@ -345,10 +414,10 @@ point.*
   cross-checked against the compiler's catalog in CI.
 - **Appendix D — Spec cross-reference** — book section → spec clause,
   for readers who want the normative text.
-- **Solutions** — every exercise in chapters 1–25, collapsed by default
-  in the web edition, extracted and CI-run like all samples. The
-  capstone publishes milestone checkpoints instead (the one exception,
-  by design).
+- **Solutions** — every exercise in chapters 1–30, collapsed by default
+  in the web edition, extracted and CI-run like all samples. The solo
+  (chapter 31) publishes milestone checkpoints instead — the one
+  exception, and the only one.
 - **Glossary** — one term per concept, the copyedit enforcement list.
 - **Index** — hand-curated entries plus every error code, trap kind,
   and flag; section numbers, not page numbers, in the web edition.
@@ -393,13 +462,51 @@ sprint files remain the implementation contracts for everything else.
 - **bs08:** the sprint's four chapters map to 18–21 unchanged; §21.5
   ("where C wins today") is a first-class section, not a caveat box, and
   its regenerated-from-CI requirement is inherited from the sprint file.
-- **bs10:** the sprint's "part intro + six milestone chapters + closing"
-  compresses to one chapter with seven numbered sections plus a closing
-  discussion inside §26.7. Rationale: milestone chapters share one
-  running repo and one architecture; section-level structure keeps
-  checkpoint tags (`m1`–`m6`) as the real units. If drafting shows the
-  milestones need chapter-scale room, bs10's author may split them back
-  out — this delta records the default, not a straitjacket.
+- **bs10 (superseded):** the earlier delta compressed a capstone into
+  one chapter (26) with seven milestone sections. The single-capstone
+  plan is retired at the sprint's own instruction (2026-08-11 user
+  decisions): Part 5 is now **Projects** — five guided builds, the solo,
+  and the coda, chapters 26–32 — and the monolith survives as chapter
+  31, the one project the reader builds with no walkthrough.
+- **bs10 (gates, 2026-08-11):** P1–P3 (chapters 26–28) are drafted
+  against a surface that does not execute at the pins, so **no chapter
+  prose landed** and the three stubs stay stubs. The finding, measured
+  at wolf-lang `f0da6e6` and lupin 0.1.4 and reproducible with
+  `wolf build`:
+  - The s37 `str` method surface is **typed in sema only**. Native
+    lowering refuses every one of the twenty-one methods; `s.get(a..b)`
+    — the load-bearing recoverable slice — additionally does not exist
+    in lupin's std subset, so it executes in *neither* reader-facing
+    tool. `find`, `count`, `split`, `bytes`, `replace` and
+    `strip_prefix` are likewise absent from lupin.
+  - `fs_read_text` (P1's file reading) is refused in native lowering
+    ("checked lane only") and does not resolve in lupin at all.
+  - `List` does not lower natively, so P2's operand stack has no
+    compiled spelling.
+  - Interpolating a `str` *value* is refused natively, so even a
+    one-line program that prints a word it read cannot be built.
+  - What does build natively today: integer and float arithmetic,
+    format specs on primitives, user structs with `str` fields,
+    recursion, and `region` blocks. That is P3's skeleton and none of
+    P3's subject.
+  Everything above executes cleanly in the compiler's *checked* lane
+  (`conform-run --checked`), which is CI's rung and not a tool the book
+  may teach a reader to run their program with. The three gates
+  therefore read "an executable str surface", not "s37 landed", and the
+  chapters wait for whichever comes first: native lowering for the str
+  surface, or lupin's std subset completing it. Per the sprint's own
+  non-target — a chapter waits for its gate whole — waiting was the only
+  option that did not require inventing console output.
+- **bs10 (what did land):** the C contrast dialect the sprint's
+  Mechanics section calls for (`cargo xtask contrast` now compiles
+  `samples/contrast/*.c` with `-std=c99 -Wall -Werror` and executes
+  every case in `samples/contrast/cases.toml`, asserting stdout, stderr
+  and exit status), the three C twins for P1–P3 as original K&R-idiom
+  implementations with eleven asserted cases between them, their
+  PERMISSIONS.md rows (§2, K1–K3), this restructure, and the solutions
+  exception narrowed to chapter 31. The C half of each side-by-side is
+  buildable today and is therefore built and asserted today; the wolf
+  half is what waits.
 - **bs11:** back matter gains an explicit Appendix D (spec
   cross-reference), which bs11's checklist implies ("claims traced to
   spec clauses") but never lists as an artifact. The index doctrine

@@ -8,9 +8,14 @@ appendix-adjacent sets). Tier meanings — `run (…)`: the solution
 program is on disk and was executed by the named checker(s), output
 pasted from the run; `prose`: the solution is discussion, no program;
 `pending`: the stem and expected outcome exist, the feature does not —
-see `EXERCISES-PENDING.md` for each blocker and owner. Chapter 26
-(the capstone) is absent by design: it publishes milestone
-checkpoints, not exercises (EXERCISES.md §4, bs10's contract).
+see `EXERCISES-PENDING.md` for each blocker and owner.
+
+Part 5 (the projects, chapters 26–32) is absent from the totals below.
+Chapter 31 — the solo — is absent *by design*: it publishes milestone
+checkpoints, not exercises (EXERCISES.md §4). Chapter 32, the coda,
+carries no batch. The five guided projects (26–30) each end with an
+extension batch, and those batches land with their chapters, which wait
+on the gates recorded in `TOC.md` §Deltas.
 
 Tier totals: 131 run (lupin) · 9 run (lupin REPL) · 19 run (wolf) · 9 run (wolf + lupin) · 61 prose · 18 pending.
 Taxonomy spread (tags, hybrids counted once per kind): fingers 33 · comprehension 136 · extension 40 · spelunking 21 · design 27.
