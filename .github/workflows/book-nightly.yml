@@ -47,7 +47,7 @@ jobs:
       - name: build tools at main
         shell: bash
         run: |
-          (cd wolf-lang && cargo build --bin wolf)
+          (cd wolf-lang && cargo build --bin wolf && cargo build -p wolf_rt)
           (cd wolf-interp && cargo build --release --bin lupin)
       - name: samples against main (report-only)
         shell: bash

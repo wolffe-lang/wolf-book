@@ -1,0 +1,9 @@
+error[E1303]: module `root` holds `#[trusted]` code, but the package manifest does not declare it
+ --> ./s12.lu:8:4
+  |
+8 | fn pack(bytes: uint) -> int {
+  |    ^^^^ the first trusted function is here
+  |
+  = note: add `trusted = root` to `wolf.pkg` — the trusted roster is the supply-chain surface
+    `wolf audit` diffs (D11 ring 2), so every trusted module is declared, visibly.
+  = note: this package has no `wolf.pkg` yet; create one next to the entry file.

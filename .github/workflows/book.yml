@@ -90,11 +90,16 @@ jobs:
             wolf-book
             wolf-lang
             wolf-interp
-      - name: build pinned wolf (debug)
+      # `wolf build` links against the runtime staticlib and looks for it
+      # beside the driver; `--bin wolf` alone does not emit it, so the
+      # native console blocks (ch01, ch09) need this second target.
+      - name: build pinned wolf (debug) + the runtime staticlib
         if: steps.acquire.outputs.toolchain == 'full'
         shell: bash
         working-directory: wolf-lang
-        run: cargo build --bin wolf
+        run: |
+          cargo build --bin wolf
+          cargo build -p wolf_rt
       - name: build pinned lupin (release)
         if: steps.acquire.outputs.toolchain == 'full'
         shell: bash

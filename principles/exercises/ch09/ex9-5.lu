@@ -3,6 +3,7 @@
 // Exercise 9-5: the injected use-after-free the oracle catches, every run.
 import c "stdlib.h"
 fn main() -> !int {
+    // # Safety: DELIBERATELY WRONG — the read happens after the free.
     unsafe {
         let p = c.malloc(8) as *u8
         p[0] = 7

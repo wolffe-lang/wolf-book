@@ -148,8 +148,8 @@ this, and how big is the granule?" — asked at four sizes.*
 - 9.5 `#include`-grade C — import a real header, call it, and wrap it in
   twenty safe lines.
 - 9.6 FFI and regions — know what C may hold and for how long.
-- 9.7 Auditing: `#[trusted]` and `wolf audit` — read a dependency's
-  capabilities and catch an upgrade that wants more.
+- 9.7 Auditing: `#[trusted]` and the audit surface — read a package's
+  unsafe rings and hold its trusted roster to the manifest.
 - 9.8 The four-tier picture — close Part 2 with the whole model on one
   page.
 - Exercises 9-1 ….

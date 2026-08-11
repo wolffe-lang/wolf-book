@@ -1,0 +1,9 @@
+error[E1301]: a raw pointer write needs an `unsafe` block
+ --> ./s2.lu:9:5
+  |
+9 |     p[0] = 1
+  |     ^^^^ raw-tier operation in safe code
+  |
+  = note: raw pointers are inert data anywhere — only the tier's operations need the ring. Wrap
+    this in `unsafe { }` and state the invariant in a `# Safety:` comment; the rules inside
+    are simpler than the safe tier's, not stricter.

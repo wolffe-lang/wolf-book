@@ -3,6 +3,8 @@
 // Exercise 9-13: an aliasing promise, broken on the next line.
 import c "stdlib.h"
 fn main() -> !int {
+    // # Safety: DELIBERATELY WRONG — `p` and `q` are the same pointer,
+    // so the assertion below is false.
     unsafe {
         let p = c.malloc(8) as *u8
         let q = p

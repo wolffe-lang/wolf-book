@@ -162,8 +162,14 @@ pub fn run(root: &Path, args: &[String]) -> Result<()> {
         let is_pending = pending.contains_key(&s.id);
         match (outcome.passed, is_pending) {
             (true, false) => {
-                // Snapshot check for fail() samples.
-                if let (Check::Fail { .. }, Some(diag)) = (&s.check, &outcome.diagnostic) {
+                // Snapshot check for every sample whose subject is a
+                // tool's own text: static rejections, checked-build UB
+                // findings, and audit-surface's manifest rule.
+                let snapshotted = matches!(
+                    s.check,
+                    Check::Fail { .. } | Check::Ub { .. } | Check::Audit { .. }
+                );
+                if let (true, Some(diag)) = (snapshotted, &outcome.diagnostic) {
                     match check_snapshot(root, &s.id, diag, bless)? {
                         SnapshotResult::Ok => {}
                         SnapshotResult::Blessed => {
@@ -530,7 +536,12 @@ fn collect_book(root: &Path) -> Result<BookScan> {
             let sample_dir = out_dir.join(&name);
             std::fs::create_dir_all(&sample_dir)?;
             let file_name = format!("{name}.lu");
-            let mut headed = format!("//! check: {check}\n");
+            let mut headed = format!(
+                "//! check: {}\n",
+                check
+                    .corpus_directive()
+                    .unwrap_or_else(|| check.to_string())
+            );
             headed.push_str("//! phase: run\n");
             headed.push_str(&format!(
                 "// EXTRACTED by `cargo xtask samples` from {} — do not edit.\n",
@@ -683,6 +694,58 @@ fn execute(tools: &Tools, s: &Sample) -> Result<Outcome> {
                 phase_reached: phase,
             })
         }
+        Check::Ub { row } => {
+            // Undefined behavior is the one verdict the book will not
+            // take on a single machine's word: lupin's oracle has to
+            // fault the program and the compiler's checked build has to
+            // name the same row. The snapshot keeps the E1401.
+            let mut cmd = Command::new(&tools.lupin);
+            cmd.arg(&s.file_name).current_dir(&s.dir);
+            let (code, _out, err) = run_with_timeout(cmd)?;
+            let oracle = err.contains(": ub(") && code == Some(3);
+            let checked = conform_run_with(tools, s, true)?;
+            let named =
+                checked.verdict == "ub(mem.ub)" && checked.ub_row.as_deref() == Some(row.as_str());
+            let detail = if oracle {
+                format!(
+                    "wolf --checked said verdict `{}` row `{}`, expected `ub(mem.ub)` row `{row}`",
+                    checked.verdict,
+                    checked.ub_row.as_deref().unwrap_or("<none>"),
+                )
+            } else {
+                format!("lupin did not fault: exit {code:?}, stderr: {}", err.trim())
+            };
+            Ok(Outcome {
+                passed: oracle && named,
+                detail,
+                diagnostic: Some(checked.diagnostic),
+                phase_reached: checked.phase,
+            })
+        }
+        Check::Audit { code } => {
+            let mut cmd = Command::new(&tools.wolf);
+            cmd.arg("audit-surface")
+                .arg(format!("./{}", s.file_name))
+                .current_dir(&s.dir);
+            let (_code, _out, err) = run_with_timeout(cmd)?;
+            // The ring inventory goes to stdout; stderr carries the
+            // rendered diagnostics and one summary line. The snapshot is
+            // the diagnostics.
+            let diag: String = err
+                .lines()
+                .filter(|l| !l.starts_with("wolf audit-surface:"))
+                .collect::<Vec<_>>()
+                .join("\n");
+            Ok(Outcome {
+                passed: err.contains(&format!("error[{code}]")),
+                detail: format!(
+                    "`wolf audit-surface` did not report {code}; stderr: {}",
+                    err.trim()
+                ),
+                diagnostic: Some(normalize(&diag)),
+                phase_reached: None,
+            })
+        }
         Check::Compile => {
             let (verdict, diag, phase) = conform_run(tools, s)?;
             let passed = !verdict.starts_with("fail(");
@@ -696,16 +759,32 @@ fn execute(tools: &Tools, s: &Sample) -> Result<Outcome> {
     }
 }
 
+/// What one `wolf conform-run` invocation reported.
+struct ConformRun {
+    verdict: String,
+    diagnostic: String,
+    phase: Option<String>,
+    /// `x-ub-row` — present only on a `ub(…)` verdict from `--checked`.
+    ub_row: Option<String>,
+}
+
 /// Run `wolf conform-run ./file` and split its output into the verdict
 /// JSON (last line, stdout) and the rendered human diagnostic.
 fn conform_run(tools: &Tools, s: &Sample) -> Result<(String, String, Option<String>)> {
+    let r = conform_run_with(tools, s, false)?;
+    Ok((r.verdict, r.diagnostic, r.phase))
+}
+
+fn conform_run_with(tools: &Tools, s: &Sample, checked: bool) -> Result<ConformRun> {
     let mut cmd = Command::new(&tools.wolf);
     // The ./ prefix matters: bare relative paths lose their parent
     // directory in package-root resolution (EXERCISES.md audit ledger,
     // finding 2 — ba:papercut, wolf-lang driver).
-    cmd.arg("conform-run")
-        .arg(format!("./{}", s.file_name))
-        .current_dir(&s.dir);
+    cmd.arg("conform-run");
+    if checked {
+        cmd.arg("--checked");
+    }
+    cmd.arg(format!("./{}", s.file_name)).current_dir(&s.dir);
     let (_code, out, err) = run_with_timeout(cmd)?;
     let json_line = out
         .lines()
@@ -727,6 +806,10 @@ fn conform_run(tools: &Tools, s: &Sample) -> Result<(String, String, Option<Stri
         .get("phase_reached")
         .and_then(|v| v.as_str())
         .map(str::to_string);
+    let ub_row = parsed
+        .get("x-ub-row")
+        .and_then(|v| v.as_str())
+        .map(str::to_string);
     // The human-rendered diagnostic: everything before the JSON line,
     // wherever the driver put it.
     let mut diag = String::new();
@@ -740,7 +823,12 @@ fn conform_run(tools: &Tools, s: &Sample) -> Result<(String, String, Option<Stri
     if diag.trim().is_empty() {
         diag = err;
     }
-    Ok((verdict, normalize(&diag), phase))
+    Ok(ConformRun {
+        verdict,
+        diagnostic: normalize(&diag),
+        phase,
+        ub_row,
+    })
 }
 
 // ------------------------------------------------------------- snapshots
@@ -818,6 +906,10 @@ fn export_corpus(
         let Origin::Book { .. } = &s.origin else {
             continue;
         };
+        // A check wolf-lang's runner cannot spell does not travel.
+        if s.check.corpus_directive().is_none() {
+            continue;
+        }
         let src = s.dir.join(&s.file_name);
         let text = std::fs::read_to_string(&src)?;
         let text = match phases.get(&s.id) {

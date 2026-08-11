@@ -20,8 +20,6 @@ verdict for a feature that does not exist yet.
 |---|---|---|---|
 | 7-5 (static half) | `fail(E1003)` | borrow-escape checking reaches no static verdict; wolfc leaves `channel` unresolved | s33-channels-select, then s18-tier0-exclusivity |
 | 8-7 | `run(exit=0, stdout="c a")` | field writes through a pool index (`pool[h].next = k`) do not denote a place in the interp std subset | s37-core-types (std surface pinning) |
-| 9-8 | `run(exit=0)` | real libc calls; the interpreter models only its documented host-intrinsic set (approximation-contract §8) | s46-libclang-importer over s29-abi-v0 |
-| 9-10 | `run(exit=0)` | `wolf audit` and capability manifests | s51-package-manager |
 | 13-1 | `run(exit=0, stdout="285")` | `par` absent from the interp std subset | s32-tasks-scheduler / s37-core-types |
 | 13-3 | `fail(E1101)` | unsynchronized-capture checking | s32-tasks-scheduler / s33-channels-select |
 | 13-6 | `run(exit=0)` | `par` absent from the interp std subset | s32-tasks-scheduler / s37-core-types |
@@ -42,7 +40,7 @@ verdict for a feature that does not exist yet.
 ## What today's tools say
 
 Recorded at authoring time (lupin 0.1.0, wolfc 0.0.1 debug), so the
-flip is detectable: 5-8, 8-7, 9-8, 13-1, 13-6, 18-3, 18-5, 18-11 exit
+flip is detectable: 5-8, 8-7, 13-1, 13-6, 18-3, 18-5, 18-11 exit
 4 `unsupported` with the reason on stderr. 13-3 and 16-9 *run to exit 0*
 under lupin — the store-buffer and sendability programs execute today
 because closures capture by copy and no sendability check exists; their

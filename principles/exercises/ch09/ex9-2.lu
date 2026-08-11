@@ -3,6 +3,8 @@
 // Exercise 9-2 solution: a legal unsafe block — C's rules, kept.
 import c "stdlib.h"
 fn main() -> !int {
+    // # Safety: the eight bytes are written before they are read, every
+    // access is in bounds, and the allocation is freed exactly once.
     unsafe {
         let p = c.malloc(8) as *u8
         c.memset(p, 5, 8)

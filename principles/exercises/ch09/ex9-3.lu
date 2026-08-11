@@ -3,6 +3,8 @@
 // Exercise 9-3: one byte past the end.
 import c "stdlib.h"
 fn main() -> !int {
+    // # Safety: DELIBERATELY WRONG — the write below is one byte past
+    // the end of the allocation, which is the point of the exercise.
     unsafe {
         let p = c.malloc(8) as *u8
         c.memset(p, 0, 8)

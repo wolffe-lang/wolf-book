@@ -1,12 +1,26 @@
-//! check: run(exit=0)
+//! check: run(exit=0, stdout="64 bytes out, declared")
 //! phase: run
-// Exercise 9-10: the audit surface — a trusted membrane, declared.
-// PENDING: `wolf audit` and capability manifests land with the package
-// manager (s51); `#[trusted]` is parsed today, enforced then.
-#[trusted]
-fn c_strlen_wrapped(s: str) -> int {
-    s.len
+// Exercise 9-10: a trusted membrane, declared — the audit granule is
+// the module, and the attribute states the obligation out loud.
+import c "stdlib.h"
+import c "string.h"
+#[trusted("the scratch buffer never leaves this frame; freed before return")]
+fn pack(bytes: uint) -> int {
+    var written = 0
+    // # Safety: both allocations own `bytes` bytes for the whole
+    // block, every C call stays inside them, and each is freed once.
+    unsafe {
+        let raw = c.malloc(bytes)
+        c.memset(raw, 0, bytes)
+        let out = c.calloc(bytes, 1)
+        c.memcpy(out, raw, bytes)
+        c.free(raw)
+        c.free(out)
+        written = bytes as int
+    }
+    written
 }
 fn main() -> !int {
-    if c_strlen_wrapped("wolf") == 4 { 0 } else { 1 }
+    print("{pack(64)} bytes out, declared")
+    0
 }

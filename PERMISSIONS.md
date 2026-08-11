@@ -24,7 +24,7 @@ for the print edition) · `cut`.
 |---|-----------|---------------|------|-----------|--------|-------|
 | 1 | "Ain't no rest for the wicked." | Cage the Elephant, "Ain't No Rest for the Wicked" | title fragment, epigraph | Part 3, scheduler chapter (ch17) | planned | TONE.md §4.2 worked placement 1; title-only quotation |
 | 2 | "Trouble" | Cage the Elephant, "Trouble" | near-title allusion, set-off line | Appendix C intro (diagnostics) | planned | TONE.md §4.2 worked placement 2; allusion, no verse quoted |
-| 3 | "Come a little closer." | Cage the Elephant, "Come a Little Closer" | title fragment, epigraph | Part 2, C-membrane chapter (ch9) | planned | TONE.md §4.2 worked placement 3; title-only quotation |
+| 3 | "Come a little closer." | Cage the Elephant, "Come a Little Closer" | title fragment, epigraph | Part 2, chapter 9 head (`book/ch09.md`) | placed | bs05. Title only, no verse; epigraph position, attribution flush right, and the first prose sentence pays the double-take off ("this chapter is about exactly how close we let it come"). Part 2's single placement in this register; delete it and the chapter still teaches |
 | 4 | "Skin and Bones." | Cage the Elephant, "Skin and Bones" (*Social Cues*, 2019) | title fragment, epigraph | Part 1, chapter 2 head (`book/ch02.md`) | placed | bs01. Title only, no verse; epigraph position, attribution flush right, and the first prose sentence pays the double-take off ("a wolf string is skin and bones: bytes, and a length"). Part 1's single placement in this register; delete it and the chapter still teaches |
 
 Chapter 1's epigraph is Bruckner (dark-Romantic register, untracked
@@ -55,6 +55,17 @@ total, as chapter 7 did, and the allocation this ledger anticipated
 above (the hammer to chapter 7, Tristan to chapter 8) is now spent in
 full. Part 2's single Cage placement stays reserved for chapter 9
 (row 3), the only unspent placement left in this part.
+
+bs05 (chapter 9) spends row 3, the placement this ledger has held for
+Part 2 since bs01: the title fragment "Come a little closer." at the
+chapter head, attributed, with the payoff in the first sentence of
+prose ("this chapter is about exactly how close we let it come" — the
+chapter is about the C membrane). Chapter 9 carries no dark-Romantic
+epigraph and no in-prose simile, so it spends one reference placement
+in total, as chapters 7 and 8 did. Part 2 is now closed at three
+placements — the Mahler Sixth hammer, the Tristan simile, and this one
+— and no placement in this register is left unspent before Part 3,
+whose reservation is row 1.
 
 The dark-Romantic register (TONE.md §4.1 — Mahler, Bruckner, Wagner
 allusions) is public domain and is deliberately *not* tracked here;

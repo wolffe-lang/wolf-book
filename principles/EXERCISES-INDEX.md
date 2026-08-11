@@ -12,7 +12,7 @@ see `EXERCISES-PENDING.md` for each blocker and owner. Chapter 26
 (the capstone) is absent by design: it publishes milestone
 checkpoints, not exercises (EXERCISES.md §4, bs10's contract).
 
-Tier totals: 130 run (lupin) · 9 run (lupin REPL) · 19 run (wolf) · 8 run (wolf + lupin) · 61 prose · 20 pending.
+Tier totals: 131 run (lupin) · 9 run (lupin REPL) · 19 run (wolf) · 9 run (wolf + lupin) · 61 prose · 18 pending.
 Taxonomy spread (tags, hybrids counted once per kind): fingers 33 · comprehension 136 · extension 40 · spelunking 21 · design 27.
 
 ## ch01 — 8 exercises
@@ -144,9 +144,9 @@ Taxonomy spread (tags, hybrids counted once per kind): fingers 33 · comprehensi
 | §9.3 — The oracle you actually run | 9-5 | fingers + comprehension · lupin | run (lupin) |
 | §9.3 — The oracle you actually run | 9-6 | comprehension · lupin | run (lupin) |
 | §9.4 — The one door back | 9-7 | comprehension · lupin | run (lupin) |
-| §9.5 — `#include`-grade C | 9-8 | fingers · pending | pending |
+| §9.5 — `#include`-grade C | 9-8 | fingers · wolf + lupin | run (wolf + lupin) |
 | §9.6 — FFI and regions | 9-9 | comprehension · lupin | run (lupin) |
-| §9.7 — Auditing: `#[trusted]` and `wolf audit` | 9-10 | spelunking · pending | pending |
+| §9.7 — Auditing: `#[trusted]` and the audit surface | 9-10 | spelunking · lupin | run (lupin) |
 | §9.8 — The four-tier picture | 9-11 | comprehension · prose | prose |
 | §9.8 — The four-tier picture | 9-12 | design | prose |
 | Chapter batch | 9-13 | extension (break-it-on-purpose) · lupin | run (lupin) |

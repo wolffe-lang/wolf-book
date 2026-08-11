@@ -3,6 +3,8 @@
 // Exercise 9-4: the pointer laundered through an int, and why it changes nothing.
 import c "stdlib.h"
 fn main() -> !int {
+    // # Safety: DELIBERATELY WRONG — the integer roundtrip does not
+    // revive the permission the free took away.
     unsafe {
         let p = c.malloc(8) as *u8
         c.memset(p, 5, 8)

@@ -4,6 +4,8 @@
 import c "stdlib.h"
 fn main() -> !int {
     let r = region()
+    // # Safety: DELIBERATELY WRONG — the allocation belongs to the
+    // program's region, so the door is told a lie.
     unsafe {
         let p = c.malloc(8) as *u8
         c.memset(p, 1, 8)

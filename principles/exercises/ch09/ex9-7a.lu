@@ -4,6 +4,8 @@
 import c "stdlib.h"
 fn main() -> !int {
     let r = region()
+    // # Safety: the allocation is made while `r` is the ambient region,
+    // so the door's claim is true; it is freed exactly once.
     unsafe {
         let p = in r { c.malloc(8) as *u8 }
         c.memset(p, 1, 8)

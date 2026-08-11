@@ -1,0 +1,10 @@
+error[E1302]: `header_len`'s parameter `p` carries a raw pointer, but this boundary stays fully safe
+ --> ./s3.lu:5:15
+  |
+5 | fn header_len(p: *u8) -> int {
+  |               ^ `*T` crosses the boundary here
+  |
+  = note: unsafety never appears in types crossing function boundaries — there are no `unsafe
+    fn`s; the proof lives at the `unsafe` block and the module is the audit granule. Pass a
+    `handle` (revalidated per access) or a region value, or keep the `*T` in a
+    module-private field.

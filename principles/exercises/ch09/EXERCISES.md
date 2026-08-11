@@ -21,11 +21,11 @@ $ grep -rn "unsafe {" ch01 ch02 ch03 ch04 ch05 ch06 ch07 ch08 | wc -l
 
 Zero: parts 1 and 2 up to this chapter never left the safe tier. The
 count is trustworthy because `unsafe` is the *only* entrance — raw
-pointers, foreign calls, and aliasing assertions do not parse outside
-the block, so the keyword is a complete index of the ring boundary. In
-C the equivalent grep misses everything, because there is no keyword:
-every pointer dereference in the program is potentially the audit's
-subject, which is to say the audit is the whole program.
+pointer operations, foreign calls, and aliasing assertions do not parse
+outside the block, so the keyword is a complete index of the ring
+boundary. In C the equivalent grep misses everything, because there is
+no keyword: every pointer dereference in the program is potentially the
+audit's subject, which is to say the audit is the whole program.
 
 ## §9.2 — Raw-tier rules
 
@@ -39,6 +39,8 @@ Solution — `ch09/ex9-2.lu`:
 ```wolf
 import c "stdlib.h"
 fn main() -> !int {
+    // # Safety: the eight bytes are written before they are read, every
+    // access is in bounds, and the allocation is freed exactly once.
     unsafe {
         let p = c.malloc(8) as *u8
         c.memset(p, 5, 8)
@@ -59,18 +61,20 @@ $ echo $?
 
 Inside the block, C's rules apply — allocate, use, free, in that
 order, and the oracle has nothing to say. The block is a contract
-change, not a crime scene.
+change, not a crime scene. Note the `# Safety:` line above it: the
+compiler warns when it is missing, and it is the sentence a reviewer
+checks the body against.
 
 **Exercise 9-3** *(comprehension · lupin)* — One character changes in
 9-2: the write is `p[8] = 1`. The allocation holds eight bytes.
-Predict the oracle's finding — its section number, and which optimizer
-license the report will name.
+Predict the oracle's finding — its row, and which optimizer license
+the report will name.
 
 Solution — the report, in full:
 
 ```console
 $ lupin ex9-3.lu
-ex9-3.lu: ub(mem.ub) §7/P3: write of 1 byte(s) at alloc#0[8], which holds 8 [mem.ub] at 207..215; tag created at 154..165
+ex9-3.lu: ub(mem.ub) §7/P3: write of 1 byte(s) at alloc#0[8], which holds 8 [mem.ub] at 350..358; tag created at 297..308
   licenses O3a: `dereferenceable(n)` on known-size accesses; bounds-based alias disproof between distinct allocations
   alloc#0 `c.malloc(8)` 8 byte(s), live, owned by region #0
     tag#0 c.malloc(8)#root Active exposed
@@ -78,7 +82,7 @@ $ echo $?
 3
 ```
 
-§7/P3, out-of-bounds — and the license line is the half worth reading
+Row P3, out of bounds — and the license line is the half worth reading
 twice: the *reason* one byte past the end is UB rather than a trap is
 that the compiler wants to assume accesses stay inside their
 allocation (`dereferenceable`, alias disproof between allocations).
@@ -104,7 +108,7 @@ Solution: no. The integer survives; the *permission* does not.
 
 ```console
 $ lupin ex9-4.lu
-ex9-4.lu: ub(mem.ub) §7/L2: read through an exposed pointer into alloc#0, which was freed [mem.unsafe.raw.1] at 338..342; tag created at 197..208
+ex9-4.lu: ub(mem.ub) §7/L2: read through an exposed pointer into alloc#0, which was freed [mem.unsafe.raw.1] at 458..462; tag created at 317..328
   licenses O8: escape analysis / stack promotion without conservatively pinning addresses
   alloc#0 `c.malloc(8)` 8 byte(s), FREED, owned by region #0
     tag#0 c.malloc(8)#root Disabled exposed
@@ -138,12 +142,12 @@ let v = p[0]
 
 ```console
 $ lupin ex9-5.lu
-ex9-5.lu: ub(mem.ub) §7/P1: read through tag#0 (c.malloc(8)#root), which is Disabled at alloc#0[0] [mem.prov.state] at 260..264; tag created at 190..201
+ex9-5.lu: ub(mem.ub) §7/P1: read through tag#0 (c.malloc(8)#root), which is Disabled at alloc#0[0] [mem.prov.state] at 333..337; tag created at 263..274
   licenses O1: `mut` params lower to `noalias` + `dereferenceable`; unique-tag stores forward without memory checks
   alloc#0 `c.malloc(8)` 8 byte(s), FREED, owned by region #0
     tag#0 c.malloc(8)#root Disabled exposed
 $ lupin ex9-5.lu
-ex9-5.lu: ub(mem.ub) §7/P1: read through tag#0 (c.malloc(8)#root), which is Disabled at alloc#0[0] [mem.prov.state] at 260..264; tag created at 190..201
+ex9-5.lu: ub(mem.ub) §7/P1: read through tag#0 (c.malloc(8)#root), which is Disabled at alloc#0[0] [mem.prov.state] at 333..337; tag created at 263..274
   licenses O1: `mut` params lower to `noalias` + `dereferenceable`; unique-tag stores forward without memory checks
   alloc#0 `c.malloc(8)` 8 byte(s), FREED, owned by region #0
     tag#0 c.malloc(8)#root Disabled exposed
@@ -157,32 +161,38 @@ be in memory" with "what the rules say about this access," and rules
 do not vary between runs. Deterministic faults are what make the
 escape hatch *debuggable* — this is §9.3's whole pitch, performed.
 
-**Exercise 9-6** *(comprehension · lupin)* — Two lines:
+**Exercise 9-6** *(comprehension · lupin)* — Allocate 64 bytes with
+`c.malloc` and read one of them before anything writes it:
 
 ```wolf
-let n = 7
-let b = n as bool
+let p = c.malloc(64) as *u8
+let v = p[0] as int
+c.free(p)
 ```
 
-No pointer, no allocation, no free. Is this UB? Predict the oracle's
-verdict and, if you predict a finding, name what optimization a
-`bool` outside {0, 1} would break.
+No free-before-use, no bounds problem, no aliasing. Predict whether
+this is undefined behavior, which row it lands on, and what
+optimization the row's license names.
 
-Solution: it is UB — validity is part of the raw tier's contract, not
-only liveness:
+Solution: it is UB, and the row is L1 — reading memory nothing has
+written is on the list in its own right:
 
 ```console
 $ lupin ex9-6.lu
-ex9-6.lu: ub(mem.ub) §7/T1: `7 as bool` produces a `bool` outside {0, 1}; the representation is restricted, which is what licenses niche packing and default-free jump tables [mem.ub] at 168..177
-  licenses O9: niche packing; match jump tables without default arms; UTF-8 fast paths without re-validation
+ex9-6.lu: ub(mem.ub) §7/L1: read of alloc#0[0], which nothing has written [mem.ub] at 306..310; tag created at 270..282
+  licenses O7: moves lower to memcpy-and-forget; dead-store elimination on moved-from places; no zero-init of locals
+  alloc#0 `c.malloc(64)` 64 byte(s), live, owned by region #0
+    tag#0 c.malloc(64)#root Active exposed
 $ echo $?
 3
 ```
 
-A `bool` that might be 7 breaks niche packing (`Option`-style layouts
-that store "absent" in the unused values) and jump tables compiled
-without a default arm. The report says so in its own words; the
-license *is* the explanation.
+The license is the explanation, as always. If reading uninitialized
+memory had a defined answer, every local would have to be zeroed, a
+move could not be a copy-and-forget, and a store to a place that is
+about to be moved out of could not be deleted. The price of skipping
+all three is that the bytes `malloc` hands back are not a value yet.
+`c.calloc` is the call that makes them one.
 
 ## §9.4 — The one door back
 
@@ -200,7 +210,7 @@ $ lupin ex9-7a.lu
 $ echo $?
 0
 $ lupin ex9-7b.lu
-ex9-7b.lu: ub(mem.ub) §7/P6: `borrow region #1 from` a pointer into alloc#0, which is owned by `program` (region #0) — the obligation is that the allocation lies wholly inside the named region's footprint [mem.unsafe.door] at 273..288; tag created at 212..223
+ex9-7b.lu: ub(mem.ub) §7/P6: `borrow region #1 from` a pointer into alloc#0, which is owned by `program` (region #0) — the obligation is that the allocation lies wholly inside the named region's footprint [mem.unsafe.door] at 395..410; tag created at 334..345
   licenses O6: safe-tier code after the door keeps all safe-tier entitlements (O1–O4) — the door is where trust concentrates
   alloc#0 `c.malloc(8)` 8 byte(s), live, owned by region #0
     tag#0 c.malloc(8)#root Active exposed
@@ -218,29 +228,31 @@ the language.
 
 ## §9.5 — `#include`-grade C
 
-**Exercise 9-8** *(fingers · pending — blocker: real libc calls; the
-interpreter models only its documented host-intrinsic set
-(approximation-contract §8); owner: s46-libclang-importer, with
-s29-abi-v0 beneath it)* — Import `math.h` and call `c.sqrt(4.0)`
-inside an unsafe block, printing the result. The expected program is
-on disk; predict its output the day it runs.
+**Exercise 9-8** *(fingers · wolf + lupin)* — Take §9.5's `pack` and
+spell its second allocation the other way round: `c.calloc(1, bytes)`
+instead of `c.calloc(bytes, 1)`. Both allocate the same number of
+bytes. Run the program under the interpreter, then compile it and run
+the binary. Report both outputs and say what a difference between them
+would have meant.
 
-Solution (prose): it prints `2` and exits 0 — `sqrt` is a pure
-function crossing the membrane with one f64 in and one out, the
-simplest possible FFI shape and the reason it is this exercise.
-Today:
+Solution — `ch09/ex9-8.lu`, and there is no difference:
 
 ```console
 $ lupin ex9-8.lu
-ex9-8.lu: unsupported: `c.sqrt` is an imported C function this machine does not model; the host-intrinsic set is documented in `docs/approximation-contract.md` §8, and inventing a body for a real libc call would put guessed behavior into a differential comparison
-$ echo $?
-4
+64 bytes out, and not a pointer in sight
+$ wolf build ex9-8.lu && ./ex9-8
+64 bytes out, and not a pointer in sight
 ```
 
-The refusal is itself a lesson in the differential method: a guessed
-`sqrt` would poison every comparison downstream, so the tool says
-`unsupported` instead — exit 4, the honest code for "outside my
-scope."
+The first line is a model of the C heap; the second is glibc. A
+difference between them would have meant one of two things, and both
+are bugs: either a model of `calloc` disagrees with `calloc`, or the
+compiler's membrane passes the arguments in the wrong order. The
+history here is not hypothetical — `calloc(n, size)` is `n * size`
+bytes, one of the models once made it `n`, and this is the shape of
+program that found it. Running a program two ways and comparing is not
+a testing technique bolted on afterward; it is what "one language, two
+implementations" is *for*.
 
 ## §9.6 — FFI and regions
 
@@ -264,7 +276,7 @@ Solution:
 
 ```console
 $ lupin ex9-9.lu
-ex9-9.lu: ub(mem.ub) §7/P4: read at alloc#0[0], whose owning region #1 was freed wholesale [mem.prov.region] at 317..321; tag created at 220..231
+ex9-9.lu: ub(mem.ub) §7/P4: read at alloc#0[0], whose owning region #1 was freed wholesale [mem.prov.region] at 438..442; tag created at 341..352
   licenses O3b: one alias-scope domain per region — pointers into distinct regions never alias; O4: regions not open in the current scope yield `invariant.load`
   alloc#0 `c.malloc(8)` 8 byte(s), live, owned by region #1
     tag#0 c.malloc(8)#root Disabled exposed
@@ -272,7 +284,7 @@ $ echo $?
 3
 ```
 
-§7/P4, not P1: nobody called `free` — the *region* died, and it took
+Row P4, not P1: nobody called `free` — the *region* died, and it took
 the allocation's permissions with it. Note the report's strange-
 looking line: the allocation is still `live` (its bytes were never
 individually freed) but its owning region is gone, and that is enough.
@@ -280,32 +292,35 @@ The rule C code linked into wolf must learn: memory borrowed while a
 region was ambient is a loan *from the region*, and the region's
 death calls it in, wholesale.
 
-## §9.7 — Auditing: `#[trusted]` and `wolf audit`
+## §9.7 — Auditing: `#[trusted]` and the audit surface
 
-**Exercise 9-10** *(spelunking · pending — blocker: `wolf audit` and
-capability manifests land with the package manager; owner:
-s51-package-manager)* — `ch09/ex9-10.lu` wraps a pretend C call in a
-`#[trusted]` function. The attribute parses today and the program
-runs; what does not exist yet is the ledger that makes `#[trusted]`
-mean something. Answer from the chapter: when `wolf audit` lands, what
-two questions about this function will it answer that reading the
-source cannot?
+**Exercise 9-10** *(spelunking · lupin)* — `ch09/ex9-10.lu` wraps its
+unsafe block in a `#[trusted]` function carrying its obligation as a
+string. Run it. Then answer from the chapter: what two questions about
+this function does a manifest-and-inventory audit answer that reading
+the function's source cannot?
 
-Solution (prose): first, *transitivity* — whether anything this
-function calls (or anything its dependencies call) is itself trusted
-or capability-bearing; source review answers one file, the audit
-answers the closure. Second, *drift* — whether the next release of a
-dependency widens its capability set (`net`, `fs`, a new trusted
-block) relative to what was reviewed; the audit is a diffable fact,
-review is a memory. As run:
+Solution — the program runs like any other:
 
 ```console
 $ lupin ex9-10.lu
+64 bytes out, declared
 $ echo $?
 0
-$ wolf audit
-wolf audit: not yet (grows at its own campaign; D34's single binary)
 ```
+
+The two questions are *closure* and *drift*. Closure: reading `pack`
+tells you what `pack` does, and tells you nothing about whether
+anything it calls — or anything its dependencies call — is itself
+trusted or holds unsafe rings of its own. The inventory answers for the
+whole package, module by module, which is a question source review
+answers one file at a time and therefore usually does not. Drift:
+whether the roster is the same roster it was last release. Review is a
+memory; the manifest is a diffable fact, and a dependency that grows a
+trusted module has to grow a manifest line to do it. Neither question
+is about whether `pack` is correct — nothing mechanical answers that,
+which is exactly why the obligation is written in the attribute in
+English, for a person.
 
 ## §9.8 — The four-tier picture
 
@@ -371,7 +386,7 @@ q[0] = 2
 
 ```console
 $ lupin ex9-13.lu
-ex9-13.lu: ub(mem.ub) §7/P5: `assume noalias` asserts these ranges are disjoint, and alloc#0[0..1) overlaps alloc#0[0..1) — the assertion is false [mem.unsafe.raw.2] at 223..242; tag created at 178..189
+ex9-13.lu: ub(mem.ub) §7/P5: `assume noalias` asserts these ranges are disjoint, and alloc#0[0..1) overlaps alloc#0[0..1) — the assertion is false [mem.unsafe.raw.2] at 337..356; tag created at 292..303
   licenses O5: the asserted ranges get `noalias` treatment in Tier-3 code — vectorization/reordering as if proven
   alloc#0 `c.malloc(8)` 8 byte(s), live, owned by region #0
     tag#0 c.malloc(8)#root Active exposed
@@ -388,44 +403,38 @@ comes up: wolf did not remove the footgun, it made the trigger
 visible and gave it an oracle.
 
 **Exercise 9-14** *(comprehension · lupin)* — The subtlest report in
-the chapter. `observe` takes `a` read-only and `b` as `mut`; `main`
-passes the same allocation through both:
+the chapter. Take §9.4's door program and add one line: after
+`let counts = borrow scratch from p`, write `p[0] = 1` through the raw
+pointer, and only then read `counts[0]`. Predict where the fault is
+reported and what the tag tree at the bottom of the report will have
+in it that no other report in this chapter has shown.
 
-```wolf
-fn observe(a: *u8, mut b: *u8) -> int {
-    b[0] = 3
-    a[0] as int
-}
-let p = c.malloc(8) as *u8
-p[0] = 1
-var q = p
-let n = observe(p, mut q)
-```
-
-Predict where the oracle reports the fault — at the call, at the
-write, or at the later read — and why "at the write" is the answer
-that lets the optimizer trust `mut`.
-
-Solution:
+Solution — `ch09/ex9-14.lu`:
 
 ```console
 $ lupin ex9-14.lu
-ex9-14.lu: ub(mem.ub) §7/P1: foreign write at alloc#0[0] while tag#1 (parameter) is PROTECTED for a call's extent — the protector makes the invalidation UB at the write rather than at a later use [mem.prov.state] at 175..183; tag created at 329..330
+ex9-14.lu: ub(mem.ub) §7/P1: read through tag#1 (`borrow … from`), which is Disabled at alloc#0[0] [mem.prov.state] at 478..487; tag created at 423..444
   licenses O1: `mut` params lower to `noalias` + `dereferenceable`; unique-tag stores forward without memory checks
-  alloc#0 `c.malloc(8)` 8 byte(s), live, owned by region #0
+  alloc#0 `c.malloc(8)` 8 byte(s), live, owned by region #1
     tag#0 c.malloc(8)#root Active exposed
-      tag#1 parameter Frozen PROTECTED
-      tag#2 parameter Reserved PROTECTED
+      tag#1 `borrow … from` Disabled|Reserved|Reserved|Reserved|Reserved|Reserved|Reserved|Reserved
 $ echo $?
 3
 ```
 
-At the write. Parameter entry mints protected tags for the call's
-whole extent, so the write through `b` is *foreign* to `a`'s protected
-tag and is UB immediately — even though the conflicting read has not
-happened yet. That timing is the license: if invalidation only counted
-at a later use, the compiler could not fold loads through `a` across
-the body, because the fault might never "arrive." Protectors make
-`mut`'s promise airtight for exactly one call — which is the shape
-`noalias` needs. The tag tree at the report's bottom is the whole
-story in four lines; learning to read it is learning the model.
+Two tags, one indented under the other: this is the first report in
+the chapter with a tree in it rather than a single root. The door
+minted `tag#1` as a child of the allocation's root tag, and that child
+is what safe code was handed. Writing through `p` afterward is a write
+through a tag that is *not* an ancestor of `tag#1` — foreign, in the
+model's word — so `tag#1` goes Disabled at the byte that was written,
+and the read through `counts` is P1. The per-byte spelling is the
+detail worth noticing: only byte 0 was written, so only byte 0's
+permission died, and the other seven are still Reserved. Permissions
+are per location, not per pointer.
+
+The general lesson is the reason the door exists. Once safe code holds
+a value, the raw tier must stop touching those bytes — because
+everything downstream is entitled to assume nobody is. Reaching around
+the door is not a slightly risky shortcut; it is the one thing the
+door's license forbids.

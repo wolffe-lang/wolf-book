@@ -14,8 +14,31 @@ pub enum Check {
     Trap { kind: String },
     /// `fail(E1234)` — wolf rejects it statically with that code.
     Fail { code: String },
+    /// `ub(P1)` — the program reaches undefined behavior, and both
+    /// machines have to say so: lupin's oracle faults it, and the
+    /// compiler's checked build names that `[mem.ub]` row. One
+    /// directive, two implementations, because a UB row nobody can
+    /// reproduce is a claim rather than a fact.
+    Ub { row: String },
+    /// `audit(E1303)` — `wolf audit-surface` rejects the package's
+    /// unsafety surface with that code (the trusted-module manifest
+    /// rule; the ring inventory itself goes to stdout).
+    Audit { code: String },
     /// bare ```wolf — must get through the static phases clean.
     Compile,
+}
+
+impl Check {
+    /// The spelling wolf-lang's corpus runner understands, for the
+    /// exported tree. `ub(row)` is that runner's `run(exit=trap(ub))`;
+    /// `audit(…)` has no counterpart there, so those samples stay home.
+    pub fn corpus_directive(&self) -> Option<String> {
+        match self {
+            Check::Ub { .. } => Some("run(exit=trap(ub))".to_string()),
+            Check::Audit { .. } => None,
+            other => Some(other.to_string()),
+        }
+    }
 }
 
 impl std::fmt::Display for Check {
@@ -28,6 +51,8 @@ impl std::fmt::Display for Check {
             } => write!(f, "run(exit={exit}, stdout=\"{s}\")"),
             Check::Trap { kind } => write!(f, "run(exit=trap({kind}))"),
             Check::Fail { code } => write!(f, "fail({code})"),
+            Check::Ub { row } => write!(f, "ub({row})"),
+            Check::Audit { code } => write!(f, "audit({code})"),
             Check::Compile => write!(f, "compile"),
         }
     }
@@ -43,6 +68,24 @@ pub fn parse_check(s: &str) -> Result<Check> {
             bail!("fail() needs a diagnostic code");
         }
         return Ok(Check::Fail {
+            code: code.to_string(),
+        });
+    }
+    if let Some(inner) = s.strip_prefix("ub(").and_then(|r| r.strip_suffix(')')) {
+        let row = inner.trim();
+        if row.is_empty() {
+            bail!("ub() needs a [mem.ub] row (P1…P6, L1, L2, T1)");
+        }
+        return Ok(Check::Ub {
+            row: row.to_string(),
+        });
+    }
+    if let Some(inner) = s.strip_prefix("audit(").and_then(|r| r.strip_suffix(')')) {
+        let code = inner.trim();
+        if code.is_empty() {
+            bail!("audit() needs a diagnostic code");
+        }
+        return Ok(Check::Audit {
             code: code.to_string(),
         });
     }
@@ -193,7 +236,11 @@ pub fn parse_fence_info(info: &str) -> Result<FenceInfo> {
             }
             let cont = matches!(args.next(), Some("cont"));
             fi.part = Some((name, cont));
-        } else if item.starts_with("run(") || item.starts_with("fail(") {
+        } else if item.starts_with("run(")
+            || item.starts_with("fail(")
+            || item.starts_with("ub(")
+            || item.starts_with("audit(")
+        {
             fi.check = Some(parse_check(item)?);
         } else if let Some(inner) = item.strip_prefix("from(").and_then(|r| r.strip_suffix(')')) {
             fi.from = Some(inner.trim().to_string());
@@ -275,6 +322,47 @@ mod tests {
             Some(Check::Run {
                 exit: 0,
                 stdout: Some("hi".into())
+            })
+        );
+    }
+
+    #[test]
+    fn check_ub_row() {
+        assert_eq!(
+            parse_check("ub(P1)").unwrap(),
+            Check::Ub { row: "P1".into() }
+        );
+        assert_eq!(
+            Check::Ub { row: "P4".into() }.corpus_directive().unwrap(),
+            "run(exit=trap(ub))"
+        );
+    }
+
+    #[test]
+    fn check_audit_code() {
+        assert_eq!(
+            parse_check("audit(E1303)").unwrap(),
+            Check::Audit {
+                code: "E1303".into()
+            }
+        );
+        assert!(Check::Audit {
+            code: "E1303".into()
+        }
+        .corpus_directive()
+        .is_none());
+    }
+
+    #[test]
+    fn fence_carries_ub_and_audit() {
+        assert_eq!(
+            parse_fence_info("wolf,ub(P3)").unwrap().check,
+            Some(Check::Ub { row: "P3".into() })
+        );
+        assert_eq!(
+            parse_fence_info("wolf,audit(E1303)").unwrap().check,
+            Some(Check::Audit {
+                code: "E1303".into()
             })
         );
     }

@@ -1,14 +1,25 @@
-//! check: run(exit=0)
+//! check: run(exit=0, stdout="64 bytes out, and not a pointer in sight")
 //! phase: run
-// Exercise 9-8: a real C call through a real header.
-// PENDING: the interpreter models only its documented host-intrinsic
-// set (approximation-contract §8); real libc calls land with the
-// importer. Expected: prints 2 and exits 0.
-import c "math.h"
-fn main() -> !int {
+// Exercise 9-8: the same allocation spelled two ways, across three
+// implementations — two models of C and the real one.
+import c "stdlib.h"
+import c "string.h"
+fn pack(bytes: uint) -> int {
+    var written = 0
+    // # Safety: both allocations own `bytes` bytes for the whole
+    // block, every C call stays inside them, and each is freed once.
     unsafe {
-        let v = c.sqrt(4.0)
-        print("{v}")
+        let raw = c.malloc(bytes)
+        c.memset(raw, 0, bytes)
+        let out = c.calloc(1, bytes)
+        c.memcpy(out, raw, bytes)
+        c.free(raw)
+        c.free(out)
+        written = bytes as int
     }
+    written
+}
+fn main() -> !int {
+    print("{pack(64)} bytes out, and not a pointer in sight")
     0
 }

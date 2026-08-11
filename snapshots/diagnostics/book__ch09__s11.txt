@@ -1,0 +1,18 @@
+error[E1401]: undefined behavior: [mem.ub] row P4 — a raw pointer read into an allocation whose region was already freed
+  --> ./s11.lu:14:17
+   |
+ 9 |         let p = region command {
+   |                 ----------------
+10 |             let scratch = c.malloc(8) as *u8
+11 |             c.memset(scratch, 5, 8)
+12 |             scratch
+13 |         }
+   | --------- the provenance this operation violates was created here
+14 |         let v = p[0] as int
+   |                 ^^^^ the operation that reaches undefined behavior
+   |
+   = note: this row licenses O3b: one alias-scope domain per region — pointers into distinct
+     regions never alias; O4: closed regions yield `invariant.load` — compiled code may
+     already have been transformed under that assumption, so the behavior of an unchecked
+     build is undefined ([mem.prov.region]). The `--checked` machine reports it
+     deterministically instead.
