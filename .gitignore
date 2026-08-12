@@ -7,5 +7,11 @@
 # chapter's `wc` claims are recomputed against them. Everything else
 # under samples/ is generated (extracted, export, selftest).
 !/samples/projects/
+# The ecosystem part's package fixtures (bs09). Tracked, because the
+# chapters quote these files byte for byte (a fence carrying
+# `file(path)`) and replay commands inside copies of these trees (a
+# `console,in(pkg/name)` block), so a fixture is as much a part of the
+# book as a paragraph. Manifests, ledgers and programs all belong here.
+!/samples/pkg/
 # Compiler-side build caches, wherever a `wolf build` was run.
 .lu-cache/

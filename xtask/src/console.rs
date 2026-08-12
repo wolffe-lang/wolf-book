@@ -35,6 +35,10 @@ pub struct ConsoleBlock {
     /// `console,from(id)` — bind the block to a named sample instead of
     /// the program above it, for the pages where the two differ.
     pub from: Option<String>,
+    /// `console,in(pkg/name)` — stage `samples/<name>` into the replay
+    /// directory first. A multi-package walkthrough needs a project on
+    /// disk, and the project is a fixture in this repository.
+    pub fixture: Option<String>,
 }
 
 /// One `$ …` command and the output the book says it produces.
@@ -210,6 +214,25 @@ fn replay(
     Ok(transcript)
 }
 
+/// Copy a fixture tree into a fresh replay directory.
+fn stage(from: &Path, to: &Path) -> Result<()> {
+    let _ = std::fs::remove_dir_all(to);
+    std::fs::create_dir_all(to)?;
+    for entry in std::fs::read_dir(from)
+        .with_context(|| format!("reading {}", from.display()))?
+        .flatten()
+    {
+        let src = entry.path();
+        let dst = to.join(entry.file_name());
+        if src.is_dir() {
+            stage(&src, &dst)?;
+        } else {
+            std::fs::copy(&src, &dst).with_context(|| format!("copying {}", src.display()))?;
+        }
+    }
+    Ok(())
+}
+
 /// What a console-check pass found.
 pub struct Report {
     pub checked: usize,
@@ -256,6 +279,24 @@ pub fn check(
             None => block.program.as_ref(),
         };
         let dir = base.join(&block.stem).join(format!("l{}", block.line));
+        // A fixture block gets the project staged into a private copy —
+        // `wolf add`/`update` rewrite manifests and ledgers, and the
+        // checked-in fixture stays pristine.
+        if let Some(name) = &block.fixture {
+            let src = root.join("samples").join(name);
+            if !src.is_dir() {
+                report.failures.push(format!(
+                    "{where_}: console,in({name}) — no fixture at samples/{name}"
+                ));
+                continue;
+            }
+            if let Err(e) = stage(&src, &dir) {
+                report
+                    .failures
+                    .push(format!("{where_}: staging samples/{name}: {e:#}"));
+                continue;
+            }
+        }
         let actual = match replay(tools, &dir, program, &steps) {
             Ok(t) => t,
             Err(e) => {

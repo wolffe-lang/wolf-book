@@ -134,6 +134,7 @@ pub fn run(root: &Path, args: &[String]) -> Result<()> {
     let (corpus, member_count) = collect_corpus(root)?;
     let book = collect_book(root)?;
     let (repl_blocks, diag_checks) = (book.repl_blocks, book.diag_checks);
+    let file_checks = book.file_checks;
     let console_blocks = book.console_blocks;
     let programs = book.programs;
     let mut samples = corpus;
@@ -226,6 +227,26 @@ pub fn run(root: &Path, args: &[String]) -> Result<()> {
                     failures.push(format!(
                         "{}: diagnostic,from({from_id}) drifted from the captured \
                          diagnostic — update the block from the real run",
+                        md.display()
+                    ));
+                }
+            }
+        }
+    }
+
+    // ---- text,file(…) blocks: the page quotes a file in this repo ----
+    for (md, line, path, block) in &file_checks {
+        let full = root.join("samples").join(path);
+        match std::fs::read_to_string(&full) {
+            Err(e) => failures.push(format!(
+                "{}:{line}: text,file({path}) — cannot read samples/{path}: {e}",
+                md.display()
+            )),
+            Ok(text) => {
+                if text != *block {
+                    failures.push(format!(
+                        "{}:{line}: text,file({path}) drifted from samples/{path} — \
+                         the page and the fixture must be the same bytes",
                         md.display()
                     ));
                 }
@@ -363,6 +384,8 @@ struct BookScan {
     console_blocks: Vec<ConsoleBlock>,
     /// Sample id → the program as printed, for `console,from(id)`.
     programs: BTreeMap<String, String>,
+    /// `text,file(path)` blocks: (markdown, line, path, block content).
+    file_checks: Vec<(PathBuf, usize, String, String)>,
     lint_failures: Vec<String>,
 }
 
@@ -438,6 +461,7 @@ fn collect_book(root: &Path) -> Result<BookScan> {
     let mut repl_blocks = 0usize;
     let mut diag_checks = Vec::new();
     let mut console_blocks = Vec::new();
+    let mut file_checks: Vec<(PathBuf, usize, String, String)> = Vec::new();
     let mut programs: BTreeMap<String, String> = BTreeMap::new();
 
     for md in &md_files {
@@ -458,6 +482,14 @@ fn collect_book(root: &Path) -> Result<BookScan> {
             }
             let fi = parse_fence_info(&f.info)
                 .with_context(|| format!("{}: bad fence info `{}`", md.display(), f.info))?;
+            // A fence carrying `file(path)` quotes a file in this
+            // repository — a member of a multi-file project, which is
+            // not a standalone program and must not be compiled as one.
+            // CI holds the page and the file to the same bytes.
+            if let Some(path) = &fi.file {
+                file_checks.push((md.clone(), f.open_line + 1, path.clone(), f.content.clone()));
+                continue;
+            }
             match fi.lang.as_str() {
                 "wolf-repl" => {
                     repl_blocks += 1;
@@ -477,6 +509,7 @@ fn collect_book(root: &Path) -> Result<BookScan> {
                         text: f.content.clone(),
                         program: last_program.clone(),
                         from: fi.from.clone(),
+                        fixture: fi.in_fixture.clone(),
                     });
                     continue;
                 }
@@ -566,6 +599,7 @@ fn collect_book(root: &Path) -> Result<BookScan> {
         repl_blocks,
         diag_checks,
         console_blocks,
+        file_checks,
         programs,
         lint_failures,
     })
@@ -743,6 +777,33 @@ fn execute(tools: &Tools, s: &Sample) -> Result<Outcome> {
                     err.trim()
                 ),
                 diagnostic: Some(normalize(&diag)),
+                phase_reached: None,
+            })
+        }
+        // The compiler builds and runs it: `wolf run` compiles the
+        // module and executes the binary in one step, which is the
+        // reader-facing spelling and the honest one.
+        Check::WolfRun { exit, stdout } => {
+            let mut cmd = Command::new(&tools.wolf);
+            cmd.arg("run").arg(&s.file_name).current_dir(&s.dir);
+            let (code, out, err) = run_with_timeout(cmd)?;
+            let mut passed = code == Some(*exit);
+            let mut detail = format!("wolf run exited {code:?}, expected {exit}");
+            if passed {
+                if let Some(want) = stdout {
+                    let got = out.trim_end_matches('\n');
+                    if got != want.as_str() {
+                        passed = false;
+                        detail = format!("stdout mismatch: expected {want:?}, got {got:?}");
+                    }
+                }
+            } else if !err.is_empty() {
+                detail = format!("{detail}\n     stderr: {}", err.trim_end());
+            }
+            Ok(Outcome {
+                passed,
+                detail,
+                diagnostic: None,
                 phase_reached: None,
             })
         }

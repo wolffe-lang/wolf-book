@@ -10,6 +10,11 @@ use anyhow::{bail, Result};
 pub enum Check {
     /// `run(exit=N[, stdout="…"])` — lupin runs it.
     Run { exit: i32, stdout: Option<String> },
+    /// `wolf-run(exit=N[, stdout="…"])` — the *compiler* builds it and
+    /// runs the binary. Needed for the programs only one lane executes:
+    /// a `comptime fn` is the compiler's to evaluate, and the reference
+    /// interpreter declines it by design.
+    WolfRun { exit: i32, stdout: Option<String> },
     /// `run(exit=trap(kind))` — lupin runs it; a defined fault, named.
     Trap { kind: String },
     /// `fail(E1234)` — wolf rejects it statically with that code.
@@ -36,6 +41,16 @@ impl Check {
         match self {
             Check::Ub { .. } => Some("run(exit=trap(ub))".to_string()),
             Check::Audit { .. } => None,
+            // The other runner has one `run`, and it is the same claim
+            // about the same program — which lane executed it is this
+            // repository's bookkeeping.
+            Check::WolfRun { exit, stdout } => Some(
+                Check::Run {
+                    exit: *exit,
+                    stdout: stdout.clone(),
+                }
+                .to_string(),
+            ),
             other => Some(other.to_string()),
         }
     }
@@ -49,6 +64,11 @@ impl std::fmt::Display for Check {
                 exit,
                 stdout: Some(s),
             } => write!(f, "run(exit={exit}, stdout=\"{s}\")"),
+            Check::WolfRun { exit, stdout: None } => write!(f, "wolf-run(exit={exit})"),
+            Check::WolfRun {
+                exit,
+                stdout: Some(s),
+            } => write!(f, "wolf-run(exit={exit}, stdout=\"{s}\")"),
             Check::Trap { kind } => write!(f, "run(exit=trap({kind}))"),
             Check::Fail { code } => write!(f, "fail({code})"),
             Check::Ub { row } => write!(f, "ub({row})"),
@@ -79,6 +99,15 @@ pub fn parse_check(s: &str) -> Result<Check> {
         return Ok(Check::Ub {
             row: row.to_string(),
         });
+    }
+    if let Some(inner) = s
+        .strip_prefix("wolf-run(")
+        .and_then(|r| r.strip_suffix(')'))
+    {
+        return match parse_run_args(inner)? {
+            Check::Run { exit, stdout } => Ok(Check::WolfRun { exit, stdout }),
+            other => bail!("wolf-run() takes exit=N[, stdout=\"…\"], not `{other}`"),
+        };
     }
     if let Some(inner) = s.strip_prefix("audit(").and_then(|r| r.strip_suffix(')')) {
         let code = inner.trim();
@@ -214,6 +243,14 @@ pub struct FenceInfo {
     pub check: Option<Check>,
     /// `diagnostic,from(id)` — cross-check against a captured run.
     pub from: Option<String>,
+    /// `console,in(pkg/name)` — replay the block inside a staged copy of
+    /// the named fixture tree under `samples/`, instead of writing the
+    /// program printed above the block. Multi-package walkthroughs (a
+    /// manifest, a dependency, a ledger) need a project, not a file.
+    pub in_fixture: Option<String>,
+    /// `text,file(pkg/name/wolf.pkg)` — the block must equal that file
+    /// byte for byte. A manifest on the page is a manifest CI resolves.
+    pub file: Option<String>,
 }
 
 pub fn parse_fence_info(info: &str) -> Result<FenceInfo> {
@@ -225,6 +262,8 @@ pub fn parse_fence_info(info: &str) -> Result<FenceInfo> {
         part: None,
         check: None,
         from: None,
+        in_fixture: None,
+        file: None,
     };
     for item in items {
         let item = item.trim();
@@ -236,7 +275,8 @@ pub fn parse_fence_info(info: &str) -> Result<FenceInfo> {
             }
             let cont = matches!(args.next(), Some("cont"));
             fi.part = Some((name, cont));
-        } else if item.starts_with("run(")
+        } else if item.starts_with("wolf-run(")
+            || item.starts_with("run(")
             || item.starts_with("fail(")
             || item.starts_with("ub(")
             || item.starts_with("audit(")
@@ -244,6 +284,18 @@ pub fn parse_fence_info(info: &str) -> Result<FenceInfo> {
             fi.check = Some(parse_check(item)?);
         } else if let Some(inner) = item.strip_prefix("from(").and_then(|r| r.strip_suffix(')')) {
             fi.from = Some(inner.trim().to_string());
+        } else if let Some(inner) = item.strip_prefix("in(").and_then(|r| r.strip_suffix(')')) {
+            let name = inner.trim();
+            if name.is_empty() {
+                bail!("in() needs a fixture path");
+            }
+            fi.in_fixture = Some(name.to_string());
+        } else if let Some(inner) = item.strip_prefix("file(").and_then(|r| r.strip_suffix(')')) {
+            let name = inner.trim();
+            if name.is_empty() {
+                bail!("file() needs a path");
+            }
+            fi.file = Some(name.to_string());
         } else if !item.is_empty() {
             bail!("unrecognized fence directive: `{item}` in `{info}`");
         }
