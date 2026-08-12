@@ -11,57 +11,77 @@
 # select, `when`, and procs. The wave-four close put the `str` method
 # set, `List` operations, value-position interpolation with format
 # specs, and the nine `fs_*` builtins into native lowering, which is
-# what makes Part 5's first three chapters buildable, and wave five's
-# first lane added the deterministic scheduler.
-# This bump crosses seven waves at once, and three of them move the
-# book. The **package manager**: `wolf.pkg` as declarative data,
-# `wolf add/rm/update/audit/tree/why`, the `wolf.sum` ledger, the I13
-# capability tree, and codes E1501-E1506 — chapters 22, 23 and 24 are
-# written on them. The **idiom arbiter**: eleven convention lints,
-# which is where the printed `wolf build` transcript in chapter 27
-# grew two warning stanzas (book/ch27.md's ledger carries the row —
-# 38 corpus files draw W0603 and the disagreement is about the book's
-# row style, not about that program). The **release tier**
-# (`wolf build --release` through LLVM), which the book does not print
-# anywhere yet. Also: `wolf 0.1.0 (wolfgang)` with the pairing line,
-# argv and env, the match tier's string-pattern fix, the comptime fold
-# published to both lanes, and the D39/D40 mode teeth.
+# what makes Part 5's first three chapters buildable; wave five's first
+# lane added the deterministic scheduler; the package manager (chapters
+# 22, 23 and 24 are written on it), the idiom arbiter's eleven
+# convention lints, argv and env, and the release tier arrived with the
+# c09 wave.
 #
-# It is NOT the newest green trunk sha, and the reason is recorded
-# because it is a gate holding. Trunk's later shas land native
-# concurrency, and at every one of them the compiler ICEs on shipped
-# book samples: `wolf conform-run` on book/ch12/s7 and ch12's exercise
-# 12-3 fails WIR verification (`[dominance]`, a select lowering whose
-# `iconst` is used outside its dominator), exercise 12-6 fails the
-# canonical-dump reparse, and the sample runner has no verdict JSON to
-# read — a hard error, not a drift. Two more (`ch03/s15`, `ch07/s12`)
-# fail `[type]` verification at every sha in this range; they do not
-# fail the suite only because their directive is a `run(…)` the runner
-# checks under lupin. This sha is the newest one whose `ci` run is
-# green AND on which the whole book suite is green, which is what the
-# gate asks for. The ICEs are filed; the pin moves when they close.
+# This bump crosses eighteen commits and two of them move the book.
+# **Native concurrency**: the compiler is no longer the implementation
+# that cannot run wolf's conc. `scope`/`s.spawn`/`channel`/`select`/
+# `freeze` lower and link, which is what Part 5's parallel grep and the
+# solo are built on, and what makes chapter 30 the first chapter whose
+# programs need a real command line as well as real tasks.
+# **The mid-end**: c09's optimizer, and with it the fix for the defect
+# that held this pin at a deliberate deviation for two sprints — the
+# select-arm dominance ICE (wolf-lang#64). Dominator-scoped GVN no
+# longer hoists a timeout sentinel out of one select arm into a block
+# that does not dominate its use.
+#
+# The previous pin was NOT the newest green trunk sha, and that
+# deviation is now closed. The record, because it is the mechanism the
+# hold notes depend on: at every sha carrying native conc between
+# c650e73 and the s42 merge, `wolf build` ICEd on `book/ch12.md`'s
+# two-`timeout`-`select` sample (`wir verify error [dominance]`), which
+# aborted `cargo xtask samples` outright rather than failing it. That
+# sample now builds and runs to `exit(0)`, printing `timed out` then
+# `got 9`, and the seven diagnostic snapshots that drifted at the
+# candidate shas do not drift here — the mid-end changed no diagnostic
+# the book prints. One sha-range finding survives the bump and is
+# recorded rather than worked around: `w.link()`, the one-argument
+# spelling chapter 15 teaches and `wolf_rt`'s own `link` doc-comment
+# names, is missing from the compiler's proc method table, so wolfc
+# answers `E0402` where lupin runs the program. Filed; chapter 15's
+# ledger carries it.
+#
+# This sha is the newest one whose `ci` run is green AND on which the
+# whole book suite is green, which is what the gate asks for.
 repo = "wolffe-lang/wolf-lang"
-rev = "c650e73dbe584c70c464038365bc33efafc85844"
+rev = "df5b2ad45ec32244c587dc16e400d0ca1db46609"
 impl_version = "0.1.0"
 
 [lupin]
-# wolf-interp at the v0.1.8 tag: runs programs, reports traps,
+# wolf-interp at the v0.1.9 tag: runs programs, reports traps,
 # evaluates REPL snippets, and is the implementation that executes
 # Part 3 — the scheduler, the seeded decision stream, and the schedule
 # explorer are all its. 0.1.6 brought the E11xx parity rejections that
 # chapter 13 is written on; 0.1.7 pushed literals' int adoption, one
 # admission ladder for `explore` and `run`, and ten idiom lints; 0.1.8
-# lands the D39 write barrier (a write through a read-mode binding
+# landed the D39 write barrier (a write through a read-mode binding
 # traps exclusivity) and the D40 loop-extent claim (mutation during
-# iteration traps at the mutation). It is also the release pairing: the
-# interpreter names the compiler sha it was differentially tested
-# against, and the compiler names it back.
-# The rev is the annotated tag object (commit `7886559`), matching the
+# iteration traps at the mutation).
+# 0.1.9 is the conc-parity release, and it is the half of this bump the
+# book cares about most: the two machines now both run wolf's
+# concurrency and are compared on it — ten of ten conc entries agreeing
+# on verdict, exit status and output bytes, seeded on both sides, with
+# the thirteenth differential running 241 entries at zero divergences.
+# Part 3's chapters were written when only one implementation could
+# execute their programs; they are now differentially checked like the
+# rest of the book.
+# It is also the release pairing: the interpreter names the compiler sha
+# it was differentially tested against, and the compiler names it back.
+# The two lines are one release apart at this pin — lupin 0.1.9 names
+# wolf `0b4e79c`, an ancestor of the compiler pin above, and the
+# compiler's own line still names lupin 0.1.8. Both are true statements
+# about what was tested against what, and §1.2 teaches the reader to
+# read them that way; the colophon prints them as they are.
+# The rev is the annotated tag object (commit `47ed21b`), matching the
 # convention this file has used since 0.1.5. The tag's own CI run is
-# green, as are the two commits above it.
+# green.
 repo = "wolffe-lang/wolf-interp"
-rev = "c0a563a5cf594bcf95cf78452cef8a66d4758d1c"
-version = "lupin 0.1.8 (wolf-interp, reference interpreter at pin 26fa98e)"
+rev = "10df88d39e55ca0133c01f20290d581303f35cfe"
+version = "lupin 0.1.9 (wolf-interp, reference interpreter at pin 0b4e79c)"
 
 [wolf-lsp]
 # Source of the vendored tmLanguage grammars under highlight/.
