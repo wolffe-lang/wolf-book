@@ -7,7 +7,9 @@ generated from the same source and inherit the same decisions
 toolchain below).
 
 Prose license: TBD at bc00 (CC BY 4.0 proposed). Code samples:
-MIT or Apache-2.0, matching the language.
+[GPL-3.0-or-later](LICENSE) with the [wolf Runtime Library
+Exception](LICENSE-EXCEPTION), matching the runtime — code you take
+from this book into your programs is yours.
 
 ## The toolchain
 
