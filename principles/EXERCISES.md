@@ -37,8 +37,9 @@ order-of-150+ as a floor; the bs00x corpus filled it at full scale:
 **246 exercises** across parts 1–4 plus the appendix-adjacent sets —
 48 in part 1, 43 in part 2, 71 in part 3, 70 in part 4, 14 on the
 appendices. Part 5's guided projects add their batches as they ship;
-chapters 26–28 brought 21 (6, 8 and 7), which is where the corpus total
-of 268 comes from. The per-chapter sets live in
+chapters 26–28 brought 21 (6, 8 and 7) and chapter 30 brought 7, which is
+where the corpus total of 275 comes from. Chapter 31 brings none by
+design (§4), and chapters 25 and 29 bring none because they are held. The per-chapter sets live in
 `principles/exercises/chNN/EXERCISES.md` (this file's §5 remains the
 chapters 1–6 exemplar batch, folded in unchanged; the chapter files
 continue its numbering); `EXERCISES-INDEX.md` maps section → exercise →

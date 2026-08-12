@@ -15,3 +15,11 @@
 !/samples/pkg/
 # Compiler-side build caches, wherever a `wolf build` was run.
 .lu-cache/
+# Corpus run byproducts. `wolf-run(…)` samples execute IN their corpus
+# directory, so a sample that writes a file leaves it behind — chapter
+# 30's exercises are the first in the corpus to write one (`pargrep`
+# writes the two logs it searches). The programs are tracked; what they
+# produce is not. A future fs-writing sample in another chapter wants a
+# line here too, or the runner wants to copy corpus samples into a
+# scratch directory the way it already copies book blocks.
+/principles/exercises/ch30/*.log

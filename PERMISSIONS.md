@@ -37,6 +37,7 @@ for the print edition) · `cut`.
 | 3 | "Come a little closer." | Cage the Elephant, "Come a Little Closer" | title fragment, epigraph | Part 2, chapter 9 head (`book/ch09.md`) | placed | bs05. Title only, no verse; epigraph position, attribution flush right, and the first prose sentence pays the double-take off ("this chapter is about exactly how close we let it come"). Part 2's single placement in this register; delete it and the chapter still teaches |
 | 4 | "Skin and Bones." | Cage the Elephant, "Skin and Bones" (*Social Cues*, 2019) | title fragment, epigraph | Part 1, chapter 2 head (`book/ch02.md`) | placed | bs01. Title only, no verse; epigraph position, attribution flush right, and the first prose sentence pays the double-take off ("a wolf string is skin and bones: bytes, and a length"). Part 1's single placement in this register; delete it and the chapter still teaches |
 | 5 | "House of Glass." | Cage the Elephant, "House of Glass" (*Melophobia*, 2013) | title fragment, epigraph | Part 4, chapter 24 head (`book/ch24.md`) | placed | bs09. Title only, no verse; epigraph position, attribution on its own line, and the first sentence of prose pays the double-take off ("a wolf package is one — everything it can do to the machine that builds it is written in a file you read in a minute"). Part 4's single placement in this register; delete it and the chapter still teaches |
+| 6 | "Back Against the Wall." | Cage the Elephant, "Back Against the Wall" (*Cage the Elephant*, 2008) | title fragment, epigraph | Part 5, chapter 31 head (`book/ch31.md`) | placed | rp02. Title only, no verse; epigraph position, attribution on its own line, and the first sentence of prose pays the double-take off ("that is where this chapter puts you, deliberately: a specification, six checkpoints, and no walkthrough"). Part 5's single placement in this register, reserved for this chapter since bs10 and spent the sprint it shipped. The joke lands on the authors' decision to withhold the walkthrough, not on the reader (TONE.md §2); delete it and the chapter still teaches |
 
 Chapter 1's epigraph is Bruckner (dark-Romantic register, untracked
 below by design). Part 1 therefore spends one Cage placement and one
@@ -189,6 +190,22 @@ without it, the register closes at five and the book is not poorer for it.
 The dark-Romantic register (TONE.md §4.1 — Mahler, Bruckner, Wagner
 allusions) is public domain and is deliberately *not* tracked here;
 this ledger is for material with a rights holder.
+
+rp02 (chapters 30 and 31) spends row 6 and closes this register's budget
+for Part 5. Chapter 30 carries no epigraph and no in-prose simile at all;
+chapter 31 carries the Cage placement and nothing else. The part's two
+dark-Romantic placements — Mahler's Ninth at chapter 28's head and
+Tchaikovsky's Sixth at chapter 32's, both public domain and untracked here
+by design — were already spent, so Part 5 ends at three reference
+placements across seven chapters, which is the frequency TONE.md §4
+describes rather than the ceiling it allows.
+
+The alternative was to let the placement lapse. It was not taken, for a
+stated reason: the reservation has been carried in this ledger since bs10
+and its only remaining candidate was the chapter that has now shipped, so
+lapsing would have retired a budgeted allocation by inaction rather than
+by decision. Row 2 (the diagnostics appendix) remains the one `planned`
+row in this table, and it belongs to the back matter rather than to a part.
 
 ---
 

@@ -8,7 +8,7 @@ to be. The day a blocking feature lands, its exercises join the CI run
 their headers already describe; until then this manifest is the honest
 list. No aspirational green.
 
-Note for the compiler track: the whole corpus — 185 directive-headed
+Note for the compiler track: the whole corpus — 188 directive-headed
 `.lu` files under `principles/exercises/`, runnable and pending alike —
 is a seed farm for the toolchain's corpus and fuzz harnesses. The
 pending files are the most valuable seeds: each one encodes an expected
@@ -41,6 +41,21 @@ reports `unsupported` at resolve. The workflow entries (20-6, 21-8,
 show a worked-example transcript (the ch20 bench-format set) label it
 as a worked example in the stem itself; nothing in the corpus presents
 invented output as a run.
+
+## What the rp02 pin bump did not move
+
+Recorded because a bump is only honest if the rows that stayed are
+checked rather than assumed. At wolf-lang's newest green trunk sha and
+lupin v0.1.9 the runner reports five pendings and **zero flips**, and
+each of the workflow rows was probed by hand: `par` is still absent from
+both implementations (`nothing named 'par' is in scope`), so 13-1 and
+13-6 hold and chapter 13 §13.1 stays vacant; `--chaos` is still
+`unexpected argument` under lupin, so 17-6 stays unprinted and chapter 17
+stays at three sections; `wolf bench` still answers `not yet`, so 19-1,
+20-6 and 21-8 hold with chapters 19–21; and the ch05, ch07 and ch08 rows
+are unmoved for the reasons their blockers name. Native concurrency and
+the compiler's mid-end are what this bump brought, and neither of them is
+what any of these rows is waiting on.
 
 ## Retired entries
 

@@ -1,0 +1,97 @@
+struct Table { lines: List[str], names: List[str], nums: List[int] }
+
+fn main() -> !int {
+    let args = env_args()
+    var pattern = "wolf"
+    var names = List[str]()
+    if args.len > 0 { pattern = args[0] }
+    var k = 1
+    while k < args.len {
+        (mut names).push(args[k])
+        k += 1
+    }
+    if names.is_empty() {
+        fs_write_text("a.log", "06:12 the wolf runs\n06:31 the moon watches\n07:02 the wolf howls\n07:40 the pack waits\n")?
+        fs_write_text("b.log", "08:15 alone\n08:52 the wolf sleeps\n09:03 moonrise\n09:44 the wolf wakes\n")?
+        (mut names).push("a.log")
+        (mut names).push("b.log")
+    }
+
+    let needles = freeze region { pattern.split("|") }
+    let t = freeze region {
+        var lines = List[str]()
+        var files = List[str]()
+        var nums = List[int]()
+        var f = 0
+        while f < names.len {
+            let name = names[f]
+            var no = 1
+            for line in fs_read_text(name)?.lines() {
+                (mut lines).push(line)
+                (mut files).push(name)
+                (mut nums).push(no)
+                no += 1
+            }
+            f += 1
+        }
+        Table { lines: lines, names: files, nums: nums }
+    }
+
+    let n = t.lines.len
+    let b1 = n / 4
+    let b2 = (n * 2) / 4
+    let b3 = (n * 3) / 4
+    let hits = channel[int](0)
+    let done = channel[int](0)
+    var found = List[int]()
+    scope s {
+        s.spawn(fn() {
+            for i in 0..b1 { if matches(t.lines[i], needles) { hits.send(i) } }
+            done.send(1)
+        })
+        s.spawn(fn() {
+            for i in b1..b2 { if matches(t.lines[i], needles) { hits.send(i) } }
+            done.send(1)
+        })
+        s.spawn(fn() {
+            for i in b2..b3 { if matches(t.lines[i], needles) { hits.send(i) } }
+            done.send(1)
+        })
+        s.spawn(fn() {
+            for i in b3..n { if matches(t.lines[i], needles) { hits.send(i) } }
+            done.send(1)
+        })
+        var live = 4
+        while live > 0 {
+            select {
+                i from hits => { (mut found).push(i) },
+                _ from done => { live -= 1 },
+            }
+        }
+    }
+
+    var i = 0
+    while i < n {
+        if member(found, i) { print("{t.names[i]}:{t.nums[i]}: {t.lines[i]}") }
+        i += 1
+    }
+    if found.is_empty() { 1 } else { 0 }
+}
+
+fn matches(line: str, needles: List[str]) -> bool {
+    var k = 0
+    while k < needles.len {
+        if line.contains(needles[k]) { return true }
+        k += 1
+    }
+    false
+}
+
+fn member(xs: List[int], v: int) -> bool {
+    var k = 0
+    while k < xs.len {
+        if xs[k] == v { return true }
+        k += 1
+    }
+    false
+}

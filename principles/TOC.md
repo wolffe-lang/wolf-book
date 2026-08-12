@@ -386,8 +386,8 @@ say on what.
 - Exercises 28-1 ….
 
 ### Chapter 29 — `tinyvm`
-*wolf-native · gate: `Pool`/`handle` executable on some lane — closed on
-both at the pin (§Deltas, bs10 pass two)*
+*wolf-native · held · gate: `Pool`/`handle` executable on some lane —
+closed on both, re-measured at the rp02 pin (§Deltas, rp02)*
 - 29.1 Fetch, decode, execute — build the dispatch loop as one `match`.
 - 29.2 Registers as a fixed `List` — give the machine its state.
 - 29.3 The heap as a `Pool` — allocate VM objects behind generational
@@ -397,23 +397,25 @@ both at the pin (§Deltas, bs10 pass two)*
 - Exercises 29-1 ….
 
 ### Chapter 30 — `pargrep`
-*wolf-native · gate: native concurrency at an adoptable pin — the surface
-is verified, the pin is blocked (§Deltas, bs10 pass two)*
+*wolf-native · shipped (rp02) · compiled, for the reason in §Deltas · the
+part's fourth project and its only concurrent one*
 - 30.1 Sharding the input — split the work before spawning anything.
 - 30.2 A task per shard — search slices inside one scope.
 - 30.3 Results through a channel — collect matches without a lock.
 - 30.4 The frozen pattern table — share one table across every task with
   no copy.
-- 30.5 Testing with a seed — reproduce a parallel run exactly (X12).
-- Exercises 30-1 ….
+- 30.5 Testing with a seed — pin the one decision the machine makes for
+  you, and make the answer not depend on the rest (X12; reworded at rp02,
+  §Deltas).
+- Exercises 30-1 … 30-7.
 
 ### Chapter 31 — `logden`, alone
-*the solo · gate: chapter 30's, and it travels with it (§Deltas, bs10
-pass two)*
+*the solo · shipped (rp02) · carries the part's single Cage placement*
 - 31.1 The problem — read the whole specification of the program, and
   nothing else.
 - 31.2 The milestone ladder — check your own work against six tagged
-  checkpoints, each with one hint.
+  checkpoints, each publishing an input and an expected output, each with
+  one hint.
 - No walkthrough, and no solutions: checkpoints are published, answers
   are not (EXERCISES.md §Solutions policy — the one exception, and this
   chapter is now all of it).
@@ -842,6 +844,126 @@ sprint files remain the implementation contracts for everything else.
     later, and two one-line fixes away from three more transcripts. The
     capability *enforcement* diagnostic (E1504) needs a std facade on
     the page and the book pins no std.
+- **rp02 (the pin moves and Part 5 closes but one, 2026-08-12):** the
+  deliberate deviation recorded at bs10's pin note is over. The
+  select-arm dominance ICE is fixed by the compiler's mid-end, the book
+  adopts the newest green trunk sha and lupin v0.1.9, and the two
+  chapters that were held on the pin rather than on their surface ship.
+  What moved, item by item, because a bump is only honest if every flip
+  is named:
+  - **Chapter 30, `pargrep`: shipped, compiled.** The whole chapter is
+    the compiler's column — the project reads files and the reference
+    interpreter has no filesystem by design, so the `wolf` fences carry
+    no `run` directive (that lane is lupin's) and the console blocks
+    assert the output, exactly as chapter 26 does. Everything the bs10
+    hold note recorded was re-run at the adopted pin and none of it
+    moved: the 97-line program, the two transcripts byte-for-byte, two
+    hundred consecutive runs at one output hash, one `stdout_sha256`
+    across six seeds.
+  - **§30.5's promise is reworded**, and this is the sprint's one TOC
+    promise change. It read "reproduce a parallel run exactly (X12)".
+    Measured at this pin it is false in the wide reading and true in a
+    narrow one: a fixed seed reproduces the runtime's own coin flips —
+    two ready `select` arms replay identically, eight of eight, in both
+    directions, and different seeds pick different arms — and does not
+    reproduce an interleaving. Twenty seeded runs of an arrival-printing
+    program gave three distinct outputs; twenty seeded runs of `pargrep`
+    gave one. The section is written on that pair, and the promise now
+    names what the seed does. The chapter had never shipped, so the
+    wording was free (the licence bs07, bs10 and rp01 took).
+  - **`wolf test --schedules` moved the wrong way and is not in the
+    chapter.** At the candidate sha bs10 measured, an exploration over
+    an order-dependent assertion found the divergence in two of three
+    tries. At the adopted pin, a test body carrying structured
+    concurrency reports `unsupported (structured concurrency in checked
+    execution)` — a scaffold refusal, which TONE.md §Tense discipline
+    forbids teaching — while the command still prints its "reproduce any
+    run with --replay=SEED" line. §30.5 therefore uses `wolf conform-run
+    … --seed=N --native`, which is the vocabulary chapters 13 and 17
+    already established with `lupin conform-run … --explore=N`. Filed at
+    full volume in chapter 30's ledger.
+  - **Chapter 30 has a second program on disk**,
+    `samples/projects/seqgrep/seqgrep.lu`, and it is the chapter's
+    honest control. Part 5's rule is two columns with the line counts
+    printed; chapter 30 has no C twin (the pthreads/Windows measurement
+    bs10 pass two recorded is unchanged), so the columns are wolf against
+    wolf. The verdict is a **non-win**: 57 lines sequential against 97
+    parallel, seventy percent more, to search eight lines of log. §30.4
+    says so before it says anything else, and names where the forty
+    lines went — three to the concurrency, thirty-seven to the shard
+    count being a constant.
+  - **Chapter 31, the solo: shipped, and it prints no program.**
+    `samples/projects/logden/` deliberately does not exist, because
+    `verify-docs` would then require the chapter to print its own
+    solution. Each milestone publishes an input and an expected output
+    instead, produced by a reference implementation kept outside this
+    repository and run at the pins — six programs, one per milestone, M6
+    hashed over a hundred runs to one value. That is the honest form of
+    an unpublished answer, and the price of the exception is that nothing
+    in CI can re-derive those transcripts.
+  - **Chapter 31 spends Part 5's Cage placement** ("Back Against the
+    Wall.", PERMISSIONS.md row 6), which is where bs10 reserved it. Part
+    5's reference budget is now closed at three: Mahler's Ninth (28),
+    Tchaikovsky's Sixth (32), and this one. Chapter 30 carries no
+    epigraph and no in-prose simile.
+  - **Chapter 29, `tinyvm`: still held, and its hold note is re-stated
+    from fresh runs rather than inherited.** All four measurements
+    reproduce at the adopted pin: `wolf build` refuses the `Pool`
+    constructor ("Pool/shared constructor lowering (runtime shapes,
+    c06)"), lupin refuses the field write through a handle
+    (`heap["handle#0[0]@0"].value does not denote a place at run time`,
+    exercise 8-7's blocker since bs04), and monomorphization is refused
+    natively in both spellings while lupin evaluates both. Native
+    concurrency and the mid-end touch none of it. The surviving gate, in
+    one line: `Pool[T]` construction in native lowering, and a field
+    write through a handle in the interpreter's std subset — the chapter
+    needs one lane where both work, and there is none.
+  - **Chapter 26's argv row is closed and §26.5 is rewritten.** The "no
+    argv" delta above is now history in the book as well as on trunk.
+    The paragraph used to end "no amount of the rest of this book makes
+    those four lines better than the C's one", which is false at this
+    pin; it now records the four `push` lines as a choice this listing
+    made (a binary that runs before the reader has written it a file) and
+    tells the reader to take the names from `env_args()` when they build
+    the tool for real. `count` itself was **not** re-cut onto
+    `env_args()`: the edit moves a shipped listing, its on-disk program,
+    its `wc` claim, three console transcripts and two measurement
+    paragraphs, which is a chapter-sized change in a sprint whose subject
+    was two other chapters. Recorded as a papercut in chapter 26's ledger
+    so the next pass does it deliberately.
+  - **One sample moved, and it is the pin's only book-visible cost.**
+    `book/ch15/s5` — exercise 15-2's program — reports `E0402` under the
+    compiler at every sha carrying native concurrency: `w.link()`, the
+    one-argument spelling §15.1 teaches, is missing from sema's proc
+    method table, while `wolf_rt`'s own `link` doc-comment names it and
+    lupin implements it. The fence gains the `run(exit=1)` directive its
+    stem already named (`*(comprehension · lupin)*`), which is the lane
+    the whole chapter runs on and a stronger check than "compiles clean".
+    No reader-facing text moved. Filed in chapter 15's ledger.
+  - **Nothing else flipped, and that was checked rather than assumed.**
+    `par` is still absent (chapter 13 §13.1 stays vacant, exercises 13-1
+    and 13-6 stay pending), `--chaos` is still rejected (chapter 17 stays
+    at three sections, exercise 17-6 stays unprinted), `wolf bench` still
+    answers `not yet` (chapters 19–21 stay held), and the ch05, ch07 and
+    ch08 pending rows are unmoved. The runner reports five pendings and
+    zero flips. The seven diagnostic snapshots bs10 pass two predicted
+    would drift did not: the mid-end changed no diagnostic the book
+    prints, and the suite needed exactly one `--bless`, for chapter 30's
+    new E1012 sample.
+  - **Three defects were found by writing the chapters, and all three are
+    in the ledgers at full volume.** The one that matters most is
+    chapter 13's: `E1101` catches an assignment to a captured binding and
+    does not catch `(mut xs).push(1)`, so two tasks writing one captured
+    `List` compile clean on both implementations — and then disagree
+    about the program's meaning (natively the parent sees both writes,
+    under lupin it sees neither). §13.2's "declining to compile the shape
+    a race is made of" is the sentence at risk; it was not edited,
+    because a caveat about a checker gap is what the ledger exists to
+    keep out of the reader's text. The other two are chapter 30's: a
+    single-arm `select` in a loop whose body assigns outward ICEs the
+    backend, and `print` is not atomic across tasks — four tasks tear
+    each other's lines, which exercise 30-5 turns into the lesson that a
+    pipeline's last stage should be sequential.
 - **bs11:** back matter gains an explicit Appendix D (spec
   cross-reference), which bs11's checklist implies ("claims traced to
   spec clauses") but never lists as an artifact. The index doctrine

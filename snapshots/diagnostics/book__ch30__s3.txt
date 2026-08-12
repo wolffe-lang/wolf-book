@@ -1,0 +1,11 @@
+error[E1012]: `needles` is frozen, so it cannot be passed as `mut`
+ --> ./s3.lu:6:5
+  |
+5 |     let needles = freeze region { "wolf|moon".split("|") }
+  |                   ---------------------------------------- the freeze happens here — the promotion to `imm` is deep and permanent
+6 |     (mut needles).push("pack")
+  |     ^^^^^^^^^^^^^ this needs the data to be mutable
+  |
+  = note: `freeze` promotes the whole graph to `imm`: shareable from anywhere, forever, and never
+    writable again. Build the value completely before freezing it, or keep a mutable copy
+    (`copy`) alongside the frozen one.

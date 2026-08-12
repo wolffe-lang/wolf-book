@@ -1,0 +1,57 @@
+struct Table { lines: List[str], names: List[str], nums: List[int] }
+
+fn main() -> !int {
+    let args = env_args()
+    var pattern = "wolf"
+    var names = List[str]()
+    if args.len > 0 { pattern = args[0] }
+    var k = 1
+    while k < args.len {
+        (mut names).push(args[k])
+        k += 1
+    }
+    if names.is_empty() {
+        fs_write_text("a.log", "06:12 the wolf runs\n06:31 the moon watches\n07:02 the wolf howls\n07:40 the pack waits\n")?
+        fs_write_text("b.log", "08:15 alone\n08:52 the wolf sleeps\n09:03 moonrise\n09:44 the wolf wakes\n")?
+        (mut names).push("a.log")
+        (mut names).push("b.log")
+    }
+
+    let needles = pattern.split("|")
+    var lines = List[str]()
+    var files = List[str]()
+    var nums = List[int]()
+    var f = 0
+    while f < names.len {
+        let name = names[f]
+        var no = 1
+        for line in fs_read_text(name)?.lines() {
+            (mut lines).push(line)
+            (mut files).push(name)
+            (mut nums).push(no)
+            no += 1
+        }
+        f += 1
+    }
+    let t = Table { lines: lines, names: files, nums: nums }
+
+    var hits = 0
+    var i = 0
+    while i < t.lines.len {
+        if matches(t.lines[i], needles) {
+            print("{t.names[i]}:{t.nums[i]}: {t.lines[i]}")
+            hits += 1
+        }
+        i += 1
+    }
+    if hits == 0 { 1 } else { 0 }
+}
+
+fn matches(line: str, needles: List[str]) -> bool {
+    var k = 0
+    while k < needles.len {
+        if line.contains(needles[k]) { return true }
+        k += 1
+    }
+    false
+}

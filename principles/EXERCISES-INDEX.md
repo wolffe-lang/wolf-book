@@ -1,6 +1,6 @@
 # EXERCISES-INDEX.md — the corpus ledger
 
-Generated view of every exercise in the corpus: 268 total. Sources:
+Generated view of every exercise in the corpus: 275 total. Sources:
 the exemplar batch in `principles/EXERCISES.md` §5 (26 exercises,
 folded in unchanged) and the per-chapter files
 `principles/exercises/chNN/EXERCISES.md` (+ `appx/` for the
@@ -446,6 +446,32 @@ Taxonomy spread (tags, hybrids counted once per kind): fingers 36 · comprehensi
 | Chapter batch | 28-5 | spelunking · the C twin | prose |
 | Chapter batch | 28-6 | extension · lupin | run (lupin) |
 | Chapter batch | 28-7 | design | prose |
+
+## ch30 — 7 exercises
+
+| section | exercise | type · checker | tier |
+|---|---|---|---|
+| Chapter batch | 30-1 | fingers · wolf | prose |
+| Chapter batch | 30-2 | comprehension · wolf | prose |
+| Chapter batch | 30-3 | comprehension · wolf | run (wolf) |
+| Chapter batch | 30-4 | extension · wolf | run (wolf) |
+| Chapter batch | 30-5 | extension · wolf | run (wolf) |
+| Chapter batch | 30-6 | spelunking · wolf | prose |
+| Chapter batch | 30-7 | design | prose |
+
+Chapter 31 contributes no row: the solo publishes six milestone
+checkpoints instead of exercises, and it is the solutions policy's one
+exception (EXERCISES.md §4). Chapter 29 contributes none either — its
+chapter is held.
+
+30-1's and 30-2's tier is `prose` for two different reasons. 30-1 needs no
+program of its own: the two it measures are `samples/projects/seqgrep/`
+and `samples/projects/pargrep/`, both printed in the chapter and both
+checked. 30-2's program is deliberately flaky — a buffered `hits` channel
+loses hits, which is the exercise — and a sample whose output varies
+between runs cannot be a CI sample, so the solution page carries the
+twenty-run measurement instead. Both reasons are stated on the solution
+pages rather than only here.
 
 ## appx — 14 exercises
 

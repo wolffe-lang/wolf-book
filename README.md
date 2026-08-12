@@ -5,7 +5,7 @@ look like a printed page. The single-file markdown and the PDF come from the
 same source and inherit the same decisions. `principles/DESIGN.md` is the
 binding contract; bs00 built the toolchain below.
 
-26 of the 32 chapters are written. The other six are stubs, and each one
+27 of the 32 chapters are written. The other five are stubs, and each one
 carries a note saying what it waits on.
 
 Prose license: TBD at bc00, with CC BY 4.0 proposed. Code samples are
