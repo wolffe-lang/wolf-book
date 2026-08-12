@@ -330,8 +330,9 @@ come from `wc`, not from vibes.
 
 Gate notes below are CI vocabulary and stay out of reader text (TONE.md
 §Tense discipline). A chapter waits for its gate *whole*: no project
-ships partially. Chapters 26–28 shipped at the bs10 pin bump; 29–32 wait,
-and their notes say on what.
+ships partially. Chapters 26–28 shipped at the bs10 pin bump and the coda
+(32) shipped at bs10's second pass; 29, 30 and 31 wait, and their notes
+say on what.
 
 ### Chapter 26 — `count`, twice
 *after K&R §1.5–1.6 · shipped (bs10) · Part 5's opener lands at this chapter's head*
@@ -373,7 +374,8 @@ and their notes say on what.
 - Exercises 28-1 ….
 
 ### Chapter 29 — `tinyvm`
-*wolf-native · gate: pools/match native*
+*wolf-native · gate: `Pool`/`handle` executable on some lane — closed on
+both at the pin (§Deltas, bs10 pass two)*
 - 29.1 Fetch, decode, execute — build the dispatch loop as one `match`.
 - 29.2 Registers as a fixed `List` — give the machine its state.
 - 29.3 The heap as a `Pool` — allocate VM objects behind generational
@@ -383,7 +385,8 @@ and their notes say on what.
 - Exercises 29-1 ….
 
 ### Chapter 30 — `pargrep`
-*wolf-native · gate: c07 native concurrency*
+*wolf-native · gate: native concurrency at an adoptable pin — the surface
+is verified, the pin is blocked (§Deltas, bs10 pass two)*
 - 30.1 Sharding the input — split the work before spawning anything.
 - 30.2 A task per shard — search slices inside one scope.
 - 30.3 Results through a channel — collect matches without a lock.
@@ -393,7 +396,8 @@ and their notes say on what.
 - Exercises 30-1 ….
 
 ### Chapter 31 — `logden`, alone
-*the solo · gate: c07 native concurrency (+ c10 optional §)*
+*the solo · gate: chapter 30's, and it travels with it (§Deltas, bs10
+pass two)*
 - 31.1 The problem — read the whole specification of the program, and
   nothing else.
 - 31.2 The milestone ladder — check your own work against six tagged
@@ -403,12 +407,14 @@ and their notes say on what.
   chapter is now all of it).
 
 ### Chapter 32 — Coda: the allocator you never needed
-*after K&R §8.7 · gate: unsafe-tier surface (chapter 9's material)*
-- 32.1 Why C ends here — read why allocation is where K&R had to finish.
+*after K&R §8.7 · shipped (bs10 pass two) · interpreted, for the reason in
+§Deltas · carries the part's second and final dark-Romantic placement*
+- 32.1 Why C ends here — read why allocation is where K&R had to finish,
+  and what this version leaves out.
 - 32.2 A free-list allocator in a page — build one in the unsafe tier,
   because the floor is simpler-ruled than the safe tier.
-- 32.3 The brace you already had — look back at chapter 28, where this
-  entire job was one closing brace.
+- 32.3 The brace you already had — measure it twice, in lines and in
+  audit surface, against chapter 28, where the whole job was one brace.
 
 ## Back matter
 
@@ -654,6 +660,75 @@ sprint files remain the implementation contracts for everything else.
   in-prose simile. The part's one Cage placement and its second
   dark-Romantic placement are unspent and reserved for the solo and the
   coda, as the sprint contract sets them.
+- **bs10 pass two (what shipped: the coda only, and the pin did not
+  move):** this pass verified all four remaining gates by building and
+  running their programs, and shipped the one that is open at a pin the
+  book can adopt.
+  - **Chapter 32, the coda: shipped, interpreted.** The allocator runs
+    under `lupin allocator.lu`, and `wolf audit-surface ./allocator.lu`
+    runs on either lane because the audit reads source. `wolf build`
+    produces no binary: `as *i64` is refused by native lowering
+    ("raw-pointer casts (unsafe-tier WIR ops, deferred from s26)") and a
+    store through a raw pointer is refused separately ("index writes
+    outside List (raw-pointer writes c10)"). This is exactly chapter 9's
+    situation — its one native transcript is §9.1's cast-free
+    `malloc`/`memset`/`memcpy` sample, and everything downstream of a
+    cast is the interpreter's — so the coda inherits a lane the book
+    already stands on rather than opening a new question.
+  - **Chapter 29, `tinyvm`: held, and the gate is closed on both lanes.**
+    Measured with chapter 8's own spelling (`region h: pool(Cell) { var
+    heap = Pool[Cell]() … (mut heap).reserve() / .init(h, …) / heap[h] }`):
+    native lowering refuses the constructor ("Pool/shared constructor
+    lowering (runtime shapes, c06)"), and under lupin a field write
+    through a handle is `heap["handle#0[0]@0"].value does not denote a
+    place at run time` — the blocker exercise 8-7 has held on since bs04.
+    A VM heap whose objects are mutated behind generational handles
+    therefore has no spelling that executes anywhere, which is the
+    chapter's central mechanism and its §29.3–29.4. Monomorphization is
+    the second half: a generic function is refused natively whether the
+    type argument is written (`pick[int](a, 0)` → "a generic function
+    used as a value (s16 comptime)") or inferred (`pick(a, 0)` →
+    "generic-function lowering (monomorphization)"). Chapter 28's ledger
+    predicted this row; it is now measured rather than inferred.
+  - **Chapters 30 and 31, `pargrep` and `logden`: held on the pin, not on
+    the surface.** The surface is real and both programs were built and
+    run. What blocks them is that the book cannot adopt a pin that
+    carries native concurrency: at the latest green trunk sha the
+    compiler **ICEs** on `book/ch12.md`'s two-`timeout`-`select` sample
+    (WIR dominance verification — the timeout sentinel CSE'd across
+    select arms), which aborts `cargo xtask samples` outright, and
+    `book/ch15/s5` regresses from compiling to `fail(E0402)`. Both are
+    shipped Part-3 samples and both are correct wolf, so the book waits
+    and the toolchain hurries — there is no third option (TONE.md §Tense
+    discipline). `book/ch32.md`'s ledger carries the minimal ICE repro,
+    the verified `pargrep`/`logden` designs, the three conservatism edges
+    that shaped them (no `s.spawn` in a loop; channel payloads of one
+    word; a `channel[T]` parameter loses its methods), and the X12
+    finding that `--replay` does not reproduce a native interleaving.
+    Nothing in chapters 30 and 31 needs re-designing when the pin moves:
+    it needs typesetting.
+- **bs10 pass two (P5 has no C twin, and it is the rig, not a judgment
+  about C):** the sprint's Mechanics section gives the C dialect to the
+  three K&R side-by-sides and calls P4 and P5 "designs C could not host".
+  The narrower true statement, measured: a parallel grep in C is a
+  pthreads program; `cargo xtask contrast` compiles every twin with one
+  hard-coded flag set (`-std=c99 -Wall -Werror`, no per-file flags) on
+  ubuntu, macOS **and windows**; there is no pthreads on the third.
+  A pthreads twin *does* compile and link under exactly those flags on
+  linux/glibc, which is the trap — it would pass locally and fail one CI
+  lane. `<threads.h>` is C11 and absent on macOS; `fork`/`pipe` do not
+  survive strict `-std=c99`. So PERMISSIONS.md §2 stays at three K&R rows
+  and the part stays at three side-by-sides. A future author who wants
+  the twin needs a per-file flags channel in `cases.toml` and a decision
+  about the Windows lane, in that order.
+- **bs10 pass two (argv exists, and the part's largest cost is dated):**
+  the "no argv" delta above is superseded on trunk and not yet in the
+  book. `env_args()` returns a `List[str]`, lowers natively, and both
+  `wolf run p.lu a b` and `./p a b` deliver real arguments (verified).
+  The pin that carries it is the pin the ICE blocks, so §26.5's
+  input-surface paragraph and chapter 26's first ledger row stand for now
+  and both want revisiting the day the pin moves — as does the sprint
+  acceptance sentence they strain against.
 - **rp01 (chapter 13 ships one section of two, 2026-08-11):** the
   chapter's gate opened halfway. E1101, E1102 and E1103 all exist now,
   in **both** implementations, with the same codes, clause tags and byte

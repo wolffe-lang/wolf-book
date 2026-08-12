@@ -144,6 +144,27 @@ therefore the last one in either register. The solo (chapter 31) is the
 only other candidate for either; a future author should spend at most one
 of them there and never both.
 
+bs10 pass two (chapter 32, the coda) adds no row and spends the
+dark-Romantic placement the paragraph above reserved for it: Tchaikovsky's
+Sixth at the head of `book/ch32.md` — public domain, untracked below by
+design — with the descent-to-the-floor image tied in the first sentence of
+prose beneath it to the section it belongs to, §32.3, where the book's last
+measurement puts an allocator underneath a closing brace. It is the book's
+final placement in that register, and the chapter carries no in-prose
+simile, so the coda spends one reference placement in total, as chapters 7,
+8, 9, 18 and 28 each did.
+
+**Part 5's single Cage placement is still unspent, and chapter 31 is the
+only remaining candidate.** Chapters 29, 30 and 31 are held (their HOLD
+notes and `principles/TOC.md` §Deltas carry the measured reasons), and a
+placement in a chapter nobody can read is a ledger row without a page, so
+this pass deliberately did not spend it. When the solo ships it may take
+that one placement and no other — the coda has taken the dark-Romantic
+half, and TONE.md §4.2's ceiling of six in that register is reached by
+chapter 2's row, chapter 9's, chapter 17's, Appendix C's planned row,
+Part 4's reserved-for-chapter-24 one, and this one. If the solo ships
+without it, the register closes at five and the book is not poorer for it.
+
 The dark-Romantic register (TONE.md §4.1 — Mahler, Bruckner, Wagner
 allusions) is public domain and is deliberately *not* tracked here;
 this ledger is for material with a rights holder.
@@ -183,6 +204,26 @@ its chapter not yet written) · `placed` (live in a chapter) ·
 All three rows are `placed` as of the bs10 pin bump: chapters 26, 27 and
 28 print their twins, and the printing is machine-checked in both
 directions.
+
+**This ledger stays at three rows, and the part stays at three
+side-by-sides.** bs10 pass two tested whether P4 and P5 could carry twins
+and the answer is no, for a reason that is the book's rig rather than a
+judgment about C. A parallel grep in C is a pthreads program; `cargo xtask
+contrast` compiles every twin with one hard-coded flag set (`-std=c99
+-Wall -Werror`, no per-file flags) on ubuntu, macOS **and windows**, and
+there is no pthreads on the third. Measured on linux/glibc, a pthreads
+twin does compile and link under exactly those flags — which is the trap
+worth recording, since it would pass locally and fail one lane of CI.
+`<threads.h>` is C11 and absent on macOS; `fork`/`pipe` do not survive
+strict `-std=c99` (`unknown type name 'pid_t'`). The coda (chapter 32) is
+written *after* K&R §8.7 in the same sense the three twins are written
+after their sections — the allocator is folklore and the shape is theirs —
+but it carries **no C listing at all**, so there is nothing here to
+attribute: no code of ours stands beside code of theirs. The prose credits
+the section, which is the whole of what that chapter borrows. A future
+author who wants a P5 twin needs a per-file flags channel in
+`cases.toml` and a decision about the Windows lane, in that order, and a
+new row here when the twin lands.
 
 - Every ```` ```c ```` block in the book must appear **verbatim** in a
   vendored `.c` file, or `cargo xtask contrast` fails. Nine blocks

@@ -1,0 +1,84 @@
+import c "stdlib.h"
+
+// A block is two header cells and then its payload:
+// [size][next][payload…]. `size` counts payload cells; `next` is the cell
+// index of the next free block, and 0 ends the list, because cell 0 is
+// never a header and so 0 can mean nothing.
+struct Heap { cells: *i64, head: int }
+
+fn arena(cells: int) -> Heap {
+    // # Safety: the allocation owns `cells` eight-byte cells and lives
+    // until the free at the end of `main`; every index below is inside it.
+    unsafe {
+        let base = c.malloc((cells * 8) as uint) as *i64
+        base[1] = (cells - 3) as i64
+        base[2] = 0
+        Heap { cells: base, head: 1 }
+    }
+}
+
+#[trusted("every `next` is a header cell inside the arena, and no block sits on the free list twice")]
+fn carve(mut h: Heap, want: int) -> int {
+    var prev = 0
+    var b = h.head
+    while b != 0 {
+        var size = 0
+        var next = 0
+        // # Safety: `b` is a header the free list put there, so cells `b`
+        // and `b + 1` are inside the arena.
+        unsafe {
+            size = h.cells[b] as int
+            next = h.cells[b + 1] as int
+        }
+        if size >= want {
+            var link = next
+            if size >= want + 3 {
+                let rest = b + 2 + want
+                // # Safety: both halves of the split lie inside the block
+                // at `b`, which had `size` payload cells.
+                unsafe {
+                    h.cells[rest] = (size - want - 2) as i64
+                    h.cells[rest + 1] = next as i64
+                    h.cells[b] = want as i64
+                }
+                link = rest
+            }
+            if prev == 0 {
+                h.head = link
+            } else {
+                // # Safety: `prev` is the header before `b` on the list.
+                unsafe { h.cells[prev + 1] = link as i64 }
+            }
+            return b + 2
+        }
+        prev = b
+        b = next
+    }
+    0
+}
+
+fn recycle(mut h: Heap, p: int) {
+    let b = p - 2
+    // # Safety: `p` came from `carve`, so `b` is its header cell.
+    unsafe { h.cells[b + 1] = h.head as i64 }
+    h.head = b
+}
+
+fn main() -> !int {
+    var h = arena(64)
+    let a = carve(mut h, 4)
+    let b = carve(mut h, 4)
+    print("a={a} b={b} free={h.head}")
+    // # Safety: both payloads own four cells each.
+    unsafe {
+        h.cells[a] = 40
+        h.cells[b] = 2
+        print("{h.cells[a] + h.cells[b]}")
+    }
+    recycle(mut h, a)
+    let d = carve(mut h, 2)
+    print("d={d} free={h.head}")
+    // # Safety: the arena is freed exactly once, and nothing reads it after.
+    unsafe { c.free(h.cells as *u8) }
+    0
+}
