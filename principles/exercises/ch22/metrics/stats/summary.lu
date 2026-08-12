@@ -1,0 +1,18 @@
+//! member: true
+/// Summary statistics over a list of column widths.
+
+/// The arithmetic mean, truncated; zero for an empty list.
+pub fn mean(xs: List[int]) -> int {
+    if xs.is_empty() { 0 } else { total(xs) / xs.len }
+}
+
+/// How many widths there are.
+pub fn count(xs: List[int]) -> int {
+    xs.len
+}
+
+fn total(xs: List[int]) -> int {
+    var t = 0
+    for x in xs { t += x }
+    t
+}

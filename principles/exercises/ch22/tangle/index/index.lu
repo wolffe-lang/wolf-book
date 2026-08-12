@@ -1,0 +1,11 @@
+//! member: true
+/// The row index: publishes rows, and asks `store` to validate them.
+use store
+
+/// Publish one row.
+pub fn note(n: int) -> int {
+    if n < store.batch() { 0 } else { 1 }
+}
+
+/// The index's fan-out.
+pub fn width() -> int { 8 }

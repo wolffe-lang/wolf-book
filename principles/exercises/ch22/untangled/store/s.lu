@@ -1,6 +1,0 @@
-//! member: true
-use index
-
-pub fn put(n: int) -> int {
-    index.note(n)
-}

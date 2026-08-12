@@ -1,5 +1,13 @@
 # Chapter 25 — Editions, stability, publishing: exercises
 
+**None of this batch is printed.** Chapter 25 is held whole — editions
+are a manifest key with no behavior, the book has no std on the page,
+and there is no publish client — so its eight stems live here and land
+with the chapter (`book/ch25.md` carries the measurements; TOC.md
+§Deltas, bs09). They read correctly today because every one of them
+reasons from a locked decision rather than from a tool, which is also
+why none of them carries a pending row: there is no program to run.
+
 This chapter's material is policy with teeth, and its exercises are
 worked the way policy is worked: by cases. Everything here is
 answerable from the chapter's decisions — editions per package, the

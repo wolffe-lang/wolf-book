@@ -1,0 +1,8 @@
+pkg {
+    name:    "local/app",
+    version: "0.1.0",
+    edition: "1",
+    deps: {
+        rows: { path: "../rows" },
+    },
+}

@@ -1,0 +1,8 @@
+//! member: true
+/// Sharpening tools nobody asked for.
+
+/// Sharpen one edge.
+pub fn sharpen() -> int { 1 }
+
+/// Whether an edge needs sharpening.
+pub fn dull(n: int) -> bool { n < 1 }

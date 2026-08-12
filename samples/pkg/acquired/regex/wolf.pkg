@@ -1,0 +1,7 @@
+pkg {
+    name:    "forest/regex",
+    version: "2.2.0",
+    edition: "1",
+
+    capabilities: [net],
+}

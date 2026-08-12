@@ -1,6 +1,0 @@
-//! member: true
-use store
-
-pub fn note(n: int) -> int {
-    if n == 0 { store.put(1) } else { 0 }
-}

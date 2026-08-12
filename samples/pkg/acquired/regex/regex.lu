@@ -1,0 +1,12 @@
+/// Pattern matching over rows — the dependency the app has trusted for
+/// two minor versions.
+
+/// Whether `width` can hold a match of `len` characters.
+pub fn fits(width: int, len: int) -> bool {
+    width >= len
+}
+
+/// How many characters of a match get shown in `width`.
+pub fn shown(width: int, len: int) -> int {
+    if width >= len { len } else { width }
+}

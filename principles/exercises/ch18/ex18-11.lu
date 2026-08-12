@@ -1,4 +1,4 @@
-//! check: run(exit=0, stdout="A-B--A--A-B")
+//! check: wolf-run(exit=0, stdout="A-B--A--A-B")
 //! phase: run
 // Exercise 18-11: an L-system expanded at compile time.
 // PENDING: no lane executes a comptime fold's result — comptime-fn

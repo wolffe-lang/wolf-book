@@ -1,0 +1,12 @@
+error[E0710]: this comptime assertion failed
+  --> ./s2.lu:13:5
+   |
+13 |     assert(handlers(a, b, c).len == 26)
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluated to `false` at compile time
+...
+19 |     const CHECKED = expect_three(Ingest, Report, Purge)
+   |                     ----------------------------------- while evaluating `expect_three`, entered here
+   |                     ----------------------------------- while evaluating `main`, entered here
+   |
+   = note: a failed comptime `assert` stops compilation — it is the witness mechanism for facts the
+     checker cannot see on its own.

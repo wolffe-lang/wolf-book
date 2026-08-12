@@ -5,5 +5,6 @@
 use store
 
 fn main() -> !int {
-    store.put(3)
+    print("stored {store.put(3)}")
+    0
 }

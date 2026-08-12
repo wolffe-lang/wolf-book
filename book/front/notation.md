@@ -55,9 +55,24 @@ $ ./wordtree
 
 A *diagnostic* block is the compiler's exact text and layout, never
 retyped; this one is cross-checked against the captured run of corpus
-sample `ch03/ex3-2`:
+sample `ch03/ex3-2`. It carries a warning above its error, which is the
+rule about editing nothing doing its job — the compiler had two things
+to say about that program and the page shows both:
 
 ```diagnostic,from(ch03/ex3-2)
+warning[W1003]: `w` is taken, never touched, and returned
+ --> ./ex3-2.lu:6:10
+  |
+6 | fn adopt(take w: str) -> str { w }
+  |          ^^^^ consumption that consumes nothing
+  |
+  = note: the caller gives the value up only to receive it back; if callers could reasonably keep
+    it, the signature is wrong.
+help: drop the `take` (call sites drop theirs and keep their binding; owned payloads may then need a real transform)
+  |
+6 | fn adopt(w: str) -> str { w }
+  |
+
 error[E1001]: `p.lead` is used here after its value moved away
   --> ./ex3-2.lu:11:13
    |

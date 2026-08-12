@@ -22,18 +22,18 @@ Solution — `ch22/metrics/`:
 use stats
 
 fn main() -> !int {
-    var xs = List[int]()
-    xs.push(4)
-    xs.push(6)
-    xs.push(8)
-    print("{stats.mean(xs)}")
+    var widths = List[int]()
+    (mut widths).push(4)
+    (mut widths).push(6)
+    (mut widths).push(8)
+    print("mean {stats.mean(widths)} of {stats.count(widths)}")
     0
 }
 ```
 
 ```console
 $ lupin metrics/main.lu
-6
+mean 6 of 3
 ```
 
 Moving `total` to another file inside `stats/` changes nothing
@@ -42,8 +42,8 @@ directory, `use stats` names it whole, and the split is a private
 reorganization. That non-event is the design.
 
 **Exercise 22-2** *(comprehension · lupin)* — `vault/keys.lu` defines
-`pub fn count()`, private `fn secrets()`, and private `fn total()`.
-The entry calls `vault.total()`. Predict the diagnostic — including
+`pub fn count()`, `pub fn loaded()`, and private `fn secrets()` and
+`fn total()`. The entry calls `vault.total()`. Predict the diagnostic — including
 whether it says the name does not *exist* — and the exit code.
 
 Solution: E0304, exit 2, and the diagnostic is precise about
@@ -53,7 +53,7 @@ is not one:
 
 ```console
 $ lupin leak/main.lu
-leak/main.lu: E0304: `total` exists in `vault`, but it is private; only `pub`/`pub(pkg)` items are visible across modules (D32) [mod.vis.private] at 148..153
+leak/main.lu: E0304: `total` exists in `vault`, but it is private; only `pub`/`pub(pkg)` items are visible across modules (D32) [mod.vis.private] at 49..54
 $ echo $?
 2
 ```
@@ -70,7 +70,7 @@ second definition is a duplicate wherever it sits:
 
 ```console
 $ lupin twice/main.lu
-twice/main.lu: E0302: the name `describe` is defined twice in this module (defined again in `twice/main.lu`); file boundaries create no scopes (D32) [mod.dup] at 103..111
+twice/main.lu: E0302: the name `describe` is defined twice in this module (defined again in `twice/main.lu`); file boundaries create no scopes (D32) [mod.dup] at 3..11
 ```
 
 **Exercise 22-4** *(comprehension · lupin)* — The entry imports
@@ -84,7 +84,7 @@ slows every build and means nothing, and a warning would be a request:
 
 ```console
 $ lupin unused/main.lu
-unused/main.lu: E0305: the import `tools` is never used in `unused/main.lu`; an unused import is a hard error (D32), and deleting the line is machine-applicable [mod.use.unused] at 113..118
+unused/main.lu: E0305: the import `tools` is never used in `unused/main.lu`; an unused import is a hard error (D32), and deleting the line is machine-applicable [mod.use.unused] at 4..9
 ```
 
 ## §22.2 — No cycles
@@ -100,7 +100,7 @@ Solution — before, the cycle drawn whole:
 
 ```console
 $ lupin tangle/main.lu
-tangle/main.lu: E0303: this import completes a cycle: `store` → `index` → `store` (in `tangle/index/i.lu`); imports between modules must form a DAG (D32) [mod.cycle] at 17..27
+tangle/main.lu: E0303: this import completes a cycle: `store` → `index` → `store` (in `tangle/index/index.lu`); imports between modules must form a DAG (D32) [mod.cycle] at 70..80
 ```
 
 After — `ch22/untangled/` adds `kinds/`, which imports nothing;
@@ -109,8 +109,7 @@ After — `ch22/untangled/` adds `kinds/`, which imports nothing;
 
 ```console
 $ lupin untangled/main.lu
-$ echo $?
-0
+stored 0
 ```
 
 The refactor's discipline: the extracted module holds what both sides
@@ -121,37 +120,66 @@ things, the tangle is reassembling under a new name.
 splits one 900-line module file into four files in the same directory,
 moves nothing across module boundaries, and changes no `pub` markers.
 List everything that changes for the library's importers, then name
-the artifact from this chapter's toolchain discussion that would
-prove your answer mechanically.
+the artifact from §22.2 that would prove your answer
+mechanically.
 
 Solution: nothing changes — the import path names the directory, the
 module's namespace is the union of its files, and the `pub` surface is
-untouched. The proof artifact is the module's export hash: an
-interface digest computed from the `pub` surface alone, which the
-split leaves bit-identical. (The corpus's visibility cases distinguish
-exactly this: package-visible items alter the package hash and never
-the export hash.) A refactor you can prove invisible is a refactor you
-can make on a Friday.
+untouched. The proof artifact is the module's export hash, which
+`wolf interface` prints: a digest over the `pub` surface alone, which
+the split leaves bit-identical. Run it before and after and compare the
+`export_hash` line; a private helper moving between files does not
+appear in the items list, so it cannot appear in the number. A refactor
+you can prove invisible is a refactor you can make on a Friday.
 
 ## §22.3 — No life before main
 
-**Exercise 22-7** *(comprehension · pending — blocker: comptime
-registries (positive CTFE); owner: s16-ctfe)* — The `init()` idiom
-this section retires: a plugin system where each module's `init()`
-registers a handler into a global table at startup, in whatever order
-the linker felt like. Sketch the comptime replacement: what builds
-the table, when, and what became of the ordering question.
+**Exercise 22-7** *(comprehension · wolf)* — The `init()` idiom §22.3
+retires: a plugin system where each module's `init()` registers a handler
+into a global table at startup, in whatever order the linker felt like.
+Write the comptime replacement for **four** handlers, with a witness that
+fails the build if one goes missing, and say what became of the ordering
+question.
 
-Solution (prose, pending the registry machinery): a comptime function
-walks the declared handler types and folds the complete table into a
-`const` — the table is a *value* computed at compile time, not a
-mutation performed at startup. The ordering question does not get
-answered; it gets deleted: there is no "before main" in which
-registration races, no order in which side effects interleave, and
-two builds produce the same table bit for bit (the determinism the
-sandbox exists to protect — chapter 18). What `init()` could do that
-the registry cannot is exactly the set of things this section is glad
-to lose: arbitrary effects at an unspecified time.
+Solution — `ex22-7.lu`, run by the compiler because a `comptime fn` is
+the compiler's to evaluate:
+
+```wolf
+struct Ingest  { rows: int }
+struct Report  { rows: int }
+struct Purge   { rows: int }
+struct Reindex { rows: int }
+
+comptime fn handlers(a: type, b: type, c: type, d: type) -> str {
+    "{typeinfo(a).name} {typeinfo(b).name} {typeinfo(c).name} {typeinfo(d).name}"
+}
+
+comptime fn expect_four(a: type, b: type, c: type, d: type) -> bool {
+    assert(handlers(a, b, c, d).len == 27)
+    true
+}
+
+fn main() -> !int {
+    const HANDLERS = handlers(Ingest, Report, Purge, Reindex)
+    const CHECKED = expect_four(Ingest, Report, Purge, Reindex)
+    print("{HANDLERS}")
+    if CHECKED { 0 } else { 1 }
+}
+```
+
+```console
+$ wolf run ex22-7.lu
+Ingest Report Purge Reindex
+```
+
+What builds the table: `handlers`, during compilation. When: before the
+program exists. What became of the ordering question: it was deleted, not
+answered. There is no phase in which two registrations could race, no
+link order to depend on, and two builds of this file produce the same
+table byte for byte — the determinism the sandbox exists to protect
+(chapter 18). Drop `Reindex` from either call and the witness fails the
+build with E0710 rather than leaving you a table that is quietly one
+handler short, which is the second thing `init()` never gave you.
 
 ## Chapter batch
 

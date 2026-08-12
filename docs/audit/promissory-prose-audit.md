@@ -522,6 +522,45 @@ deterministic` on the lost-update run. `--seed` is unaffected.
 
 ---
 
+### bs09 pass (2026-08-12) — Part 4's ecosystem chapters
+
+**Tense self-audit.** The grep set over `book/ch22.md`, `book/ch23.md`,
+`book/ch24.md` and `book/ch25.md` returns **zero** reader-facing hits for
+deferral language ("not yet", "when it lands", "at this pin", "for now",
+"a feature away", "will land", "does not exist yet"), zero sprint,
+campaign or milestone identifiers, and zero scaffold output taught. Every
+remaining hit is inside an unpublished HOLD or AUDIT LEDGER comment.
+
+Three findings were *created by* that grep set rather than merely
+recorded by it, and all three are one-string fixes in wolf-lang:
+
+1. **E1503's note** ends "Declare C-library needs in the declarative
+   `c: { }` recipe (c10)". The covenant chapter's single most persuasive
+   transcript — a dependency whose manifest asks for a shell command
+   being refused at parse time — is therefore unprintable, and §24.2
+   prints `wolf --explain E1503` instead. The catalog entry for the same
+   code already says the same sentence without the campaign id.
+2. **E0701's note** ends "file contents will arrive later as declared
+   build inputs (s51), never as an evaluator capability". Since s51 has
+   landed, that note is now a campaign id *and* a false claim about the
+   product. ch18's ledger opened this row; this pass upgrades it, and
+   ch24's exercises 24-4 and 24-5 dropped their pasted stanzas for it.
+3. **`wolf.sum`'s header** — written by the tool into every wolf
+   project's version control — reads "# wolf.sum — integrity ledger
+   (s51). …". This is the worst of the three in kind: not a diagnostic
+   the book quotes, but a sprint identifier the toolchain commits to
+   users' repositories. §23.3 prints the ledger's data line and describes
+   the header in prose, which costs that block its byte-for-byte
+   `file(…)` check.
+
+**Also opened by this pass**, and not a tense finding: the compiler
+cannot load a sibling module directory unless every member file carries
+`//! member: true`, a test-harness convention its own source names as
+such. Chapter 22 therefore takes its module transcripts from lupin. Full
+measurement in `book/ch22.md`'s ledger.
+
+---
+
 *Method note: catalog built from full reads of `book/front/*.md`,
 `book/ch01–ch06.md`, `principles/TONE.md`, `STYLE.md`,
 `samples-pending.toml`, and the bs00/bs01/bs02 contracts in

@@ -1,0 +1,6 @@
+use vault
+
+fn main() -> !int {
+    print("{vault.total()}")
+    0
+}

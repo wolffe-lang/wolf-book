@@ -1,0 +1,6 @@
+use regex
+
+fn main() -> !int {
+    print("{regex.shown(8, 12)}")
+    0
+}

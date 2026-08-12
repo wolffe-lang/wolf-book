@@ -280,36 +280,48 @@ an ecosystem with no build scripts to fear.*
 - Exercises 21-1 ….
 
 ### Chapter 22 — Modules: the shape of a wolf project
+*shipped (bs09)*
 - 22.1 Directory = module — structure a project where files are
   invisible to importers.
 - 22.2 No cycles — hit the error, do the interface-extraction refactor,
-  and name what the rule buys.
-- 22.3 No life before main — replace `init()` registration with comptime
-  registries.
-- Exercises 22-1 ….
+  and name what the rule buys, down to the export hash that proves it.
+- 22.3 No life before main — replace `init()` registration with a
+  comptime registry the compiler folds and a witness it settles.
+- Exercises 22-1 … 22-8.
 
 ### Chapter 23 — Packages and dependencies
-- 23.1 `wolf.pkg` is data — read a manifest as the whole truth.
-- 23.2 MVS in one page — get the same versions forever from the same
-  manifest.
-- 23.3 `wolf.sum` and the log — verify even the author cannot swap bits
-  under a tag.
-- 23.4 Script mode, demystified — see chapter 1's frontmatter deps as
-  the same machinery.
-- Exercises 23-1 ….
+*two sections of four shipped (bs09); the held pair's reasons are in
+`book/ch23.md`'s HOLD note*
+- 23.1 `wolf.pkg` is data — read a manifest as the whole truth, and add
+  a dependency without running anything.
+- (held) 23.2 MVS in one page — get the same versions forever from the
+  same manifest. Held at bs09: version arithmetic happens over registry
+  dependencies, and resolving one is refused. The `(held)` prefix is
+  what stops `verify-docs` demanding the heading in a shipped chapter;
+  drop it when the section is written. The number stays reserved.
+- 23.3 `wolf.sum` — the ledger — read the witness a build compares
+  against, and know what it does and does not protect.
+- (held) 23.4 Script mode, demystified — see chapter 1's frontmatter
+  deps as the same machinery. Held at bs09: a script's frontmatter
+  dependencies have no spelling.
+- Exercises 23-1, 23-5, 23-6, 23-8 (23-2 … 23-4 written and unprinted
+  with §23.2; 23-7 pending with §23.4).
 
 ### Chapter 24 — The covenant: no build scripts
+*shipped (bs09) · Part 4's one Cage placement is at this chapter's head*
 - 24.1 The threat, from history — event-stream, left-pad, build.rs; one
   paragraph each, sourced.
-- 24.2 What replaces scripts — declarative recipes plus the sandboxed
-  comptime you already trust.
+- 24.2 What replaces scripts — a manifest that cannot compute, plus the
+  sandboxed comptime you already trust.
 - 24.3 Capabilities and `wolf audit` — catch the dependency that
-  suddenly wants `net`.
+  suddenly wants `net`, and fail the build on it.
 - 24.4 What the covenant costs — name the autotools-shaped things v1
   cannot vendor, and why the line holds.
-- Exercises 24-1 ….
+- Exercises 24-1 … 24-8.
 
 ### Chapter 25 — Editions, stability, publishing
+*held whole (bs09) · gate: an edition mechanism, a std on the page, and
+a publish client — measured reasons in `book/ch25.md`'s HOLD note*
 - 25.1 Editions per package — upgrade on your clock; no wolf 2.0, ever.
 - 25.2 The stdlib posture — depend on core, penumbra, or `std.x` with
   eyes open.
@@ -696,6 +708,65 @@ sprint files remain the implementation contracts for everything else.
   pointer is correct, and rp01's gate did not open on `par`; and bs08's
   reword-not-edited row, ch10 §10.1's "Part 4 asks it", stays
   outstanding because chapters 19–21 are still held.
+- **bs09 (what shipped, 2026-08-12):** the sprint's four chapters map to
+  22–25 unchanged in subject. Chapter 22 ships whole; chapter 24 ships
+  whole; chapter 23 ships **two sections of four**; chapter 25 is **held
+  whole**. The one-line version: the package manager is real and the
+  reader can run the manifest, the tree, the ledger, the capability tree
+  and the acquisition gate, while the three things the other two
+  sections need — version arithmetic over registry dependencies, a std
+  on the page, and a publish client — do not exist at the pin.
+  Section-level deltas, all recorded because the anchors had never been
+  published:
+  - §23.2 and §23.4 are held with their numbers reserved, following
+    ch13 §13.1's mechanism rather than ch17's renumbering: the two
+    sections arrive in the slots the part was planned around, and
+    nothing shipped has to be renumbered when they do. Their TOC rows
+    carry the `(held)` prefix and the chapter renders no heading for
+    them.
+  - §23.3's title loses "and the log". `wolf_pkg::log` pins the
+    transparency-log record format and no verb reads or writes it, so a
+    section titled for the log would promise a mechanism the reader
+    cannot reach. What the section does teach — the ledger's format, its
+    byte-stability, the source-filtered tree hash, and the refusal when
+    bits move — is all real. Exercise 23-5 was rewritten to ask about
+    the ledger's protection and its boundary rather than about the log's
+    guarantee.
+  - §22.2's promise gains "down to the export hash that proves it":
+    `wolf interface` prints a module's `export_hash` over its `pub`
+    surface, and that number is the mechanical form of "the split is
+    invisible to importers". It is also the pointer chapter 25 owes
+    when its gate opens, since semver-with-teeth is computed against it.
+  - §22.3's promise gains the witness. The comptime fold reaches a
+    running program at this pin (it did not at bs08's), so the registry
+    is a real transcript rather than a sketch, and the `assert` that
+    fails the build when the table is the wrong shape is the section's
+    second half.
+  - **Two exercises flip and three more do**: 22-7 and 24-6 leave
+    `EXERCISES-PENDING.md` as real runs, and ch18's 18-3, 18-5 and
+    18-11 leave `samples-pending.toml` as reported FLIPs — the fold
+    executes now. All five run under the compiler, which needed a
+    runner lane: `wolf-run(exit=N[, stdout="…"])` is a new book-side
+    check directive meaning "the compiler builds this and runs the
+    binary", for the programs only one implementation executes. It
+    exports to wolf-lang's corpus as an ordinary `run(…)`, because which
+    lane ran a program is this repository's bookkeeping.
+  - **Machinery added:** ```` ```console,in(pkg/name) ```` stages a
+    fixture tree under `samples/pkg/` into a private copy and replays
+    the block inside it (multi-file and multi-package walkthroughs are
+    checkable at all only this way; `wolf add`/`update` rewrite the copy
+    and the fixture stays pristine), and a fence carrying `file(path)`
+    quotes a fixture file instead of declaring a standalone program, so
+    a page and a project cannot drift. Thirteen fixtures under
+    `samples/pkg/` back chapters 22, 23 and 24.
+  - **Not shown, and why** (full measurements in each chapter's ledger):
+    the hostile-dependency refusal (E1503) and the comptime ambient-IO
+    refusals (E0701) are real and are printed as catalog entries rather
+    than rendered diagnostics, because both rendered notes carry a
+    campaign id in reader-facing text — ch18's E0701 row, one code
+    later, and two one-line fixes away from three more transcripts. The
+    capability *enforcement* diagnostic (E1504) needs a std facade on
+    the page and the book pins no std.
 - **bs11:** back matter gains an explicit Appendix D (spec
   cross-reference), which bs11's checklist implies ("claims traced to
   spec clauses") but never lists as an artifact. The index doctrine

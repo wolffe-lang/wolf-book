@@ -1,0 +1,11 @@
+//! member: true
+/// The row store: writes rows, and asks `index` to publish each one.
+use index
+
+/// Store one row and publish it.
+pub fn put(n: int) -> int {
+    index.note(n)
+}
+
+/// How many rows the store will accept at once.
+pub fn batch() -> int { 64 }

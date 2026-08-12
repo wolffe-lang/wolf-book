@@ -1,4 +1,4 @@
-//! check: run(exit=0, stdout="285")
+//! check: wolf-run(exit=0, stdout="285")
 //! phase: run
 // Exercise 18-3: a table folded at compile time.
 // PENDING: positive comptime evaluation (CTFE engine) — owner s16-ctfe.

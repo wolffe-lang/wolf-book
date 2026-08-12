@@ -1,6 +1,0 @@
-//! member: true
-use kinds
-
-pub fn note(n: int) -> int {
-    kinds.classify(n)
-}

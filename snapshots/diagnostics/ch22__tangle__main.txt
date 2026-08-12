@@ -1,12 +1,12 @@
 error[E0303]: this import completes a cycle: `store` → `index` → `store`
- --> ./index/i.lu:2:1
+ --> ./index/index.lu:3:1
   |
-2 | use store
+3 | use store
   | ^^^^^^^^^ the cycle closes here
   |
- ::: ./store/s.lu:2:1
+ ::: ./store/store.lu:3:1
   |
-2 | use index
+3 | use index
   | --------- `store` enters the cycle here
   |
   = note: imports between modules must form a DAG (D32); extract what both sides need into a third

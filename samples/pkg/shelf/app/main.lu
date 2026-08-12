@@ -1,0 +1,8 @@
+use rows
+
+fn main() -> !int {
+    let w = rows.widest(31, 24)
+    let r = rows.fit(50, 3)
+    print("{w} wide, {r} rows")
+    0
+}

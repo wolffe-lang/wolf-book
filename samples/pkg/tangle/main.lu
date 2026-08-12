@@ -1,0 +1,6 @@
+use store
+
+fn main() -> !int {
+    print("stored {store.put(3)}")
+    0
+}

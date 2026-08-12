@@ -36,6 +36,7 @@ for the print edition) · `cut`.
 | 2 | "Trouble" | Cage the Elephant, "Trouble" | near-title allusion, set-off line | Appendix C intro (diagnostics) | planned | TONE.md §4.2 worked placement 2; allusion, no verse quoted |
 | 3 | "Come a little closer." | Cage the Elephant, "Come a Little Closer" | title fragment, epigraph | Part 2, chapter 9 head (`book/ch09.md`) | placed | bs05. Title only, no verse; epigraph position, attribution flush right, and the first prose sentence pays the double-take off ("this chapter is about exactly how close we let it come"). Part 2's single placement in this register; delete it and the chapter still teaches |
 | 4 | "Skin and Bones." | Cage the Elephant, "Skin and Bones" (*Social Cues*, 2019) | title fragment, epigraph | Part 1, chapter 2 head (`book/ch02.md`) | placed | bs01. Title only, no verse; epigraph position, attribution flush right, and the first prose sentence pays the double-take off ("a wolf string is skin and bones: bytes, and a length"). Part 1's single placement in this register; delete it and the chapter still teaches |
+| 5 | "House of Glass." | Cage the Elephant, "House of Glass" (*Melophobia*, 2013) | title fragment, epigraph | Part 4, chapter 24 head (`book/ch24.md`) | placed | bs09. Title only, no verse; epigraph position, attribution on its own line, and the first sentence of prose pays the double-take off ("a wolf package is one — everything it can do to the machine that builds it is written in a file you read in a minute"). Part 4's single placement in this register; delete it and the chapter still teaches |
 
 Chapter 1's epigraph is Bruckner (dark-Romantic register, untracked
 below by design). Part 1 therefore spends one Cage placement and one
@@ -123,6 +124,26 @@ part has one. With chapter 2's row, chapter 9's, and chapter 17's
 placed and Appendix C's planned, spending Part 4's on chapter 24 and
 Part 5's per the paragraph below puts the book at six placements in
 that register, which is the ceiling TONE.md §4.2 sets.
+
+bs09 (chapters 22–25) **spends Part 4's reserved placement**, which is
+row 5 above, at chapter 24's head — the no-build-scripts covenant, which
+is the material bs08's paragraph named as the reason to hold it. The
+title fragment is "House of Glass.", attributed, epigraph position, and
+the payoff is the first sentence of prose: a wolf package is one, because
+everything it can do to the machine that builds it is written in a file
+you can read. Delete the quotation and §24.1 still opens on three
+incidents. Chapters 22 and 23 carry no epigraph and no in-prose simile at
+all, and chapter 25 ships no prose (its gate has not opened —
+`principles/TOC.md` §Deltas, bs09), so Part 4 closes at **two** reference
+placements in total: the Brahms epigraph at chapter 18's head (bs08,
+dark-Romantic, untracked here by design) and this one.
+
+With chapter 2's row, chapter 9's, chapter 17's and now chapter 24's
+placed, and Appendix C's planned, the book stands at **five** placements
+in this register with **one** unspent — Part 5's, reserved for the solo
+or the coda per the paragraph below. That is six, which is the ceiling
+TONE.md §4.2 sets, so no future sprint may add a placement in this
+register without retiring one.
 
 bs10 (Part 5, chapters 26–28) adds no row and leaves the part's Cage
 placement unspent. It spends **one** reference placement in total, and it

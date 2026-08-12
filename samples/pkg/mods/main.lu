@@ -1,0 +1,10 @@
+use stats
+
+fn main() -> !int {
+    var widths = List[int]()
+    (mut widths).push(4)
+    (mut widths).push(6)
+    (mut widths).push(8)
+    print("mean {stats.mean(widths)} of {stats.count(widths)}")
+    0
+}

@@ -1,0 +1,11 @@
+/// Whitespace tidying — the innocent half of a package nobody builds.
+
+/// One space for every run of spaces.
+pub fn squeeze(n: int) -> int {
+    if n > 1 { 1 } else { n }
+}
+
+/// Whether a width needs squeezing at all.
+pub fn crowded(n: int) -> bool {
+    n > 1
+}

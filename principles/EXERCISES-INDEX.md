@@ -16,11 +16,18 @@ the rest of that chapter ships (`book/ch13.md`); ch17's 17-6, whose
 section is held for want of fault injection (TOC.md §Deltas, bs07);
 ch19's nine, ch20's eight and ch21's nine, whose three chapters are
 held whole (`book/ch19.md`, `book/ch20.md`, `book/ch21.md` carry the
-measured reasons); and ch18's 18-3, 18-5 and 18-11, the three whose
-deliverable is a printed folded value, which no lane executes at the
-pin. Everything else in ch18 — nine stems of twelve — is printed.
-All of them stay in the corpus so the day their surface lands the stems
-and the sections arrive together.
+measured reasons); ch23's 23-2, 23-3, 23-4 and 23-7, whose two sections
+are held (`book/ch23.md`); and ch25's eight, whose chapter is held whole
+(`book/ch25.md`). All of them stay in the corpus so the day their
+surface lands the stems and the sections arrive together.
+
+ch18's 18-3, 18-5 and 18-11 are no longer pending. At the bs09 pin the
+comptime fold reaches a running program, so all three are green samples —
+under the *compiler*, via the `wolf-run(…)` directive the runner grew for
+programs only one implementation executes. They are still not printed in
+chapter 18, which is bs08's chapter and not bs09's footprint; the three
+stems are ready and the section that wants them needs one sentence added.
+Recorded here so the editing pass does not have to rediscover it.
 
 Part 5's first three chapters are in the totals below; 29 and 30 are not,
 and land with their chapters. Chapter 31 — the solo — is absent *by
@@ -35,7 +42,13 @@ several of its stems are tagged `· wolf` while the distilled solution
 program on disk runs under lupin — the tier column says what CI
 executed, and the exercise file says which is which and why.
 
-Tier totals: 143 run (lupin) · 9 run (lupin REPL) · 20 run (wolf) · 12 run (wolf + lupin) · 68 prose · 16 pending.
+Tier totals: 143 run (lupin) · 9 run (lupin REPL) · 25 run (wolf) · 12 run (wolf + lupin) · 68 prose · 11 pending.
+Four of the 25 `run (wolf)` are the `wolf-run(…)` lane the bs09 bump
+added — 18-3, 18-5, 18-11 and 22-7, each holding a `comptime fn` that the
+reference interpreter declines by design. 24-6 is the fifth addition and
+is a package walkthrough rather than a file, so it has no `.lu`: its
+transcript is the verbs' own output, replayed against a fixture. Which
+lane executed a sample is bookkeeping; the claim is about the program.
 Taxonomy spread (tags, hybrids counted once per kind): fingers 36 · comprehension 142 · extension 45 · spelunking 24 · design 31.
 
 ## ch01 — 8 exercises
@@ -292,15 +305,15 @@ Taxonomy spread (tags, hybrids counted once per kind): fingers 36 · comprehensi
 |---|---|---|---|
 | §18.1 — Wolf at compile time | 18-1 | comprehension · wolf | run (wolf) |
 | §18.1 — Wolf at compile time | 18-2 | comprehension · wolf | run (wolf) |
-| §18.1 — Wolf at compile time (held, not printed) | 18-3 | fingers · pending | pending |
+| §18.1 — Wolf at compile time (not printed; see the note at the head) | 18-3 | fingers · wolf | run (wolf) |
 | §18.2 — Types as values | 18-4 | comprehension · wolf | run (wolf) |
-| §18.2 — Types as values (held, not printed) | 18-5 | extension · pending | pending |
+| §18.2 — Types as values (not printed; see the note at the head) | 18-5 | extension · wolf | run (wolf) |
 | §18.4 — What it refuses to do (printed there, not §18.3) | 18-6 | spelunking · wolf | run (wolf) |
 | §18.4 — What it refuses to do | 18-7 | comprehension · wolf | run (wolf) |
 | §18.4 — What it refuses to do | 18-8 | comprehension · wolf | run (wolf) |
 | §18.4 — What it refuses to do | 18-9 | comprehension · wolf | run (wolf) |
 | §18.4 — What it refuses to do | 18-10 | extension (break-it-on-purpose) · wolf | run (wolf) |
-| Chapter batch (held, not printed) | 18-11 | extension · pending | pending |
+| Chapter batch (not printed; see the note at the head) | 18-11 | extension · wolf | run (wolf) |
 | Chapter batch | 18-12 | design | prose |
 
 ## ch19 — 9 exercises
@@ -354,7 +367,7 @@ Taxonomy spread (tags, hybrids counted once per kind): fingers 36 · comprehensi
 | §22.1 — Directory = module | 22-4 | comprehension · lupin | run (lupin) |
 | §22.2 — No cycles | 22-5 | comprehension + extension · lupin | run (lupin) |
 | §22.2 — No cycles | 22-6 | comprehension · prose | prose |
-| §22.3 — No life before main | 22-7 | comprehension · pending | pending |
+| §22.3 — No life before main | 22-7 | comprehension · wolf | run (wolf) |
 | Chapter batch | 22-8 | design | prose |
 
 ## ch23 — 8 exercises
@@ -362,12 +375,12 @@ Taxonomy spread (tags, hybrids counted once per kind): fingers 36 · comprehensi
 | section | exercise | type · checker | tier |
 |---|---|---|---|
 | §23.1 — `wolf.pkg` is data | 23-1 | comprehension · prose | prose |
-| §23.2 — MVS in one page | 23-2 | comprehension · prose | prose |
-| §23.2 — MVS in one page | 23-3 | comprehension · prose | prose |
-| §23.2 — MVS in one page | 23-4 | comprehension · prose | prose |
-| §23.3 — `wolf.sum` and the log | 23-5 | comprehension · prose | prose |
-| §23.3 — `wolf.sum` and the log | 23-6 | spelunking · wolf | run (wolf) |
-| §23.4 — Script mode, demystified | 23-7 | comprehension · pending | pending |
+| §23.2 (held, not printed) — MVS in one page | 23-2 | comprehension · prose | prose |
+| §23.2 (held, not printed) — MVS in one page | 23-3 | comprehension · prose | prose |
+| §23.2 (held, not printed) — MVS in one page | 23-4 | comprehension · prose | prose |
+| §23.3 — `wolf.sum` — the ledger | 23-5 | comprehension · prose | prose |
+| §23.1 — `wolf.pkg` is data (printed there, not §23.3) | 23-6 | spelunking · wolf | run (wolf) |
+| §23.4 (held, not printed) — Script mode, demystified | 23-7 | comprehension · pending | pending |
 | Chapter batch | 23-8 | design | prose |
 
 ## ch24 — 8 exercises
@@ -379,11 +392,13 @@ Taxonomy spread (tags, hybrids counted once per kind): fingers 36 · comprehensi
 | §24.1 — The threat, from history | 24-3 | comprehension · prose | prose |
 | §24.2 — What replaces scripts | 24-4 | comprehension · wolf | run (wolf) |
 | §24.2 — What replaces scripts | 24-5 | comprehension · wolf | run (wolf) |
-| §24.3 — Capabilities and `wolf audit` | 24-6 | comprehension · pending | pending |
+| §24.3 — Capabilities and `wolf audit` | 24-6 | comprehension · wolf | run (wolf) |
 | §24.4 — What the covenant costs | 24-7 | design | prose |
 | Chapter batch | 24-8 | comprehension · prose | prose |
 
 ## ch25 — 8 exercises
+
+*Chapter held whole (bs09); none of these eight is printed.*
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|

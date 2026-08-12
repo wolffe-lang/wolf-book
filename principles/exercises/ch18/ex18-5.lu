@@ -1,4 +1,4 @@
-//! check: run(exit=0)
+//! check: wolf-run(exit=0)
 //! phase: run
 // Exercise 18-5: a function over a type.
 // PENDING: reflection at comptime (typeinfo) — owner s16-ctfe.

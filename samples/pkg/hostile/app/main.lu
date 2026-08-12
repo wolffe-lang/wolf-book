@@ -1,0 +1,6 @@
+use tidy
+
+fn main() -> !int {
+    print("{tidy.squeeze(4)}")
+    0
+}

@@ -4,8 +4,11 @@ Commands run from this directory; outputs are pasted from real runs.
 The history exercises cite the incidents §24.1 sources; their solutions
 reason from the section's own citations rather than importing new
 claims. The enforcement exercises run today — the comptime sandbox is
-live in wolf, and two of its refusals below are this chapter's whole
-argument in diagnostic form.
+live, the capability tree is real, and 24-6 is a walkthrough rather
+than a sketch. 24-4 and 24-5 print their code and not the compiler's
+rendered stanza, for the reason chapter 24's ledger records: E0701's
+note carries a campaign id, so the rendered text is CI's business (it
+is snapshot-checked on every run) and not the page's.
 
 ## §24.1 — The threat, from history
 
@@ -28,7 +31,7 @@ comptime sandbox refuses ambient reach at build time (24-4, 24-5
 below). Residue: *runtime* malice in code you call remains possible —
 which is what capabilities are for. Concealment — the payload hid in
 a minified transitive dep nobody read; capability manifests plus
-`wolf audit` (pending s51; see 24-6) make "this dep now wants `net`"
+`wolf audit` (see 24-6) make "this dep now wants `net`"
 a surfaced diff instead of archaeology. Residue: a malicious payload
 *within* already-granted capabilities. The lesson the three residues
 teach together: the covenant shrinks the attack surface to the part a
@@ -60,7 +63,8 @@ subject).
 
 Solution: generating code from a schema — comptime evaluation over the
 schema *as a declared build input* (chapter 18's refusal note points
-there; s51 delivers the declaration). Discovering platform facts —
+there, and the package manifest is where the declaration lives).
+Discovering platform facts —
 target metadata in the manifest and comptime conditionals over the
 declared target, not probes of the build host. Compiling and linking
 a bundled C library — the declarative recipe layer for the common
@@ -84,31 +88,17 @@ comptime fn latest_ad() -> str {
 }
 ```
 
-Solution: E0701, and the confinement reason — with `wolf add` itself
-in the note's example scenario:
-
-```console
-$ wolf conform-run ./ex24-4.lu
-error[E0701]: `net_fetch` reaches the network, which comptime code can never touch
- --> ./ex24-4.lu:6:5
-  |
-6 |     net_fetch("https://deps.example.test/banner")
-  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ ambient IO at compile time
-...
-9 |     const AD = latest_ad()
-  |                ----------- while evaluating `latest_ad`, entered here
-  |                ----------- while evaluating `main`, entered here
-  |
-  = note: why it is refused — confinement: `wolf add` must never mean arbitrary code talks to the
-    network with your credentials.
-  = note: the comptime sandbox is hermetic (D33): the intrinsics available at compile time are an
-    explicit allowlist, and nothing ambient is on it. Compute this value at runtime instead;
-    file contents will arrive later as declared build inputs (s51), never as an evaluator
-    capability.
-```
+Solution: E0701, and the **confinement** reason — the diagnostic's first
+note says so in those words, and names the scenario outright: `wolf add`
+must never mean arbitrary code talks to the network with your
+credentials. It arrives from the type checker, at the call inside the
+`comptime fn`, with a second span at the `const` that entered the
+evaluation. The sample is `ex24-4.lu` and CI checks it as a
+`fail(E0701)` with a reviewed snapshot, so the exact text is verified
+even where it is not printed.
 
 The covenant is not a policy document; it is this rejection, emitted
-by the type checker, before anything runs.
+before anything runs.
 
 **Exercise 24-5** *(comprehension · wolf)* — The build step that reads
 your CI secrets: `env_var("CI_DEPLOY_TOKEN")` inside a `comptime fn`.
@@ -116,28 +106,17 @@ Predict the refusal reason this one cites — and note before running
 that 18-6 filed environment reads under one reason, while the
 diagnostic gives this capability a compound answer.
 
-Solution — the environment gets both barrels, and the note names
-secrets outright:
-
-```console
-$ wolf conform-run ./ex24-5.lu
-error[E0701]: `env_var` reaches environment variables, which comptime code can never touch
- --> ./ex24-5.lu:5:5
-  |
-5 |     env_var("CI_DEPLOY_TOKEN")
-  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^ ambient IO at compile time
-...
-8 |     const T = exfil()
-  |               ------- while evaluating `exfil`, entered here
-  |               ------- while evaluating `main`, entered here
-  |
-  = note: why it is refused — determinism and confinement: environment contents differ per machine
-    and may hold secrets.
-  = note: the comptime sandbox is hermetic (D33): the intrinsics available at compile time are an
-    explicit allowlist, and nothing ambient is on it. Compute this value at runtime instead;
-    file contents will arrive later as declared build inputs (s51), never as an evaluator
-    capability.
-```
+Solution — the environment gets both barrels: the note reads
+"determinism and confinement", because environment contents differ per
+machine *and* may hold secrets. That is the compound answer the stem
+warns about: chapter 18's exercise 18-6 asks a reader to sort a clock
+read, a network fetch, and an environment read under the catalog's two
+categories, and the catalog files the environment under confinement
+while the diagnostic for this capability names both. Both are right
+about different things, which is worth noticing: the category is what
+the rule is *for*, and the note is why this particular intrinsic is
+refused. The sample is `ex24-5.lu`, checked as a `fail(E0701)` with its
+own snapshot.
 
 The scenario this kills is the one event-stream normalized: code you
 did not read, running at build time, in possession of what your CI
@@ -145,32 +124,47 @@ knows. Here that code does not get to run at all.
 
 ## §24.3 — Capabilities and `wolf audit`
 
-**Exercise 24-6** *(comprehension · pending — blocker: capability
-manifests and `wolf audit`; owner: s51-package-manager)* — A worked
-audit diff in the pinned format (an example, not tool output — the
-tool answers with its s31 scaffold line today):
+**Exercise 24-6** *(comprehension · wolf)* — Take a project with one
+dependency whose manifest declares no capabilities, record the world with
+`wolf update`, then edit the dependency's manifest to declare `net` and
+run `wolf audit --ci`. Report the exit code and the line that produced
+it. Then say which artifact held the *previous* answer, and what would
+have happened if that artifact had been refreshed first.
 
-```text
-$ wolf audit --diff
-den/rows      1.4.0 -> 1.5.0   capabilities: (none) -> (none)
-forest/regex  2.1.0 -> 2.2.0   capabilities: (none) -> net
+Solution — the walkthrough, in a project shaped like §23.1's:
+
+```console
+$ wolf update --dir app
+wolf update: wolf.sum refreshed (1 entry)
+$ wolf audit --ci --dir app
+capability tree (I13)
+den/logsearch 0.1.0 (root) caps=[]
+└── regex 2.2.0 caps=[net]
+effective: [net]
+wolf audit: `regex` ACQUIRES capability `net` (was not in wolf.sum)
+wolf audit: capability acquisition detected — refusing (--ci)
+$ echo $?
+1
 ```
 
-One line stops the merge. Say which, what question it forces, and why
-"it needs to download updated Unicode tables" — the plausible answer
-the upgrade's changelog will offer — is precisely the answer the
-covenant rejects.
+Exit 1, from the ACQUIRES line: a text-matching library now wants the
+network, and `--ci` treats acquisition as a finding rather than news.
+The artifact holding the previous answer is `wolf.sum` — its last field
+is the capability set, recorded the last time a human accepted the
+world. That is why the ordering in the tool is not an accident: `wolf
+audit` reports the diff *before* any verb rewrites the ledger, so
+refreshing first destroys the evidence. Run `wolf update` before you
+audit and the ledger now says `caps=net`, the diff is empty, the gate
+passes, and the only trace of the change is a line in a file you did not
+read. The gate is only a gate while the ledger is behind you.
 
-Solution: the `regex` line — a text-matching library that suddenly
-wants `net` is either compromised or has grown ambitions no caller
-asked for; the forced question is "what, concretely, will you do with
-it." The Unicode-tables answer fails because it relocates data
-acquisition from publish time (tables baked into the released
-artifact, hashed, auditable) to run time on *your* machines with
-*your* network — a determinism loss and an exfiltration channel in
-one move. The audit gate's job is exactly to make that trade visible
-before it is your incident. Until s51, this discipline runs on human
-review of dependency diffs; the exercise is the reflex.
+The question the failing build forces is not "is this library
+malicious" — that has no answer you can reach — but "what, concretely,
+will you do with `net`". The upgrade will have a plausible reply ready,
+and the most plausible one ("it downloads updated Unicode tables") is
+exactly the one to refuse: it moves data acquisition from publish time,
+where the tables are baked into a hashed artifact anyone can audit, to
+run time on your machines with your network.
 
 ## §24.4 — What the covenant costs
 

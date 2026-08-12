@@ -1,0 +1,6 @@
+fn describe() -> str { "from main" }
+
+fn main() -> !int {
+    print(describe())
+    0
+}

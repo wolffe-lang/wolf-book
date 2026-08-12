@@ -1,0 +1,11 @@
+//! member: true
+/// The row index: publishes rows, and decides validity from `kinds`.
+use kinds
+
+/// Publish one row.
+pub fn note(n: int) -> int {
+    if kinds.in_batch(n) { 0 } else { 1 }
+}
+
+/// The index's fan-out.
+pub fn width() -> int { 8 }

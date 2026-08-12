@@ -1,0 +1,15 @@
+/// The key vault's public face.
+
+/// How many keys are held.
+pub fn count() -> int {
+    secrets() - 1
+}
+
+/// Whether the vault holds anything at all.
+pub fn loaded() -> bool {
+    secrets() > 0
+}
+
+fn secrets() -> int { 3 }
+
+fn total() -> int { secrets() + 1 }

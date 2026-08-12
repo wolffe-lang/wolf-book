@@ -1,0 +1,6 @@
+use tools
+
+fn main() -> !int {
+    print("no tools needed")
+    0
+}

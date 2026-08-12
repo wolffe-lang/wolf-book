@@ -1,0 +1,5 @@
+fn total(xs: List[int]) -> int {
+    var t = 0
+    for x in xs { t += x }
+    t
+}

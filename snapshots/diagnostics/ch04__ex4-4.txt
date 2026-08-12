@@ -1,3 +1,17 @@
+warning[W1002]: `i` is `mut`, and the body never writes it
+ --> ./ex4-4.lu:7:9
+  |
+7 | fn wide(mut i: Inner, mut n: int) { n += 1 }
+  |         ^^^ writeback nothing uses
+  |
+  = note: every call site surrenders exclusive access for a write that never happens; the read
+    default is the honest mode.
+help: drop the `mut` here and at every call site — the parameter is never written
+  |
+7 | fn wide(i: Inner, mut n: int) { n += 1 }
+11 |     wide(p.a, mut p.a.n)
+  |
+
 error[E1002]: `p.a.n` cannot go `mut` here: it overlaps `p.a`, already passed `mut` in this call
   --> ./ex4-4.lu:11:23
    |

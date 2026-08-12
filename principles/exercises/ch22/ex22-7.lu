@@ -1,0 +1,25 @@
+//! check: wolf-run(exit=0, stdout="Ingest Report Purge Reindex")
+//! phase: run
+// Exercise 22-7: the comptime registry that replaces `init()`. Four
+// handlers, one folded table, one witness that fails the build if the
+// table is not four names long.
+struct Ingest  { rows: int }
+struct Report  { rows: int }
+struct Purge   { rows: int }
+struct Reindex { rows: int }
+
+comptime fn handlers(a: type, b: type, c: type, d: type) -> str {
+    "{typeinfo(a).name} {typeinfo(b).name} {typeinfo(c).name} {typeinfo(d).name}"
+}
+
+comptime fn expect_four(a: type, b: type, c: type, d: type) -> bool {
+    assert(handlers(a, b, c, d).len == 27)
+    true
+}
+
+fn main() -> !int {
+    const HANDLERS = handlers(Ingest, Report, Purge, Reindex)
+    const CHECKED = expect_four(Ingest, Report, Purge, Reindex)
+    print("{HANDLERS}")
+    if CHECKED { 0 } else { 1 }
+}

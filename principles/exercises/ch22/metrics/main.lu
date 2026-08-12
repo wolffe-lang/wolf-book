@@ -1,14 +1,14 @@
-//! check: run(exit=0, stdout="6")
+//! check: run(exit=0, stdout="mean 6 of 3")
 //! phase: run
 // Exercise 22-1: directory = module; `stats/` is the module, its files
 // are invisible from here.
 use stats
 
 fn main() -> !int {
-    var xs = List[int]()
-    xs.push(4)
-    xs.push(6)
-    xs.push(8)
-    print("{stats.mean(xs)}")
+    var widths = List[int]()
+    (mut widths).push(4)
+    (mut widths).push(6)
+    (mut widths).push(8)
+    print("mean {stats.mean(widths)} of {stats.count(widths)}")
     0
 }

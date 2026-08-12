@@ -1,0 +1,10 @@
+//! member: true
+/// What `store` and `index` needed from each other, and nothing else.
+
+/// The largest batch either side will accept.
+pub fn batch() -> int { 64 }
+
+/// Whether a row number is inside a batch.
+pub fn in_batch(n: int) -> bool {
+    n < batch()
+}
