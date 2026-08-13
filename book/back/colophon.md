@@ -9,7 +9,7 @@ $ wolf --version
 wolf 0.1.0 (wolfgang)
 paired with lupin 0.1.8 (reference interpreter), pin 7886559
 $ lupin --version
-lupin 0.1.9 (wolf-interp, reference interpreter at pin 0b4e79c)
+lupin 0.1.10 (wolf-interp, reference interpreter at pin 613c3dc)
 ```
 
 The two lines name different interpreter releases on purpose. Each tool

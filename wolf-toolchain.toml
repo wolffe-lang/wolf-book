@@ -58,7 +58,7 @@ rev = "613c3dc2bdec3b151c23fc200227f3a6230f68c4"
 impl_version = "0.1.0"
 
 [lupin]
-# wolf-interp at the v0.1.9 tag: runs programs, reports traps,
+# wolf-interp at the v0.1.10 tag: runs programs, reports traps,
 # evaluates REPL snippets, and is the implementation that executes
 # Part 3 — the scheduler, the seeded decision stream, and the schedule
 # explorer are all its. 0.1.6 brought the E11xx parity rejections that
@@ -77,19 +77,19 @@ impl_version = "0.1.0"
 # rest of the book.
 # It is also the release pairing: the interpreter names the compiler sha
 # it was differentially tested against, and the compiler names it back.
-# The two lines are one release apart at this pin — lupin 0.1.9 names
-# wolf `0b4e79c`, an ancestor of the compiler pin above, and the
-# compiler's own line still names lupin 0.1.8. Both are true statements
-# about what was tested against what, and §1.2 teaches the reader to
-# read them that way; the colophon prints them as they are.
-# The rev is the annotated tag object (commit `47ed21b`), matching the
+# 0.1.10 names the same compiler sha this file pins above, so the book,
+# the compiler and the interpreter all describe one toolchain. It also
+# closed the differential's biggest blind spot: the flagless comparison
+# lane had been reaching `run` on none of the corpus, so the dynamic
+# half was ledgered as uncompared; both machines now execute the corpus
+# at all three tiers, and the release tier changed nothing observable.
+# The rev is the annotated tag object (commit `c11c5ed`), matching the
 # convention this file has used since 0.1.5. The tag's own CI run is
-# green.
-# Unchanged at the bs11 bump: 0.1.9 is still the newest tag, and the two
-# commits above it are docs. The whole book suite is green on it.
+# green, and the whole book suite is green on it: the only movement at
+# the bump is the two transcripts that print the version.
 repo = "wolffe-lang/wolf-interp"
-rev = "10df88d39e55ca0133c01f20290d581303f35cfe"
-version = "lupin 0.1.9 (wolf-interp, reference interpreter at pin 0b4e79c)"
+rev = "11650e6786a2898751087b7daba0eb495cd5847a"
+version = "lupin 0.1.10 (wolf-interp, reference interpreter at pin 613c3dc)"
 
 [wolf-lsp]
 # Source of the vendored tmLanguage grammars under highlight/.
