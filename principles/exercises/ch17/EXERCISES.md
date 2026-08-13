@@ -101,12 +101,11 @@ $ echo $?
 1
 ```
 
-(bs06 recorded the opposite here: at lupin v0.1.4 this program
-explored 16 schedules and reported `observably deterministic` while
-`--seed=1` printed 100 — a wrong frontier claim, filed rather than
-smoothed over. At v0.1.5 the claim is sound, which is why §17.2 of the
-chapter can rest its whole argument on it. The finding is retired with
-the commit that ships chapter 17.)
+(The frontier claim is what §17.2 rests its argument on, so it is worth
+knowing that it is checked: an earlier interpreter release reported this
+program `observably deterministic` while a seeded run printed the wrong
+balance, and that disagreement was filed against the interpreter rather
+than written around here.)
 
 ## §17.2 — The seed, the schedule, and the frontier
 

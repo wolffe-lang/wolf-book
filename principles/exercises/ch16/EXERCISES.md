@@ -99,9 +99,8 @@ The trap is `use-after-move`, citing the same clause family as chapter
 7's moved string — because a region is a value and `move` into a
 channel is the same move as `take` into a function. No new rule was
 needed to make cross-task transfer safe; the old rule was enough, which
-is the design working as designed. (The compiler will reject this
-statically once its channel surface lands — s33's job; today lupin's
-dynamic enforcement carries the lesson alone.)
+is the design working as designed. (The compiler rejects the shape statically, at the send; lupin carries
+the same lesson dynamically, at the read.)
 
 ## §16.2 — Freeze, then share
 

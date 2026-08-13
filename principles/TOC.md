@@ -254,28 +254,28 @@ an ecosystem with no build scripts to fear.*
 - Exercises 18-1 ….
 
 ### Chapter 19 — Perf contracts
-- 19.1 Four promises — break `#[noalloc]`, `#[inplace]`, `#[nopanic]`,
+- (held) 19.1 Four promises — break `#[noalloc]`, `#[inplace]`, `#[nopanic]`,
   `#[bounded_stack]` one at a time and read the errors.
-- 19.2 Contracts are API — see a dependency lose `#[noalloc]` and semver
+- (held) 19.2 Contracts are API — see a dependency lose `#[noalloc]` and semver
   notice.
-- 19.3 When not to — smell contract noise.
+- (held) 19.3 When not to — smell contract noise.
 - Exercises 19-1 ….
 
 ### Chapter 20 — Reading `wolf bench diff`
-- 20.1 The format — read ns/op, allocs, and metadata; trust medians and
+- (held) 20.1 The format — read ns/op, allocs, and metadata; trust medians and
   MAD.
-- 20.2 The variance gate — watch a "3% win" get correctly called noise.
-- 20.3 Your own baseline — run the `--baseline` workflow in your repo.
+- (held) 20.2 The variance gate — watch a "3% win" get correctly called noise.
+- (held) 20.3 Your own baseline — run the `--baseline` workflow in your repo.
 - Exercises 20-1 ….
 
 ### Chapter 21 — Beating C honestly
-- 21.1 Aliasing — compare safe wolf against hand-`restrict` C on the
+- (held) 21.1 Aliasing — compare safe wolf against hand-`restrict` C on the
   same kernel.
-- 21.2 Arenas — measure region allocation against malloc discipline.
-- 21.3 Layout — win a traversal benchmark with `Soa[T]` legally.
-- 21.4 Checked arithmetic's bill — see the real post-optimization cost,
+- (held) 21.2 Arenas — measure region allocation against malloc discipline.
+- (held) 21.3 Layout — win a traversal benchmark with `Soa[T]` legally.
+- (held) 21.4 Checked arithmetic's bill — see the real post-optimization cost,
   from CI, dated.
-- 21.5 Where C wins today — read the current losses with tracking
+- (held) 21.5 Where C wins today — read the current losses with tracking
   issues, regenerated each release.
 - Exercises 21-1 ….
 
@@ -322,10 +322,10 @@ an ecosystem with no build scripts to fear.*
 ### Chapter 25 — Editions, stability, publishing
 *held whole (bs09) · gate: an edition mechanism, a std on the page, and
 a publish client — measured reasons in `book/ch25.md`'s HOLD note*
-- 25.1 Editions per package — upgrade on your clock; no wolf 2.0, ever.
-- 25.2 The stdlib posture — depend on core, penumbra, or `std.x` with
+- (held) 25.1 Editions per package — upgrade on your clock; no wolf 2.0, ever.
+- (held) 25.2 The stdlib posture — depend on core, penumbra, or `std.x` with
   eyes open.
-- 25.3 Publishing — ship `owner/pkg` with capabilities declared and
+- (held) 25.3 Publishing — ship `owner/pkg` with capabilities declared and
   semver with teeth.
 - Exercises 25-1 ….
 
@@ -388,11 +388,11 @@ say on what.
 ### Chapter 29 — `tinyvm`
 *wolf-native · held · gate: `Pool`/`handle` executable on some lane —
 closed on both, re-measured at the rp02 pin (§Deltas, rp02)*
-- 29.1 Fetch, decode, execute — build the dispatch loop as one `match`.
-- 29.2 Registers as a fixed `List` — give the machine its state.
-- 29.3 The heap as a `Pool` — allocate VM objects behind generational
+- (held) 29.1 Fetch, decode, execute — build the dispatch loop as one `match`.
+- (held) 29.2 Registers as a fixed `List` — give the machine its state.
+- (held) 29.3 The heap as a `Pool` — allocate VM objects behind generational
   handles.
-- 29.4 A dangling reference is a stale handle — inject one and read the
+- (held) 29.4 A dangling reference is a stale handle — inject one and read the
   trap, not the exploit.
 - Exercises 29-1 ….
 
@@ -447,6 +447,8 @@ part's fourth project and its only concurrent one*
 - **Glossary** — one term per concept, the copyedit enforcement list.
 - **Index** — hand-curated entries plus every error code, trap kind,
   and flag; section numbers, not page numbers, in the web edition.
+- **Errata** — the report address, the three kinds of correction, and
+  what the web edition and a printed copy each promise.
 - **Colophon** — the toolchain version this printing is true for, the
   CI-verified-samples guarantee, and the errata address.
 
@@ -969,3 +971,81 @@ sprint files remain the implementation contracts for everything else.
   spec clauses") but never lists as an artifact. The index doctrine
   (section numbers as anchors) is stated here and in DESIGN.md so bs11
   inherits it rather than deciding it.
+- **bs11 (what the editing pass did, 2026-08-12):** the pin moves to the
+  newest green trunk sha and lupin stays at v0.1.9; the whole suite is
+  green at the bump. The back matter is written: Appendix A is generated
+  from the pinned spec's `grammar.ebnf`, Appendix B closes the twelve
+  trap kinds, Appendix C lists the 47 diagnostic codes the book prints
+  against the compiler's own catalog summaries, Appendix D maps book
+  section to spec clause, and the glossary, index, errata page and
+  Solutions page are real. Back matter gains an **Errata** page, which no
+  earlier plan lists: the colophon promised an errata address and the
+  address needed a page to point at.
+  - **The five held chapters and the two held-section chapters now say
+    so on their own pages.** A reader who lands on chapter 19 used to
+    find a title and three empty headings. Each held chapter carries one
+    short note, present tense, no schedule: what the chapter covers, what
+    the toolchain does not do, and where the material that *is* here
+    lives. Their section headings are deleted and their TOC rows carry
+    the `(held)` prefix, which is the mechanism §13.1 and §23.2 already
+    used — so numbering is reserved rather than rendered empty, and
+    `verify-docs` enforces the pairing.
+  - **The Solutions page publishes only printed exercises.** 214 of the
+    275; an exercise whose section is held has no reader-facing stem, so
+    publishing its answer would answer a question the reader was never
+    asked. `verify-docs` fails the build if a printed stem has no
+    published solution, which is the check that makes the policy real.
+    The page is generated, so the samples runner skips extracting it (the
+    corpus it comes from is executed directly) and says so on every run.
+  - **Exercise 5-8 is unprinted and 16-9 is printed.** 5-8's stem carried
+    a blocker note, an owner and a sprint id in the reader's text, and its
+    subject is the combinator chain that does not exist; the stem is held
+    with the rest of that surface. 16-9 was written, green, and printed
+    nowhere with no hold recorded — it now ends §16.3, and E1102's
+    rendered text is a new reviewed snapshot.
+  - **§13.1's dangling pointer is gone.** ch06 §6.5's boxed promise
+    pointed at §13.1, a section that renders no heading, and named the
+    sprint that would cash it. It now points at chapter 13, which exists,
+    and keeps the falsifiable half ("if parallelizing this program turns
+    out to need a rewrite, the claim was false and the book will say
+    so"). Audit row 26 closes as a rewording.
+  - **The remaining rp-std deferral prose is gone from the pages, and the
+    gaps behind it are not.** Five sentences in ch04, ch05 and ch06 said
+    "at this pin", "a feature away", or promised a run that does not
+    exist. They are rewritten as statements about the language and the
+    two implementations. What survives is structural and named: §5.1's
+    `Set` demo, §5.2's refused chain, §5.4's absent-key discipline and
+    the ch06 capstone's shape, all four measured again at this pin (a
+    hashed set does not construct, no combinator resolves, and
+    `m[k] += 1` works on a present key and not an absent one).
+  - **Two chapters' transcripts are shorter because the compiler got
+    politer.** The diagnostics polish upstream dropped the repeated note
+    from a second occurrence of one code (ch13's snapshots, ch27's
+    console block, which gains one sentence about it), dropped a sprint
+    id from `audit-surface`'s header (ch32, twice), and closed a failed
+    build with a pointer at `wolf --explain` (ch01). All four re-captured
+    from real runs.
+  - **Terminology:** "thread" no longer stands in for *task* (ch08 twice,
+    ch09 twice, ch10, ch30), "error union" no longer stands in for *row*
+    (ch10), a trap is not called a panic (ch12) or a crash (ch06), and the
+    six core terms are italicized once each — *region*, *task*, *proc*
+    and *channel* each lost a second italic, and `imm` lost one 22
+    chapters after its introduction.
+  - **Cross-references:** the front matter's Go on-ramp pointed at
+    chapter 11 for material that starts at chapter 10, its C on-ramp
+    pointed at chapter 20 for the C membrane that is chapter 9, ch30
+    credited chapter 11 for chapter 10's scope, ch31 cited a preface the
+    book does not have, and the two front-matter pages disagreed about
+    whether every exercise has a solution. All five corrected.
+  - **Doc truth gained five checks**, because a hand-maintained appendix
+    is a promise: every clause tag in reader-facing prose resolves against
+    the vendored anchor set (with six named exceptions that Appendix D
+    prints and CI holds to its length), every code the book shows has an
+    Appendix C row and every Appendix C row is in the catalog, Appendix B
+    carries the twelve kinds, every printed exercise has a solution, and
+    the tense-discipline greps run in CI over prose with fences excluded.
+  - **Print:** the typst converter learned markdown tables and the
+    Solutions page's `<details>` wrappers. Tables used to reach the PDF as
+    rows of pipe characters, which is what a print review is for. Long
+    tool lines wrap inside their block rather than overflowing the
+    measure, checked on the rendered artifact.

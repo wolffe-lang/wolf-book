@@ -313,9 +313,8 @@ remains constructible — exercise 12-2 — because waiting for *data* is
 a program's own business; acquiring *locks* piecemeal was never
 anything but a bug factory.)
 
-Audit note (resolved at the bs06 pin): the divergence this solution
-used to record — wolf rejecting the program as `E0201` where lupin
-said `E0203` — is gone. Both implementations now report E0201, with
+Note: the two implementations once disagreed here — wolf rejecting the
+program as `E0201` where lupin said `E0203`. Both report E0201, with
 the same rule in their own words, one at the parse rung and one before
 the first line runs. The transcript above is lupin's at the current
 pin; §12.4 prints the compiler's half beside it.

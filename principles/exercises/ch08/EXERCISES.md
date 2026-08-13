@@ -215,15 +215,12 @@ unrestricted, and the region dies as one unit, so no edge can dangle.
 The two-phase `reserve`/`init` is what closed the cycle without a null
 in sight.
 
-**Exercise 8-7** *(extension · pending — blocker: field writes through
-a pool index (`pool[h].next = k`) do not yet denote a place in lupin's
-std subset; owner: s37-core-types (std surface pinning) with the
-interp subset following)* — Grow the ring into the real folklore
-program: an LRU cache with sentinel head and tail, `unlink` and
-`push_front` as the only two link operations, promotion on get, and
-eviction of `tail.prev` at capacity. The expected program is on disk
-with its directive header; trace it by hand: after put a, put b, get a,
-put c at capacity 2, what does the front-to-back walk print?
+**Exercise 8-7** *(extension · prose)* — Grow the ring into the real
+folklore program: an LRU cache with sentinel head and tail, `unlink`
+and `push_front` as the only two link operations, promotion on get, and
+eviction of `tail.prev` at capacity. Trace it by hand: after put a, put
+b, get a, put c at capacity 2, what does the front-to-back walk
+print?
 
 Solution (prose): `c a`. Insertion order is b-then-a reversed by
 `push_front`; the get promotes `a` past `b`; the eviction takes
@@ -231,13 +228,6 @@ Solution (prose): `c a`. Insertion order is b-then-a reversed by
 walk visits `head.next` to `tail`. Every link mutation in the program
 goes through `unlink` or `push_front` — four pointer writes and five —
 which is the entire aliasing surface a reviewer must read.
-
-```console
-$ lupin ex8-7.lu
-ex8-7.lu: unsupported: `pool["handle#0[2]@0"].prev` does not denote a place at run time
-$ echo $?
-4
-```
 
 ## §8.5 — Freeze
 

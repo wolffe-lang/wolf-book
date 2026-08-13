@@ -6,7 +6,7 @@ in full — reading them is most of this chapter's homework.
 
 ## §9.1 — The three rings
 
-**Exercise 9-1** *(fingers + spelunking)* — The complete unsafe audit
+**Exercise 9-1** *(fingers + spelunking · wolf)* — The complete unsafe audit
 of every program in this book's first eight chapters is one command.
 Run it from `principles/exercises/`, report the number, and state what
 property of the language makes the count trustworthy — what would the

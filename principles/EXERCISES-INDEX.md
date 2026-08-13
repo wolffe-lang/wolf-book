@@ -17,9 +17,15 @@ section is held for want of fault injection (TOC.md §Deltas, bs07);
 ch19's nine, ch20's eight and ch21's nine, whose three chapters are
 held whole (`book/ch19.md`, `book/ch20.md`, `book/ch21.md` carry the
 measured reasons); ch23's 23-2, 23-3, 23-4 and 23-7, whose two sections
-are held (`book/ch23.md`); and ch25's eight, whose chapter is held whole
-(`book/ch25.md`). All of them stay in the corpus so the day their
-surface lands the stems and the sections arrive together.
+are held (`book/ch23.md`); ch25's eight, whose chapter is held whole
+(`book/ch25.md`); ch07's 7-5, whose static verdict does not exist on
+either lane (`samples-pending.toml`); and ch05's 5-8, unprinted at bs11
+because its whole subject is the combinator chain, and a stem cannot
+carry a blocker note in a reader's text (TONE.md §Tense discipline).
+All of them stay in the corpus so the day their surface lands the stems
+and the sections arrive together. **214 of the 275 are printed**, and
+`cargo xtask verify-docs` fails the build if a printed stem has no
+published solution.
 
 ch18's 18-3, 18-5 and 18-11 are no longer pending. At the bs09 pin the
 comptime fold reaches a running program, so all three are green samples —
@@ -29,8 +35,8 @@ chapter 18, which is bs08's chapter and not bs09's footprint; the three
 stems are ready and the section that wants them needs one sentence added.
 Recorded here so the editing pass does not have to rediscover it.
 
-Part 5's first three chapters are in the totals below; 29 and 30 are not,
-and land with their chapters. Chapter 31 — the solo — is absent *by
+Part 5's first three chapters are in the totals below, and so is ch30,
+which shipped with its chapter; ch29's batch lands with its chapter. Chapter 31 — the solo — is absent *by
 design*: it publishes milestone checkpoints, not exercises (EXERCISES.md
 §4). Chapter 32, the coda, carries no batch.
 
@@ -42,14 +48,23 @@ several of its stems are tagged `· wolf` while the distilled solution
 program on disk runs under lupin — the tier column says what CI
 executed, and the exercise file says which is which and why.
 
-Tier totals: 143 run (lupin) · 9 run (lupin REPL) · 25 run (wolf) · 12 run (wolf + lupin) · 68 prose · 11 pending.
-Four of the 25 `run (wolf)` are the `wolf-run(…)` lane the bs09 bump
+Tier totals: 143 run (lupin) · 9 run (lupin REPL) · 28 run (wolf) · 12 run (wolf + lupin) · 72 prose · 11 pending. That is 275.
+Four of the 28 `run (wolf)` are the `wolf-run(…)` lane the bs09 bump
 added — 18-3, 18-5, 18-11 and 22-7, each holding a `comptime fn` that the
 reference interpreter declines by design. 24-6 is the fifth addition and
 is a package walkthrough rather than a file, so it has no `.lu`: its
 transcript is the verbs' own output, replayed against a fixture. Which
 lane executed a sample is bookkeeping; the claim is about the program.
-Taxonomy spread (tags, hybrids counted once per kind): fingers 36 · comprehension 142 · extension 45 · spelunking 24 · design 31.
+Taxonomy spread (tags, hybrids counted once per kind): fingers 37 ·
+comprehension 144 · extension 47 · spelunking 25 · design 32.
+
+Three stems are printed under a section other than the one this index
+assigns them, each deliberately: 13-2 (printed in §13.2 while §13.1 is
+held), 18-6 (printed in §18.4), and 23-6 (printed in §23.1). Two more
+are printed in another *chapter*: 4-3 and 4-4 end §7.4 and §7.5, because
+the call-site `mut` they need is taught there and the numbers are stable
+(EXERCISES.md §1). 24-8 is a chapter-batch stem printed inside §24.3,
+ahead of 24-7; the batch is the chapter's last two either way.
 
 ## ch01 — 8 exercises
 

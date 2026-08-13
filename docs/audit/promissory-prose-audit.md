@@ -18,6 +18,40 @@ Severity key:
   M1 (or at s37–s38 for std surface); the section is rewritten, not
   patched.
 
+**Status (updated 2026-08-12, bs11).** **21 of 28 findings closed** (F1,
+F2, F3, 1–13, 15, 16, 21, 23, 26). Seven remain — 14, 17, 18, 19, 22, 24
+and 25 — and every one of them is the same shape: a section whose
+*structure* exists because a std surface does not, measured again at the
+bs11 pin rather than inherited.
+
+- **Closed at bs11 by rewording, with the gap left standing:** 15 and 16
+  (ch04's capture limits and the file-less `defer`, both restated as
+  facts about the language and about an interpreter with no filesystem by
+  design), 21 (ch05's trait note, no longer endorsed by prose that names
+  a schedule), 23 (ch06's exit-1 verdict, which now describes what the
+  reader sees and promises no trace), and 26 (ch06 §6.5's `par` box,
+  repointed at chapter 13 with its falsifiable half intact and its sprint
+  apparatus deleted).
+- **Open, all rp-std, all re-measured at this pin:** 14 (ch03 §3.4's
+  refusal transcript — the division-of-labor point survives, the refusal
+  is still the sample), 17 (a pedagogical sequencing note, not a gap),
+  18, 19, 22 and 24 (ch05's `Set` demo, the refused chain, the absent-key
+  discipline, and the capstone's shape), and 25 (the capstone's embedded
+  text). The measurements: `Set[str]()` answers ``unsupported: `str` does
+  not resolve``, no combinator resolves on either lane, and `m["k"] += 1`
+  now works on a **present** key while an absent one still answers `does
+  not denote a place at run time`. Row 25's blocker changed shape rather
+  than closing: `env_args()` is real and lowers natively, and the
+  interpreter that runs the capstone still refuses trailing arguments, so
+  the embedded text is now stated as a property of the listing instead of
+  a promise about `main`.
+- **What bs11 added to the machinery rather than the prose:** the greps
+  this document was written to run are now `cargo xtask verify-docs`
+  checks. Deferral vocabulary, `blocker:`/`owner:`, the ledger's own name,
+  and sprint identifiers fail the build if they reach reader-facing prose
+  (fences excluded — the tools keep their voice). The audit no longer
+  depends on someone remembering to grep.
+
 **Status (updated 2026-08-11, rp01).** **rp-M1 is done** (see §6) and
 **rp01 has closed chapter 2's three rows**, which the string surface now
 serves. **16 of 28 findings closed** (F1, F2, F3, 1–13) — the whole
@@ -567,3 +601,41 @@ measurement in `book/ch22.md`'s ledger.
 `wolf/sprints/book/`. The chapters' unpublished audit ledgers were used
 as corroborating evidence (they are not reader-facing and are not
 findings themselves — they are the mechanism working as designed).*
+
+---
+
+### bs11 pass (2026-08-12) — the editing pass and the back matter
+
+**Tense self-audit.** The grep set runs in CI now, over every page in
+`book/` with HTML comments stripped and fenced blocks excluded, and it is
+green: zero hits for "at this pin", "a feature away", "does not exist
+yet", "when it lands", "the pinned interpreter", "the pinned toolchain",
+"blocker:", "owner:", "audit ledger", "young toolchain", and zero sprint
+identifiers. The five sentences that failed it are rewritten (ch03 §3.4,
+ch04 §4.2 and §4.3, ch05 §5.1 and §5.4, ch06 §6.3). The back matter is
+inside the same gate, which matters because the Solutions page carries
+prose from the exercise corpus: six solution blocks named a sprint, an
+owner, or the ledger, and one pasted a stale `conform-run` record whose
+verdict was a refusal. All seven were fixed at the source.
+
+**Two findings this pass created rather than recorded.** Both are
+upstream, both filed at full volume in the chapter ledgers:
+
+1. A failed build now closes with "(`wolf --explain E0201` explains any
+   code by name)" — with `E0201` hard-coded as the example, whatever the
+   run's actual codes were. Chapter 1 prints that line directly under an
+   `E0202` error, which invites the reader to explain a code they never
+   saw. The hint is right and its example should be the run's first code.
+2. `E0708`'s note gained "but not yet for aggregates" in the same polish
+   pass that removed a campaign id from it. The tools keep their own
+   voice, so the book prints it; a diagnostic that states a schedule is
+   still worth a note to the diagnostics voice gate.
+
+**Closed by the pin.** All three defects the ecosystem chapters filed
+against the compiler's text are fixed upstream: `E0701`'s note no longer
+promises declared build inputs "later (s51)", `E1503`'s note dropped its
+campaign id, and `wolf.sum`'s header — the one the tool writes into every
+user's version control — dropped its sprint id. Two chapter transcripts
+can now be upgraded to rendered refusals (§24.2's `E1503`, §23.3's
+byte-checked ledger quote) and are named in those chapters' ledgers as
+the next pass's cheapest win.

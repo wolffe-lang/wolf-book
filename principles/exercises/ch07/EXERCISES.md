@@ -30,19 +30,18 @@ diagnostic you saw in chapter 3 that already told you the answer.
 
 Solution: both accept it. Assigning to a moved-from place makes it
 live again — the diagnostic's note said exactly that, and this is that
-note performed. lupin runs the program; the compiler's mem checker
-finds nothing to reject, and its observation record says so in two
-fields — `phase_reached` is `mem` with an empty diagnostics list —
-while the verdict stays `unsupported`, because a *pass* verdict would
-require running the program and `wolf build|run` lands at s31. The
-record is the honest shape of "statically fine, dynamically untested."
+note performed. Both implementations run it, and they print the same
+line, which is the differential doing its ordinary job:
 
 ```console
 $ lupin ex7-1.lu
 ada lin grace
-$ wolf conform-run ./ex7-1.lu
-{"commit":"unknown","diagnostics":[],"file":"./ex7-1.lu","impl":"wolfc","impl_version":"0.0.1","phase_reached":"mem","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"unsupported"}
 ```
+
+The compiler has one thing to add, and it is about the signature rather
+than the move: `adopt` takes a value only to hand it straight back, so
+`W1003` asks whether the `take` earns itself. The binary is produced
+anyway and prints `ada lin grace`.
 
 ## §7.2 — Values are trees
 

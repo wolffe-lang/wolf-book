@@ -1,7 +1,198 @@
 # Appendix A — Grammar summary
 
-<!-- STUB (bs00): generated from the spec's grammar.ebnf in bs11 — never
-     hand-maintained. Home page exists for navigation and numbering. -->
+The whole surface grammar of wolf, in one place. It is not written
+here: it is extracted from the specification's grammar document and
+copied into this book by CI, so a production on this page and a
+production the parser implements cannot disagree. Where this appendix
+and a chapter differ about what parses, this appendix is right and the
+chapter has a bug.
 
-*Stub — the surface grammar in one place, generated from the spec's
-`grammar.ebnf`. Lands in bs11.*
+Terminals are quoted. `IDENT`, `INT`, `FLOAT`, `STRING` and the
+character classes they are built from come first; the item, type,
+statement and expression grammars follow. `TERM` is a statement
+terminator: a newline, or a semicolon where one line holds two
+statements.
+
+```ebnf
+IDENT ::= ('_' XID_Continue+) | (XID_Start XID_Continue*)
+
+INT   ::= DEC_LIT | '0x' HEX_DIGIT ('_' | HEX_DIGIT)* | '0o' OCT_DIGIT ('_' | OCT_DIGIT)* | '0b' BIN_DIGIT ('_' | BIN_DIGIT)*
+DEC_LIT ::= DIGIT ('_' | DIGIT)*
+FLOAT ::= DEC_LIT '.' DEC_LIT EXPONENT? | DEC_LIT EXPONENT
+EXPONENT ::= ('e' | 'E') ('+' | '-')? DEC_LIT
+
+STRING     ::= '"' STR_PART* '"'
+STR_PART   ::= STR_TEXT | '{{' | '}}' | INTERP
+INTERP     ::= '{' expr FORMAT_SPEC? '}'
+FORMAT_SPEC ::= ':' /* fill/align/sign/width/precision/type, spec §7.4 */
+
+unit  ::= inner_doc* item*
+item  ::= attribute* visibility? bare_item
+bare_item ::= fn_item | let_item | var_item | type_item | trait_item
+            | impl_item | use_item | import_c_item | const_item
+visibility ::= 'pub' ('(' 'pkg' ')')?
+
+use_item ::= 'use' path ( '.' '{' IDENT (',' IDENT)* ','? '}' )? ('as' IDENT)? TERM
+import_c_item ::= 'import' 'c' STRING TERM
+path ::= IDENT ('.' IDENT)*
+
+fn_item   ::= fn_qual* 'fn' IDENT generics? '(' params? ')' fn_ret? (block | TERM)
+fn_qual   ::= 'comptime' | 'extern' STRING | 'export'
+generics  ::= '[' generic_param (',' generic_param)* ','? ']'
+generic_param ::= IDENT (':' bound)? | IDENT ':' 'type'
+bound     ::= path ('+' path)*
+params    ::= param (',' param)* ','?
+param     ::= param_mode? IDENT ':' type | param_mode? 'self' view_set?
+param_mode ::= 'mut' | 'take'
+view_set  ::= '.' '{' IDENT (',' IDENT)* '}'
+fn_ret    ::= '->' ret_type
+ret_type  ::= type ('!' error_row)?   /* `-> !T` parses via type's '!' type */
+
+let_item ::= 'let' pattern (':' type)? '=' expr TERM
+var_item ::= 'var' pattern (':' type)? '=' expr TERM
+const_item ::= 'const' IDENT (':' type)? '=' expr TERM
+
+type_item   ::= 'type' IDENT generics? '=' type_def TERM?
+type_def    ::= struct_def | enum_def | type   /* `distinct T` via prefix_type_kw */
+struct_def  ::= 'struct' '{' field* '}'
+field       ::= attribute* visibility? IDENT ':' type ','?
+enum_def    ::= 'enum' '{' variant (',' variant)* ','? '}'
+variant     ::= IDENT ('(' type (',' type)* ')')?
+
+struct_item ::= 'struct' IDENT generics? '{' field* '}'
+enum_item   ::= 'enum' IDENT generics? '{' variant (',' variant)* ','? '}'
+
+trait_item ::= 'trait' IDENT generics? '{' trait_member* '}'
+trait_member ::= fn_item | type_item | const_item
+impl_item  ::= 'impl' generics? type ('for' type)? '{' impl_member* '}'
+impl_member ::= fn_item | type_item | const_item
+
+attribute ::= '#[' attr (',' attr)* ']'
+attr      ::= path attr_input?
+attr_input ::= '(' attr_arg (',' attr_arg)* ')' | '=' literal
+attr_arg  ::= attr | literal   /* `key = "v"` is attr with '=' input */
+
+block ::= '{' stmt* expr? '}'
+stmt  ::= attribute* stmt_base
+stmt_base ::= let_item | var_item | const_item | assign_stmt | defer_stmt
+        | expr_stmt | item
+assign_stmt ::= place assign_op expr TERM
+assign_op   ::= '=' | '+=' | '-=' | '*=' | '/=' | '%=' | '&=' | '|=' | '^=' | '<<=' | '>>='
+defer_stmt  ::= ('defer' | 'errdefer') expr TERM
+expr_stmt   ::= expr TERM
+place ::= expr  /* must be a place-expression; checked in sema, not grammar */
+
+/* [gram.expr.prec] — the authoritative climb, tightest first,
+   rendered from the §3.2 table by `cargo xtask spec-extract`.
+   Tiers 1/2/14/15 are spelled in [gram.expr.primary]: primary,
+   postfix_expr, range_expr, else_expr. Comparison operators
+   (tier 11) do not chain. */
+prefix_operand ::= prefix_op prefix_operand | postfix_expr   /* tier 3, prefix */
+prefix_op ::= '!' | '-' | '&' | '&mut' | '*' | 'move' | 'copy' | 'shared'
+cast_expr ::= prefix_operand ('as' type)*   /* tier 4, left */
+mul_expr ::= cast_expr (('*' | '/' | '%') cast_expr)*   /* tier 5, left */
+add_expr ::= mul_expr (('+' | '-') mul_expr)*   /* tier 6, left */
+shift_expr ::= add_expr (('<<' | '>>') add_expr)*   /* tier 7, left */
+bitand_expr ::= shift_expr ('&' shift_expr)*   /* tier 8, left */
+bitxor_expr ::= bitand_expr ('^' bitand_expr)*   /* tier 9, left */
+bitor_expr ::= bitxor_expr ('|' bitxor_expr)*   /* tier 10, left */
+cmp_expr ::= bitor_expr (cmp_op bitor_expr)?   /* tier 11, none — no chaining */
+cmp_op ::= '==' | '!=' | '<' | '>' | '<=' | '>=' | '<=>'
+and_expr ::= cmp_expr ('&&' cmp_expr)*   /* tier 12, left */
+or_expr ::= and_expr ('||' and_expr)*   /* tier 13, left */
+
+expr ::= else_expr | jump_expr
+else_expr ::= range_expr ('else' (block | '|' closed_pattern '|' (expr | block) | expr))?
+range_expr ::= r_end (('..' | '..=') r_end?)? | ('..' | '..=') r_end
+r_end ::= or_expr | '^' or_expr
+/* `^n` marks a from-end endpoint (D25): s[^1], s[^13..], s[..^1].       */
+/* tiers 3–13 (or_expr ↓ prefix_operand) are rendered into the extracted
+   grammar from the §3.2 climb table by `cargo xtask spec-extract`.      */
+postfix_expr ::= receiver (call_args | index_args | '.' member | '?')*
+receiver   ::= primary | '(' param_mode expr ')'
+/* the moded form is receiver position only: '.' member must follow.  */
+call_args  ::= '(' (call_arg (',' call_arg)* ','?)? ')'
+call_arg   ::= ('mut' | 'take')? expr
+index_args ::= '[' (index_arg (',' index_arg)* ','?)? ']'
+index_arg  ::= call_arg | prefix_type_kw type | 'region'
+member     ::= IDENT | INT | reserved_kw
+/* tuple access: pair.0, pair.1. Member position is keyword-transparent:
+   nothing competes with a member name after `.`, so `.take(n)` and
+   `s.spawn(…)` parse — member names live in their own namespace. */
+primary ::= literal | path | struct_lit | '(' expr (',' expr)* ','? ')' | block
+          | if_expr | match_expr | loop_expr | closure | region_expr
+          | scope_expr | select_expr | when_expr | unsafe_expr | spawn_expr
+          | asm_expr | borrow_expr
+struct_lit ::= path '{' (field_init (',' field_init)* ','?)? '}'
+field_init ::= IDENT ':' expr | IDENT
+literal ::= INT | FLOAT | STRING | MULTILINE_STRING | RAW_STRING
+          | GENERALIZED_STRING | 'true' | 'false'
+
+if_expr    ::= 'if' expr block ('else' (if_expr | block))?
+match_expr ::= 'match' expr '{' arm* '}'
+match_arm  ::= pattern ('if' expr)? '=>' (expr | block)
+arm        ::= match_arm arm_sep?
+arm_sep    ::= ',' | TERM
+loop_expr  ::= 'for' pattern 'in' expr block
+             | 'while' expr block
+             | 'loop' block
+jump_expr  ::= 'return' expr? | 'break' expr? | 'continue'
+
+closure ::= 'fn' '(' params_untyped? ')' (block | expr)
+params_untyped ::= closure_param (',' closure_param)* ','?
+closure_param  ::= param_mode? IDENT (':' type)?
+
+region_expr ::= 'region' IDENT? (':' region_strategy)? block  /* sugar   */
+              | 'region' '(' region_strategy? ')'             /* value   */
+              | 'in' expr block                               /* into r  */
+              | 'freeze' prefix_operand
+region_strategy ::= 'rc' | 'pool' '(' type ')'
+
+scope_expr  ::= 'scope' IDENT? block
+spawn_expr  ::= 'spawn' 'proc' path call_args
+select_expr ::= 'select' '{' select_arm (arm_sep select_arm)* arm_sep? '}'
+select_arm  ::= pattern 'from' expr '=>' (expr | block)
+              | 'timeout' '(' expr ')' '=>' (expr | block)
+when_expr   ::= 'when' '(' expr (',' expr)+ ','? ')' block
+
+unsafe_expr ::= 'unsafe' block
+              | 'unsafe' 'c' capture_list? block          /* inline C   */
+asm_expr    ::= 'asm' '{' STRING (',' asm_operand)* ','? '}'
+asm_operand ::= IDENT '=' asm_dir '(' asm_constraint ')' expr
+              | asm_dir '(' asm_constraint ')' expr
+asm_dir     ::= 'in' | 'out' | 'inout' | 'lateout'
+asm_constraint ::= IDENT
+capture_list ::= '[' IDENT (',' IDENT)* ','? ']'
+assume_stmt ::= 'assume' 'noalias' expr (',' expr)+ TERM
+borrow_expr ::= 'borrow' expr 'from' expr
+
+type ::= path type_args?
+       | '!' type
+       | type '!' error_row          /* postfix row: T ! {row}, any type position */
+       | prefix_type_kw type
+       | '*' type                    /* raw pointer, unsafe tier */
+       | 'dyn' path
+       | '(' type (',' type)* ','? ')'
+       | 'fn' '(' (type (',' type)*)? ')' ('->' ret_type)?
+       | 'type'                      /* the type of types, comptime */
+       | 'region'                    /* the type of first-class regions (X4) */
+prefix_type_kw ::= 'shared' | 'handle' | 'weak' | 'distinct'
+type_args ::= '[' type_arg (',' type_arg)* ','? ']'
+type_arg  ::= type | expr            /* const generics; disambiguated in sema */
+error_row ::= '{' row_entry (',' row_entry)* (',' '..')? ','? '}'
+row_entry ::= path ('(' type (',' type)* ')')?
+
+pattern ::= closed_pattern ('|' closed_pattern)*
+closed_pattern ::= '_' | literal | IDENT
+          | path '(' pattern (',' pattern)* ','? ')'
+          | '(' pattern (',' pattern)* ','? ')'
+          | IDENT '@' closed_pattern
+
+reserved_kw ::= 'as' | 'asm' | 'assume' | 'borrow' | 'break' | 'comptime'
+  | 'const' | 'continue' | 'copy' | 'defer' | 'distinct' | 'dyn' | 'else'
+  | 'enum' | 'errdefer' | 'export' | 'extern' | 'false' | 'fn' | 'for'
+  | 'freeze' | 'handle' | 'if' | 'impl' | 'import' | 'in' | 'let' | 'loop'
+  | 'match' | 'move' | 'mut' | 'proc' | 'pub' | 'region' | 'return'
+  | 'scope' | 'select' | 'shared' | 'spawn' | 'struct' | 'take' | 'trait'
+  | 'true' | 'type' | 'unsafe' | 'use' | 'var' | 'weak' | 'when' | 'while'
+```

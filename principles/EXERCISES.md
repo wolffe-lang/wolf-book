@@ -16,9 +16,19 @@ Two tools check exercises today:
   with the shipping diagnostics. Anything whose answer is an error code
   is wolf's.
 
-Every exercise below names its checker. When the full `wolf build|run`
-lands (s31), the checker column gains a third entry; the doctrine does
-not change.
+Every exercise names its checker, and four more names are in use because
+four kinds of exercise have no single tool behind them:
+
+- **prose** — the answer is discussion, and nothing runs.
+- **lupin REPL** — the answer is a transcript of a session.
+- **corpus** — the reader runs a program the corpus already holds.
+- **the C twin** — the answer is read out of the C program printed
+  beside the wolf one, in the projects part.
+
+A kind may be hybrid (`comprehension + extension`), and a vein may
+qualify a kind in parentheses (`comprehension (schedule play)`); §8 lists
+the veins. Where a stem joins a kind and a vein with `+`, read it as the
+parenthetical form.
 
 ---
 
@@ -33,20 +43,19 @@ earned; chapters end with a batch that mixes the chapter's sections.
 
 Every section that teaches something ends with at least one exercise. A
 chapter ends with three to six more. The book-wide target was
-order-of-150+ as a floor; the bs00x corpus filled it at full scale:
-**246 exercises** across parts 1–4 plus the appendix-adjacent sets —
-48 in part 1, 43 in part 2, 71 in part 3, 70 in part 4, 14 on the
-appendices. Part 5's guided projects add their batches as they ship;
-chapters 26–28 brought 21 (6, 8 and 7) and chapter 30 brought 7, which is
-where the corpus total of 275 comes from. Chapter 31 brings none by
-design (§4), and chapters 25 and 29 bring none because they are held. The per-chapter sets live in
+order-of-150+ as a floor; the corpus filled it at full scale: **275
+exercises** — 49 in part 1, 43 in part 2, 71 in part 3, 70 in part 4, 28
+in part 5, and 14 on the appendices. Chapter 31 brings none by design
+(§4) and chapter 32 none at all; chapter 29's batch lands with its
+chapter. The per-chapter sets live in
 `principles/exercises/chNN/EXERCISES.md` (this file's §5 remains the
 chapters 1–6 exemplar batch, folded in unchanged; the chapter files
 continue its numbering); `EXERCISES-INDEX.md` maps section → exercise →
-tier, and `EXERCISES-PENDING.md` is the honest list of the 20 whose
+tier, and `EXERCISES-PENDING.md` is the honest list of the eleven whose
 blocking features have not landed, each named with its blocker and
-owning sprint. 165 solutions were executed against the real tools at
-authoring time; 61 are discussion solutions by design.
+owner. 189 exercises have a solution program that CI executes; 72 are
+discussion solutions by design, 9 live in a REPL transcript, and the
+rest re-run a sibling's program or read a tool's output.
 
 ## 3. Taxonomy
 
@@ -68,8 +77,12 @@ exercise.
 
 ## 4. Solutions policy
 
-Every exercise has a solution page in the web edition, collapsed by
-default, adjacent to the exercise. Solution programs are ordinary
+Every printed exercise has a solution in the back matter, collapsed by
+default, linked to the section that set it (`book/back/solutions.md`,
+generated from these files by `cargo xtask backmatter`). An exercise
+whose section is held is not printed, and an unprinted exercise
+publishes no solution: the answer to a question the reader was never
+asked is repo bookkeeping. Solution programs are ordinary
 samples: extracted by the bs00 pipeline, executed in CI, snapshot-checked
 where they show diagnostics. A solution that stops compiling fails the
 book's build — solutions rot first, so they are wired to the same alarm
@@ -679,8 +692,7 @@ v=-4
 
 The signature grew (rows are spelled, not sprung on callers) and the
 match grew an arm — exhaustiveness is what tells you, at compile time,
-that a handler fell behind its row. See the audit ledger below for a
-divergence this exercise surfaced.
+that a handler fell behind its row.
 
 **Exercise 6-4** *(comprehension · lupin)* — The error carries a
 payload. Predict both printed lines:
@@ -778,7 +790,7 @@ exercise, the exercise says so in place.
 
 ## 7. Stats for this batch
 
-26 exercises: 8 fingers, 11 comprehension, 4 extension, 2 design, 1
+26 exercises: 7 fingers, 12 comprehension, 4 extension, 2 design, 1
 spelunking-hybrid (4-4). Checkers: 23 exercised under lupin (including
 the REPL exercise), 3 under wolf conform-run (3-2 and 4-4 under both).
 All 23 solution programs on disk ran with the outputs shown; the REPL

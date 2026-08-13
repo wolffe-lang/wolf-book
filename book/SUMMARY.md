@@ -59,4 +59,5 @@
 [Solutions](back/solutions.md)
 [Glossary](back/glossary.md)
 [Index](back/book-index.md)
+[Errata](back/errata.md)
 [Colophon](back/colophon.md)
