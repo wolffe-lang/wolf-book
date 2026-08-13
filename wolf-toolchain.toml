@@ -17,38 +17,44 @@
 # convention lints, argv and env, and the release tier arrived with the
 # c09 wave.
 #
-# This bump crosses eighteen commits and two of them move the book.
-# **Native concurrency**: the compiler is no longer the implementation
-# that cannot run wolf's conc. `scope`/`s.spawn`/`channel`/`select`/
-# `freeze` lower and link, which is what Part 5's parallel grep and the
-# solo are built on, and what makes chapter 30 the first chapter whose
-# programs need a real command line as well as real tasks.
-# **The mid-end**: c09's optimizer, and with it the fix for the defect
-# that held this pin at a deliberate deviation for two sprints — the
-# select-arm dominance ICE (wolf-lang#64). Dominator-scoped GVN no
-# longer hoists a timeout sentinel out of one select arm into a block
-# that does not dominate its use.
+# Native concurrency landed with the c09 wave: `scope`/`s.spawn`/
+# `channel`/`select`/`freeze` lower and link, which is what Part 5's
+# parallel grep and the solo are built on. The mid-end landed with it,
+# and with it the fix for the select-arm dominance ICE (wolf-lang#64)
+# that held this pin at a deliberate deviation for two sprints.
 #
-# The previous pin was NOT the newest green trunk sha, and that
-# deviation is now closed. The record, because it is the mechanism the
-# hold notes depend on: at every sha carrying native conc between
-# c650e73 and the s42 merge, `wolf build` ICEd on `book/ch12.md`'s
-# two-`timeout`-`select` sample (`wir verify error [dominance]`), which
-# aborted `cargo xtask samples` outright rather than failing it. That
-# sample now builds and runs to `exit(0)`, printing `timed out` then
-# `got 9`, and the seven diagnostic snapshots that drifted at the
-# candidate shas do not drift here — the mid-end changed no diagnostic
-# the book prints. One sha-range finding survives the bump and is
-# recorded rather than worked around: `w.link()`, the one-argument
-# spelling chapter 15 teaches and `wolf_rt`'s own `link` doc-comment
-# names, is missing from the compiler's proc method table, so wolfc
-# answers `E0402` where lupin runs the program. Filed; chapter 15's
-# ledger carries it.
+# This bump (bs11) crosses eight commits: the whole-program tier, the
+# release-build parallel clusters, and the diagnostics polish that is
+# the half the book cares about. Every one of the three defects the
+# ecosystem chapters filed against the compiler's own text is fixed
+# here, so the book's transcripts get shorter and truer:
+#   * E0701's note no longer promises declared build inputs "later
+#     (s51)"; it states where file contents belong. Chapters 18 and 24
+#     print the note again.
+#   * E1503's note drops its campaign id, so §24.2 prints the refusal
+#     itself instead of `wolf --explain`.
+#   * `wolf.sum`'s header — a line the tool writes into every user's
+#     version control — drops its sprint id, so §23.3 quotes the
+#     fixture byte-for-byte again.
+# Three more diagnostics moved and every one is an improvement: a
+# repeated diagnostic prints its note once (chapters 13, 27), the
+# `audit-surface` header drops its sprint id (chapter 32), and a failed
+# build closes with a pointer at `wolf --explain`. Eleven snapshots and
+# four console blocks were re-captured; nothing regressed.
+#
+# One finding survives the bump, recorded rather than worked around:
+# `w.link()`, the one-argument spelling chapter 15 teaches and
+# `wolf_rt`'s own `link` doc-comment names, is missing from the
+# compiler's proc method table, so wolfc answers `E0402` where lupin
+# runs the program. Chapter 15's ledger carries it. wolf-lang#71 —
+# `E1101` misses a `(mut xs).push(…)` receiver-lend, so two tasks
+# mutating one captured `List` compile clean — is open at this sha and
+# is chapter 13's top ledger row.
 #
 # This sha is the newest one whose `ci` run is green AND on which the
 # whole book suite is green, which is what the gate asks for.
 repo = "wolffe-lang/wolf-lang"
-rev = "df5b2ad45ec32244c587dc16e400d0ca1db46609"
+rev = "613c3dc2bdec3b151c23fc200227f3a6230f68c4"
 impl_version = "0.1.0"
 
 [lupin]
@@ -79,6 +85,8 @@ impl_version = "0.1.0"
 # The rev is the annotated tag object (commit `47ed21b`), matching the
 # convention this file has used since 0.1.5. The tag's own CI run is
 # green.
+# Unchanged at the bs11 bump: 0.1.9 is still the newest tag, and the two
+# commits above it are docs. The whole book suite is green on it.
 repo = "wolffe-lang/wolf-interp"
 rev = "10df88d39e55ca0133c01f20290d581303f35cfe"
 version = "lupin 0.1.9 (wolf-interp, reference interpreter at pin 0b4e79c)"
