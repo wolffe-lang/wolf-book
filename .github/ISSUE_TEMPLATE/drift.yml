@@ -1,0 +1,33 @@
+name: Drift
+description: A sample no longer holds on a newer toolchain than the colophon's.
+labels: ["erratum:drift"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Drift is fixed at the next pin bump, with every flip named. The
+        book's nightly lane watches for this too; a report that arrives
+        first is still useful.
+  - type: input
+    id: where
+    attributes:
+      label: Which sample
+      description: Section number, or the exercise id.
+      placeholder: "30.5, or ch13/ex13-3"
+    validations:
+      required: true
+  - type: textarea
+    id: observed
+    attributes:
+      label: What you ran and what it printed
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: pins
+    attributes:
+      label: Your toolchain
+      description: Output of `wolf --version` and `lupin --version`.
+      render: text
+    validations:
+      required: true

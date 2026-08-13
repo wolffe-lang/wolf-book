@@ -299,7 +299,7 @@ fn markdown_to_typst(wolf: &Grammar, content: &str) -> Result<String> {
     Ok(out)
 }
 
-fn strip_html_comments(text: &str) -> String {
+pub fn strip_html_comments(text: &str) -> String {
     let mut out = String::new();
     let mut rest = text;
     while let Some(start) = rest.find("<!--") {
@@ -337,6 +337,41 @@ fn typst_prose(text: &str) -> String {
             continue;
         }
         let trimmed = line.trim_start();
+        // `<details>` wrappers are the Solutions page's collapse (DESIGN.md
+        // §3). Print has no collapse: the wrapper disappears and the
+        // summary becomes the block's heading.
+        if trimmed.starts_with("<details") || trimmed.starts_with("</details>") {
+            continue;
+        }
+        if let Some(rest) = trimmed.strip_prefix("<summary>") {
+            let head = rest.trim_end_matches("</summary>");
+            out.push_str(&format!("==== {}\n", typst_inline(head)));
+            continue;
+        }
+        // A markdown table: the header row, the alignment row, then body
+        // rows until the block ends. Typst sets it as a real table so the
+        // PDF does not print pipes.
+        if trimmed.starts_with('|')
+            && lines
+                .get(i)
+                .map(|l| is_table_rule(l.trim_start()))
+                .unwrap_or(false)
+        {
+            let header = split_row(trimmed);
+            let cols = header.len();
+            i += 1; // the alignment row
+            let mut rows: Vec<Vec<String>> = Vec::new();
+            while let Some(next) = lines.get(i) {
+                let next = next.trim_start();
+                if !next.starts_with('|') {
+                    break;
+                }
+                rows.push(split_row(next));
+                i += 1;
+            }
+            out.push_str(&typst_table(cols, &header, &rows));
+            continue;
+        }
         let hashes = trimmed.chars().take_while(|&c| c == '#').count();
         if (1..=6).contains(&hashes) && trimmed[hashes..].starts_with(' ') {
             let mut title = trimmed[hashes..].trim().to_string();
@@ -362,6 +397,50 @@ fn typst_prose(text: &str) -> String {
             out.push('\n');
         }
     }
+    out
+}
+
+/// `|---|:--:|` — the row that makes the row above it a header.
+fn is_table_rule(line: &str) -> bool {
+    line.starts_with('|')
+        && line
+            .chars()
+            .all(|c| matches!(c, '|' | '-' | ':' | ' ' | '\t'))
+        && line.contains('-')
+}
+
+fn split_row(line: &str) -> Vec<String> {
+    line.trim()
+        .trim_start_matches('|')
+        .trim_end_matches('|')
+        .split('|')
+        .map(|c| c.trim().to_string())
+        .collect()
+}
+
+fn typst_table(cols: usize, header: &[String], rows: &[Vec<String>]) -> String {
+    let mut out = format!(
+        "#table(\n  columns: {cols},\n  stroke: 0.4pt + rgb(\"#c8c2b6\"),\n  inset: 5pt,\n"
+    );
+    let cells = |row: &[String], strong: bool| {
+        let mut s = String::from("  ");
+        for i in 0..cols {
+            let cell = row.get(i).map(String::as_str).unwrap_or("");
+            let body = typst_inline(cell);
+            if strong {
+                let _ = write!(s, "[*{body}*], ");
+            } else {
+                let _ = write!(s, "[{body}], ");
+            }
+        }
+        s.push('\n');
+        s
+    };
+    out.push_str(&cells(header, true));
+    for row in rows {
+        out.push_str(&cells(row, false));
+    }
+    out.push_str(")\n");
     out
 }
 
@@ -561,6 +640,28 @@ mod tests {
         let out = typst_prose(md);
         assert!(out.starts_with("#epigraph[#emph["), "got: {out}");
         assert!(!out.contains("#align(right)"), "got: {out}");
+    }
+
+    #[test]
+    fn a_markdown_table_becomes_a_typst_table() {
+        let md = "| Kind | Fault |\n|------|-------|\n| `bounds` | outside |\n| `ub` | oracle |\n";
+        let out = typst_prose(md);
+        assert!(out.contains("#table("), "got: {out}");
+        assert!(out.contains("columns: 2"), "got: {out}");
+        // The header row is set bold, the body rows plain, and no pipe
+        // character survives into the PDF.
+        assert!(out.contains("[*Kind*]"), "got: {out}");
+        assert!(out.contains("[outside]"), "got: {out}");
+        assert!(!out.contains('|'), "pipes reached the print path: {out}");
+    }
+
+    #[test]
+    fn details_wrappers_expand_for_print() {
+        let md = "<details>\n<summary>Exercise 3-2 — [§3.1](../ch03.md#3.1)</summary>\n\nbody text\n</details>\n";
+        let out = typst_prose(md);
+        assert!(!out.contains("details"), "got: {out}");
+        assert!(out.contains("==== Exercise 3-2"), "got: {out}");
+        assert!(out.contains("body text"), "got: {out}");
     }
 
     #[test]

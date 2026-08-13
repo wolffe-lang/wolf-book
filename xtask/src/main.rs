@@ -6,8 +6,10 @@
 //!   grammar-sync       vendor the tmLanguage grammars, regenerate highlight.css
 //!   render [target]    web | md | pdf | all (default all)
 //!   mdbook-preprocess  the mdBook preprocessor protocol (highlight + anchors)
+//!   backmatter         regenerate the generated back matter; --check for CI
 //!   verify-docs        doc-truth checks (counts, pins, TOC↔stub numbering)
 
+mod backmatter;
 mod console;
 mod contrast;
 mod directives;
@@ -39,6 +41,7 @@ fn dispatch(args: &[String]) -> Result<()> {
     let rest = if args.is_empty() { &[][..] } else { &args[1..] };
     match cmd {
         Some("samples") => samples::run(&repo_root()?, rest),
+        Some("backmatter") => backmatter::run(&repo_root()?, rest),
         Some("contrast") => contrast::run(&repo_root()?),
         Some("grammar-sync") => highlight::grammar_sync(&repo_root()?, rest),
         Some("render") => render::run(&repo_root()?, rest),
@@ -61,6 +64,8 @@ fn print_help() {
          \x20 contrast              compile and assert the vendored contrast code\n\
          \x20 grammar-sync [--check] re-vendor grammars from wolf-lsp at the pin;\n\
          \x20                       --check fails on drift without writing\n\
+         \x20 backmatter [--check]  regenerate Appendix A and the Solutions page\n\
+         \x20                       from the spec and the corpus; --check fails on drift\n\
          \x20 render [web|md|pdf|all]\n\
          \x20 mdbook-preprocess     (internal) mdBook preprocessor protocol\n\
          \x20 verify-docs           doc-truth checks"

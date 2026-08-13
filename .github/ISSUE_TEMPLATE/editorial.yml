@@ -1,0 +1,17 @@
+name: Editorial erratum
+description: A typo, a broken sentence, a wrong cross-reference.
+labels: ["erratum:editorial"]
+body:
+  - type: input
+    id: where
+    attributes:
+      label: Where
+      placeholder: "12.3, third paragraph"
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: The text as printed, and the correction
+    validations:
+      required: true

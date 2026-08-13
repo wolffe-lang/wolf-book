@@ -1,0 +1,31 @@
+name: Technical erratum
+description: A sample, a claim, or a diagnostic on a page is wrong.
+labels: ["erratum:technical"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The fix goes through the reviewer checklist: the claim gets traced
+        and the sample gets executed. See `docs/errata-policy.md`.
+  - type: input
+    id: where
+    attributes:
+      label: Where
+      description: Section number, or the appendix and the row.
+      placeholder: "8.4, or Appendix C row E1012"
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What the page says, and what is true instead
+    validations:
+      required: true
+  - type: textarea
+    id: pins
+    attributes:
+      label: Your toolchain
+      description: Output of `wolf --version` and `lupin --version`.
+      render: text
+    validations:
+      required: true

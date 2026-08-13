@@ -75,6 +75,20 @@ pub fn run(root: &Path) -> Result<()> {
     // 8. Each project's on-disk program is the program its chapter prints.
     verify_projects(root, &mut failures)?;
 
+    // 9. Clause tags, diagnostic codes, trap kinds: the back matter and
+    //    the chapters against the vendored spec artifacts.
+    verify_clause_tags(root, &mut failures)?;
+    verify_diagnostic_codes(root, &mut failures)?;
+    verify_traps(root, &mut failures)?;
+
+    // 10. Every printed exercise has a published solution.
+    verify_solutions(root, &mut failures)?;
+
+    // 11. The tense discipline, as a grep CI owns (TONE.md §Tense
+    //     discipline). Prose only: fence content is the tools' voice and
+    //     fence directives are build metadata.
+    verify_tense(root, &mut failures)?;
+
     if failures.is_empty() {
         println!(
             "verify-docs: ok (corpus count {actual}, pins well-formed, TOC/stub numbering agrees)"
@@ -86,6 +100,288 @@ pub fn run(root: &Path) -> Result<()> {
         }
         bail!("{} doc-truth failure(s)", failures.len());
     }
+}
+
+/// Reader-facing prose of one page: HTML comments stripped, fenced
+/// blocks dropped, so the checks below never read the tools' voice or a
+/// fence's build directives as if the book had written them.
+fn reader_prose(text: &str) -> String {
+    let stripped = crate::render::strip_html_comments(text);
+    let mut out = String::new();
+    let mut in_fence = false;
+    for line in stripped.lines() {
+        if line.trim_start().starts_with("```") {
+            in_fence = !in_fence;
+            continue;
+        }
+        if !in_fence {
+            out.push_str(line);
+            out.push('\n');
+        }
+    }
+    out
+}
+
+fn book_pages(root: &Path) -> Result<Vec<(String, String)>> {
+    let mut pages = Vec::new();
+    let mut dirs = vec![root.join("book")];
+    while let Some(dir) = dirs.pop() {
+        for entry in std::fs::read_dir(&dir)? {
+            let path = entry?.path();
+            if path.is_dir() {
+                dirs.push(path);
+            } else if path.extension().and_then(|e| e.to_str()) == Some("md") {
+                let rel = path
+                    .strip_prefix(root)
+                    .unwrap_or(&path)
+                    .to_string_lossy()
+                    .replace('\\', "/");
+                pages.push((rel, std::fs::read_to_string(&path)?));
+            }
+        }
+    }
+    pages.sort();
+    Ok(pages)
+}
+
+/// Clause tags the tools print that the spec has not registered.
+/// Appendix D lists them for the reader; this list is what CI holds to
+/// its length, in both directions: a new one fails the build, and one
+/// that gains an anchor upstream has to leave the appendix.
+const UNANCHORED_TAGS: &[&str] = &[
+    "arith.checked",
+    "mod.cycle",
+    "mod.dup",
+    "mod.use.unused",
+    "mod.vis.private",
+    "repl.trap.alive",
+];
+
+fn verify_clause_tags(root: &Path, failures: &mut Vec<String>) -> Result<()> {
+    let anchors = std::fs::read_to_string(root.join("vendor/spec/anchors.json"))
+        .context("reading vendor/spec/anchors.json")?;
+    let anchors: toml::Value = serde_json::from_str::<serde_json::Value>(&anchors)
+        .map(|v| toml::Value::String(v.to_string()))
+        .context("parsing vendor/spec/anchors.json")?;
+    let anchor_text = anchors.as_str().unwrap_or_default().to_string();
+    let appendix = std::fs::read_to_string(root.join("book/back/appendix-d.md"))?;
+    let mut seen_unanchored: Vec<&str> = Vec::new();
+    for (rel, text) in book_pages(root)? {
+        for tag in clause_tags(&reader_prose(&text)) {
+            let quoted = format!("\"{tag}\":");
+            if anchor_text.contains(&quoted) {
+                continue;
+            }
+            match UNANCHORED_TAGS.iter().find(|t| **t == tag) {
+                Some(known) => {
+                    if !seen_unanchored.contains(known) {
+                        seen_unanchored.push(known);
+                    }
+                }
+                None => failures.push(format!(
+                    "{rel}: clause tag `[{tag}]` is in no spec anchor and not in \
+                     Appendix D's list of tags without one"
+                )),
+            }
+        }
+    }
+    for tag in UNANCHORED_TAGS {
+        if !appendix.contains(tag) {
+            failures.push(format!(
+                "book/back/appendix-d.md: `{tag}` is listed as unanchored but the \
+                 appendix does not name it"
+            ));
+        }
+        if !seen_unanchored.contains(tag) && anchor_text.contains(&format!("\"{tag}\":")) {
+            failures.push(format!(
+                "vendor/spec/anchors.json now anchors `{tag}` — drop its row from \
+                 Appendix D and from UNANCHORED_TAGS"
+            ));
+        }
+    }
+    Ok(())
+}
+
+/// `[a.b.c]` tags in prose. Diagnostic codes, markdown links and
+/// generic-argument brackets are not clause tags.
+fn clause_tags(prose: &str) -> Vec<String> {
+    let mut out = Vec::new();
+    let bytes = prose.as_bytes();
+    let mut i = 0usize;
+    while i < bytes.len() {
+        if bytes[i] == b'[' {
+            if let Some(end) = prose[i + 1..].find(']') {
+                let inner = &prose[i + 1..i + 1 + end];
+                // A tag is dotted lowercase segments: `mem.ub.defined`.
+                // Slice ranges (`[2..]`, `[t.0..t.1]`) and format specs
+                // (`[.precision]`) are not tags.
+                let segments: Vec<&str> = inner.split('.').collect();
+                let dotted = segments.len() > 1
+                    && !inner.contains("..")
+                    && segments.iter().all(|s| {
+                        s.starts_with(|c: char| c.is_ascii_lowercase())
+                            && s.chars()
+                                .all(|c| c.is_ascii_lowercase() || c.is_ascii_digit())
+                    });
+                if dotted && !out.contains(&inner.to_string()) {
+                    out.push(inner.to_string());
+                }
+                i += end + 2;
+                continue;
+            }
+        }
+        i += 1;
+    }
+    out
+}
+
+fn verify_diagnostic_codes(root: &Path, failures: &mut Vec<String>) -> Result<()> {
+    let catalog = std::fs::read_to_string(root.join("vendor/spec/diagnostic-codes.txt"))
+        .context("reading vendor/spec/diagnostic-codes.txt")?;
+    let known: Vec<&str> = catalog
+        .lines()
+        .map(str::trim)
+        .filter(|l| !l.is_empty())
+        .collect();
+    let appendix = std::fs::read_to_string(root.join("book/back/appendix-c.md"))?;
+    for code in codes_in(&appendix) {
+        if !known.contains(&code.as_str()) {
+            failures.push(format!(
+                "book/back/appendix-c.md: `{code}` is not in the compiler's catalog"
+            ));
+        }
+    }
+    for (rel, text) in book_pages(root)? {
+        if rel.ends_with("appendix-c.md") || rel.ends_with("book-index.md") {
+            continue;
+        }
+        for code in codes_in(&reader_prose(&text)) {
+            if !appendix.contains(&code) {
+                failures.push(format!(
+                    "{rel}: shows `{code}`, which Appendix C does not list"
+                ));
+            }
+        }
+    }
+    Ok(())
+}
+
+fn codes_in(text: &str) -> Vec<String> {
+    let mut out = Vec::new();
+    let bytes = text.as_bytes();
+    for (i, b) in bytes.iter().enumerate() {
+        if !(*b == b'E' || *b == b'W') {
+            continue;
+        }
+        if i > 0 && (bytes[i - 1].is_ascii_alphanumeric() || bytes[i - 1] == b'_') {
+            continue;
+        }
+        let rest = &text[i + 1..];
+        let digits: String = rest.chars().take(4).collect();
+        if digits.len() == 4 && digits.chars().all(|c| c.is_ascii_digit()) {
+            let after = rest.chars().nth(4);
+            if after.map(|c| c.is_ascii_digit()).unwrap_or(false) {
+                continue;
+            }
+            let code = format!("{}{digits}", *b as char);
+            if !out.contains(&code) {
+                out.push(code);
+            }
+        }
+    }
+    out
+}
+
+/// The twelve kinds `[conf.trap.set]` closes. Appendix B is the book's
+/// copy of that set, and a copy that drifts is worse than no copy.
+const TRAP_KINDS: &[&str] = &[
+    "overflow",
+    "div-zero",
+    "bounds",
+    "use-after-move",
+    "exclusivity",
+    "region-fault",
+    "stale-handle",
+    "alloc-contract",
+    "assert",
+    "race",
+    "ub",
+    "deadlock",
+];
+
+fn verify_traps(root: &Path, failures: &mut Vec<String>) -> Result<()> {
+    let appendix = std::fs::read_to_string(root.join("book/back/appendix-b.md"))?;
+    for kind in TRAP_KINDS {
+        if !appendix.contains(&format!("`{kind}`")) {
+            failures.push(format!(
+                "book/back/appendix-b.md: trap kind `{kind}` is missing from the table"
+            ));
+        }
+    }
+    if !appendix.contains("twelve") {
+        failures.push("book/back/appendix-b.md: no longer states the set's size".into());
+    }
+    Ok(())
+}
+
+fn verify_solutions(root: &Path, failures: &mut Vec<String>) -> Result<()> {
+    let page = std::fs::read_to_string(root.join("book/back/solutions.md"))?;
+    for ((ch, num), _) in crate::backmatter::printed_exercises(root)? {
+        let marker = format!("<summary>Exercise {ch}-{num} —");
+        if !page.contains(&marker) {
+            failures.push(format!(
+                "book/back/solutions.md: exercise {ch}-{num} is printed in the chapter \
+                 and has no published solution"
+            ));
+        }
+    }
+    Ok(())
+}
+
+/// Deferral vocabulary and repo apparatus, in reader-facing prose only.
+const FORBIDDEN_PROSE: &[&str] = &[
+    "at this pin",
+    "a feature away",
+    "does not exist yet",
+    "when it lands",
+    "the pinned interpreter",
+    "the pinned toolchain",
+    "blocker:",
+    "owner:",
+    "audit ledger",
+    "young toolchain",
+];
+
+fn verify_tense(root: &Path, failures: &mut Vec<String>) -> Result<()> {
+    for (rel, text) in book_pages(root)? {
+        let prose = reader_prose(&text);
+        for needle in FORBIDDEN_PROSE {
+            if prose.contains(needle) {
+                failures.push(format!(
+                    "{rel}: reader-facing prose says \"{needle}\" (TONE.md \
+                     §Tense discipline: the ledger is where that lives)"
+                ));
+            }
+        }
+        for word in prose.split(|c: char| !(c.is_ascii_alphanumeric())) {
+            let is_sprint = matches!(word.len(), 3 | 4)
+                && (word.starts_with('s') || word.starts_with("is") || word.starts_with("bs"))
+                && word[1..].chars().any(|c| c.is_ascii_digit())
+                && word.chars().skip(1).all(|c| c.is_ascii_digit() || c == 's')
+                && word
+                    .chars()
+                    .last()
+                    .map(|c| c.is_ascii_digit())
+                    .unwrap_or(false);
+            if is_sprint {
+                failures.push(format!(
+                    "{rel}: reader-facing prose names `{word}` — sprint identifiers are \
+                     CI's vocabulary, never a page's"
+                ));
+            }
+        }
+    }
+    Ok(())
 }
 
 fn claimed_corpus_count(root: &Path) -> Result<usize> {

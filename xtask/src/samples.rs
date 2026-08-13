@@ -113,6 +113,11 @@ pub fn run(root: &Path, args: &[String]) -> Result<()> {
     let tools = locate_tools(root)?;
     println!("samples: lupin = {}", tools.lupin.display());
     println!("samples: wolf  = {}", tools.wolf.display());
+    println!(
+        "samples: SKIP extraction book/back/solutions.md — generated from the exercise \
+         corpus, which this run executes directly (cargo xtask backmatter --check holds \
+         the page to it)"
+    );
 
     if self_test {
         return selftest(root, &tools);
@@ -445,8 +450,14 @@ fn collect_book(root: &Path) -> Result<BookScan> {
         let name = p.file_name().and_then(|n| n.to_str()).unwrap_or("");
         // `_template.md` and friends are scaffolding, not book content:
         // their blocks are illustrative placeholders, never executed.
+        // `solutions.md` is generated from the exercise corpus, and the
+        // corpus is what this runner already executes — extracting it a
+        // second time would run every solution twice under a second id.
+        // The generator holds the page to its sources
+        // (`cargo xtask backmatter --check`).
         if p.extension().and_then(|e| e.to_str()) == Some("md")
             && name != "SUMMARY.md"
+            && name != "solutions.md"
             && !name.starts_with('_')
         {
             md_files.push(p.to_path_buf());

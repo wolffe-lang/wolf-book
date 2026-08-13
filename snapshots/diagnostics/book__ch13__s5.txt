@@ -36,8 +36,6 @@ warning[W1101]: this write to `hits` stays inside the task
   |                 ------------------ the closure captured it at spawn
   |                        ^^^^ lands on the task's own copy
   |
-  = note: task captures copy (or move); the enclosing binding never sees this assignment. Send the
-    result over a channel, or return it through the scope's join.
 
 warning[W1102]: the closure above captured `hits` by value, so it will not see this assignment
  --> ./s5.lu:8:24

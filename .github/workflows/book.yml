@@ -11,6 +11,13 @@ on:
   push:
     branches: [main, trunk]
   pull_request:
+  # A toolchain release re-verifies the book by construction: wolf-lang and
+  # wolf-interp fire this event on release, the whole suite runs at the pin,
+  # and the web edition redeploys if it passes (docs/errata-policy.md).
+  # `workflow_dispatch` is the dry run of that path.
+  repository_dispatch:
+    types: [toolchain-release]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -125,6 +132,12 @@ jobs:
         shell: bash
         working-directory: wolf-book
         run: cargo xtask verify-docs
+      - name: generated back matter is not stale
+        shell: bash
+        working-directory: wolf-book
+        env:
+          WOLF_LANG_PATH: ${{ github.workspace }}/wolf-lang
+        run: cargo xtask backmatter --check
       # Contrast code rots too: the Rust the book prints in ch07 §7.6 is
       # vendored, compiled with warnings denied, asserted, and diffed
       # against the printed block. Runs without the wolf toolchain.
