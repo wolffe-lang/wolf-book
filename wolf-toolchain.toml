@@ -23,38 +23,60 @@
 # and with it the fix for the select-arm dominance ICE (wolf-lang#64)
 # that held this pin at a deliberate deviation for two sprints.
 #
-# This bump (bs11) crosses eight commits: the whole-program tier, the
-# release-build parallel clusters, and the diagnostics polish that is
-# the half the book cares about. Every one of the three defects the
-# ecosystem chapters filed against the compiler's own text is fixed
-# here, so the book's transcripts get shorter and truer:
-#   * E0701's note no longer promises declared build inputs "later
-#     (s51)"; it states where file contents belong. Chapters 18 and 24
-#     print the note again.
-#   * E1503's note drops its campaign id, so §24.2 prints the refusal
-#     itself instead of `wolf --explain`.
-#   * `wolf.sum`'s header — a line the tool writes into every user's
-#     version control — drops its sprint id, so §23.3 quotes the
-#     fixture byte-for-byte again.
-# Three more diagnostics moved and every one is an improvement: a
-# repeated diagnostic prints its note once (chapters 13, 27), the
-# `audit-surface` header drops its sprint id (chapter 32), and a failed
-# build closes with a pointer at `wolf --explain`. Eleven snapshots and
-# four console blocks were re-captured; nothing regressed.
+# This bump (bs10 pass three) crosses the two campaigns that closed the
+# language's last interpreter-only claims, plus the hygiene wave between
+# them: c19 finishes native concurrency (the release tier runs the
+# eleven spawn-bearing corpus programs `func.addr` was holding off it; a
+# proc spawned in a loop is sound because the runtime now copies the
+# argument record the proc owns — `[abi.native.procenv]`), and c21 lands
+# monomorphization (a generic free function, an inherent generic impl,
+# a generic nominal's layout — all instantiate on one worklist, D8 dedup
+# behind it). Between them: the byte-view lend (8 of 9 std.bytes
+# functions cross without copying), E1015 retired INTO the catalog and
+# its refusal downgraded to W1004 with the copy as the answer, the
+# fail-pin ledger split into rules vs forward pins, and `cargo xtask
+# peel` (the survey lens the mis-sized contracts of 08-19 forced into
+# existence).
 #
-# One finding survives the bump, recorded rather than worked around:
-# `w.link()`, the one-argument spelling chapter 15 teaches and
-# `wolf_rt`'s own `link` doc-comment names, is missing from the
-# compiler's proc method table, so wolfc answers `E0402` where lupin
-# runs the program. Chapter 15's ledger carries it. wolf-lang#71 —
-# `E1101` misses a `(mut xs).push(…)` receiver-lend, so two tasks
-# mutating one captured `List` compile clean — is open at this sha and
-# is chapter 13's top ledger row.
+# What the bump changes for the book, measured at this sha:
+#   * Chapter 29's gate LOSES ITS SECOND HALF: `pick(a, 0)` on a
+#     `List[int]` compiles, links, runs, and prints the same 7 on both
+#     lanes. What survives of the gate is its first half, unchanged and
+#     re-measured — the `Pool` constructor refusal and the interpreter's
+#     handle-write refusal, quoted fresh in the chapter's hold note.
+#     (The EXPLICIT spelling `pick[int](a, 0)` still refuses — "a
+#     generic function used as a value (comptime)" — a narrower fact
+#     than the old note's, and recorded there.)
+#   * Chapter 13's top ledger row half-closes: E1101 now catches the
+#     `(mut xs).push` receiver-lend across a spawn (wolf-lang#71's
+#     compiler half, fixed), while lupin 0.1.10 still runs the same
+#     program to a write-dropping exit 0 — the divergence inverts
+#     instead of closing. Filed as wolf-interp#30; the row narrows.
+#   * The catalog grows six codes (E1015's own retirement page among
+#     them, E1507–E1509, W1004, W1501); anchors grow taskenv, procenv
+#     and the shebang clause. Vendored spec artifacts re-vendored.
+#   * Zero snapshot movement: 386 samples pass with no re-capture, no
+#     flip, and the version transcripts are byte-identical because
+#     `wolf --version` still prints the 0.1.8 pairing line at this sha
+#     (wolf-lang#87 — the rot is upstream's open issue, and it is why
+#     the colophon does not move at this bump).
+#
+# The pairing asymmetry, named: lupin stays at 0.1.10, whose own
+# version line names the PREVIOUS wolf pin (613c3dc). The two machines'
+# releases pair one step apart by policy (§1.2 teaches the reader to
+# read them that way); a lupin release naming this sha re-closes the
+# symmetry when the interpreter next ships.
+#
+# One finding survives the bump unchanged: `w.link()`, the one-argument
+# spelling chapter 15 teaches, still answers E0402 (`link` takes 1
+# argument) — chapter 15's ledger carries it, wolf-lang#87 carries the
+# version-line rot, and wolf-interp#30 now carries the capture-check
+# half of what used to be chapter 13's compiler row.
 #
 # This sha is the newest one whose `ci` run is green AND on which the
 # whole book suite is green, which is what the gate asks for.
 repo = "wolffe-lang/wolf-lang"
-rev = "613c3dc2bdec3b151c23fc200227f3a6230f68c4"
+rev = "2c6980a128fb8e3889931d65d64147e1136799e4"
 impl_version = "0.1.0"
 
 [lupin]
