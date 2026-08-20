@@ -1049,3 +1049,41 @@ sprint files remain the implementation contracts for everything else.
     rows of pipe characters, which is what a print review is for. Long
     tool lines wrap inside their block rather than overflowing the
     measure, checked on the rendered artifact.
+- **bs10 pass three (the pin crosses the conc and generics campaigns,
+  2026-08-20):** wolf moves to 2c6980a — c19 (native concurrency
+  complete: the release tier, loop-spawned procs) and c21
+  (monomorphization) both closed upstream — and lupin stays at v0.1.10,
+  whose version line names the previous pin; the asymmetry is recorded
+  in `wolf-toolchain.toml` and re-closes at the interpreter's next
+  release. The whole suite is green at the bump: 386 samples, 0
+  failures, 0 flips, and — the first pin move with this property —
+  **zero snapshot re-captures**: no diagnostic the book prints moved,
+  and `wolf --version` still prints the 0.1.8 pairing line
+  (wolf-lang#87), so even the colophon stands.
+  - **Chapter 29's gate loses its second half, measured on the hold
+    note's own spellings.** `pick(a, 0)` compiles, links, runs and
+    prints 7 on both lanes; the explicit `pick[int](a, 0)` still
+    refuses at resolve, recorded as the narrower surviving fact. The
+    Pool constructor and handle-write refusals reproduce verbatim
+    (the native one grew a parenthetical; same verdict). The chapter
+    stays held on the genuinely-one-line gate: `Pool[T]` construction
+    natively, a field write through a handle in the interpreter.
+  - **Chapter 13's top ledger row half-closes and inverts.** E1101 now
+    rejects the `(mut xs).push` capture across a spawn — wolf-lang#71's
+    compiler half, fixed, and §13.2 keeps its claim with no caveat —
+    while lupin 0.1.10 still runs the same program to a write-dropping
+    exit 0. The divergence used to be "both admit it and disagree what
+    it means"; it is now "one rejects, one loses writes silently",
+    which is worse for the interpreter and filed as wolf-interp#30.
+    The row narrows to that half. 13-1 and 13-6 (on `par`) did not
+    flip; §13.1 stays vacant in ch06's reserved slot.
+  - **The catalog and anchors grow, and the vendored spec follows.**
+    Six new codes (E1015's retirement page among them — the compiler's
+    first retired code keeps its number and says what replaced it;
+    W1004 is the replacement), three new anchors (taskenv, procenv,
+    the shebang clause). Appendix A is unchanged (the grammar did not
+    move); `verify-docs` holds in both directions over the new list.
+  - **Chapter 18's §18.3 clause narrows from "generic monomorphization"
+    to const-generic elaboration** — monomorphization landed; the
+    const-generic module still compiles-not-prints, same witness,
+    narrower reason. One clause, no reader-facing structure moved.
