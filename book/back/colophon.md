@@ -7,17 +7,18 @@ against:
 ```console
 $ wolf --version
 wolf 0.1.0 (wolfgang)
-paired with lupin 0.1.8 (reference interpreter), pin 7886559
+paired with lupin 0.1.13 (reference interpreter), pin c9da6d9
 $ lupin --version
 lupin 0.1.10 (wolf-interp, reference interpreter at pin 613c3dc)
 ```
 
 The two lines name different interpreter releases on purpose. Each tool
 reports the revision of the other that it was differentially tested
-against, and those tests happen one release apart: the interpreter here is
-0.1.9, and the compiler's last differential run was against 0.1.8.
-§1.2 teaches the reader to read the pair that way. This page prints them
-as they are.
+against: the compiler's line is stamped at its own release ritual and
+names the newest interpreter it was differenced against (0.1.13), while
+this book pins the older 0.1.10 — the release whose behaviour every
+lupin-lane sample on these pages is true for. §1.2 teaches the reader
+to read the pair that way. This page prints them as they are.
 
 The exact revisions — the compiler, the interpreter, and the wolf
 grammar vendored from wolf-lsp — are recorded in `wolf-toolchain.toml`
