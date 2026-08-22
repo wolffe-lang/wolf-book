@@ -1184,6 +1184,69 @@ do something about it. (The row previews chapter 6; reading it is
 enough here.)
 </details>
 
+<details>
+<summary>Exercise 5-9 — [§5.5](../ch05.md#5.5)</summary>
+
+**Exercise 5-9** *(extension)* — Add a third shape to the `Draw`
+example, and then make `render` count its calls: what has to change,
+and what — pleasantly — does not?
+
+Solution — the third impl is three lines, and that is the point:
+
+```wolf,run(exit=0)
+trait Draw {
+    fn draw(self) -> str
+}
+struct Dot { x: int }
+struct Ring { r: int }
+struct Star { points: int }
+impl Draw for Dot { fn draw(self) -> str { "dot at {self.x}" } }
+impl Draw for Ring { fn draw(self) -> str { "ring of {self.r}" } }
+impl Draw for Star { fn draw(self) -> str { "star of {self.points}" } }
+fn render(o: dyn Draw) -> str { o.draw() }
+fn main() -> !int {
+    let d = Dot { x: 3 }
+    let r = Ring { r: 9 }
+    let s = Star { points: 5 }
+    var calls = 0
+    print(render(d as dyn Draw))
+    calls = calls + 1
+    print(render(r as dyn Draw))
+    calls = calls + 1
+    print(render(s as dyn Draw))
+    calls = calls + 1
+    print("{calls} renders")
+    0
+}
+```
+
+What changed: one struct, one impl, one binding, one call. What did
+not: `render`. That is erasure earning its keep — the function that
+takes `dyn Draw` never learns how many implementors exist. The counter
+lives at the call sites, because `render` has nowhere to keep state:
+it borrows its argument and owns nothing — the same ownership honesty
+Part 2 makes precise.
+</details>
+
+<details>
+<summary>Exercise 5-10 — [§5.5](../ch05.md#5.5)</summary>
+
+**Exercise 5-10** *(design)* — The cast-a-binding rule exists because
+the dyn pair points at its operand rather than owning it. What would
+the language have to invent for `Dot { x: 3 } as dyn Draw` to be legal,
+and who would pay for it?
+
+Solution — the temporary needs a home that outlives the expression, so
+the language would have to invent one: a hidden allocation (a box the
+reader never wrote), or a compiler-synthesized binding with a lifetime
+the reader never chose. Both are costs paid silently, and wolf's
+temperament is that erasure may change dispatch but never ownership —
+the pair points at your value, in your frame or your region, and the
+`let home = …` the error asks for is the language declining to
+allocate behind your back. The reader pays one visible line; the
+alternative is every reader paying an invisible allocation.
+</details>
+
 ## Chapter 6
 
 <details>
