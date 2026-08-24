@@ -106,9 +106,21 @@ error[E1010]: `keep` still holds a value allocated in region `tmp` when the regi
 
 The checker speaks in allocation, escape, and free — the word
 "lifetime" appears nowhere, because the region *is* the lifetime,
-reified. (lupin currently runs this program to exit 0: its dynamic
-escape check has not landed. The corpus logs the divergence; the
-directive header carries the static expectation.)
+reified. lupin enforces the same rule at run time and blames the read
+rather than the write: the value died with its region, and the fault
+fires where the program finally reaches for it.
+
+```console
+$ lupin ex8-3.lu
+ex8-3.lu: trap(region-fault): `keep.value` reaches into `tmp` (region #1), which was freed wholesale; the value died with the region [mem.region.intra.2] at 249..259; the region was created here at 190..241
+$ echo $?
+3
+```
+
+One rule, two moments: the compiler refuses the program before it
+starts; the interpreter lets it run and faults the exact access that
+needed the freed data. Which line each tool blames is the difference
+between "this could dangle" and "this did."
 
 ## §8.3 — Regions are values
 
