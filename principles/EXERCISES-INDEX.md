@@ -14,16 +14,18 @@ Batches written and **not printed in their chapters**: ch13's 13-1,
 13-6 and 13-8 — all three `par`'s, whose section §13.1 is held while
 the rest of that chapter ships (`book/ch13.md`); ch17's 17-6, whose
 section is held for want of fault injection (TOC.md §Deltas, bs07);
-ch19's nine, ch20's eight and ch21's nine, whose three chapters are
-held whole (`book/ch19.md`, `book/ch20.md`, `book/ch21.md` carry the
-measured reasons); ch23's 23-2, 23-3, 23-4 and 23-7, whose two sections
+ch19's nine and ch20's eight, whose two chapters are
+held whole (`book/ch19.md` and `book/ch20.md` carry the
+measured reasons); ch21's 21-4, 21-7 and 21-8, whose sections §21.3 and
+§21.5 are held while the rest of that chapter ships
+(`book/ch21.md`); ch23's 23-2, 23-3, 23-4 and 23-7, whose two sections
 are held (`book/ch23.md`); ch25's eight, whose chapter is held whole
 (`book/ch25.md`); ch07's 7-5, whose static verdict does not exist on
 either lane (`samples-pending.toml`); and ch05's 5-8, unprinted at bs11
 because its whole subject is the combinator chain, and a stem cannot
 carry a blocker note in a reader's text (TONE.md §Tense discipline).
 All of them stay in the corpus so the day their surface lands the stems
-and the sections arrive together. **214 of the 275 are printed**, and
+and the sections arrive together. **222 of the 275 are printed**, and
 `cargo xtask verify-docs` fails the build if a printed stem has no
 published solution.
 

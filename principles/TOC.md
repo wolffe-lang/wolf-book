@@ -269,11 +269,13 @@ an ecosystem with no build scripts to fear.*
 - Exercises 20-1 ….
 
 ### Chapter 21 — Beating C honestly
-- (held) 21.1 Aliasing — compare safe wolf against hand-`restrict` C on the
+*three sections of five shipped (rp02, the declaration pass); the held
+pair's reasons are in `book/ch21.md`'s HOLD note*
+- 21.1 Aliasing — compare safe wolf against hand-`restrict` C on the
   same kernel.
-- (held) 21.2 Arenas — measure region allocation against malloc discipline.
+- 21.2 Arenas — measure region allocation against malloc discipline.
 - (held) 21.3 Layout — win a traversal benchmark with `Soa[T]` legally.
-- (held) 21.4 Checked arithmetic's bill — see the real post-optimization cost,
+- 21.4 Checked arithmetic's bill — see the real post-optimization cost,
   from CI, dated.
 - (held) 21.5 Where C wins today — read the current losses with tracking
   issues, regenerated each release.
@@ -1087,3 +1089,41 @@ sprint files remain the implementation contracts for everything else.
     to const-generic elaboration** — monomorphization landed; the
     const-generic module still compiles-not-prints, same witness,
     narrower reason. One clause, no reader-facing structure moved.
+- **rp02 (the pin catches the declaration, 2026-08-24):** wolf moves to
+  fc7fdec (the post-M2 wave) and lupin to 0.1.13 (the is16 merge,
+  859a23b); the pairing asymmetry the last two bumps carried is over —
+  both version transcripts name the same pin, and the colophon's
+  asymmetry paragraph is retired. What moved, item by item:
+  - **Chapter 21 ships three sections of five.** The bs08 hold's tier
+    and kernel objections were re-measured and are gone: `wolf build
+    --release` builds and runs the saxpy, arena and overflow kernels,
+    and lupin agrees on every byte. §21.1 (aliasing: restrict's
+    unchecked promise against E1002's checked claim, C twins in the
+    contrast lane), §21.2 (arenas: the 20,000-interaction count against
+    the brace), §21.4 (the bill: the release binary trapping overflow,
+    then the declared CI number quoted from bench/ritual-ledger.jsonl
+    with provenance — geomean 1.080, HOLDS, third consecutive nightly,
+    wolf-lang#89 — with both spent exceptions told as part of the
+    story). §21.3 stays held (typebuild still has no surface spelling;
+    re-verified, same E0201) and §21.5 stays held on the missing `wolf
+    bench` (re-verified, byte-identical refusal); chapter 20's
+    consequence ordering (write 20 before the loss table) now scopes to
+    §21.5 alone. Exercises 21-1, 21-2, 21-3, 21-5, 21-6 and 21-9 print;
+    21-9 is reworded for the edition (the falsifiability question now
+    asks about the declared C gate the page prints). ch19 and ch20
+    re-audited by command and held, transcripts refreshed in place.
+  - **Chapter 8's two-windows sample is re-spelled at the bump.** The
+    compiler now follows region provenance through aggregates (E1010
+    catches a container-borne escape from an open scratch region) and
+    lupin's is16 faults freed-region reads dynamically — the two
+    machines moved together, and §8.6's sample now moves its value out
+    by assignment before the push. The oldest ch08 ledger row (escape
+    checking was static-only) closes; exercise 8-3's solution gains the
+    dynamic-twin transcript.
+  - **The wolf-run sweep: one graduation, nine holds.** Chapter 5's
+    default-body fence graduates to the lupin lane (0.1.13 dispatches
+    defaults through the implementing type). The nine surviving
+    wolf-run sites hold with fresh dated reasons: the primitive-impl
+    qualified call does not resolve interpreted, comptime is the
+    compiler's engine by design (ch18 ×3, ch22), and the interpreter
+    has no filesystem by design (ch30 fence and its three exercises).
