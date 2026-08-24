@@ -1,7 +1,9 @@
 //! check: run(exit=0, stdout="12 20")
 //! phase: run
-// Exercise 21-2: saxpy — the aliasing chapter's kernel. Semantics run
-// today; the measurement rig is s44's.
+// Exercise 21-2: saxpy — the aliasing chapter's kernel, mode-spelled
+// so both machines accept it (re-harvested at the rp02 pin: lupin
+// tolerates a bare `xs.push`, wolf requires the call-site `(mut …)` —
+// the divergence is in ch21's ledger).
 fn saxpy(a: f64, xs: List[f64], mut ys: List[f64]) {
     var i = 0
     while i < xs.len {
@@ -11,14 +13,14 @@ fn saxpy(a: f64, xs: List[f64], mut ys: List[f64]) {
 }
 fn main() -> !int {
     var xs = List[f64]()
-    xs.push(1.0)
-    xs.push(2.0)
-    xs.push(3.0)
-    xs.push(4.0)
-    xs.push(5.0)
+    (mut xs).push(1.0)
+    (mut xs).push(2.0)
+    (mut xs).push(3.0)
+    (mut xs).push(4.0)
+    (mut xs).push(5.0)
     var ys = List[f64]()
     var i = 0
-    while i < 5 { ys.push(10.0); i += 1 }
+    while i < 5 { (mut ys).push(10.0); i += 1 }
     saxpy(2.0, xs, mut ys)
     print("{ys[0]} {ys[4]}")
     0

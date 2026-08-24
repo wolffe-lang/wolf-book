@@ -15,86 +15,77 @@
 # lane added the deterministic scheduler; the package manager (chapters
 # 22, 23 and 24 are written on it), the idiom arbiter's eleven
 # convention lints, argv and env, and the release tier arrived with the
-# c09 wave.
+# c09 wave. Native concurrency landed with c09 too: `scope`/`s.spawn`/
+# `channel`/`select`/`freeze` lower and link. The traits-era pass
+# crossed the dispatch campaigns (static trait dispatch, default
+# bodies, `v as dyn Trait`, primitive impls, explicit application) and
+# moved the stamped pairing line for the first time since 0.1.8.
 #
-# Native concurrency landed with the c09 wave: `scope`/`s.spawn`/
-# `channel`/`select`/`freeze` lower and link, which is what Part 5's
-# parallel grep and the solo are built on. The mid-end landed with it,
-# and with it the fix for the select-arm dominance ICE (wolf-lang#64)
-# that held this pin at a deliberate deviation for two sprints.
-#
-# This bump (the traits-era pass) crosses the dispatch campaigns: c22
-# lands static trait dispatch (an impl method lowers like an inherent
-# one; a default body instantiates with Self bound and dispatches back
-# through the overriding impl), `call.ind` gives the tiers an indirect
-# call, and s98 completes D47 — `v as dyn Trait` from a place, the pair
-# borrowing what it points at, E0810 naming the temporary that has no
-# home. Around them: explicit generic application (`first[str](…)` is a
-# spelling for the same instantiation — wolf-lang#111), imported enums
-# consumed whole across module boundaries (#23), impls on primitive
-# types (#119, D49's substrate), and the pairing line derived from a
-# stamped file (#87 closed — the version transcript below moves for the
-# first time since 0.1.8).
+# This bump (the declaration pass) crosses the post-M2 wave. M2 itself
+# was declared at this sha's history (wolf-lang#89): the suite geomean
+# against naive `clang -O3` is 1.080, the primary gate HOLDS on its
+# third consecutive nightly (bench/ritual-ledger.jsonl, 2026-08-24T03:39Z,
+# commit 2ff4dd1), with the two documented exceptions spent — b3_churn
+# (checked adds on input-derived values, X3's renounced win) and
+# word_count (boundary-computing iteration vs a boundary-free scan).
+# Around the declaration: fmt2's suffix family (#74), s106's net
+# crossing (the s39 arm falls; timeout and spawn-accept lower), and
+# s105 — regions and closures are values, capture sets recorded,
+# prov_holy_grail runs, and the mem tier follows region provenance
+# through aggregates.
 #
 # What the bump changes for the book, measured at this sha:
-#   * The catalog grows four codes (E0810, E0811, E0812, E1510); the
-#     anchors grow the dyn ABI clause family. Vendored spec artifacts
-#     re-vendored; the grammar is byte-identical (the `as dyn` surface
-#     rides the existing cast form and the D28 type form).
-#   * `wolf --version` prints the stamped pairing line — the colophon
-#     moves, and its prose drops the rot story wolf-lang#87 carried.
-#   * Chapter 5's "no traits yet" clause (§5.3) becomes false at this
-#     sha and is superseded by the new trait section, which this bump's
-#     content commits add. Exercise 5-3's explicit call is now a
-#     compiler fact as well as an interpreter one.
-#
-# The pairing asymmetry, restated: lupin stays at 0.1.10 (the release
-# whose behaviour the lupin-lane samples are true for); the compiler's
-# stamped line names 0.1.13, the newest interpreter it was differenced
-# against. A book-side lupin bump is its own deliberate pass — the
-# trait-era sections use the wolf-run lane where 0.1.10 predates the
-# surface, the ch18 comptime precedent.
+#   * The catalog is unchanged (154 codes); the anchors grow one clause
+#     family entry ([abi.native.closure]); the grammar is byte-identical.
+#     Vendored spec artifacts re-vendored for the anchor line alone.
+#   * The escape checker follows provenance through aggregates: a
+#     container write from inside an open scratch region is E1010 even
+#     when the write aims at an outer container. Chapter 8 §8.6's
+#     two-windows sample is re-spelled at this bump (the value leaves by
+#     assignment; the push happens after the brace), and lupin's is16
+#     fault (below) is the same rule's dynamic half — the two machines
+#     moved together.
+#   * `wolf build --release` compiles and links shipped kernels — the
+#     saxpy shape (`ys[i] = …` through a `mut` receiver) builds and runs
+#     on both tiers, which is what opens ch21 §21.1–§21.2. `wolf bench`
+#     still answers `not yet` (ch20 holds; §21.5 holds with it).
+#     Contract attributes still parse and verify nothing (ch19 holds).
 #
 # This sha is the newest non-bot commit on trunk; the parent project's
 # gauntlet and bench-gates runs are green on it, which is what the gate
 # asks for.
 repo = "wolffe-lang/wolf-lang"
-rev = "7296812c0425bf4fe6f489e76aa8bd50b6eefe4b"
+rev = "fc7fdecbe30180296009c1666902ac816d7e9370"
 impl_version = "0.1.0"
 
 [lupin]
-# wolf-interp at the v0.1.10 tag: runs programs, reports traps,
-# evaluates REPL snippets, and is the implementation that executes
-# Part 3 — the scheduler, the seeded decision stream, and the schedule
-# explorer are all its. 0.1.6 brought the E11xx parity rejections that
-# chapter 13 is written on; 0.1.7 pushed literals' int adoption, one
-# admission ladder for `explore` and `run`, and ten idiom lints; 0.1.8
-# landed the D39 write barrier (a write through a read-mode binding
-# traps exclusivity) and the D40 loop-extent claim (mutation during
-# iteration traps at the mutation).
-# 0.1.9 is the conc-parity release, and it is the half of this bump the
-# book cares about most: the two machines now both run wolf's
-# concurrency and are compared on it — ten of ten conc entries agreeing
-# on verdict, exit status and output bytes, seeded on both sides, with
-# the thirteenth differential running 241 entries at zero divergences.
-# Part 3's chapters were written when only one implementation could
-# execute their programs; they are now differentially checked like the
-# rest of the book.
-# It is also the release pairing: the interpreter names the compiler sha
-# it was differentially tested against, and the compiler names it back.
-# 0.1.10 names the same compiler sha this file pins above, so the book,
-# the compiler and the interpreter all describe one toolchain. It also
-# closed the differential's biggest blind spot: the flagless comparison
-# lane had been reaching `run` on none of the corpus, so the dynamic
-# half was ledgered as uncompared; both machines now execute the corpus
-# at all three tiers, and the release tier changed nothing observable.
-# The rev is the annotated tag object (commit `c11c5ed`), matching the
-# convention this file has used since 0.1.5. The tag's own CI run is
-# green, and the whole book suite is green on it: the only movement at
-# the bump is the two transcripts that print the version.
+# wolf-interp at the is16 merge on trunk: the stamped version line names
+# lupin 0.1.13, and the pairing asymmetry the last two bumps restated is
+# over — the compiler's line names 0.1.13 at pin c9da6d9, and the
+# interpreter's line names the same pin back. The book, the compiler and
+# the interpreter describe one toolchain again, and the two version
+# transcripts (colophon, §1.2) move accordingly.
+#
+# What the releases since 0.1.10 carry, as the book meets them:
+# containers know their home (is16) — a read that reaches into a freed
+# region is trap(region-fault) citing [mem.region.intra.2], which is
+# E1010's dynamic meaning and closes the oldest divergence chapter 8's
+# ledger recorded (the escape rule was static-only; it is not any more —
+# exercise 8-3's program now traps at the read on both machines' terms).
+# Default bodies dispatch through the implementing type, so chapter 5's
+# default-body fence graduates from the compiler-only lane to the lupin
+# lane. Primitive impls still do not resolve (`Text.text(n)` on an int
+# answers `unsupported`), comptime stays the compiler's engine by
+# design, and the machine still has no filesystem by design — the
+# remaining `wolf-run` fences hold on those three reasons, re-verified
+# at this rev.
+#
+# The rev is the trunk merge commit, not an annotated tag: the pinning
+# target is the is16 close, and the stamped pairing line above is the
+# release identity the transcripts print.
 repo = "wolffe-lang/wolf-interp"
-rev = "11650e6786a2898751087b7daba0eb495cd5847a"
-version = "lupin 0.1.10 (wolf-interp, reference interpreter at pin 613c3dc)"
+rev = "859a23b930968a566d957e6b9cf136889227a7cd"
+version = "lupin 0.1.13 (wolf-interp, reference interpreter at pin c9da6d9)"
 
 [wolf-lsp]
 # Source of the vendored tmLanguage grammars under highlight/.

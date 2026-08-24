@@ -128,3 +128,33 @@ name = "no words at all: an empty tree walks to nothing"
 stdin = "\n"
 exit = 0
 stdout = ""
+
+# ---------------------------------------------------------------- saxpy
+# chapter 21's aliasing kernel, both spellings (original, not after K&R)
+
+[[case]]
+file = "saxpy_restrict.c"
+name = "saxpy with restrict: five elements against a=2"
+exit = 0
+stdout = """
+12 20
+"""
+
+[[case]]
+file = "saxpy.c"
+name = "saxpy without restrict: same inputs, same answer"
+exit = 0
+stdout = """
+12 20
+"""
+
+# ---------------------------------------------------------- arena_nodes
+# chapter 21's malloc-discipline twin (original)
+
+[[case]]
+file = "arena_nodes.c"
+name = "ten thousand nodes, retail allocation and retail free"
+exit = 0
+stdout = """
+29994
+"""

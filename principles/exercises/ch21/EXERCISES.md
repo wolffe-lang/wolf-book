@@ -56,8 +56,10 @@ $ lupin ex21-2.lu
 
 2·1 + 10 and 2·5 + 10, printed the way a whole-valued `f64` prints —
 shortest round-trip, so `12` rather than `12.0`. The kernel is
-deliberately the same one as 21-1: what runs here is the semantics; what s44 measures later is
-this exact shape against `clang -O2` with and without `restrict`.
+deliberately the same one as 21-1: what runs here is the semantics, on
+both machines and on the compiler's release tier alike. The suite
+§21.4 cites gates this same shape against naive `clang -O3`; the
+numbers on the page stay CI's.
 
 ## §21.2 — Arenas
 
@@ -116,10 +118,10 @@ $ echo $?
 ```
 
 Every one of those two million additions carried the check that made
-the last one honest. What the check *costs* after optimization —
-branch prediction eats most of it; the compiler hoists some of the
-rest — is a measured number with a date on it, from s44's CI, and the
-book prints it from there rather than asserting it here.
+the last one honest. What the check *costs* after optimization is a
+measured number with a date on it, and §21.4 prints it from CI's own
+ledger — the checked-adds exception in the suite's gate is that cost
+made explicit — rather than asserting it here.
 
 **Exercise 21-6** *(spelunking · lupin)* — From exercise 21-5's trap
 line alone: name the decision id it cites, the clause tag it enforces,
@@ -177,18 +179,21 @@ behind on vectorizable sizes, the gap widening with stride complexity.
 If the measured result disagrees, the *exercise* is finding out why;
 this corpus keeps the header and CI keeps the appointment.
 
-**Exercise 21-9** *(comprehension · prose)* — "Faster than Rust is a
-falsifiable CI gate" is a sentence with a specific engineering
-content. Name the three artifacts that must exist for the claim to be
-falsifiable rather than promotional, and which chapters of this book
-introduced each.
+**Exercise 21-9** *(comprehension · prose)* — "Beats naive C, and the
+claim is a falsifiable CI gate" is a sentence with a specific
+engineering content. Name the three artifacts that must exist for the
+claim to be falsifiable rather than promotional, and for each say
+whether this edition already prints it.
 
-Solution: a pinned, public benchmark suite — the kernels and their
-harness (this chapter and s44's suite); a variance discipline that can
-call a delta noise — median, MAD, symmetric gate (chapter 20); and a
-dated, regenerated record wired to CI so the claim expires when the
-world changes — the colophon's toolchain pin and §21.5's
-regenerated-each-release tables (chapter 20's metadata rule, this
-chapter's practice). Remove any one and the sentence degrades to
-advertising: no suite and it is unmeasured, no variance gate and it is
-cherry-picked, no date and it is folklore.
+Solution: a pinned, public benchmark suite — the kernels, their C
+twins, and the gate that reads them (this edition prints its verdict
+line in §21.4, with the repository path and the date); a variance
+discipline that can call a delta noise — medians, mean absolute
+deviation, a symmetric gate (the instrument that would put that
+discipline in your hands is chapter 20's subject, and this edition
+does not carry chapter 20); and a dated, regenerated record wired to
+CI so the claim expires when the world changes — the colophon's
+toolchain pin and the ledger line §21.4 quotes, which names its
+commit and its night. Remove any one and the sentence degrades to
+advertising: no suite and it is unmeasured, no variance gate and it
+is cherry-picked, no date and it is folklore.

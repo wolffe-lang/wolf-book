@@ -1,0 +1,8 @@
+error[E1002]: `xs` is lent for this call while `xs` goes `mut` in it
+  --> ./s2.lu:14:16
+   |
+14 |     saxpy(2.0, xs, mut xs)
+   |                ^^ read of a place being mutated
+   |                        -- `xs` is passed `mut` here
+   |
+   = note: the same place twice is never disjoint.

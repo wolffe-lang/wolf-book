@@ -3,6 +3,8 @@
 // Exercise 22-7: the comptime registry that replaces `init()`. Four
 // handlers, one folded table, one witness that fails the build if the
 // table is not four names long.
+// wolf-run lane, re-verified at the rp02 pin (2026-08-24, lupin 0.1.13):
+// lupin declines `comptime fn` by design (exit 4). Holds.
 struct Ingest  { rows: int }
 struct Report  { rows: int }
 struct Purge   { rows: int }

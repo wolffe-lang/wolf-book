@@ -1,9 +1,9 @@
 //! check: wolf-run(exit=0, stdout="A-B--A--A-B")
 //! phase: run
 // Exercise 18-11: an L-system expanded at compile time.
-// PENDING: no lane executes a comptime fold's result — comptime-fn
-// lowering is refused natively and lupin declines `comptime fn`.
-// Owner: c05-codegen / wolf-interp std subset.
+// wolf-run lane, re-verified at the rp02 pin (2026-08-24): the compiler
+// executes the fold natively; lupin still declines `comptime fn` by design
+// (exit 4). Holds.
 comptime fn expand(axiom: str, steps: int) -> str {
     var cur = axiom
     var step = 0

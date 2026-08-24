@@ -2212,9 +2212,21 @@ error[E1010]: `keep` still holds a value allocated in region `tmp` when the regi
 
 The checker speaks in allocation, escape, and free — the word
 "lifetime" appears nowhere, because the region *is* the lifetime,
-reified. (lupin currently runs this program to exit 0: its dynamic
-escape check has not landed. The corpus logs the divergence; the
-directive header carries the static expectation.)
+reified. lupin enforces the same rule at run time and blames the read
+rather than the write: the value died with its region, and the fault
+fires where the program finally reaches for it.
+
+```console
+$ lupin ex8-3.lu
+ex8-3.lu: trap(region-fault): `keep.value` reaches into `tmp` (region #1), which was freed wholesale; the value died with the region [mem.region.intra.2] at 249..259; the region was created here at 190..241
+$ echo $?
+3
+```
+
+One rule, two moments: the compiler refuses the program before it
+starts; the interpreter lets it run and faults the exact access that
+needed the freed data. Which line each tool blames is the difference
+between "this could dangle" and "this did."
 </details>
 
 <details>
@@ -5897,6 +5909,157 @@ bearing wall of the caching, reproducibility, and audit stories, and
 the package manifest is where the need is threaded instead of through
 the evaluator. The distinction to hold onto: *what* is read can be
 data; *that* it was read must be declaration.
+</details>
+
+## Chapter 21
+
+<details>
+<summary>Exercise 21-1 — [§21.1](../ch21.md#21.1)</summary>
+
+**Exercise 21-1** *(comprehension · prose)* — Here is saxpy in C:
+
+```c
+void saxpy(double a, const double *xs, double *ys, size_t n) {
+    for (size_t i = 0; i < n; i++) ys[i] = a * xs[i] + ys[i];
+}
+```
+
+Without `restrict`, name the specific possibility the C compiler must
+plan for, and the optimization it therefore hesitates on. Then state
+what a wolf compiler knows about `saxpy(a, xs, mut ys)` from the
+signature alone, and who did the work of establishing it.
+
+Solution: the C compiler must assume `xs` and `ys` may overlap — a
+store through `ys[i]` could change some later `xs[j]`, so reordering
+and vectorizing the loads requires either a runtime overlap check or
+giving up the transform. `restrict` is the programmer *promising*
+disjointness, unchecked: get it wrong and the program is undefined. In
+wolf, `mut ys` is an exclusive claim and `xs` a shared read — chapter
+7's rule — so disjointness is a fact the type system already proved at
+every call site. Same fact, different laborer: C trusts the
+programmer's word; wolf makes the caller demonstrate it, once, at
+compile time.
+</details>
+
+<details>
+<summary>Exercise 21-2 — [§21.1](../ch21.md#21.1)</summary>
+
+**Exercise 21-2** *(fingers · lupin)* — Type the wolf saxpy and run
+it: five elements, `a = 2.0`, `ys` all tens. Predict both printed
+values first.
+
+Solution — `ch21/ex21-2.lu`:
+
+```wolf
+fn saxpy(a: f64, xs: List[f64], mut ys: List[f64]) {
+    var i = 0
+    while i < xs.len {
+        ys[i] = a * xs[i] + ys[i]
+        i += 1
+    }
+}
+```
+
+```console
+$ lupin ex21-2.lu
+12 20
+```
+
+2·1 + 10 and 2·5 + 10, printed the way a whole-valued `f64` prints —
+shortest round-trip, so `12` rather than `12.0`. The kernel is
+deliberately the same one as 21-1: what runs here is the semantics, on
+both machines and on the compiler's release tier alike. The suite
+§21.4 cites gates this same shape against naive `clang -O3`; the
+numbers on the page stay CI's.
+</details>
+
+<details>
+<summary>Exercise 21-3 — [§21.2](../ch21.md#21.2)</summary>
+
+**Exercise 21-3** *(comprehension · prose)* — A request handler builds
+a parse tree of 10,000 nodes, reads it, and discards it. Count the
+allocator interactions — calls into allocate and free machinery — for
+(a) malloc discipline with individual `free`, (b) malloc discipline
+with one arena library, (c) a wolf region. Then name the cost in (c)
+that did *not* disappear and where it went.
+
+Solution: (a) 20,000 — every node allocated and freed retail. (b) on
+the order of a few dozen — the arena grabs slabs and frees them
+wholesale; nodes are pointer bumps, which is the arena's entire trick.
+(c) matches (b) at runtime — bump allocation, one wholesale free at
+region end — with the checking moved to compile time: the guarantee
+that no node pointer outlives the region is the region checker's
+proof, not a code review's hope. What did not disappear: the proof
+obligation. C's arena has the same lifetime rule and enforces it with
+discipline; wolf's region has it as a type fact. The allocator math is
+identical — chapter 8 said so — and the difference is who catches the
+escapee.
+</details>
+
+<details>
+<summary>Exercise 21-5 — [§21.4](../ch21.md#21.4)</summary>
+
+**Exercise 21-5** *(comprehension · lupin)* — The bill and the payout
+in one program: `sum_to(n)` adds 1,000,000 to an `i32` accumulator `n`
+times. Predict both calls' fates — `sum_to(2000)`, then
+`sum_to(3000)` — with the arithmetic that decides them.
+
+Solution: 2000 × 1,000,000 = 2.0 × 10⁹ fits under `i32`'s
+2,147,483,647 ceiling; 3000 × 1,000,000 crosses it at iteration 2148:
+
+```console
+$ lupin ex21-5.lu
+2000000000
+ex21-5.lu: trap(overflow): `+` produced 2148000000, outside `i32` — checked arithmetic traps in every profile (X3); spell intended overflow `wrapping[i32]` [arith.checked] at 272..286
+$ echo $?
+3
+```
+
+Every one of those two million additions carried the check that made
+the last one honest. What the check *costs* after optimization is a
+measured number with a date on it, and §21.4 prints it from CI's own
+ledger — the checked-adds exception in the suite's gate is that cost
+made explicit — rather than asserting it here.
+</details>
+
+<details>
+<summary>Exercise 21-6 — [§21.4](../ch21.md#21.4)</summary>
+
+**Exercise 21-6** *(spelunking · lupin)* — From exercise 21-5's trap
+line alone: name the decision id it cites, the clause tag it enforces,
+and the documented spelling for the program that *wanted* wraparound.
+Then state, in one sentence, why this trap firing "in every profile"
+is the chapter's honesty rather than the chapter's embarrassment.
+
+Solution: X3 is the decision; `[arith.checked]` the clause;
+`wrapping[i32]` the intended-overflow spelling — all three are in the
+line, which is the point of trap lines. The one sentence: a language
+claiming to beat C while quietly disabling its own safety checks in
+release builds would be rigging the race, and X3 is wolf agreeing to
+be benchmarked with the checks on.
+</details>
+
+<details>
+<summary>Exercise 21-9 — [§21.4](../ch21.md#21.4)</summary>
+
+**Exercise 21-9** *(comprehension · prose)* — "Beats naive C, and the
+claim is a falsifiable CI gate" is a sentence with a specific
+engineering content. Name the three artifacts that must exist for the
+claim to be falsifiable rather than promotional, and for each say
+whether this edition already prints it.
+
+Solution: a pinned, public benchmark suite — the kernels, their C
+twins, and the gate that reads them (this edition prints its verdict
+line in §21.4, with the repository path and the date); a variance
+discipline that can call a delta noise — medians, mean absolute
+deviation, a symmetric gate (the instrument that would put that
+discipline in your hands is chapter 20's subject, and this edition
+does not carry chapter 20); and a dated, regenerated record wired to
+CI so the claim expires when the world changes — the colophon's
+toolchain pin and the ledger line §21.4 quotes, which names its
+commit and its night. Remove any one and the sentence degrades to
+advertising: no suite and it is unmeasured, no variance gate and it
+is cherry-picked, no date and it is folklore.
 </details>
 
 ## Chapter 22
