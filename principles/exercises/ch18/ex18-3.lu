@@ -1,7 +1,10 @@
 //! check: wolf-run(exit=0, stdout="285")
 //! phase: run
 // Exercise 18-3: a table folded at compile time.
-// PENDING: positive comptime evaluation (CTFE engine) — owner s16-ctfe.
+// wolf-run lane, re-verified at the rp02 pin (2026-08-24, lupin 0.1.13):
+// comptime evaluation is the compiler's engine; lupin declines `comptime fn`
+// by design (`unsupported: … the `comptime` namespace is still a reserved
+// forward one`, exit 4). Holds.
 comptime fn sum_squares(n: int) -> int {
     var acc = 0
     var i = 1

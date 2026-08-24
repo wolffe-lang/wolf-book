@@ -1,6 +1,9 @@
 //! check: wolf-run(exit=0)
 //! phase: run
 // Exercise 30-3: the pattern list without `freeze` — it still compiles, and what the four tasks may do with it is what changed.
+// wolf-run lane, re-verified at the rp02 pin (2026-08-24, lupin 0.1.13):
+// the interpreter has no filesystem by design (`fs_write_text` is declined,
+// exit 4). Holds.
 struct Table { lines: List[str], names: List[str], nums: List[int] }
 
 fn main() -> !int {
