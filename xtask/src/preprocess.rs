@@ -132,26 +132,34 @@ fn render_one_fence(grammars: &Grammars, f: &Fence) -> Result<Option<String>> {
         return Ok(None);
     }
     let fi = parse_fence_info(info).with_context(|| format!("bad fence info `{}`", info))?;
-    let (dialect, body) = match fi.lang.as_str() {
-        "wolf" => {
-            let dialect = if fi.part.is_some() { "part" } else { "program" };
-            (dialect, render_code_html(&grammars.wolf, &f.content)?)
-        }
-        "wolfi" => ("program", render_code_html(&grammars.wolfi, &f.content)?),
-        "wolf-pkg" => ("program", render_code_html(&grammars.wolf_pkg, &f.content)?),
-        "wolf-repl" => ("repl", render_output_html("repl", &f.content)),
-        "console" => ("console", render_output_html("console", &f.content)),
-        // A C twin's run (bs10). It reads as a console transcript and it is
-        // a checked claim: `cargo xtask contrast` derives every line of it
-        // from the named case in `samples/contrast/cases.toml`. It renders
-        // as the console dialect, and its `from(…)` never reaches the page.
-        "c-run" => ("console", render_output_html("console", &f.content)),
-        "diagnostic" => ("diagnostic", render_output_html("diagnostic", &f.content)),
-        _ => return Ok(None), // text, mermaid, … — not ours
+    // The taxonomy is dialects.rs's (rp03): one table classes the fence,
+    // names it for the reader, and styles it on both renders. A fence
+    // outside the table (text, ebnf, …) is a figure, not a dialect.
+    let Some((dialect, label)) = crate::dialects::classify(&fi) else {
+        return Ok(None);
+    };
+    let body = match fi.lang.as_str() {
+        "wolf" => render_code_html(&grammars.wolf, &f.content)?,
+        "wolfi" => render_code_html(&grammars.wolfi, &f.content)?,
+        "wolf-pkg" => render_code_html(&grammars.wolf_pkg, &f.content)?,
+        "wolf-repl" => render_output_html("repl", &f.content),
+        // A C twin's run (bs10) reads as a console transcript and is a
+        // checked claim: `cargo xtask contrast` derives every line of it
+        // from the named case in `samples/contrast/cases.toml`. Its
+        // `from(…)` binding never reaches the page — the label says
+        // what it is; the case name is CI's business.
+        "console" | "c-run" => render_output_html("console", &f.content),
+        "diagnostic" => render_output_html("diagnostic", &f.content),
+        // Contrast code (rust, c): escaped verbatim — no wolf grammar
+        // pretends to know another language's tokens.
+        "rust" | "c" => crate::highlight::render_plain_html(&f.content),
+        other => unreachable!("dialects::classify admitted unhandled lang `{other}`"),
     };
     let lang_class = fi.lang.replace('.', "-");
     Ok(Some(format!(
-        "<pre class=\"dialect-{dialect} language-{lang_class}\"><code>{body}</code></pre>\n\n"
+        "<pre class=\"dialect-{} language-{lang_class}\" data-dialect=\"{}\"><code>{body}</code></pre>\n\n",
+        dialect.key,
+        crate::highlight::escape_html(&label)
     )))
 }
 
@@ -258,9 +266,12 @@ mod tests {
         let grammars = load_grammars(&root).unwrap();
         let md = "intro\n\n```wolf,run(exit=0)\nfn main() -> !int { 0 }\n```\n";
         let out = render_fences(&grammars, md).unwrap();
-        assert!(out.contains("<pre class=\"dialect-program language-wolf\">"));
+        assert!(out.contains(
+            "<pre class=\"dialect-program language-wolf\" data-dialect=\"wolf · runs, exit 0\">"
+        ));
         assert!(out.contains("<span class=\"hl-kw\">fn</span>"));
-        // The directive never reaches the reader.
+        // The directive never reaches the reader raw — the label is its
+        // reader-facing spelling.
         assert!(!out.contains("run(exit=0)"));
     }
 
@@ -275,14 +286,38 @@ mod tests {
     }
 
     #[test]
-    fn a_twin_run_renders_as_a_console_and_keeps_its_case_name_off_the_page() {
+    fn a_twin_run_renders_as_its_own_dialect_and_keeps_its_case_name_off_the_page() {
         let root = crate::repo_root().unwrap();
         let grammars = load_grammars(&root).unwrap();
         let md = "```c-run,from(the alphabetized walk)\n$ ./wordtree\n   3 wolf\n```\n";
         let out = render_fences(&grammars, md).unwrap();
-        assert!(out.contains("dialect-console"));
+        assert!(out.contains("dialect-twin"));
+        assert!(out.contains("data-dialect=\"c · run\""));
         assert!(out.contains("hl-prompt"));
         // The binding to `cases.toml` is CI's business, not the reader's.
         assert!(!out.contains("the alphabetized walk"));
+    }
+
+    #[test]
+    fn contrast_code_renders_labeled_and_escaped() {
+        let root = crate::repo_root().unwrap();
+        let grammars = load_grammars(&root).unwrap();
+        let md = "```rust\npub fn tokens(input: &str) -> Vec<Token<'_>> {}\n```\n";
+        let out = render_fences(&grammars, md).unwrap();
+        assert!(out.contains("dialect-contrast"));
+        assert!(out.contains("data-dialect=\"rust · contrast\""));
+        // Escaped verbatim, no wolf-grammar spans.
+        assert!(out.contains("Vec&lt;Token&lt;'_&gt;&gt;"));
+        assert!(!out.contains("hl-kw"));
+    }
+
+    #[test]
+    fn part_fences_carry_their_name_in_the_label() {
+        let root = crate::repo_root().unwrap();
+        let grammars = load_grammars(&root).unwrap();
+        let md = "```wolf,part(greet)\nfn greet() -> str { \"hi\" }\n```\n";
+        let out = render_fences(&grammars, md).unwrap();
+        assert!(out.contains("dialect-part"));
+        assert!(out.contains("data-dialect=\"wolf · part(greet)\""));
     }
 }

@@ -12,6 +12,7 @@
 mod backmatter;
 mod console;
 mod contrast;
+mod dialects;
 mod directives;
 mod fence;
 mod highlight;

@@ -11,3 +11,29 @@
 .hl-err { color: #a12622; font-weight: 700; }
 .hl-warn { color: #7a4a12; font-weight: 700; }
 .hl-prompt { color: #6e6e6e; }
+
+/* The dialect frame (rp03): label + left accent + ground tint,
+   generated from the taxonomy in xtask/src/dialects.rs — the
+   same table the typst PDF blocks come from. */
+pre[data-dialect]::before {
+    content: attr(data-dialect);
+    display: block;
+    font-family: var(--mono, monospace);
+    font-size: 0.75em;
+    letter-spacing: 0.06em;
+    margin: 0 0 0.65em 0;
+}
+pre.dialect-program { background-color: #faf8f4; border-inline-start: 3px solid #1a4f8a; }
+pre.dialect-program::before { color: #1a4f8a; }
+pre.dialect-part { background-color: #faf8f4; border-inline-start: 3px dashed #1a4f8a; }
+pre.dialect-part::before { color: #1a4f8a; }
+pre.dialect-repl { background-color: #f4f7f4; border-inline-start: 3px solid #355e3b; }
+pre.dialect-repl::before { color: #355e3b; }
+pre.dialect-console { background-color: #f2f2f0; border-inline-start: 3px solid #3c3c3c; }
+pre.dialect-console::before { color: #3c3c3c; }
+pre.dialect-twin { background-color: #f2f2f0; border-inline-start: 3px dashed #3c3c3c; }
+pre.dialect-twin::before { color: #3c3c3c; }
+pre.dialect-diagnostic { background-color: #fdf7f5; border-inline-start: 3px solid #a12622; }
+pre.dialect-diagnostic::before { color: #a12622; }
+pre.dialect-contrast { background-color: #faf5ec; border-inline-start: 3px solid #7a4a12; }
+pre.dialect-contrast::before { color: #7a4a12; }
