@@ -4,6 +4,14 @@ The book sets code in seven dialects. Programs are complete and executed
 by CI; the blocks below are the pipeline's smoke test as much as the
 reader's legend.
 
+Every dialect wears its name. A code block carries a small label at its
+top edge, set in the block's accent over its own left rule and ground
+tint — read the label and you know who is speaking before you read a
+line of the code. The label also repeats what CI holds the block to:
+`wolf · runs, exit 0` says the program under it is executed on every
+commit and exits as printed, and `wolf · part(greet)` names the slice
+the extractor stitches.
+
 A *program* block is a complete `.lu` file, run as shown:
 
 ```wolf,run(exit=0, stdout="hello, wolf")
