@@ -25,7 +25,8 @@ pub fn run(root: &Path, args: &[String]) -> Result<()> {
         "all" => {
             render_web(root)?;
             render_md(root)?;
-            render_pdf(root, require_pdf)
+            render_pdf(root, require_pdf)?;
+            check_dialect_markers(root)
         }
         other => bail!("unknown render target `{other}` (web|md|pdf|all)"),
     }
@@ -239,6 +240,9 @@ fn typst_preamble() -> String {
   breakable: true,
 )[#set text(font: "Source Code Pro", size: 8.8pt); #set par(justify: false, leading: 0.55em); #body]
 #let epigraph(body) = block(above: 1.2em, below: 1.6em, width: 100%)[#body]
+"##,
+    ) + &crate::dialects::typst_defs()
+        + r##"
 #let partpage(title) = {
   v(2.5in)
   align(center)[#text(size: 20pt, weight: "bold")[#title]]
@@ -247,8 +251,7 @@ fn typst_preamble() -> String {
 #align(center)[#v(2in)#text(size: 28pt, weight: "bold")[The Wolf Book]#v(0.5em)]
 #align(center)[#text(style: "italic")[every sample executed, every diagnostic real]]
 #pagebreak()
-"##,
-    )
+"##
 }
 
 fn typst_escape(s: &str) -> String {
@@ -277,18 +280,36 @@ fn markdown_to_typst(wolf: &Grammar, content: &str) -> Result<String> {
     for seg in segments(content) {
         match seg {
             Segment::Fence(f) => {
-                let info = f.info.trim();
-                let lang = info.split(',').next().unwrap_or("").trim();
-                if matches!(lang, "wolf") {
-                    // Directives are build instructions; strip them here too.
-                    let _ = parse_fence_info(info); // validated in samples
-                    out.push_str(&typst_wolf_block(wolf, &f.content)?);
-                } else {
-                    let _ = writeln!(
-                        out,
-                        "#codeblock[#raw(block: true, {})]",
-                        typst_str(f.content.trim_end_matches('\n'))
-                    );
+                // The same taxonomy the web render classes fences with
+                // (dialects.rs, rp03): the PDF sets each dialect in its
+                // own labeled frame; directives never reach the page —
+                // the label is their reader-facing spelling.
+                let classified = parse_fence_info(f.info.trim())
+                    .ok()
+                    .and_then(|fi| crate::dialects::classify(&fi).map(|(d, l)| (d, l, fi.lang)));
+                match classified {
+                    Some((d, label, lang)) if lang == "wolf" => {
+                        let _ = writeln!(out, "#dialect-{}({})[", d.key, typst_str(&label));
+                        out.push_str(&typst_code_lines(wolf, &f.content)?);
+                        out.push_str("]\n");
+                    }
+                    Some((d, label, _)) => {
+                        let _ = writeln!(
+                            out,
+                            "#dialect-{}({})[#raw(block: true, {})]",
+                            d.key,
+                            typst_str(&label),
+                            typst_str(f.content.trim_end_matches('\n'))
+                        );
+                    }
+                    // Figures (text, ebnf, …) keep the plain ground.
+                    None => {
+                        let _ = writeln!(
+                            out,
+                            "#codeblock[#raw(block: true, {})]",
+                            typst_str(f.content.trim_end_matches('\n'))
+                        );
+                    }
                 }
             }
             Segment::Text(text) => {
@@ -297,6 +318,56 @@ fn markdown_to_typst(wolf: &Grammar, content: &str) -> Result<String> {
         }
     }
     Ok(out)
+}
+
+/// rp03's visual regression guard, run by `render all`: every declared
+/// dialect must appear with its distinct marker on both renders. The
+/// Notation page is the fixture — it demonstrates each dialect — so a
+/// render refactor that collapses the dialects, or a Notation edit that
+/// drops a demonstration, fails the build here.
+fn check_dialect_markers(root: &Path) -> Result<()> {
+    let read = |rel: &str| -> Result<String> {
+        std::fs::read_to_string(root.join(rel))
+            .with_context(|| format!("dialect guard: reading {rel}"))
+    };
+    let html = read("target/render/web/front/notation.html")?;
+    let css = read("target/render/web/highlight.css")?;
+    let typ = read("target/render/wolf-book.typ")?;
+    let mut failures = Vec::new();
+    for d in crate::dialects::DIALECTS {
+        if !html.contains(&format!("dialect-{}", d.key)) {
+            failures.push(format!(
+                "web: the Notation page demonstrates no `{}` block",
+                d.key
+            ));
+        }
+        if !css.contains(&format!("pre.dialect-{}", d.key)) {
+            failures.push(format!(
+                "web: highlight.css styles no `dialect-{}` class — run `cargo xtask grammar-sync`",
+                d.key
+            ));
+        }
+        if !typ.contains(&format!("#dialect-{}(", d.key)) {
+            failures.push(format!("pdf: the typst source sets no `{}` frame", d.key));
+        }
+    }
+    if !html.contains("data-dialect=\"") {
+        failures.push("web: no fence carries its dialect label (data-dialect)".into());
+    }
+    if !css.contains("content: attr(data-dialect)") {
+        failures.push("web: highlight.css renders no dialect label".into());
+    }
+    if !failures.is_empty() {
+        for f in &failures {
+            eprintln!("render: DIALECT GUARD: {f}");
+        }
+        bail!("dialect guard failed ({} finding(s))", failures.len());
+    }
+    println!(
+        "render: dialect guard — {} dialects marked on web and typst, labels present",
+        crate::dialects::DIALECTS.len()
+    );
+    Ok(())
 }
 
 pub fn strip_html_comments(text: &str) -> String {
@@ -538,10 +609,11 @@ fn typst_escape_inline(s: &str) -> String {
     out
 }
 
-/// A wolf code block, highlighted through the same grammar and the same
-/// palette as the web edition, set in typst.
-fn typst_wolf_block(wolf: &Grammar, code: &str) -> Result<String> {
-    let mut out = String::from("#codeblock[\n");
+/// Wolf code lines, highlighted through the same grammar and the same
+/// palette as the web edition, set in typst — the body of a dialect
+/// frame (the caller supplies the block).
+fn typst_code_lines(wolf: &Grammar, code: &str) -> Result<String> {
+    let mut out = String::new();
     let lines: Vec<&str> = code.lines().collect();
     let tokenized = tokenize(wolf, code)?;
     for (line, tokens) in lines.iter().zip(&tokenized) {
@@ -574,7 +646,6 @@ fn typst_wolf_block(wolf: &Grammar, code: &str) -> Result<String> {
         }
         out.push_str("#linebreak()\n");
     }
-    out.push_str("]\n");
     Ok(out)
 }
 
@@ -665,11 +736,61 @@ mod tests {
     }
 
     #[test]
-    fn typst_wolf_block_colors_keywords() {
+    fn typst_code_lines_color_keywords() {
         let root = crate::repo_root().unwrap();
         let grammars = crate::preprocess::load_grammars(&root).unwrap();
-        let t = typst_wolf_block(&grammars.wolf, "fn main() -> !int { 0 }\n").unwrap();
+        let t = typst_code_lines(&grammars.wolf, "fn main() -> !int { 0 }\n").unwrap();
         assert!(t.contains("weight: \"bold\""));
         assert!(t.contains("#\"fn\"") || t.contains("[#\"fn\"]"));
+    }
+
+    #[test]
+    fn every_dialect_sets_its_own_typst_frame() {
+        let root = crate::repo_root().unwrap();
+        let grammars = crate::preprocess::load_grammars(&root).unwrap();
+        let md = concat!(
+            "```wolf,run(exit=0)\nfn main() -> !int { 0 }\n```\n\n",
+            "```wolf,part(greet)\nfn greet() -> str { \"hi\" }\n```\n\n",
+            "```wolf-repl\nwolf> 1\n1 : i64\n```\n\n",
+            "```console\n$ lupin hello.lu\nhello\n```\n\n",
+            "```c-run,from(a case)\n$ ./twin\nout\n```\n\n",
+            "```diagnostic,from(ch03/s1)\nerror[E1001]: moved\n```\n\n",
+            "```rust\npub fn t() {}\n```\n\n",
+            "```text\na figure\n```\n"
+        );
+        let t = markdown_to_typst(&grammars.wolf, md).unwrap();
+        for key in [
+            "program",
+            "part",
+            "repl",
+            "console",
+            "twin",
+            "diagnostic",
+            "contrast",
+        ] {
+            assert!(
+                t.contains(&format!("#dialect-{key}(")),
+                "missing {key}: {t}"
+            );
+        }
+        // Labels surface the reader-facing metadata; from() stays off.
+        assert!(t.contains("\"wolf · runs, exit 0\""));
+        assert!(t.contains("\"wolf · part(greet)\""));
+        assert!(!t.contains("a case"));
+        // Figures keep the plain ground.
+        assert!(t.contains("#codeblock[#raw(block: true, \"a figure\")]"));
+        // And the preamble defines every frame the pages call.
+        let pre = typst_preamble();
+        for key in [
+            "program",
+            "part",
+            "repl",
+            "console",
+            "twin",
+            "diagnostic",
+            "contrast",
+        ] {
+            assert!(pre.contains(&format!("#let dialect-{key}(")), "{key}");
+        }
     }
 }

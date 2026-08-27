@@ -50,8 +50,10 @@ else.
 
 ## 2. Code blocks and the single-source highlight contract
 
-- **Presentation:** a very light warm gray ground (`#faf8f4` class),
-  no border, slight inset, same measure as prose. Monospace stack:
+- **Presentation:** a very light ground tint per dialect (the program
+  blocks' `#faf8f4` warm gray is the base), no border beyond the
+  dialect's left accent rule, slight inset, same measure as prose.
+  Monospace stack:
 
   ```css
   font-family: "Source Code Pro", ui-monospace, "Cascadia Mono",
@@ -60,10 +62,23 @@ else.
 
   Source Code Pro is self-hosted (OFL) so web and PDF set code
   identically; the tail exists for readers who block fonts.
-- **Dialects:** the five block kinds from TOC.md's notation section
-  (program, part, REPL transcript, console run, diagnostic) are visually
-  distinguishable — transcripts keep their prompts, console runs keep
-  their `$`, diagnostics keep the compiler's exact text and layout.
+- **Dialects (rp03):** the seven block kinds the Notation page declares
+  (program, part, REPL transcript, console run, twin run, diagnostic,
+  contrast) are visually distinct at a glance. Each block wears a small
+  label at its top edge naming its dialect and what CI holds it to
+  ("wolf · runs, exit 0") — the accessible channel, text rather than
+  hue — plus a left accent rule whose *style* also varies (solid vs
+  dashed, the shape channel that survives monochrome) and a faint
+  ground tint (warm for the book's own code, cool for the tools').
+  The taxonomy lives in ONE table, `xtask/src/dialects.rs`: the web
+  fence classes, the generated `theme/highlight.css` rules, and the
+  typst PDF frames all derive from it, and `render all`'s dialect
+  guard fails the build if either render drops a dialect's marker.
+  Every label ink holds at least a 6.8:1 contrast ratio on its tint;
+  body ink exceeds 15:1 on every tint. Content-level signals stay:
+  transcripts keep their prompts, console runs keep their `$`,
+  diagnostics keep the compiler's exact text and layout. `from(…)`
+  bindings are CI's business and never reach the page.
 - **Syntax highlighting is defined once.** One highlight definition for
   wolf and one small CSS file, shared by every page and every output
   format. The seed is wolf-lsp's generated grammar: `cargo xtask

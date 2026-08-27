@@ -123,16 +123,10 @@ pre > code {
     display: block;
 }
 
-/* The five dialects are visually distinguishable (DESIGN.md §2):
-   transcripts and console runs keep their prompts (content-level),
-   diagnostics keep the compiler's exact layout. The classes mark the
-   kind for print and for subtle presentation differences. */
-pre.dialect-repl, pre.dialect-console {
-    background-color: #f6f6f6;
-}
-pre.dialect-diagnostic {
-    background-color: #fdf7f7;
-}
+/* The seven dialects are visually distinguishable (DESIGN.md §2):
+   label + left accent + ground tint. The rules live in the GENERATED
+   highlight.css, derived from the one taxonomy table in
+   xtask/src/dialects.rs — never hand-kept here (rp03). */
 
 /* ---- Tables: bookish rules, no zebra ---- */
 

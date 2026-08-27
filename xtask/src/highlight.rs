@@ -111,10 +111,22 @@ pub fn class_for_scope(scope: &str) -> Option<&'static str> {
         .map(|(_, class)| *class)
 }
 
-fn escape_html(s: &str) -> String {
+pub fn escape_html(s: &str) -> String {
     s.replace('&', "&amp;")
         .replace('<', "&lt;")
         .replace('>', "&gt;")
+}
+
+/// Escaped, unhighlighted lines — the contrast dialect's body (another
+/// language's code carries no wolf grammar, and the book does not
+/// pretend otherwise).
+pub fn render_plain_html(text: &str) -> String {
+    let mut out = String::new();
+    for line in text.lines() {
+        out.push_str(&escape_html(line));
+        out.push('\n');
+    }
+    out
 }
 
 /// Render wolf-family code to classed spans (no `<pre>` wrapper).
@@ -204,6 +216,7 @@ pub fn generate_css() -> String {
         }
         let _ = writeln!(css, ".{} {{{} }}", s.class, body);
     }
+    css.push_str(&crate::dialects::dialect_css());
     css
 }
 
