@@ -88,7 +88,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §2.3 — exemplar batch (EXERCISES.md §5) | 2-1 | comprehension · lupin REPL | run (lupin REPL) |
 | §2.1 — exemplar batch (EXERCISES.md §5) | 2-2 | fingers · lupin | run (lupin) |
 | §2.3 — exemplar batch (EXERCISES.md §5) | 2-3 | comprehension · lupin | run (lupin) |
-| §2.2 — exemplar batch (EXERCISES.md §5) | 2-4 | extension · lupin | run (lupin) |
+| §2.4 — exemplar batch (EXERCISES.md §5) | 2-4 | extension · lupin | run (lupin) |
 | §2.2 — Multiline and raw | 2-5 | comprehension · lupin REPL | run (lupin REPL) |
 | §2.3 — Bytes, honestly | 2-6 | comprehension · lupin REPL | run (lupin REPL) |
 | §2.4 — Iterating meaning | 2-7 | extension · lupin | run (lupin) |

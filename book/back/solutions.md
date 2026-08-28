@@ -315,7 +315,7 @@ $ echo $?
 </details>
 
 <details>
-<summary>Exercise 2-4 — [§2.2](../ch02.md#2.2)</summary>
+<summary>Exercise 2-4 — [§2.4](../ch02.md#2.4)</summary>
 
 **Exercise 2-4** *(extension · lupin)* — Extend the word counter to also
 report lines and bytes for a `"""` multiline block. Predict which of the
