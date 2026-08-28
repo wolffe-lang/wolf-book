@@ -8,7 +8,7 @@ to be. The day a blocking feature lands, its exercises join the CI run
 their headers already describe; until then this manifest is the honest
 list. No aspirational green.
 
-Note for the compiler track: the whole corpus — 188 directive-headed
+Note for the compiler track: the whole corpus — 189 directive-headed
 `.lu` files under `principles/exercises/`, runnable and pending alike —
 is a seed farm for the toolchain's corpus and fuzz harnesses. The
 pending files are the most valuable seeds: each one encodes an expected

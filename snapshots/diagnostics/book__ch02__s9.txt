@@ -1,0 +1,9 @@
+error[E0110]: a `char` literal holds exactly one Unicode scalar value
+ --> ./s9.lu:5:13
+  |
+5 |     let g = 'e\u{301}'
+  |             ^^^^^^^^^^ the second one starts at byte 2
+  |
+  = note: a `char` is one scalar, not a grapheme: an accented letter typed as base + combining
+    accent is TWO scalars even when it renders as one glyph (spell it precomposed, or keep
+    it in a `str`). For text, use a string literal `"…"`.

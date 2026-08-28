@@ -81,7 +81,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §1.5 — What `run` was doing for you | 1-8 | comprehension · wolf + lupin | run (wolf + lupin) |
 | §1.2 — Two implementations, one language | 1-7 | fingers · wolf + lupin | run (wolf + lupin) |
 
-## ch02 — 8 exercises
+## ch02 — 9 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
@@ -92,6 +92,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §2.2 — Multiline and raw | 2-5 | comprehension · lupin REPL | run (lupin REPL) |
 | §2.3 — Bytes, honestly | 2-6 | comprehension · lupin REPL | run (lupin REPL) |
 | §2.4 — Iterating meaning | 2-7 | extension · lupin | run (lupin) |
+| §2.4 — Iterating meaning | 2-9 | comprehension · wolf | run (wolf) |
 | §2.5 — What the machine does | 2-8 | comprehension · lupin REPL | run (lupin REPL) |
 
 ## ch03 — 8 exercises

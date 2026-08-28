@@ -47,8 +47,9 @@ wolf, without hearing the word "lifetime."*
   escape archaeology.
 - 2.3 Bytes, honestly — predict `"é".len`, slice by byte offset with
   checked ranges, and say why there is no `s[i]`.
-- 2.4 Iterating meaning — walk `words()` and `lines()` and pick the
-  iterator that spells its unit.
+- 2.4 Iterating meaning — walk `words()`, `lines()`, and `chars()` —
+  pick the iterator that spells its unit, and meet `char`, the scalar
+  the character tier is honest about.
 - 2.5 What the machine does — know what a slice costs (two words) and
   what an f-string compiles to.
 - Exercises 2-1 … 2-4.

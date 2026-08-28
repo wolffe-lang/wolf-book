@@ -1,7 +1,7 @@
 # Appendix C — Diagnostics
 
 Every diagnostic the book shows, with the one-line summary the compiler's
-own catalog carries for it. The catalog holds 144 codes; these 47 are the
+own catalog carries for it. The catalog holds 164 codes; these 48 are the
 ones a page in this edition prints. A code is stable: it identifies a
 rule, not a message, and `wolf --explain E1001` prints the whole entry
 for any of them — the summary, the reasoning, and the fix — whether or
@@ -14,6 +14,7 @@ column says `both`, some page shows both readings of it side by side.
 
 | Code | What it says | Shown by | Sections |
 |------|--------------|----------|----------|
+| `E0110` | a malformed `char` literal | wolf | 2.4 |
 | `E0201` | the parser expected a different token or construct here | both | 1.5, 4.1, 12.4, 14.1 |
 | `E0202` | an opening delimiter is never closed | both | 1.5, Notation |
 | `E0203` | expected a declaration at the top level | wolf | Solutions |

@@ -87,6 +87,41 @@ false immediately and `out` is returned as the empty string it started
 as. A loop whose bounds are honest handles its degenerate input by
 arithmetic, not by an `if` bolted on the front.
 
+**Exercise 2-9** *(comprehension · wolf)* — Predict all six numbers
+before running: for each of `"wolf"`, `"é"`, and `"e\u{301}"`, both
+`.len` and `.chars().len`. Then the pointed half: which of the six
+could §2.3 have told you, and which one needed this section?
+
+Solution — `ch02/wolfrun/ex2-9.lu` (wolf lane, isolated in a
+subdirectory so the interpreter-lane siblings keep their one-main
+module; the interpreter at this printing's pin does not read `char`
+yet, and §2.4
+says so on the page):
+
+```wolf
+fn main() -> !int {
+    print("{"wolf".len} {"wolf".chars().len}")
+    print("{"é".len} {"é".chars().len}")
+    print("{"e\u{301}".len} {"e\u{301}".chars().len}")
+    0
+}
+```
+
+```console
+$ wolf run ex2-9.lu
+4 4
+2 1
+3 2
+```
+
+Five of the six are §2.3 material: `.len` counts bytes (4, 2, 3), and
+ASCII is the case where every scalar is one byte, so `"wolf"` counts 4
+either way and `"é"`'s two bytes are one scalar. The number that needed
+this section is the last: `"e\u{301}".chars().len` is 2 — a combining
+accent is its own scalar, so the glyph a reader sees as one letter is
+two chars in a three-byte string. Bytes count storage, chars count
+scalars, and neither counts what the reader sees.
+
 ## §2.5 — What the machine does
 
 **Exercise 2-8** *(comprehension · lupin REPL)* — `s` is
