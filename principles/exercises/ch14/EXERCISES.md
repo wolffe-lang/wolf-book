@@ -70,7 +70,7 @@ fn build_then_crash() -> !int {
     let r = region()
     let n = in r {
         var xs = List[int]()
-        for i in 0..100 { xs.push(i) }
+        for i in 0..100 { (mut xs).push(i) }
         xs.len
     }
     Boom
