@@ -17,8 +17,8 @@ visible, and what synchronization made that true?
         let r = region()
         let xs = in r {
             var v = List[int]()
-            v.push(41)
-            v.push(1)
+            (mut v).push(41)
+            (mut v).push(1)
             v
         }
         ch.send(move r)
@@ -112,7 +112,7 @@ exist while both tasks read it?
 ```wolf
     let table = freeze region {
         var xs = List[int]()
-        for i in 0..10 { xs.push(i * i) }
+        for i in 0..10 { (mut xs).push(i * i) }
         xs
     }
     scope s {
