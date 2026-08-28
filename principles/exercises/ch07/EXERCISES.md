@@ -427,10 +427,10 @@ fn lcs_len(a: List[str], b: List[str]) -> int {
         var row = List[int]()
         var j = 0
         while j <= b.len {
-            row.push(0)
+            (mut row).push(0)
             j += 1
         }
-        table.push(row)
+        (mut table).push(row)
         i += 1
     }
     i = 1

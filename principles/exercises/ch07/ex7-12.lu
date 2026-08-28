@@ -8,10 +8,10 @@ fn lcs_len(a: List[str], b: List[str]) -> int {
         var row = List[int]()
         var j = 0
         while j <= b.len {
-            row.push(0)
+            (mut row).push(0)
             j += 1
         }
-        table.push(row)
+        (mut table).push(row)
         i += 1
     }
     i = 1
@@ -33,12 +33,12 @@ fn lcs_len(a: List[str], b: List[str]) -> int {
 }
 fn main() -> !int {
     var old = List[str]()
-    old.push("the wolf runs")
-    old.push("the moon watches")
-    old.push("the elk listens")
+    (mut old).push("the wolf runs")
+    (mut old).push("the moon watches")
+    (mut old).push("the elk listens")
     var new = List[str]()
-    new.push("the wolf runs")
-    new.push("the elk listens")
+    (mut new).push("the wolf runs")
+    (mut new).push("the elk listens")
     print("{lcs_len(old, new)}")
     0
 }
