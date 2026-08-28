@@ -3,7 +3,7 @@
 // Appendix B, exercise B-3: bounds.
 fn main() -> !int {
     var xs = List[int]()
-    xs.push(1)
+    (mut xs).push(1)
     print("{xs[1]}")
     0
 }
