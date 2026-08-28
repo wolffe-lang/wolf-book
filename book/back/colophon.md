@@ -7,9 +7,9 @@ against:
 ```console
 $ wolf --version
 wolf 0.1.0 (wolfgang)
-paired with lupin 0.1.13 (reference interpreter), pin c9da6d9
+paired with lupin 0.1.14 (reference interpreter), pin 90c90df
 $ lupin --version
-lupin 0.1.13 (wolf-interp, reference interpreter at pin c9da6d9)
+lupin 0.1.14 (wolf-interp, reference interpreter at pin 90c90df)
 ```
 
 The two lines agree, and the agreement is the point. Each tool reports

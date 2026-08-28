@@ -21,77 +21,79 @@
 # bodies, `v as dyn Trait`, primitive impls, explicit application) and
 # moved the stamped pairing line for the first time since 0.1.8.
 #
-# This bump (the declaration pass) crosses the post-M2 wave. M2 itself
-# was declared at this sha's history (wolf-lang#89): the suite geomean
-# against naive `clang -O3` is 1.080, the primary gate HOLDS on its
-# third consecutive nightly (bench/ritual-ledger.jsonl, 2026-08-24T03:39Z,
-# commit 2ff4dd1), with the two documented exceptions spent — b3_churn
-# (checked adds on input-derived values, X3's renounced win) and
-# word_count (boundary-computing iteration vs a boundary-free scan).
-# Around the declaration: fmt2's suffix family (#74), s106's net
-# crossing (the s39 arm falls; timeout and spawn-accept lower), and
-# s105 — regions and closures are values, capture sets recorded,
-# prov_holy_grail runs, and the mem tier follows region provenance
-# through aggregates.
+# This bump (bs13) crosses the s116–s121 wave, 17 days after the last
+# one, and it is the first bump the ledger gate supervises: bs12 triaged
+# all 169 audit rows at the previous pin, so every surviving row is
+# re-measured against this one. The wave's headline for the book is
+# s121/D58: `char` is a Unicode scalar value — not a byte, not a
+# grapheme, not an integer — with `'…'` literals (E0110 refuses the
+# malformed shapes at the lexer), total `char as int`, a trapping
+# `int as char`, and `chars() -> List[char]`. Chapter 2 teaches it at
+# this bump, and the byte-scan workaround prose it obsoletes retires.
 #
 # What the bump changes for the book, measured at this sha:
-#   * The catalog is unchanged (154 codes); the anchors grow one clause
-#     family entry ([abi.native.closure]); the grammar is byte-identical.
-#     Vendored spec artifacts re-vendored for the anchor line alone.
-#   * The escape checker follows provenance through aggregates: a
-#     container write from inside an open scratch region is E1010 even
-#     when the write aims at an outer container. Chapter 8 §8.6's
-#     two-windows sample is re-spelled at this bump (the value leaves by
-#     assignment; the push happens after the brace), and lupin's is16
-#     fault (below) is the same rule's dynamic half — the two machines
-#     moved together.
-#   * `wolf build --release` compiles and links shipped kernels — the
-#     saxpy shape (`ys[i] = …` through a `mut` receiver) builds and runs
-#     on both tiers, which is what opens ch21 §21.1–§21.2. `wolf bench`
-#     still answers `not yet` (ch20 holds; §21.5 holds with it).
-#     Contract attributes still parse and verify nothing (ch19 holds).
+#   * The catalog grows 154 -> 164: E0110 (malformed char literal),
+#     E0414 (main's signature), E0609 (nested error rows), and the
+#     E1601–E1607 constant-time family. The anchors grow 344 -> 393
+#     ([type.char.*], [gram.lex.char], [mem.str.chars], the ct.* and
+#     os.random/os.signal families, among others). The grammar gains
+#     CHAR_LIT; Appendix A regenerates.
+#   * `wolf --version`'s pairing line names lupin 0.1.14 at pin 90c90df,
+#     and lupin 0.1.14 names the same pin back — the pairing the two
+#     transcripts print is symmetric again (both transcripts move).
+#   * 43 samples flipped at this bump, all classified, residue empty:
+#     41 are lupin 0.1.14's receiver-mode enforcement (X1's call-site
+#     mode, dynamic since is17-era work — bare `xs.push(…)` is now
+#     `trap(exclusivity)` under lupin exactly where wolf has said E0804
+#     all along; the book re-spells every Part-1 receiver `(mut xs)`),
+#     and 2 are the version transcripts above. One of the 41 wore a
+#     disguise: ch16's ex16-1 trapped inside a spawned task, the send
+#     never happened, and the `else` on `recv()` swallowed the fault
+#     into a bare exit 1.
 #
 # This sha is the newest non-bot commit on trunk; the parent project's
 # gauntlet and bench-gates runs are green on it, which is what the gate
 # asks for.
 repo = "wolffe-lang/wolf-lang"
-rev = "fc7fdecbe30180296009c1666902ac816d7e9370"
+rev = "a900b8c8540246ff69aaee424ba412d06bc6b340"
 impl_version = "0.1.0"
 
 [lupin]
-# wolf-interp at the is16 merge on trunk: the stamped version line names
-# lupin 0.1.13, and the pairing asymmetry the last two bumps restated is
-# over — the compiler's line names 0.1.13 at pin c9da6d9, and the
-# interpreter's line names the same pin back. The book, the compiler and
-# the interpreter describe one toolchain again, and the two version
-# transcripts (colophon, §1.2) move accordingly.
+# wolf-interp at the v0.1.14 release tag (the is14–is25 catch-up,
+# released at pin 90c90df): the stamped line names lupin 0.1.14 at pin
+# 90c90df, the compiler's pairing line at this book's [wolf] rev names
+# the same release and pin back, and the two version transcripts
+# (colophon, §1.2) move accordingly. The book's [wolf] rev sits four
+# merges past 90c90df on the same trunk; the stamped pairing pin is the
+# release identity, not this book's sample pin, and the transcripts
+# print it as the tools do.
 #
-# What the releases since 0.1.10 carry, as the book meets them:
-# containers know their home (is16) — a read that reaches into a freed
-# region is trap(region-fault) citing [mem.region.intra.2], which is
-# E1010's dynamic meaning and closes the oldest divergence chapter 8's
-# ledger recorded (the escape rule was static-only; it is not any more —
-# exercise 8-3's program now traps at the read on both machines' terms).
-# Default bodies dispatch through the implementing type, so chapter 5's
-# default-body fence graduates from the compiler-only lane to the lupin
-# lane. Primitive impls still do not resolve (`Text.text(n)` on an int
-# answers `unsupported`), comptime stays the compiler's engine by
-# design, and the machine still has no filesystem by design — the
-# remaining `wolf-run` fences hold on those three reasons, re-verified
-# at this rev.
-#
-# The rev is the trunk merge commit, not an annotated tag: the pinning
-# target is the is16 close, and the stamped pairing line above is the
-# release identity the transcripts print.
+# What 0.1.14 carries, as the book meets it: receiver-mode enforcement —
+# X1's call-site mode is now dynamic, so bare `xs.push(…)` is
+# trap(exclusivity) naming E0804's spelling, which closes ch21's oldest
+# divergence row (lupin ran what wolf refused) and re-spells 41 samples
+# in this repo. Deterministic scheduling, the REPL line editor (is25),
+# and the D57 version-suffix discipline (an off-tag build says
+# +dev.<commit>; this rev IS the tag, so the transcripts stay clean).
+# NOT yet in this machine: `char` — a `'…'` literal is E0101 ("`'`
+# begins no token") and `chars()` answers `unsupported` by name, so
+# chapter 2's char sections run on the compiler lane with an honest
+# per-machine note until the wolf-interp char sprint (is26) lands.
 repo = "wolffe-lang/wolf-interp"
-rev = "859a23b930968a566d957e6b9cf136889227a7cd"
-version = "lupin 0.1.13 (wolf-interp, reference interpreter at pin c9da6d9)"
+rev = "a3591de454ef5262872f86640e7b1457431d46d6"
+version = "lupin 0.1.14 (wolf-interp, reference interpreter at pin 90c90df)"
 
 [wolf-lsp]
 # Source of the vendored tmLanguage grammars under highlight/.
 # `cargo xtask grammar-sync --check` fails on drift against this pin.
+# Bumped with the bs13 pin move: the grammar at this rev carries the
+# full operator set and the numeric-type keywords (the old pin knew
+# `Self|bool|int|str` and a fraction of the operators). It does NOT yet
+# know `char` or the `'…'` literal — s121 postdates it — so char code
+# highlights as plain text until wolf-lsp regenerates its grammar; a
+# rendering gap, not a truth gap, and it rides the next wolf-lsp bump.
 repo = "wolffe-lang/wolf-lsp"
-rev = "dc05c271b683d1c8b544ab5fae74e66a4a034af7"
+rev = "2b89cfbd0071aa9aa26d18b0483334743faeb29e"
 
 [wolf-repl]
 # REPL transcript replay is pending(is08): wolf-repl blocks are counted
