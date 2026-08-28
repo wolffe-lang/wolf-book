@@ -4,9 +4,9 @@
 // that will change is the loop that builds `sq`.
 fn main() -> !int {
     var xs = List[int]()
-    for i in 1..=9 { xs.push(i) }
+    for i in 1..=9 { (mut xs).push(i) }
     var sq = List[int]()
-    for x in xs { sq.push(x * x) }
+    for x in xs { (mut sq).push(x * x) }
     var sum = 0
     for v in sq { sum += v }
     print("{sum}")

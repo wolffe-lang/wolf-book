@@ -6,7 +6,7 @@
 // it lands.
 fn main() -> !int {
     var xs = List[int]()
-    for i in 1..=9 { xs.push(i) }
+    for i in 1..=9 { (mut xs).push(i) }
     let sq = xs.par(fn(x) x * x)
     var sum = 0
     for v in sq { sum += v }

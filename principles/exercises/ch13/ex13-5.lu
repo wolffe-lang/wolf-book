@@ -16,7 +16,7 @@ fn grep(text: str, pattern: str) -> List[str] ! {EmptyPattern} {
     if pattern.is_empty() { return EmptyPattern }
     var hits = List[str]()
     for line in text.lines() {
-        if contains(line, pattern) { hits.push(line) }
+        if contains(line, pattern) { (mut hits).push(line) }
     }
     hits
 }

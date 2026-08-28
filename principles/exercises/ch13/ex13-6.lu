@@ -20,7 +20,7 @@ fn main() -> !int {
         the elk drift north
         """
     var lines = List[str]()
-    for line in doc.lines() { lines.push(line) }
+    for line in doc.lines() { (mut lines).push(line) }
     let flags = lines.par(fn(line) contains(line, "wolf"))
     var n = 0
     for f in flags { if f { n += 1 } }

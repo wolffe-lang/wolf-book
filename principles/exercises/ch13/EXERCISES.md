@@ -22,7 +22,7 @@ spelling replaces the squaring loop with one call:
 ```wolf
 fn main() -> !int {
     var xs = List[int]()
-    for i in 1..=9 { xs.push(i) }
+    for i in 1..=9 { (mut xs).push(i) }
     let sq = xs.par(fn(x) x * x)
     var sum = 0
     for v in sq { sum += v }
@@ -70,9 +70,9 @@ Solution — `ch13/ex13-2.lu`:
 ```wolf
 fn main() -> !int {
     var xs = List[int]()
-    for i in 1..=9 { xs.push(i) }
+    for i in 1..=9 { (mut xs).push(i) }
     var sq = List[int]()
-    for x in xs { sq.push(x * x) }
+    for x in xs { (mut sq).push(x * x) }
     var sum = 0
     for v in sq { sum += v }
     print("{sum}")
@@ -223,7 +223,7 @@ fn grep(text: str, pattern: str) -> List[str] ! {EmptyPattern} {
     if pattern.is_empty() { return EmptyPattern }
     var hits = List[str]()
     for line in text.lines() {
-        if contains(line, pattern) { hits.push(line) }
+        if contains(line, pattern) { (mut hits).push(line) }
     }
     hits
 }
