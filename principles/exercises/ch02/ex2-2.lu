@@ -3,9 +3,9 @@
 // Exercise 2-2 solution: a two-column table via format specs.
 fn main() -> !int {
     var names = List[str]()
-    names.push("wolf")
-    names.push("marmot")
-    names.push("elk")
+    (mut names).push("wolf")
+    (mut names).push("marmot")
+    (mut names).push("elk")
     var i = 0
     for n in names {
         i += 1

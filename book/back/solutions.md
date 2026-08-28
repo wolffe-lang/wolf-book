@@ -2023,10 +2023,10 @@ fn lcs_len(a: List[str], b: List[str]) -> int {
         var row = List[int]()
         var j = 0
         while j <= b.len {
-            row.push(0)
+            (mut row).push(0)
             j += 1
         }
-        table.push(row)
+        (mut table).push(row)
         i += 1
     }
     i = 1
@@ -4169,9 +4169,9 @@ Solution — `ch13/ex13-2.lu`:
 ```wolf
 fn main() -> !int {
     var xs = List[int]()
-    for i in 1..=9 { xs.push(i) }
+    for i in 1..=9 { (mut xs).push(i) }
     var sq = List[int]()
-    for x in xs { sq.push(x * x) }
+    for x in xs { (mut sq).push(x * x) }
     var sum = 0
     for v in sq { sum += v }
     print("{sum}")
@@ -4330,7 +4330,7 @@ fn grep(text: str, pattern: str) -> List[str] ! {EmptyPattern} {
     if pattern.is_empty() { return EmptyPattern }
     var hits = List[str]()
     for line in text.lines() {
-        if contains(line, pattern) { hits.push(line) }
+        if contains(line, pattern) { (mut hits).push(line) }
     }
     hits
 }
@@ -4461,7 +4461,7 @@ fn build_then_crash() -> !int {
     let r = region()
     let n = in r {
         var xs = List[int]()
-        for i in 0..100 { xs.push(i) }
+        for i in 0..100 { (mut xs).push(i) }
         xs.len
     }
     Boom
@@ -4986,8 +4986,8 @@ visible, and what synchronization made that true?
         let r = region()
         let xs = in r {
             var v = List[int]()
-            v.push(41)
-            v.push(1)
+            (mut v).push(41)
+            (mut v).push(1)
             v
         }
         ch.send(move r)
@@ -5091,7 +5091,7 @@ exist while both tasks read it?
 ```wolf
     let table = freeze region {
         var xs = List[int]()
-        for i in 0..10 { xs.push(i * i) }
+        for i in 0..10 { (mut xs).push(i * i) }
         xs
     }
     scope s {
