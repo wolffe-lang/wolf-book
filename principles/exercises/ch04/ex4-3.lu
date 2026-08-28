@@ -1,8 +1,8 @@
 //! check: run(exit=0)
 //! phase: run
 // Exercise 4-3 solution: mutation is visible at both ends.
-fn grow(mut xs: List[int]) { xs.push(7) }
-fn shrink(mut xs: List[int]) { let _ = xs.pop() }
+fn grow(mut xs: List[int]) { (mut xs).push(7) }
+fn shrink(mut xs: List[int]) { let _ = (mut xs).pop() }
 fn main() -> !int {
     var xs = List[int]()
     grow(mut xs)
