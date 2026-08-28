@@ -7,9 +7,9 @@
 #[noalloc]
 fn build() -> List[int] {
     var xs = List[int]()
-    xs.push(1)
-    xs.push(2)
-    xs.push(3)
+    (mut xs).push(1)
+    (mut xs).push(2)
+    (mut xs).push(3)
     xs
 }
 fn main() -> !int {

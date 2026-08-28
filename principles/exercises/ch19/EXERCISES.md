@@ -187,7 +187,7 @@ fn tally_into(mut acc: List[int], base: int) {
 fn main() -> !int {
     var acc = List[int]()
     var i = 0
-    while i < 5 { acc.push(i); i += 1 }
+    while i < 5 { (mut acc).push(i); i += 1 }
     tally_into(mut acc, 3)
     tally_into(mut acc, 4)
     var sum = 0
