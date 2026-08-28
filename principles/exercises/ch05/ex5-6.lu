@@ -22,8 +22,8 @@ fn main() -> !int {
     for line in log.lines() {
         let at = index_of(seen, line)
         if at < 0 {
-            seen.push(line)
-            counts.push(1)
+            (mut seen).push(line)
+            (mut counts).push(1)
         } else {
             counts[at] = counts[at] + 1
         }

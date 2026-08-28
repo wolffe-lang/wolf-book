@@ -3,10 +3,10 @@
 // Exercise 5-1 solution: a List is also a stack.
 fn main() -> !int {
     var xs = List[int]()
-    xs.push(1)
-    xs.push(2)
-    xs.push(3)
-    let top = xs.pop()
+    (mut xs).push(1)
+    (mut xs).push(2)
+    (mut xs).push(3)
+    let top = (mut xs).pop()
     print("top={top} len={xs.len}")
     0
 }

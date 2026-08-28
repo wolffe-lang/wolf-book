@@ -3,7 +3,7 @@
 // Exercise 5-4: the index is out of range. Predict the exact behavior.
 fn main() -> !int {
     var xs = List[int]()
-    xs.push(1)
+    (mut xs).push(1)
     print("{xs[10]}")
     0
 }

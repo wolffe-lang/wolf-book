@@ -7,7 +7,7 @@ fn first[T](xs: List[T], fallback: T) -> T {
 }
 fn main() -> !int {
     var howls = List[str]()
-    howls.push("awoo")
+    (mut howls).push("awoo")
     let empty = List[int]()
     print("{first[str](howls, "silence")} {first(empty, -1)}")
     0

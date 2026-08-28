@@ -6,24 +6,24 @@ fn eval_rpn(tokens: List[str]) -> int ! {Underflow, BadToken} {
     for t in tokens {
         if t == "+" || t == "-" || t == "*" || t == "/" {
             if stack.len < 2 { return Underflow }
-            let b = stack.pop()
-            let a = stack.pop()
-            if t == "+" { stack.push(a + b) } else if t == "-" { stack.push(a - b) } else if t == "*" { stack.push(a * b) } else { stack.push(a / b) }
+            let b = (mut stack).pop()
+            let a = (mut stack).pop()
+            if t == "+" { (mut stack).push(a + b) } else if t == "-" { (mut stack).push(a - b) } else if t == "*" { (mut stack).push(a * b) } else { (mut stack).push(a / b) }
         } else {
             let n = t.to_int() else { return BadToken }
-            stack.push(n)
+            (mut stack).push(n)
         }
     }
     if stack.len != 1 { return Underflow }
-    stack.pop()
+    (mut stack).pop()
 }
 fn main() -> !int {
     var tokens = List[str]()
-    tokens.push("3")
-    tokens.push("4")
-    tokens.push("+")
-    tokens.push("2")
-    tokens.push("*")
+    (mut tokens).push("3")
+    (mut tokens).push("4")
+    (mut tokens).push("+")
+    (mut tokens).push("2")
+    (mut tokens).push("*")
     let v = eval_rpn(tokens) else |_| { return 1 }
     print("{v}")
     0
