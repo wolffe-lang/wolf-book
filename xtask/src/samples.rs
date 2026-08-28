@@ -417,9 +417,32 @@ fn part1_files(root: &Path) -> Result<std::collections::BTreeSet<PathBuf>> {
 /// word. The two are distinguishable only by position — a collision
 /// worth knowing about, since it is also what a human grepping for a
 /// codebase's move surface has to filter by hand.
+///
+/// One deliberate exception (bs13): the write-marked receiver,
+/// `(mut xs).push(…)`. Since the wolf-lang/wolf-interp pin at a900b8c /
+/// lupin 0.1.14, BOTH machines enforce X1's call-site mode on method
+/// receivers — the compiler statically (E0804) and the interpreter with
+/// `trap(exclusivity)` — so a Part-1 program that builds a `List` cannot
+/// be written without it. Part 1 teaches it as "this call writes `xs`"
+/// (§3.1) and defers the why to chapter 7; every other position of
+/// `mut`, and all of `take`/`region`/`shared`, stay out of Part 1.
 fn ownership_annotations(program: &str) -> Vec<&'static str> {
     let bytes = program.as_bytes();
     let is_word = |b: u8| b.is_ascii_alphanumeric() || b == b'_';
+    // `(mut xs).push(…)` / `(mut cents).pop()`: `mut` opening a
+    // parenthesized receiver that is immediately called through. The
+    // declaration-mode `fn f(mut x: int)` also follows a `(`, but its
+    // paren group is never followed by `.`, which is what tells the
+    // two apart here just as it does in the grammar.
+    let is_write_marked_receiver = |at: usize| {
+        if bytes.get(at.wrapping_sub(1)) != Some(&b'(') {
+            return false;
+        }
+        match program[at..].find(')') {
+            Some(rel) => bytes.get(at + rel + 1) == Some(&b'.'),
+            None => false,
+        }
+    };
     let mut hits: Vec<&'static str> = Vec::new();
     for tok in OWNERSHIP_TOKENS {
         let mut from = 0usize;
@@ -433,6 +456,9 @@ fn ownership_annotations(program: &str) -> Vec<&'static str> {
             }
             if before == Some(b'.') {
                 continue; // a method call, not an annotation
+            }
+            if tok == "mut" && is_write_marked_receiver(at) {
+                continue; // the write-marked receiver Part 1 teaches
             }
             hits.push(tok);
             break;
@@ -535,7 +561,10 @@ fn collect_book(root: &Path) -> Result<BookScan> {
                     lint_failures.push(format!(
                         "{}:{}: Part-1 sample carries the ownership annotation `{tok}` — \
                          Part 1 teaches none of `mut`/`take`/`region`/`shared` (bs02 \
-                         acceptance 4); reshape the sample or move the material",
+                         acceptance 4, narrowed at bs13: the write-marked receiver \
+                         `(mut xs).push(…)` is the one permitted form, because both \
+                         machines enforce it at the pin); reshape the sample or move \
+                         the material",
                         md.display(),
                         f.open_line + 1,
                     ));
@@ -1093,6 +1122,23 @@ mod tests {
     fn ownership_lint_reports_every_token_present() {
         let hits = ownership_annotations("fn f(mut x: int) { take y }\n");
         assert_eq!(hits, vec!["mut", "take"]);
+    }
+
+    #[test]
+    fn ownership_lint_allows_the_write_marked_receiver() {
+        // bs13: `(mut xs).push(…)` is mandatory on both machines at the
+        // pin (wolf E0804 statically, lupin trap(exclusivity) at run
+        // time), so Part 1 carries exactly this form and no other.
+        assert!(ownership_annotations("(mut names).push(\"ada\")\n").is_empty());
+        assert!(ownership_annotations("let last = (mut cents).pop()\n").is_empty());
+        // The declaration mode is still an annotation: its paren group
+        // is not called through.
+        assert_eq!(
+            ownership_annotations("fn grow(mut xs: List[int]) { (mut xs).push(7) }\n"),
+            vec!["mut"]
+        );
+        // A bare parenthesized mode with no receiver call stays caught.
+        assert_eq!(ownership_annotations("f(mut x)\n"), vec!["mut"]);
     }
 
     #[test]
