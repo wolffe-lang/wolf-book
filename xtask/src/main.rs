@@ -8,6 +8,7 @@
 //!   mdbook-preprocess  the mdBook preprocessor protocol (highlight + anchors)
 //!   backmatter         regenerate the generated back matter; --check for CI
 //!   verify-docs        doc-truth checks (counts, pins, TOC↔stub numbering)
+//!   ledger             audit-ledger state; --check gates unfiled open rows
 
 mod backmatter;
 mod console;
@@ -16,6 +17,7 @@ mod dialects;
 mod directives;
 mod fence;
 mod highlight;
+mod ledger;
 mod preprocess;
 mod render;
 mod samples;
@@ -48,6 +50,7 @@ fn dispatch(args: &[String]) -> Result<()> {
         Some("render") => render::run(&repo_root()?, rest),
         Some("mdbook-preprocess") => preprocess::cmd_preprocess(&repo_root()?, rest),
         Some("verify-docs") => verify::run(&repo_root()?),
+        Some("ledger") => ledger::run(&repo_root()?, rest),
         Some("help") | None => {
             print_help();
             Ok(())
@@ -69,7 +72,9 @@ fn print_help() {
          \x20                       from the spec and the corpus; --check fails on drift\n\
          \x20 render [web|md|pdf|all]\n\
          \x20 mdbook-preprocess     (internal) mdBook preprocessor protocol\n\
-         \x20 verify-docs           doc-truth checks"
+         \x20 verify-docs           doc-truth checks\n\
+         \x20 ledger [--check]      audit-ledger state per chapter; --check fails\n\
+         \x20                       on open ba:* rows neither filed nor waived"
     );
 }
 

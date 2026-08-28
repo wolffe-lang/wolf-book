@@ -132,6 +132,15 @@ jobs:
         shell: bash
         working-directory: wolf-book
         run: cargo xtask verify-docs
+      # bs12: the audit-ledger gate. bs01's rule — "closing a chapter PR
+      # requires its ledger emptied into issues or explicitly waived in
+      # review" — is enforced here rather than aspirational: an open
+      # `ba:*` row must cite wolf-lang#N or carry waived(...), and the
+      # per-chapter counts land in the CI log instead of an HTML comment.
+      - name: audit ledger (open rows filed or waived)
+        shell: bash
+        working-directory: wolf-book
+        run: cargo xtask ledger --check
       - name: generated back matter is not stale
         shell: bash
         working-directory: wolf-book
