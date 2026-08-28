@@ -92,6 +92,13 @@ exists to forbid. Specifically:
   are CI's vocabulary and the colophon's, never a section's. The
   reader is told which toolchain version the book is true for
   exactly once, in the colophon.
+- **Decision numbers are apparatus; "CI" is a word.** (ruled
+  2026-08-28, off the bs14 audit) D-numbers and X-numbers reference a
+  register the reader does not have: state the decision's content in
+  the sentence and drop the citation — "wolf has no lifetimes by
+  design", never "per D28". "CI" needs no gloss and is welcome in
+  prose — a senior engineer owns the term; it is the sprint/pin
+  *apparatus* that stays out, not the engineering vocabulary.
 - **Scaffold output is not product output.** The honest-failure rule
   (§1) covers traps and diagnostics — the product's real voice. It
   does not cover `unsupported` refusals or pre-alpha banners, which
