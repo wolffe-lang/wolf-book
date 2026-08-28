@@ -123,8 +123,8 @@ workbench, not a calculator.
 <details>
 <summary>Exercise 1-5 — [§1.3](../ch01.md#1.3)</summary>
 
-**Exercise 1-5** *(fingers + extension · lupin)* — The first program in
-*The C Programming Language* prints a Fahrenheit-to-Celsius table. Write
+**Exercise 1-5** *(fingers + extension · lupin)* — The first table in
+*The C Programming Language* converts Fahrenheit to Celsius. Write
 wolf's: 0 to 120 degrees in steps of 20, one line per row. Then look
 hard at the 20-degree row. Is it right?
 
@@ -218,9 +218,10 @@ the specification, and it is found here rather than in your program.
 <summary>Exercise 1-8 — [§1.5](../ch01.md#1.5)</summary>
 
 **Exercise 1-8** *(comprehension · wolf + lupin)* — Build the greeting,
-then run `wolf build hello.lu` a second time without editing the file.
-Predict what the second build does before you run it, and where it put
-what it kept.
+then run `wolf build hello.lu --verbose` a second time without editing
+the file. A successful build is silent by default; `--verbose` is how
+you watch it work. Predict what the second build does before you run
+it, and where it put what it kept.
 
 Solution:
 
