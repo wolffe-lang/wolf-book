@@ -46,6 +46,21 @@ The book-specific rules:
 - **Every term is italicized once, at its definition, and never again.**
   One term per concept, book-wide: *task*, *proc*, *region*, *scope*,
   *trap*, *row*. Synonym drift is a copyedit defect.
+- **Bold in running prose marks a ratified rule-sentence, nothing
+  else.** (ruled 2026-08-28, off the bs14 audit) A rule-sentence is a
+  one-sentence law of the language a chapter is built around. The
+  ratified set:
+  - *A parameter borrows; a return moves.* (ch04)
+  - *A parameter with no mode is the caller's, for reading, until the
+    call returns.* (ch07)
+  - *An allocation lands in the region that is open around it.* (ch08)
+  - *Safety in wolf is checked per region, not per object.* (ch08)
+  - *A raw pointer `*T` carries no aliasing assumptions.* (ch09)
+  A new one enters by amendment here, never by bolding. Structural
+  bold (exercise labels, run-in headers, "Coming from X") is layout,
+  not emphasis, and stays. The signpost that announces a rule ("the
+  rule is one sentence:") is cut everywhere — the bold IS the
+  signpost.
 - **Comparisons to other languages are ones we would defend to that
   language's designers.** Honest contrast, credited lineage, no strawmen.
 - **No feature is promised before its campaign shipped.** Scope is
