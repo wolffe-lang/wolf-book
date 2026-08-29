@@ -11,16 +11,16 @@ prints it:
 <file>.lu: trap(<kind>): <fault> [<clause>] at <line>:<col>
 ```
 
-The location is the operation that faulted (a 1-based line and a
-1-based column counted in characters), and a trap ends the process with
-exit 3. The status is per-machine and documented, not part of the
-contract: 3 is the interpreter's, a compiled binary ends with its own
-documented 134, and conforming tools compare the *kind*, never the
-number (`[conf.trap.exit]`). A compiled binary's report is two lines,
-the kind and the site: `wolf-trap: <kind>`, then
-`  at <file>:<line>:<col>` (`[conf.trap.report]`). A REPL session's
-trap line keeps entry-relative byte offsets instead: a session has no
-stable line numbering, and the prompt owns its own coordinate. A trap is not undefined behavior and not a
+The location is the operation that faulted (a 1-based line and a 1-based
+column counted in characters), and a trap ends the process with exit 3.
+The status is per-machine and documented, not part of the contract: 3 is
+the interpreter's, a compiled binary ends with its own documented 134, and
+conforming tools compare the *kind*, never the number
+(`[conf.trap.exit]`). A compiled binary's report is two lines, the kind
+and the site: `wolf-trap: <kind>`, then ` at <file>:<line>:<col>`
+(`[conf.trap.report]`). A REPL session's trap line keeps entry-relative
+byte offsets instead: a session has no stable line numbering, and the
+prompt owns its own coordinate. A trap is not undefined behavior and not a
 crash: the fault is named, the rule is cited, and the same program faults
 the same way in every build profile.
 
