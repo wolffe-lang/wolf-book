@@ -24,7 +24,7 @@ fn main() -> !int {
 
 ```console
 $ lupin ex3-6.lu
-ex3-6.lu: trap(overflow): `*` produced 2147488281, outside `i32` — checked arithmetic traps in every profile (X3); spell intended overflow `wrapping[i32]` [arith.checked] at 160..165
+ex3-6.lu: trap(overflow): `*` produced 2147488281, outside `i32` — checked arithmetic traps in every profile (X3); spell intended overflow `wrapping[i32]` [arith.checked] at 6:13
 $ echo $?
 3
 ```

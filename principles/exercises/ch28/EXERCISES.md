@@ -99,7 +99,7 @@ leaf the walk reaches, before anything is printed at all.
 
 ```console
 $ lupin ex28-4.lu
-ex28-4.lu: trap(bounds): index 0 is outside a collection of 0 element(s) [mem.ub.defined] at 708..717
+ex28-4.lu: trap(bounds): index 0 is outside a collection of 0 element(s) [mem.ub.defined] at 29:10
 $ echo $?
 3
 ```

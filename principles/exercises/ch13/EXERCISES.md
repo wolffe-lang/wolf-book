@@ -143,7 +143,7 @@ The interpreter refuses the same program, and says it once:
 
 ```console
 $ lupin ex13-3.lu
-ex13-3.lu: E1101: this task writes to `hits`, which it captures from the enclosing function: unsynchronized mutable capture across tasks (D14 — copy, share `imm`, or `move`; a `sync` type mediates shared writes) [conc.task.spawn] at 318..322
+ex13-3.lu: E1101: this task writes to `hits`, which it captures from the enclosing function: unsynchronized mutable capture across tasks (D14 — copy, share `imm`, or `move`; a `sync` type mediates shared writes) [conc.task.spawn] at 9:24
 $ echo $?
 2
 ```

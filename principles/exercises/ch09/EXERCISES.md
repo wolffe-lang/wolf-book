@@ -74,7 +74,7 @@ Solution — the report, in full:
 
 ```console
 $ lupin ex9-3.lu
-ex9-3.lu: ub(mem.ub) §7/P3: write of 1 byte(s) at alloc#0[8], which holds 8 [mem.ub] at 350..358; tag created at 297..308
+ex9-3.lu: ub(mem.ub) §7/P3: write of 1 byte(s) at alloc#0[8], which holds 8 [mem.ub] at 11:9; tag created at 9:17
   licenses O3a: `dereferenceable(n)` on known-size accesses; bounds-based alias disproof between distinct allocations
   alloc#0 `c.malloc(8)` 8 byte(s), live, owned by region #0
     tag#0 c.malloc(8)#root Active exposed
@@ -108,7 +108,7 @@ Solution: no. The integer survives; the *permission* does not.
 
 ```console
 $ lupin ex9-4.lu
-ex9-4.lu: ub(mem.ub) §7/L2: read through an exposed pointer into alloc#0, which was freed [mem.unsafe.raw.1] at 458..462; tag created at 317..328
+ex9-4.lu: ub(mem.ub) §7/L2: read through an exposed pointer into alloc#0, which was freed [mem.unsafe.raw.1] at 14:17; tag created at 9:17
   licenses O8: escape analysis / stack promotion without conservatively pinning addresses
   alloc#0 `c.malloc(8)` 8 byte(s), FREED, owned by region #0
     tag#0 c.malloc(8)#root Disabled exposed
@@ -142,12 +142,12 @@ let v = p[0]
 
 ```console
 $ lupin ex9-5.lu
-ex9-5.lu: ub(mem.ub) §7/P1: read through tag#0 (c.malloc(8)#root), which is Disabled at alloc#0[0] [mem.prov.state] at 333..337; tag created at 263..274
+ex9-5.lu: ub(mem.ub) §7/P1: read through tag#0 (c.malloc(8)#root), which is Disabled at alloc#0[0] [mem.prov.state] at 11:17; tag created at 8:17
   licenses O1: `mut` params lower to `noalias` + `dereferenceable`; unique-tag stores forward without memory checks
   alloc#0 `c.malloc(8)` 8 byte(s), FREED, owned by region #0
     tag#0 c.malloc(8)#root Disabled exposed
 $ lupin ex9-5.lu
-ex9-5.lu: ub(mem.ub) §7/P1: read through tag#0 (c.malloc(8)#root), which is Disabled at alloc#0[0] [mem.prov.state] at 333..337; tag created at 263..274
+ex9-5.lu: ub(mem.ub) §7/P1: read through tag#0 (c.malloc(8)#root), which is Disabled at alloc#0[0] [mem.prov.state] at 11:17; tag created at 8:17
   licenses O1: `mut` params lower to `noalias` + `dereferenceable`; unique-tag stores forward without memory checks
   alloc#0 `c.malloc(8)` 8 byte(s), FREED, owned by region #0
     tag#0 c.malloc(8)#root Disabled exposed
@@ -179,7 +179,7 @@ written is on the list in its own right:
 
 ```console
 $ lupin ex9-6.lu
-ex9-6.lu: ub(mem.ub) §7/L1: read of alloc#0[0], which nothing has written [mem.ub] at 306..310; tag created at 270..282
+ex9-6.lu: ub(mem.ub) §7/L1: read of alloc#0[0], which nothing has written [mem.ub] at 10:17; tag created at 9:17
   licenses O7: moves lower to memcpy-and-forget; dead-store elimination on moved-from places; no zero-init of locals
   alloc#0 `c.malloc(64)` 64 byte(s), live, owned by region #0
     tag#0 c.malloc(64)#root Active exposed
@@ -210,7 +210,7 @@ $ lupin ex9-7a.lu
 $ echo $?
 0
 $ lupin ex9-7b.lu
-ex9-7b.lu: ub(mem.ub) §7/P6: `borrow region #1 from` a pointer into alloc#0, which is owned by `program` (region #0) — the obligation is that the allocation lies wholly inside the named region's footprint [mem.unsafe.door] at 395..410; tag created at 334..345
+ex9-7b.lu: ub(mem.ub) §7/P6: `borrow region #1 from` a pointer into alloc#0, which is owned by `program` (region #0) — the obligation is that the allocation lies wholly inside the named region's footprint [mem.unsafe.door] at 12:17; tag created at 10:17
   licenses O6: safe-tier code after the door keeps all safe-tier entitlements (O1–O4) — the door is where trust concentrates
   alloc#0 `c.malloc(8)` 8 byte(s), live, owned by region #0
     tag#0 c.malloc(8)#root Active exposed
@@ -276,7 +276,7 @@ Solution:
 
 ```console
 $ lupin ex9-9.lu
-ex9-9.lu: ub(mem.ub) §7/P4: read at alloc#0[0], whose owning region #1 was freed wholesale [mem.prov.region] at 438..442; tag created at 341..352
+ex9-9.lu: ub(mem.ub) §7/P4: read at alloc#0[0], whose owning region #1 was freed wholesale [mem.prov.region] at 14:17; tag created at 10:25
   licenses O3b: one alias-scope domain per region — pointers into distinct regions never alias; O4: regions not open in the current scope yield `invariant.load`
   alloc#0 `c.malloc(8)` 8 byte(s), live, owned by region #1
     tag#0 c.malloc(8)#root Disabled exposed
@@ -386,7 +386,7 @@ q[0] = 2
 
 ```console
 $ lupin ex9-13.lu
-ex9-13.lu: ub(mem.ub) §7/P5: `assume noalias` asserts these ranges are disjoint, and alloc#0[0..1) overlaps alloc#0[0..1) — the assertion is false [mem.unsafe.raw.2] at 337..356; tag created at 292..303
+ex9-13.lu: ub(mem.ub) §7/P5: `assume noalias` asserts these ranges are disjoint, and alloc#0[0..1) overlaps alloc#0[0..1) — the assertion is false [mem.unsafe.raw.2] at 11:9; tag created at 9:17
   licenses O5: the asserted ranges get `noalias` treatment in Tier-3 code — vectorization/reordering as if proven
   alloc#0 `c.malloc(8)` 8 byte(s), live, owned by region #0
     tag#0 c.malloc(8)#root Active exposed
@@ -413,7 +413,7 @@ Solution — `ch09/ex9-14.lu`:
 
 ```console
 $ lupin ex9-14.lu
-ex9-14.lu: ub(mem.ub) §7/P1: read through tag#1 (`borrow … from`), which is Disabled at alloc#0[0] [mem.prov.state] at 478..487; tag created at 423..444
+ex9-14.lu: ub(mem.ub) §7/P1: read through tag#1 (`borrow … from`), which is Disabled at alloc#0[0] [mem.prov.state] at 15:17; tag created at 13:22
   licenses O1: `mut` params lower to `noalias` + `dereferenceable`; unique-tag stores forward without memory checks
   alloc#0 `c.malloc(8)` 8 byte(s), live, owned by region #1
     tag#0 c.malloc(8)#root Active exposed

@@ -8,11 +8,14 @@ A trap line has one shape, and the interpreter is the implementation that
 prints it:
 
 ```text
-<file>.lu: trap(<kind>): <fault> [<clause>] at <lo>..<hi>
+<file>.lu: trap(<kind>): <fault> [<clause>] at <line>:<col>
 ```
 
-The byte range is the span of the operation that faulted, and a trap ends
-the process with exit 3. A trap is not undefined behavior and not a
+The location is the operation that faulted — a 1-based line and a
+1-based column counted in characters — and a trap ends the process with
+exit 3. A REPL session's trap line keeps entry-relative byte offsets
+instead: a session has no stable line numbering, and the prompt owns its
+own coordinate. A trap is not undefined behavior and not a
 crash: the fault is named, the rule is cited, and the same program faults
 the same way in every build profile.
 

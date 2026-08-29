@@ -90,7 +90,7 @@ fn main() -> !int {
 
 ```console
 $ lupin ex16-3.lu
-ex16-3.lu: trap(use-after-move): `r` was moved out and is uninitialized here [mem.tier0.move.2] at 254..255; `r` moved here at 231..237
+ex16-3.lu: trap(use-after-move): `r` was moved out and is uninitialized here [mem.tier0.move.2] at 9:16; `r` moved here at 8:13
 $ echo $?
 3
 ```
