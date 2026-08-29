@@ -3,6 +3,32 @@
 Files: `book/front/how-to-read.md`, `book/front/notation.md`, `book/SUMMARY.md`.
 Line numbers are raw file lines. Prose only; fenced blocks skipped.
 
+## bs16 register rewrite — recomputed header (lane A)
+
+Rewritten against REGISTER.md (R2, R5, R6-adjacent colons, R7, R8's
+restraint unneeded — no maxim closers rowed). Line references below are
+to the bs14 text.
+
+**how-to-read.md:** 598 prose words (was 621); em-dashes 5 → 0 running
+(0.0/1000w, was 8.1). Sass stack flattened to one wry line per audience
+paragraph («at home in part 1 and ambushed in part 2»; «Chapter 9 is
+the one you came for»); «rather than» ×2 (at the ration).
+**notation.md:** 748 prose words (was 747); em-dashes 12 → 0 running
+(0.0/1000w, was 16.1). All three dash-pair-enclosed lists to
+parentheses (R7); «rather than» ×4 → ×2 (kept: the measurement/
+recollection contrast, the tombstone policy — the catalog's count
+missed [101], also retired). One reality-check fix at the current pins:
+the exit-code paragraph's «`3` is a trap» predates the per-machine
+trap-status ruling (interpreter 3, native 134, kind is the contract —
+Appendix B); the sentence now states the interpreter's exit and defers
+the per-machine table to Appendix B.
+**SUMMARY.md:** zero edits. Its charter row (ch05's title) is a human
+call the bs14 catalog itself flagged, and retitling ch05 is outside
+this lane's one permitted ch05 edit — ESCALATED to the packet. The
+title-separator dashes are structural template (no R1 decision is
+ratified for part/appendix titles); noted rows kept with their
+defenses.
+
 ---
 
 ## front/how-to-read.md
@@ -23,6 +49,10 @@ sentence runs to a subordinate pileup.
   none; severity: charter; honesty: each line alone is dry, true, and
   information-bearing — the finding is the stack, not any single sentence;
   suggestion: keep the best one per audience paragraph, flatten the rest.
+  **bs16: fixed (sass budget)** — kept «at home in part 1 and ambushed in
+  part 2» and «Chapter 9 is the one you came for»; «declines to guess on
+  your behalf» deleted (the byte-count sentence carries the claim);
+  «Part 1 is a weekend» → «Part 1 is short work».
 - [53–56] «part 5 builds programs — spending what the earlier parts taught
   and introducing nothing new, which is the point: by the time you reach it
   the language is one you already know, and none of the projects is a
@@ -30,14 +60,18 @@ sentence runs to a subordinate pileup.
   expansion in one sentence); reflexive em-dash where a comma serves;
   severity: tell; suggestion: split after "nothing new." and let "None of
   the projects is a trick" stand as its own sentence.
+  **bs16: fixed-by-R2** — split at «nothing new.»; the «which is the
+  point» announcement goes; the trick sentence stands on its own.
 - [27, 43] «rather than a syntax to learn» / «rather than left to you» —
   "X rather than Y" contrast frame, twice in one short file and recurring
   across the front matter (see notation.md); severity: noted; each instance
   reads fine alone — recorded for the lane-wide pattern count.
+  **bs16: kept (at the ration)** — ×2 is the R5-amendment cap.
 - [29–30] «the two places it is not are worth your attention» — mild
   editorialized significance ("worth your attention" tells the reader to
   care rather than showing why); severity: noted; suggestion: "the two
   places it is not are these:" and let the two places argue for themselves.
+  **bs16: fixed-by-R5** — suggestion adopted; the marker deleted.
 
 ## front/notation.md
 
@@ -62,29 +96,40 @@ often enough to read as a template.
   honesty: each list enumerates real things — the tell is the identical
   rhythm, not the content; suggestion: keep one, recast the others with
   parens or a plain "such as" clause. SYSTEMIC candidate.
+  **bs16: fixed-by-R7** — the ratified rule outbids the bs14 keep-one
+  suggestion (lists never sit between dashes): all three to parentheses;
+  how-to-read's line-8 sibling to a colon.
 - [123–124] «Tool output is pasted from real runs and never edited — no
   elisions, no retyped error messages, no tidied spans.» — rule-of-three
   rhetorical amplification plus reflexive dash; severity: tell; honesty:
   every claim in the triplet is real and CI-checkable; the rhythm, not the
   facts, is the tell; suggestion: "Tool output is pasted from real runs and
   never edited: nothing is elided or retyped."
+  **bs16: fixed-by-R2** — suggestion adopted verbatim.
 - [7–10] «A code block carries a small label at its top edge, set in the
   block's accent over its own left rule and ground tint — read the label and
   you know who is speaking before you read a line of the code.» — reflexive
   em-dash splicing two full sentences; severity: noted; suggestion: full
   stop after "ground tint."
+  **bs16: fixed-by-R2** — suggestion adopted.
 - [66–68] «which is the rule about editing nothing doing its job — the
   compiler had two things to say about that program and the page shows
   both» — dash where a colon serves; severity: noted; suggestion: colon.
+  **bs16: fixed-by-R2** — colon.
 - [144–145] «Exit codes recur often enough to be worth memorizing early —
   these are the ones behind the book's `$ echo $?` lines.» — dash where a
   colon or period serves; severity: noted; suggestion: period, then "These
   are the ones behind…".
+  **bs16: fixed-by-R5 + R2 + reality-check** — «worth memorizing» is the
+  marker family: now the imperative «Memorize the exit codes early;».
+  The trap-exit sentence updates to the per-machine ruling (see header).
 - [57, 139, 153–154] «a measurement rather than a recollection» / «what a
   program *means* rather than what it costs» / «leaves a tombstone rather
   than renumbering its neighbors» — "X rather than Y" contrast frame, three
   more instances (five across ~1,400 front-matter prose words); severity:
   noted; recorded for the lane-wide pattern count.
+  **bs16: fixed (ration)** — notation.md held to ×2 (kept [57], [153–154];
+  [139] and the unrowed [101] retired).
 
 ## book/SUMMARY.md
 
@@ -103,14 +148,21 @@ register except one marketing-flavored promise.
   reads as a knowing allusion to Rust's "fearless" branding, and the chapter
   may cash the claim — flagged for the human call; suggestion: "Collections
   and generics".
+  **bs16: ESCALATED to the packet** — the bs14 flag stands; retitling
+  ch05 (SUMMARY + its H1) is a human call, and the H1 edit sits outside
+  this lane's one permitted ch05 edit.
 - [19] «The escape hatch is a door, not a cliff» — contrast-frame title;
   severity: noted; honesty: affirmative-first "X, not Y" is the acceptable
   direction of the family, and the image is the chapter's actual thesis —
   defensible as is.
+  **bs16: kept-with-defense.**
 - [9, 37] «Strings, honestly» / «Beating C honestly» — the same earnestness
   adverb carrying two titles; severity: noted; suggestion: keep the stronger
   one (ch21's, where honesty names the benchmark discipline) if either must
   yield.
+  **bs16: noted (cross-lane)** — ch21's title is lane B's file and a ch02
+  retitle is a human call the register does not name; recorded for the
+  packet, no edit.
 
 ---
 
