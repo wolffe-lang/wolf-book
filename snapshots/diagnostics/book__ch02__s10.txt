@@ -1,5 +1,5 @@
 error[E0110]: a `char` literal holds exactly one Unicode scalar value
- --> ./s9.lu:5:13
+ --> ./s10.lu:5:13
   |
 5 |     let g = 'e\u{301}'
   |             ^^^^^^^^^^ the second one starts at byte 2
