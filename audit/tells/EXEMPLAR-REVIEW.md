@@ -162,3 +162,127 @@ than" RATIONED ≤2/chapter; any connective multiplying under rewrite
 gets the same cap (R5 extended). 7. Non-blessed bold demotes to
 PLAIN PROSE, not italics (R10 amended). 8. Second exemplar: YES —
 ch05 (R4/R6/R9) precedes the bs16 fan-out.
+
+---
+
+# Second exemplar — ch05 against the register (bs15-ch05)
+
+Ordered by ruling 8: ch05 exercises what ch15 structurally could not —
+R9 above all (nine of the book's ten schedule-narration charter rows),
+R6's dash/relative-clause cross-reference appendages, and the R4
+question (on which see the correction below). Full dispositions in
+ch05.md's catalog; the diff is `git diff trunk..bs15-ch05 --
+book/ch05.md`.
+
+## ch05 before / after
+
+| metric (prose only; fences + ledger stripped) | before | after |
+|---|---|---|
+| prose words | 2503 | 2214 |
+| em-dashes, total | 39 (15.6/1000w) | 1 (0.5/1000w) |
+| em-dashes, running prose | 29 (11.6/1000w) | 0 (0.0/1000w) |
+| em-dashes, exercise-header template | 9 | 0 (R1) |
+| em-dashes, verbatim tool quote in code span | 1 | 1 (untouchable) |
+| schedule-narration charter rows | 9 | 0 (R9) |
+| negation family, rowed | 6 | 3 (all catalog-defended) |
+| reveal mold («was a schedule. It is now a fact») | 1 | 0 |
+| «rather than» | 6 | 2 (the ration) |
+| «honest» motif | 5 | 1 |
+| tell-severity findings | 4 | 0 |
+
+The surviving em-dash is the compiler's own note quoted verbatim in a
+code span (`a temporary has no home — bind it first.`): tool voice,
+CI-adjacent, not prose punctuation. As in ch15, every running dash
+substituted cleanly; none met the survivor bar (the budget amendment
+noted — if a hunk reads overcorrected, name it and the dash returns).
+
+## R9 — the verification protocol and its results
+
+The register's rule is scope-not-schedule, but this lane's brief added
+a step the ch15 exemplar never needed: VERIFY REALITY FIRST, because
+ch05's deferral prose was written when features were absent and the
+toolchain has moved. Every gap was probed at the book's pin (lupin
+0.1.14 at a3591de, wolf at a900b8c, built for this run) before its
+prose was touched:
+
+| deferral taught | probe result at the pin | disposition |
+|---|---|---|
+| `Set` absent ([183], [186-209]) | still absent (`unsupported`, exit 4) | scope statement: «Part 1's std has no set container» |
+| combinators absent ([251]) | still absent (`sorted_by` unsupported) | scope statement: «Part 1's std has one combinator, `count()`» |
+| loop-as-concession ([258]) | (same gate) | pedagogy: «we write the loop, because the loop is what the chain means» |
+| traits «had not landed» ([419-424]) | LANDED — §5.5's trait fences run | history deleted; teaching choice stated in the present |
+| §5.5 «was a schedule. It is now a fact» ([552-554]) | LANDED | opens on the material; heading «Traits: the system lands» → «Traits» |
+| `n.text()` sugar on primitives ([598-600]) | still absent, BOTH machines | scope: «does not reach a primitive receiver» |
+| container-`dyn` ([675-677]) | absent — `List[dyn Draw]` is E0201 on both machines; no D-number = not stateable as scope | sentence deleted; new ledger row |
+| `Eq`/`Ord` operator dispatch ([679-683]) | absent — lupin's struct `==` is structural (an inverting `impl Eq` is never consulted); wolf refuses | cut to the boundary fact; new ledger row |
+
+One healing found where the prose had no deferral left to fix: the
+QUALIFIED `Text.text(n)` on a primitive receiver — the reason the
+§5.5 fence runs on the wolf-run lane — now resolves under lupin 0.1.14
+(prints `int(7)`, exit 0). Recorded in the fence's audit comment;
+graduating the fence to `run()` is fence-authority work (bs16).
+
+Nothing needed the flag-instead-of-fake escape: every still-absent
+feature was honestly stateable as scope, so no passage reverts to
+draft.
+
+## R6 — the worked evidence
+
+- «which is a deliberate economy and §5.3's subject» → its own
+  sentence: «The economy is deliberate, and §5.3 returns to it.»
+- the §3.1 aside in a dash pair → parentheses: «(`(mut cents).push(340)`
+  is §3.1's "this call writes `cents`", in its natural habitat now)».
+- «hand the emptiness back as a value, which is chapter 6» →
+  «(chapter 6's subject)».
+- Woven grammar kept, per the rule: «the linear scan §5.1 will have a
+  word about», «the way §4.4's returns do», «the same definition-site
+  honesty §5.3 taught for generics».
+
+## R4 — a correction to the ordering premise
+
+ch05 hosts NO instance of the ten ratified R4 templates — the
+register's own evidence table places the measurement credo at
+ch02 ≈ ch03, and a grep of ch05 for all ten confirms none lands here.
+What ch05 does host is template-KIN at motif grain, and those were
+rewritten in local words under their own rows: the cost-ledger frame
+(«The cost is real and somebody pays it» → the plain cost statement)
+and the honest-motif tic (×5 → ×1). The consequence for the sprint:
+R4 proper (choosing a survivor, rewriting the echoes) is still
+unexercised by any exemplar, and its first true sites are bs16's
+(ch02/ch03 and the table's other pairs). The survivor list rides as
+ratified; no exemplar evidence contradicts it.
+
+## Open calls for the human
+
+1. **The three refusal fences (§5.1 set.lu, §5.2 chain.lu, §5.4
+   bump.lu).** TONE says scaffold output is never a section's
+   load-bearing sample, and the [186-209] charter row says drop it —
+   but fences are CI-owned and this lane's contract (prose only,
+   byte-identical failure sets) rightly refuses me the authority. The
+   prose around them now states scope without teaching the refusal,
+   which is as far as prose can carry it. bs16 needs a ruling: retire
+   the refusal fences (and re-teach those passages product-first), or
+   defend them as differential-lane evidence.
+2. **The §5.5 heading rename** («Traits: the system lands» →
+   «Traits») leaves principles/exercises/ch05/EXERCISES.md's §5.5
+   header echoing the old name — outside bs15 write scope, same
+   boat as the R1 corpus decision (open call 1 of the first packet);
+   rides into bs16.
+3. **The healed qualified call** (lupin 0.1.14 runs `Text.text(n)` on
+   an `int`): the §5.5 wolf-run fence can graduate to `run()` and its
+   per-machine comment retire. Fence authority = bs16.
+4. **R4 remains exemplar-untested** (see correction above). Either
+   bless the survivor list on its face a second time and let bs16's
+   ch02/ch03 lanes be the proof, or order a third (thin) exemplar on
+   ch02 §measurement-credo before fan-out. Recommendation: the
+   former — the list is already ratified and the rule is mechanical.
+
+## Sample checks
+
+Prose-only diff (no fenced line touched; fence blocks byte-identical
+by extraction diff). The rig ran at the pinned toolchain before and
+after the rewrite: 34 failures both runs, failure sets byte-identical,
+every failure environmental to this aarch64-darwin host (`wolf build`
+targets linux/x86-64 only). ch05 contributes exactly one, its wolf-run
+fence; every ch05 lupin-lane sample passes. CI's linux runners hold
+the real gate and see a prose-only diff.
