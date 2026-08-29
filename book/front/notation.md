@@ -6,7 +6,7 @@ reader's legend.
 
 Every dialect wears its name. A code block carries a small label at its
 top edge, set in the block's accent over its own left rule and ground
-tint — read the label and you know who is speaking before you read a
+tint. Read the label and you know who is speaking before you read a
 line of the code. The label also repeats what CI holds the block to:
 `wolf · runs, exit 0` says the program under it is executed on every
 commit and exits as printed, and `wolf · part(greet)` names the slice
@@ -52,8 +52,8 @@ hello, wolf
 ```
 
 A *twin run* shows a C program from the projects part being run. It sets
-the same way a console run does, and CI derives every line of it — the
-command, the output, the exit status — from that program's declared case,
+the same way a console run does, and CI derives every line of it (the
+command, the output, the exit status) from that program's declared case,
 so it is a measurement rather than a recollection:
 
 ```c-run,from(case is folded, so one word is one node)
@@ -64,7 +64,7 @@ $ ./wordtree
 A *diagnostic* block is the compiler's exact text and layout, never
 retyped; this one is cross-checked against the captured run of corpus
 sample `ch03/ex3-2`. It carries a warning above its error, which is the
-rule about editing nothing doing its job — the compiler had two things
+rule about editing nothing doing its job: the compiler had two things
 to say about that program and the page shows both:
 
 ```diagnostic,from(ch03/ex3-2)
@@ -98,7 +98,7 @@ help: to keep the original, copy it at the move
 ```
 
 A *contrast* block is another language's code, shown where the honest
-comparison needs the program rather than a description of it. It is
+comparison needs the program itself. It is
 vendored under `samples/contrast/`, compiled and run by CI with warnings
 denied, and checked character-for-character against the block on the
 page:
@@ -112,7 +112,7 @@ pub fn tokens(input: &str) -> Vec<Token<'_>> {
 }
 ```
 
-Figures — ownership trees, tables of boxes and arrows — are set in the
+Figures (ownership trees, tables of boxes and arrows) are set in the
 same monospaced ground with no dialect label. They are drawings, not
 code, and nothing runs them.
 
@@ -120,14 +120,14 @@ code, and nothing runs them.
 
 The distinction that matters is who is speaking. Program and part blocks
 are the book's; console runs, transcripts, and diagnostics are the
-tools'. Tool output is pasted from real runs and never edited — no
-elisions, no retyped error messages, no tidied spans. When a diagnostic
+tools'. Tool output is pasted from real runs and never edited: nothing
+is elided or retyped. When a diagnostic
 looks longer than the program that earned it, that is the compiler's
 editorial decision and the book keeps it.
 
 Two programs appear at the prompt, for the reason chapter 1 gives: one
 language, two implementations of it, one of which compiles. A
-`$ wolf …` line is the compiler — `wolf build` produces a binary,
+`$ wolf …` line is the compiler: `wolf build` produces a binary,
 `wolf run` produces one and executes it, and either may refuse the
 program first. A `$ lupin …` line is the reference interpreter running
 the same source without compiling it. Both cite specification clauses
@@ -136,23 +136,25 @@ in square brackets (`[mem.ub.defined]`) and stable error codes
 meet in your own terminal is findable in this book.
 
 Most of the book's runs are the interpreter's, because the book is
-usually asking what a program *means* rather than what it costs, and
-that is the question the reference implementation answers. Where the
-compiler has something of its own to say — a diagnostic, a binary, a
-measurement — it says it under its own prompt.
+usually asking what a program *means*, and that is the question the
+reference implementation answers. Where the compiler has something of
+its own to say (a diagnostic, a binary, a measurement) it says it under
+its own prompt.
 
-Exit codes recur often enough to be worth memorizing early — these are
-the ones behind the book's `$ echo $?` lines. `0` and whatever else
-your `main` returns are the program's own; `1` means `main` handed back
-an error; `2` is a static rejection, so the program never started; `3`
-is a trap, so it started and hit a rule.
+Memorize the exit codes early; they are the ones behind the book's
+`$ echo $?` lines. `0` and whatever else your `main` returns are the
+program's own; `1` means `main` handed back an error; `2` is a static
+rejection, so the program never started; `3` is the interpreter's trap
+exit, so the program started and hit a rule. A compiled binary ends a
+trap with its own documented status, and the kind, never the number, is
+the contract (Appendix B records both).
 
 ## Exercises and solutions
 
 Exercise numbering is K&R style: Exercise 3-2 is the second exercise of
 chapter 3. Numbers are stable; a retired exercise leaves a tombstone
 rather than renumbering its neighbors. Stems end the section whose
-material they exercise, and each carries its kind and its checker —
+material they exercise, and each carries its kind and its checker:
 *(comprehension · lupin)* means predict the outcome, then let the
 interpreter settle it; *(spelunking · wolf)* means read what the compiler
 says and explain it back.
