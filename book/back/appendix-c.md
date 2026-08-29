@@ -63,7 +63,7 @@ column says `both`, some page shows both readings of it side by side.
 | `W1101` | this write stays inside the task | wolf | 13.2 |
 | `W1102` | the closure captured this value before it changed | wolf | Solutions |
 
-Two conventions in that table are worth stating. `E`-numbered codes stop
+Two conventions run through that table. `E`-numbered codes stop
 the build or the run; `W`-numbered codes are advice, and the artifact is
 produced anyway (§27.5 shows a binary built over two warnings). And the
 families are blocked by hundreds: `E02xx` is the parser, `E03xx`

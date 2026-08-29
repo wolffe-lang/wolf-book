@@ -28,3 +28,5 @@ TONE §3.8's convergence test.
   three fields moves to parentheses (the row's own contingency). 0
   running dashes in 1013 prose words; the table's E1503 quoted text is
   CI-owned and untouched.
+- **bs16 (R5, no bs14 row):** the closing paragraph's «worth stating»
+  marker deleted ("Two conventions run through that table.").
