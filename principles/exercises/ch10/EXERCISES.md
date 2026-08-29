@@ -7,12 +7,12 @@ lupin. Seeded runs use `lupin run FILE --seed=N`.
 
 ## §10.1 — The task tree
 
-**Exercise 10-1** *(fingers · lupin)* — Type and run your first scope:
+**Exercise 10-1** *(fingers · lupin)*. Type and run your first scope:
 two children each send a number into a channel, and `main` adds what it
 receives after the scope closes. Then swap the two `spawn` lines and
 run again. What changed?
 
-Solution — `ch10/ex10-1.lu`:
+Solution. `ch10/ex10-1.lu`:
 
 ```wolf
 fn main() -> !int {
@@ -38,7 +38,7 @@ Swapping the spawns changes nothing observable: addition commutes, and
 the scope's exit joins both children before the first `recv` runs, so
 both values are already in the buffer either way.
 
-**Exercise 10-2** *(comprehension · lupin)* — Predict the order of the
+**Exercise 10-2** *(comprehension · lupin)*. Predict the order of the
 two lines, then say what enforces it — the scheduler, or something
 stronger:
 
@@ -69,7 +69,7 @@ The wrong answer worth ruling out: "the child happened to be scheduled
 first." Move the `print` *inside* the scope and the order genuinely is
 the scheduler's to choose; after the brace, it is not.
 
-**Exercise 10-3** *(comprehension · lupin)* — A child's last expression
+**Exercise 10-3** *(comprehension · lupin)*. A child's last expression
 is a value. Predict this program's exit code, and account for the 42:
 
 ```wolf
@@ -93,12 +93,12 @@ $ echo $?
 
 ## §10.2 — The leaked goroutine, retired
 
-**Exercise 10-4** *(extension (break-it-on-purpose) · lupin)* — Port Go's classic
+**Exercise 10-4** *(extension (break-it-on-purpose) · lupin)*. Port Go's classic
 leak: spawn a receiver on a channel that nobody will ever send to. In
 Go the goroutine outlives the function, silently, forever. Write the
 wolf version and predict what happens instead — and at which line.
 
-Solution — `ch10/ex10-4.lu`:
+Solution. `ch10/ex10-4.lu`:
 
 ```wolf
 fn main() -> !int {
@@ -127,7 +127,7 @@ every live task blocked, so the trap fires and names them. The leak is
 not fixed; it is *retired*: this program cannot express "and the task
 lingers on unowned."
 
-**Exercise 10-5** *(spelunking · lupin)* — Read exercise 10-4's trap
+**Exercise 10-5** *(spelunking · lupin)*. Read exercise 10-4's trap
 line clause by clause. What does "no timer is pending" rule out, what
 is the "blocked-task roster" for, and why does the trap name `main`
 itself as blocked?
@@ -145,7 +145,7 @@ tasks are exactly what a deadlock is made of. The clause tag
 
 ## §10.3 — The dropped error, surfaced
 
-**Exercise 10-6** *(comprehension · lupin)* — Three children compute
+**Exercise 10-6** *(comprehension · lupin)*. Three children compute
 through `?`; one of them fails. Predict both printed lines, and name
 the exact point in the source where the error crosses from child to
 parent:
@@ -184,12 +184,12 @@ join surfaced the error
 7
 ```
 
-**Exercise 10-7** *(extension · lupin)* — Change 10-6 so no child
+**Exercise 10-7** *(extension · lupin)*. Change 10-6 so no child
 fails (use 1, 2, and 4), then finish the job: close the channel, drain
 it, and return the sum. Why is it correct to `close` only after the
 scope's closing brace — what has the join already proved by then?
 
-Solution — `ch10/ex10-7.lu`:
+Solution. `ch10/ex10-7.lu`:
 
 ```wolf
 fn gather_all() -> !int {
@@ -217,7 +217,7 @@ converts "I hope they are done" into a fact you may compute with.
 
 ## §10.4 — Cancellation
 
-**Exercise 10-8** *(comprehension · lupin)* — One sibling blocks
+**Exercise 10-8** *(comprehension · lupin)*. One sibling blocks
 forever; the other fails immediately. Predict all the output, and
 answer the pointed part first: does the blocked sibling's `defer` run?
 
@@ -258,14 +258,14 @@ sibling cleanup ran
 
 ## Chapter batch
 
-**Exercise 10-9** *(extension · lupin)* — Build a two-stage pipeline:
+**Exercise 10-9** *(extension · lupin)*. Build a two-stage pipeline:
 a producer sends 1 through 5 into `raw`; a transformer squares each
 into `squared`; `main` counts what arrives. Each stage closes the
 channel it sends on, when its input runs dry. Run it under two seeds.
 Then answer: which task must close `squared`, and what goes wrong if
 `main` tries to?
 
-Solution — `ch10/ex10-9.lu`:
+Solution. `ch10/ex10-9.lu`:
 
 ```wolf
 fn main() -> !int {
@@ -301,7 +301,7 @@ closes and drains. If `main` closed `squared`, it would be guessing;
 close is the sender's verb, and each stage owns exactly one sending
 side. That ownership discipline is the whole pipeline pattern.
 
-**Exercise 10-10** *(design)* — Go has `go f()`; wolf deliberately has
+**Exercise 10-10** *(design)*. Go has `go f()`; wolf deliberately has
 no detached spawn — a task needs a scope, and the scope must close.
 Take the other side seriously: name a real program shape that detached
 spawn serves well, sketch how wolf expresses it, and state what the

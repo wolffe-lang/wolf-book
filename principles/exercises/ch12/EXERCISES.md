@@ -8,12 +8,12 @@ a parse-rung error both implementations report; seeded runs use
 
 ## §12.1 — Typed channels
 
-**Exercise 12-1** *(fingers · lupin)* — A producer sends four squares
+**Exercise 12-1** *(fingers · lupin)*. A producer sends four squares
 and closes; `main` drains with a `for` loop. Type it, run it, then
 delete the `ch.close()` line and predict what the second run does
 before you try it.
 
-Solution — `ch12/ex12-1.lu`:
+Solution. `ch12/ex12-1.lu`:
 
 ```wolf
 fn main() -> !int {
@@ -41,12 +41,12 @@ producer is already gone, and the deadlock trap fires. A `for` over a
 channel is a loop whose termination condition is *someone else's*
 promise — close is how that promise is kept.
 
-**Exercise 12-2** *(extension (break-it-on-purpose) · lupin)* — Using one task and
+**Exercise 12-2** *(extension (break-it-on-purpose) · lupin)*. Using one task and
 one channel of capacity 1, write the shortest program you can whose
 second statement never finishes. Predict the trap kind and the roster
 before running.
 
-Solution — `ch12/ex12-2.lu`:
+Solution. `ch12/ex12-2.lu`:
 
 ```wolf
 fn main() -> !int {
@@ -72,7 +72,7 @@ waiting, and `main` alone closes a cycle of length one.
 
 ## §12.2 — `select` with timeouts
 
-**Exercise 12-3** *(comprehension · lupin)* — Two identical `select`s;
+**Exercise 12-3** *(comprehension · lupin)*. Two identical `select`s;
 between them, one `send`. Predict both printed lines:
 
 ```wolf
@@ -102,7 +102,7 @@ timed out
 got 9
 ```
 
-**Exercise 12-4** *(comprehension + schedule play · lupin)* — Both
+**Exercise 12-4** *(comprehension + schedule play · lupin)*. Both
 channels are ready before the `select` runs. Write down every output
 this program is *allowed* to print, then run it under seed 1 and seed
 2024:
@@ -137,7 +137,7 @@ Each seed replays byte-identically, forever. "Nondeterministic" in
 wolf means the *spec* admits more than one outcome; any single seeded
 run is as reproducible as arithmetic.
 
-**Exercise 12-5** *(spelunking · lupin)* — Run the explorer over 12-4
+**Exercise 12-5** *(spelunking · lupin)*. Run the explorer over 12-4
 and read its report line by line:
 
 ```console
@@ -170,12 +170,12 @@ exercise 12-8 earns it.
 
 ## §12.3 — When channels are the wrong queue
 
-**Exercise 12-6** *(extension · lupin)* — Build a router: one task
+**Exercise 12-6** *(extension · lupin)*. Build a router: one task
 reads an inbox and forwards each value to an `evens` or `odds` sink.
 `main` feeds 1 through 8 and then sums both sinks. Mind the closes:
 who closes what, in what order?
 
-Solution — `ch12/ex12-6.lu`:
+Solution. `ch12/ex12-6.lu`:
 
 ```wolf
 fn main() -> !int {
@@ -213,7 +213,7 @@ router close its two output channels. Each channel is closed by its
 only sender, and the close order is forced by the data flow — trace it
 backward from the sums and every close is where it must be.
 
-**Exercise 12-7** *(design)* — A single task maintains a work list it
+**Exercise 12-7** *(design)*. A single task maintains a work list it
 alone pushes to and pops from. Argue why a `channel` is the wrong type
 for that list even though it would work, and name the two properties a
 channel charges for that this task does not use. When does the answer
@@ -234,7 +234,7 @@ that is true.
 
 ## §12.4 — `when (a, b)`
 
-**Exercise 12-8** *(comprehension · lupin)* — Two tasks acquire the
+**Exercise 12-8** *(comprehension · lupin)*. Two tasks acquire the
 same two mutexes in *opposite* spellings. Predict the total, and
 predict what the explorer says about this program — then check both:
 
@@ -278,12 +278,12 @@ ex12-8.lu: explored 2 schedule(s) in 2 execution(s) (DPOR; 0 slept, 0 pruned), f
 exercise 12-5's program could not earn. Addition commutes; that is
 doing part of the work here, and the stem's real lesson is in 12-9.
 
-**Exercise 12-9** *(extension (break-it-on-purpose) · lupin)* — Now construct the
+**Exercise 12-9** *(extension (break-it-on-purpose) · lupin)*. Now construct the
 classic deadlock `when` was designed to kill: task one takes `a` then
 `b`, task two takes `b` then `a`, nested. Write it and report what
 actually happens — at what phase does this program die?
 
-Solution — `ch12/ex12-9.lu`:
+Solution. `ch12/ex12-9.lu`:
 
 ```wolf
 fn main() -> !int {

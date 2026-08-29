@@ -9,7 +9,7 @@ below is lupin's.
 
 ## §17.1 — The bug that typechecks
 
-**Exercise 17-1** *(comprehension · lupin)* — Two tasks each deposit
+**Exercise 17-1** *(comprehension · lupin)*. Two tasks each deposit
 50 into a balance that starts at 0, through a get-then-set protocol
 with the store loop in `main`. There is no shared mutable capture, no
 `Mutex`, nothing chapter 13 would reject. Predict the balance under
@@ -58,7 +58,7 @@ $ lupin ex17-1.lu
 balance=50
 ```
 
-**Exercise 17-2** *(comprehension (schedule play) · lupin)* — Hunt it: run 17-1 under
+**Exercise 17-2** *(comprehension (schedule play) · lupin)*. Hunt it: run 17-1 under
 seeds 0 through 5. Record each balance. Which seeds produce the
 correct answer, and what had to happen in the schedule for 100 to
 come out?
@@ -109,7 +109,7 @@ than written around here.)
 
 ## §17.2 — The seed, the schedule, and the frontier
 
-**Exercise 17-3** *(fingers · lupin)* — Two sends race into one
+**Exercise 17-3** *(fingers · lupin)*. Two sends race into one
 channel; main prints the arrival order. Run it twice with `--seed=0`,
 once with `--seed=3`, and once with `--schedule=ev:0,0,0`. Before
 running: which pairs of those four runs are guaranteed to match?
@@ -145,7 +145,7 @@ A schedule is a value. Two runs disagree only if their schedules
 disagree, and a schedule you can name is a schedule you can rerun —
 that is the entire mechanism this chapter's debugging story stands on.
 
-**Exercise 17-4** *(comprehension · lupin)* — The explorer prints the
+**Exercise 17-4** *(comprehension · lupin)*. The explorer prints the
 two schedules of 17-3 as decision streams `ev:0,0,0` and `ev:1,0,0`.
 Three decisions, but only the first digit ever differs. What is the
 first decision choosing between — and why are the remaining two
@@ -160,13 +160,13 @@ events; a program's concurrency is measured by how many entries in
 that stream could have gone otherwise, and this program has exactly
 one.
 
-**Exercise 17-5** *(spelunking · lupin)* — Run
+**Exercise 17-5** *(spelunking · lupin)*. Run
 `lupin conform-run ex17-3.lu --explore=64` and read the report back:
 explain `explored 2 schedule(s)`, `DPOR`, `frontier closed`,
 `SCHEDULE-DEPENDENT`, the per-outcome `replay:` seeds, and the process
 exit code.
 
-Solution — the run:
+Solution. The run:
 
 ```console
 $ lupin conform-run ex17-3.lu --explore=64
@@ -201,7 +201,7 @@ its baseline program runs in the corpus, and neither is printed in
 
 **Exercise 17-6** *(comprehension · pending — blocker: `--chaos`
 fault injection at declared effect points; owner:
-s36-deterministic-scheduler)* — `fetch` declares its effect point: a
+s36-deterministic-scheduler)*. `fetch` declares its effect point: a
 `recv` that can fail into the `Lost` tag. Under chaos testing the
 runtime injects that failure on schedule-chosen runs. State what
 outputs a chaos campaign over this program must produce (both of
@@ -245,7 +245,7 @@ injection half waits on s36.
 
 ## §17.3 — Scope honesty (what exploration cannot see)
 
-**Exercise 17-7** *(comprehension · lupin)* — Rerun 17-3's exploration
+**Exercise 17-7** *(comprehension · lupin)*. Rerun 17-3's exploration
 with `--explore-preemptions=0`. Predict what the report will claim
 about determinism before you run it, then reconcile the claim with
 17-5's.
@@ -272,7 +272,7 @@ only because no finding was reached. Read exploration reports the way
 you read benchmarks: the verdict is conditional on the budget line,
 and "frontier open" is the condition talking.
 
-**Exercise 17-8** *(design)* — List three behaviors of a real
+**Exercise 17-8** *(design)*. List three behaviors of a real
 concurrent service that seeded schedule exploration, as this chapter
 defines it, cannot find — and for each, name the tool or practice
 that owns it instead. The chapter's own scope-honesty section (§17.4)
@@ -295,13 +295,13 @@ that sentence, with both clauses stressed, is §17.4's whole content.
 
 ## Chapter batch
 
-**Exercise 17-9** *(extension (break-it-on-purpose) · lupin)* — Construct a
+**Exercise 17-9** *(extension (break-it-on-purpose) · lupin)*. Construct a
 deadlock from two tasks and two rendezvous channels, each task
 receiving first and sending second. Predict the trap's roster before
 running: how many tasks does it name, and why is the answer three
 when you wrote two?
 
-Solution — `ch17/ex17-9.lu`:
+Solution. `ch17/ex17-9.lu`:
 
 ```wolf
 fn main() -> !int {

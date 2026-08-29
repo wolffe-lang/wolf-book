@@ -6,7 +6,7 @@ under the compiler's `conform-run` until s34.
 
 ## §15.1 — Two primitives
 
-**Exercise 15-1** *(comprehension · lupin)* — Chapter 14 showed a proc
+**Exercise 15-1** *(comprehension · lupin)*. Chapter 14 showed a proc
 returning a value: `is_normal()` was true. This proc returns an error
 instead. Predict both fields — there are three possible exit shapes
 and this line can only show you two booleans:
@@ -38,7 +38,7 @@ $ lupin ex15-1.lu
 normal=false killed=false
 ```
 
-**Exercise 15-2** *(comprehension · lupin)* — `monitor` delivers a
+**Exercise 15-2** *(comprehension · lupin)*. `monitor` delivers a
 message; `link` shares fate. This program links to a proc that fails,
 then blocks on an empty channel. Two prints are written. Predict what
 appears on stdout, and what `echo $?` shows:
@@ -69,7 +69,7 @@ $ echo $?
 1
 ```
 
-**Exercise 15-3** *(design)* — A pipeline proc feeds a compressor
+**Exercise 15-3** *(design)*. A pipeline proc feeds a compressor
 proc, which feeds an uploader proc. For each of the three pairs,
 choose `link` or `monitor` and defend the choice with the failure you
 are designing for. One of the three answers should be "neither" —
@@ -90,13 +90,13 @@ nobody drew.
 
 ## §15.2 — A supervisor in forty lines
 
-**Exercise 15-4** *(fingers · lupin)* — Build the smallest supervisor:
+**Exercise 15-4** *(fingers · lupin)*. Build the smallest supervisor:
 spawn a worker that fails on its first attempt and succeeds on its
 second; monitor it; on an abnormal exit, print a line and respawn with
 the next attempt number; stop after three attempts. Run it and keep
 the output.
 
-Solution — `ch15/ex15-4.lu`:
+Solution. `ch15/ex15-4.lu`:
 
 ```wolf
 fn worker(attempt: int) -> !int {
@@ -136,7 +136,7 @@ reason, a bounded retry. The stdlib's supervisor adds policy — restart
 strategies, intensity limits, child ordering — but no new primitive.
 You have now built the thing the next section hands you.
 
-**Exercise 15-5** *(comprehension · lupin)* — Same supervisor, but the
+**Exercise 15-5** *(comprehension · lupin)*. Same supervisor, but the
 worker fails every time. Predict the full output and the exit code
 before running — including how many times the worker actually runs.
 
@@ -157,13 +157,13 @@ $ echo $?
 1
 ```
 
-**Exercise 15-6** *(extension · lupin)* — Change the worker to fail
+**Exercise 15-6** *(extension · lupin)*. Change the worker to fail
 twice and succeed on the third attempt — the flappy dependency
 pattern. Predict the output, run it, and then answer: your budget is
 3. What single-character change makes this worker's recovery
 impossible, and what does the output become?
 
-Solution — `ch15/ex15-6.lu` (worker):
+Solution. `ch15/ex15-6.lu` (worker):
 
 ```wolf
 fn worker(attempt: int) -> !int {
@@ -187,7 +187,7 @@ this exercise is that bet lost by one.
 
 ## §15.3 — The root supervisor
 
-**Exercise 15-7** *(design)* — Every proc in wolf lives under the root
+**Exercise 15-7** *(design)*. Every proc in wolf lives under the root
 supervisor; there is no unsupervised spawn. Sketch the supervision
 tree for the chapter 14 log-search service (listener, planner, one
 proc per shard), choosing for each internal node: restart the child
@@ -207,7 +207,7 @@ world, or die and let the OS supervisor act) is a deployment
 decision, not a code decision. The tree is the failure design; the
 procs are only its leaves.
 
-**Exercise 15-8** *(spelunking · corpus)* — The pinned corpus checks
+**Exercise 15-8** *(spelunking · corpus)*. The pinned corpus checks
 the kill rule with this directive header, from
 `upstream/corpus/conc/proc_kill_defers.lu`:
 
@@ -232,7 +232,7 @@ directive that checks the wrong observable verifies nothing.
 
 ## Chapter batch
 
-**Exercise 15-9** *(design)* — A teammate proposes: "monitors are
+**Exercise 15-9** *(design)*. A teammate proposes: "monitors are
 strictly better — a link is a monitor whose handler calls exit, so
 the language should ship only monitors." Take the other side using
 15-2's observed behavior: name two properties of `link` that the

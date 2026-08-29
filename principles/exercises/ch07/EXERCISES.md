@@ -8,7 +8,7 @@ record it emits instead, and says so.
 
 ## §7.1 — The error we owed you
 
-**Exercise 7-1** *(comprehension · wolf + lupin)* — Chapter 3's broken
+**Exercise 7-1** *(comprehension · wolf + lupin)*. Chapter 3's broken
 `Pack` program, with one line added:
 
 ```wolf
@@ -45,13 +45,13 @@ anyway and prints `ada lin grace`.
 
 ## §7.2 — Values are trees
 
-**Exercise 7-2** *(fingers · lupin)* — Draw the ownership tree of `den`
+**Exercise 7-2** *(fingers · lupin)*. Draw the ownership tree of `den`
 below before running anything: one box per value, one arrow per field.
 Then move the deepest leaf out with `move` and verify, by printing
 them, that the leaf's *sibling* and its *cousins* are all still
 usable:
 
-Solution — `ch07/ex7-2.lu`:
+Solution. `ch07/ex7-2.lu`:
 
 ```wolf
 struct Wolf { name: str, call: str }
@@ -80,14 +80,14 @@ The move emptied exactly one path — `den.alpha.name` — and the tree's
 other four leaves never noticed. (`move` is the plain-expression
 spelling; `take` is the same act written at a call site.)
 
-**Exercise 7-3** *(extension (break-it-on-purpose) · wolf + lupin)* — Using one
+**Exercise 7-3** *(extension (break-it-on-purpose) · wolf + lupin)*. Using one
 struct, one function taking `take`, and nothing else, write the
 smallest program that traps `use-after-move` *through a field*. Predict
 the compiler's E-code and the interpreter's trap kind before checking
 both. Why does the exercise say "through a field" — what would be
 different, and what the same, with a bare local?
 
-Solution — `ch07/ex7-3.lu`:
+Solution. `ch07/ex7-3.lu`:
 
 ```wolf
 struct S { a: str }
@@ -131,7 +131,7 @@ per-path, not per-variable — `s` as a whole is neither dead nor alive,
 only `s.a` is dead. Both tools cite the same clause family,
 `[mem.tier0.move.2]`, which is the differential spine again.
 
-**Exercise 7-4** *(comprehension · lupin)* — Every field of `P` is an
+**Exercise 7-4** *(comprehension · lupin)*. Every field of `P` is an
 `int`. Predict what the second line of `main` does to `a`:
 
 ```wolf
@@ -171,7 +171,7 @@ copies." Wolf's rule is per-*decision*, not per-*type*: the reader of
 **Exercise 7-5** *(comprehension · lupin; static verdict pending —
 blocker: E1003 borrow-escape checking reaches no verdict while wolfc
 leaves `channel` unresolved; owner: s33-channels-select, check
-s18-tier0-exclusivity)* — A parameter is borrowed for the call; a
+s18-tier0-exclusivity)*. A parameter is borrowed for the call; a
 local borrow `&x` lives inside its function's activation. This program
 tries to make one outlive it:
 
@@ -211,13 +211,13 @@ day the verdict arrives.
 
 ## §7.4 — `mut` at both ends
 
-**Exercise 7-6** *(fingers + spelunking · lupin)* — Write `swap` for
+**Exercise 7-6** *(fingers + spelunking · lupin)*. Write `swap` for
 two `int`s using `mut` at both ends, and verify it. Then state the
 single search you would run over a strange codebase to find every line
 that can mutate anything — and what property of the language makes the
 search complete.
 
-Solution — `ch07/ex7-6.lu`:
+Solution. `ch07/ex7-6.lu`:
 
 ```wolf
 fn swap(mut a: int, mut b: int) {
@@ -247,7 +247,7 @@ false negatives, which is what "required at both ends" buys.
 
 ## §7.5 — Field-granular exclusivity
 
-**Exercise 7-7** *(comprehension · wolf + lupin)* — The simplest
+**Exercise 7-7** *(comprehension · wolf + lupin)*. The simplest
 possible exclusivity violation: one place, claimed twice.
 
 ```wolf
@@ -293,7 +293,7 @@ disjoint places, so aliasing questions are settled at the call site,
 which is also what lets the compiler hand `noalias` facts to the
 optimizer (§7.7's subject).
 
-**Exercise 7-8** *(comprehension + fingers · lupin)* — Four call shapes against
+**Exercise 7-8** *(comprehension + fingers · lupin)*. Four call shapes against
 `struct P { a: Q, b: Q }`, `struct Q { n: int }`. Verdict for each,
 before checking any:
 
@@ -324,7 +324,7 @@ $ lupin ex7-8.lu
 
 ## §7.6 — Why there are no lifetimes
 
-**Exercise 7-9** *(spelunking · wolf)* — Run `wolf --explain E1001` and
+**Exercise 7-9** *(spelunking · wolf)*. Run `wolf --explain E1001` and
 read all of it. Quote the sentence that licenses re-initialization
 (exercise 7-1's move), the phrase that states field granularity
 (exercise 7-3's), and the one word in the first paragraph that makes
@@ -355,7 +355,7 @@ sentence puts assignment and argument passing under the same verb,
 which is why chapters 3 and 7 have been describing one mechanism, not
 two.
 
-**Exercise 7-10** *(design)* — Rust's zero-copy parser hands out `&str`
+**Exercise 7-10** *(design)*. Rust's zero-copy parser hands out `&str`
 slices of an input buffer it does not own, with lifetimes proving the
 buffer outlives every slice. Wolf has no lifetime annotations, so that
 API shape is not expressible for arbitrary callers. Sketch the wolf
@@ -383,12 +383,12 @@ that no signature in this paragraph mentions anything but values.
 
 ## §7.7 — What the machine does
 
-**Exercise 7-11** *(fingers · lupin REPL)* — In the REPL, move a string
+**Exercise 7-11** *(fingers · lupin REPL)*. In the REPL, move a string
 out of one binding into another, then read both — the corpse first.
 What does the session do that a compiled program cannot, and which
 clause tag names the reason the trap did not end your session?
 
-Solution — one session:
+Solution. One session:
 
 ```console
 $ lupin
@@ -411,13 +411,13 @@ a move is a transfer, never a destruction, and the machine-level story
 
 ## Chapter batch
 
-**Exercise 7-12** *(extension · lupin)* — The longest common
+**Exercise 7-12** *(extension · lupin)*. The longest common
 subsequence of two line lists is the skeleton every diff tool hangs
 on. Build the DP table as a `List[List[int]]` and return its corner.
 For the two three-line "files" in the solution, compute the answer on
 paper first: which two lines survive in both?
 
-Solution — `ch07/ex7-12.lu` (core):
+Solution. `ch07/ex7-12.lu` (core):
 
 ```wolf
 fn lcs_len(a: List[str], b: List[str]) -> int {
@@ -462,14 +462,14 @@ Note what the function signature says about ownership: both lists are
 borrowed — the caller keeps them, un-moved, and no annotation was
 spent saying so.
 
-**Exercise 7-13** *(comprehension + extension · lupin)* — Extend 7-12
+**Exercise 7-13** *(comprehension + extension · lupin)*. Extend 7-12
 into a printing diff: walk the finished table backward from the corner,
 emitting `  ` for common lines, `- ` for deletions, `+ ` for
 additions. Before running, predict the full output for `old` = the
 wolf/moon/elk lines and `new` = wolf/elk/river. Then explain why the
 walk must go *backward*.
 
-Solution — `ch07/ex7-13.lu` (the walk):
+Solution. `ch07/ex7-13.lu` (the walk):
 
 ```wolf
 fn print_diff(a: List[str], b: List[str], table: List[List[int]], i: int, j: int) {

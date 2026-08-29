@@ -6,7 +6,7 @@ in full — reading them is most of this chapter's homework.
 
 ## §9.1 — The three rings
 
-**Exercise 9-1** *(fingers + spelunking · wolf)* — The complete unsafe audit
+**Exercise 9-1** *(fingers + spelunking · wolf)*. The complete unsafe audit
 of every program in this book's first eight chapters is one command.
 Run it from `principles/exercises/`, report the number, and state what
 property of the language makes the count trustworthy — what would the
@@ -29,12 +29,12 @@ audit's subject, which is to say the audit is the whole program.
 
 ## §9.2 — Raw-tier rules
 
-**Exercise 9-2** *(fingers · lupin)* — Your first unsafe block, kept
+**Exercise 9-2** *(fingers · lupin)*. Your first unsafe block, kept
 legal: allocate eight bytes from C, set them all to 5, read one back,
 free, print. Type it, run it, and note the exit code — the point of
 this exercise is that nothing happens.
 
-Solution — `ch09/ex9-2.lu`:
+Solution. `ch09/ex9-2.lu`:
 
 ```wolf
 import c "stdlib.h"
@@ -65,12 +65,12 @@ change, not a crime scene. Note the `# Safety:` line above it: the
 compiler warns when it is missing, and it is the sentence a reviewer
 checks the body against.
 
-**Exercise 9-3** *(comprehension · lupin)* — One character changes in
+**Exercise 9-3** *(comprehension · lupin)*. One character changes in
 9-2: the write is `p[8] = 1`. The allocation holds eight bytes.
 Predict the oracle's finding — its row, and which optimizer license
 the report will name.
 
-Solution — the report, in full:
+Solution. The report, in full:
 
 ```console
 $ lupin ex9-3.lu
@@ -89,7 +89,7 @@ allocation (`dereferenceable`, alias disproof between allocations).
 Every oracle report has this shape: the fault, then the optimization
 that the rule purchases. UB is not a punishment; it is a price list.
 
-**Exercise 9-4** *(comprehension · lupin)* — The pointer is laundered
+**Exercise 9-4** *(comprehension · lupin)*. The pointer is laundered
 through an integer before the read:
 
 ```wolf
@@ -125,13 +125,13 @@ somewhere might name its address.
 
 ## §9.3 — The oracle you actually run
 
-**Exercise 9-5** *(fingers + comprehension · lupin)* — Inject the classic:
+**Exercise 9-5** *(fingers + comprehension · lupin)*. Inject the classic:
 write, free, read, through one pointer. Run it twice. What is the
 oracle's finding, and — the actual question — what is identical
 between the two runs that would *not* be identical for a
 use-after-free in C?
 
-Solution — `ch09/ex9-5.lu`:
+Solution. `ch09/ex9-5.lu`:
 
 ```wolf
 let p = c.malloc(8) as *u8
@@ -161,7 +161,7 @@ be in memory" with "what the rules say about this access," and rules
 do not vary between runs. Deterministic faults are what make the
 escape hatch *debuggable* — this is §9.3's whole pitch, performed.
 
-**Exercise 9-6** *(comprehension · lupin)* — Allocate 64 bytes with
+**Exercise 9-6** *(comprehension · lupin)*. Allocate 64 bytes with
 `c.malloc` and read one of them before anything writes it:
 
 ```wolf
@@ -196,14 +196,14 @@ all three is that the bytes `malloc` hands back are not a value yet.
 
 ## §9.4 — The one door back
 
-**Exercise 9-7** *(comprehension · lupin)* — Two programs differ by
+**Exercise 9-7** *(comprehension · lupin)*. Two programs differ by
 one line's position. Both allocate eight C bytes, both cross back to
 safe code through `borrow r from p` — the door. In the first, the
 `malloc` happens inside `in r { }`; in the second, outside any window.
 Predict each verdict before running either, and state the door's
 obligation in one sentence.
 
-Solution — `ch09/ex9-7a.lu` and `ch09/ex9-7b.lu`:
+Solution. `ch09/ex9-7a.lu` and `ch09/ex9-7b.lu`:
 
 ```console
 $ lupin ex9-7a.lu
@@ -228,14 +228,14 @@ the language.
 
 ## §9.5 — `#include`-grade C
 
-**Exercise 9-8** *(fingers · wolf + lupin)* — Take §9.5's `pack` and
+**Exercise 9-8** *(fingers · wolf + lupin)*. Take §9.5's `pack` and
 spell its second allocation the other way round: `c.calloc(1, bytes)`
 instead of `c.calloc(bytes, 1)`. Both allocate the same number of
 bytes. Run the program under the interpreter, then compile it and run
 the binary. Report both outputs and say what a difference between them
 would have meant.
 
-Solution — `ch09/ex9-8.lu`, and there is no difference:
+Solution. `ch09/ex9-8.lu`, and there is no difference:
 
 ```console
 $ lupin ex9-8.lu
@@ -256,7 +256,7 @@ implementations" is *for*.
 
 ## §9.6 — FFI and regions
 
-**Exercise 9-9** *(comprehension · lupin)* — A C allocation made while
+**Exercise 9-9** *(comprehension · lupin)*. A C allocation made while
 a region was ambient, escaping the region that owned it:
 
 ```wolf
@@ -294,13 +294,13 @@ death calls it in, wholesale.
 
 ## §9.7 — Auditing: `#[trusted]` and the audit surface
 
-**Exercise 9-10** *(spelunking · lupin)* — `ch09/ex9-10.lu` wraps its
+**Exercise 9-10** *(spelunking · lupin)*. `ch09/ex9-10.lu` wraps its
 unsafe block in a `#[trusted]` function carrying its obligation as a
 string. Run it. Then answer from the chapter: what two questions about
 this function does a manifest-and-inventory audit answer that reading
 the function's source cannot?
 
-Solution — the program runs like any other:
+Solution. The program runs like any other:
 
 ```console
 $ lupin ex9-10.lu
@@ -324,7 +324,7 @@ English, for a person.
 
 ## §9.8 — The four-tier picture
 
-**Exercise 9-11** *(comprehension · prose)* — Five fragments; place
+**Exercise 9-11** *(comprehension · prose)*. Five fragments; place
 each on the four-tier map (safe values, regions, unsafe raw,
 the door):
 
@@ -345,7 +345,7 @@ keep: four tiers, one direction of trust — every construct on this
 list either stays in its tier or crosses at the door, and nothing else
 crosses at all.
 
-**Exercise 9-12** *(design)* — A team wraps a 40,000-line C codec
+**Exercise 9-12** *(design)*. A team wraps a 40,000-line C codec
 behind wolf FFI. Debate the two candidate shapes: (a) one `unsafe`
 block per call site, spread through the application; (b) one module
 owning every unsafe line, exporting twenty safe functions, `#[trusted]`
@@ -369,12 +369,12 @@ doors work because buildings have few of them.
 
 ## Chapter batch
 
-**Exercise 9-13** *(extension (break-it-on-purpose) · lupin)* — Construct the
+**Exercise 9-13** *(extension (break-it-on-purpose) · lupin)*. Construct the
 shortest program you can in which the *assertion*, not any access, is
 the undefined behavior: use `assume noalias` on two pointers that
 alias. Predict the oracle's wording — what does it say overlaps what?
 
-Solution — `ch09/ex9-13.lu`:
+Solution. `ch09/ex9-13.lu`:
 
 ```wolf
 let p = c.malloc(8) as *u8
@@ -402,14 +402,14 @@ with it. It is also the exercise to remember when C's `restrict`
 comes up: wolf did not remove the footgun, it made the trigger
 visible and gave it an oracle.
 
-**Exercise 9-14** *(comprehension · lupin)* — The subtlest report in
+**Exercise 9-14** *(comprehension · lupin)*. The subtlest report in
 the chapter. Take §9.4's door program and add one line: after
 `let counts = borrow scratch from p`, write `p[0] = 1` through the raw
 pointer, and only then read `counts[0]`. Predict where the fault is
 reported and what the tag tree at the bottom of the report will have
 in it that no other report in this chapter has shown.
 
-Solution — `ch09/ex9-14.lu`:
+Solution. `ch09/ex9-14.lu`:
 
 ```console
 $ lupin ex9-14.lu

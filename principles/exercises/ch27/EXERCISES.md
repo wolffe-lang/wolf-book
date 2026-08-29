@@ -9,11 +9,11 @@ chapter tells you to develop in.
 
 ## The chapter batch
 
-**Exercise 27-1** *(fingers · lupin)* — Add `%` to the dispatch. Then
+**Exercise 27-1** *(fingers · lupin)*. Add `%` to the dispatch. Then
 predict what your arm does for `7 0 %` before you run it, and say whether
 you had to write anything the `/` arm did not already show you.
 
-Solution — `ex27-1.lu`. Two edits: `37` joins `is_operator`'s list of
+Solution. `ex27-1.lu`. Two edits: `37` joins `is_operator`'s list of
 bytes, and a `37 =>` arm joins the `match` with the same zero guard the
 `47` arm has:
 
@@ -37,13 +37,13 @@ made a new kind of problem. That is the answer to the second half: no, the
 `/` arm showed you everything. Adding an operator to this calculator costs
 one byte in `is_operator` and one arm.
 
-**Exercise 27-2** *(comprehension · lupin)* — `eval` returns `Empty` for
+**Exercise 27-2** *(comprehension · lupin)*. `eval` returns `Empty` for
 both an underflowing operator and an expression that leaves two values on
 the stack. Predict the output for the three lines `3 +`, `3 4`, and
 `3 4 + 5`, and then argue whether one tag for two situations is the same
 mistake §27.1 accused the C of making.
 
-Solution — `ex27-2.lu`. All three are `Empty`:
+Solution. `ex27-2.lu`. All three are `Empty`:
 
 ```console
 $ lupin ex27-2.lu
@@ -65,12 +65,12 @@ this program is a smaller one — the message is imprecise, because one tag
 is doing two jobs and its text has to cover both. That is a wording
 problem with a wording fix, and 27-3 is the fix.
 
-**Exercise 27-3** *(extension · lupin)* — Give `Empty` a payload: which
+**Exercise 27-3** *(extension · lupin)*. Give `Empty` a payload: which
 operator ran out of operands, and how many it found. You will have to
 change the row, the two `return`s, and one match arm — say what told you
 each one.
 
-Solution — `ex27-3.lu`. A second payload struct, `Short { op: str, found:
+Solution. `ex27-3.lu`. A second payload struct, `Short { op: str, found:
 int }`, and `Empty` becomes `Empty(Short)` in `eval`'s row:
 
 ```console
@@ -93,11 +93,11 @@ different failures are still sharing a tag. Splitting them into
 `Underflow(Short)` and `Leftover(int)` is one more row entry and one more
 arm, and it is the version to write if this were a real calculator.
 
-**Exercise 27-4** *(comprehension · lupin)* — Feed it `007` and `-0` and
+**Exercise 27-4** *(comprehension · lupin)*. Feed it `007` and `-0` and
 `- 3`. Predict all three results before running, then explain which of the
 three is handled by `strip_prefix` and which by `words()`.
 
-Solution — `ex27-4.lu`:
+Solution. `ex27-4.lu`:
 
 ```console
 $ lupin ex27-4.lu
@@ -118,7 +118,7 @@ decides what "attached" means. That division is the whole reason the wolf
 column needs no `ungetch`, and this exercise is the smallest program that
 shows it.
 
-**Exercise 27-5** *(spelunking · the C twin)* — Take a census of `broken`
+**Exercise 27-5** *(spelunking · the C twin)*. Take a census of `broken`
 in `rpn.c`: count the places that can set it and the places that read it,
 and write down the line numbers. Then take the same census of the wolf
 column's failure surface — where a tag can be produced, and where one is
@@ -145,12 +145,12 @@ out of it without either handling the row or propagating it, and if the row
 grows a tag the handler stops compiling. One read by convention, one read by
 type.
 
-**Exercise 27-6** *(extension · lupin)* — Add two stack words that are not
+**Exercise 27-6** *(extension · lupin)*. Add two stack words that are not
 operators: `dup` duplicates the top value, `swap` exchanges the top two.
 Neither touches `number` or the `match`. Predict what `7 2 swap -`
 evaluates to before you run it.
 
-Solution — `ex27-6.lu`. Two branches ahead of the `!is_operator(tok)`
+Solution. `ex27-6.lu`. Two branches ahead of the `!is_operator(tok)`
 test, each with the length guard the operators already use:
 
 ```console
@@ -165,7 +165,7 @@ Neither word needed a new tag, a new payload, or a change to the dispatch,
 because a stack word that only moves values around cannot fail in a way the
 `Empty` tag does not already cover.
 
-**Exercise 27-7** *(design)* — Wolf's stack holds `int` and K&R's holds
+**Exercise 27-7** *(design)*. Wolf's stack holds `int` and K&R's holds
 `double`. Argue the other choice: what would the wolf column have to give
 up to work in `f64`, what would it gain, and where in this chapter would
 the text have to change?
@@ -191,7 +191,7 @@ The defensible position is the one the chapter takes, stated as a choice
 rather than as a virtue: this calculator does integer arithmetic, and if
 you want fractions you are writing the parser.
 
-**Exercise 27-8** *(design)* — Sketch the REPL: read a line, evaluate it,
+**Exercise 27-8** *(design)*. Sketch the REPL: read a line, evaluate it,
 print the answer, and stop at end of input. `read_line()` returns
 `str ! {eof, io, utf8}`, so name the loop's exit condition, and then say
 what the calculator would have to remember between lines for `x 3 +` to

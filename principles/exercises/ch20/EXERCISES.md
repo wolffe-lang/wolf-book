@@ -10,7 +10,7 @@ block here claims to be one.
 
 ## §20.1 — The format
 
-**Exercise 20-1** *(comprehension · prose)* — The worked example below
+**Exercise 20-1** *(comprehension · prose)*. The worked example below
 is hand-written in the s01 format (it is not a tool run). Three
 kernels, before and after your change:
 
@@ -34,7 +34,7 @@ kernel — the move is more iterations (tighter MAD), not a verdict.
 The discipline the format teaches: delta means nothing except against
 its own noise band.
 
-**Exercise 20-2** *(comprehension · prose)* — In the same worked
+**Exercise 20-2** *(comprehension · prose)*. In the same worked
 format, a change produces `allocs/op 3 → 0` and `delta -0.4% ± 1.9%`
 on the same kernel. A teammate calls the patch pointless. Name two
 distinct reasons the allocs column can matter when ns/op does not
@@ -50,7 +50,7 @@ and eligibility is worth having before the hot path needs it. The
 column exists because "did not get faster" and "did not get simpler"
 are different findings.
 
-**Exercise 20-3** *(comprehension · prose)* — Five samples of one
+**Exercise 20-3** *(comprehension · prose)*. Five samples of one
 benchmark, in ns: 1000, 1010, 990, 1005, 2400. Compute mean and
 median; state which the s01 format reports and what the outlier most
 plausibly was. Then say what MAD does with the same five numbers that
@@ -68,12 +68,12 @@ weather.
 
 ## §20.2 — The variance gate
 
-**Exercise 20-4** *(spelunking · wolf)* — Ask the binary for a
+**Exercise 20-4** *(spelunking · wolf)*. Ask the binary for a
 benchmark and read what comes back. Which half of the toolchain owns
 the gap, and where else in this book have you seen this exact
 reporting posture?
 
-Solution — a real run, the only one in this chapter:
+Solution. A real run, the only one in this chapter:
 
 ```console
 $ wolf bench
@@ -92,7 +92,7 @@ scaffold refusal is not product output, so this exercise's subject
 does not survive TONE.md's tense discipline. It waits for `wolf
 bench`.)*
 
-**Exercise 20-5** *(comprehension · prose)* — The variance gate fails
+**Exercise 20-5** *(comprehension · prose)*. The variance gate fails
 a CI run when the delta is within the noise band, in either direction.
 A teammate objects: "a 3% win is a 3% win; gate only the losses."
 Using worked example 20-1's `render` row (+3.0% ± 4.9%), construct the
@@ -110,7 +110,7 @@ inside the band is not a measurement, whichever direction it flatters.
 
 **Exercise 20-6** *(extension · pending — blocker: bench harness and
 baseline workflow; owner: s01-test-and-bench-infrastructure /
-s44-perf-validation)* — When the harness lands: record a baseline in
+s44-perf-validation)*. When the harness lands: record a baseline in
 your own repo with `--baseline`, make a change you believe is neutral,
 and run the diff. The exercise's deliverable is your surprise,
 whichever row it comes from.
@@ -122,7 +122,7 @@ with a browser open can carry a 10% band; the worked examples' 2%
 bands are what a pinned-governor CI box buys. Until the tool exists,
 the habit to build is 20-1's: never read a delta without its band.
 
-**Exercise 20-7** *(comprehension · prose)* — The sprint plan gates CI
+**Exercise 20-7** *(comprehension · prose)*. The sprint plan gates CI
 on two co-equal tracks: compile-time and runtime (D5). Your change
 makes `parse_row` 12% faster at runtime and makes the compiler spend
 9% longer on the crate. In the s01 format, which gates fire, and what
@@ -139,7 +139,7 @@ plural.
 
 ## Chapter batch
 
-**Exercise 20-8** *(design)* — Every row in the s01 format carries
+**Exercise 20-8** *(design)*. Every row in the s01 format carries
 metadata: toolchain commit, target triple, CPU governor, run date.
 Argue which single field the *book* most depends on, given TONE.md's
 rule that performance claims are made by "a program and a measurement"

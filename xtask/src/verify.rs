@@ -327,7 +327,7 @@ fn verify_traps(root: &Path, failures: &mut Vec<String>) -> Result<()> {
 fn verify_solutions(root: &Path, failures: &mut Vec<String>) -> Result<()> {
     let page = std::fs::read_to_string(root.join("book/back/solutions.md"))?;
     for ((ch, num), _) in crate::backmatter::printed_exercises(root)? {
-        let marker = format!("<summary>Exercise {ch}-{num} —");
+        let marker = format!("<summary>Exercise {ch}-{num}.");
         if !page.contains(&marker) {
             failures.push(format!(
                 "book/back/solutions.md: exercise {ch}-{num} is printed in the chapter \

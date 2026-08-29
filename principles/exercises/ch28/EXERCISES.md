@@ -7,11 +7,11 @@ the chapter's own transcripts are.
 
 ## The chapter batch
 
-**Exercise 28-1** *(fingers · lupin)* — Build the tree as printed and run
+**Exercise 28-1** *(fingers · lupin)*. Build the tree as printed and run
 it. Then add a word that sorts before `moon` and one that sorts after
 `wolf`, and predict where each appears in the output before you run it.
 
-Solution — `ex28-1.lu`, with `zebra apple` added to the text. The
+Solution. `ex28-1.lu`, with `zebra apple` added to the text. The
 prediction: `apple` first and `zebra` last, whatever order they arrive in.
 
 ```console
@@ -31,12 +31,12 @@ the in-order walk reports the tree's *shape*, and the shape came from
 left-most leaf and `zebra` the right-most, and neither insertion touched a
 node it did not have to.
 
-**Exercise 28-2** *(comprehension · lupin)* — `add` compares with
+**Exercise 28-2** *(comprehension · lupin)*. `add` compares with
 `w < n.word` on `str`. Predict the order of `Wolf`, `wolf`, `WOLF`, and
 `wolfs` in the output *without* the `.lower()` call, and say which two of
 the four end up as one node once `.lower()` is back.
 
-Solution — `ex28-2.lu`. Four distinct words, four nodes, ordered by bytes:
+Solution. `ex28-2.lu`. Four distinct words, four nodes, ordered by bytes:
 
 ```console
 $ lupin ex28-2.lu
@@ -57,13 +57,13 @@ The lesson worth keeping is that byte order is not alphabetical order, and
 the book says so plainly in chapter 2 rather than pretending otherwise.
 `lower()` is enough for ASCII words and it is not a collation.
 
-**Exercise 28-3** *(extension · lupin)* — Add a `-n` mode: print the words
+**Exercise 28-3** *(extension · lupin)*. Add a `-n` mode: print the words
 in descending order of count instead of alphabetically, with ties broken
 alphabetically. The tree is already sorted by word, so the shape of the
 answer is a second pass — say what you collect on the first pass, and what
 it costs in lines.
 
-Solution — `ex28-3.lu`. The first pass is `collect`, an in-order walk that
+Solution. `ex28-3.lu`. The first pass is `collect`, an in-order walk that
 pushes each node's word and count onto two parallel `List`s — so it arrives
 already sorted alphabetically, which is what makes the tie-breaking free.
 The second pass is a selection walk: `next_after` finds the largest
@@ -89,11 +89,11 @@ carries a cursor (`the last pair printed`) instead of a mark. The cursor
 version is arguably the better program anyway, since it allocates nothing
 per iteration, but it is not the one a reader would reach for first.
 
-**Exercise 28-4** *(comprehension · lupin)* — Delete the `is_empty()` guard
+**Exercise 28-4** *(comprehension · lupin)*. Delete the `is_empty()` guard
 in `walk` and predict the exact failure: which trap kind, which exit code,
 and at which of the two `walk` calls. Then check it.
 
-Solution — `ex28-4.lu`, with `walk(n.left[0])` unguarded. The prediction:
+Solution. `ex28-4.lu`, with `walk(n.left[0])` unguarded. The prediction:
 a `bounds` trap, exit 3, at the *left* call — and it fires on the first
 leaf the walk reaches, before anything is printed at all.
 
@@ -111,7 +111,7 @@ work. Here it is a defined fault with a kind, a clause tag, and a byte
 span, and it happens at the same place every time. That is the difference
 the whole book is about, arriving in a two-line function.
 
-**Exercise 28-5** *(spelunking · the C twin)* — Count, in `wordtree.c`,
+**Exercise 28-5** *(spelunking · the C twin)*. Count, in `wordtree.c`,
 every line that would disappear if `malloc` could not fail, and then every
 line that would disappear if the program never had to free. Give both
 numbers and say which of the two the `region` brace replaced.
@@ -142,12 +142,12 @@ allocation failure is not a value a program is handed, which is a different
 argument and a stronger one. The brace is the visible half. The invisible
 half is bigger.
 
-**Exercise 28-6** *(extension · lupin)* — Take the tree's census: write
+**Exercise 28-6** *(extension · lupin)*. Take the tree's census: write
 `nodes` and `depth` and print both after the walk. Then multiply the node
 count by two and say what that number is in the C column, and what it is
 in the wolf one.
 
-Solution — `ex28-6.lu`. Two recursions in the same shape as `walk`:
+Solution. `ex28-6.lu`. Two recursions in the same shape as `walk`:
 
 ```console
 $ lupin ex28-6.lu
@@ -171,7 +171,7 @@ does: the nodes and their strings are allocations in the region, the region
 frees once, and the only place the number ten appears is in an exercise
 about the other column.
 
-**Exercise 28-7** *(design)* — K&R's `addtree` returns the new subtree
+**Exercise 28-7** *(design)*. K&R's `addtree` returns the new subtree
 root; wolf's `add` takes `mut n` and returns nothing. Both are answers to
 "how does a recursive insert report where the tree went." Argue which is
 easier to get wrong, and then say what the wolf version does about the

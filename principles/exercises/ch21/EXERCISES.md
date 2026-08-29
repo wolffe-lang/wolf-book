@@ -9,7 +9,7 @@ chapter is mostly counting, and counting is checkable.
 
 ## §21.1 — Aliasing
 
-**Exercise 21-1** *(comprehension · prose)* — Here is saxpy in C:
+**Exercise 21-1** *(comprehension · prose)*. Here is saxpy in C:
 
 ```c
 void saxpy(double a, const double *xs, double *ys, size_t n) {
@@ -33,11 +33,11 @@ every call site. Same fact, different laborer: C trusts the
 programmer's word; wolf makes the caller demonstrate it, once, at
 compile time.
 
-**Exercise 21-2** *(fingers · lupin)* — Type the wolf saxpy and run
+**Exercise 21-2** *(fingers · lupin)*. Type the wolf saxpy and run
 it: five elements, `a = 2.0`, `ys` all tens. Predict both printed
 values first.
 
-Solution — `ch21/ex21-2.lu`:
+Solution. `ch21/ex21-2.lu`:
 
 ```wolf
 fn saxpy(a: f64, xs: List[f64], mut ys: List[f64]) {
@@ -63,7 +63,7 @@ numbers on the page stay CI's.
 
 ## §21.2 — Arenas
 
-**Exercise 21-3** *(comprehension · prose)* — A request handler builds
+**Exercise 21-3** *(comprehension · prose)*. A request handler builds
 a parse tree of 10,000 nodes, reads it, and discards it. Count the
 allocator interactions — calls into allocate and free machinery — for
 (a) malloc discipline with individual `free`, (b) malloc discipline
@@ -84,7 +84,7 @@ escapee.
 
 ## §21.3 — Layout
 
-**Exercise 21-4** *(comprehension · prose)* — 1,000 particles, each
+**Exercise 21-4** *(comprehension · prose)*. 1,000 particles, each
 `{ x: f64, y: f64, z: f64 }` (24 bytes, no padding). A pass reads only
 `x`. With 64-byte cache lines, compute the lines fetched for the pass
 under array-of-structs and under `Soa[Particle]`'s x-column, and the
@@ -101,7 +101,7 @@ which is why "legally" appears in the section title.
 
 ## §21.4 — Checked arithmetic's bill
 
-**Exercise 21-5** *(comprehension · lupin)* — The bill and the payout
+**Exercise 21-5** *(comprehension · lupin)*. The bill and the payout
 in one program: `sum_to(n)` adds 1,000,000 to an `i32` accumulator `n`
 times. Predict both calls' fates — `sum_to(2000)`, then
 `sum_to(3000)` — with the arithmetic that decides them.
@@ -123,7 +123,7 @@ measured number with a date on it, and §21.4 prints it from CI's own
 ledger — the checked-adds exception in the suite's gate is that cost
 made explicit — rather than asserting it here.
 
-**Exercise 21-6** *(spelunking · lupin)* — From exercise 21-5's trap
+**Exercise 21-6** *(spelunking · lupin)*. From exercise 21-5's trap
 line alone: name the decision id it cites, the clause tag it enforces,
 and the documented spelling for the program that *wanted* wraparound.
 Then state, in one sentence, why this trap firing "in every profile"
@@ -138,7 +138,7 @@ be benchmarked with the checks on.
 
 ## §21.5 — Where C wins today
 
-**Exercise 21-7** *(design)* — A loss table in §21.5's format (a
+**Exercise 21-7** *(design)*. A loss table in §21.5's format (a
 worked example, not CI output) reads:
 
 ```text
@@ -167,7 +167,7 @@ from an admission into a work item with a date.
 ## Chapter batch
 
 **Exercise 21-8** *(comprehension · pending — blocker: bench rigs and
-CI perf gates; owner: s44-perf-validation)* — When the rigs land: run
+CI perf gates; owner: s44-perf-validation)*. When the rigs land: run
 the saxpy comparison from 21-1/21-2 — wolf against `clang -O2`, with
 and without `restrict` on the C side — and read the three-way result
 against your 21-1 answer. The C-without-`restrict` column is the
@@ -179,7 +179,7 @@ behind on vectorizable sizes, the gap widening with stride complexity.
 If the measured result disagrees, the *exercise* is finding out why;
 this corpus keeps the header and CI keeps the appointment.
 
-**Exercise 21-9** *(comprehension · prose)* — "Beats naive C, and the
+**Exercise 21-9** *(comprehension · prose)*. "Beats naive C, and the
 claim is a falsifiable CI gate" is a sentence with a specific
 engineering content. Name the three artifacts that must exist for the
 claim to be falsifiable rather than promotional, and for each say

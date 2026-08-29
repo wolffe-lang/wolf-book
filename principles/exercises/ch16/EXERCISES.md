@@ -7,7 +7,7 @@ lupin's except where marked pending.
 
 ## §16.1 — `ch.send(move r)`
 
-**Exercise 16-1** *(comprehension · lupin)* — The sender builds a list
+**Exercise 16-1** *(comprehension · lupin)*. The sender builds a list
 inside a region — two pushes — and sends the region. Predict: does the
 receiver's `in r2 { … }` block run before or after both pushes are
 visible, and what synchronization made that true?
@@ -39,12 +39,12 @@ $ lupin ex16-1.lu
 received
 ```
 
-**Exercise 16-2** *(fingers · lupin)* — Make the transfer carry real
+**Exercise 16-2** *(fingers · lupin)*. Make the transfer carry real
 freight: build the two-element list in `main`, send the region to a
 receiving task, and have the receiver sum the list *it never built*.
 Print the sum from the receiver's side.
 
-Solution — `ch16/ex16-2.lu` (receiver):
+Solution. `ch16/ex16-2.lu` (receiver):
 
 ```wolf
     s.spawn(fn() {
@@ -70,12 +70,12 @@ serialized, nothing was copied — the graph moved as a graph. (Erlang
 gets this safety by deep-copying every message; the next section's
 lineup prices that.)
 
-**Exercise 16-3** *(extension (break-it-on-purpose) · lupin)* — Construct the
+**Exercise 16-3** *(extension (break-it-on-purpose) · lupin)*. Construct the
 smallest program in which a sender touches a region *after* sending it
 with `move`. Predict the exact trap kind before running — it is one
 you met in chapter 7, not a new one.
 
-Solution — `ch16/ex16-3.lu`:
+Solution. `ch16/ex16-3.lu`:
 
 ```wolf
 fn main() -> !int {
@@ -104,7 +104,7 @@ the same lesson dynamically, at the read.)
 
 ## §16.2 — Freeze, then share
 
-**Exercise 16-4** *(comprehension · lupin)* — Ten squares are frozen
+**Exercise 16-4** *(comprehension · lupin)*. Ten squares are frozen
 into `table`; two tasks each read one entry and send it back. Predict
 the printed number, and answer precisely: how many copies of the table
 exist while both tasks read it?
@@ -133,7 +133,7 @@ $ lupin ex16-4.lu
 25
 ```
 
-**Exercise 16-5** *(design)* — For each payload, choose `move` or
+**Exercise 16-5** *(design)*. For each payload, choose `move` or
 `freeze` and defend it in one sentence: (a) a parsed configuration
 read by every worker for the process lifetime; (b) a request's parse
 tree handed from parser to executor; (c) a routing table rebuilt every
@@ -154,7 +154,7 @@ untouchable — wolf gives no third verb, on purpose.
 
 ## §16.3 — The honest lineup
 
-**Exercise 16-6** *(design)* — The same workload — a producer builds a
+**Exercise 16-6** *(design)*. The same workload — a producer builds a
 million-node tree, a consumer walks it — in four systems: Erlang
 (copying send), Go (send a pointer), Rust (`Arc<Mutex<Tree>>`), wolf
 (`ch.send(move r)`). For each, name what the transfer costs at the
@@ -181,7 +181,7 @@ looking expensive.
 
 ## Chapter batch
 
-**Exercise 16-7** *(extension · lupin)* — A maze is a graph, and a
+**Exercise 16-7** *(extension · lupin)*. A maze is a graph, and a
 graph is a region's favorite payload. Carve a 5×5 maze with a seeded
 generator (per-cell wall bitmasks: 1=N 2=E 4=S 8=W, depth-first carve,
 a small linear-congruential step for direction choice), building the
@@ -190,7 +190,7 @@ solver breadth-first-searches it in place and prints the shortest-path
 distance from corner to corner. Seed 1: run it. Before you do, answer:
 how many times is the wall table copied between carver and solver?
 
-Solution — `ch16/ex16-7.lu` (the transfer; carve and solve are in the
+Solution. `ch16/ex16-7.lu` (the transfer; carve and solve are in the
 file):
 
 ```wolf
@@ -221,13 +221,13 @@ could live there too. One `move` later the solver owns all of it, and
 the answer — 18 steps for seed 1 — comes out of memory the solver
 never allocated.
 
-**Exercise 16-8** *(comprehension + schedule play · lupin)* — Change
+**Exercise 16-8** *(comprehension + schedule play · lupin)*. Change
 the carve seed to 2 and run the program three times, including once
 under `lupin run … --seed=7`. Predict: which of the two seeds in play
 changes the printed distance, and which cannot — and why does this
 program print the same distance under every scheduler seed?
 
-Solution — `ch16/ex16-8.lu` (one line differs from 16-7):
+Solution. `ch16/ex16-8.lu` (one line differs from 16-7):
 
 ```console
 $ lupin ex16-8.lu
@@ -246,7 +246,7 @@ construction. Determinism you can argue from the program's shape is
 worth more than determinism you observed in three runs — chapter 17
 is about the programs where you cannot argue it.
 
-**Exercise 16-9** *(comprehension · wolf + lupin)* — This program
+**Exercise 16-9** *(comprehension · wolf + lupin)*. This program
 declares a channel of bare `List[int]` — not `Copy`, not imm, not a
 region, not sync:
 

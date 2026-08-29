@@ -171,7 +171,7 @@ fn solutions(root: &Path) -> Result<String> {
             where_printed.section, where_printed.chapter, where_printed.section
         );
         out.push_str(&format!(
-            "\n<details>\n<summary>Exercise {ch}-{num} — {link}</summary>\n\n{}\n</details>\n",
+            "\n<details>\n<summary>Exercise {ch}-{num}. {link}</summary>\n\n{}\n</details>\n",
             body.trim_end()
         ));
         published += 1;

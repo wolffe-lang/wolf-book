@@ -6,7 +6,7 @@ run from this directory; outputs are pasted from real runs.
 
 ## §6.1 — `!T` and the row
 
-**Exercise 6-6** *(comprehension · lupin)* — The row below ends in
+**Exercise 6-6** *(comprehension · lupin)*. The row below ends in
 `..`, which makes it *open*: `probe` may return tags the signature
 never lists. Predict all three numbers, and say which arm of the
 `match` handles `probe(-1)` and why the program compiles at all when
@@ -41,14 +41,14 @@ $ lupin ex6-6.lu
 
 ## §6.2 — `?`, `else`, `else |err|`
 
-**Exercise 6-7** *(extension · lupin)* — `head` prints a file's first
+**Exercise 6-7** *(extension · lupin)*. `head` prints a file's first
 `n` lines — and a file with fewer than `n` lines is not a crash, it is
 an answer. Write `head(text, n)` whose error carries how many lines
 actually existed, and a caller that asks for 2 lines (succeeds) and 5
 lines (handled). Why does the payload belong in the error instead of
 being printed by `head` itself?
 
-Solution — `ch06/ex6-7.lu`:
+Solution. `ch06/ex6-7.lu`:
 
 ```wolf
 fn head(text: str, n: int) -> str ! {TooFew(int)} {
@@ -98,7 +98,7 @@ for every caller it will ever have.
 
 ## §6.4 — Hardening by refactor
 
-**Exercise 6-9** *(extension · lupin)* — Three postures toward the
+**Exercise 6-9** *(extension · lupin)*. Three postures toward the
 input `"7x"`: trap on it, default it to zero, or refuse it out loud.
 The script hardens one construct at a time:
 
@@ -116,7 +116,7 @@ Predict all three printed lines of the solution's `main`, which calls
 pointed part: rank the three postures for a program that reads
 numbers from a config file, and defend last place.
 
-Solution — `ch06/ex6-9.lu`:
+Solution. `ch06/ex6-9.lu`:
 
 ```console
 $ lupin ex6-9.lu
@@ -135,12 +135,12 @@ section in one function.
 
 ## §6.5 — Capstone: wordcount
 
-**Exercise 6-10** *(extension · lupin)* — The wordcount loop, grown by
+**Exercise 6-10** *(extension · lupin)*. The wordcount loop, grown by
 one requirement: count words, and separately count words of four bytes
 or more. Predict both numbers for the line
 `the wolf runs and the moon watches over`, then run.
 
-Solution — `ch06/ex6-10.lu`:
+Solution. `ch06/ex6-10.lu`:
 
 ```wolf
 fn main() -> !int {
@@ -171,7 +171,7 @@ same loop parallelizes by changing one call; the boxed promise stands.
 
 ## Chapter batch
 
-**Exercise 6-8** *(design)* — Chapter 6's `parse` exposes the row
+**Exercise 6-8** *(design)*. Chapter 6's `parse` exposes the row
 `{Empty, NotDigit(Bad), TooLong}`. Suppose `parse` moves into a
 library, behind a public API used by fifty programs. Argue both sides:
 should the public signature keep the three-tag row, or coarsen to a

@@ -9,12 +9,12 @@ exercises below say which side of that line they stand on.
 ## §19.1 — Four promises
 
 **Exercise 19-1** *(comprehension · pending — blocker: perf-contract
-verification (I15); owner: s24–s26 WIR fact sprints)* — `build` carries
+verification (I15); owner: s24–s26 WIR fact sprints)*. `build` carries
 `#[noalloc]` and allocates a `List` on its first line. State what the
 verifying compiler must do with this program, then run it under
 today's tools and record what actually happens.
 
-Solution — `ch19/ex19-1.lu`. The verifying compiler rejects it: the
+Solution. `ch19/ex19-1.lu`. The verifying compiler rejects it: the
 attribute is a proof obligation, and the `List[int]()` in the body is
 a WIR allocation fact that contradicts it. (The fail code is
 unassigned in today's catalog; the `.lu` header states the expected
@@ -33,7 +33,7 @@ tier — and `wolf conform-run` reports `verdict=unsupported` at
 neither checks it. That gap is this chapter's ledger entry, and CI
 flips these exercises to verified the day I15's checker lands.
 
-**Exercise 19-2** *(comprehension · prose)* — Four bodies, one
+**Exercise 19-2** *(comprehension · prose)*. Four bodies, one
 attribute. Which of these could carry `#[noalloc]` under a verifying
 compiler, and for each refusal, name the allocating expression:
 
@@ -50,7 +50,7 @@ Number 2 is the refusal: an f-string builds a new `str`, and a new
 answer worth ruling out is 4: "returns a str" is not "allocates a
 str" — the contract tracks allocation, not types.
 
-**Exercise 19-3** *(comprehension · prose)* — May a verifying compiler
+**Exercise 19-3** *(comprehension · prose)*. May a verifying compiler
 accept `#[nopanic]` on this function?
 
 ```wolf
@@ -67,11 +67,11 @@ separately. The cheap fixes each change the promise: `wrapping[i32]`
 keeps `nopanic` and changes the arithmetic; dropping the attribute
 keeps the arithmetic and changes the promise.
 
-**Exercise 19-4** *(fingers · lupin)* — Annotate a genuinely
+**Exercise 19-4** *(fingers · lupin)*. Annotate a genuinely
 allocation-free function with `#[noalloc]` and run it. Then state
 precisely what today's toolchain claimed about your attribute.
 
-Solution — `ch19/ex19-4.lu`:
+Solution. `ch19/ex19-4.lu`:
 
 ```wolf
 struct Vec3 { x: f64, y: f64, z: f64 }
@@ -96,7 +96,7 @@ dot product; it proves nothing about the attribute, which no tool read.
 An unverified contract is a comment with better syntax — until I15,
 exactly that, and this book will not pretend otherwise.
 
-**Exercise 19-5** *(comprehension · prose)* — `#[inplace]` promises a
+**Exercise 19-5** *(comprehension · prose)*. `#[inplace]` promises a
 function mutates through its `mut` parameters without allocating
 working storage. Which of these keeps that promise: (a) reversing a
 `List` with one temporary variable inside a swap loop; (b) reversing a
@@ -114,7 +114,7 @@ unless the signature says it.
 
 ## §19.2 — Contracts are API
 
-**Exercise 19-6** *(spelunking · wolf)* — The pinned corpus states
+**Exercise 19-6** *(spelunking · wolf)*. The pinned corpus states
 I15's rule in one comment (`upstream/corpus/comptime.lu`): "`#[noalloc]`
 is compiler-VERIFIED against WIR facts, not a comment that rots."
 Explain the "comment that rots" failure mode this contracts against,
@@ -132,7 +132,7 @@ corpus and this book share one honesty model — expected outcomes are
 recorded before the machinery exists, and nothing reports green
 meanwhile.
 
-**Exercise 19-7** *(comprehension · prose)* — Your dependency's
+**Exercise 19-7** *(comprehension · prose)*. Your dependency's
 `parse_row` carried `#[noalloc]` in v1.3; v1.4 drops the attribute
 with no other signature change. Under semver with teeth, what version
 number must v1.4 actually be, and what breaks if the registry lets it
@@ -149,7 +149,7 @@ statement that removing one is the same event as removing a function.
 
 ## §19.3 — When not to
 
-**Exercise 19-8** *(design)* — A colleague proposes `#[noalloc]` on
+**Exercise 19-8** *(design)*. A colleague proposes `#[noalloc]` on
 every function in your utility library "since most of them qualify."
 Argue the other side using exactly two costs, then state the rule you
 would adopt instead.
@@ -168,13 +168,13 @@ that are for sale.
 
 ## Chapter batch
 
-**Exercise 19-9** *(extension · lupin)* — Exercise 19-1's `build`
+**Exercise 19-9** *(extension · lupin)*. Exercise 19-1's `build`
 cannot keep its promise because it allocates its own result. Refactor
 to the shape that could: the caller allocates once and lends the
 storage down with `mut`. Run it. Which function in your refactor could
 now honestly carry `#[noalloc]`, and which still cannot?
 
-Solution — `ch19/ex19-9.lu`:
+Solution. `ch19/ex19-9.lu`:
 
 ```wolf
 fn tally_into(mut acc: List[int], base: int) {

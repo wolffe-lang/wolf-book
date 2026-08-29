@@ -16,7 +16,7 @@ not printed. They land with §13.1.
 
 **Exercise 13-1** *(comprehension · pending — blocker: `par` absent
 from the interpreter's std subset; owner: s32-tasks-scheduler /
-s37-core-types)* — Nine numbers, squared and summed. The parallel
+s37-core-types)*. Nine numbers, squared and summed. The parallel
 spelling replaces the squaring loop with one call:
 
 ```wolf
@@ -53,7 +53,7 @@ $ echo $?
 4
 ```
 
-**Exercise 13-2** *(fingers · lupin)* — Nine numbers, squared and
+**Exercise 13-2** *(fingers · lupin)*. Nine numbers, squared and
 summed, on one core: build the list, square each into a second list, add
 them up, print the total. Run it and keep the program. The number it
 prints is the number every divided version of this job has to agree
@@ -65,7 +65,7 @@ and the sequential baseline is what §13.2 opens on. The one-line-diff
 framing this stem used to carry is 13-1's and travels back to it when
 `par` lands.)
 
-Solution — `ch13/ex13-2.lu`:
+Solution. `ch13/ex13-2.lu`:
 
 ```wolf
 fn main() -> !int {
@@ -87,7 +87,7 @@ $ lupin ex13-2.lu
 
 ## §13.2 — The race that does not compile
 
-**Exercise 13-3** *(comprehension · wolf + lupin)* — Two tasks
+**Exercise 13-3** *(comprehension · wolf + lupin)*. Two tasks
 increment a captured `var`:
 
 ```wolf
@@ -161,7 +161,7 @@ from a clean exit code. That contrast was the argument for making the
 capture a compile error. The argument won; the demonstration is gone,
 and W1101's note is where the lost-update story now lives.
 
-**Exercise 13-4** *(spelunking · lupin)* — Two programs differ in one
+**Exercise 13-4** *(spelunking · lupin)*. Two programs differ in one
 `print`. Explore both and read the verdicts:
 
 ```console
@@ -201,13 +201,13 @@ in input order.
 
 ## Chapter batch
 
-**Exercise 13-5** *(extension · lupin)* — grep, wolfished: write
+**Exercise 13-5** *(extension · lupin)*. Grep, wolfished: write
 `grep(text, pattern) -> List[str] ! {EmptyPattern}` returning the
 matching lines. Substring search is yours to write with byte slices.
 Why is the empty pattern an *error* here, when POSIX grep happily
 matches it everywhere?
 
-Solution — `ch13/ex13-5.lu`:
+Solution. `ch13/ex13-5.lu`:
 
 ```wolf
 fn contains(hay: str, needle: str) -> bool {
@@ -246,7 +246,7 @@ defaults should serve its likeliest accident, not its cleverest use.
 
 **Exercise 13-6** *(extension · pending — blocker: `par` absent from
 the interpreter's std subset; owner: s32-tasks-scheduler /
-s37-core-types)* — Parallelize 13-5: collect the lines into a list and
+s37-core-types)*. Parallelize 13-5: collect the lines into a list and
 map `contains` over them with `par`, counting matches from the
 returned flags. `ch13/ex13-6.lu` is on disk with the one-call
 spelling. Why is `contains` an ideal `par` body, and what about
@@ -268,12 +268,12 @@ $ echo $?
 4
 ```
 
-**Exercise 13-7** *(comprehension · lupin)* — One Euler step for two
+**Exercise 13-7** *(comprehension · lupin)*. One Euler step for two
 bodies on a line, gravity only, equal masses. Before running: what is
 `v1 + v2` after the step, and is your answer exact or approximate for
 f64 arithmetic?
 
-Solution — `ch13/ex13-7.lu` (excerpt):
+Solution. `ch13/ex13-7.lu` (excerpt):
 
 ```wolf
 let r = absf(x2 - x1)
@@ -299,7 +299,7 @@ the two accelerations separately with different roundings and the
 symmetry is gone. That observation is the seed of every reproducible
 n-body benchmark in Part 4.
 
-**Exercise 13-8** *(design)* — A million elements, a `par` map, and a
+**Exercise 13-8** *(design)*. A million elements, a `par` map, and a
 machine with eight cores. Task-per-element is a million tasks;
 task-per-chunk is eight. Discuss: what does each choice cost, which
 one does a *structured* runtime prefer, and why must the answer never

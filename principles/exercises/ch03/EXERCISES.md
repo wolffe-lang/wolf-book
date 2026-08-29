@@ -6,13 +6,13 @@ run from this directory; outputs are pasted from real runs.
 
 ## §3.3 — Arithmetic that traps
 
-**Exercise 3-6** *(extension (break-it-on-purpose) · lupin)* — Using one
+**Exercise 3-6** *(extension (break-it-on-purpose) · lupin)*. Using one
 `i32` binding and one `*`, write the smallest program that traps with
 `overflow` on `i32`. State, before running it, why the number you chose
 is the smallest one that works, and what the trap line will say the
 product was.
 
-Solution — `ch03/ex3-6.lu`:
+Solution. `ch03/ex3-6.lu`:
 
 ```wolf
 fn main() -> !int {
@@ -37,7 +37,7 @@ pretend it fit. The annotation is what makes the multiplication an
 `i32` multiplication: a bare literal is unconstrained until something
 gives it a type, and `let n: i32` is that something.
 
-**Exercise 3-7** *(comprehension · lupin)* — Predict both lines. If you
+**Exercise 3-7** *(comprehension · lupin)*. Predict both lines. If you
 arrived from Python, predict them twice:
 
 ```wolf
@@ -65,7 +65,7 @@ $ lupin ex3-7.lu
 
 ## §3.1 — `let`, `var`, and handing values over
 
-**Exercise 3-8** *(comprehension · lupin)* — Predict the one printed
+**Exercise 3-8** *(comprehension · lupin)*. Predict the one printed
 line, then answer the pointed part: after `name = "grace"`, what
 happened to `"ada"` — and why does `first` not care?
 

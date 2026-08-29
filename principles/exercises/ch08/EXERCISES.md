@@ -6,7 +6,7 @@ at `impl_version 0.0.1`.
 
 ## §8.1 — You already think in regions
 
-**Exercise 8-1** *(comprehension · prose)* — Three programs you have
+**Exercise 8-1** *(comprehension · prose)*. Three programs you have
 met or written: (a) a web server handling one request — parse the
 headers, build a response, send it; (b) a compiler pass — read an AST,
 produce a transformed AST, discard the scratch; (c) a game loop — each
@@ -28,12 +28,12 @@ which is the chapter's opening argument.
 
 ## §8.2 — The block form
 
-**Exercise 8-2** *(fingers · lupin)* — Sum the first hundred integers
+**Exercise 8-2** *(fingers · lupin)*. Sum the first hundred integers
 using a list a helper function builds — with the helper writing no
 region code at all — inside `region tmp { }`. State where `fill`'s
 list is allocated, and what happens to it at the closing brace.
 
-Solution — `ch08/ex8-2.lu`:
+Solution. `ch08/ex8-2.lu`:
 
 ```wolf
 fn fill(n: int) -> List[int] {
@@ -63,7 +63,7 @@ the region frees wholesale: the list, its buffer, all of it, in one
 motion. `total` survives because an `int` is a value in the frame, not
 an allocation in the region.
 
-**Exercise 8-3** *(comprehension · wolf)* — One assignment tries to
+**Exercise 8-3** *(comprehension · wolf)*. One assignment tries to
 smuggle a region value past the brace:
 
 ```wolf
@@ -124,13 +124,13 @@ between "this could dangle" and "this did."
 
 ## §8.3 — Regions are values
 
-**Exercise 8-4** *(fingers · lupin REPL)* — In the REPL: define a
+**Exercise 8-4** *(fingers · lupin REPL)*. In the REPL: define a
 one-field struct, create a region with `region(rc)`, allocate one
 value into it with `in r { … }`, and look at `:regions` before and
 after `freeze r`. Predict the two state words you will see before you
 look.
 
-Solution — one session:
+Solution. One session:
 
 ```console
 $ lupin
@@ -157,7 +157,7 @@ open it — the `in r { }` window did, briefly, and left it suspended
 with one object inside. `freeze` is a state of the region, not a
 property of any binding.
 
-**Exercise 8-5** *(comprehension · lupin)* — A region is being sent
+**Exercise 8-5** *(comprehension · lupin)*. A region is being sent
 somewhere while a window into it is still open:
 
 ```wolf
@@ -192,14 +192,14 @@ cites the compiler's number so the two tiers stay one story.
 
 ## §8.4 — Cycles are fine here
 
-**Exercise 8-6** *(fingers · lupin)* — Build a five-node doubly-linked
+**Exercise 8-6** *(fingers · lupin)*. Build a five-node doubly-linked
 ring in a pool region: each node points `next` and `prev`. Then prove
 both directions work: walk five steps forward from the head (where do
 you land?), and two steps backward. Rust folklore says this program
 requires `unsafe` or `Rc<RefCell<…>>`; say in one sentence why wolf's
 checker does not object here.
 
-Solution — `ch08/ex8-6.lu` (core):
+Solution. `ch08/ex8-6.lu` (core):
 
 ```wolf
 struct Node { value: int, next: handle Node, prev: handle Node }
@@ -227,7 +227,7 @@ unrestricted, and the region dies as one unit, so no edge can dangle.
 The two-phase `reserve`/`init` is what closed the cycle without a null
 in sight.
 
-**Exercise 8-7** *(extension · prose)* — Grow the ring into the real
+**Exercise 8-7** *(extension · prose)*. Grow the ring into the real
 folklore program: an LRU cache with sentinel head and tail, `unlink`
 and `push_front` as the only two link operations, promotion on get, and
 eviction of `tail.prev` at capacity. Trace it by hand: after put a, put
@@ -243,7 +243,7 @@ which is the entire aliasing surface a reviewer must read.
 
 ## §8.5 — Freeze
 
-**Exercise 8-8** *(comprehension · wolf + lupin)* — A struct type with
+**Exercise 8-8** *(comprehension · wolf + lupin)*. A struct type with
 a strong `shared` edge back to itself:
 
 ```wolf
@@ -287,7 +287,7 @@ the only way to refuse all of those programs at once. The dynamic tier
 saw no allocation, no cycle, no fault — also true. The note is the
 chapter in miniature: `weak`, `handle`, or put the cycle in a region.
 
-**Exercise 8-9** *(comprehension + spelunking · wolf)* — One write after a freeze:
+**Exercise 8-9** *(comprehension + spelunking · wolf)*. One write after a freeze:
 
 ```wolf
 struct Config { limit: int }
@@ -331,11 +331,11 @@ $ echo $?
 3
 ```
 
-**Exercise 8-10** *(comprehension · lupin)* — The dynamic half of the
+**Exercise 8-10** *(comprehension · lupin)*. The dynamic half of the
 same contract: create a pool region, freeze the region value, then
 call `reserve` on the pool. Predict the trap kind and the clause tag.
 
-Solution — `ch08/ex8-10.lu`:
+Solution. `ch08/ex8-10.lu`:
 
 ```wolf
 struct Node { value: int }
@@ -361,7 +361,7 @@ of the region's interior, and frozen means frozen all the way down.
 
 ## §8.6 — Open, and open again
 
-**Exercise 8-11** *(comprehension · lupin)* — Two region values, two
+**Exercise 8-11** *(comprehension · lupin)*. Two region values, two
 nested `in` windows, reads and writes crossing both:
 
 ```wolf
@@ -400,7 +400,7 @@ $ lupin ex8-11.lu
 
 ## §8.7 — `shared` and `handle`
 
-**Exercise 8-12** *(comprehension · lupin)* — A handle is used after
+**Exercise 8-12** *(comprehension · lupin)*. A handle is used after
 its slot is gone:
 
 ```wolf
@@ -433,7 +433,7 @@ profile, never UB — a stale handle in wolf is a *defined* event, which
 is the entire difference between a handle and a C pointer into a
 freed arena.
 
-**Exercise 8-13** *(design)* — Four fields, one decision each: (a) a
+**Exercise 8-13** *(design)*. Four fields, one decision each: (a) a
 parent pointer in a tree whose nodes a region owns; (b) an
 edge in a social graph where nodes are deleted while neighbors hold
 references; (c) a config blob read by every task for the process's
@@ -459,7 +459,7 @@ type system will hold you to.
 
 ## §8.8 — What the machine does
 
-**Exercise 8-14** *(spelunking · wolf)* — Run `wolf --explain E1012`
+**Exercise 8-14** *(spelunking · wolf)*. Run `wolf --explain E1012`
 and read it against exercise 8-9. Find: the sentence that explains why
 frozen data needs no locks, the phrase that makes the promotion
 transitive, and the reason "readable forever" is a *performance*
@@ -493,7 +493,7 @@ unbreakable.
 
 ## Chapter batch
 
-**Exercise 8-15** *(extension · lupin)* — A text adventure's world is
+**Exercise 8-15** *(extension · lupin)*. A text adventure's world is
 a cyclic graph: rooms point at each other in four directions, and
 "north then south" must come home. Build three rooms — den, ridge,
 river bank — in a pool region, close the cycles with two-phase init,
@@ -501,7 +501,7 @@ and walk the path north, east, west, south, printing the room at each
 step. Predict the four lines before running; the fourth is the one
 that checks you wired `south` self-loops honestly.
 
-Solution — `ch08/ex8-15.lu` (walk shown; full wiring on disk):
+Solution. `ch08/ex8-15.lu` (walk shown; full wiring on disk):
 
 ```wolf
 for step in path {
@@ -525,14 +525,14 @@ optional type. Room graphs are why the region chapter and the
 adventure genre get along: the whole world dies in one motion when
 the game ends, cycles and all.
 
-**Exercise 8-16** *(extension · lupin)* — `wc`, wolfished: count the
+**Exercise 8-16** *(extension · lupin)*. `wc`, wolfished: count the
 lines and words of a multiline block, but store every line in a
 scratch region while counting — then let the region die and print the
 counts after it is gone. State what survives the brace and why this
 program's memory use at peak is "the text, once" rather than "the
 text, twice."
 
-Solution — `ch08/ex8-16.lu`:
+Solution. `ch08/ex8-16.lu`:
 
 ```wolf
 fn main() -> !int {

@@ -6,7 +6,7 @@ run from this directory; outputs are pasted from real runs.
 
 ## §2.2 — Multiline and raw
 
-**Exercise 2-5** *(comprehension · lupin REPL)* — Predict all three
+**Exercise 2-5** *(comprehension · lupin REPL)*. Predict all three
 lengths before evaluating: `"\n".len`, `r"\n".len`, `r"C:\temp".len`.
 
 Solution: 1, 2, 7. In an ordinary literal `\n` is one byte, a newline.
@@ -25,7 +25,7 @@ $ lupin eval 'r"C:\temp".len'
 
 ## §2.3 — Bytes, honestly
 
-**Exercise 2-6** *(comprehension · lupin REPL)* — `"wolf"` has four
+**Exercise 2-6** *(comprehension · lupin REPL)*. `"wolf"` has four
 bytes. Predict each of these, precisely — value or event:
 `"wolf"[..2]`, `"wolf"[2..]`, `"wolf"[4..4]`, `"wolf"[3..2]`.
 
@@ -51,12 +51,12 @@ after the last byte is a real position — it is where appending happens.
 
 ## §2.4 — Iterating meaning
 
-**Exercise 2-7** *(extension · lupin)* — Write `encode`, a run-length
+**Exercise 2-7** *(extension · lupin)*. Write `encode`, a run-length
 encoder over bytes: `"aaabcc"` becomes `"a3b1c2"`. Walk the string with
 byte slices and equality only. What does your encoder do with the empty
 string, and did you have to write a special case for it?
 
-Solution — `ch02/ex2-7.lu`:
+Solution. `ch02/ex2-7.lu`:
 
 ```wolf
 fn encode(s: str) -> str {
@@ -87,12 +87,12 @@ false immediately and `out` is returned as the empty string it started
 as. A loop whose bounds are honest handles its degenerate input by
 arithmetic, not by an `if` bolted on the front.
 
-**Exercise 2-9** *(comprehension · wolf)* — Predict all six numbers
+**Exercise 2-9** *(comprehension · wolf)*. Predict all six numbers
 before running: for each of `"wolf"`, `"é"`, and `"e\u{301}"`, both
 `.len` and `.chars().len`. Then the pointed half: which of the six
 could §2.3 have told you, and which one needed this section?
 
-Solution — `ch02/ex2-9.lu`:
+Solution. `ch02/ex2-9.lu`:
 
 ```wolf
 fn main() -> !int {
@@ -120,7 +120,7 @@ scalars, and neither counts what the reader sees.
 
 ## §2.5 — What the machine does
 
-**Exercise 2-8** *(comprehension · lupin REPL)* — `s` is
+**Exercise 2-8** *(comprehension · lupin REPL)*. `s` is
 `"wolfpack"`. Predict all four values, then say what slicing `s`
 cost — did any of these lines copy eight bytes?
 

@@ -6,7 +6,7 @@ run from this directory; outputs are pasted from real runs.
 
 ## §4.1 — Signatures are the contract
 
-**Exercise 4-5** *(comprehension · lupin)* — Euclid's algorithm, in the
+**Exercise 4-5** *(comprehension · lupin)*. Euclid's algorithm, in the
 expression style:
 
 ```wolf
@@ -30,7 +30,7 @@ $ lupin ex4-5.lu
 
 ## §4.3 — `defer`
 
-**Exercise 4-6** *(comprehension · lupin)* — A `defer` is registered
+**Exercise 4-6** *(comprehension · lupin)*. A `defer` is registered
 when execution reaches it. Predict all five output lines, in order:
 
 ```wolf
@@ -64,13 +64,13 @@ one
 
 ## Chapter batch
 
-**Exercise 4-7** *(extension · lupin)* — Build `day_of_year(month, day,
+**Exercise 4-7** *(extension · lupin)*. Build `day_of_year(month, day,
 leap)` from two functions: `days_in(month, leap)` as one `match`, and a
 loop that sums the months before yours. Verify: March 1st is day 60 in
 a common year. Which date is day 60 in a leap year, and where in your
 code did that difference come from?
 
-Solution — `ch04/ex4-7.lu`:
+Solution. `ch04/ex4-7.lu`:
 
 ```wolf
 fn days_in(month: int, leap: bool) -> int {

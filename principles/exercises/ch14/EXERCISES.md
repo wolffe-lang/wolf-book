@@ -7,7 +7,7 @@ territory until s34 lands.
 
 ## §14.1 — Armstrong's argument, one page
 
-**Exercise 14-1** *(comprehension · lupin)* — A proc's function returns
+**Exercise 14-1** *(comprehension · lupin)*. A proc's function returns
 `3`. Before running, predict both fields of the line this prints:
 
 ```wolf
@@ -37,7 +37,7 @@ $ lupin ex14-1.lu
 normal=true killed=false
 ```
 
-**Exercise 14-2** *(design)* — A log-search service has three
+**Exercise 14-2** *(design)*. A log-search service has three
 concerns: an HTTP listener, a query planner, and one index shard per
 disk. Argue where the proc boundaries go. For each boundary you draw,
 name the failure it isolates and the state that dies with it; for one
@@ -58,12 +58,12 @@ Armstrong's argument, applied.
 
 ## §14.2 — Crash means bulk-free
 
-**Exercise 14-3** *(comprehension · lupin)* — `build_then_crash`
+**Exercise 14-3** *(comprehension · lupin)*. `build_then_crash`
 allocates a hundred integers into a region, then returns an error.
 Predict what the monitor reports and, separately, what happened to the
 hundred integers — then say which line of code freed them.
 
-Solution — `ch14/ex14-3.lu` (excerpt):
+Solution. `ch14/ex14-3.lu` (excerpt):
 
 ```wolf
 fn build_then_crash() -> !int {
@@ -87,7 +87,7 @@ proc owns its regions, and an abnormal exit frees them wholesale —
 no unwinding, no per-object teardown. The monitor's `exit(reason)`
 arrives after the memory is already gone.
 
-**Exercise 14-4** *(comprehension · lupin)* — `sleeper` registers a
+**Exercise 14-4** *(comprehension · lupin)*. `sleeper` registers a
 defer and then blocks forever on an empty channel; the owner kills it.
 Two prints are written in this program: `defer-skipped` in the proc
 and `released` in the owner. Predict which of them appear, and in what
@@ -126,7 +126,7 @@ $ lupin ex14-4.lu
 released
 ```
 
-**Exercise 14-5** *(comprehension · lupin)* — The same shape at task
+**Exercise 14-5** *(comprehension · lupin)*. The same shape at task
 granularity. One sibling blocks on a channel with a defer registered;
 the other fails. Predict the output — and then state, in one sentence
 each, why this defer runs when 14-4's did not:
@@ -163,12 +163,12 @@ which one you are holding.
 
 ## §14.3 — Mailboxes
 
-**Exercise 14-6** *(fingers · lupin)* — Build a counting service: a
+**Exercise 14-6** *(fingers · lupin)*. Build a counting service: a
 proc that reads commands from a channel, where `0` means "reply with
 the total" and any other value adds to it. Drive it with 5, 2, then a
 report, and print what comes back.
 
-Solution — `ch14/ex14-6.lu`:
+Solution. `ch14/ex14-6.lu`:
 
 ```wolf
 fn counter(cmds: channel[int], replies: channel[int]) -> int {
@@ -202,12 +202,12 @@ the channel, the proc serializes them, and the reply channel carries
 answers back. No lock appears because no state is shared — the total
 lives in exactly one proc.
 
-**Exercise 14-7** *(extension · lupin)* — Grow the protocol: `-1`
+**Exercise 14-7** *(extension · lupin)*. Grow the protocol: `-1`
 resets the counter. Report the total, reset, add 3, and report again.
 Predict both numbers first, then answer: what ordering guarantee makes
 your prediction safe, and which chapter taught it?
 
-Solution — `ch14/ex14-7.lu` (excerpt):
+Solution. `ch14/ex14-7.lu` (excerpt):
 
 ```wolf
     for c in cmds {
@@ -226,7 +226,7 @@ overtake the first report, and the 3 cannot overtake the reset. The
 protocol's integers are starting to strain — a real command set wants
 a type, which is where rows and enums earn their keep.
 
-**Exercise 14-8** *(design)* — Erlang mailboxes offer *selective
+**Exercise 14-8** *(design)*. Erlang mailboxes offer *selective
 receive*: a proc can pluck the first message matching a pattern,
 leaving the rest queued. Wolf's mailbox is a FIFO channel plus
 `select` over multiple channels. State one protocol that selective
@@ -247,14 +247,14 @@ every queue in the program has a name and a bound.
 
 ## Chapter batch
 
-**Exercise 14-9** *(comprehension + schedule play · lupin)* — Two
+**Exercise 14-9** *(comprehension + schedule play · lupin)*. Two
 client tasks each send two increments to the counting proc; the scope
 joins, then main asks for the total. Run it under seeds 0, 1, 5, 9.
 Predict first: does the total vary with the schedule, and why not —
 and name the thing that *does* vary between those runs even though no
 output shows it.
 
-Solution — `ch14/ex14-9.lu` (main excerpt):
+Solution. `ch14/ex14-9.lu` (main excerpt):
 
 ```wolf
     scope s {

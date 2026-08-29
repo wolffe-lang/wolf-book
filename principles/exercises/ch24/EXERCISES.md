@@ -12,7 +12,7 @@ is snapshot-checked on every run) and not the page's.
 
 ## §24.1 — The threat, from history
 
-**Exercise 24-1** *(spelunking · prose)* — The event-stream incident
+**Exercise 24-1** *(spelunking · prose)*. The event-stream incident
 (2018), from §24.1's sourcing: a maintainer handed a popular npm
 package to a volunteer, who shipped a version whose install-time and
 runtime code targeted a specific downstream wallet application. List
@@ -37,7 +37,7 @@ a surfaced diff instead of archaeology. Residue: a malicious payload
 teach together: the covenant shrinks the attack surface to the part a
 human must still review, and makes that part small enough to review.
 
-**Exercise 24-2** *(comprehension · prose)* — Left-pad (2016) took
+**Exercise 24-2** *(comprehension · prose)*. Left-pad (2016) took
 thousands of builds down without executing a byte of anyone's code.
 State what kind of failure it was, why the comptime sandbox is
 irrelevant to it — the pointed half of the question — and which
@@ -54,7 +54,7 @@ trust" from "infrastructure I must not depend on" is the exercise;
 conflating them is how teams buy a sandbox and still go down on a
 Tuesday.
 
-**Exercise 24-3** *(comprehension · prose)* — `build.rs` is the
+**Exercise 24-3** *(comprehension · prose)*. `build.rs` is the
 mechanism §24.1's third paragraph indicts. Name three legitimate jobs
 build scripts do in the Rust ecosystem, and for each, the covenant-
 compatible replacement this part of the book offers. Then name the
@@ -76,7 +76,7 @@ it. That refusal is priced in §24.4, not hidden.
 
 ## §24.2 — What replaces scripts
 
-**Exercise 24-4** *(comprehension · wolf)* — The dependency that
+**Exercise 24-4** *(comprehension · wolf)*. The dependency that
 phones home at build time, spelled as directly as wolf's syntax
 allows. Predict the E-code and *which of the catalog's two refusal
 reasons* the diagnostic will cite (they differ by capability —
@@ -100,13 +100,13 @@ even where it is not printed.
 The covenant is not a policy document; it is this rejection, emitted
 before anything runs.
 
-**Exercise 24-5** *(comprehension · wolf)* — The build step that reads
+**Exercise 24-5** *(comprehension · wolf)*. The build step that reads
 your CI secrets: `env_var("CI_DEPLOY_TOKEN")` inside a `comptime fn`.
 Predict the refusal reason this one cites — and note before running
 that 18-6 filed environment reads under one reason, while the
 diagnostic gives this capability a compound answer.
 
-Solution — the environment gets both barrels: the note reads
+Solution. The environment gets both barrels: the note reads
 "determinism and confinement", because environment contents differ per
 machine *and* may hold secrets. That is the compound answer the stem
 warns about: chapter 18's exercise 18-6 asks a reader to sort a clock
@@ -124,14 +124,14 @@ knows. Here that code does not get to run at all.
 
 ## §24.3 — Capabilities and `wolf audit`
 
-**Exercise 24-6** *(comprehension · wolf)* — Take a project with one
+**Exercise 24-6** *(comprehension · wolf)*. Take a project with one
 dependency whose manifest declares no capabilities, record the world with
 `wolf update`, then edit the dependency's manifest to declare `net` and
 run `wolf audit --ci`. Report the exit code and the line that produced
 it. Then say which artifact held the *previous* answer, and what would
 have happened if that artifact had been refreshed first.
 
-Solution — the walkthrough, in a project shaped like §23.1's:
+Solution. The walkthrough, in a project shaped like §23.1's:
 
 ```console
 $ wolf update --dir app
@@ -168,7 +168,7 @@ run time on your machines with your network.
 
 ## §24.4 — What the covenant costs
 
-**Exercise 24-7** *(design)* — Pick the strongest real case against
+**Exercise 24-7** *(design)*. Pick the strongest real case against
 the covenant: a widely-needed C library whose build is a thicket of
 `./configure` feature detection (the class §24.4 names as what v1
 cannot vendor). The maintainer of a wolf wrapper asks for "one
@@ -199,7 +199,7 @@ reading a manifest.
 
 ## Chapter batch
 
-**Exercise 24-8** *(comprehension · prose)* — "It's only a
+**Exercise 24-8** *(comprehension · prose)*. "It's only a
 dev-dependency" — a teammate waves through a test-helper package
 whose new version adds comptime code, on the grounds that it ships
 nothing to production. Locate the two errors, using this chapter and

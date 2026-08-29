@@ -12,7 +12,7 @@ section that does not exist is homework nobody assigned (TOC.md
 
 ## §23.1 — `wolf.pkg` is data
 
-**Exercise 23-1** *(comprehension · prose)* — The manifest §23.1
+**Exercise 23-1** *(comprehension · prose)*. The manifest §23.1
 prints, which is a real file in the book's fixtures:
 
 ```wolf
@@ -44,7 +44,7 @@ which is the mechanical version of this exercise.
 
 ## §23.2 — MVS in one page
 
-**Exercise 23-2** *(comprehension · prose — written, not printed with §23.2)* — MVS by hand, round one.
+**Exercise 23-2** *(comprehension · prose — written, not printed with §23.2)*. MVS by hand, round one.
 Your package requires `rows ≥ 1.2` and `regex ≥ 2.0`; `rows 1.2`
 itself requires `regex ≥ 2.1`. The registry holds `rows` 1.2, 1.3,
 1.5 and `regex` 2.0, 2.1, 2.3. Compute the build list, then state the
@@ -56,7 +56,7 @@ package — the smallest versions that satisfy everyone, never the
 newest available. 1.3, 1.5, and 2.3 exist and are not consulted;
 availability is not a request.
 
-**Exercise 23-3** *(comprehension · prose — written, not printed with §23.2)* — Round two. To the world
+**Exercise 23-3** *(comprehension · prose — written, not printed with §23.2)*. Round two. To the world
 of 23-2, add a new dependency `csv 1.0` which requires `rows ≥ 1.3`.
 Recompute the build list and name precisely which versions moved and
 which did not — the "did not" is the exercise.
@@ -68,7 +68,7 @@ happens when a requirement demands it, and only to the demanded
 package. The blast radius of adding a dependency is readable from the
 requirements it brings, not from the registry's news feed.
 
-**Exercise 23-4** *(comprehension · prose — written, not printed with §23.2)* — Two teammates run a
+**Exercise 23-4** *(comprehension · prose — written, not printed with §23.2)*. Two teammates run a
 build of the same commit six months apart. Under a range-and-solver
 regime (`^1.2`, latest-compatible wins), name two distinct events in
 the intervening months that make their binaries differ. Under MVS
@@ -85,7 +85,7 @@ solver with opinions.
 
 ## §23.3 — `wolf.sum` and the log
 
-**Exercise 23-5** *(comprehension · prose)* — An upstream author
+**Exercise 23-5** *(comprehension · prose)*. An upstream author
 force-pushes tag `v1.4.0` of `den/rows` so the same version name now
 serves different bytes. Walk the failure: what does your `wolf.sum`
 notice, what does the build do about it, and what would you have to run
@@ -114,12 +114,12 @@ the designed answer, and what a reader can rely on today is the
 narrower guarantee: bits cannot change under you without the build
 saying so.
 
-**Exercise 23-6** *(spelunking · wolf)* — Run `wolf tree` and then
+**Exercise 23-6** *(spelunking · wolf)*. Run `wolf tree` and then
 `wolf why` on a project with one dependency, and then run `wolf why` for
 a name that is not in the graph. Report all three exit codes, and say
 what the third one is for.
 
-Solution — real runs, in the `shelf` fixture §23.1 prints:
+Solution. Real runs, in the `shelf` fixture §23.1 prints:
 
 ```console
 $ wolf tree --dir app
@@ -175,7 +175,7 @@ determinism.
 
 ## Chapter batch
 
-**Exercise 23-8** *(design)* — Wolf's determinism has a price: your
+**Exercise 23-8** *(design)*. Wolf's determinism has a price: your
 users do not receive a dependency's bug fixes until you raise a
 minimum by hand. A colleague calls this a security liability and
 wants ranges back. Take wolf's side without dodging the liability —

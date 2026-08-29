@@ -9,13 +9,13 @@ marks the files that only exist through their directory.
 
 ## §22.1 — Directory = module
 
-**Exercise 22-1** *(fingers · lupin)* — Build the two-module project:
+**Exercise 22-1** *(fingers · lupin)*. Build the two-module project:
 an entry file and a `stats/` directory exporting `mean`, with a
 private `total` helper the entry never sees. Run it. Then move
 `total` into a second file inside `stats/` and state what changes for
 the entry file.
 
-Solution — `ch22/metrics/`:
+Solution. `ch22/metrics/`:
 
 ```wolf
 // metrics/main.lu
@@ -41,7 +41,7 @@ anywhere: files are invisible to importers — the module is the
 directory, `use stats` names it whole, and the split is a private
 reorganization. That non-event is the design.
 
-**Exercise 22-2** *(comprehension · lupin)* — `vault/keys.lu` defines
+**Exercise 22-2** *(comprehension · lupin)*. `vault/keys.lu` defines
 `pub fn count()`, `pub fn loaded()`, and private `fn secrets()` and
 `fn total()`. The entry calls `vault.total()`. Predict the diagnostic — including
 whether it says the name does not *exist* — and the exit code.
@@ -58,7 +58,7 @@ $ echo $?
 2
 ```
 
-**Exercise 22-3** *(comprehension · lupin)* — `twice/main.lu` and its
+**Exercise 22-3** *(comprehension · lupin)*. `twice/main.lu` and its
 sibling `twice/extra.lu` each define `fn describe()`. Neither file
 imports the other. Predict the verdict, and say why "neither imports
 the other" is a trap in the question.
@@ -73,7 +73,7 @@ $ lupin twice/main.lu
 twice/main.lu: E0302: the name `describe` is defined twice in this module (defined again in `twice/main.lu`); file boundaries create no scopes (D32) [mod.dup] at 4:4
 ```
 
-**Exercise 22-4** *(comprehension · lupin)* — The entry imports
+**Exercise 22-4** *(comprehension · lupin)*. The entry imports
 `tools` and never mentions it again. Predict: warning or error, and
 what the diagnostic offers about the fix.
 
@@ -89,14 +89,14 @@ unused/main.lu: E0305: the import `tools` is never used in `unused/main.lu`; an 
 
 ## §22.2 — No cycles
 
-**Exercise 22-5** *(comprehension + extension · lupin)* — In
+**Exercise 22-5** *(comprehension + extension · lupin)*. In
 `ch22/tangle/`, `store` imports `index` to log entries and `index`
 imports `store` to validate them — each import has a reason, which is
 how real cycles are born. Predict the diagnostic. Then perform the
 interface-extraction refactor in a copy: move the shared vocabulary
 into a third module neither imports from, and run the result.
 
-Solution — before, the cycle drawn whole:
+Solution. Before, the cycle drawn whole:
 
 ```console
 $ lupin tangle/main.lu
@@ -116,7 +116,7 @@ The refactor's discipline: the extracted module holds what both sides
 *needed from each other* and nothing else. If `kinds` starts importing
 things, the tangle is reassembling under a new name.
 
-**Exercise 22-6** *(comprehension · prose)* — A library refactor
+**Exercise 22-6** *(comprehension · prose)*. A library refactor
 splits one 900-line module file into four files in the same directory,
 moves nothing across module boundaries, and changes no `pub` markers.
 List everything that changes for the library's importers, then name
@@ -134,14 +134,14 @@ you can prove invisible is a refactor you can make on a Friday.
 
 ## §22.3 — No life before main
 
-**Exercise 22-7** *(comprehension · wolf)* — The `init()` idiom §22.3
+**Exercise 22-7** *(comprehension · wolf)*. The `init()` idiom §22.3
 retires: a plugin system where each module's `init()` registers a handler
 into a global table at startup, in whatever order the linker felt like.
 Write the comptime replacement for **four** handlers, with a witness that
 fails the build if one goes missing, and say what became of the ordering
 question.
 
-Solution — `ex22-7.lu`, run by the compiler because a `comptime fn` is
+Solution. `ex22-7.lu`, run by the compiler because a `comptime fn` is
 the compiler's to evaluate:
 
 ```wolf
@@ -183,7 +183,7 @@ handler short, which is the second thing `init()` never gave you.
 
 ## Chapter batch
 
-**Exercise 22-8** *(design)* — Import cycles are errors (D32). A
+**Exercise 22-8** *(design)*. Import cycles are errors (D32). A
 colleague argues the compiler should permit cycles and merely warn,
 citing a large codebase where breaking them means touching forty
 files. Argue wolf's side using what the rule *buys*, then concede the

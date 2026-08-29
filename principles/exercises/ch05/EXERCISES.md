@@ -6,14 +6,14 @@ run from this directory; outputs are pasted from real runs.
 
 ## §5.1 — `List`, `Map`, `Set`, tuples
 
-**Exercise 5-6** *(extension · lupin)* — `uniq` counts adjacent
+**Exercise 5-6** *(extension · lupin)*. `uniq` counts adjacent
 duplicates; yours will count all of them and keep first-seen order.
 Read a multiline block line by line and print each distinct line once,
 with its count, in the order lines first appeared. Two parallel lists —
 one of lines seen, one of counts — are enough. Why does a `Map` alone
 not solve this?
 
-Solution — `ch05/ex5-6.lu`:
+Solution. `ch05/ex5-6.lu`:
 
 ```wolf
 fn index_of(xs: List[str], s: str) -> int {
@@ -65,14 +65,14 @@ structure that almost fits.
 
 ## Chapter batch
 
-**Exercise 5-7** *(comprehension + extension · lupin)* — An RPN
+**Exercise 5-7** *(comprehension + extension · lupin)*. An RPN
 evaluator is a loop and a stack, and the stack is a `List`. Given the
 tokens `3 4 + 2 *`, trace the stack contents after each token on
 paper, then run. Then answer from your trace, not from the code: which
 input would make `stack.len < 2` true at an operator, and what does
 your evaluator do about it?
 
-Solution — `ch05/ex5-7.lu`:
+Solution. `ch05/ex5-7.lu`:
 
 ```wolf
 fn eval_rpn(tokens: List[str]) -> int ! {Underflow, BadToken} {
@@ -120,7 +120,7 @@ enough here.)
 
 **Exercise 5-8** *(comprehension · pending — blocker: `sorted_by` /
 `take` absent from the interp std subset; owner: s37-core-types (std
-surface pinning))* — The chapter's signature chain, applied to a score
+surface pinning))*. The chapter's signature chain, applied to a score
 table:
 
 ```wolf
@@ -157,11 +157,11 @@ $ echo $?
 
 ## §5.5 — Traits: the system lands
 
-**Exercise 5-9** *(extension)* — Add a third shape to the `Draw`
+**Exercise 5-9** *(extension)*. Add a third shape to the `Draw`
 example, and then make `render` count its calls: what has to change,
 and what — pleasantly — does not?
 
-Solution — the third impl is three lines, and that is the point:
+Solution. The third impl is three lines, and that is the point:
 
 ```wolf,run(exit=0)
 trait Draw {
@@ -197,12 +197,12 @@ lives at the call sites, because `render` has nowhere to keep state:
 it borrows its argument and owns nothing — the same ownership honesty
 Part 2 makes precise.
 
-**Exercise 5-10** *(design)* — The cast-a-binding rule exists because
+**Exercise 5-10** *(design)*. The cast-a-binding rule exists because
 the dyn pair points at its operand rather than owning it. What would
 the language have to invent for `Dot { x: 3 } as dyn Draw` to be legal,
 and who would pay for it?
 
-Solution — the temporary needs a home that outlives the expression, so
+Solution. The temporary needs a home that outlives the expression, so
 the language would have to invent one: a hidden allocation (a box the
 reader never wrote), or a compiler-synthesized binding with a lifetime
 the reader never chose. Both are costs paid silently, and wolf's
