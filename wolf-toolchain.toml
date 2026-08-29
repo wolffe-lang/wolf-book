@@ -21,67 +21,84 @@
 # bodies, `v as dyn Trait`, primitive impls, explicit application) and
 # moved the stamped pairing line for the first time since 0.1.8.
 #
-# This bump (bs13) crosses the s116–s121 wave, 17 days after the last
-# one, and it is the first bump the ledger gate supervises: bs12 triaged
-# all 169 audit rows at the previous pin, so every surviving row is
-# re-measured against this one. The wave's headline for the book is
-# s121/D58: `char` is a Unicode scalar value — not a byte, not a
-# grapheme, not an integer — with `'…'` literals (E0110 refuses the
-# malformed shapes at the lexer), total `char as int`, a trapping
-# `int as char`, and `chars() -> List[char]`. Chapter 2 teaches it at
-# this bump, and the byte-scan workaround prose it obsoletes retires.
+# This bump (bs17) crosses the s122–s127 wave plus the CI sweep. The
+# headline for the book is s125: a compiled trap now names its site —
+# the first stderr line stays the byte-identical `wolf-trap: <kind>`
+# ABI, and a second line says `  at <file>:<line>:<col>`
+# ([conf.trap.report]). D60 rides with it: a trap's exit status is
+# per-machine and documented (native 134, reference interpreter 3;
+# [conf.trap.exit]) and the KIND is the only comparison surface. The
+# other half of the wave is the machine's: s59/s127 bring the native
+# and release tiers to macOS/aarch64, so the compile-lane samples run
+# on this book's development host as well as on the linux CI runner.
+# s126/D61 adds the index-origin marker (`#![index(1)]`).
 #
 # What the bump changes for the book, measured at this sha:
-#   * The catalog grows 154 -> 164: E0110 (malformed char literal),
-#     E0414 (main's signature), E0609 (nested error rows), and the
-#     E1601–E1607 constant-time family. The anchors grow 344 -> 393
-#     ([type.char.*], [gram.lex.char], [mem.str.chars], the ct.* and
-#     os.random/os.signal families, among others). The grammar gains
-#     CHAR_LIT; Appendix A regenerates.
-#   * `wolf --version`'s pairing line names lupin 0.1.14 at pin 90c90df,
-#     and lupin 0.1.14 names the same pin back — the pairing the two
-#     transcripts print is symmetric again (both transcripts move).
-#   * 43 samples flipped at this bump, all classified, residue empty:
-#     41 are lupin 0.1.14's receiver-mode enforcement (X1's call-site
-#     mode, dynamic since is17-era work — bare `xs.push(…)` is now
-#     `trap(exclusivity)` under lupin exactly where wolf has said E0804
-#     all along; the book re-spells every Part-1 receiver `(mut xs)`),
-#     and 2 are the version transcripts above. One of the 41 wore a
-#     disguise: ch16's ex16-1 trapped inside a spawned task, the send
-#     never happened, and the `else` on `recv()` swallowed the fault
-#     into a bare exit 1.
+#   * The catalog grows 164 -> 168: E0211, E0415, E0813, W0317. The
+#     anchors grow 393 -> 397: [conf.trap.render], [conf.trap.report],
+#     [conf.directive.standalone], [gram.attr.index],
+#     [gram.expr.index.origin] arrive; [gram.lex.ident] DROPS OUT of
+#     the regenerated set — a spec-extract scanner defect at this rev
+#     (s126's bare `[` literals derail its bracket scanner, filed
+#     wolf-lang#170); the clause text stands, the book cites the tag
+#     nowhere, and the anchor rides the fix. The grammar gains
+#     inner_attribute; Appendix A regenerates.
+#   * `wolf --version`'s pairing line names lupin 0.1.15 at pin
+#     a900b8c — the interpreter release the s122–s125 differential ran
+#     against — while the lupin beside it is the 0.1.16 release naming
+#     pin e561c6f back. The two lines name different releases on
+#     purpose, one release apart (the is27 release rode AFTER the last
+#     differential stamp); the colophon and §1.2 print them as they
+#     are, the way the 0.1.8/0.1.10 era did.
+#   * 34 console rows re-record at this bump, all classified, residue
+#     empty: 31 are lupin file-door diagnostic lines re-spelled
+#     line:col by is27 (with the corpus EXERCISES.md hand-lane rows
+#     that feed the Solutions page), 2 are the version transcripts
+#     above, and 1 is §21.4's native trap gaining its site line. In
+#     the other direction the host's own ledger empties: the 34
+#     compile-lane rows that were environmental failures on
+#     macOS/aarch64 at the old pin (native codegen was linux-only)
+#     now build, run, and byte-compare on this machine — linux CI
+#     keeps the gate either way.
 #
-# This sha is the newest non-bot commit on trunk; the parent project's
-# gauntlet and bench-gates runs are green on it, which is what the gate
-# asks for.
+# This sha is the newest non-bot commit on trunk; all six wolf-lang CI
+# jobs are green on it, which is what the gate asks for.
 repo = "wolffe-lang/wolf-lang"
-rev = "a900b8c8540246ff69aaee424ba412d06bc6b340"
+rev = "addcd7f0bd90b16bfa8bec429ab7f27c46a2c1bb"
 impl_version = "0.1.0"
 
 [lupin]
-# wolf-interp at the v0.1.14 release tag (the is14–is25 catch-up,
-# released at pin 90c90df): the stamped line names lupin 0.1.14 at pin
-# 90c90df, the compiler's pairing line at this book's [wolf] rev names
-# the same release and pin back, and the two version transcripts
-# (colophon, §1.2) move accordingly. The book's [wolf] rev sits four
-# merges past 90c90df on the same trunk; the stamped pairing pin is the
-# release identity, not this book's sample pin, and the transcripts
-# print it as the tools do.
+# wolf-interp at the v0.1.16 release tag (is27, released at pin
+# e561c6f): the stamped line names lupin 0.1.16 at pin e561c6f. The
+# compiler's pairing line at this book's [wolf] rev names lupin 0.1.15
+# at pin a900b8c — one release behind, because the is27 release
+# followed the last differential stamp; each line is that tool's own
+# documented fact, the two version transcripts (colophon, §1.2) print
+# them as they are, and the KIND-level agreement the pairing exists
+# for is unaffected. The book's [wolf] rev sits past e561c6f on the
+# same trunk (s127, s126, the CI sweep); a release's pin is its
+# identity, not this book's sample pin.
 #
-# What 0.1.14 carries, as the book meets it: receiver-mode enforcement —
-# X1's call-site mode is now dynamic, so bare `xs.push(…)` is
-# trap(exclusivity) naming E0804's spelling, which closes ch21's oldest
-# divergence row (lupin ran what wolf refused) and re-spells 41 samples
-# in this repo. Deterministic scheduling, the REPL line editor (is25),
-# and the D57 version-suffix discipline (an off-tag build says
-# +dev.<commit>; this rev IS the tag, so the transcripts stay clean).
-# NOT yet in this machine: `char` — a `'…'` literal is E0101 ("`'`
-# begins no token") and `chars()` answers `unsupported` by name, so
-# chapter 2's char sections run on the compiler lane with an honest
-# per-machine note until the wolf-interp char sprint (is26) lands.
+# What 0.1.16 carries, as the book meets it — is27, the lupin half of
+# s125's trap-site pair: every file-door human fault line (trap, UB
+# finding, static diagnostic, secondary spans included) spells its
+# location `line:col` — 1-based line, 1-based column counted in
+# characters — where 0.1.14 printed entry-relative byte offsets. That
+# re-records 31 chapter console lines and the corpus's hand-checked
+# solutions rows in this repo, and it closes the book's oldest
+# diagnostic complaint (a learner counting bytes; wolf-lang#158). The
+# REPL door deliberately keeps byte offsets (a session has no stable
+# line numbering; documented in wolf-interp docs/repl.md), so the
+# book's ~6 REPL-transcript span lines stay byte-span. Beneath it,
+# 0.1.15 (is26) taught this machine `char` from the spec: `'…'`
+# literals lex (E0110 refuses the malformed shapes by name), casts
+# trap per D58, `chars()` yields `List[char]` — so chapter 2's §2.4
+# no longer needs its compiler-lane scoping note, and both machines
+# read every char sample in this book. D57 discipline: this rev IS
+# the tag, so the transcripts stay clean.
 repo = "wolffe-lang/wolf-interp"
-rev = "a3591de454ef5262872f86640e7b1457431d46d6"
-version = "lupin 0.1.14 (wolf-interp, reference interpreter at pin 90c90df)"
+rev = "2777fa3a57aa6bcf4505b9e33e4b47d97936d19a"
+version = "lupin 0.1.16 (wolf-interp, reference interpreter at pin e561c6f)"
 
 [wolf-lsp]
 # Source of the vendored tmLanguage grammars under highlight/.
