@@ -728,7 +728,7 @@ mod tests {
 
     #[test]
     fn details_wrappers_expand_for_print() {
-        let md = "<details>\n<summary>Exercise 3-2 — [§3.1](../ch03.md#3.1)</summary>\n\nbody text\n</details>\n";
+        let md = "<details>\n<summary>Exercise 3-2. [§3.1](../ch03.md#3.1)</summary>\n\nbody text\n</details>\n";
         let out = typst_prose(md);
         assert!(!out.contains("details"), "got: {out}");
         assert!(out.contains("==== Exercise 3-2"), "got: {out}");
