@@ -24,9 +24,9 @@ cross-reference pointing at the wrong section, a heading that lies about
 its section. These take the fast path and land as soon as they are read.
 
 **Drift.** A sample that no longer runs on a newer toolchain than the
-colophon's. CI catches most of this before a reader does (the book builds against
-the compiler's own main branch nightly, and a break is visible there
-first), but the nightly is a report and not a gate, so a reader on a
+colophon's. CI catches most of this before a reader does (the book builds
+against the compiler's own main branch nightly, and a break is visible
+there first), but the nightly is a report and not a gate, so a reader on a
 newer toolchain may arrive first. Drift is fixed at the next pin bump.
 
 ## What this edition promises
