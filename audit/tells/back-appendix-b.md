@@ -23,3 +23,15 @@ exists to prevent.
   "permitted rather than required" is conformance vocabulary, not
   flourish; severity: noted (recorded for the lane's rather-than
   density); suggestion: none.
+
+## bs16 — dispositions
+
+- [15–17] **bs16: kept-with-defense** — unchanged.
+- [42–45] **bs16: kept-with-defense** — conformance vocabulary,
+  unchanged ("permitted rather than required" is the spec's own
+  contrast; within the R5 cap).
+- **bs16 (no bs14 row):** bs17's re-recorded trap-line paragraph
+  brought one post-catalog dash pair (the 1-based line/column
+  apposition) — moved to parentheses (R7/R2). 0 running dashes in 546
+  prose words; the heading title dash stays as template. The D60/is27
+  content added by bs17 is untouched.

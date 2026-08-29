@@ -11,8 +11,8 @@ prints it:
 <file>.lu: trap(<kind>): <fault> [<clause>] at <line>:<col>
 ```
 
-The location is the operation that faulted — a 1-based line and a
-1-based column counted in characters — and a trap ends the process with
+The location is the operation that faulted (a 1-based line and a
+1-based column counted in characters), and a trap ends the process with
 exit 3. The status is per-machine and documented, not part of the
 contract: 3 is the interpreter's, a compiled binary ends with its own
 documented 134, and conforming tools compare the *kind*, never the
