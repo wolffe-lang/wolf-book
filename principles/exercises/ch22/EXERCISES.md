@@ -53,7 +53,7 @@ is not one:
 
 ```console
 $ lupin leak/main.lu
-leak/main.lu: E0304: `total` exists in `vault`, but it is private; only `pub`/`pub(pkg)` items are visible across modules (D32) [mod.vis.private] at 49..54
+leak/main.lu: E0304: `total` exists in `vault`, but it is private; only `pub`/`pub(pkg)` items are visible across modules (D32) [mod.vis.private] at 7:19
 $ echo $?
 2
 ```
@@ -70,7 +70,7 @@ second definition is a duplicate wherever it sits:
 
 ```console
 $ lupin twice/main.lu
-twice/main.lu: E0302: the name `describe` is defined twice in this module (defined again in `twice/main.lu`); file boundaries create no scopes (D32) [mod.dup] at 3..11
+twice/main.lu: E0302: the name `describe` is defined twice in this module (defined again in `twice/main.lu`); file boundaries create no scopes (D32) [mod.dup] at 4:4
 ```
 
 **Exercise 22-4** *(comprehension · lupin)* — The entry imports
@@ -84,7 +84,7 @@ slows every build and means nothing, and a warning would be a request:
 
 ```console
 $ lupin unused/main.lu
-unused/main.lu: E0305: the import `tools` is never used in `unused/main.lu`; an unused import is a hard error (D32), and deleting the line is machine-applicable [mod.use.unused] at 4..9
+unused/main.lu: E0305: the import `tools` is never used in `unused/main.lu`; an unused import is a hard error (D32), and deleting the line is machine-applicable [mod.use.unused] at 4:5
 ```
 
 ## §22.2 — No cycles
@@ -100,7 +100,7 @@ Solution — before, the cycle drawn whole:
 
 ```console
 $ lupin tangle/main.lu
-tangle/main.lu: E0303: this import completes a cycle: `store` → `index` → `store` (in `tangle/index/index.lu`); imports between modules must form a DAG (D32) [mod.cycle] at 70..80
+tangle/main.lu: E0303: this import completes a cycle: `store` → `index` → `store` (in `tangle/index/index.lu`); imports between modules must form a DAG (D32) [mod.cycle] at 3:48
 ```
 
 After — `ch22/untangled/` adds `kinds/`, which imports nothing;

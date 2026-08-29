@@ -112,7 +112,7 @@ fires where the program finally reaches for it.
 
 ```console
 $ lupin ex8-3.lu
-ex8-3.lu: trap(region-fault): `keep.value` reaches into `tmp` (region #1), which was freed wholesale; the value died with the region [mem.region.intra.2] at 249..259; the region was created here at 190..241
+ex8-3.lu: trap(region-fault): `keep.value` reaches into `tmp` (region #1), which was freed wholesale; the value died with the region [mem.region.intra.2] at 10:8; the region was created here at 7:5
 $ echo $?
 3
 ```
@@ -181,7 +181,7 @@ this one is open at the send:
 
 ```console
 $ lupin ex8-5.lu
-ex8-5.lu: trap(region-fault): region #1 is open here and cannot be transferred; a region moves as a closed subtree (the compiler's E1005) [mem.region.freeze.3] at 277..283
+ex8-5.lu: trap(region-fault): region #1 is open here and cannot be transferred; a region moves as a closed subtree (the compiler's E1005) [mem.region.freeze.3] at 10:17
 $ echo $?
 3
 ```
@@ -326,7 +326,7 @@ the clause E1012 enforces statically:
 
 ```console
 $ lupin ex8-9.lu
-ex8-9.lu: trap(region-fault): region #1 is frozen: `imm` data is immutable forever [mem.region.freeze.1] at 195..208
+ex8-9.lu: trap(region-fault): region #1 is frozen: `imm` data is immutable forever [mem.region.freeze.1] at 7:5
 $ echo $?
 3
 ```
@@ -350,7 +350,7 @@ fn main() -> !int {
 
 ```console
 $ lupin ex8-10.lu
-ex8-10.lu: trap(region-fault): region #1 is frozen: `imm` data is immutable forever [mem.region.freeze.1] at 264..275
+ex8-10.lu: trap(region-fault): region #1 is frozen: `imm` data is immutable forever [mem.region.freeze.1] at 9:13
 $ echo $?
 3
 ```
@@ -421,7 +421,7 @@ Solution:
 
 ```console
 $ lupin ex8-12.lu
-ex8-12.lu: trap(stale-handle): handle into pool#0 slot 0 carries generation 0, the slot is at generation 1; a stale handle is a deterministic fault in every profile, never UB [mem.shared.handle.2] at 348..355
+ex8-12.lu: trap(stale-handle): handle into pool#0 slot 0 carries generation 0, the slot is at generation 1; a stale handle is a deterministic fault in every profile, never UB [mem.shared.handle.2] at 11:17
 $ echo $?
 3
 ```

@@ -18,7 +18,7 @@ printed in Appendix B.
 
 ```console
 $ lupin exB-1.lu
-exB-1.lu: trap(overflow): `+` produced 2147483648, outside `i32` — checked arithmetic traps in every profile (X3); spell intended overflow `wrapping[i32]` [arith.checked] at 152..159
+exB-1.lu: trap(overflow): `+` produced 2147483648, outside `i32` — checked arithmetic traps in every profile (X3); spell intended overflow `wrapping[i32]` [arith.checked] at 6:13
 ```
 
 `overflow`, `[arith.checked]`. The line also names the decision (X3)
@@ -30,7 +30,7 @@ computed to zero. The pointed part: is remainder division?
 
 ```console
 $ lupin exB-2.lu
-exB-2.lu: trap(div-zero): division by zero is defined behavior in wolf: it traps [mem.ub.defined] at 176..181
+exB-2.lu: trap(div-zero): division by zero is defined behavior in wolf: it traps [mem.ub.defined] at 7:13
 ```
 
 `div-zero`, `[mem.ub.defined]` — remainder is division for this
@@ -42,7 +42,7 @@ list.
 
 ```console
 $ lupin exB-3.lu
-exB-3.lu: trap(bounds): index 1 is outside a collection of 1 element(s) [mem.ub.defined] at 158..163
+exB-3.lu: trap(bounds): index 1 is outside a collection of 1 element(s) [mem.ub.defined] at 7:13
 ```
 
 `bounds`, `[mem.ub.defined]` — one clause family covers list
@@ -53,7 +53,7 @@ indexing and byte slicing (exercise 2-6): defined fault, not UB.
 
 ```console
 $ lupin exB-4.lu
-exB-4.lu: trap(use-after-move): `s` was moved out and is uninitialized here [mem.tier0.move.2] at 170..171; `s` moved here at 153..159
+exB-4.lu: trap(use-after-move): `s` was moved out and is uninitialized here [mem.tier0.move.2] at 7:11; `s` moved here at 6:13
 $ echo $?
 3
 ```
@@ -67,7 +67,7 @@ p.a.n)`: a path and its own prefix, both claimed `mut`.
 
 ```console
 $ lupin exB-5.lu
-exB-5.lu: trap(exclusivity): `p.a.n` is accessed as `mut` while `p.a` is held as `mut`; the paths conflict [mem.model.path.disjoint] at 316..325; `p.a` held here at 307..314
+exB-5.lu: trap(exclusivity): `p.a.n` is accessed as `mut` while `p.a` is held as `mut`; the paths conflict [mem.model.path.disjoint] at 9:19; `p.a` held here at 9:10
 ```
 
 `exclusivity`, `[mem.model.path.disjoint]` — the clause exercise 4-4
@@ -78,7 +78,7 @@ whose region was frozen.
 
 ```console
 $ lupin exB-6.lu
-exB-6.lu: trap(region-fault): region #1 is frozen: `imm` data is immutable forever [mem.region.freeze.1] at 280..291
+exB-6.lu: trap(region-fault): region #1 is frozen: `imm` data is immutable forever [mem.region.freeze.1] at 9:13
 ```
 
 `region-fault`, `[mem.region.freeze.1]` — the kind covers every
@@ -89,7 +89,7 @@ whose slot was removed.
 
 ```console
 $ lupin exB-7.lu
-exB-7.lu: trap(stale-handle): handle into pool#0 slot 0 carries generation 0, the slot is at generation 1; a stale handle is a deterministic fault in every profile, never UB [mem.shared.handle.2] at 328..335
+exB-7.lu: trap(stale-handle): handle into pool#0 slot 0 carries generation 0, the slot is at generation 1; a stale handle is a deterministic fault in every profile, never UB [mem.shared.handle.2] at 11:9
 ```
 
 `stale-handle`, `[mem.shared.handle.2]` — the generation arithmetic
@@ -102,7 +102,7 @@ claimed - 1)` with `claimed = 4`.
 
 ```console
 $ lupin exB-8.lu
-exB-8.lu: trap(assert): assertion failed [conf.trap.map] at 130..163
+exB-8.lu: trap(assert): assertion failed [conf.trap.map] at 6:5
 ```
 
 `assert`, `[conf.trap.map]` — the one trap you aim on purpose; its
@@ -114,7 +114,7 @@ channel in a one-task program.
 
 ```console
 $ lupin exB-9.lu
-exB-9.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0) [conc.deadlock.trap] at 206..215
+exB-9.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0) [conc.deadlock.trap] at 7:13
 ```
 
 `deadlock`, `[conc.deadlock.trap]`, with the blocked-task roster —
@@ -149,7 +149,7 @@ carry that no other trap has?
 
 ```console
 $ lupin exB-11.lu
-exB-11.lu: ub(mem.ub) §7/L2: read through an exposed pointer into alloc#0, which was freed [mem.unsafe.raw.1] at 405..409; tag created at 264..275
+exB-11.lu: ub(mem.ub) §7/L2: read through an exposed pointer into alloc#0, which was freed [mem.unsafe.raw.1] at 14:17; tag created at 9:17
   licenses O8: escape analysis / stack promotion without conservatively pinning addresses
   alloc#0 `c.malloc(8)` 8 byte(s), FREED, owned by region #0
     tag#0 c.malloc(8)#root Disabled exposed
@@ -236,7 +236,7 @@ The interpreter, at the moment of the read:
 
 ```console
 $ lupin exC-2.lu
-exC-2.lu: trap(use-after-move): `d.name` was moved out and is uninitialized here [mem.tier0.move.2] at 255..261; `d.name` moved here at 232..243
+exC-2.lu: trap(use-after-move): `d.name` was moved out and is uninitialized here [mem.tier0.move.2] at 9:11; `d.name` moved here at 8:19
 $ echo $?
 3
 ```

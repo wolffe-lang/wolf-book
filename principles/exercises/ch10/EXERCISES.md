@@ -115,7 +115,7 @@ fn main() -> !int {
 
 ```console
 $ lupin ex10-4.lu
-ex10-4.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0), `task@196` (task 1) [conc.deadlock.trap] at 178..304
+ex10-4.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0), `task@196` (task 1) [conc.deadlock.trap] at 6:5
 $ echo $?
 3
 ```

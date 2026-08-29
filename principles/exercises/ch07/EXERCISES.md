@@ -120,7 +120,7 @@ help: to keep the original, copy it at the move
 
 ```console
 $ lupin ex7-3.lu
-ex7-3.lu: trap(use-after-move): `s.a` was moved out and is uninitialized here [mem.tier0.move.2] at 236..239; `s.a` moved here at 214..222
+ex7-3.lu: trap(use-after-move): `s.a` was moved out and is uninitialized here [mem.tier0.move.2] at 9:13; `s.a` moved here at 8:17
 $ echo $?
 3
 ```
@@ -151,7 +151,7 @@ user-defined types. The fix spells the duplication where it happens:
 
 ```console
 $ lupin ex7-4.lu
-ex7-4.lu: trap(use-after-move): `a.x` was moved out and is uninitialized here [mem.tier0.move.2] at 233..236; `a` moved here at 219..220
+ex7-4.lu: trap(use-after-move): `a.x` was moved out and is uninitialized here [mem.tier0.move.2] at 8:13; `a` moved here at 7:13
 ```
 
 `ch07/ex7-4b.lu` changes one word — `let b = copy a` — and:
@@ -282,7 +282,7 @@ error[E1002]: `n` cannot go `mut` here: it overlaps `n`, already passed `mut` in
 
 ```console
 $ lupin ex7-7.lu
-ex7-7.lu: trap(exclusivity): `n` is accessed as `mut` while `n` is held as `mut`; the paths conflict [mem.tier0.excl.1] at 215..220; `n` held here at 208..213
+ex7-7.lu: trap(exclusivity): `n` is accessed as `mut` while `n` is held as `mut`; the paths conflict [mem.tier0.excl.1] at 10:18; `n` held here at 10:11
 ```
 
 If allowed, `n` could be 1 or 2 depending on whether `a` and `b` are

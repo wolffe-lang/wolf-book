@@ -112,7 +112,7 @@ Solution: 2000 × 1,000,000 = 2.0 × 10⁹ fits under `i32`'s
 ```console
 $ lupin ex21-5.lu
 2000000000
-ex21-5.lu: trap(overflow): `+` produced 2148000000, outside `i32` — checked arithmetic traps in every profile (X3); spell intended overflow `wrapping[i32]` [arith.checked] at 272..286
+ex21-5.lu: trap(overflow): `+` produced 2148000000, outside `i32` — checked arithmetic traps in every profile (X3); spell intended overflow `wrapping[i32]` [arith.checked] at 9:9
 $ echo $?
 3
 ```

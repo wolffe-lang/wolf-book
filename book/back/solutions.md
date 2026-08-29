@@ -173,7 +173,7 @@ Solution — `ch01/ex1-6.lu` (broken on purpose):
 
 ```console
 $ lupin ex1-6.lu
-ex1-6.lu: E0202: the file ends where `}` was required [gram.expr.block] at 162..162
+ex1-6.lu: E0202: the file ends where `}` was required [gram.expr.block] at 6:6
 $ echo $?
 2
 ```
@@ -308,7 +308,7 @@ in its clause tag:
 
 ```console
 $ lupin ex2-3.lu
-ex2-3.lu: trap(bounds): byte range 2..9 is outside a 4-byte string [mem.ub.defined] at 156..163
+ex2-3.lu: trap(bounds): byte range 2..9 is outside a 4-byte string [mem.ub.defined] at 6:13
 $ echo $?
 3
 ```
@@ -474,11 +474,7 @@ before running: for each of `"wolf"`, `"é"`, and `"e\u{301}"`, both
 `.len` and `.chars().len`. Then the pointed half: which of the six
 could §2.3 have told you, and which one needed this section?
 
-Solution — `ch02/wolfrun/ex2-9.lu` (wolf lane, isolated in a
-subdirectory so the interpreter-lane siblings keep their one-main
-module; the interpreter at this printing's pin does not read `char`
-yet, and §2.4
-says so on the page):
+Solution — `ch02/ex2-9.lu`:
 
 ```wolf
 fn main() -> !int {
@@ -583,7 +579,7 @@ help: to keep the original, copy it at the move
 
 ```console
 $ lupin ./ex3-2.lu
-./ex3-2.lu: trap(use-after-move): `p.lead` was moved out and is uninitialized here [mem.tier0.move.2] at 381..387; `p.lead` moved here at 337..348
+./ex3-2.lu: trap(use-after-move): `p.lead` was moved out and is uninitialized here [mem.tier0.move.2] at 11:13; `p.lead` moved here at 9:19
 $ echo $?
 3
 ```
@@ -606,7 +602,7 @@ cites, and the line also names the spelling for intentional wraparound:
 
 ```console
 $ lupin ex3-3.lu
-ex3-3.lu: trap(overflow): `+` produced 2147483648, outside `i32` — checked arithmetic traps in every profile (X3); spell intended overflow `wrapping[i32]` [arith.checked] at 178..185
+ex3-3.lu: trap(overflow): `+` produced 2147483648, outside `i32` — checked arithmetic traps in every profile (X3); spell intended overflow `wrapping[i32]` [arith.checked] at 6:16
 ```
 </details>
 
@@ -627,7 +623,7 @@ zero arrived:
 
 ```console
 $ lupin ex3-4.lu
-ex3-4.lu: trap(div-zero): division by zero is defined behavior in wolf: it traps [mem.ub.defined] at 187..192
+ex3-4.lu: trap(div-zero): division by zero is defined behavior in wolf: it traps [mem.ub.defined] at 7:13
 ```
 </details>
 
@@ -670,7 +666,7 @@ fn main() -> !int {
 
 ```console
 $ lupin ex3-6.lu
-ex3-6.lu: trap(overflow): `*` produced 2147488281, outside `i32` — checked arithmetic traps in every profile (X3); spell intended overflow `wrapping[i32]` [arith.checked] at 160..165
+ex3-6.lu: trap(overflow): `*` produced 2147488281, outside `i32` — checked arithmetic traps in every profile (X3); spell intended overflow `wrapping[i32]` [arith.checked] at 6:13
 $ echo $?
 3
 ```
@@ -1082,7 +1078,7 @@ because indexing is checked everywhere:
 
 ```console
 $ lupin ex5-4.lu
-ex5-4.lu: trap(bounds): index 10 is outside a collection of 1 element(s) [mem.ub.defined] at 193..199
+ex5-4.lu: trap(bounds): index 10 is outside a collection of 1 element(s) [mem.ub.defined] at 7:13
 $ echo $?
 3
 ```
@@ -1776,7 +1772,7 @@ help: to keep the original, copy it at the move
 
 ```console
 $ lupin ex7-3.lu
-ex7-3.lu: trap(use-after-move): `s.a` was moved out and is uninitialized here [mem.tier0.move.2] at 236..239; `s.a` moved here at 214..222
+ex7-3.lu: trap(use-after-move): `s.a` was moved out and is uninitialized here [mem.tier0.move.2] at 9:13; `s.a` moved here at 8:17
 $ echo $?
 3
 ```
@@ -1811,7 +1807,7 @@ user-defined types. The fix spells the duplication where it happens:
 
 ```console
 $ lupin ex7-4.lu
-ex7-4.lu: trap(use-after-move): `a.x` was moved out and is uninitialized here [mem.tier0.move.2] at 233..236; `a` moved here at 219..220
+ex7-4.lu: trap(use-after-move): `a.x` was moved out and is uninitialized here [mem.tier0.move.2] at 8:13; `a` moved here at 7:13
 ```
 
 `ch07/ex7-4b.lu` changes one word — `let b = copy a` — and:
@@ -1903,7 +1899,7 @@ error[E1002]: `n` cannot go `mut` here: it overlaps `n`, already passed `mut` in
 
 ```console
 $ lupin ex7-7.lu
-ex7-7.lu: trap(exclusivity): `n` is accessed as `mut` while `n` is held as `mut`; the paths conflict [mem.tier0.excl.1] at 215..220; `n` held here at 208..213
+ex7-7.lu: trap(exclusivity): `n` is accessed as `mut` while `n` is held as `mut`; the paths conflict [mem.tier0.excl.1] at 10:18; `n` held here at 10:11
 ```
 
 If allowed, `n` could be 1 or 2 depending on whether `a` and `b` are
@@ -2258,7 +2254,7 @@ fires where the program finally reaches for it.
 
 ```console
 $ lupin ex8-3.lu
-ex8-3.lu: trap(region-fault): `keep.value` reaches into `tmp` (region #1), which was freed wholesale; the value died with the region [mem.region.intra.2] at 249..259; the region was created here at 190..241
+ex8-3.lu: trap(region-fault): `keep.value` reaches into `tmp` (region #1), which was freed wholesale; the value died with the region [mem.region.intra.2] at 10:8; the region was created here at 7:5
 $ echo $?
 3
 ```
@@ -2333,7 +2329,7 @@ this one is open at the send:
 
 ```console
 $ lupin ex8-5.lu
-ex8-5.lu: trap(region-fault): region #1 is open here and cannot be transferred; a region moves as a closed subtree (the compiler's E1005) [mem.region.freeze.3] at 277..283
+ex8-5.lu: trap(region-fault): region #1 is open here and cannot be transferred; a region moves as a closed subtree (the compiler's E1005) [mem.region.freeze.3] at 10:17
 $ echo $?
 3
 ```
@@ -2490,7 +2486,7 @@ the clause E1012 enforces statically:
 
 ```console
 $ lupin ex8-9.lu
-ex8-9.lu: trap(region-fault): region #1 is frozen: `imm` data is immutable forever [mem.region.freeze.1] at 195..208
+ex8-9.lu: trap(region-fault): region #1 is frozen: `imm` data is immutable forever [mem.region.freeze.1] at 7:5
 $ echo $?
 3
 ```
@@ -2518,7 +2514,7 @@ fn main() -> !int {
 
 ```console
 $ lupin ex8-10.lu
-ex8-10.lu: trap(region-fault): region #1 is frozen: `imm` data is immutable forever [mem.region.freeze.1] at 264..275
+ex8-10.lu: trap(region-fault): region #1 is frozen: `imm` data is immutable forever [mem.region.freeze.1] at 9:13
 $ echo $?
 3
 ```
@@ -2593,7 +2589,7 @@ Solution:
 
 ```console
 $ lupin ex8-12.lu
-ex8-12.lu: trap(stale-handle): handle into pool#0 slot 0 carries generation 0, the slot is at generation 1; a stale handle is a deterministic fault in every profile, never UB [mem.shared.handle.2] at 348..355
+ex8-12.lu: trap(stale-handle): handle into pool#0 slot 0 carries generation 0, the slot is at generation 1; a stale handle is a deterministic fault in every profile, never UB [mem.shared.handle.2] at 11:17
 $ echo $?
 3
 ```
@@ -2833,7 +2829,7 @@ Solution — the report, in full:
 
 ```console
 $ lupin ex9-3.lu
-ex9-3.lu: ub(mem.ub) §7/P3: write of 1 byte(s) at alloc#0[8], which holds 8 [mem.ub] at 350..358; tag created at 297..308
+ex9-3.lu: ub(mem.ub) §7/P3: write of 1 byte(s) at alloc#0[8], which holds 8 [mem.ub] at 11:9; tag created at 9:17
   licenses O3a: `dereferenceable(n)` on known-size accesses; bounds-based alias disproof between distinct allocations
   alloc#0 `c.malloc(8)` 8 byte(s), live, owned by region #0
     tag#0 c.malloc(8)#root Active exposed
@@ -2871,7 +2867,7 @@ Solution: no. The integer survives; the *permission* does not.
 
 ```console
 $ lupin ex9-4.lu
-ex9-4.lu: ub(mem.ub) §7/L2: read through an exposed pointer into alloc#0, which was freed [mem.unsafe.raw.1] at 458..462; tag created at 317..328
+ex9-4.lu: ub(mem.ub) §7/L2: read through an exposed pointer into alloc#0, which was freed [mem.unsafe.raw.1] at 14:17; tag created at 9:17
   licenses O8: escape analysis / stack promotion without conservatively pinning addresses
   alloc#0 `c.malloc(8)` 8 byte(s), FREED, owned by region #0
     tag#0 c.malloc(8)#root Disabled exposed
@@ -2907,12 +2903,12 @@ let v = p[0]
 
 ```console
 $ lupin ex9-5.lu
-ex9-5.lu: ub(mem.ub) §7/P1: read through tag#0 (c.malloc(8)#root), which is Disabled at alloc#0[0] [mem.prov.state] at 333..337; tag created at 263..274
+ex9-5.lu: ub(mem.ub) §7/P1: read through tag#0 (c.malloc(8)#root), which is Disabled at alloc#0[0] [mem.prov.state] at 11:17; tag created at 8:17
   licenses O1: `mut` params lower to `noalias` + `dereferenceable`; unique-tag stores forward without memory checks
   alloc#0 `c.malloc(8)` 8 byte(s), FREED, owned by region #0
     tag#0 c.malloc(8)#root Disabled exposed
 $ lupin ex9-5.lu
-ex9-5.lu: ub(mem.ub) §7/P1: read through tag#0 (c.malloc(8)#root), which is Disabled at alloc#0[0] [mem.prov.state] at 333..337; tag created at 263..274
+ex9-5.lu: ub(mem.ub) §7/P1: read through tag#0 (c.malloc(8)#root), which is Disabled at alloc#0[0] [mem.prov.state] at 11:17; tag created at 8:17
   licenses O1: `mut` params lower to `noalias` + `dereferenceable`; unique-tag stores forward without memory checks
   alloc#0 `c.malloc(8)` 8 byte(s), FREED, owned by region #0
     tag#0 c.malloc(8)#root Disabled exposed
@@ -2948,7 +2944,7 @@ written is on the list in its own right:
 
 ```console
 $ lupin ex9-6.lu
-ex9-6.lu: ub(mem.ub) §7/L1: read of alloc#0[0], which nothing has written [mem.ub] at 306..310; tag created at 270..282
+ex9-6.lu: ub(mem.ub) §7/L1: read of alloc#0[0], which nothing has written [mem.ub] at 10:17; tag created at 9:17
   licenses O7: moves lower to memcpy-and-forget; dead-store elimination on moved-from places; no zero-init of locals
   alloc#0 `c.malloc(64)` 64 byte(s), live, owned by region #0
     tag#0 c.malloc(64)#root Active exposed
@@ -2981,7 +2977,7 @@ $ lupin ex9-7a.lu
 $ echo $?
 0
 $ lupin ex9-7b.lu
-ex9-7b.lu: ub(mem.ub) §7/P6: `borrow region #1 from` a pointer into alloc#0, which is owned by `program` (region #0) — the obligation is that the allocation lies wholly inside the named region's footprint [mem.unsafe.door] at 395..410; tag created at 334..345
+ex9-7b.lu: ub(mem.ub) §7/P6: `borrow region #1 from` a pointer into alloc#0, which is owned by `program` (region #0) — the obligation is that the allocation lies wholly inside the named region's footprint [mem.unsafe.door] at 12:17; tag created at 10:17
   licenses O6: safe-tier code after the door keeps all safe-tier entitlements (O1–O4) — the door is where trust concentrates
   alloc#0 `c.malloc(8)` 8 byte(s), live, owned by region #0
     tag#0 c.malloc(8)#root Active exposed
@@ -3051,7 +3047,7 @@ Solution:
 
 ```console
 $ lupin ex9-9.lu
-ex9-9.lu: ub(mem.ub) §7/P4: read at alloc#0[0], whose owning region #1 was freed wholesale [mem.prov.region] at 438..442; tag created at 341..352
+ex9-9.lu: ub(mem.ub) §7/P4: read at alloc#0[0], whose owning region #1 was freed wholesale [mem.prov.region] at 14:17; tag created at 10:25
   licenses O3b: one alias-scope domain per region — pointers into distinct regions never alias; O4: regions not open in the current scope yield `invariant.load`
   alloc#0 `c.malloc(8)` 8 byte(s), live, owned by region #1
     tag#0 c.malloc(8)#root Disabled exposed
@@ -3171,7 +3167,7 @@ q[0] = 2
 
 ```console
 $ lupin ex9-13.lu
-ex9-13.lu: ub(mem.ub) §7/P5: `assume noalias` asserts these ranges are disjoint, and alloc#0[0..1) overlaps alloc#0[0..1) — the assertion is false [mem.unsafe.raw.2] at 337..356; tag created at 292..303
+ex9-13.lu: ub(mem.ub) §7/P5: `assume noalias` asserts these ranges are disjoint, and alloc#0[0..1) overlaps alloc#0[0..1) — the assertion is false [mem.unsafe.raw.2] at 11:9; tag created at 9:17
   licenses O5: the asserted ranges get `noalias` treatment in Tier-3 code — vectorization/reordering as if proven
   alloc#0 `c.malloc(8)` 8 byte(s), live, owned by region #0
     tag#0 c.malloc(8)#root Active exposed
@@ -3202,7 +3198,7 @@ Solution — `ch09/ex9-14.lu`:
 
 ```console
 $ lupin ex9-14.lu
-ex9-14.lu: ub(mem.ub) §7/P1: read through tag#1 (`borrow … from`), which is Disabled at alloc#0[0] [mem.prov.state] at 478..487; tag created at 423..444
+ex9-14.lu: ub(mem.ub) §7/P1: read through tag#1 (`borrow … from`), which is Disabled at alloc#0[0] [mem.prov.state] at 15:17; tag created at 13:22
   licenses O1: `mut` params lower to `noalias` + `dereferenceable`; unique-tag stores forward without memory checks
   alloc#0 `c.malloc(8)` 8 byte(s), live, owned by region #1
     tag#0 c.malloc(8)#root Active exposed
@@ -3352,7 +3348,7 @@ fn main() -> !int {
 
 ```console
 $ lupin ex10-4.lu
-ex10-4.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0), `task@196` (task 1) [conc.deadlock.trap] at 178..304
+ex10-4.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0), `task@196` (task 1) [conc.deadlock.trap] at 6:5
 $ echo $?
 3
 ```
@@ -3629,7 +3625,7 @@ waits for children, and the trap names all four:
 
 ```console
 $ lupin ex11-2.lu
-ex11-2.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0), `task@219` (task 1), `task@219` (task 2), `task@219` (task 3) [conc.deadlock.trap] at 326..416
+ex11-2.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0), `task@219` (task 1), `task@219` (task 2), `task@219` (task 3) [conc.deadlock.trap] at 11:5
 $ echo $?
 3
 ```
@@ -3904,7 +3900,7 @@ fn main() -> !int {
 
 ```console
 $ lupin ex12-2.lu
-ex12-2.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0) [conc.deadlock.trap] at 211..221
+ex12-2.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0) [conc.deadlock.trap] at 8:5
 $ echo $?
 3
 ```
@@ -4165,7 +4161,7 @@ fn main() -> !int {
 
 ```console
 $ lupin ex12-9.lu
-ex12-9.lu: E0201: `when` acquires a set, so it needs at least two operands; for one, call the method on the sync type [gram.expr.conc] at 544..552
+ex12-9.lu: E0201: `when` acquires a set, so it needs at least two operands; for one, call the method on the sync type [gram.expr.conc] at 14:24
 $ echo $?
 2
 ```
@@ -4283,7 +4279,7 @@ The interpreter refuses the same program, and says it once:
 
 ```console
 $ lupin ex13-3.lu
-ex13-3.lu: E1101: this task writes to `hits`, which it captures from the enclosing function: unsynchronized mutable capture across tasks (D14 — copy, share `imm`, or `move`; a `sync` type mediates shared writes) [conc.task.spawn] at 318..322
+ex13-3.lu: E1101: this task writes to `hits`, which it captures from the enclosing function: unsynchronized mutable capture across tasks (D14 — copy, share `imm`, or `move`; a `sync` type mediates shared writes) [conc.task.spawn] at 9:24
 $ echo $?
 2
 ```
@@ -5106,7 +5102,7 @@ fn main() -> !int {
 
 ```console
 $ lupin ex16-3.lu
-ex16-3.lu: trap(use-after-move): `r` was moved out and is uninitialized here [mem.tier0.move.2] at 254..255; `r` moved here at 231..237
+ex16-3.lu: trap(use-after-move): `r` was moved out and is uninitialized here [mem.tier0.move.2] at 9:16; `r` moved here at 8:13
 $ echo $?
 3
 ```
@@ -5628,7 +5624,7 @@ fn main() -> !int {
 
 ```console
 $ lupin ex17-9.lu
-ex17-9.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0), `task@231` (task 1), `task@336` (task 2) [conc.deadlock.trap] at 213..438
+ex17-9.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0), `task@231` (task 1), `task@336` (task 2) [conc.deadlock.trap] at 7:5
 $ echo $?
 3
 ```
@@ -6050,7 +6046,7 @@ Solution: 2000 × 1,000,000 = 2.0 × 10⁹ fits under `i32`'s
 ```console
 $ lupin ex21-5.lu
 2000000000
-ex21-5.lu: trap(overflow): `+` produced 2148000000, outside `i32` — checked arithmetic traps in every profile (X3); spell intended overflow `wrapping[i32]` [arith.checked] at 272..286
+ex21-5.lu: trap(overflow): `+` produced 2148000000, outside `i32` — checked arithmetic traps in every profile (X3); spell intended overflow `wrapping[i32]` [arith.checked] at 9:9
 $ echo $?
 3
 ```
@@ -6155,7 +6151,7 @@ is not one:
 
 ```console
 $ lupin leak/main.lu
-leak/main.lu: E0304: `total` exists in `vault`, but it is private; only `pub`/`pub(pkg)` items are visible across modules (D32) [mod.vis.private] at 49..54
+leak/main.lu: E0304: `total` exists in `vault`, but it is private; only `pub`/`pub(pkg)` items are visible across modules (D32) [mod.vis.private] at 7:19
 $ echo $?
 2
 ```
@@ -6176,7 +6172,7 @@ second definition is a duplicate wherever it sits:
 
 ```console
 $ lupin twice/main.lu
-twice/main.lu: E0302: the name `describe` is defined twice in this module (defined again in `twice/main.lu`); file boundaries create no scopes (D32) [mod.dup] at 3..11
+twice/main.lu: E0302: the name `describe` is defined twice in this module (defined again in `twice/main.lu`); file boundaries create no scopes (D32) [mod.dup] at 4:4
 ```
 </details>
 
@@ -6194,7 +6190,7 @@ slows every build and means nothing, and a warning would be a request:
 
 ```console
 $ lupin unused/main.lu
-unused/main.lu: E0305: the import `tools` is never used in `unused/main.lu`; an unused import is a hard error (D32), and deleting the line is machine-applicable [mod.use.unused] at 4..9
+unused/main.lu: E0305: the import `tools` is never used in `unused/main.lu`; an unused import is a hard error (D32), and deleting the line is machine-applicable [mod.use.unused] at 4:5
 ```
 </details>
 
@@ -6212,7 +6208,7 @@ Solution — before, the cycle drawn whole:
 
 ```console
 $ lupin tangle/main.lu
-tangle/main.lu: E0303: this import completes a cycle: `store` → `index` → `store` (in `tangle/index/index.lu`); imports between modules must form a DAG (D32) [mod.cycle] at 70..80
+tangle/main.lu: E0303: this import completes a cycle: `store` → `index` → `store` (in `tangle/index/index.lu`); imports between modules must form a DAG (D32) [mod.cycle] at 3:48
 ```
 
 After — `ch22/untangled/` adds `kinds/`, which imports nothing;
@@ -7222,7 +7218,7 @@ leaf the walk reaches, before anything is printed at all.
 
 ```console
 $ lupin ex28-4.lu
-ex28-4.lu: trap(bounds): index 0 is outside a collection of 0 element(s) [mem.ub.defined] at 708..717
+ex28-4.lu: trap(bounds): index 0 is outside a collection of 0 element(s) [mem.ub.defined] at 29:10
 $ echo $?
 3
 ```

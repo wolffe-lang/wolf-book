@@ -60,7 +60,7 @@ fn main() -> !int {
 
 ```console
 $ lupin ex12-2.lu
-ex12-2.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0) [conc.deadlock.trap] at 211..221
+ex12-2.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0) [conc.deadlock.trap] at 8:5
 $ echo $?
 3
 ```
@@ -299,7 +299,7 @@ fn main() -> !int {
 
 ```console
 $ lupin ex12-9.lu
-ex12-9.lu: E0201: `when` acquires a set, so it needs at least two operands; for one, call the method on the sync type [gram.expr.conc] at 544..552
+ex12-9.lu: E0201: `when` acquires a set, so it needs at least two operands; for one, call the method on the sync type [gram.expr.conc] at 14:24
 $ echo $?
 2
 ```

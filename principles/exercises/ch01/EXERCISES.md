@@ -85,7 +85,7 @@ Solution — `ch01/ex1-6.lu` (broken on purpose):
 
 ```console
 $ lupin ex1-6.lu
-ex1-6.lu: E0202: the file ends where `}` was required [gram.expr.block] at 162..162
+ex1-6.lu: E0202: the file ends where `}` was required [gram.expr.block] at 6:6
 $ echo $?
 2
 ```

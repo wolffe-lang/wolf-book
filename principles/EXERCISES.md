@@ -240,7 +240,7 @@ in its clause tag:
 
 ```console
 $ lupin ex2-3.lu
-ex2-3.lu: trap(bounds): byte range 2..9 is outside a 4-byte string [mem.ub.defined] at 156..163
+ex2-3.lu: trap(bounds): byte range 2..9 is outside a 4-byte string [mem.ub.defined] at 6:13
 $ echo $?
 3
 ```
@@ -344,7 +344,7 @@ help: to keep the original, copy it at the move
 
 ```console
 $ lupin ./ex3-2.lu
-./ex3-2.lu: trap(use-after-move): `p.lead` was moved out and is uninitialized here [mem.tier0.move.2] at 381..387; `p.lead` moved here at 337..348
+./ex3-2.lu: trap(use-after-move): `p.lead` was moved out and is uninitialized here [mem.tier0.move.2] at 11:13; `p.lead` moved here at 9:19
 $ echo $?
 3
 ```
@@ -363,7 +363,7 @@ cites, and the line also names the spelling for intentional wraparound:
 
 ```console
 $ lupin ex3-3.lu
-ex3-3.lu: trap(overflow): `+` produced 2147483648, outside `i32` — checked arithmetic traps in every profile (X3); spell intended overflow `wrapping[i32]` [arith.checked] at 178..185
+ex3-3.lu: trap(overflow): `+` produced 2147483648, outside `i32` — checked arithmetic traps in every profile (X3); spell intended overflow `wrapping[i32]` [arith.checked] at 6:16
 ```
 
 **Exercise 3-4** *(comprehension · lupin)* — The divisor is computed,
@@ -380,7 +380,7 @@ zero arrived:
 
 ```console
 $ lupin ex3-4.lu
-ex3-4.lu: trap(div-zero): division by zero is defined behavior in wolf: it traps [mem.ub.defined] at 187..192
+ex3-4.lu: trap(div-zero): division by zero is defined behavior in wolf: it traps [mem.ub.defined] at 7:13
 ```
 
 **Exercise 3-5** *(design)* — Wolf has no ternary operator. Write the
@@ -587,7 +587,7 @@ because indexing is checked everywhere:
 
 ```console
 $ lupin ex5-4.lu
-ex5-4.lu: trap(bounds): index 10 is outside a collection of 1 element(s) [mem.ub.defined] at 193..199
+ex5-4.lu: trap(bounds): index 10 is outside a collection of 1 element(s) [mem.ub.defined] at 7:13
 $ echo $?
 3
 ```

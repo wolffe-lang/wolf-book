@@ -48,7 +48,7 @@ The specification is seven documents:
 | 16.1 `ch.send(move r)` | `[mem.tier0.move.2]` | 02 |
 | 22.1 Directory = module | `[mod.dup]`, `[mod.vis.private]`, `[mod.use.unused]` | see below |
 | 22.2 No cycles | `[mod.cycle]` | see below |
-| Appendix B | `[conf.trap.set]`, `[conf.trap.map]`, `[conf.trap.assert]`, `[conc.mm.race.3]` | 05, 03 |
+| Appendix B | `[conf.trap.set]`, `[conf.trap.map]`, `[conf.trap.assert]`, `[conf.trap.exit]`, `[conf.trap.report]`, `[conc.mm.race.3]` | 05, 03 |
 
 ## Six tags with no clause
 
