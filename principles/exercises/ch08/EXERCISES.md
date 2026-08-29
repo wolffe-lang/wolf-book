@@ -6,14 +6,14 @@ at `impl_version 0.0.1`.
 
 ## §8.1 — You already think in regions
 
-**Exercise 8-1** *(comprehension · prose)*. Three programs you have
-met or written: (a) a web server handling one request — parse the
-headers, build a response, send it; (b) a compiler pass — read an AST,
-produce a transformed AST, discard the scratch; (c) a game loop — each
-frame computes collision pairs and a display list, then draws. For
-each, name the group of allocations that share a death, the moment
-they all die, and the one value (if any) that must survive. No wolf
-required; the point is that the regions were already there.
+**Exercise 8-1** *(comprehension · prose)*. Three programs you have met
+or written: (a) a web server handling one request (parse the headers,
+build a response, send it); (b) a compiler pass (read an AST, produce a
+transformed AST, discard the scratch); (c) a game loop (each frame
+computes collision pairs and a display list, then draws). For each, name
+the group of allocations that share a death, the moment they all die,
+and the one value (if any) that must survive. No wolf required; the
+point is that the regions were already there.
 
 Solution: (a) everything parsed and built for the request dies when
 the response is flushed; the survivor is the response bytes (and any
@@ -29,9 +29,9 @@ which is the chapter's opening argument.
 ## §8.2 — The block form
 
 **Exercise 8-2** *(fingers · lupin)*. Sum the first hundred integers
-using a list a helper function builds — with the helper writing no
-region code at all — inside `region tmp { }`. State where `fill`'s
-list is allocated, and what happens to it at the closing brace.
+using a list a helper function builds (the helper writing no
+region code at all) inside `region tmp { }`. State where `fill`'s list
+is allocated, and what happens to it at the closing brace.
 
 Solution. `ch08/ex8-2.lu`:
 
@@ -125,10 +125,9 @@ between "this could dangle" and "this did."
 ## §8.3 — Regions are values
 
 **Exercise 8-4** *(fingers · lupin REPL)*. In the REPL: define a
-one-field struct, create a region with `region(rc)`, allocate one
-value into it with `in r { … }`, and look at `:regions` before and
-after `freeze r`. Predict the two state words you will see before you
-look.
+one-field struct, create a region with `region(rc)`, allocate one value
+into it with `in r { … }`, and look at `:regions` before and after
+`freeze r`. Predict the two state words you will see before you look.
 
 Solution. One session:
 
@@ -243,8 +242,8 @@ which is the entire aliasing surface a reviewer must read.
 
 ## §8.5 — Freeze
 
-**Exercise 8-8** *(comprehension · wolf + lupin)*. A struct type with
-a strong `shared` edge back to itself:
+**Exercise 8-8** *(comprehension · wolf + lupin)*. A struct type with a
+strong `shared` edge back to itself:
 
 ```wolf
 struct Node { value: int, next: shared Node }
@@ -287,7 +286,8 @@ the only way to refuse all of those programs at once. The dynamic tier
 saw no allocation, no cycle, no fault — also true. The note is the
 chapter in miniature: `weak`, `handle`, or put the cycle in a region.
 
-**Exercise 8-9** *(comprehension + spelunking · wolf)*. One write after a freeze:
+**Exercise 8-9** *(comprehension + spelunking · wolf)*. One write after
+a freeze:
 
 ```wolf
 struct Config { limit: int }
@@ -332,8 +332,8 @@ $ echo $?
 ```
 
 **Exercise 8-10** *(comprehension · lupin)*. The dynamic half of the
-same contract: create a pool region, freeze the region value, then
-call `reserve` on the pool. Predict the trap kind and the clause tag.
+same contract: create a pool region, freeze the region value, then call
+`reserve` on the pool. Predict the trap kind and the clause tag.
 
 Solution. `ch08/ex8-10.lu`:
 
@@ -400,8 +400,8 @@ $ lupin ex8-11.lu
 
 ## §8.7 — `shared` and `handle`
 
-**Exercise 8-12** *(comprehension · lupin)*. A handle is used after
-its slot is gone:
+**Exercise 8-12** *(comprehension · lupin)*. A handle is used after its
+slot is gone:
 
 ```wolf
 region r: pool(Node) {
@@ -434,13 +434,12 @@ is the entire difference between a handle and a C pointer into a
 freed arena.
 
 **Exercise 8-13** *(design)*. Four fields, one decision each: (a) a
-parent pointer in a tree whose nodes a region owns; (b) an
-edge in a social graph where nodes are deleted while neighbors hold
-references; (c) a config blob read by every task for the process's
-whole life; (d) a cache entry another subsystem may hold while the
-cache evicts it. For each: `shared`, `weak`, `handle`, or a plain
-intra-region edge — and name the *failure contract* you chose, not
-only the shape.
+parent pointer in a tree whose nodes a region owns; (b) an edge in a
+social graph where nodes are deleted while neighbors hold references;
+(c) a config blob read by every task for the process's whole life; (d) a
+cache entry another subsystem may hold while the cache evicts it. For
+each: `shared`, `weak`, `handle`, or a plain intra-region edge; and
+name the *failure contract* you chose, not only the shape.
 
 Solution (discussion): (a) plain intra-region edge (or `handle` if
 nodes are removed individually): the cycle is safe inside the region,
@@ -459,11 +458,11 @@ type system will hold you to.
 
 ## §8.8 — What the machine does
 
-**Exercise 8-14** *(spelunking · wolf)*. Run `wolf --explain E1012`
-and read it against exercise 8-9. Find: the sentence that explains why
+**Exercise 8-14** *(spelunking · wolf)*. Run `wolf --explain E1012` and
+read it against exercise 8-9. Find: the sentence that explains why
 frozen data needs no locks, the phrase that makes the promotion
-transitive, and the reason "readable forever" is a *performance*
-claim, not only a safety one.
+transitive, and the reason "readable forever" is a *performance* claim,
+not only a safety one.
 
 Solution:
 
@@ -493,13 +492,13 @@ unbreakable.
 
 ## Chapter batch
 
-**Exercise 8-15** *(extension · lupin)*. A text adventure's world is
-a cyclic graph: rooms point at each other in four directions, and
-"north then south" must come home. Build three rooms — den, ridge,
-river bank — in a pool region, close the cycles with two-phase init,
-and walk the path north, east, west, south, printing the room at each
-step. Predict the four lines before running; the fourth is the one
-that checks you wired `south` self-loops honestly.
+**Exercise 8-15** *(extension · lupin)*. A text adventure's world is a
+cyclic graph: rooms point at each other in four directions, and "north
+then south" must come home. Build three rooms (den, ridge, river bank)
+in a pool region, close the cycles with two-phase init, and walk the
+path north, east, west, south, printing the room at each step. Predict
+the four lines before running; the fourth is the one that checks your
+`south` links are real.
 
 Solution. `ch08/ex8-15.lu` (walk shown; full wiring on disk):
 
@@ -526,11 +525,10 @@ adventure genre get along: the whole world dies in one motion when
 the game ends, cycles and all.
 
 **Exercise 8-16** *(extension · lupin)*. `wc`, wolfished: count the
-lines and words of a multiline block, but store every line in a
-scratch region while counting — then let the region die and print the
-counts after it is gone. State what survives the brace and why this
-program's memory use at peak is "the text, once" rather than "the
-text, twice."
+lines and words of a multiline block, but store every line in a scratch
+region while counting; then let the region die and print the counts
+after it is gone. State what survives the brace and why this program's
+memory use at peak is "the text, once" rather than "the text, twice."
 
 Solution. `ch08/ex8-16.lu`:
 

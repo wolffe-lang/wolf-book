@@ -355,8 +355,8 @@ family. This differential is the book's spine and the reader meets it
 here first.
 
 **Exercise 3-3** *(comprehension · lupin)*. `2147483647` is `i32`'s
-ceiling. Predict what `big + 1` does in a release build. (Trick
-warning: the answer is the same in every build.)
+ceiling. Predict what `big + 1` does in a release build. (Trick warning:
+the answer is the same in every build.)
 
 Solution: it traps, in every profile — X3 is the decision the trap line
 cites, and the line also names the spelling for intentional wraparound:
@@ -398,8 +398,8 @@ production and a style war; the book spends neither.
 ### Chapter 4 — Functions
 
 **Exercise 4-1** *(fingers · lupin)*. Functions are values. Write
-`compose` so that `compose(double, double)` returns a function, and
-apply it to 10.
+`compose` so that `compose(double, double)` returns a function, and apply
+it to 10.
 
 Solution. `ch04/ex4-1.lu`:
 
@@ -553,8 +553,8 @@ marmot    5
 ```
 
 **Exercise 5-3** *(extension · lupin)*. Write `first[T]` with a
-fallback for the empty case, and call it twice: once with the type
-named, once letting inference name it.
+fallback for the empty case, and call it twice: once with the type named,
+once letting inference name it.
 
 Solution. `ch05/ex5-3.lu`:
 
@@ -608,9 +608,9 @@ holds the compiler to it.
 
 ### Chapter 6 — Errors are values
 
-**Exercise 6-1** *(fingers · lupin)*. Write `parse` so empty input is
-an error, and give two call sites: one defaulting with `else 0`, one
-with `else 7`. Predict both prints first.
+**Exercise 6-1** *(fingers · lupin)*. Write `parse` so empty input is an
+error, and give two call sites: one defaulting with `else 0`, one with
+`else 7`. Predict both prints first.
 
 Solution. `ch06/ex6-1.lu`:
 
@@ -665,8 +665,8 @@ a=43 b=-2
 ```
 
 **Exercise 6-3** *(extension · lupin)*. Grow the row: add a `TooLong`
-variant for inputs over four bytes and handle it. What else did you
-have to change, and what told you?
+variant for inputs over four bytes and handle it. What else did you have
+to change, and what told you?
 
 Solution. `ch06/ex6-3.lu` (excerpt):
 

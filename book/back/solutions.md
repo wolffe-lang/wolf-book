@@ -190,11 +190,10 @@ the absence lives.
 <summary>Exercise 1-7. [§1.2](../ch01.md#1.2)</summary>
 
 **Exercise 1-7** *(fingers · wolf + lupin)*. Compile the greeting with
-`wolf build`, run the binary, then run the source under `lupin`.
-Compare the two outputs byte for byte — `diff <(./hello) <(lupin
-hello.lu)` will do it. Then say which of the two runs could have
-printed something different, and what it would mean about the language
-if it had.
+`wolf build`, run the binary, then run the source under `lupin`. Compare
+the two outputs byte for byte: `diff <(./hello) <(lupin hello.lu)` will
+do it. Then say which of the two runs could have printed something
+different, and what it would mean about the language if it had.
 
 Solution:
 
@@ -373,8 +372,8 @@ $ lupin eval 'r"C:\temp".len'
 <summary>Exercise 2-6. [§2.3](../ch02.md#2.3)</summary>
 
 **Exercise 2-6** *(comprehension · lupin REPL)*. `"wolf"` has four
-bytes. Predict each of these, precisely — value or event:
-`"wolf"[..2]`, `"wolf"[2..]`, `"wolf"[4..4]`, `"wolf"[3..2]`.
+bytes. Predict each of these, precisely, as a value or an event: `"wolf"[..2]`,
+`"wolf"[2..]`, `"wolf"[4..4]`, `"wolf"[3..2]`.
 
 Solution: `wo`, `lf`, the empty string, and a trap. An open end fills
 in the boundary; `4..4` is an empty range *at* a legal boundary, which
@@ -440,9 +439,9 @@ arithmetic, not by an `if` bolted on the front.
 <details>
 <summary>Exercise 2-8. [§2.5](../ch02.md#2.5)</summary>
 
-**Exercise 2-8** *(comprehension · lupin REPL)*. `s` is
-`"wolfpack"`. Predict all four values, then say what slicing `s`
-cost — did any of these lines copy eight bytes?
+**Exercise 2-8** *(comprehension · lupin REPL)*. `s` is `"wolfpack"`.
+Predict all four values, then say what slicing `s` cost: did any of
+these lines copy eight bytes?
 
 ```console
 wolf> let s = "wolfpack"
@@ -594,8 +593,8 @@ here first.
 <summary>Exercise 3-3. [§3.3](../ch03.md#3.3)</summary>
 
 **Exercise 3-3** *(comprehension · lupin)*. `2147483647` is `i32`'s
-ceiling. Predict what `big + 1` does in a release build. (Trick
-warning: the answer is the same in every build.)
+ceiling. Predict what `big + 1` does in a release build. (Trick warning:
+the answer is the same in every build.)
 
 Solution: it traps, in every profile — X3 is the decision the trap line
 cites, and the line also names the spelling for intentional wraparound:
@@ -715,7 +714,7 @@ $ lupin ex3-7.lu
 
 **Exercise 3-8** *(comprehension · lupin)*. Predict the one printed
 line, then answer the pointed part: after `name = "grace"`, what
-happened to `"ada"` — and why does `first` not care?
+happened to `"ada"`, and why does `first` not care?
 
 ```wolf
 fn main() -> !int {
@@ -747,8 +746,8 @@ the trackers.
 <summary>Exercise 4-1. [§4.2](../ch04.md#4.2)</summary>
 
 **Exercise 4-1** *(fingers · lupin)*. Functions are values. Write
-`compose` so that `compose(double, double)` returns a function, and
-apply it to 10.
+`compose` so that `compose(double, double)` returns a function, and apply
+it to 10.
 
 Solution. `ch04/ex4-1.lu`:
 
@@ -1040,8 +1039,8 @@ marmot    5
 <summary>Exercise 5-3. [§5.3](../ch05.md#5.3)</summary>
 
 **Exercise 5-3** *(extension · lupin)*. Write `first[T]` with a
-fallback for the empty case, and call it twice: once with the type
-named, once letting inference name it.
+fallback for the empty case, and call it twice: once with the type named,
+once letting inference name it.
 
 Solution. `ch05/ex5-3.lu`:
 
@@ -1170,10 +1169,10 @@ structure that almost fits.
 
 **Exercise 5-7** *(comprehension + extension · lupin)*. An RPN
 evaluator is a loop and a stack, and the stack is a `List`. Given the
-tokens `3 4 + 2 *`, trace the stack contents after each token on
-paper, then run. Then answer from your trace, not from the code: which
-input would make `stack.len < 2` true at an operator, and what does
-your evaluator do about it?
+tokens `3 4 + 2 *`, trace the stack contents after each token on paper,
+then run. Then answer from your trace, not from the code: which input
+would make `stack.len < 2` true at an operator, and what does your
+evaluator do about it?
 
 Solution. `ch05/ex5-7.lu`:
 
@@ -1288,9 +1287,9 @@ alternative is every reader paying an invisible allocation.
 <details>
 <summary>Exercise 6-1. [§6.2](../ch06.md#6.2)</summary>
 
-**Exercise 6-1** *(fingers · lupin)*. Write `parse` so empty input is
-an error, and give two call sites: one defaulting with `else 0`, one
-with `else 7`. Predict both prints first.
+**Exercise 6-1** *(fingers · lupin)*. Write `parse` so empty input is an
+error, and give two call sites: one defaulting with `else 0`, one with
+`else 7`. Predict both prints first.
 
 Solution. `ch06/ex6-1.lu`:
 
@@ -1353,8 +1352,8 @@ a=43 b=-2
 <summary>Exercise 6-3. [§6.1](../ch06.md#6.1)</summary>
 
 **Exercise 6-3** *(extension · lupin)*. Grow the row: add a `TooLong`
-variant for inputs over four bytes and handle it. What else did you
-have to change, and what told you?
+variant for inputs over four bytes and handle it. What else did you have
+to change, and what told you?
 
 Solution. `ch06/ex6-3.lu` (excerpt):
 
@@ -1489,11 +1488,11 @@ $ lupin ex6-6.lu
 <summary>Exercise 6-7. [§6.2](../ch06.md#6.2)</summary>
 
 **Exercise 6-7** *(extension · lupin)*. `head` prints a file's first
-`n` lines — and a file with fewer than `n` lines is not a crash, it is
-an answer. Write `head(text, n)` whose error carries how many lines
-actually existed, and a caller that asks for 2 lines (succeeds) and 5
-lines (handled). Why does the payload belong in the error instead of
-being printed by `head` itself?
+`n` lines, and a file with fewer than `n` lines is not a crash, it is an
+answer. Write `head(text, n)` whose error carries how many lines actually
+existed, and a caller that asks for 2 lines (succeeds) and 5 lines
+(handled). Why does the payload belong in the error instead of being
+printed by `head` itself?
 
 Solution. `ch06/ex6-7.lu`:
 
@@ -1616,8 +1615,8 @@ section in one function.
 
 **Exercise 6-10** *(extension · lupin)*. The wordcount loop, grown by
 one requirement: count words, and separately count words of four bytes
-or more. Predict both numbers for the line
-`the wolf runs and the moon watches over`, then run.
+or more. Predict both numbers for the line `the wolf runs and the moon
+watches over`, then run.
 
 Solution. `ch06/ex6-10.lu`:
 
@@ -1826,11 +1825,11 @@ copies." Wolf's rule is per-*decision*, not per-*type*: the reader of
 <details>
 <summary>Exercise 7-6. [§7.4](../ch07.md#7.4)</summary>
 
-**Exercise 7-6** *(fingers + spelunking · lupin)*. Write `swap` for
-two `int`s using `mut` at both ends, and verify it. Then state the
-single search you would run over a strange codebase to find every line
-that can mutate anything — and what property of the language makes the
-search complete.
+**Exercise 7-6** *(fingers + spelunking · lupin)*. Write `swap` for two
+`int`s using `mut` at both ends, and verify it. Then state the single
+search you would run over a strange codebase to find every line that can
+mutate anything, and what property of the language makes the search
+complete.
 
 Solution. `ch07/ex7-6.lu`:
 
@@ -1914,9 +1913,9 @@ optimizer (§7.7's subject).
 <details>
 <summary>Exercise 7-8. [§7.5](../ch07.md#7.5)</summary>
 
-**Exercise 7-8** *(comprehension + fingers · lupin)*. Four call shapes against
-`struct P { a: Q, b: Q }`, `struct Q { n: int }`. Verdict for each,
-before checking any:
+**Exercise 7-8** *(comprehension + fingers · lupin)*. Four call shapes
+against `struct P { a: Q, b: Q }`, `struct Q { n: int }`. Verdict for
+each, before checking any:
 
 1. `f(mut p.a, mut p.b)`
 2. `f(mut p.a.n, mut p.b.n)`
@@ -2013,9 +2012,9 @@ that no signature in this paragraph mentions anything but values.
 <summary>Exercise 7-11. [§7.7](../ch07.md#7.7)</summary>
 
 **Exercise 7-11** *(fingers · lupin REPL)*. In the REPL, move a string
-out of one binding into another, then read both — the corpse first.
-What does the session do that a compiled program cannot, and which
-clause tag names the reason the trap did not end your session?
+out of one binding into another, then read both, the corpse first. What
+does the session do that a compiled program cannot, and which clause tag
+names the reason the trap did not end your session?
 
 Solution. One session:
 
@@ -2142,14 +2141,14 @@ story.
 <details>
 <summary>Exercise 8-1. [§8.1](../ch08.md#8.1)</summary>
 
-**Exercise 8-1** *(comprehension · prose)*. Three programs you have
-met or written: (a) a web server handling one request — parse the
-headers, build a response, send it; (b) a compiler pass — read an AST,
-produce a transformed AST, discard the scratch; (c) a game loop — each
-frame computes collision pairs and a display list, then draws. For
-each, name the group of allocations that share a death, the moment
-they all die, and the one value (if any) that must survive. No wolf
-required; the point is that the regions were already there.
+**Exercise 8-1** *(comprehension · prose)*. Three programs you have met
+or written: (a) a web server handling one request (parse the headers,
+build a response, send it); (b) a compiler pass (read an AST, produce a
+transformed AST, discard the scratch); (c) a game loop (each frame
+computes collision pairs and a display list, then draws). For each, name
+the group of allocations that share a death, the moment they all die,
+and the one value (if any) that must survive. No wolf required; the
+point is that the regions were already there.
 
 Solution: (a) everything parsed and built for the request dies when
 the response is flushed; the survivor is the response bytes (and any
@@ -2167,9 +2166,9 @@ which is the chapter's opening argument.
 <summary>Exercise 8-2. [§8.2](../ch08.md#8.2)</summary>
 
 **Exercise 8-2** *(fingers · lupin)*. Sum the first hundred integers
-using a list a helper function builds — with the helper writing no
-region code at all — inside `region tmp { }`. State where `fill`'s
-list is allocated, and what happens to it at the closing brace.
+using a list a helper function builds (the helper writing no
+region code at all) inside `region tmp { }`. State where `fill`'s list
+is allocated, and what happens to it at the closing brace.
 
 Solution. `ch08/ex8-2.lu`:
 
@@ -2269,10 +2268,9 @@ between "this could dangle" and "this did."
 <summary>Exercise 8-4. [§8.3](../ch08.md#8.3)</summary>
 
 **Exercise 8-4** *(fingers · lupin REPL)*. In the REPL: define a
-one-field struct, create a region with `region(rc)`, allocate one
-value into it with `in r { … }`, and look at `:regions` before and
-after `freeze r`. Predict the two state words you will see before you
-look.
+one-field struct, create a region with `region(rc)`, allocate one value
+into it with `in r { … }`, and look at `:regions` before and after
+`freeze r`. Predict the two state words you will see before you look.
 
 Solution. One session:
 
@@ -2399,8 +2397,8 @@ which is the entire aliasing surface a reviewer must read.
 <details>
 <summary>Exercise 8-8. [§8.5](../ch08.md#8.5)</summary>
 
-**Exercise 8-8** *(comprehension · wolf + lupin)*. A struct type with
-a strong `shared` edge back to itself:
+**Exercise 8-8** *(comprehension · wolf + lupin)*. A struct type with a
+strong `shared` edge back to itself:
 
 ```wolf
 struct Node { value: int, next: shared Node }
@@ -2447,7 +2445,8 @@ chapter in miniature: `weak`, `handle`, or put the cycle in a region.
 <details>
 <summary>Exercise 8-9. [§8.5](../ch08.md#8.5)</summary>
 
-**Exercise 8-9** *(comprehension + spelunking · wolf)*. One write after a freeze:
+**Exercise 8-9** *(comprehension + spelunking · wolf)*. One write after
+a freeze:
 
 ```wolf
 struct Config { limit: int }
@@ -2496,8 +2495,8 @@ $ echo $?
 <summary>Exercise 8-10. [§8.5](../ch08.md#8.5)</summary>
 
 **Exercise 8-10** *(comprehension · lupin)*. The dynamic half of the
-same contract: create a pool region, freeze the region value, then
-call `reserve` on the pool. Predict the trap kind and the clause tag.
+same contract: create a pool region, freeze the region value, then call
+`reserve` on the pool. Predict the trap kind and the clause tag.
 
 Solution. `ch08/ex8-10.lu`:
 
@@ -2568,8 +2567,8 @@ $ lupin ex8-11.lu
 <details>
 <summary>Exercise 8-12. [§8.7](../ch08.md#8.7)</summary>
 
-**Exercise 8-12** *(comprehension · lupin)*. A handle is used after
-its slot is gone:
+**Exercise 8-12** *(comprehension · lupin)*. A handle is used after its
+slot is gone:
 
 ```wolf
 region r: pool(Node) {
@@ -2606,13 +2605,12 @@ freed arena.
 <summary>Exercise 8-13. [§8.7](../ch08.md#8.7)</summary>
 
 **Exercise 8-13** *(design)*. Four fields, one decision each: (a) a
-parent pointer in a tree whose nodes a region owns; (b) an
-edge in a social graph where nodes are deleted while neighbors hold
-references; (c) a config blob read by every task for the process's
-whole life; (d) a cache entry another subsystem may hold while the
-cache evicts it. For each: `shared`, `weak`, `handle`, or a plain
-intra-region edge — and name the *failure contract* you chose, not
-only the shape.
+parent pointer in a tree whose nodes a region owns; (b) an edge in a
+social graph where nodes are deleted while neighbors hold references;
+(c) a config blob read by every task for the process's whole life; (d) a
+cache entry another subsystem may hold while the cache evicts it. For
+each: `shared`, `weak`, `handle`, or a plain intra-region edge; and
+name the *failure contract* you chose, not only the shape.
 
 Solution (discussion): (a) plain intra-region edge (or `handle` if
 nodes are removed individually): the cycle is safe inside the region,
@@ -2633,11 +2631,11 @@ type system will hold you to.
 <details>
 <summary>Exercise 8-14. [§8.8](../ch08.md#8.8)</summary>
 
-**Exercise 8-14** *(spelunking · wolf)*. Run `wolf --explain E1012`
-and read it against exercise 8-9. Find: the sentence that explains why
+**Exercise 8-14** *(spelunking · wolf)*. Run `wolf --explain E1012` and
+read it against exercise 8-9. Find: the sentence that explains why
 frozen data needs no locks, the phrase that makes the promotion
-transitive, and the reason "readable forever" is a *performance*
-claim, not only a safety one.
+transitive, and the reason "readable forever" is a *performance* claim,
+not only a safety one.
 
 Solution:
 
@@ -2669,13 +2667,13 @@ unbreakable.
 <details>
 <summary>Exercise 8-15. [§8.8](../ch08.md#8.8)</summary>
 
-**Exercise 8-15** *(extension · lupin)*. A text adventure's world is
-a cyclic graph: rooms point at each other in four directions, and
-"north then south" must come home. Build three rooms — den, ridge,
-river bank — in a pool region, close the cycles with two-phase init,
-and walk the path north, east, west, south, printing the room at each
-step. Predict the four lines before running; the fourth is the one
-that checks you wired `south` self-loops honestly.
+**Exercise 8-15** *(extension · lupin)*. A text adventure's world is a
+cyclic graph: rooms point at each other in four directions, and "north
+then south" must come home. Build three rooms (den, ridge, river bank)
+in a pool region, close the cycles with two-phase init, and walk the
+path north, east, west, south, printing the room at each step. Predict
+the four lines before running; the fourth is the one that checks your
+`south` links are real.
 
 Solution. `ch08/ex8-15.lu` (walk shown; full wiring on disk):
 
@@ -2706,11 +2704,10 @@ the game ends, cycles and all.
 <summary>Exercise 8-16. [§8.8](../ch08.md#8.8)</summary>
 
 **Exercise 8-16** *(extension · lupin)*. `wc`, wolfished: count the
-lines and words of a multiline block, but store every line in a
-scratch region while counting — then let the region die and print the
-counts after it is gone. State what survives the brace and why this
-program's memory use at peak is "the text, once" rather than "the
-text, twice."
+lines and words of a multiline block, but store every line in a scratch
+region while counting; then let the region die and print the counts
+after it is gone. State what survives the brace and why this program's
+memory use at peak is "the text, once" rather than "the text, twice."
 
 Solution. `ch08/ex8-16.lu`:
 
@@ -2782,8 +2779,8 @@ audit's subject, which is to say the audit is the whole program.
 
 **Exercise 9-2** *(fingers · lupin)*. Your first unsafe block, kept
 legal: allocate eight bytes from C, set them all to 5, read one back,
-free, print. Type it, run it, and note the exit code — the point of
-this exercise is that nothing happens.
+free, print. Type it, run it, and note the exit code: the point of this
+exercise is that nothing happens.
 
 Solution. `ch09/ex9-2.lu`:
 
@@ -2821,9 +2818,9 @@ checks the body against.
 <summary>Exercise 9-3. [§9.2](../ch09.md#9.2)</summary>
 
 **Exercise 9-3** *(comprehension · lupin)*. One character changes in
-9-2: the write is `p[8] = 1`. The allocation holds eight bytes.
-Predict the oracle's finding — its row, and which optimizer license
-the report will name.
+9-2: the write is `p[8] = 1`. The allocation holds eight bytes. Predict
+the oracle's finding: its row, and which optimizer license the report
+will name.
 
 Solution. The report, in full:
 
@@ -2886,11 +2883,11 @@ somewhere might name its address.
 <details>
 <summary>Exercise 9-5. [§9.3](../ch09.md#9.3)</summary>
 
-**Exercise 9-5** *(fingers + comprehension · lupin)*. Inject the classic:
-write, free, read, through one pointer. Run it twice. What is the
-oracle's finding, and — the actual question — what is identical
-between the two runs that would *not* be identical for a
-use-after-free in C?
+**Exercise 9-5** *(fingers + comprehension · lupin)*. Inject the
+classic: write, free, read, through one pointer. Run it twice. What is
+the oracle's finding, and (the actual question) what is identical
+between the two runs that would *not* be identical for a use-after-free
+in C?
 
 Solution. `ch09/ex9-5.lu`:
 
@@ -3124,12 +3121,12 @@ crosses at all.
 <details>
 <summary>Exercise 9-12. [§9.8](../ch09.md#9.8)</summary>
 
-**Exercise 9-12** *(design)*. A team wraps a 40,000-line C codec
-behind wolf FFI. Debate the two candidate shapes: (a) one `unsafe`
-block per call site, spread through the application; (b) one module
-owning every unsafe line, exporting twenty safe functions, `#[trusted]`
-on the membrane. Which failure modes does each shape optimize for, and
-what does the twenty-line rule from §9.5 actually buy the reviewer?
+**Exercise 9-12** *(design)*. A team wraps a 40,000-line C codec behind
+wolf FFI. Debate the two candidate shapes: (a) one `unsafe` block per
+call site, spread through the application; (b) one module owning every
+unsafe line, exporting twenty safe functions, `#[trusted]` on the
+membrane. Which failure modes does each shape optimize for, and what
+does the twenty-line rule from §9.5 actually buy the reviewer?
 
 Solution (discussion): shape (a) optimizes for nothing except writing
 speed; its failure mode is that the audit surface *is* the
@@ -3150,10 +3147,10 @@ doors work because buildings have few of them.
 <details>
 <summary>Exercise 9-13. [§9.8](../ch09.md#9.8)</summary>
 
-**Exercise 9-13** *(extension (break-it-on-purpose) · lupin)*. Construct the
-shortest program you can in which the *assertion*, not any access, is
-the undefined behavior: use `assume noalias` on two pointers that
-alias. Predict the oracle's wording — what does it say overlaps what?
+**Exercise 9-13** *(extension (break-it-on-purpose) · lupin)*. Construct
+the shortest program you can in which the *assertion*, not any access,
+is the undefined behavior: use `assume noalias` on two pointers that
+alias. Predict the oracle's wording: what does it say overlaps what?
 
 Solution. `ch09/ex9-13.lu`:
 
@@ -3187,12 +3184,12 @@ visible and gave it an oracle.
 <details>
 <summary>Exercise 9-14. [§9.8](../ch09.md#9.8)</summary>
 
-**Exercise 9-14** *(comprehension · lupin)*. The subtlest report in
-the chapter. Take §9.4's door program and add one line: after
+**Exercise 9-14** *(comprehension · lupin)*. The subtlest report in the
+chapter. Take §9.4's door program and add one line: after
 `let counts = borrow scratch from p`, write `p[0] = 1` through the raw
 pointer, and only then read `counts[0]`. Predict where the fault is
-reported and what the tag tree at the bottom of the report will have
-in it that no other report in this chapter has shown.
+reported and what the tag tree at the bottom of the report will have in
+it that no other report in this chapter has shown.
 
 Solution. `ch09/ex9-14.lu`:
 
@@ -3232,8 +3229,8 @@ door's license forbids.
 
 **Exercise 10-1** *(fingers · lupin)*. Type and run your first scope:
 two children each send a number into a channel, and `main` adds what it
-receives after the scope closes. Then swap the two `spawn` lines and
-run again. What changed?
+receives after the scope closes. Then swap the two `spawn` lines and run
+again. What changed?
 
 Solution. `ch10/ex10-1.lu`:
 
@@ -3266,7 +3263,7 @@ both values are already in the buffer either way.
 <summary>Exercise 10-2. [§10.1](../ch10.md#10.1)</summary>
 
 **Exercise 10-2** *(comprehension · lupin)*. Predict the order of the
-two lines, then say what enforces it — the scheduler, or something
+two lines, then say what enforces it: the scheduler, or something
 stronger:
 
 ```wolf
@@ -3326,10 +3323,11 @@ $ echo $?
 <details>
 <summary>Exercise 10-4. [§10.2](../ch10.md#10.2)</summary>
 
-**Exercise 10-4** *(extension (break-it-on-purpose) · lupin)*. Port Go's classic
-leak: spawn a receiver on a channel that nobody will ever send to. In
-Go the goroutine outlives the function, silently, forever. Write the
-wolf version and predict what happens instead — and at which line.
+**Exercise 10-4** *(extension (break-it-on-purpose) · lupin)*. Port
+Go's classic leak: spawn a receiver on a channel that nobody will ever
+send to. In Go the goroutine outlives the function, silently, forever.
+Write the wolf version and predict what happens instead, and at which
+line.
 
 Solution. `ch10/ex10-4.lu`:
 
@@ -3427,10 +3425,10 @@ join surfaced the error
 <details>
 <summary>Exercise 10-7. [§10.3](../ch10.md#10.3)</summary>
 
-**Exercise 10-7** *(extension · lupin)*. Change 10-6 so no child
-fails (use 1, 2, and 4), then finish the job: close the channel, drain
-it, and return the sum. Why is it correct to `close` only after the
-scope's closing brace — what has the join already proved by then?
+**Exercise 10-7** *(extension · lupin)*. Change 10-6 so no child fails
+(use 1, 2, and 4), then finish the job: close the channel, drain it, and
+return the sum. Why is it correct to `close` only after the scope's
+closing brace: what has the join already proved by then?
 
 Solution. `ch10/ex10-7.lu`:
 
@@ -3463,8 +3461,8 @@ converts "I hope they are done" into a fact you may compute with.
 <summary>Exercise 10-8. [§10.4](../ch10.md#10.4)</summary>
 
 **Exercise 10-8** *(comprehension · lupin)*. One sibling blocks
-forever; the other fails immediately. Predict all the output, and
-answer the pointed part first: does the blocked sibling's `defer` run?
+forever; the other fails immediately. Predict all the output, and answer
+the pointed part first: does the blocked sibling's `defer` run?
 
 ```wolf
 fn fail_fast() -> !int { Boom }
@@ -3505,12 +3503,11 @@ sibling cleanup ran
 <details>
 <summary>Exercise 10-9. [§10.4](../ch10.md#10.4)</summary>
 
-**Exercise 10-9** *(extension · lupin)*. Build a two-stage pipeline:
-a producer sends 1 through 5 into `raw`; a transformer squares each
-into `squared`; `main` counts what arrives. Each stage closes the
-channel it sends on, when its input runs dry. Run it under two seeds.
-Then answer: which task must close `squared`, and what goes wrong if
-`main` tries to?
+**Exercise 10-9** *(extension · lupin)*. Build a two-stage pipeline: a
+producer sends 1 through 5 into `raw`; a transformer squares each into
+`squared`; `main` counts what arrives. Each stage closes the channel it
+sends on, when its input runs dry. Run it under two seeds. Then answer:
+which task must close `squared`, and what goes wrong if `main` tries to?
 
 Solution. `ch10/ex10-9.lu`:
 
@@ -3553,10 +3550,10 @@ side. That ownership discipline is the whole pipeline pattern.
 <summary>Exercise 10-10. [§10.4](../ch10.md#10.4)</summary>
 
 **Exercise 10-10** *(design)*. Go has `go f()`; wolf deliberately has
-no detached spawn — a task needs a scope, and the scope must close.
-Take the other side seriously: name a real program shape that detached
-spawn serves well, sketch how wolf expresses it, and state what the
-wolf version pays and what it collects.
+no detached spawn: a task needs a scope, and the scope must close. Take
+the other side seriously: name a real program shape that detached spawn
+serves well, sketch how wolf expresses it, and state what the wolf
+version pays and what it collects.
 
 Solution (discussion): the honest case for detachment is the
 fire-and-forget notifier — a metrics ping, a log ship — where the
@@ -3580,9 +3577,9 @@ and wolf asks it at the point where you still can.
 
 **Exercise 11-1** *(fingers · lupin)*. A function cannot spawn unless
 somebody hands it a scope. Write `launch(s, ch, n)` that spawns into a
-caller's scope, and a `main` that calls it three times inside one
-`scope` block. The `Scope` parameter is the entire mechanism — nothing
-else in the signature says "concurrent."
+caller's scope, and a `main` that calls it three times inside one `scope`
+block. The `Scope` parameter is the entire mechanism: nothing else in
+the signature says "concurrent."
 
 Solution. `ch11/ex11-1.lu`:
 
@@ -3615,7 +3612,7 @@ $ lupin ex11-1.lu
 
 **Exercise 11-2** *(comprehension · lupin)*. Take 11-1 and change one
 character: make the channel a rendezvous, `channel[int](0)`. Predict
-precisely what happens and why — the answer involves which side of the
+precisely what happens and why: the answer involves which side of the
 scope's closing brace the receives sit on.
 
 Solution: deadlock. With no buffer, each child's `send` blocks until
@@ -3656,9 +3653,9 @@ review.
 <summary>Exercise 11-4. [§11.2](../ch11.md#11.2)</summary>
 
 **Exercise 11-4** *(extension · lupin)*. Build a worker pool: three
-workers share one `jobs` channel and one `results` channel; `main`
-feeds six jobs and closes. Each worker is the same four lines. Why does
-the pool need no "shut down workers" message?
+workers share one `jobs` channel and one `results` channel; `main` feeds
+six jobs and closes. Each worker is the same four lines. Why does the
+pool need no "shut down workers" message?
 
 Solution. `ch11/ex11-4.lu`:
 
@@ -3698,11 +3695,11 @@ protocols other ecosystems teach.
 <details>
 <summary>Exercise 11-5. [§11.2](../ch11.md#11.2)</summary>
 
-**Exercise 11-5** *(comprehension + schedule play · lupin)*. Shrink
-the pool to two workers and four jobs, and tag each result with the
-worker that produced it. Before running: is the *assignment* of jobs
-to workers part of the program, or part of the schedule? Run under
-seed 1 and seed 2024 and defend your answer with the outputs.
+**Exercise 11-5** *(comprehension + schedule play · lupin)*. Shrink the
+pool to two workers and four jobs, and tag each result with the worker
+that produced it. Before running: is the *assignment* of jobs to workers
+part of the program, or part of the schedule? Run under seed 1 and seed
+2024 and defend your answer with the outputs.
 
 Solution. `ch11/ex11-5.lu` (excerpt):
 
@@ -3844,10 +3841,9 @@ return, which is the chapter 10 leak wearing a signature.
 <details>
 <summary>Exercise 12-1. [§12.1](../ch12.md#12.1)</summary>
 
-**Exercise 12-1** *(fingers · lupin)*. A producer sends four squares
-and closes; `main` drains with a `for` loop. Type it, run it, then
-delete the `ch.close()` line and predict what the second run does
-before you try it.
+**Exercise 12-1** *(fingers · lupin)*. A producer sends four squares and
+closes; `main` drains with a `for` loop. Type it, run it, then delete the
+`ch.close()` line and predict what the second run does before you try it.
 
 Solution. `ch12/ex12-1.lu`:
 
@@ -3881,10 +3877,10 @@ promise — close is how that promise is kept.
 <details>
 <summary>Exercise 12-2. [§12.1](../ch12.md#12.1)</summary>
 
-**Exercise 12-2** *(extension (break-it-on-purpose) · lupin)*. Using one task and
-one channel of capacity 1, write the shortest program you can whose
-second statement never finishes. Predict the trap kind and the roster
-before running.
+**Exercise 12-2** *(extension (break-it-on-purpose) · lupin)*. Using one
+task and one channel of capacity 1, write the shortest program you can
+whose second statement never finishes. Predict the trap kind and the
+roster before running.
 
 Solution. `ch12/ex12-2.lu`:
 
@@ -3949,9 +3945,8 @@ got 9
 <summary>Exercise 12-4. [§12.2](../ch12.md#12.2)</summary>
 
 **Exercise 12-4** *(comprehension + schedule play · lupin)*. Both
-channels are ready before the `select` runs. Write down every output
-this program is *allowed* to print, then run it under seed 1 and seed
-2024:
+channels are ready before the `select` runs. Write down every output this
+program is *allowed* to print, then run it under seed 1 and seed 2024:
 
 ```wolf
 fn main() -> !int {
@@ -4022,10 +4017,10 @@ exercise 12-8 earns it.
 <details>
 <summary>Exercise 12-6. [§12.3](../ch12.md#12.3)</summary>
 
-**Exercise 12-6** *(extension · lupin)*. Build a router: one task
-reads an inbox and forwards each value to an `evens` or `odds` sink.
-`main` feeds 1 through 8 and then sums both sinks. Mind the closes:
-who closes what, in what order?
+**Exercise 12-6** *(extension · lupin)*. Build a router: one task reads
+an inbox and forwards each value to an `evens` or `odds` sink. `main`
+feeds 1 through 8 and then sums both sinks. Mind the closes: who closes
+what, in what order?
 
 Solution. `ch12/ex12-6.lu`:
 
@@ -4140,10 +4135,10 @@ doing part of the work here, and the stem's real lesson is in 12-9.
 <details>
 <summary>Exercise 12-9. [§12.4](../ch12.md#12.4)</summary>
 
-**Exercise 12-9** *(extension (break-it-on-purpose) · lupin)*. Now construct the
-classic deadlock `when` was designed to kill: task one takes `a` then
-`b`, task two takes `b` then `a`, nested. Write it and report what
-actually happens — at what phase does this program die?
+**Exercise 12-9** *(extension (break-it-on-purpose) · lupin)*. Now
+construct the classic deadlock `when` was designed to kill: task one
+takes `a` then `b`, task two takes `b` then `a`, nested. Write it and
+report what actually happens: at what phase does this program die?
 
 Solution. `ch12/ex12-9.lu`:
 
@@ -4343,11 +4338,11 @@ in input order.
 <details>
 <summary>Exercise 13-5. [§13.2](../ch13.md#13.2)</summary>
 
-**Exercise 13-5** *(extension · lupin)*. Grep, wolfished: write
+**Exercise 13-5** *(extension · lupin)*. grep, wolfished: write
 `grep(text, pattern) -> List[str] ! {EmptyPattern}` returning the
-matching lines. Substring search is yours to write with byte slices.
-Why is the empty pattern an *error* here, when POSIX grep happily
-matches it everywhere?
+matching lines. Substring search is yours to write with byte slices. Why
+is the empty pattern an *error* here, when POSIX grep happily matches it
+everywhere?
 
 Solution. `ch13/ex13-5.lu`:
 
@@ -4461,11 +4456,11 @@ normal=true killed=false
 <details>
 <summary>Exercise 14-2. [§14.1](../ch14.md#14.1)</summary>
 
-**Exercise 14-2** *(design)*. A log-search service has three
-concerns: an HTTP listener, a query planner, and one index shard per
-disk. Argue where the proc boundaries go. For each boundary you draw,
-name the failure it isolates and the state that dies with it; for one
-boundary you chose *not* to draw, name what shared fate you accepted.
+**Exercise 14-2** *(design)*. A log-search service has three concerns:
+an HTTP listener, a query planner, and one index shard per disk. Argue
+where the proc boundaries go. For each boundary you draw, name the
+failure it isolates and the state that dies with it; for one boundary you
+chose *not* to draw, name what shared fate you accepted.
 
 Solution (discussion): the strong answer puts each shard in its own
 proc — a corrupt index or a crashing decompressor takes down one
@@ -4487,7 +4482,7 @@ Armstrong's argument, applied.
 **Exercise 14-3** *(comprehension · lupin)*. `build_then_crash`
 allocates a hundred integers into a region, then returns an error.
 Predict what the monitor reports and, separately, what happened to the
-hundred integers — then say which line of code freed them.
+hundred integers; then say which line of code freed them.
 
 Solution. `ch14/ex14-3.lu` (excerpt):
 
@@ -4519,8 +4514,8 @@ arrives after the memory is already gone.
 
 **Exercise 14-4** *(comprehension · lupin)*. `sleeper` registers a
 defer and then blocks forever on an empty channel; the owner kills it.
-Two prints are written in this program: `defer-skipped` in the proc
-and `released` in the owner. Predict which of them appear, and in what
+Two prints are written in this program: `defer-skipped` in the proc and
+`released` in the owner. Predict which of them appear, and in what
 order:
 
 ```wolf
@@ -4561,9 +4556,9 @@ released
 <summary>Exercise 14-5. [§14.2](../ch14.md#14.2)</summary>
 
 **Exercise 14-5** *(comprehension · lupin)*. The same shape at task
-granularity. One sibling blocks on a channel with a defer registered;
-the other fails. Predict the output — and then state, in one sentence
-each, why this defer runs when 14-4's did not:
+granularity. One sibling blocks on a channel with a defer registered; the
+other fails. Predict the output. Then state, in one sentence each,
+why this defer runs when 14-4's did not:
 
 ```wolf
 fn race_them() -> !int {
@@ -4599,10 +4594,10 @@ which one you are holding.
 <details>
 <summary>Exercise 14-6. [§14.3](../ch14.md#14.3)</summary>
 
-**Exercise 14-6** *(fingers · lupin)*. Build a counting service: a
-proc that reads commands from a channel, where `0` means "reply with
-the total" and any other value adds to it. Drive it with 5, 2, then a
-report, and print what comes back.
+**Exercise 14-6** *(fingers · lupin)*. Build a counting service: a proc
+that reads commands from a channel, where `0` means "reply with the
+total" and any other value adds to it. Drive it with 5, 2, then a report,
+and print what comes back.
 
 Solution. `ch14/ex14-6.lu`:
 
@@ -4642,10 +4637,10 @@ lives in exactly one proc.
 <details>
 <summary>Exercise 14-7. [§14.3](../ch14.md#14.3)</summary>
 
-**Exercise 14-7** *(extension · lupin)*. Grow the protocol: `-1`
-resets the counter. Report the total, reset, add 3, and report again.
-Predict both numbers first, then answer: what ordering guarantee makes
-your prediction safe, and which chapter taught it?
+**Exercise 14-7** *(extension · lupin)*. Grow the protocol: `-1` resets
+the counter. Report the total, reset, add 3, and report again. Predict
+both numbers first, then answer: what ordering guarantee makes your
+prediction safe, and which chapter taught it?
 
 Solution. `ch14/ex14-7.lu` (excerpt):
 
@@ -4693,12 +4688,11 @@ every queue in the program has a name and a bound.
 <details>
 <summary>Exercise 14-9. [§14.3](../ch14.md#14.3)</summary>
 
-**Exercise 14-9** *(comprehension + schedule play · lupin)*. Two
-client tasks each send two increments to the counting proc; the scope
-joins, then main asks for the total. Run it under seeds 0, 1, 5, 9.
-Predict first: does the total vary with the schedule, and why not —
-and name the thing that *does* vary between those runs even though no
-output shows it.
+**Exercise 14-9** *(comprehension + schedule play · lupin)*. Two client
+tasks each send two increments to the counting proc; the scope joins, then
+main asks for the total. Run it under seeds 0, 1, 5, 9. Predict first:
+does the total vary with the schedule, and why not? Then name the thing
+that *does* vary between those runs even though no output shows it.
 
 Solution. `ch14/ex14-9.lu` (main excerpt):
 
@@ -4832,8 +4826,8 @@ nobody drew.
 **Exercise 15-4** *(fingers · lupin)*. Build the smallest supervisor:
 spawn a worker that fails on its first attempt and succeeds on its
 second; monitor it; on an abnormal exit, print a line and respawn with
-the next attempt number; stop after three attempts. Run it and keep
-the output.
+the next attempt number; stop after three attempts. Run it and keep the
+output.
 
 Solution. `ch15/ex15-4.lu`:
 
@@ -4937,11 +4931,11 @@ this exercise is that bet lost by one.
 <summary>Exercise 15-7. [§15.3](../ch15.md#15.3)</summary>
 
 **Exercise 15-7** *(design)*. Every proc in wolf lives under the root
-supervisor; there is no unsupervised spawn. Sketch the supervision
-tree for the chapter 14 log-search service (listener, planner, one
-proc per shard), choosing for each internal node: restart the child
-alone, restart all children, or escalate. Name the failure scenario
-that made you pick each policy.
+supervisor; there is no unsupervised spawn. Sketch the supervision tree
+for the chapter 14 log-search service (listener, planner, one proc per
+shard), choosing for each internal node: restart the child alone, restart
+all children, or escalate. Name the failure scenario that made you pick
+each policy.
 
 Solution (discussion): the shards sit under one internal supervisor
 with restart-alone: shard failures are independent (one bad disk, one
@@ -5012,7 +5006,7 @@ scheduler material is where that becomes checkable.)
 <summary>Exercise 16-1. [§16.1](../ch16.md#16.1)</summary>
 
 **Exercise 16-1** *(comprehension · lupin)*. The sender builds a list
-inside a region — two pushes — and sends the region. Predict: does the
+inside a region (two pushes) and sends the region. Predict: does the
 receiver's `in r2 { … }` block run before or after both pushes are
 visible, and what synchronization made that true?
 
@@ -5082,9 +5076,9 @@ lineup prices that.)
 <details>
 <summary>Exercise 16-3. [§16.1](../ch16.md#16.1)</summary>
 
-**Exercise 16-3** *(extension (break-it-on-purpose) · lupin)*. Construct the
-smallest program in which a sender touches a region *after* sending it
-with `move`. Predict the exact trap kind before running — it is one
+**Exercise 16-3** *(extension (break-it-on-purpose) · lupin)*. Construct
+the smallest program in which a sender touches a region *after* sending
+it with `move`. Predict the exact trap kind before running; it is one
 you met in chapter 7, not a new one.
 
 Solution. `ch16/ex16-3.lu`:
@@ -5118,10 +5112,10 @@ the same lesson dynamically, at the read.)
 <details>
 <summary>Exercise 16-4. [§16.2](../ch16.md#16.2)</summary>
 
-**Exercise 16-4** *(comprehension · lupin)*. Ten squares are frozen
-into `table`; two tasks each read one entry and send it back. Predict
-the printed number, and answer precisely: how many copies of the table
-exist while both tasks read it?
+**Exercise 16-4** *(comprehension · lupin)*. Ten squares are frozen into
+`table`; two tasks each read one entry and send it back. Predict the
+printed number, and answer precisely: how many copies of the table exist
+while both tasks read it?
 
 ```wolf
     let table = freeze region {
@@ -5152,11 +5146,10 @@ $ lupin ex16-4.lu
 <summary>Exercise 16-5. [§16.2](../ch16.md#16.2)</summary>
 
 **Exercise 16-5** *(design)*. For each payload, choose `move` or
-`freeze` and defend it in one sentence: (a) a parsed configuration
-read by every worker for the process lifetime; (b) a request's parse
-tree handed from parser to executor; (c) a routing table rebuilt every
-30 seconds and read constantly; (d) a 2 GB index segment consulted by
-eight shards.
+`freeze` and defend it in one sentence: (a) a parsed configuration read by
+every worker for the process lifetime; (b) a request's parse tree handed
+from parser to executor; (c) a routing table rebuilt every 30 seconds and
+read constantly; (d) a 2 GB index segment consulted by eight shards.
 
 Solution (discussion): (a) freeze — many readers, no writer, forever:
 the definitional freeze. (b) move — exactly one consumer, which will
@@ -5174,13 +5167,12 @@ untouchable — wolf gives no third verb, on purpose.
 <details>
 <summary>Exercise 16-6. [§16.3](../ch16.md#16.3)</summary>
 
-**Exercise 16-6** *(design)*. The same workload — a producer builds a
-million-node tree, a consumer walks it — in four systems: Erlang
-(copying send), Go (send a pointer), Rust (`Arc<Mutex<Tree>>`), wolf
-(`ch.send(move r)`). For each, name what the transfer costs at the
-moment of send, and what it costs the *receiver* to be safe while
-reading. One of the four pays at a different time than the others —
-which?
+**Exercise 16-6** *(design)*. The same workload (a producer builds a
+million-node tree, a consumer walks it) in four systems: Erlang (copying
+send), Go (send a pointer), Rust (`Arc<Mutex<Tree>>`), wolf
+(`ch.send(move r)`). For each, name what the transfer costs at the moment
+of send, and what it costs the *receiver* to be safe while reading. One
+of the four pays at a different time than the others: which?
 
 Solution (discussion): Erlang pays at send — a deep copy of a million
 nodes — and the receiver is then perfectly safe reading its private
@@ -5203,14 +5195,14 @@ looking expensive.
 <details>
 <summary>Exercise 16-7. [§16.3](../ch16.md#16.3)</summary>
 
-**Exercise 16-7** *(extension · lupin)*. A maze is a graph, and a
-graph is a region's favorite payload. Carve a 5×5 maze with a seeded
-generator (per-cell wall bitmasks: 1=N 2=E 4=S 8=W, depth-first carve,
-a small linear-congruential step for direction choice), building the
-wall table inside a region. Send the region to a solver task; the
-solver breadth-first-searches it in place and prints the shortest-path
-distance from corner to corner. Seed 1: run it. Before you do, answer:
-how many times is the wall table copied between carver and solver?
+**Exercise 16-7** *(extension · lupin)*. A maze is a graph, and a graph
+is a region's favorite payload. Carve a 5×5 maze with a seeded generator
+(per-cell wall bitmasks: 1=N 2=E 4=S 8=W, depth-first carve, a small
+linear-congruential step for direction choice), building the wall table
+inside a region. Send the region to a solver task; the solver
+breadth-first-searches it in place and prints the shortest-path distance
+from corner to corner. Seed 1: run it. Before you do, answer: how many
+times is the wall table copied between carver and solver?
 
 Solution. `ch16/ex16-7.lu` (the transfer; carve and solve are in the
 file):
@@ -5247,11 +5239,11 @@ never allocated.
 <details>
 <summary>Exercise 16-8. [§16.3](../ch16.md#16.3)</summary>
 
-**Exercise 16-8** *(comprehension + schedule play · lupin)*. Change
-the carve seed to 2 and run the program three times, including once
-under `lupin run … --seed=7`. Predict: which of the two seeds in play
-changes the printed distance, and which cannot — and why does this
-program print the same distance under every scheduler seed?
+**Exercise 16-8** *(comprehension + schedule play · lupin)*. Change the
+carve seed to 2 and run the program three times, including once under
+`lupin run … --seed=7`. Predict: which of the two seeds in play changes
+the printed distance, and which cannot, and why does this program print
+the same distance under every scheduler seed?
 
 Solution. `ch16/ex16-8.lu` (one line differs from 16-7):
 
@@ -5392,10 +5384,10 @@ balance=50
 <details>
 <summary>Exercise 17-2. [§17.1](../ch17.md#17.1)</summary>
 
-**Exercise 17-2** *(comprehension (schedule play) · lupin)*. Hunt it: run 17-1 under
-seeds 0 through 5. Record each balance. Which seeds produce the
-correct answer, and what had to happen in the schedule for 100 to
-come out?
+**Exercise 17-2** *(comprehension (schedule play) · lupin)*. Hunt it:
+run 17-1 under seeds 0 through 5. Record each balance. Which seeds
+produce the correct answer, and what had to happen in the schedule for
+100 to come out?
 
 Solution:
 
@@ -5445,10 +5437,10 @@ than written around here.)
 <details>
 <summary>Exercise 17-3. [§17.2](../ch17.md#17.2)</summary>
 
-**Exercise 17-3** *(fingers · lupin)*. Two sends race into one
-channel; main prints the arrival order. Run it twice with `--seed=0`,
-once with `--seed=3`, and once with `--schedule=ev:0,0,0`. Before
-running: which pairs of those four runs are guaranteed to match?
+**Exercise 17-3** *(fingers · lupin)*. Two sends race into one channel;
+main prints the arrival order. Run it twice with `--seed=0`, once with
+`--seed=3`, and once with `--schedule=ev:0,0,0`. Before running: which
+pairs of those four runs are guaranteed to match?
 
 ```wolf
     scope s {
@@ -5485,11 +5477,11 @@ that is the entire mechanism this chapter's debugging story stands on.
 <details>
 <summary>Exercise 17-4. [§17.2](../ch17.md#17.2)</summary>
 
-**Exercise 17-4** *(comprehension · lupin)*. The explorer prints the
-two schedules of 17-3 as decision streams `ev:0,0,0` and `ev:1,0,0`.
-Three decisions, but only the first digit ever differs. What is the
-first decision choosing between — and why are the remaining two
-decisions no longer choices once it is made?
+**Exercise 17-4** *(comprehension · lupin)*. The explorer prints the two
+schedules of 17-3 as decision streams `ev:0,0,0` and `ev:1,0,0`. Three
+decisions, but only the first digit ever differs. What is the first
+decision choosing between, and why are the remaining two decisions no
+longer choices once it is made?
 
 Solution: the first decision picks which spawned task runs at the
 first scheduling point — task one's send or task two's send fires
@@ -5541,9 +5533,8 @@ command, which is the difference between a bug report and an anecdote.
 <summary>Exercise 17-7. [§17.3](../ch17.md#17.3)</summary>
 
 **Exercise 17-7** *(comprehension · lupin)*. Rerun 17-3's exploration
-with `--explore-preemptions=0`. Predict what the report will claim
-about determinism before you run it, then reconcile the claim with
-17-5's.
+with `--explore-preemptions=0`. Predict what the report will claim about
+determinism before you run it, then reconcile the claim with 17-5's.
 
 Solution:
 
@@ -5596,11 +5587,11 @@ that sentence, with both clauses stressed, is §17.4's whole content.
 <details>
 <summary>Exercise 17-9. [§17.3](../ch17.md#17.3)</summary>
 
-**Exercise 17-9** *(extension (break-it-on-purpose) · lupin)*. Construct a
-deadlock from two tasks and two rendezvous channels, each task
+**Exercise 17-9** *(extension (break-it-on-purpose) · lupin)*. Construct
+a deadlock from two tasks and two rendezvous channels, each task
 receiving first and sending second. Predict the trap's roster before
-running: how many tasks does it name, and why is the answer three
-when you wrote two?
+running: how many tasks does it name, and why is the answer three when
+you wrote two?
 
 Solution. `ch17/ex17-9.lu`:
 
@@ -5821,7 +5812,7 @@ outputs are in `ex18-7a.lu` through `ex18-7c.lu`'s runs.)
 **Exercise 18-8** *(comprehension · wolf)*. A reader decides budgets
 are noise and writes `#[budget(fuel = 0)]` to turn the meter off.
 Predict what the compiler does with a *trivial* call under that
-attribute — a `comptime fn` that returns `10` and computes nothing.
+attribute: a `comptime fn` that returns `10` and computes nothing.
 
 Solution: the rejection is about the attribute, not the workload.
 Budgets are raised, never removed; there is no spelling that disables
@@ -5879,9 +5870,10 @@ help: raise the budget here: `#[budget(fuel = 2000000)]`
 <details>
 <summary>Exercise 18-10. [§18.4](../ch18.md#18.4)</summary>
 
-**Exercise 18-10** *(extension (break-it-on-purpose) · wolf)*. Earn E0703 — the
-*heap* budget — using only a `while` loop and a `var`, without
-tripping fuel first. (You will need to grant fuel to get there.)
+**Exercise 18-10** *(extension (break-it-on-purpose) · wolf)*. Earn
+E0703 (the *heap* budget) using only a `while` loop and a `var`,
+without tripping fuel first. (You will need to grant fuel to get
+there.)
 
 Solution. `ch18/ex18-10.lu`: grant a large fuel budget so the loop
 lives long enough to exhaust the 65536-cell comptime heap instead:
@@ -5980,9 +5972,9 @@ compile time.
 <details>
 <summary>Exercise 21-2. [§21.1](../ch21.md#21.1)</summary>
 
-**Exercise 21-2** *(fingers · lupin)*. Type the wolf saxpy and run
-it: five elements, `a = 2.0`, `ys` all tens. Predict both printed
-values first.
+**Exercise 21-2** *(fingers · lupin)*. Type the wolf saxpy and run it:
+five elements, `a = 2.0`, `ys` all tens. Predict both printed values
+first.
 
 Solution. `ch21/ex21-2.lu`:
 
@@ -6014,7 +6006,7 @@ numbers on the page stay CI's.
 
 **Exercise 21-3** *(comprehension · prose)*. A request handler builds
 a parse tree of 10,000 nodes, reads it, and discards it. Count the
-allocator interactions — calls into allocate and free machinery — for
+allocator interactions (calls into allocate and free machinery) for
 (a) malloc discipline with individual `free`, (b) malloc discipline
 with one arena library, (c) a wolf region. Then name the cost in (c)
 that did *not* disappear and where it went.
@@ -6037,8 +6029,8 @@ escapee.
 
 **Exercise 21-5** *(comprehension · lupin)*. The bill and the payout
 in one program: `sum_to(n)` adds 1,000,000 to an `i32` accumulator `n`
-times. Predict both calls' fates — `sum_to(2000)`, then
-`sum_to(3000)` — with the arithmetic that decides them.
+times. Predict both calls' fates (`sum_to(2000)`, then `sum_to(3000)`)
+with the arithmetic that decides them.
 
 Solution: 2000 × 1,000,000 = 2.0 × 10⁹ fits under `i32`'s
 2,147,483,647 ceiling; 3000 × 1,000,000 crosses it at iteration 2148:
@@ -6064,8 +6056,8 @@ made explicit — rather than asserting it here.
 **Exercise 21-6** *(spelunking · lupin)*. From exercise 21-5's trap
 line alone: name the decision id it cites, the clause tag it enforces,
 and the documented spelling for the program that *wanted* wraparound.
-Then state, in one sentence, why this trap firing "in every profile"
-is the chapter's honesty rather than the chapter's embarrassment.
+Then state, in one sentence, why this trap firing "in every profile" is
+the chapter's honesty rather than the chapter's embarrassment.
 
 Solution: X3 is the decision; `[arith.checked]` the clause;
 `wrapping[i32]` the intended-overflow spelling — all three are in the
@@ -6141,8 +6133,8 @@ reorganization. That non-event is the design.
 
 **Exercise 22-2** *(comprehension · lupin)*. `vault/keys.lu` defines
 `pub fn count()`, `pub fn loaded()`, and private `fn secrets()` and
-`fn total()`. The entry calls `vault.total()`. Predict the diagnostic — including
-whether it says the name does not *exist* — and the exit code.
+`fn total()`. The entry calls `vault.total()`. Predict the diagnostic
+(including whether it says the name does not *exist*) and the exit code.
 
 Solution: E0304, exit 2, and the diagnostic is precise about
 existence: the name is there and visibility is the objection. A
@@ -6162,8 +6154,8 @@ $ echo $?
 
 **Exercise 22-3** *(comprehension · lupin)*. `twice/main.lu` and its
 sibling `twice/extra.lu` each define `fn describe()`. Neither file
-imports the other. Predict the verdict, and say why "neither imports
-the other" is a trap in the question.
+imports the other. Predict the verdict, and say why "neither imports the
+other" is a trap in the question.
 
 Solution: E0302 — "file boundaries create no scopes." The trap is
 thinking imports are involved at all: sibling files are not two scopes
@@ -6179,9 +6171,9 @@ twice/main.lu: E0302: the name `describe` is defined twice in this module (defin
 <details>
 <summary>Exercise 22-4. [§22.1](../ch22.md#22.1)</summary>
 
-**Exercise 22-4** *(comprehension · lupin)*. The entry imports
-`tools` and never mentions it again. Predict: warning or error, and
-what the diagnostic offers about the fix.
+**Exercise 22-4** *(comprehension · lupin)*. The entry imports `tools`
+and never mentions it again. Predict: warning or error, and what the
+diagnostic offers about the fix.
 
 Solution: a hard error, E0305, and the diagnostic notes the fix is
 machine-applicable — deleting the line. Wolf takes the Go position
@@ -6301,9 +6293,9 @@ handler short, which is the second thing `init()` never gave you.
 
 **Exercise 22-8** *(design)*. Import cycles are errors (D32). A
 colleague argues the compiler should permit cycles and merely warn,
-citing a large codebase where breaking them means touching forty
-files. Argue wolf's side using what the rule *buys*, then concede the
-strongest point on the other side and answer it.
+citing a large codebase where breaking them means touching forty files.
+Argue wolf's side using what the rule *buys*, then concede the strongest
+point on the other side and answer it.
 
 Solution (discussion): the buy is threefold. Builds: a DAG gives every
 module a finish order, so compilation parallelizes and incremental
@@ -6667,10 +6659,10 @@ reading a manifest.
 <summary>Exercise 24-8. [§24.3](../ch24.md#24.3)</summary>
 
 **Exercise 24-8** *(comprehension · prose)*. "It's only a
-dev-dependency" — a teammate waves through a test-helper package
-whose new version adds comptime code, on the grounds that it ships
-nothing to production. Locate the two errors, using this chapter and
-one fact from chapter 18.
+dev-dependency": a teammate waves through a test-helper package whose
+new version adds comptime code, on the grounds that it ships nothing to
+production. Locate the two errors, using this chapter and one fact from
+chapter 18.
 
 Solution: error one — build-time compromise does not care about
 shipping: comptime code in any dependency evaluates inside your
@@ -6804,8 +6796,8 @@ is internal and the caller is going to widen it again anyway.
 <summary>Exercise 26-5. [§26.5](../ch26.md#26.5)</summary>
 
 **Exercise 26-5** *(spelunking · wolf)*. Add a third name that does not
-exist, run the program, and read the exit status. Then read the E0602 note
-above in full and explain, in two sentences, why the C's `-1` needs a
+exist, run the program, and read the exit status. Then read the E0602
+note above in full and explain, in two sentences, why the C's `-1` needs a
 convention and a row does not.
 
 Solution: the run reports the missing name on standard error, prints the
@@ -6904,9 +6896,9 @@ one byte in `is_operator` and one arm.
 
 **Exercise 27-2** *(comprehension · lupin)*. `eval` returns `Empty` for
 both an underflowing operator and an expression that leaves two values on
-the stack. Predict the output for the three lines `3 +`, `3 4`, and
-`3 4 + 5`, and then argue whether one tag for two situations is the same
-mistake §27.1 accused the C of making.
+the stack. Predict the output for the three lines `3 +`, `3 4`, and `3 4 +
+5`, and then argue whether one tag for two situations is the same mistake
+§27.1 accused the C of making.
 
 Solution. `ex27-2.lu`. All three are `Empty`:
 
@@ -6936,7 +6928,7 @@ problem with a wording fix, and 27-3 is the fix.
 
 **Exercise 27-3** *(extension · lupin)*. Give `Empty` a payload: which
 operator ran out of operands, and how many it found. You will have to
-change the row, the two `return`s, and one match arm — say what told you
+change the row, the two `return`s, and one match arm. Say what told you
 each one.
 
 Solution. `ex27-3.lu`. A second payload struct, `Short { op: str, found:
@@ -6995,11 +6987,11 @@ shows it.
 <details>
 <summary>Exercise 27-5. [§27.5](../ch27.md#27.5)</summary>
 
-**Exercise 27-5** *(spelunking · the C twin)*. Take a census of `broken`
-in `rpn.c`: count the places that can set it and the places that read it,
-and write down the line numbers. Then take the same census of the wolf
-column's failure surface — where a tag can be produced, and where one is
-handled. Say what the two ratios tell you.
+**Exercise 27-5** *(spelunking · the C twin)*. Take a census of
+`broken` in `rpn.c`: count the places that can set it and the places
+that read it, and write down the line numbers. Then take the same census
+of the wolf column's failure surface: where a tag can be produced, and
+where one is handled. Say what the two ratios tell you.
 
 Solution. In `samples/contrast/rpn.c`, `broken` is declared at line 35 and
 raised at five sites: 43 (`push` overflow), 53 (`pop` underflow), 69
@@ -7084,7 +7076,7 @@ you want fractions you are writing the parser.
 print the answer, and stop at end of input. `read_line()` returns
 `str ! {eof, io, utf8}`, so name the loop's exit condition, and then say
 what the calculator would have to remember between lines for `x 3 +` to
-mean anything — and what shape that memory wants to be.
+mean anything, and what shape that memory wants to be.
 
 Solution (discussion): the loop is
 `let line = read_line() else |_| { break }` inside a `while true`, and the
@@ -7142,10 +7134,10 @@ node it did not have to.
 <details>
 <summary>Exercise 28-2. [§28.5](../ch28.md#28.5)</summary>
 
-**Exercise 28-2** *(comprehension · lupin)*. `add` compares with
-`w < n.word` on `str`. Predict the order of `Wolf`, `wolf`, `WOLF`, and
-`wolfs` in the output *without* the `.lower()` call, and say which two of
-the four end up as one node once `.lower()` is back.
+**Exercise 28-2** *(comprehension · lupin)*. `add` compares with `w <
+n.word` on `str`. Predict the order of `Wolf`, `wolf`, `WOLF`, and `wolfs`
+in the output *without* the `.lower()` call, and say which two of the four
+end up as one node once `.lower()` is back.
 
 Solution. `ex28-2.lu`. Four distinct words, four nodes, ordered by bytes:
 
@@ -7175,8 +7167,8 @@ the book says so plainly in chapter 2 rather than pretending otherwise.
 **Exercise 28-3** *(extension · lupin)*. Add a `-n` mode: print the words
 in descending order of count instead of alphabetically, with ties broken
 alphabetically. The tree is already sorted by word, so the shape of the
-answer is a second pass — say what you collect on the first pass, and what
-it costs in lines.
+answer is a second pass. Say what you collect on the first pass, and
+what it costs in lines.
 
 Solution. `ex28-3.lu`. The first pass is `collect`, an in-order walk that
 pushes each node's word and count onto two parallel `List`s — so it arrives
@@ -7364,7 +7356,7 @@ page.
 <summary>Exercise 30-2. [§30.5](../ch30.md#30.5)</summary>
 
 **Exercise 30-2** *(comprehension · wolf)*. `hits` and `done` are both
-`channel[int](0)`. Give `hits` a buffer — `channel[int](64)` — and predict
+`channel[int](0)`. Give `hits` a buffer (`channel[int](64)`) and predict
 what happens before you run it. Then run the binary twenty times and count
 the report lines each time. Two questions: what can `done.send(1)` do now
 that it could not do before, and which line of the collector is the one
@@ -7473,9 +7465,9 @@ that assumed it would fail on a loaded machine.
 
 **Exercise 30-5** *(extension · wolf)*. Make the report order-dependent
 on purpose: delete both channels and the collector, and have each task
-print its own matches directly. Run the binary twenty times and hash the
-output. You will get more damage than you predicted — say what the extra
-damage is, and then say what you have broken in terms of §30.5's rule
+print its own matches directly. Run the binary twenty times and hash
+the output. You will get more damage than you predicted. Say what the
+extra damage is, and then say what you have broken in terms of §30.5's rule
 rather than in terms of tasks.
 
 Solution. `ex30-5.lu`. Twenty runs, twenty distinct outputs. Here is one:
@@ -7507,7 +7499,7 @@ cheapest way to obey it is to let exactly one task print.
 <summary>Exercise 30-6. [§30.5](../ch30.md#30.5)</summary>
 
 **Exercise 30-6** *(spelunking · wolf)*. Read the E1012 note in §30.4 in
-full. It offers two ways out — build the value completely before freezing,
+full. It offers two ways out: build the value completely before freezing,
 or keep a mutable `copy` alongside. Say which one `pargrep` uses and what
 the other one would cost in a four-task program.
 

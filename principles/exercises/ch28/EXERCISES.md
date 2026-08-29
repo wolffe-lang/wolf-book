@@ -31,10 +31,10 @@ the in-order walk reports the tree's *shape*, and the shape came from
 left-most leaf and `zebra` the right-most, and neither insertion touched a
 node it did not have to.
 
-**Exercise 28-2** *(comprehension · lupin)*. `add` compares with
-`w < n.word` on `str`. Predict the order of `Wolf`, `wolf`, `WOLF`, and
-`wolfs` in the output *without* the `.lower()` call, and say which two of
-the four end up as one node once `.lower()` is back.
+**Exercise 28-2** *(comprehension · lupin)*. `add` compares with `w <
+n.word` on `str`. Predict the order of `Wolf`, `wolf`, `WOLF`, and `wolfs`
+in the output *without* the `.lower()` call, and say which two of the four
+end up as one node once `.lower()` is back.
 
 Solution. `ex28-2.lu`. Four distinct words, four nodes, ordered by bytes:
 
@@ -60,8 +60,8 @@ the book says so plainly in chapter 2 rather than pretending otherwise.
 **Exercise 28-3** *(extension · lupin)*. Add a `-n` mode: print the words
 in descending order of count instead of alphabetically, with ties broken
 alphabetically. The tree is already sorted by word, so the shape of the
-answer is a second pass — say what you collect on the first pass, and what
-it costs in lines.
+answer is a second pass. Say what you collect on the first pass, and
+what it costs in lines.
 
 Solution. `ex28-3.lu`. The first pass is `collect`, an in-order walk that
 pushes each node's word and count onto two parallel `List`s — so it arrives

@@ -112,8 +112,8 @@ row when the set is part of your interface, and infer it when the function
 is internal and the caller is going to widen it again anyway.
 
 **Exercise 26-5** *(spelunking · wolf)*. Add a third name that does not
-exist, run the program, and read the exit status. Then read the E0602 note
-above in full and explain, in two sentences, why the C's `-1` needs a
+exist, run the program, and read the exit status. Then read the E0602
+note above in full and explain, in two sentences, why the C's `-1` needs a
 convention and a row does not.
 
 Solution: the run reports the missing name on standard error, prints the

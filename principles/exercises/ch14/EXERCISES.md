@@ -37,11 +37,11 @@ $ lupin ex14-1.lu
 normal=true killed=false
 ```
 
-**Exercise 14-2** *(design)*. A log-search service has three
-concerns: an HTTP listener, a query planner, and one index shard per
-disk. Argue where the proc boundaries go. For each boundary you draw,
-name the failure it isolates and the state that dies with it; for one
-boundary you chose *not* to draw, name what shared fate you accepted.
+**Exercise 14-2** *(design)*. A log-search service has three concerns:
+an HTTP listener, a query planner, and one index shard per disk. Argue
+where the proc boundaries go. For each boundary you draw, name the
+failure it isolates and the state that dies with it; for one boundary you
+chose *not* to draw, name what shared fate you accepted.
 
 Solution (discussion): the strong answer puts each shard in its own
 proc — a corrupt index or a crashing decompressor takes down one
@@ -61,7 +61,7 @@ Armstrong's argument, applied.
 **Exercise 14-3** *(comprehension · lupin)*. `build_then_crash`
 allocates a hundred integers into a region, then returns an error.
 Predict what the monitor reports and, separately, what happened to the
-hundred integers — then say which line of code freed them.
+hundred integers; then say which line of code freed them.
 
 Solution. `ch14/ex14-3.lu` (excerpt):
 
@@ -89,8 +89,8 @@ arrives after the memory is already gone.
 
 **Exercise 14-4** *(comprehension · lupin)*. `sleeper` registers a
 defer and then blocks forever on an empty channel; the owner kills it.
-Two prints are written in this program: `defer-skipped` in the proc
-and `released` in the owner. Predict which of them appear, and in what
+Two prints are written in this program: `defer-skipped` in the proc and
+`released` in the owner. Predict which of them appear, and in what
 order:
 
 ```wolf
@@ -127,9 +127,9 @@ released
 ```
 
 **Exercise 14-5** *(comprehension · lupin)*. The same shape at task
-granularity. One sibling blocks on a channel with a defer registered;
-the other fails. Predict the output — and then state, in one sentence
-each, why this defer runs when 14-4's did not:
+granularity. One sibling blocks on a channel with a defer registered; the
+other fails. Predict the output. Then state, in one sentence each,
+why this defer runs when 14-4's did not:
 
 ```wolf
 fn race_them() -> !int {
@@ -163,10 +163,10 @@ which one you are holding.
 
 ## §14.3 — Mailboxes
 
-**Exercise 14-6** *(fingers · lupin)*. Build a counting service: a
-proc that reads commands from a channel, where `0` means "reply with
-the total" and any other value adds to it. Drive it with 5, 2, then a
-report, and print what comes back.
+**Exercise 14-6** *(fingers · lupin)*. Build a counting service: a proc
+that reads commands from a channel, where `0` means "reply with the
+total" and any other value adds to it. Drive it with 5, 2, then a report,
+and print what comes back.
 
 Solution. `ch14/ex14-6.lu`:
 
@@ -202,10 +202,10 @@ the channel, the proc serializes them, and the reply channel carries
 answers back. No lock appears because no state is shared — the total
 lives in exactly one proc.
 
-**Exercise 14-7** *(extension · lupin)*. Grow the protocol: `-1`
-resets the counter. Report the total, reset, add 3, and report again.
-Predict both numbers first, then answer: what ordering guarantee makes
-your prediction safe, and which chapter taught it?
+**Exercise 14-7** *(extension · lupin)*. Grow the protocol: `-1` resets
+the counter. Report the total, reset, add 3, and report again. Predict
+both numbers first, then answer: what ordering guarantee makes your
+prediction safe, and which chapter taught it?
 
 Solution. `ch14/ex14-7.lu` (excerpt):
 
@@ -247,12 +247,11 @@ every queue in the program has a name and a bound.
 
 ## Chapter batch
 
-**Exercise 14-9** *(comprehension + schedule play · lupin)*. Two
-client tasks each send two increments to the counting proc; the scope
-joins, then main asks for the total. Run it under seeds 0, 1, 5, 9.
-Predict first: does the total vary with the schedule, and why not —
-and name the thing that *does* vary between those runs even though no
-output shows it.
+**Exercise 14-9** *(comprehension + schedule play · lupin)*. Two client
+tasks each send two increments to the counting proc; the scope joins, then
+main asks for the total. Run it under seeds 0, 1, 5, 9. Predict first:
+does the total vary with the schedule, and why not? Then name the thing
+that *does* vary between those runs even though no output shows it.
 
 Solution. `ch14/ex14-9.lu` (main excerpt):
 

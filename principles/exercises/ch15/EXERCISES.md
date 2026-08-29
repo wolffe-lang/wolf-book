@@ -93,8 +93,8 @@ nobody drew.
 **Exercise 15-4** *(fingers · lupin)*. Build the smallest supervisor:
 spawn a worker that fails on its first attempt and succeeds on its
 second; monitor it; on an abnormal exit, print a line and respawn with
-the next attempt number; stop after three attempts. Run it and keep
-the output.
+the next attempt number; stop after three attempts. Run it and keep the
+output.
 
 Solution. `ch15/ex15-4.lu`:
 
@@ -188,11 +188,11 @@ this exercise is that bet lost by one.
 ## §15.3 — The root supervisor
 
 **Exercise 15-7** *(design)*. Every proc in wolf lives under the root
-supervisor; there is no unsupervised spawn. Sketch the supervision
-tree for the chapter 14 log-search service (listener, planner, one
-proc per shard), choosing for each internal node: restart the child
-alone, restart all children, or escalate. Name the failure scenario
-that made you pick each policy.
+supervisor; there is no unsupervised spawn. Sketch the supervision tree
+for the chapter 14 log-search service (listener, planner, one proc per
+shard), choosing for each internal node: restart the child alone, restart
+all children, or escalate. Name the failure scenario that made you pick
+each policy.
 
 Solution (discussion): the shards sit under one internal supervisor
 with restart-alone: shard failures are independent (one bad disk, one

@@ -211,11 +211,11 @@ day the verdict arrives.
 
 ## §7.4 — `mut` at both ends
 
-**Exercise 7-6** *(fingers + spelunking · lupin)*. Write `swap` for
-two `int`s using `mut` at both ends, and verify it. Then state the
-single search you would run over a strange codebase to find every line
-that can mutate anything — and what property of the language makes the
-search complete.
+**Exercise 7-6** *(fingers + spelunking · lupin)*. Write `swap` for two
+`int`s using `mut` at both ends, and verify it. Then state the single
+search you would run over a strange codebase to find every line that can
+mutate anything, and what property of the language makes the search
+complete.
 
 Solution. `ch07/ex7-6.lu`:
 
@@ -293,9 +293,9 @@ disjoint places, so aliasing questions are settled at the call site,
 which is also what lets the compiler hand `noalias` facts to the
 optimizer (§7.7's subject).
 
-**Exercise 7-8** *(comprehension + fingers · lupin)*. Four call shapes against
-`struct P { a: Q, b: Q }`, `struct Q { n: int }`. Verdict for each,
-before checking any:
+**Exercise 7-8** *(comprehension + fingers · lupin)*. Four call shapes
+against `struct P { a: Q, b: Q }`, `struct Q { n: int }`. Verdict for
+each, before checking any:
 
 1. `f(mut p.a, mut p.b)`
 2. `f(mut p.a.n, mut p.b.n)`
@@ -384,9 +384,9 @@ that no signature in this paragraph mentions anything but values.
 ## §7.7 — What the machine does
 
 **Exercise 7-11** *(fingers · lupin REPL)*. In the REPL, move a string
-out of one binding into another, then read both — the corpse first.
-What does the session do that a compiled program cannot, and which
-clause tag names the reason the trap did not end your session?
+out of one binding into another, then read both, the corpse first. What
+does the session do that a compiled program cannot, and which clause tag
+names the reason the trap did not end your session?
 
 Solution. One session:
 

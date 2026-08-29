@@ -67,7 +67,7 @@ $ lupin ex3-7.lu
 
 **Exercise 3-8** *(comprehension · lupin)*. Predict the one printed
 line, then answer the pointed part: after `name = "grace"`, what
-happened to `"ada"` — and why does `first` not care?
+happened to `"ada"`, and why does `first` not care?
 
 ```wolf
 fn main() -> !int {

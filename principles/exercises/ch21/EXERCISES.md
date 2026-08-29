@@ -33,9 +33,9 @@ every call site. Same fact, different laborer: C trusts the
 programmer's word; wolf makes the caller demonstrate it, once, at
 compile time.
 
-**Exercise 21-2** *(fingers · lupin)*. Type the wolf saxpy and run
-it: five elements, `a = 2.0`, `ys` all tens. Predict both printed
-values first.
+**Exercise 21-2** *(fingers · lupin)*. Type the wolf saxpy and run it:
+five elements, `a = 2.0`, `ys` all tens. Predict both printed values
+first.
 
 Solution. `ch21/ex21-2.lu`:
 
@@ -65,7 +65,7 @@ numbers on the page stay CI's.
 
 **Exercise 21-3** *(comprehension · prose)*. A request handler builds
 a parse tree of 10,000 nodes, reads it, and discards it. Count the
-allocator interactions — calls into allocate and free machinery — for
+allocator interactions (calls into allocate and free machinery) for
 (a) malloc discipline with individual `free`, (b) malloc discipline
 with one arena library, (c) a wolf region. Then name the cost in (c)
 that did *not* disappear and where it went.
@@ -103,8 +103,8 @@ which is why "legally" appears in the section title.
 
 **Exercise 21-5** *(comprehension · lupin)*. The bill and the payout
 in one program: `sum_to(n)` adds 1,000,000 to an `i32` accumulator `n`
-times. Predict both calls' fates — `sum_to(2000)`, then
-`sum_to(3000)` — with the arithmetic that decides them.
+times. Predict both calls' fates (`sum_to(2000)`, then `sum_to(3000)`)
+with the arithmetic that decides them.
 
 Solution: 2000 × 1,000,000 = 2.0 × 10⁹ fits under `i32`'s
 2,147,483,647 ceiling; 3000 × 1,000,000 crosses it at iteration 2148:
@@ -126,8 +126,8 @@ made explicit — rather than asserting it here.
 **Exercise 21-6** *(spelunking · lupin)*. From exercise 21-5's trap
 line alone: name the decision id it cites, the clause tag it enforces,
 and the documented spelling for the program that *wanted* wraparound.
-Then state, in one sentence, why this trap firing "in every profile"
-is the chapter's honesty rather than the chapter's embarrassment.
+Then state, in one sentence, why this trap firing "in every profile" is
+the chapter's honesty rather than the chapter's embarrassment.
 
 Solution: X3 is the decision; `[arith.checked]` the clause;
 `wrapping[i32]` the intended-overflow spelling — all three are in the

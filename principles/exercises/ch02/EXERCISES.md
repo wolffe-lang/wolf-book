@@ -26,8 +26,8 @@ $ lupin eval 'r"C:\temp".len'
 ## §2.3 — Bytes, honestly
 
 **Exercise 2-6** *(comprehension · lupin REPL)*. `"wolf"` has four
-bytes. Predict each of these, precisely — value or event:
-`"wolf"[..2]`, `"wolf"[2..]`, `"wolf"[4..4]`, `"wolf"[3..2]`.
+bytes. Predict each of these, precisely, as a value or an event: `"wolf"[..2]`,
+`"wolf"[2..]`, `"wolf"[4..4]`, `"wolf"[3..2]`.
 
 Solution: `wo`, `lf`, the empty string, and a trap. An open end fills
 in the boundary; `4..4` is an empty range *at* a legal boundary, which
@@ -120,9 +120,9 @@ scalars, and neither counts what the reader sees.
 
 ## §2.5 — What the machine does
 
-**Exercise 2-8** *(comprehension · lupin REPL)*. `s` is
-`"wolfpack"`. Predict all four values, then say what slicing `s`
-cost — did any of these lines copy eight bytes?
+**Exercise 2-8** *(comprehension · lupin REPL)*. `s` is `"wolfpack"`.
+Predict all four values, then say what slicing `s` cost: did any of
+these lines copy eight bytes?
 
 ```console
 wolf> let s = "wolfpack"

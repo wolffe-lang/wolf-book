@@ -58,10 +58,10 @@ $ lupin ex17-1.lu
 balance=50
 ```
 
-**Exercise 17-2** *(comprehension (schedule play) · lupin)*. Hunt it: run 17-1 under
-seeds 0 through 5. Record each balance. Which seeds produce the
-correct answer, and what had to happen in the schedule for 100 to
-come out?
+**Exercise 17-2** *(comprehension (schedule play) · lupin)*. Hunt it:
+run 17-1 under seeds 0 through 5. Record each balance. Which seeds
+produce the correct answer, and what had to happen in the schedule for
+100 to come out?
 
 Solution:
 
@@ -109,10 +109,10 @@ than written around here.)
 
 ## §17.2 — The seed, the schedule, and the frontier
 
-**Exercise 17-3** *(fingers · lupin)*. Two sends race into one
-channel; main prints the arrival order. Run it twice with `--seed=0`,
-once with `--seed=3`, and once with `--schedule=ev:0,0,0`. Before
-running: which pairs of those four runs are guaranteed to match?
+**Exercise 17-3** *(fingers · lupin)*. Two sends race into one channel;
+main prints the arrival order. Run it twice with `--seed=0`, once with
+`--seed=3`, and once with `--schedule=ev:0,0,0`. Before running: which
+pairs of those four runs are guaranteed to match?
 
 ```wolf
     scope s {
@@ -145,11 +145,11 @@ A schedule is a value. Two runs disagree only if their schedules
 disagree, and a schedule you can name is a schedule you can rerun —
 that is the entire mechanism this chapter's debugging story stands on.
 
-**Exercise 17-4** *(comprehension · lupin)*. The explorer prints the
-two schedules of 17-3 as decision streams `ev:0,0,0` and `ev:1,0,0`.
-Three decisions, but only the first digit ever differs. What is the
-first decision choosing between — and why are the remaining two
-decisions no longer choices once it is made?
+**Exercise 17-4** *(comprehension · lupin)*. The explorer prints the two
+schedules of 17-3 as decision streams `ev:0,0,0` and `ev:1,0,0`. Three
+decisions, but only the first digit ever differs. What is the first
+decision choosing between, and why are the remaining two decisions no
+longer choices once it is made?
 
 Solution: the first decision picks which spawned task runs at the
 first scheduling point — task one's send or task two's send fires
@@ -246,9 +246,8 @@ injection half waits on s36.
 ## §17.3 — Scope honesty (what exploration cannot see)
 
 **Exercise 17-7** *(comprehension · lupin)*. Rerun 17-3's exploration
-with `--explore-preemptions=0`. Predict what the report will claim
-about determinism before you run it, then reconcile the claim with
-17-5's.
+with `--explore-preemptions=0`. Predict what the report will claim about
+determinism before you run it, then reconcile the claim with 17-5's.
 
 Solution:
 
@@ -295,11 +294,11 @@ that sentence, with both clauses stressed, is §17.4's whole content.
 
 ## Chapter batch
 
-**Exercise 17-9** *(extension (break-it-on-purpose) · lupin)*. Construct a
-deadlock from two tasks and two rendezvous channels, each task
+**Exercise 17-9** *(extension (break-it-on-purpose) · lupin)*. Construct
+a deadlock from two tasks and two rendezvous channels, each task
 receiving first and sending second. Predict the trap's roster before
-running: how many tasks does it name, and why is the answer three
-when you wrote two?
+running: how many tasks does it name, and why is the answer three when
+you wrote two?
 
 Solution. `ch17/ex17-9.lu`:
 

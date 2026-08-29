@@ -220,7 +220,7 @@ outputs are in `ex18-7a.lu` through `ex18-7c.lu`'s runs.)
 **Exercise 18-8** *(comprehension · wolf)*. A reader decides budgets
 are noise and writes `#[budget(fuel = 0)]` to turn the meter off.
 Predict what the compiler does with a *trivial* call under that
-attribute — a `comptime fn` that returns `10` and computes nothing.
+attribute: a `comptime fn` that returns `10` and computes nothing.
 
 Solution: the rejection is about the attribute, not the workload.
 Budgets are raised, never removed; there is no spelling that disables
@@ -270,9 +270,10 @@ error[E0702]: comptime evaluation ran out of fuel after 1000000 steps
 help: raise the budget here: `#[budget(fuel = 2000000)]`
 ```
 
-**Exercise 18-10** *(extension (break-it-on-purpose) · wolf)*. Earn E0703 — the
-*heap* budget — using only a `while` loop and a `var`, without
-tripping fuel first. (You will need to grant fuel to get there.)
+**Exercise 18-10** *(extension (break-it-on-purpose) · wolf)*. Earn
+E0703 (the *heap* budget) using only a `while` loop and a `var`,
+without tripping fuel first. (You will need to grant fuel to get
+there.)
 
 Solution. `ch18/ex18-10.lu`: grant a large fuel budget so the loop
 lives long enough to exhaust the 65536-cell comptime heap instead:

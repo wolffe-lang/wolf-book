@@ -8,9 +8,9 @@ Every checker in this chapter is lupin; wolf conform-run reports
 
 **Exercise 11-1** *(fingers · lupin)*. A function cannot spawn unless
 somebody hands it a scope. Write `launch(s, ch, n)` that spawns into a
-caller's scope, and a `main` that calls it three times inside one
-`scope` block. The `Scope` parameter is the entire mechanism — nothing
-else in the signature says "concurrent."
+caller's scope, and a `main` that calls it three times inside one `scope`
+block. The `Scope` parameter is the entire mechanism: nothing else in
+the signature says "concurrent."
 
 Solution. `ch11/ex11-1.lu`:
 
@@ -39,7 +39,7 @@ $ lupin ex11-1.lu
 
 **Exercise 11-2** *(comprehension · lupin)*. Take 11-1 and change one
 character: make the channel a rendezvous, `channel[int](0)`. Predict
-precisely what happens and why — the answer involves which side of the
+precisely what happens and why: the answer involves which side of the
 scope's closing brace the receives sit on.
 
 Solution: deadlock. With no buffer, each child's `send` blocks until
@@ -74,9 +74,9 @@ review.
 ## §11.2 — The background refresher
 
 **Exercise 11-4** *(extension · lupin)*. Build a worker pool: three
-workers share one `jobs` channel and one `results` channel; `main`
-feeds six jobs and closes. Each worker is the same four lines. Why does
-the pool need no "shut down workers" message?
+workers share one `jobs` channel and one `results` channel; `main` feeds
+six jobs and closes. Each worker is the same four lines. Why does the
+pool need no "shut down workers" message?
 
 Solution. `ch11/ex11-4.lu`:
 
@@ -112,11 +112,11 @@ brace then proves all workers are gone before `results` is touched.
 Two channel closes and one join replace the ad-hoc "poison pill"
 protocols other ecosystems teach.
 
-**Exercise 11-5** *(comprehension + schedule play · lupin)*. Shrink
-the pool to two workers and four jobs, and tag each result with the
-worker that produced it. Before running: is the *assignment* of jobs
-to workers part of the program, or part of the schedule? Run under
-seed 1 and seed 2024 and defend your answer with the outputs.
+**Exercise 11-5** *(comprehension + schedule play · lupin)*. Shrink the
+pool to two workers and four jobs, and tag each result with the worker
+that produced it. Before running: is the *assignment* of jobs to workers
+part of the program, or part of the schedule? Run under seed 1 and seed
+2024 and defend your answer with the outputs.
 
 Solution. `ch11/ex11-5.lu` (excerpt):
 

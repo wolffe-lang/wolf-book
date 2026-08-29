@@ -9,8 +9,8 @@ lupin. Seeded runs use `lupin run FILE --seed=N`.
 
 **Exercise 10-1** *(fingers · lupin)*. Type and run your first scope:
 two children each send a number into a channel, and `main` adds what it
-receives after the scope closes. Then swap the two `spawn` lines and
-run again. What changed?
+receives after the scope closes. Then swap the two `spawn` lines and run
+again. What changed?
 
 Solution. `ch10/ex10-1.lu`:
 
@@ -39,7 +39,7 @@ the scope's exit joins both children before the first `recv` runs, so
 both values are already in the buffer either way.
 
 **Exercise 10-2** *(comprehension · lupin)*. Predict the order of the
-two lines, then say what enforces it — the scheduler, or something
+two lines, then say what enforces it: the scheduler, or something
 stronger:
 
 ```wolf
@@ -93,10 +93,11 @@ $ echo $?
 
 ## §10.2 — The leaked goroutine, retired
 
-**Exercise 10-4** *(extension (break-it-on-purpose) · lupin)*. Port Go's classic
-leak: spawn a receiver on a channel that nobody will ever send to. In
-Go the goroutine outlives the function, silently, forever. Write the
-wolf version and predict what happens instead — and at which line.
+**Exercise 10-4** *(extension (break-it-on-purpose) · lupin)*. Port
+Go's classic leak: spawn a receiver on a channel that nobody will ever
+send to. In Go the goroutine outlives the function, silently, forever.
+Write the wolf version and predict what happens instead, and at which
+line.
 
 Solution. `ch10/ex10-4.lu`:
 
@@ -184,10 +185,10 @@ join surfaced the error
 7
 ```
 
-**Exercise 10-7** *(extension · lupin)*. Change 10-6 so no child
-fails (use 1, 2, and 4), then finish the job: close the channel, drain
-it, and return the sum. Why is it correct to `close` only after the
-scope's closing brace — what has the join already proved by then?
+**Exercise 10-7** *(extension · lupin)*. Change 10-6 so no child fails
+(use 1, 2, and 4), then finish the job: close the channel, drain it, and
+return the sum. Why is it correct to `close` only after the scope's
+closing brace: what has the join already proved by then?
 
 Solution. `ch10/ex10-7.lu`:
 
@@ -218,8 +219,8 @@ converts "I hope they are done" into a fact you may compute with.
 ## §10.4 — Cancellation
 
 **Exercise 10-8** *(comprehension · lupin)*. One sibling blocks
-forever; the other fails immediately. Predict all the output, and
-answer the pointed part first: does the blocked sibling's `defer` run?
+forever; the other fails immediately. Predict all the output, and answer
+the pointed part first: does the blocked sibling's `defer` run?
 
 ```wolf
 fn fail_fast() -> !int { Boom }
@@ -258,12 +259,11 @@ sibling cleanup ran
 
 ## Chapter batch
 
-**Exercise 10-9** *(extension · lupin)*. Build a two-stage pipeline:
-a producer sends 1 through 5 into `raw`; a transformer squares each
-into `squared`; `main` counts what arrives. Each stage closes the
-channel it sends on, when its input runs dry. Run it under two seeds.
-Then answer: which task must close `squared`, and what goes wrong if
-`main` tries to?
+**Exercise 10-9** *(extension · lupin)*. Build a two-stage pipeline: a
+producer sends 1 through 5 into `raw`; a transformer squares each into
+`squared`; `main` counts what arrives. Each stage closes the channel it
+sends on, when its input runs dry. Run it under two seeds. Then answer:
+which task must close `squared`, and what goes wrong if `main` tries to?
 
 Solution. `ch10/ex10-9.lu`:
 
@@ -302,10 +302,10 @@ close is the sender's verb, and each stage owns exactly one sending
 side. That ownership discipline is the whole pipeline pattern.
 
 **Exercise 10-10** *(design)*. Go has `go f()`; wolf deliberately has
-no detached spawn — a task needs a scope, and the scope must close.
-Take the other side seriously: name a real program shape that detached
-spawn serves well, sketch how wolf expresses it, and state what the
-wolf version pays and what it collects.
+no detached spawn: a task needs a scope, and the scope must close. Take
+the other side seriously: name a real program shape that detached spawn
+serves well, sketch how wolf expresses it, and state what the wolf
+version pays and what it collects.
 
 Solution (discussion): the honest case for detachment is the
 fire-and-forget notifier — a metrics ping, a log ship — where the

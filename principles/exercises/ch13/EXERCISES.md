@@ -201,11 +201,11 @@ in input order.
 
 ## Chapter batch
 
-**Exercise 13-5** *(extension · lupin)*. Grep, wolfished: write
+**Exercise 13-5** *(extension · lupin)*. grep, wolfished: write
 `grep(text, pattern) -> List[str] ! {EmptyPattern}` returning the
-matching lines. Substring search is yours to write with byte slices.
-Why is the empty pattern an *error* here, when POSIX grep happily
-matches it everywhere?
+matching lines. Substring search is yours to write with byte slices. Why
+is the empty pattern an *error* here, when POSIX grep happily matches it
+everywhere?
 
 Solution. `ch13/ex13-5.lu`:
 

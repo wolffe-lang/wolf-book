@@ -67,10 +67,10 @@ structure that almost fits.
 
 **Exercise 5-7** *(comprehension + extension · lupin)*. An RPN
 evaluator is a loop and a stack, and the stack is a `List`. Given the
-tokens `3 4 + 2 *`, trace the stack contents after each token on
-paper, then run. Then answer from your trace, not from the code: which
-input would make `stack.len < 2` true at an operator, and what does
-your evaluator do about it?
+tokens `3 4 + 2 *`, trace the stack contents after each token on paper,
+then run. Then answer from your trace, not from the code: which input
+would make `stack.len < 2` true at an operator, and what does your
+evaluator do about it?
 
 Solution. `ch05/ex5-7.lu`:
 

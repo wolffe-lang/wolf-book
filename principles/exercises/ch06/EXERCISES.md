@@ -42,11 +42,11 @@ $ lupin ex6-6.lu
 ## §6.2 — `?`, `else`, `else |err|`
 
 **Exercise 6-7** *(extension · lupin)*. `head` prints a file's first
-`n` lines — and a file with fewer than `n` lines is not a crash, it is
-an answer. Write `head(text, n)` whose error carries how many lines
-actually existed, and a caller that asks for 2 lines (succeeds) and 5
-lines (handled). Why does the payload belong in the error instead of
-being printed by `head` itself?
+`n` lines, and a file with fewer than `n` lines is not a crash, it is an
+answer. Write `head(text, n)` whose error carries how many lines actually
+existed, and a caller that asks for 2 lines (succeeds) and 5 lines
+(handled). Why does the payload belong in the error instead of being
+printed by `head` itself?
 
 Solution. `ch06/ex6-7.lu`:
 
@@ -137,8 +137,8 @@ section in one function.
 
 **Exercise 6-10** *(extension · lupin)*. The wordcount loop, grown by
 one requirement: count words, and separately count words of four bytes
-or more. Predict both numbers for the line
-`the wolf runs and the moon watches over`, then run.
+or more. Predict both numbers for the line `the wolf runs and the moon
+watches over`, then run.
 
 Solution. `ch06/ex6-10.lu`:
 

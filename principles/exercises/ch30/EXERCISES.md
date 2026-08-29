@@ -35,7 +35,7 @@ takes its shard count from the input, and that is not the version on the
 page.
 
 **Exercise 30-2** *(comprehension · wolf)*. `hits` and `done` are both
-`channel[int](0)`. Give `hits` a buffer — `channel[int](64)` — and predict
+`channel[int](0)`. Give `hits` a buffer (`channel[int](64)`) and predict
 what happens before you run it. Then run the binary twenty times and count
 the report lines each time. Two questions: what can `done.send(1)` do now
 that it could not do before, and which line of the collector is the one
@@ -132,9 +132,9 @@ that assumed it would fail on a loaded machine.
 
 **Exercise 30-5** *(extension · wolf)*. Make the report order-dependent
 on purpose: delete both channels and the collector, and have each task
-print its own matches directly. Run the binary twenty times and hash the
-output. You will get more damage than you predicted — say what the extra
-damage is, and then say what you have broken in terms of §30.5's rule
+print its own matches directly. Run the binary twenty times and hash
+the output. You will get more damage than you predicted. Say what the
+extra damage is, and then say what you have broken in terms of §30.5's rule
 rather than in terms of tasks.
 
 Solution. `ex30-5.lu`. Twenty runs, twenty distinct outputs. Here is one:
@@ -162,7 +162,7 @@ the last stage of a concurrent pipeline should be sequential, and the
 cheapest way to obey it is to let exactly one task print.
 
 **Exercise 30-6** *(spelunking · wolf)*. Read the E1012 note in §30.4 in
-full. It offers two ways out — build the value completely before freezing,
+full. It offers two ways out: build the value completely before freezing,
 or keep a mutable `copy` alongside. Say which one `pargrep` uses and what
 the other one would cost in a four-task program.
 

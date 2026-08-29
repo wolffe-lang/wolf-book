@@ -200,10 +200,10 @@ reading a manifest.
 ## Chapter batch
 
 **Exercise 24-8** *(comprehension · prose)*. "It's only a
-dev-dependency" — a teammate waves through a test-helper package
-whose new version adds comptime code, on the grounds that it ships
-nothing to production. Locate the two errors, using this chapter and
-one fact from chapter 18.
+dev-dependency": a teammate waves through a test-helper package whose
+new version adds comptime code, on the grounds that it ships nothing to
+production. Locate the two errors, using this chapter and one fact from
+chapter 18.
 
 Solution: error one — build-time compromise does not care about
 shipping: comptime code in any dependency evaluates inside your

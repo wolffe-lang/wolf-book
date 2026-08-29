@@ -120,11 +120,10 @@ one above; what will not differ is the word `reused`.
 ## §1.2 — Two implementations, one language
 
 **Exercise 1-7** *(fingers · wolf + lupin)*. Compile the greeting with
-`wolf build`, run the binary, then run the source under `lupin`.
-Compare the two outputs byte for byte — `diff <(./hello) <(lupin
-hello.lu)` will do it. Then say which of the two runs could have
-printed something different, and what it would mean about the language
-if it had.
+`wolf build`, run the binary, then run the source under `lupin`. Compare
+the two outputs byte for byte: `diff <(./hello) <(lupin hello.lu)` will
+do it. Then say which of the two runs could have printed something
+different, and what it would mean about the language if it had.
 
 Solution:
 

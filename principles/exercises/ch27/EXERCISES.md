@@ -39,9 +39,9 @@ one byte in `is_operator` and one arm.
 
 **Exercise 27-2** *(comprehension · lupin)*. `eval` returns `Empty` for
 both an underflowing operator and an expression that leaves two values on
-the stack. Predict the output for the three lines `3 +`, `3 4`, and
-`3 4 + 5`, and then argue whether one tag for two situations is the same
-mistake §27.1 accused the C of making.
+the stack. Predict the output for the three lines `3 +`, `3 4`, and `3 4 +
+5`, and then argue whether one tag for two situations is the same mistake
+§27.1 accused the C of making.
 
 Solution. `ex27-2.lu`. All three are `Empty`:
 
@@ -67,7 +67,7 @@ problem with a wording fix, and 27-3 is the fix.
 
 **Exercise 27-3** *(extension · lupin)*. Give `Empty` a payload: which
 operator ran out of operands, and how many it found. You will have to
-change the row, the two `return`s, and one match arm — say what told you
+change the row, the two `return`s, and one match arm. Say what told you
 each one.
 
 Solution. `ex27-3.lu`. A second payload struct, `Short { op: str, found:
@@ -118,11 +118,11 @@ decides what "attached" means. That division is the whole reason the wolf
 column needs no `ungetch`, and this exercise is the smallest program that
 shows it.
 
-**Exercise 27-5** *(spelunking · the C twin)*. Take a census of `broken`
-in `rpn.c`: count the places that can set it and the places that read it,
-and write down the line numbers. Then take the same census of the wolf
-column's failure surface — where a tag can be produced, and where one is
-handled. Say what the two ratios tell you.
+**Exercise 27-5** *(spelunking · the C twin)*. Take a census of
+`broken` in `rpn.c`: count the places that can set it and the places
+that read it, and write down the line numbers. Then take the same census
+of the wolf column's failure surface: where a tag can be produced, and
+where one is handled. Say what the two ratios tell you.
 
 Solution. In `samples/contrast/rpn.c`, `broken` is declared at line 35 and
 raised at five sites: 43 (`push` overflow), 53 (`pop` underflow), 69
@@ -195,7 +195,7 @@ you want fractions you are writing the parser.
 print the answer, and stop at end of input. `read_line()` returns
 `str ! {eof, io, utf8}`, so name the loop's exit condition, and then say
 what the calculator would have to remember between lines for `x 3 +` to
-mean anything — and what shape that memory wants to be.
+mean anything, and what shape that memory wants to be.
 
 Solution (discussion): the loop is
 `let line = read_line() else |_| { break }` inside a `while true`, and the

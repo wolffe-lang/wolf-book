@@ -43,8 +43,8 @@ reorganization. That non-event is the design.
 
 **Exercise 22-2** *(comprehension · lupin)*. `vault/keys.lu` defines
 `pub fn count()`, `pub fn loaded()`, and private `fn secrets()` and
-`fn total()`. The entry calls `vault.total()`. Predict the diagnostic — including
-whether it says the name does not *exist* — and the exit code.
+`fn total()`. The entry calls `vault.total()`. Predict the diagnostic
+(including whether it says the name does not *exist*) and the exit code.
 
 Solution: E0304, exit 2, and the diagnostic is precise about
 existence: the name is there and visibility is the objection. A
@@ -60,8 +60,8 @@ $ echo $?
 
 **Exercise 22-3** *(comprehension · lupin)*. `twice/main.lu` and its
 sibling `twice/extra.lu` each define `fn describe()`. Neither file
-imports the other. Predict the verdict, and say why "neither imports
-the other" is a trap in the question.
+imports the other. Predict the verdict, and say why "neither imports the
+other" is a trap in the question.
 
 Solution: E0302 — "file boundaries create no scopes." The trap is
 thinking imports are involved at all: sibling files are not two scopes
@@ -73,9 +73,9 @@ $ lupin twice/main.lu
 twice/main.lu: E0302: the name `describe` is defined twice in this module (defined again in `twice/main.lu`); file boundaries create no scopes (D32) [mod.dup] at 4:4
 ```
 
-**Exercise 22-4** *(comprehension · lupin)*. The entry imports
-`tools` and never mentions it again. Predict: warning or error, and
-what the diagnostic offers about the fix.
+**Exercise 22-4** *(comprehension · lupin)*. The entry imports `tools`
+and never mentions it again. Predict: warning or error, and what the
+diagnostic offers about the fix.
 
 Solution: a hard error, E0305, and the diagnostic notes the fix is
 machine-applicable — deleting the line. Wolf takes the Go position
@@ -185,9 +185,9 @@ handler short, which is the second thing `init()` never gave you.
 
 **Exercise 22-8** *(design)*. Import cycles are errors (D32). A
 colleague argues the compiler should permit cycles and merely warn,
-citing a large codebase where breaking them means touching forty
-files. Argue wolf's side using what the rule *buys*, then concede the
-strongest point on the other side and answer it.
+citing a large codebase where breaking them means touching forty files.
+Argue wolf's side using what the rule *buys*, then concede the strongest
+point on the other side and answer it.
 
 Solution (discussion): the buy is threefold. Builds: a DAG gives every
 module a finish order, so compilation parallelizes and incremental

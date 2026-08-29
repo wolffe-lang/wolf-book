@@ -31,8 +31,8 @@ audit's subject, which is to say the audit is the whole program.
 
 **Exercise 9-2** *(fingers · lupin)*. Your first unsafe block, kept
 legal: allocate eight bytes from C, set them all to 5, read one back,
-free, print. Type it, run it, and note the exit code — the point of
-this exercise is that nothing happens.
+free, print. Type it, run it, and note the exit code: the point of this
+exercise is that nothing happens.
 
 Solution. `ch09/ex9-2.lu`:
 
@@ -66,9 +66,9 @@ compiler warns when it is missing, and it is the sentence a reviewer
 checks the body against.
 
 **Exercise 9-3** *(comprehension · lupin)*. One character changes in
-9-2: the write is `p[8] = 1`. The allocation holds eight bytes.
-Predict the oracle's finding — its row, and which optimizer license
-the report will name.
+9-2: the write is `p[8] = 1`. The allocation holds eight bytes. Predict
+the oracle's finding: its row, and which optimizer license the report
+will name.
 
 Solution. The report, in full:
 
@@ -125,11 +125,11 @@ somewhere might name its address.
 
 ## §9.3 — The oracle you actually run
 
-**Exercise 9-5** *(fingers + comprehension · lupin)*. Inject the classic:
-write, free, read, through one pointer. Run it twice. What is the
-oracle's finding, and — the actual question — what is identical
-between the two runs that would *not* be identical for a
-use-after-free in C?
+**Exercise 9-5** *(fingers + comprehension · lupin)*. Inject the
+classic: write, free, read, through one pointer. Run it twice. What is
+the oracle's finding, and (the actual question) what is identical
+between the two runs that would *not* be identical for a use-after-free
+in C?
 
 Solution. `ch09/ex9-5.lu`:
 
@@ -345,12 +345,12 @@ keep: four tiers, one direction of trust — every construct on this
 list either stays in its tier or crosses at the door, and nothing else
 crosses at all.
 
-**Exercise 9-12** *(design)*. A team wraps a 40,000-line C codec
-behind wolf FFI. Debate the two candidate shapes: (a) one `unsafe`
-block per call site, spread through the application; (b) one module
-owning every unsafe line, exporting twenty safe functions, `#[trusted]`
-on the membrane. Which failure modes does each shape optimize for, and
-what does the twenty-line rule from §9.5 actually buy the reviewer?
+**Exercise 9-12** *(design)*. A team wraps a 40,000-line C codec behind
+wolf FFI. Debate the two candidate shapes: (a) one `unsafe` block per
+call site, spread through the application; (b) one module owning every
+unsafe line, exporting twenty safe functions, `#[trusted]` on the
+membrane. Which failure modes does each shape optimize for, and what
+does the twenty-line rule from §9.5 actually buy the reviewer?
 
 Solution (discussion): shape (a) optimizes for nothing except writing
 speed; its failure mode is that the audit surface *is* the
@@ -369,10 +369,10 @@ doors work because buildings have few of them.
 
 ## Chapter batch
 
-**Exercise 9-13** *(extension (break-it-on-purpose) · lupin)*. Construct the
-shortest program you can in which the *assertion*, not any access, is
-the undefined behavior: use `assume noalias` on two pointers that
-alias. Predict the oracle's wording — what does it say overlaps what?
+**Exercise 9-13** *(extension (break-it-on-purpose) · lupin)*. Construct
+the shortest program you can in which the *assertion*, not any access,
+is the undefined behavior: use `assume noalias` on two pointers that
+alias. Predict the oracle's wording: what does it say overlaps what?
 
 Solution. `ch09/ex9-13.lu`:
 
@@ -402,12 +402,12 @@ with it. It is also the exercise to remember when C's `restrict`
 comes up: wolf did not remove the footgun, it made the trigger
 visible and gave it an oracle.
 
-**Exercise 9-14** *(comprehension · lupin)*. The subtlest report in
-the chapter. Take §9.4's door program and add one line: after
+**Exercise 9-14** *(comprehension · lupin)*. The subtlest report in the
+chapter. Take §9.4's door program and add one line: after
 `let counts = borrow scratch from p`, write `p[0] = 1` through the raw
 pointer, and only then read `counts[0]`. Predict where the fault is
-reported and what the tag tree at the bottom of the report will have
-in it that no other report in this chapter has shown.
+reported and what the tag tree at the bottom of the report will have in
+it that no other report in this chapter has shown.
 
 Solution. `ch09/ex9-14.lu`:
 
