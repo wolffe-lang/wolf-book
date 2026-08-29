@@ -24,11 +24,10 @@ cross-reference pointing at the wrong section, a heading that lies about
 its section. These take the fast path and land as soon as they are read.
 
 **Drift.** A sample that no longer runs on a newer toolchain than the
-colophon's. CI catches most of this before a reader does — the book
-builds against the compiler's own main branch nightly, and a break is
-visible there first — but the nightly is a report and not a gate, so a
-reader on a newer toolchain may arrive first. Drift is fixed at the next
-pin bump, together, deliberately.
+colophon's. CI catches most of this before a reader does (the book builds against
+the compiler's own main branch nightly, and a break is visible there
+first), but the nightly is a report and not a gate, so a reader on a
+newer toolchain may arrive first. Drift is fixed at the next pin bump.
 
 ## What this edition promises
 
@@ -40,9 +39,9 @@ corrections to print are made at reprint, and until then they are listed
 here, so a reader holding paper and a reader holding a browser are
 reading the same book with one of them carrying a footnote.
 
-Fixes are not silent. A technical correction changes the page and says so
-in the commit that carries it; an editorial one changes the page. Neither
-is backdated, and no claim in this book is quietly withdrawn.
+A technical correction changes the page and says so in the commit that
+carries it; an editorial one changes the page. Every correction stays
+visible in the history.
 
 ## Known corrections
 
