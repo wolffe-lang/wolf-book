@@ -25,6 +25,25 @@ per-chapter catalogs) are not "fixed". A row the chapter's catalog
 defends (severity: noted, keep) is kept; the register never overrules
 a catalog defense, only names which rule would have applied.
 
+**RATIFIED 2026-08-28 by the human** (the eight open calls in
+EXEMPLAR-REVIEW.md, answered per the orchestrator's recommendations),
+with three amendments now part of the register's law:
+- **R10 amended — non-blessed bold demotes to PLAIN PROSE, never
+  italics** (TONE reserves italics for a term's single definition; an
+  italic demotion would trade one rule-breach for another).
+- **R5 extended — multiplying connectives are rationed.** "rather
+  than" ≤2 per chapter, and ANY connective observed growing under
+  rewrite (the ch15 ×3→×4 case) gets the same cap; the rewrite must
+  not mint its own tell.
+- **The budget, not zero, is the fan-out target.** ch15's zero-dash
+  state STANDS as reviewed; bs16 chapters aim at R2's ≤5/1000w, and a
+  dash may return exactly where all four substitutes misread — zero
+  is not the goal, unreflectiveness is the defect.
+R1 (period), R2 (budget), R3 (≤1 reveal survivor), and R4's proposed
+survivor list are approved as written. A SECOND EXEMPLAR (ch05 —
+exercising R4/R6/R9, which ch15 structurally cannot) precedes the
+bs16 fan-out.
+
 ---
 
 ## R1 — the exercise-header template dash

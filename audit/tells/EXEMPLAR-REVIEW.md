@@ -149,3 +149,16 @@ and every failure is environmental to this host — `wolf build` targets
 linux/x86-64 only, so the compile-lane console replays cannot run on
 this aarch64-darwin machine; ch15's own samples (all lupin-lane) pass.
 CI's linux runners hold the real gate and see a prose-only diff.
+
+---
+
+## Rulings (2026-08-28, human — via the orchestrator's recommendations)
+
+1. R1 period: RATIFIED. 2. The 5/1000w budget: BLESSED. 3. ch15's
+zero stands; the budget (not zero) is the fan-out target — a dash
+returns where all four substitutes misread. 4. R4 survivor list:
+APPROVED as proposed. 5. R3 "at most one": CONFIRMED. 6. "rather
+than" RATIONED ≤2/chapter; any connective multiplying under rewrite
+gets the same cap (R5 extended). 7. Non-blessed bold demotes to
+PLAIN PROSE, not italics (R10 amended). 8. Second exemplar: YES —
+ch05 (R4/R6/R9) precedes the bs16 fan-out.
