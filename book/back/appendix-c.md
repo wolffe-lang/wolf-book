@@ -4,7 +4,7 @@ Every diagnostic the book shows, with the one-line summary the compiler's
 own catalog carries for it. The catalog holds 168 codes; these 48 are the
 ones a page in this edition prints. A code is stable: it identifies a
 rule, not a message, and `wolf --explain E1001` prints the whole entry
-for any of them — the summary, the reasoning, and the fix — whether or
+for any of them (the summary, the reasoning, and the fix) whether or
 not this book shows it.
 
 The *Shown by* column names which implementation printed the text on the
@@ -63,7 +63,7 @@ column says `both`, some page shows both readings of it side by side.
 | `W1101` | this write stays inside the task | wolf | 13.2 |
 | `W1102` | the closure captured this value before it changed | wolf | Solutions |
 
-Two conventions in that table are worth stating. `E`-numbered codes stop
+Two conventions run through that table. `E`-numbered codes stop
 the build or the run; `W`-numbered codes are advice, and the artifact is
 produced anyway (§27.5 shows a binary built over two warnings). And the
 families are blocked by hundreds: `E02xx` is the parser, `E03xx`

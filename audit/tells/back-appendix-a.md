@@ -16,3 +16,11 @@ register — TONE §3.8's "flat is the voice" holding as written.
   shape, but the contrast is the provenance claim itself (the page's one
   job is to say the grammar is copied, not authored), so context
   defends; severity: noted; suggestion: none required.
+
+## bs16 — dispositions
+
+Measured CLEAN at bs14 and held to TONE §3.8; per the contract, no work
+invented. Zero edits to book/back/appendix-a.md.
+
+- [3–5] **bs16: kept-with-defense** — the provenance claim is the
+  page's one job; unchanged.

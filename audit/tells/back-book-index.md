@@ -16,3 +16,11 @@ the reference register.
   so context defends; severity: noted; suggestion: none. (Entry-level
   descriptors with personality — «C, where it wins 26.5», «borrow, why
   the word is absent 7.3» — read as navigation aids, not sass; no rows.)
+
+## bs16 — dispositions
+
+Measured CLEAN at bs14; per the contract, no work invented. Zero edits
+to book/back/book-index.md.
+
+- [3] **bs16: kept-with-defense** — the correction is the preamble's
+  job; unchanged.

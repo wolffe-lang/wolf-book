@@ -1,6 +1,6 @@
 # Colophon
 
-This printing is true for one toolchain, and these lines are it — each
+This printing is true for one toolchain, and these lines are it, each
 implementation also naming the revision of the other it was tested
 against:
 
@@ -19,8 +19,8 @@ is 0.1.16, and the compiler's last differential run was against 0.1.15.
 §1.2 teaches the reader to read the pair that way. This page prints them
 as they are.
 
-The exact revisions — the compiler, the interpreter, and the wolf
-grammar vendored from wolf-lsp — are recorded in `wolf-toolchain.toml`
+The exact revisions (the compiler, the interpreter, and the wolf
+grammar vendored from wolf-lsp) are recorded in `wolf-toolchain.toml`
 at the repository root. Every code sample, every console run, and every
 diagnostic on these pages was executed against them by CI; the samples
 runner's report is the guarantee, not this sentence. The surface grammar
@@ -38,8 +38,8 @@ arrive.
 The text is Charter; code is Source Code Pro, self-hosted so the web
 edition and the PDF set code identically. The web edition is canonical
 and is built with mdBook, with syntax highlighting done at build time
-from the same grammar the editor tooling uses — no highlighter runs in the
-reader's browser. The PDF is set with typst from the same markdown. All
+from the same grammar the editor tooling uses; no highlighter runs in
+the reader's browser. The PDF is set with typst from the same markdown. All
 three artifacts build on every commit, and the PDF's absence fails the
 build.
 

@@ -1,8 +1,8 @@
 # Appendix D — Spec cross-reference
 
 The book teaches; the specification rules. Where a page cites a clause in
-square brackets — `[mem.ub.defined]`, `[conc.task.spawn]` — this table is
-how you find the normative text behind it. Clause anchors are stable, so
+square brackets (`[mem.ub.defined]`, `[conc.task.spawn]`), this table
+is how you find the normative text behind it. Clause anchors are stable, so
 a tag printed by a tool in your terminal is findable in the spec even when
 the tool's wording changes.
 
@@ -10,13 +10,13 @@ The specification is seven documents:
 
 | Document | Anchors |
 |----------|---------|
-| 01 — Surface Grammar | `gram.*` |
-| 02 — Memory Model | `mem.*` |
-| 03 — Concurrency | `conc.*` |
-| 04 — ABI | `abi.*` |
-| 05 — Conformance | `conf.*` |
-| 06 — Differential Protocol | `proto.*` |
-| 07 — Schedule Points | `sched.*` |
+| 01. Surface Grammar | `gram.*` |
+| 02. Memory Model | `mem.*` |
+| 03. Concurrency | `conc.*` |
+| 04. ABI | `abi.*` |
+| 05. Conformance | `conf.*` |
+| 06. Differential Protocol | `proto.*` |
+| 07. Schedule Points | `sched.*` |
 
 ## Book section to clause
 
@@ -67,7 +67,7 @@ should find out from the book that the search will fail:
 | `repl.trap.alive` | the REPL's trap line, §1.4 |
 
 The module rules those four `mod.*` tags name are real and are enforced
-by both implementations — chapter 22 runs every one of them. What is
+by both implementations: chapter 22 runs every one of them. What is
 missing is the anchor, and the fix belongs in the specification rather
 than on this page. The book's own CI holds this list to its length: a new
 unanchored tag in the prose fails the doc-truth job, and an anchor that
@@ -78,6 +78,6 @@ arrives in the spec removes its row from this table.
 The two documents answer different questions. A section here shows a
 program and argues about it; a clause there states a rule and closes its
 set. Where they disagree, the specification wins and the book has a bug.
-The book's `[conf.*]` citations are the exception worth knowing about:
+The book's `[conf.*]` citations are the exception:
 those clauses are what make the samples in this edition checkable, so
 that appendix and this one describe the same machinery from two sides.

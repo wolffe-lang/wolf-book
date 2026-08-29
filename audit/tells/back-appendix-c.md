@@ -20,3 +20,13 @@ TONE §3.8's convergence test.
   reasoning, and the fix — whether or not this book shows it» — em-dash
   pair around a rule-of-three; the three are the entry's actual fields;
   severity: noted; suggestion: parenthesize if bs15 sweeps dashes.
+
+## bs16 — dispositions
+
+- [5–6] **bs16: kept-with-defense** — unchanged.
+- [6–8] **bs16: fixed-by-R7** — the dash pair around the entry's
+  three fields moves to parentheses (the row's own contingency). 0
+  running dashes in 1013 prose words; the table's E1503 quoted text is
+  CI-owned and untouched.
+- **bs16 (R5, no bs14 row):** the closing paragraph's «worth stating»
+  marker deleted ("Two conventions run through that table.").

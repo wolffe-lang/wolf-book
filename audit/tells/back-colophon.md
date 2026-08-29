@@ -24,3 +24,16 @@ dash-asides are the only habit showing.
   (lane density); suggestion: "reserved, not written" trades one family
   for another — leave, or "Four chapters and five sections in this
   edition are reserved; each says on its own page what it covers."
+
+## bs16 — dispositions
+
+- [15] **bs16: overtaken** — the "two lines agree" flourish no longer
+  exists; bs17's pin bump replaced the passage with the
+  different-releases explanation, which is factual and plain.
+- [24–26] **bs16: kept-with-defense** — unchanged.
+- [31] **bs16: kept-with-defense** — "reserved rather than written"
+  stays (the row's own note: the swap trades one family for another;
+  single instance, within the R5 cap).
+- **bs16 (no bs14 row):** the three dash-asides swept under R2/R7 —
+  L3 to a comma, L22 to parentheses, L41 to a semicolon. 0 running
+  dashes in 363 prose words.

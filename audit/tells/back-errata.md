@@ -28,3 +28,12 @@ one policy sentence would do.
   another language that its own users would object to.» — four-item
   anaphoric list; the items are the issue template's real categories;
   severity: noted; suggestion: none required.
+
+## bs16 — dispositions
+
+- [43–45] **bs16: fixed-by-R3** — suggestion adopted verbatim.
+- [28–29] **bs16: kept-with-defense** — unchanged; the surrounding
+  dash pair moves to parentheses (R7).
+- [30–31] **bs16: fixed** — "Drift is fixed at the next pin bump."
+- [14–16] **bs16: kept-with-defense** — unchanged.
+- 0 running dashes in 412 prose words (was 2).
