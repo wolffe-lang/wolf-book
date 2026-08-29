@@ -474,11 +474,7 @@ before running: for each of `"wolf"`, `"é"`, and `"e\u{301}"`, both
 `.len` and `.chars().len`. Then the pointed half: which of the six
 could §2.3 have told you, and which one needed this section?
 
-Solution — `ch02/wolfrun/ex2-9.lu` (wolf lane, isolated in a
-subdirectory so the interpreter-lane siblings keep their one-main
-module; the interpreter at this printing's pin does not read `char`
-yet, and §2.4
-says so on the page):
+Solution — `ch02/ex2-9.lu`:
 
 ```wolf
 fn main() -> !int {
