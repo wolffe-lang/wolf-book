@@ -9,7 +9,7 @@
 - [Strings, honestly](ch02.md)
 - [Values and expressions](ch03.md)
 - [Functions](ch04.md)
-- [Collections and generics without fear](ch05.md)
+- [Collections and generics](ch05.md)
 - [Errors are values](ch06.md)
 
 # Part 2 — Memory

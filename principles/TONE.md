@@ -56,7 +56,14 @@ The book-specific rules:
   - *An allocation lands in the region that is open around it.* (ch08)
   - *Safety in wolf is checked per region, not per object.* (ch08)
   - *A raw pointer `*T` carries no aliasing assumptions.* (ch09)
-  A new one enters by amendment here, never by bolding. Structural
+  - *`wolf add` never means arbitrary code runs on your machine.*
+    (ch24 — the covenant; blessed 2026-08-30 by amendment, off the
+    bs16-c escalation)
+  A new one enters by amendment here, never by bolding.
+  Heading and label dashes (`## N.M title — subtitle`, `**Step N —**`
+  run-in labels, `# Appendix X —`) are LAYOUT, like structural bold —
+  outside the running-prose dash budget and untouched by the register
+  (ruled 2026-08-30; lanes A and C converged on it independently). Structural
   bold (exercise labels, run-in headers, "Coming from X") is layout,
   not emphasis, and stays. The signpost that announces a rule ("the
   rule is one sentence:") is cut everywhere — the bold IS the
