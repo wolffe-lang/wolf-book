@@ -189,9 +189,9 @@ Solution: three artifacts. A pinned, public benchmark suite: the
 kernels, their C twins, and the gate that reads them (this edition
 prints its verdict line in §21.4, with the repository path and the
 date). A variance discipline that can call a delta noise: medians,
-mean absolute deviation, a symmetric gate (the instrument that would
-put that discipline in your hands is chapter 20's subject, and this
-edition does not carry chapter 20). A dated, regenerated record wired
+mean absolute deviation, a symmetric gate (chapter 19 teaches the
+discipline; the instrument that would put it in your hands is not
+part of this edition's toolchain). A dated, regenerated record wired
 to CI so the claim expires when the world changes: the colophon's
 toolchain pin and the ledger line §21.4 quotes, which names its
 commit and its night. Remove any one and the sentence degrades to
