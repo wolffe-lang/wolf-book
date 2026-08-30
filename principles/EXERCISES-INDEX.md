@@ -1,6 +1,6 @@
 # EXERCISES-INDEX.md — the corpus ledger
 
-Generated view of every exercise in the corpus: 275 total. Sources:
+Generated view of every exercise in the corpus: 276 total. Sources:
 the exemplar batch in `principles/EXERCISES.md` §5 (26 exercises,
 folded in unchanged) and the per-chapter files
 `principles/exercises/chNN/EXERCISES.md` (+ `appx/` for the
@@ -14,9 +14,11 @@ Batches written and **not printed in their chapters**: ch13's 13-1,
 13-6 and 13-8 — all three `par`'s, whose section §13.1 is held while
 the rest of that chapter ships (`book/ch13.md`); ch17's 17-6, whose
 section is held for want of fault injection (TOC.md §Deltas, bs07);
-ch19's nine and ch20's eight, whose two chapters are
-held whole (`book/ch19.md` and `book/ch20.md` carry the
-measured reasons); ch21's 21-4, 21-7 and 21-8, whose sections §21.3 and
+ch20's contracts nine (20-5 … 20-13, the old ch19 set renumbered at
+the bs18 re-draw), which wait for the verifying compiler while their
+chapter ships its printed four (the old ch20 bench-format eight are
+retired, two re-homed as 19-3 and 19-5 —
+EXERCISES-PENDING.md's re-draw note has the accounting); ch21's 21-4, 21-7 and 21-8, whose sections §21.3 and
 §21.5 are held while the rest of that chapter ships
 (`book/ch21.md`); ch23's 23-2, 23-3, 23-4 and 23-7, whose two sections
 are held (`book/ch23.md`); ch25's eight, whose chapter is held whole
@@ -25,7 +27,7 @@ either lane (`samples-pending.toml`); and ch05's 5-8, unprinted at bs11
 because its whole subject is the combinator chain, and a stem cannot
 carry a blocker note in a reader's text (TONE.md §Tense discipline).
 All of them stay in the corpus so the day their surface lands the stems
-and the sections arrive together. **222 of the 275 are printed**, and
+and the sections arrive together. **231 of the 276 are printed**, and
 `cargo xtask verify-docs` fails the build if a printed stem has no
 published solution.
 
@@ -50,15 +52,15 @@ several of its stems are tagged `· wolf` while the distilled solution
 program on disk runs under lupin — the tier column says what CI
 executed, and the exercise file says which is which and why.
 
-Tier totals: 143 run (lupin) · 9 run (lupin REPL) · 28 run (wolf) · 12 run (wolf + lupin) · 72 prose · 11 pending. That is 275.
-Four of the 28 `run (wolf)` are the `wolf-run(…)` lane the bs09 bump
+Tier totals: 145 run (lupin) · 9 run (lupin REPL) · 27 run (wolf) · 12 run (wolf + lupin) · 73 prose · 10 pending. That is 276.
+Four of the 27 `run (wolf)` are the `wolf-run(…)` lane the bs09 bump
 added — 18-3, 18-5, 18-11 and 22-7, each holding a `comptime fn` that the
 reference interpreter declines by design. 24-6 is the fifth addition and
 is a package walkthrough rather than a file, so it has no `.lu`: its
 transcript is the verbs' own output, replayed against a fixture. Which
 lane executed a sample is bookkeeping; the claim is about the program.
-Taxonomy spread (tags, hybrids counted once per kind): fingers 37 ·
-comprehension 144 · extension 47 · spelunking 25 · design 32.
+Taxonomy spread (tags, hybrids counted once per kind): fingers 39 ·
+comprehension 144 · extension 46 · spelunking 24 · design 33.
 
 Three stems are printed under a section other than the one this index
 assigns them, each deliberately: 13-2 (printed in §13.2 while §13.1 is
@@ -334,32 +336,41 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | Chapter batch (not printed; see the note at the head) | 18-11 | extension · wolf | run (wolf) |
 | Chapter batch | 18-12 | design | prose |
 
-## ch19 — 9 exercises
+## ch19 — 5 exercises
+
+*(the bs18 set; the chapter is Reading the release tier since the
+re-draw. 19-1's solution transcript also builds and runs the release
+binary; the tier names the directive's executor.)*
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
-| §19.1 — Four promises | 19-1 | comprehension · pending | pending |
-| §19.1 — Four promises | 19-2 | comprehension · prose | prose |
-| §19.1 — Four promises | 19-3 | comprehension · prose | prose |
-| §19.1 — Four promises | 19-4 | fingers · lupin | run (lupin) |
-| §19.1 — Four promises | 19-5 | comprehension · prose | prose |
-| §19.2 — Contracts are API | 19-6 | spelunking · wolf | run (wolf) |
-| §19.2 — Contracts are API | 19-7 | comprehension · prose | prose |
-| §19.3 — When not to | 19-8 | design | prose |
-| Chapter batch | 19-9 | extension · lupin | run (lupin) |
+| §19.1 — One program, two binaries | 19-1 | fingers · wolf + lupin | run (lupin) |
+| §19.2 — The compiler hands LLVM less | 19-2 | comprehension · prose | prose |
+| §19.3 — Reading a loss | 19-3 | comprehension · prose | prose |
+| §19.3 — Reading a loss | 19-4 | comprehension · prose | prose |
+| Chapter batch | 19-5 | design | prose |
 
-## ch20 — 8 exercises
+## ch20 — 13 exercises
+
+*(the bs18 printed four, then the contracts corpus — the old ch19
+nine, renumbered +4 with their subject at the re-draw — unprinted
+until the verifying compiler lands.)*
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
-| §20.1 — The format | 20-1 | comprehension · prose | prose |
-| §20.1 — The format | 20-2 | comprehension · prose | prose |
-| §20.1 — The format | 20-3 | comprehension · prose | prose |
-| §20.2 — The variance gate | 20-4 | spelunking · wolf | run (wolf) |
-| §20.2 — The variance gate | 20-5 | comprehension · prose | prose |
-| §20.3 — Your own baseline | 20-6 | extension · pending | pending |
-| §20.3 — Your own baseline | 20-7 | comprehension · prose | prose |
-| Chapter batch | 20-8 | design | prose |
+| §20.1 — The promises the language keeps | 20-1 | fingers · lupin | run (lupin) |
+| §20.2 — The ledger and the clock | 20-2 | comprehension · prose | prose |
+| §20.3 — The floors and the ratchets | 20-3 | comprehension · prose | prose |
+| §20.4 — Exceptions, written and capped | 20-4 | design | prose |
+| Contracts corpus (unprinted) | 20-5 | comprehension · pending | pending |
+| Contracts corpus (unprinted) | 20-6 | comprehension · prose | prose |
+| Contracts corpus (unprinted) | 20-7 | comprehension · prose | prose |
+| Contracts corpus (unprinted) | 20-8 | fingers · lupin | run (lupin) |
+| Contracts corpus (unprinted) | 20-9 | comprehension · prose | prose |
+| Contracts corpus (unprinted) | 20-10 | spelunking · wolf | run (wolf) |
+| Contracts corpus (unprinted) | 20-11 | comprehension · prose | prose |
+| Contracts corpus (unprinted) | 20-12 | design | prose |
+| Contracts corpus (unprinted) | 20-13 | extension · lupin | run (lupin) |
 
 ## ch21 — 9 exercises
 
