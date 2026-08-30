@@ -13,7 +13,7 @@ trap *kind* and the clause tag you expect in brackets. The table is
 closed, so this is a twelve-way multiple choice with the answer key
 printed in Appendix B.
 
-**Exercise B-1** *(comprehension · lupin)* — `let big: i32 =
+**Exercise B-1** *(comprehension · lupin)*. `let big: i32 =
 2147483647` then `big + 1`. Kind and clause?
 
 ```console
@@ -25,7 +25,7 @@ exB-1.lu: trap(overflow): `+` produced 2147483648, outside `i32` — checked ari
 and the intended-wraparound spelling; a trap line is a complete
 citation or it is a defect.
 
-**Exercise B-2** *(comprehension · lupin)* — `7 % d` where `d`
+**Exercise B-2** *(comprehension · lupin)*. `7 % d` where `d`
 computed to zero. The pointed part: is remainder division?
 
 ```console
@@ -37,7 +37,7 @@ exB-2.lu: trap(div-zero): division by zero is defined behavior in wolf: it traps
 purpose, and how the zero arrived is irrelevant (exercise 3-4 made
 the same point with `/`).
 
-**Exercise B-3** *(comprehension · lupin)* — `xs[1]` on a one-element
+**Exercise B-3** *(comprehension · lupin)*. `xs[1]` on a one-element
 list.
 
 ```console
@@ -48,7 +48,7 @@ exB-3.lu: trap(bounds): index 1 is outside a collection of 1 element(s) [mem.ub.
 `bounds`, `[mem.ub.defined]` — one clause family covers list
 indexing and byte slicing (exercise 2-6): defined fault, not UB.
 
-**Exercise B-4** *(comprehension · lupin)* — `let t = move s` then
+**Exercise B-4** *(comprehension · lupin)*. `let t = move s` then
 `print(s)`.
 
 ```console
@@ -62,7 +62,7 @@ $ echo $?
 and the move it conflicts with. (The compiler's static verdict on
 this rule is exercise C-2's subject.)
 
-**Exercise B-5** *(comprehension · lupin)* — `wide(mut p.a, mut
+**Exercise B-5** *(comprehension · lupin)*. `wide(mut p.a, mut
 p.a.n)`: a path and its own prefix, both claimed `mut`.
 
 ```console
@@ -73,7 +73,7 @@ exB-5.lu: trap(exclusivity): `p.a.n` is accessed as `mut` while `p.a` is held as
 `exclusivity`, `[mem.model.path.disjoint]` — the clause exercise 4-4
 met as E1002's citation, enforced here at the second claim.
 
-**Exercise B-6** *(comprehension · lupin)* — reserve from a pool
+**Exercise B-6** *(comprehension · lupin)*. Reserve from a pool
 whose region was frozen.
 
 ```console
@@ -84,7 +84,7 @@ exB-6.lu: trap(region-fault): region #1 is frozen: `imm` data is immutable forev
 `region-fault`, `[mem.region.freeze.1]` — the kind covers every
 region operation its state forbids; freezing is the permanent state.
 
-**Exercise B-7** *(comprehension · lupin)* — read through a handle
+**Exercise B-7** *(comprehension · lupin)*. Read through a handle
 whose slot was removed.
 
 ```console
@@ -97,7 +97,7 @@ is in the message: the handle names generation 0, the slot moved to
 1, and the mismatch is the fault, deterministically, in every
 profile (X5's contract).
 
-**Exercise B-8** *(comprehension · lupin)* — `assert("wolf".len ==
+**Exercise B-8** *(comprehension · lupin)*. `assert("wolf".len ==
 claimed - 1)` with `claimed = 4`.
 
 ```console
@@ -109,7 +109,7 @@ exB-8.lu: trap(assert): assertion failed [conf.trap.map] at 6:5
 clause lives in the conformance mapping, not the memory model,
 because the fault is yours by construction.
 
-**Exercise B-9** *(comprehension · lupin)* — `recv` on an unbuffered
+**Exercise B-9** *(comprehension · lupin)*. `recv` on an unbuffered
 channel in a one-task program.
 
 ```console
@@ -127,7 +127,7 @@ is a fate, and the trap is what reports fates.
 the dynamic race machine observing a real conflict under exploration
 (owner: s36-deterministic-scheduler and the interp's conc machine);
 `alloc-contract` needs the wolf_rt quarantine allocator (owner:
-s23-memory-conformance / wolf_rt))* — The two kinds this appendix
+s23-memory-conformance / wolf_rt))*. The two kinds this appendix
 cannot yet demonstrate. State, from the table's own definitions, what
 each would require a program to do, and why today's tools decline.
 
@@ -142,7 +142,7 @@ whose hooks are stubbed until s23's machinery lands. Both rows stand
 in Appendix B with their clauses; the corpus holds the headers and
 CI holds the appointment.
 
-**Exercise B-11** *(comprehension · lupin)* — Through the membrane:
+**Exercise B-11** *(comprehension · lupin)*. Through the membrane:
 `malloc`, `memset`, launder the pointer through an `int`, `free`,
 recast, read. Kind, and what extra evidence does this kind's report
 carry that no other trap has?
@@ -167,12 +167,12 @@ it; safe wolf cannot spell this program.
 
 ## Appendix C — the diagnostic catalog
 
-**Exercise C-1** *(spelunking · wolf)* — Run `wolf --explain E1001`
+**Exercise C-1** *(spelunking · wolf)*. Run `wolf --explain E1001`
 and read it against any E1001 instance from this book (3-2's, or
 C-2's below). Name two facts the catalog entry states that no single
 instance shows.
 
-Solution — the real entry:
+Solution. The real entry:
 
 ```console
 $ wolf --explain E1001
@@ -197,7 +197,7 @@ entry states the rule that decides every path. Instance and entry
 divide the labor: the diagnostic is the rule applied, `--explain` is
 the rule stated.
 
-**Exercise C-2** *(comprehension · wolf + lupin)* — The appendix's
+**Exercise C-2** *(comprehension · wolf + lupin)*. The appendix's
 one-rule-two-voices demonstration, minimal: a struct field moved by
 `take`, then read. Predict both tools' outputs — code, kind, and the
 clause families each cites:
@@ -213,7 +213,7 @@ fn main() -> !int {
 }
 ```
 
-Solution — the compiler, before anything runs:
+Solution. The compiler, before anything runs:
 
 ```console
 $ wolf conform-run ./exC-2.lu
@@ -247,7 +247,7 @@ blamed path, same conflicting-move span, one enforcement performed
 twice. This differential is the book's spine; the appendices are
 where its two halves file their paperwork.
 
-**Exercise C-3** *(comprehension · prose)* — Five codes from this
+**Exercise C-3** *(comprehension · prose)*. Five codes from this
 book's own runs: E0202, E0303, E0705, E1001, E1101. From their
 numbering and the chapters that produced them, name each one's
 family and the phase that emits it, and state the convention the

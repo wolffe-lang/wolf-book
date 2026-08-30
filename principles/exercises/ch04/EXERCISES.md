@@ -6,7 +6,7 @@ run from this directory; outputs are pasted from real runs.
 
 ## §4.1 — Signatures are the contract
 
-**Exercise 4-5** *(comprehension · lupin)* — Euclid's algorithm, in the
+**Exercise 4-5** *(comprehension · lupin)*. Euclid's algorithm, in the
 expression style:
 
 ```wolf
@@ -15,12 +15,12 @@ fn gcd(a: int, b: int) -> int {
 }
 ```
 
-Trace `gcd(1071, 462)` on paper — write down every `(a, b)` pair the
-recursion visits — and state the result before running it.
+Trace `gcd(1071, 462)` on paper (write down every `(a, b)` pair the
+recursion visits) and state the result before running it.
 
 Solution: the pairs are (1071, 462), (462, 147), (147, 21), (21, 0);
 the answer is 21. Each step the second argument becomes the remainder,
-which strictly shrinks, which is why the recursion is finite — the
+which strictly shrinks, which is why the recursion is finite. The
 signature promises an `int` and the arithmetic delivers one.
 
 ```console
@@ -30,7 +30,7 @@ $ lupin ex4-5.lu
 
 ## §4.3 — `defer`
 
-**Exercise 4-6** *(comprehension · lupin)* — A `defer` is registered
+**Exercise 4-6** *(comprehension · lupin)*. A `defer` is registered
 when execution reaches it. Predict all five output lines, in order:
 
 ```wolf
@@ -48,7 +48,7 @@ fn main() -> !int {
 ```
 
 Solution: `one`, `10`, `two`, `one`, `20`. The early return in
-`work(0)` fires only the defer that had already been reached — the
+`work(0)` fires only the defer that had already been reached: the
 second `defer` line never executed, so it never registered. `work(1)`
 reaches both and unwinds them in reverse. A defer is not a property of
 the function; it is an event in its execution.
@@ -64,13 +64,13 @@ one
 
 ## Chapter batch
 
-**Exercise 4-7** *(extension · lupin)* — Build `day_of_year(month, day,
+**Exercise 4-7** *(extension · lupin)*. Build `day_of_year(month, day,
 leap)` from two functions: `days_in(month, leap)` as one `match`, and a
 loop that sums the months before yours. Verify: March 1st is day 60 in
 a common year. Which date is day 60 in a leap year, and where in your
 code did that difference come from?
 
-Solution — `ch04/ex4-7.lu`:
+Solution. `ch04/ex4-7.lu`:
 
 ```wolf
 fn days_in(month: int, leap: bool) -> int {
@@ -106,6 +106,6 @@ $ lupin ex4-7.lu
 ```
 
 In a leap year, day 60 is February 29th, and March 1st moves to 61. The
-difference lives in exactly one arm of `days_in` — the `2 =>` arm — and
+difference lives in exactly one arm of `days_in` (the `2 =>` arm) and
 nowhere else, which is the argument for writing the table as a `match`
 instead of scattering the leap rule through the loop.

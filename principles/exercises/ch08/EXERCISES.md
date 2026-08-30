@@ -6,34 +6,34 @@ at `impl_version 0.0.1`.
 
 ## §8.1 — You already think in regions
 
-**Exercise 8-1** *(comprehension · prose)* — Three programs you have
-met or written: (a) a web server handling one request — parse the
-headers, build a response, send it; (b) a compiler pass — read an AST,
-produce a transformed AST, discard the scratch; (c) a game loop — each
-frame computes collision pairs and a display list, then draws. For
-each, name the group of allocations that share a death, the moment
-they all die, and the one value (if any) that must survive. No wolf
-required; the point is that the regions were already there.
+**Exercise 8-1** *(comprehension · prose)*. Three programs you have met
+or written: (a) a web server handling one request (parse the headers,
+build a response, send it); (b) a compiler pass (read an AST, produce a
+transformed AST, discard the scratch); (c) a game loop (each frame
+computes collision pairs and a display list, then draws). For each, name
+the group of allocations that share a death, the moment they all die,
+and the one value (if any) that must survive. No wolf required; the
+point is that the regions were already there.
 
 Solution: (a) everything parsed and built for the request dies when
 the response is flushed; the survivor is the response bytes (and any
 session state, which was never the request's to own). (b) the scratch
-and the *input* AST die at pass end; the survivor is the output AST —
+and the *input* AST die at pass end; the survivor is the output AST,
 which is why pass frameworks so often copy it out of an arena. (c) the
 collision pairs and display list die at frame end, sixty times a
 second; the survivor is the game state that feeds the next frame. In
 every case the granule was "these thousands of objects, together," and
-the death was one moment — a shape single-owner trees cannot spell,
+the death was one moment: a shape single-owner trees cannot spell,
 which is the chapter's opening argument.
 
 ## §8.2 — The block form
 
-**Exercise 8-2** *(fingers · lupin)* — Sum the first hundred integers
-using a list a helper function builds — with the helper writing no
-region code at all — inside `region tmp { }`. State where `fill`'s
-list is allocated, and what happens to it at the closing brace.
+**Exercise 8-2** *(fingers · lupin)*. Sum the first hundred integers
+using a list a helper function builds (the helper writing no
+region code at all) inside `region tmp { }`. State where `fill`'s list
+is allocated, and what happens to it at the closing brace.
 
-Solution — `ch08/ex8-2.lu`:
+Solution. `ch08/ex8-2.lu`:
 
 ```wolf
 fn fill(n: int) -> List[int] {
@@ -57,13 +57,13 @@ $ lupin ex8-2.lu
 4950
 ```
 
-`fill` allocates into the *caller's* current region — that is the
+`fill` allocates into the *caller's* current region: that is the
 default, and it is why the helper needed no annotation. At the brace,
 the region frees wholesale: the list, its buffer, all of it, in one
 motion. `total` survives because an `int` is a value in the frame, not
 an allocation in the region.
 
-**Exercise 8-3** *(comprehension · wolf)* — One assignment tries to
+**Exercise 8-3** *(comprehension · wolf)*. One assignment tries to
 smuggle a region value past the brace:
 
 ```wolf
@@ -77,7 +77,7 @@ fn main() -> !int {
 }
 ```
 
-Predict the compiler's verdict, and — before reading the diagnostic —
+Predict the compiler's verdict, and, before reading the diagnostic,
 list the three code locations you expect it to point at.
 
 Solution: rejected, E1010, and the diagnostic points at exactly the
@@ -104,7 +104,7 @@ error[E1010]: `keep` still holds a value allocated in region `tmp` when the regi
     make the value a `shared` cell (reference-counted, never dangles).
 ```
 
-The checker speaks in allocation, escape, and free — the word
+The checker speaks in allocation, escape, and free: the word
 "lifetime" appears nowhere, because the region *is* the lifetime,
 reified. lupin enforces the same rule at run time and blames the read
 rather than the write: the value died with its region, and the fault
@@ -124,13 +124,12 @@ between "this could dangle" and "this did."
 
 ## §8.3 — Regions are values
 
-**Exercise 8-4** *(fingers · lupin REPL)* — In the REPL: define a
-one-field struct, create a region with `region(rc)`, allocate one
-value into it with `in r { … }`, and look at `:regions` before and
-after `freeze r`. Predict the two state words you will see before you
-look.
+**Exercise 8-4** *(fingers · lupin REPL)*. In the REPL: define a
+one-field struct, create a region with `region(rc)`, allocate one value
+into it with `in r { … }`, and look at `:regions` before and after
+`freeze r`. Predict the two state words you will see before you look.
 
-Solution — one session:
+Solution. One session:
 
 ```console
 $ lupin
@@ -153,11 +152,11 @@ wolf> :quit
 ```
 
 The states are `suspended` and `frozen`. Creating a region does not
-open it — the `in r { }` window did, briefly, and left it suspended
+open it: the `in r { }` window did, briefly, and left it suspended
 with one object inside. `freeze` is a state of the region, not a
 property of any binding.
 
-**Exercise 8-5** *(comprehension · lupin)* — A region is being sent
+**Exercise 8-5** *(comprehension · lupin)*. A region is being sent
 somewhere while a window into it is still open:
 
 ```wolf
@@ -176,7 +175,7 @@ fn main() -> !int {
 Predict the event, its trap kind, and the static error code the trap
 line will mention.
 
-Solution: a `region-fault` — a region moves as a *closed* subtree, and
+Solution: a `region-fault`. A region moves as a *closed* subtree, and
 this one is open at the send:
 
 ```console
@@ -192,14 +191,14 @@ cites the compiler's number so the two tiers stay one story.
 
 ## §8.4 — Cycles are fine here
 
-**Exercise 8-6** *(fingers · lupin)* — Build a five-node doubly-linked
+**Exercise 8-6** *(fingers · lupin)*. Build a five-node doubly-linked
 ring in a pool region: each node points `next` and `prev`. Then prove
 both directions work: walk five steps forward from the head (where do
 you land?), and two steps backward. Rust folklore says this program
 requires `unsafe` or `Rc<RefCell<…>>`; say in one sentence why wolf's
 checker does not object here.
 
-Solution — `ch08/ex8-6.lu` (core):
+Solution. `ch08/ex8-6.lu` (core):
 
 ```wolf
 struct Node { value: int, next: handle Node, prev: handle Node }
@@ -220,14 +219,14 @@ $ lupin ex8-6.lu
 10 40
 ```
 
-Five steps forward from node 1 is node 1 again — it is a ring — and
+Five steps forward from node 1 is node 1 again (it is a ring), and
 two steps back lands on node 4. The checker does not object because
 the cycle never crosses the region border: intra-region edges are
 unrestricted, and the region dies as one unit, so no edge can dangle.
 The two-phase `reserve`/`init` is what closed the cycle without a null
 in sight.
 
-**Exercise 8-7** *(extension · prose)* — Grow the ring into the real
+**Exercise 8-7** *(extension · prose)*. Grow the ring into the real
 folklore program: an LRU cache with sentinel head and tail, `unlink`
 and `push_front` as the only two link operations, promotion on get, and
 eviction of `tail.prev` at capacity. Trace it by hand: after put a, put
@@ -238,13 +237,13 @@ Solution (prose): `c a`. Insertion order is b-then-a reversed by
 `push_front`; the get promotes `a` past `b`; the eviction takes
 `tail.prev`, which the promotion made `b`; `c` lands in front. The
 walk visits `head.next` to `tail`. Every link mutation in the program
-goes through `unlink` or `push_front` — four pointer writes and five —
+goes through `unlink` or `push_front` (four pointer writes and five),
 which is the entire aliasing surface a reviewer must read.
 
 ## §8.5 — Freeze
 
-**Exercise 8-8** *(comprehension · wolf + lupin)* — A struct type with
-a strong `shared` edge back to itself:
+**Exercise 8-8** *(comprehension · wolf + lupin)*. A struct type with a
+strong `shared` edge back to itself:
 
 ```wolf
 struct Node { value: int, next: shared Node }
@@ -284,10 +283,11 @@ $ echo $?
 This is conservatism, legitimately: the static tier rejects by *shape*
 because some program with this type leaks, and refusing the type is
 the only way to refuse all of those programs at once. The dynamic tier
-saw no allocation, no cycle, no fault — also true. The note is the
+saw no allocation, no cycle, no fault, which is also true. The note is the
 chapter in miniature: `weak`, `handle`, or put the cycle in a region.
 
-**Exercise 8-9** *(comprehension + spelunking · wolf)* — One write after a freeze:
+**Exercise 8-9** *(comprehension + spelunking · wolf)*. One write after
+a freeze:
 
 ```wolf
 struct Config { limit: int }
@@ -319,9 +319,9 @@ error[E1012]: `cfg.limit` is frozen, so it cannot be assigned through
 ```
 
 The repairs: finish building before freezing, or `copy` a mutable
-twin. There is no third repair, because there is no unfreeze —
+twin. There is no third repair, because there is no unfreeze:
 `freeze` is a cadence, not a lock. lupin reaches the same verdict from
-the other side, trapping `region-fault` at `[mem.region.freeze.1]` —
+the other side, trapping `region-fault` at `[mem.region.freeze.1]`,
 the clause E1012 enforces statically:
 
 ```console
@@ -331,11 +331,11 @@ $ echo $?
 3
 ```
 
-**Exercise 8-10** *(comprehension · lupin)* — The dynamic half of the
-same contract: create a pool region, freeze the region value, then
-call `reserve` on the pool. Predict the trap kind and the clause tag.
+**Exercise 8-10** *(comprehension · lupin)*. The dynamic half of the
+same contract: create a pool region, freeze the region value, then call
+`reserve` on the pool. Predict the trap kind and the clause tag.
 
-Solution — `ch08/ex8-10.lu`:
+Solution. `ch08/ex8-10.lu`:
 
 ```wolf
 struct Node { value: int }
@@ -355,13 +355,13 @@ $ echo $?
 3
 ```
 
-`region-fault`, citing `[mem.region.freeze.1]` — the same clause the
+`region-fault`, citing `[mem.region.freeze.1]`, the same clause the
 E1012 diagnostic enforces statically in 8-9. `reserve` is a mutation
 of the region's interior, and frozen means frozen all the way down.
 
 ## §8.6 — Open, and open again
 
-**Exercise 8-11** *(comprehension · lupin)* — Two region values, two
+**Exercise 8-11** *(comprehension · lupin)*. Two region values, two
 nested `in` windows, reads and writes crossing both:
 
 ```wolf
@@ -382,15 +382,15 @@ in a {
 
 Predict the printed total. Then the antichain question: of the shapes
 (1) `in a { in b { } }`, (2) `in a { in a { } }`, (3)
-`in a { } in a { }` — sequential reopen — which are legal? Answer from
+`in a { } in a { }` (sequential reopen), which are legal? Answer from
 the rule that region values are affine and windows must be into
 *distinct* regions, then check the one the program demonstrates.
 
-Solution: total is 6 (1 + 2, then 3). Shape 1 is legal — distinct
+Solution: total is 6 (1 + 2, then 3). Shape 1 is legal: distinct
 regions, both open, provably disjoint because region values are affine
 (no alias of `a` can exist to sneak into the inner window). Shape 2 is
 the one the rule forbids: the same region twice would make the two
-windows alias. Shape 3 is legal — suspend, then reopen; the REPL
+windows alias. Shape 3 is legal: suspend, then reopen; the REPL
 showed a region surviving between windows in 8-4.
 
 ```console
@@ -400,8 +400,8 @@ $ lupin ex8-11.lu
 
 ## §8.7 — `shared` and `handle`
 
-**Exercise 8-12** *(comprehension · lupin)* — A handle is used after
-its slot is gone:
+**Exercise 8-12** *(comprehension · lupin)*. A handle is used after its
+slot is gone:
 
 ```wolf
 region r: pool(Node) {
@@ -414,7 +414,7 @@ region r: pool(Node) {
 }
 ```
 
-Predict the trap kind, and — the part worth being precise about — what
+Predict the trap kind, and be precise about what
 the trap line will say about *generations*.
 
 Solution:
@@ -427,43 +427,40 @@ $ echo $?
 ```
 
 The handle remembers the generation it was issued at; `remove` bumped
-the slot's generation; the mismatch is the fault. The sentence to
-carry out of this exercise is the trap's own: deterministic, in every
-profile, never UB — a stale handle in wolf is a *defined* event, which
-is the entire difference between a handle and a C pointer into a
-freed arena.
+the slot's generation; the mismatch is the fault. The trap line says
+it itself: deterministic, in every profile, never UB. A stale handle
+in wolf is a *defined* event, which is the entire difference between
+a handle and a C pointer into a freed arena.
 
-**Exercise 8-13** *(design)* — Four fields, one decision each: (a) a
-parent pointer in a tree whose nodes a region owns; (b) an
-edge in a social graph where nodes are deleted while neighbors hold
-references; (c) a config blob read by every task for the process's
-whole life; (d) a cache entry another subsystem may hold while the
-cache evicts it. For each: `shared`, `weak`, `handle`, or a plain
-intra-region edge — and name the *failure contract* you chose, not
-only the shape.
+**Exercise 8-13** *(design)*. Four fields, one decision each: (a) a
+parent pointer in a tree whose nodes a region owns; (b) an edge in a
+social graph where nodes are deleted while neighbors hold references;
+(c) a config blob read by every task for the process's whole life; (d) a
+cache entry another subsystem may hold while the cache evicts it. For
+each: `shared`, `weak`, `handle`, or a plain intra-region edge; and
+name the *failure contract* you chose, not only the shape.
 
 Solution (discussion): (a) plain intra-region edge (or `handle` if
 nodes are removed individually): the cycle is safe inside the region,
-and the failure contract is "none — the region dies as one." (b)
+and the failure contract is "none: the region dies as one." (b)
 `handle`: deletion must be observable, and the contract is "reads of a
-dead neighbor fault, deterministically" — a `weak` would answer
+dead neighbor fault, deterministically." A `weak` would answer
 "gone" quietly, which a graph traversal can misread as "no edge." (c)
 `freeze` and share the frozen region: read-only forever wants the
 no-synchronization contract, and freezing is how you buy it. (d)
-`weak` inside `shared`: the cache wants eviction to *win* — the other
+`weak` inside `shared`: the cache wants eviction to *win*. The other
 subsystem's read should answer "gone, reload" rather than fault or
 keep the entry alive; a strong `shared` would silently defeat the
-eviction policy. The pattern under all four: pick the reference type
-by what you want *failure* to look like, because that is the part the
-type system will hold you to.
+eviction policy. All four choices are made by naming what failure
+should look like, which is the part the type system holds you to.
 
 ## §8.8 — What the machine does
 
-**Exercise 8-14** *(spelunking · wolf)* — Run `wolf --explain E1012`
-and read it against exercise 8-9. Find: the sentence that explains why
+**Exercise 8-14** *(spelunking · wolf)*. Run `wolf --explain E1012` and
+read it against exercise 8-9. Find: the sentence that explains why
 frozen data needs no locks, the phrase that makes the promotion
-transitive, and the reason "readable forever" is a *performance*
-claim, not only a safety one.
+transitive, and the reason "readable forever" is a *performance* claim,
+not only a safety one.
 
 Solution:
 
@@ -482,26 +479,26 @@ or keep a mutable `copy` alongside the frozen one.
 ```
 
 No-locks: "a single write anywhere would break every reader
-everywhere" — the absence of writers is what synchronization would
-otherwise buy. Transitivity: "promotes *everything in it*" — the deal
+everywhere"; the absence of writers is what synchronization would
+otherwise buy. Transitivity: "promotes *everything in it*"; the deal
 is per-region, not per-binding. And "readable forever" is a
 performance claim because a fact the compiler can rely on is a fact
 the optimizer can spend: loads from *imm* data can be hoisted, merged,
-and const-propagated across calls — the aliasing fact C cannot state
+and const-propagated across calls, the aliasing fact C cannot state
 (§8.8's refrain), available here because the type system made it
 unbreakable.
 
 ## Chapter batch
 
-**Exercise 8-15** *(extension · lupin)* — A text adventure's world is
-a cyclic graph: rooms point at each other in four directions, and
-"north then south" must come home. Build three rooms — den, ridge,
-river bank — in a pool region, close the cycles with two-phase init,
-and walk the path north, east, west, south, printing the room at each
-step. Predict the four lines before running; the fourth is the one
-that checks you wired `south` self-loops honestly.
+**Exercise 8-15** *(extension · lupin)*. A text adventure's world is a
+cyclic graph: rooms point at each other in four directions, and "north
+then south" must come home. Build three rooms (den, ridge, river bank)
+in a pool region, close the cycles with two-phase init, and walk the
+path north, east, west, south, printing the room at each step. Predict
+the four lines before running; the fourth is the one that checks your
+`south` links are real.
 
-Solution — `ch08/ex8-15.lu` (walk shown; full wiring on disk):
+Solution. `ch08/ex8-15.lu` (walk shown; full wiring on disk):
 
 ```wolf
 for step in path {
@@ -519,20 +516,19 @@ you are at the den
 ```
 
 The last two lines are both "den": west from the river bank comes
-home, and the den's `south` is wired to itself — a self-loop is the
+home, and the den's `south` is wired to itself: a self-loop is the
 graph's honest spelling of "you cannot go that way," and it costs no
 optional type. Room graphs are why the region chapter and the
 adventure genre get along: the whole world dies in one motion when
 the game ends, cycles and all.
 
-**Exercise 8-16** *(extension · lupin)* — `wc`, wolfished: count the
-lines and words of a multiline block, but store every line in a
-scratch region while counting — then let the region die and print the
-counts after it is gone. State what survives the brace and why this
-program's memory use at peak is "the text, once" rather than "the
-text, twice."
+**Exercise 8-16** *(extension · lupin)*. `wc`, wolfished: count the
+lines and words of a multiline block, but store every line in a scratch
+region while counting; then let the region die and print the counts
+after it is gone. State what survives the brace and why this program's
+memory use at peak is "the text, once," not "the text, twice."
 
-Solution — `ch08/ex8-16.lu`:
+Solution. `ch08/ex8-16.lu`:
 
 ```wolf
 fn main() -> !int {
@@ -561,10 +557,10 @@ $ lupin ex8-16.lu
 3 lines, 11 words
 ```
 
-The counts survive — plain `int`s in the frame. The stored lines do
+The counts survive: plain `int`s in the frame. The stored lines do
 not, and did not need to: line *views* into the original text are
 two-word slices, so the region holds a list of views, not a second
 copy of the text. Peak memory is the text plus a few dozen bytes of
-list — and at the brace, even those go, wholesale. That is the region
+list. At the brace, even those go, wholesale. That is the region
 answer to a question `wc` authors in C solve with careful `free`
 bookkeeping: put the bookkeeping in the shape, then stop doing it.

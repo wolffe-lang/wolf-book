@@ -123,10 +123,10 @@ debug build at `impl_version 0.0.1`.
 
 ### Chapter 1 — Hello, Wolf
 
-**Exercise 1-1** *(fingers · lupin)* — Type the hello program exactly as
+**Exercise 1-1** *(fingers · lupin)*. Type the hello program exactly as
 printed and run it. Then make it print a second line of your choosing.
 
-Solution — `ch01/ex1-1.lu`:
+Solution. `ch01/ex1-1.lu`:
 
 ```wolf
 fn main() -> !int {
@@ -142,7 +142,7 @@ hello, wolf
 the moon is up
 ```
 
-**Exercise 1-2** *(comprehension · lupin)* — Before running, write down
+**Exercise 1-2** *(comprehension · lupin)*. Before running, write down
 what this program prints and what `echo $?` shows afterward:
 
 ```wolf
@@ -152,7 +152,7 @@ fn main() -> !int {
 }
 ```
 
-Solution: it prints `working` and exits `3` — `main`'s last expression
+Solution: it prints `working` and exits `3`: `main`'s last expression
 is the process exit code, and `print` output is unrelated to it.
 
 ```console
@@ -162,11 +162,11 @@ $ echo $?
 3
 ```
 
-**Exercise 1-3** *(fingers · lupin)* — Braces interpolate expressions,
+**Exercise 1-3** *(fingers · lupin)*. Braces interpolate expressions,
 not only names. Print a sentence that computes `6 * 7` twice inside one
 string literal.
 
-Solution — `ch01/ex1-3.lu`:
+Solution. `ch01/ex1-3.lu`:
 
 ```wolf
 fn main() -> !int {
@@ -183,10 +183,10 @@ hello, reader — 42 is still 42
 
 ### Chapter 2 — Strings, honestly
 
-**Exercise 2-1** *(comprehension · lupin REPL)* — Predict all three
+**Exercise 2-1** *(comprehension · lupin REPL)*. Predict all three
 before evaluating: `"wolf".len`, `"é".len`, `"🐺".len`.
 
-Solution: 4, 2, 4 — `len` counts UTF-8 bytes. One ASCII letter is one
+Solution: 4, 2, 4. `len` counts UTF-8 bytes: one ASCII letter is one
 byte, é is two, the wolf emoji is four.
 
 ```console
@@ -198,11 +198,11 @@ $ lupin eval '"🐺".len'
 4 : i64
 ```
 
-**Exercise 2-2** *(fingers · lupin)* — Using format specs, print a
+**Exercise 2-2** *(fingers · lupin)*. Using format specs, print a
 two-column table: names left-aligned in 10 columns, numbers
 right-aligned in 4.
 
-Solution — `ch02/ex2-2.lu`:
+Solution. `ch02/ex2-2.lu`:
 
 ```wolf
 fn main() -> !int {
@@ -226,7 +226,7 @@ marmot       2
 elk          3
 ```
 
-**Exercise 2-3** *(comprehension · lupin)* — `"wolf"` has four bytes.
+**Exercise 2-3** *(comprehension · lupin)*. `"wolf"` has four bytes.
 Predict the exact behavior of:
 
 ```wolf
@@ -245,11 +245,11 @@ $ echo $?
 3
 ```
 
-**Exercise 2-4** *(extension · lupin)* — Extend the word counter to also
+**Exercise 2-4** *(extension · lupin)*. Extend the word counter to also
 report lines and bytes for a `"""` multiline block. Predict which of the
 three numbers is a byte count before running.
 
-Solution — `ch02/ex2-4.lu`:
+Solution. `ch02/ex2-4.lu`:
 
 ```wolf
 fn main() -> !int {
@@ -271,11 +271,11 @@ $ lupin ex2-4.lu
 ```
 
 31 is bytes: 13 for the first line, 16 for the second, and two
-newlines — the dedent removed the leading spaces before counting.
+newlines (the dedent removed the leading spaces before counting).
 
 ### Chapter 3 — Values and expressions
 
-**Exercise 3-1** *(comprehension · lupin)* — Predict the one line this
+**Exercise 3-1** *(comprehension · lupin)*. Predict the one line this
 prints. Both `match` and `if` are expressions here; nothing is a
 statement:
 
@@ -300,7 +300,7 @@ $ lupin ex3-1.lu
 many and odd
 ```
 
-**Exercise 3-2** *(comprehension · wolf + lupin)* — The pack loses its
+**Exercise 3-2** *(comprehension · wolf + lupin)*. The pack loses its
 lead:
 
 ```wolf
@@ -322,7 +322,7 @@ tool blame, and why is `let b` not the one?
 
 Solution: the compiler rejects it statically; the interpreter runs it
 and traps at the same use. `let b` survives because `p.tail` is a
-disjoint field — moving `p.lead` empties only that path.
+disjoint field: moving `p.lead` empties only that path.
 
 ```console
 $ wolf conform-run ./ex3-2.lu
@@ -354,11 +354,11 @@ program starts; lupin enforces it dynamically and cites the same clause
 family. This differential is the book's spine and the reader meets it
 here first.
 
-**Exercise 3-3** *(comprehension · lupin)* — `2147483647` is `i32`'s
-ceiling. Predict what `big + 1` does in a release build. (Trick
-warning: the answer is the same in every build.)
+**Exercise 3-3** *(comprehension · lupin)*. `2147483647` is `i32`'s
+ceiling. Predict what `big + 1` does in a release build. (Trick warning:
+the answer is the same in every build.)
 
-Solution: it traps, in every profile — X3 is the decision the trap line
+Solution: it traps, in every profile. X3 is the decision the trap line
 cites, and the line also names the spelling for intentional wraparound:
 
 ```console
@@ -366,7 +366,7 @@ $ lupin ex3-3.lu
 ex3-3.lu: trap(overflow): `+` produced 2147483648, outside `i32` — checked arithmetic traps in every profile (X3); spell intended overflow `wrapping[i32]` [arith.checked] at 6:16
 ```
 
-**Exercise 3-4** *(comprehension · lupin)* — The divisor is computed,
+**Exercise 3-4** *(comprehension · lupin)*. The divisor is computed,
 not literal. Does that change anything?
 
 ```wolf
@@ -383,7 +383,7 @@ $ lupin ex3-4.lu
 ex3-4.lu: trap(div-zero): division by zero is defined behavior in wolf: it traps [mem.ub.defined] at 7:13
 ```
 
-**Exercise 3-5** *(design)* — Wolf has no ternary operator. Write the
+**Exercise 3-5** *(design)*. Wolf has no ternary operator. Write the
 expression you would have used one for, in wolf, and then argue either
 side: is `if`-as-expression enough?
 
@@ -391,17 +391,17 @@ Solution (discussion): `let parity = if n % 2 == 0 { "even" } else
 { "odd" }` is the whole answer to the common case, and it nests without
 precedence archaeology, which `?:` never did. The honest cost: it is
 longer, and chained conditions (`a ? x : b ? y : z`) become `match` or
-stacked `if`/`else` — more lines, each readable. Wolf's position is that
+stacked `if`/`else`: more lines, each readable. Wolf's position is that
 a second conditional syntax buys keystrokes and costs a grammar
 production and a style war; the book spends neither.
 
 ### Chapter 4 — Functions
 
-**Exercise 4-1** *(fingers · lupin)* — Functions are values. Write
-`compose` so that `compose(double, double)` returns a function, and
-apply it to 10.
+**Exercise 4-1** *(fingers · lupin)*. Functions are values. Write
+`compose` so that `compose(double, double)` returns a function, and apply
+it to 10.
 
-Solution — `ch04/ex4-1.lu`:
+Solution. `ch04/ex4-1.lu`:
 
 ```wolf
 fn main() -> !int {
@@ -418,7 +418,7 @@ $ lupin ex4-1.lu
 40
 ```
 
-**Exercise 4-2** *(comprehension · lupin)* — Predict the order of the
+**Exercise 4-2** *(comprehension · lupin)*. Predict the order of the
 three lines:
 
 ```wolf
@@ -430,7 +430,7 @@ fn main() -> !int {
 }
 ```
 
-Solution: `body`, then the defers in reverse registration order —
+Solution: `body`, then the defers in reverse registration order.
 `defer` is a stack, because teardown must unwind what setup wound:
 
 ```console
@@ -440,11 +440,11 @@ second registered
 first registered
 ```
 
-**Exercise 4-3** *(extension · lupin)* — Give the list a `shrink`
+**Exercise 4-3** *(extension · lupin)*. Give the list a `shrink`
 function to pair with `grow`. Then, without running anything, state how
 you would find every mutation in this program with one search.
 
-Solution — `ch04/ex4-3.lu`:
+Solution. `ch04/ex4-3.lu`:
 
 ```wolf
 fn grow(mut xs: List[int]) { xs.push(7) }
@@ -465,10 +465,10 @@ len=1
 ```
 
 The search is `grep 'mut '` (or, stricter, `(mut `): call-site `mut` is
-required, so the callers are the complete mutation audit — that is X1's
+required, so the callers are the complete mutation audit. That is X1's
 entire argument, performed on your own file.
 
-**Exercise 4-4** *(comprehension + spelunking · wolf)* — One of these
+**Exercise 4-4** *(comprehension + spelunking · wolf)*. One of these
 calls is legal and one is not:
 
 ```wolf
@@ -479,9 +479,9 @@ wide(mut p.a, mut p.a.n)
 Say which and why, then check yourself against the compiler and against
 `wolf --explain E1002`.
 
-Solution: `bump` passes two *disjoint* paths — legal. `wide` passes a
-path and its own prefix; `p.a.n` lives inside `p.a`, so two exclusive
-claims overlap:
+Solution: `bump` passes two *disjoint* paths, which is legal. `wide`
+passes a path and its own prefix; `p.a.n` lives inside `p.a`, so two
+exclusive claims overlap:
 
 ```console
 $ wolf conform-run ./ex4-4.lu
@@ -499,16 +499,16 @@ error[E1002]: `p.a.n` cannot go `mut` here: it overlaps `p.a`, already passed `m
 The `--explain` entry states the general rule the diagnostic instances:
 "Two paths conflict iff one is a prefix of the other"
 (`[mem.model.path.disjoint]`). Under lupin the same program runs to the
-call and traps `exclusivity`, citing the same clause — predict that,
+call and traps `exclusivity`, citing the same clause; predict that,
 too, and check it.
 
 ### Chapter 5 — Collections and generics
 
-**Exercise 5-1** *(fingers · lupin)* — A `List` is also a stack. Push
+**Exercise 5-1** *(fingers · lupin)*. A `List` is also a stack. Push
 three values, pop one, and print the popped value and the remaining
 length.
 
-Solution — `ch05/ex5-1.lu`:
+Solution. `ch05/ex5-1.lu`:
 
 ```wolf
 fn main() -> !int {
@@ -527,11 +527,11 @@ $ lupin ex5-1.lu
 top=3 len=2
 ```
 
-**Exercise 5-2** *(fingers · lupin)* — Score the pack: write two scores
+**Exercise 5-2** *(fingers · lupin)*. Score the pack: write two scores
 into a `Map`, raise one by reading it back, and print the table with
 format specs.
 
-Solution — `ch05/ex5-2.lu`:
+Solution. `ch05/ex5-2.lu`:
 
 ```wolf
 fn main() -> !int {
@@ -552,11 +552,11 @@ wolf      4
 marmot    5
 ```
 
-**Exercise 5-3** *(extension · lupin)* — Write `first[T]` with a
-fallback for the empty case, and call it twice: once with the type
-named, once letting inference name it.
+**Exercise 5-3** *(extension · lupin)*. Write `first[T]` with a
+fallback for the empty case, and call it twice: once with the type named,
+once letting inference name it.
 
-Solution — `ch05/ex5-3.lu`:
+Solution. `ch05/ex5-3.lu`:
 
 ```wolf
 fn first[T](xs: List[T], fallback: T) -> T {
@@ -579,11 +579,11 @@ awoo -1
 Both calls hit the same definition; `[str]` at the call site is
 documentation, not a requirement, because the arguments already pin `T`.
 
-**Exercise 5-4** *(comprehension · lupin)* — The list has one element.
+**Exercise 5-4** *(comprehension · lupin)*. The list has one element.
 Predict `xs[10]`, precisely: what kind of event, and what exit code.
 
-Solution: a `bounds` trap, exit 3 — same contract as string slicing,
-because indexing is checked everywhere:
+Solution: a `bounds` trap, exit 3, the same contract as string
+slicing, because indexing is checked everywhere:
 
 ```console
 $ lupin ex5-4.lu
@@ -592,7 +592,7 @@ $ echo $?
 3
 ```
 
-**Exercise 5-5** *(design)* — Wolf writes generics `top[T]` and indexing
+**Exercise 5-5** *(design)*. Wolf writes generics `top[T]` and indexing
 `m["k"]` with the same brackets. Rust chose `::<T>` partly to avoid that
 ambiguity. What does wolf's choice cost, and where is the cost paid?
 
@@ -602,17 +602,17 @@ and *semantic analysis* decides index versus generic-apply (the corpus
 pins this in `grammar/brackets_index.lu`). The compiler carries the
 complexity so that user code never grows a `::<>`. The trade to defend:
 error messages at that seam must stay excellent, because when sema
-guesses wrong, the diagnostic — not the syntax — is what saves the
+guesses wrong, the diagnostic, not the syntax, is what saves the
 reader. That is a bet on tooling quality, made on purpose, and this book
 holds the compiler to it.
 
 ### Chapter 6 — Errors are values
 
-**Exercise 6-1** *(fingers · lupin)* — Write `parse` so empty input is
-an error, and give two call sites: one defaulting with `else 0`, one
-with `else 7`. Predict both prints first.
+**Exercise 6-1** *(fingers · lupin)*. Write `parse` so empty input is an
+error, and give two call sites: one defaulting with `else 0`, one with
+`else 7`. Predict both prints first.
 
-Solution — `ch06/ex6-1.lu`:
+Solution. `ch06/ex6-1.lu`:
 
 ```wolf
 fn parse(s: str) -> int ! {Empty} {
@@ -632,7 +632,7 @@ $ lupin ex6-1.lu
 a=42 b=7
 ```
 
-**Exercise 6-2** *(comprehension · lupin)* — `chain` calls `parse`
+**Exercise 6-2** *(comprehension · lupin)*. `chain` calls `parse`
 through `?`. Predict `a` and `b`, and name which row variant `b`'s
 handler sees:
 
@@ -654,7 +654,7 @@ fn main() -> !int {
 }
 ```
 
-Solution: `a=43` (parse succeeds, `?` unwraps, one is added); `b=-2` —
+Solution: `a=43` (parse succeeds, `?` unwraps, one is added); `b=-2`:
 `parse("")` returns `Empty`, `?` hands it up unchanged, and the handler
 matches it. The variant crossed one call boundary without wrapping;
 that is the row composing by union.
@@ -664,11 +664,11 @@ $ lupin ex6-2.lu
 a=43 b=-2
 ```
 
-**Exercise 6-3** *(extension · lupin)* — Grow the row: add a `TooLong`
-variant for inputs over four bytes and handle it. What else did you
-have to change, and what told you?
+**Exercise 6-3** *(extension · lupin)*. Grow the row: add a `TooLong`
+variant for inputs over four bytes and handle it. What else did you have
+to change, and what told you?
 
-Solution — `ch06/ex6-3.lu` (excerpt):
+Solution. `ch06/ex6-3.lu` (excerpt):
 
 ```wolf
 fn parse(s: str) -> int ! {Empty, NotDigit(Bad), TooLong} {
@@ -691,10 +691,10 @@ v=-4
 ```
 
 The signature grew (rows are spelled, not sprung on callers) and the
-match grew an arm — exhaustiveness is what tells you, at compile time,
+match grew an arm: exhaustiveness is what tells you, at compile time,
 that a handler fell behind its row.
 
-**Exercise 6-4** *(comprehension · lupin)* — The error carries a
+**Exercise 6-4** *(comprehension · lupin)*. The error carries a
 payload. Predict both printed lines:
 
 ```wolf
@@ -718,7 +718,8 @@ fn main() -> !int {
 ```
 
 Solution: byte 1 of `"4x"` is `x`, so the handler prints the payload's
-fields, then `v=-1` — the handler's value becomes the expression's:
+fields, then `v=-1`, because the handler's value becomes the
+expression's:
 
 ```console
 $ lupin ex6-4.lu
@@ -726,7 +727,7 @@ bad digit `x` at byte 1
 v=-1
 ```
 
-**Exercise 6-5** *(comprehension · lupin)* — `errdefer` runs only on
+**Exercise 6-5** *(comprehension · lupin)*. `errdefer` runs only on
 the error path. `work(true)` succeeds; `work(false)` fails after the
 `errdefer` is registered. Predict all four output lines:
 

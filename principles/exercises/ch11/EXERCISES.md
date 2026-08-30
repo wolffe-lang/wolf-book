@@ -6,13 +6,13 @@ Every checker in this chapter is lupin; wolf conform-run reports
 
 ## §11.1 — The scope as a capability
 
-**Exercise 11-1** *(fingers · lupin)* — A function cannot spawn unless
+**Exercise 11-1** *(fingers · lupin)*. A function cannot spawn unless
 somebody hands it a scope. Write `launch(s, ch, n)` that spawns into a
-caller's scope, and a `main` that calls it three times inside one
-`scope` block. The `Scope` parameter is the entire mechanism — nothing
-else in the signature says "concurrent."
+caller's scope, and a `main` that calls it three times inside one `scope`
+block. The `Scope` parameter is the entire mechanism: nothing else in
+the signature says "concurrent."
 
-Solution — `ch11/ex11-1.lu`:
+Solution. `ch11/ex11-1.lu`:
 
 ```wolf
 fn launch(s: Scope, ch: channel[int], n: int) {
@@ -37,9 +37,9 @@ $ lupin ex11-1.lu
 60
 ```
 
-**Exercise 11-2** *(comprehension · lupin)* — Take 11-1 and change one
+**Exercise 11-2** *(comprehension · lupin)*. Take 11-1 and change one
 character: make the channel a rendezvous, `channel[int](0)`. Predict
-precisely what happens and why — the answer involves which side of the
+precisely what happens and why: the answer involves which side of the
 scope's closing brace the receives sit on.
 
 Solution: deadlock. With no buffer, each child's `send` blocks until
@@ -55,17 +55,17 @@ $ echo $?
 ```
 
 The buffered version worked because capacity 3 let every send complete
-without a receiver. Buffer size is not a tuning knob here; it is part
-of the program's correctness argument.
+without a receiver. Buffer size here is part of the program's
+correctness argument, not a tuning knob.
 
-**Exercise 11-3** *(comprehension · lupin)* — Using only the text of
+**Exercise 11-3** *(comprehension · lupin)*. Using only the text of
 11-1's program, answer: which functions in it are able to spawn tasks,
 and what single search over a large codebase would find every function
 with that ability? (Chapter 7 asked the same question about mutation.)
 
 Solution (prose): `main` can spawn (it owns a `scope` block) and
 `launch` can spawn (it receives a `Scope`). Nothing else can. The
-search is for `Scope` in parameter lists plus `scope` blocks — the
+search is for `Scope` in parameter lists plus `scope` blocks: the
 spawn surface is exactly the set of functions the type system shows
 holding the capability, the same audit `grep '(mut '` performs for
 mutation. A capability you can grep for is a capability you can
@@ -73,12 +73,12 @@ review.
 
 ## §11.2 — The background refresher
 
-**Exercise 11-4** *(extension · lupin)* — Build a worker pool: three
-workers share one `jobs` channel and one `results` channel; `main`
-feeds six jobs and closes. Each worker is the same four lines. Why does
-the pool need no "shut down workers" message?
+**Exercise 11-4** *(extension · lupin)*. Build a worker pool: three
+workers share one `jobs` channel and one `results` channel; `main` feeds
+six jobs and closes. Each worker is the same four lines. Why does the
+pool need no "shut down workers" message?
 
-Solution — `ch11/ex11-4.lu`:
+Solution. `ch11/ex11-4.lu`:
 
 ```wolf
 fn main() -> !int {
@@ -106,19 +106,19 @@ $ lupin ex11-4.lu
 total=91
 ```
 
-A worker's loop ends when `jobs` closes and drains — the close *is*
+A worker's loop ends when `jobs` closes and drains: the close *is*
 the shutdown message, broadcast to every receiver at once. The scope's
 brace then proves all workers are gone before `results` is touched.
 Two channel closes and one join replace the ad-hoc "poison pill"
 protocols other ecosystems teach.
 
-**Exercise 11-5** *(comprehension + schedule play · lupin)* — Shrink
-the pool to two workers and four jobs, and tag each result with the
-worker that produced it. Before running: is the *assignment* of jobs
-to workers part of the program, or part of the schedule? Run under
-seed 1 and seed 2024 and defend your answer with the outputs.
+**Exercise 11-5** *(comprehension + schedule play · lupin)*. Shrink the
+pool to two workers and four jobs, and tag each result with the worker
+that produced it. Before running: is the *assignment* of jobs to workers
+part of the program, or part of the schedule? Run under seed 1 and seed
+2024 and defend your answer with the outputs.
 
-Solution — `ch11/ex11-5.lu` (excerpt):
+Solution. `ch11/ex11-5.lu` (excerpt):
 
 ```wolf
 scope s {
@@ -147,14 +147,14 @@ worker 0 took job 4
 
 The assignment is the schedule's: seed 1 lets worker 1 drain the whole
 queue, seed 2024 hands it to worker 0, and both are conforming runs of
-the same program. What the program owns is the *set* of results — four
+the same program. What the program owns is the *set* of results: four
 squares would be identical in every schedule, which is exercise 11-4's
 sum. Write programs whose meaning lives in what is computed, not in
 who computed it; the seeds exist to catch you when you have not.
 
 ## §11.3 — The structured dump
 
-**Exercise 11-6** *(spelunking · lupin REPL)* — Turn on the trace and
+**Exercise 11-6** *(spelunking · lupin REPL)*. Turn on the trace and
 run a scope with two children, then read the scheduler's own account:
 
 ```console
@@ -188,7 +188,7 @@ wolf> :trace
 wolf> :quit
 ```
 
-From the trace alone, reconstruct the task tree — which tasks exist,
+From the trace alone, reconstruct the task tree: which tasks exist,
 who owns them, and in what order they completed.
 
 Solution (prose): three tasks. `main` is task 0; `task@33` (task 1)
@@ -199,23 +199,23 @@ unparks and the scope joins at ev#12 with "all 2 child(ren) complete."
 The dump is not a stack sample; it is the ownership tree the language
 defined, reported by the machine that enforced it.
 
-**Exercise 11-7** *(comprehension · lupin REPL)* — In 11-6's trace,
+**Exercise 11-7** *(comprehension · lupin REPL)*. In 11-6's trace,
 find every `SchedDecision` line and read its "picked 0 of N ready"
 suffix. At which event did the scheduler actually have a choice, and
 what does that tell you about how many *different* traces this
 one-line program could produce?
 
-Solution (prose): only ev#6 offered a choice — "picked 0 of 2 ready,"
+Solution (prose): only ev#6 offered a choice: "picked 0 of 2 ready,"
 with both children runnable. ev#8 and ev#11 each had one ready task,
 which is no decision at all. One binary choice, so two inequivalent
-schedules exist: task 1 first or task 2 first — precisely the two
+schedules exist: task 1 first or task 2 first, precisely the two
 outputs `a b` and `b a`. Counting the "of N ready" suffixes is a hand
 computation of what chapter 17's `--explore` computes for real
-programs, and it is worth doing once by eye to believe the tool.
+programs; do it once by eye to believe the tool.
 
 ## Chapter batch
 
-**Exercise 11-8** *(design)* — A library offers
+**Exercise 11-8** *(design)*. A library offers
 `fetch_all(urls: List[str]) -> List[Response]` and wants to fetch
 concurrently. Two candidate signatures:
 
@@ -230,16 +230,16 @@ and which caller is each one honest to?
 
 Solution (discussion): the internal-scope version is honest to the
 caller who wants a blocking call: when it returns, no task it started
-survives — the function is externally sequential, concurrency as an
+survives. The function is externally sequential, concurrency as an
 implementation detail, nothing to cancel from outside because nothing
 outlives the call. The `Scope` parameter is honest to the caller who
 wants to *compose* lifetimes: the fetches join when the caller's scope
 closes, so the caller can hang ten calls on one scope and cancel the
-lot by leaving it — but the signature now admits that tasks may
+lot by leaving it. But the signature now admits that tasks may
 outlive the call itself, and every reader of the call site must look
 up to find the brace those tasks die at. The library rule of thumb
 wolf's std follows: take a `Scope` when the work's lifetime is
 legitimately the caller's decision; keep the scope internal when the
 function's contract is "done means done." The wrong design is the
-secret third one — an internal scope that detaches work past its own
+secret third one: an internal scope that detaches work past its own
 return, which is the chapter 10 leak wearing a signature.

@@ -6,10 +6,10 @@ in full — reading them is most of this chapter's homework.
 
 ## §9.1 — The three rings
 
-**Exercise 9-1** *(fingers + spelunking · wolf)* — The complete unsafe audit
+**Exercise 9-1** *(fingers + spelunking · wolf)*. The complete unsafe audit
 of every program in this book's first eight chapters is one command.
 Run it from `principles/exercises/`, report the number, and state what
-property of the language makes the count trustworthy — what would the
+property of the language makes the count trustworthy: what would the
 same grep miss in C?
 
 Solution:
@@ -20,7 +20,7 @@ $ grep -rn "unsafe {" ch01 ch02 ch03 ch04 ch05 ch06 ch07 ch08 | wc -l
 ```
 
 Zero: parts 1 and 2 up to this chapter never left the safe tier. The
-count is trustworthy because `unsafe` is the *only* entrance — raw
+count is trustworthy because `unsafe` is the *only* entrance: raw
 pointer operations, foreign calls, and aliasing assertions do not parse
 outside the block, so the keyword is a complete index of the ring
 boundary. In C the equivalent grep misses everything, because there is
@@ -29,12 +29,12 @@ audit's subject, which is to say the audit is the whole program.
 
 ## §9.2 — Raw-tier rules
 
-**Exercise 9-2** *(fingers · lupin)* — Your first unsafe block, kept
+**Exercise 9-2** *(fingers · lupin)*. Your first unsafe block, kept
 legal: allocate eight bytes from C, set them all to 5, read one back,
-free, print. Type it, run it, and note the exit code — the point of
-this exercise is that nothing happens.
+free, print. Type it, run it, and note the exit code: the point of this
+exercise is that nothing happens.
 
-Solution — `ch09/ex9-2.lu`:
+Solution. `ch09/ex9-2.lu`:
 
 ```wolf
 import c "stdlib.h"
@@ -59,18 +59,18 @@ $ echo $?
 0
 ```
 
-Inside the block, C's rules apply — allocate, use, free, in that
+Inside the block, C's rules apply: allocate, use, free, in that
 order, and the oracle has nothing to say. The block is a contract
 change, not a crime scene. Note the `# Safety:` line above it: the
 compiler warns when it is missing, and it is the sentence a reviewer
 checks the body against.
 
-**Exercise 9-3** *(comprehension · lupin)* — One character changes in
-9-2: the write is `p[8] = 1`. The allocation holds eight bytes.
-Predict the oracle's finding — its row, and which optimizer license
-the report will name.
+**Exercise 9-3** *(comprehension · lupin)*. One character changes in
+9-2: the write is `p[8] = 1`. The allocation holds eight bytes. Predict
+the oracle's finding: its row, and which optimizer license the report
+will name.
 
-Solution — the report, in full:
+Solution. The report, in full:
 
 ```console
 $ lupin ex9-3.lu
@@ -82,14 +82,14 @@ $ echo $?
 3
 ```
 
-Row P3, out of bounds — and the license line is the half worth reading
-twice: the *reason* one byte past the end is UB rather than a trap is
+Row P3, out of bounds. Read the license line twice:
+the *reason* one byte past the end is UB rather than a trap is
 that the compiler wants to assume accesses stay inside their
 allocation (`dereferenceable`, alias disproof between allocations).
 Every oracle report has this shape: the fault, then the optimization
 that the rule purchases. UB is not a punishment; it is a price list.
 
-**Exercise 9-4** *(comprehension · lupin)* — The pointer is laundered
+**Exercise 9-4** *(comprehension · lupin)*. The pointer is laundered
 through an integer before the read:
 
 ```wolf
@@ -117,7 +117,7 @@ $ echo $?
 ```
 
 The cast back from `int` reconnects the pointer to the allocation's
-exposed tags — but every tag of a freed allocation is Disabled, so no
+exposed tags, but every tag of a freed allocation is Disabled, so no
 defined execution exists to choose. The license explains who benefits:
 if an integer roundtrip could resurrect access, the compiler could
 never promote an allocation to a register, because some integer
@@ -125,13 +125,13 @@ somewhere might name its address.
 
 ## §9.3 — The oracle you actually run
 
-**Exercise 9-5** *(fingers + comprehension · lupin)* — Inject the classic:
-write, free, read, through one pointer. Run it twice. What is the
-oracle's finding, and — the actual question — what is identical
-between the two runs that would *not* be identical for a
-use-after-free in C?
+**Exercise 9-5** *(fingers + comprehension · lupin)*. Inject the
+classic: write, free, read, through one pointer. Run it twice. What is
+the oracle's finding, and (the actual question) what is identical
+between the two runs that would *not* be identical for a use-after-free
+in C?
 
-Solution — `ch09/ex9-5.lu`:
+Solution. `ch09/ex9-5.lu`:
 
 ```wolf
 let p = c.malloc(8) as *u8
@@ -153,15 +153,15 @@ ex9-5.lu: ub(mem.ub) §7/P1: read through tag#0 (c.malloc(8)#root), which is Dis
     tag#0 c.malloc(8)#root Disabled exposed
 ```
 
-Byte-identical reports, twice — same fault, same spans, same tag
+Byte-identical reports, twice: same fault, same spans, same tag
 story. A C use-after-free reads whatever the allocator left there:
 sometimes 7, sometimes a new object, sometimes a crash, varying with
 allocator mood and moon phase. The oracle replaces "what happened to
 be in memory" with "what the rules say about this access," and rules
 do not vary between runs. Deterministic faults are what make the
-escape hatch *debuggable* — this is §9.3's whole pitch, performed.
+escape hatch *debuggable*. That is §9.3's pitch, performed.
 
-**Exercise 9-6** *(comprehension · lupin)* — Allocate 64 bytes with
+**Exercise 9-6** *(comprehension · lupin)*. Allocate 64 bytes with
 `c.malloc` and read one of them before anything writes it:
 
 ```wolf
@@ -174,7 +174,7 @@ No free-before-use, no bounds problem, no aliasing. Predict whether
 this is undefined behavior, which row it lands on, and what
 optimization the row's license names.
 
-Solution: it is UB, and the row is L1 — reading memory nothing has
+Solution: it is UB, and the row is L1. Reading memory nothing has
 written is on the list in its own right:
 
 ```console
@@ -196,14 +196,14 @@ all three is that the bytes `malloc` hands back are not a value yet.
 
 ## §9.4 — The one door back
 
-**Exercise 9-7** *(comprehension · lupin)* — Two programs differ by
+**Exercise 9-7** *(comprehension · lupin)*. Two programs differ by
 one line's position. Both allocate eight C bytes, both cross back to
-safe code through `borrow r from p` — the door. In the first, the
+safe code through `borrow r from p`, the door. In the first, the
 `malloc` happens inside `in r { }`; in the second, outside any window.
 Predict each verdict before running either, and state the door's
 obligation in one sentence.
 
-Solution — `ch09/ex9-7a.lu` and `ch09/ex9-7b.lu`:
+Solution. `ch09/ex9-7a.lu` and `ch09/ex9-7b.lu`:
 
 ```console
 $ lupin ex9-7a.lu
@@ -222,20 +222,20 @@ The obligation: the allocation must lie wholly inside the named
 region's footprint. The first program allocated while `r` was ambient,
 so the claim is true; the second claims bytes owned by the program
 region. The license line is the chapter's thesis in one clause: after
-a truthful door, safe code keeps *all* its entitlements — which is why
+a truthful door, safe code keeps *all* its entitlements, which is why
 the door is one narrow place, and why lying to it is the worst lie in
 the language.
 
 ## §9.5 — `#include`-grade C
 
-**Exercise 9-8** *(fingers · wolf + lupin)* — Take §9.5's `pack` and
+**Exercise 9-8** *(fingers · wolf + lupin)*. Take §9.5's `pack` and
 spell its second allocation the other way round: `c.calloc(1, bytes)`
 instead of `c.calloc(bytes, 1)`. Both allocate the same number of
 bytes. Run the program under the interpreter, then compile it and run
 the binary. Report both outputs and say what a difference between them
 would have meant.
 
-Solution — `ch09/ex9-8.lu`, and there is no difference:
+Solution. `ch09/ex9-8.lu`, and there is no difference:
 
 ```console
 $ lupin ex9-8.lu
@@ -248,15 +248,15 @@ The first line is a model of the C heap; the second is glibc. A
 difference between them would have meant one of two things, and both
 are bugs: either a model of `calloc` disagrees with `calloc`, or the
 compiler's membrane passes the arguments in the wrong order. The
-history here is not hypothetical — `calloc(n, size)` is `n * size`
+history here is not hypothetical: `calloc(n, size)` is `n * size`
 bytes, one of the models once made it `n`, and this is the shape of
-program that found it. Running a program two ways and comparing is not
-a testing technique bolted on afterward; it is what "one language, two
-implementations" is *for*.
+program that found it. Running a program two ways and comparing is
+what "one language, two implementations" is *for*, not a testing
+technique bolted on afterward.
 
 ## §9.6 — FFI and regions
 
-**Exercise 9-9** *(comprehension · lupin)* — A C allocation made while
+**Exercise 9-9** *(comprehension · lupin)*. A C allocation made while
 a region was ambient, escaping the region that owned it:
 
 ```wolf
@@ -284,7 +284,7 @@ $ echo $?
 3
 ```
 
-Row P4, not P1: nobody called `free` — the *region* died, and it took
+Row P4, not P1: nobody called `free`. The *region* died, and it took
 the allocation's permissions with it. Note the report's strange-
 looking line: the allocation is still `live` (its bytes were never
 individually freed) but its owning region is gone, and that is enough.
@@ -294,13 +294,13 @@ death calls it in, wholesale.
 
 ## §9.7 — Auditing: `#[trusted]` and the audit surface
 
-**Exercise 9-10** *(spelunking · lupin)* — `ch09/ex9-10.lu` wraps its
+**Exercise 9-10** *(spelunking · lupin)*. `ch09/ex9-10.lu` wraps its
 unsafe block in a `#[trusted]` function carrying its obligation as a
 string. Run it. Then answer from the chapter: what two questions about
 this function does a manifest-and-inventory audit answer that reading
 the function's source cannot?
 
-Solution — the program runs like any other:
+Solution. The program runs like any other:
 
 ```console
 $ lupin ex9-10.lu
@@ -311,20 +311,20 @@ $ echo $?
 
 The two questions are *closure* and *drift*. Closure: reading `pack`
 tells you what `pack` does, and tells you nothing about whether
-anything it calls — or anything its dependencies call — is itself
+anything it calls (or anything its dependencies call) is itself
 trusted or holds unsafe rings of its own. The inventory answers for the
 whole package, module by module, which is a question source review
 answers one file at a time and therefore usually does not. Drift:
 whether the roster is the same roster it was last release. Review is a
 memory; the manifest is a diffable fact, and a dependency that grows a
 trusted module has to grow a manifest line to do it. Neither question
-is about whether `pack` is correct — nothing mechanical answers that,
+is about whether `pack` is correct: nothing mechanical answers that,
 which is exactly why the obligation is written in the attribute in
 English, for a person.
 
 ## §9.8 — The four-tier picture
 
-**Exercise 9-11** *(comprehension · prose)* — Five fragments; place
+**Exercise 9-11** *(comprehension · prose)*. Five fragments; place
 each on the four-tier map (safe values, regions, unsafe raw,
 the door):
 
@@ -334,23 +334,22 @@ the door):
 4. `borrow r from p`
 5. `ch.send(move r)` where `r` is a closed region
 
-Solution: 1 is tier-0 safe values — chapter 7's world, no annotations.
-2 is the region tier's shared edge — a handle read, checked by
-generation, faulting stale rather than dangling. 3 is the raw tier —
+Solution: 1 is tier-0 safe values, chapter 7's world, no annotations.
+2 is the region tier's shared edge: a handle read, checked by
+generation, faulting stale rather than dangling. 3 is the raw tier:
 legal only inside `unsafe`, governed by the oracle's price list. 4 is
-the door itself — the one construct that moves data *up* a tier, with
+the door itself, the one construct that moves data *up* a tier, with
 its truth obligation. 5 is the region tier's transfer verb, safe
-because closed-subtree moves preserve every invariant. The picture to
-keep: four tiers, one direction of trust — every construct on this
-list either stays in its tier or crosses at the door, and nothing else
-crosses at all.
+because closed-subtree moves preserve every invariant. Four tiers,
+one direction of trust: every construct on this list either stays in
+its tier or crosses at the door, and nothing else crosses at all.
 
-**Exercise 9-12** *(design)* — A team wraps a 40,000-line C codec
-behind wolf FFI. Debate the two candidate shapes: (a) one `unsafe`
-block per call site, spread through the application; (b) one module
-owning every unsafe line, exporting twenty safe functions, `#[trusted]`
-on the membrane. Which failure modes does each shape optimize for, and
-what does the twenty-line rule from §9.5 actually buy the reviewer?
+**Exercise 9-12** *(design)*. A team wraps a 40,000-line C codec behind
+wolf FFI. Debate the two candidate shapes: (a) one `unsafe` block per
+call site, spread through the application; (b) one module owning every
+unsafe line, exporting twenty safe functions, `#[trusted]` on the
+membrane. Which failure modes does each shape optimize for, and what
+does the twenty-line rule from §9.5 actually buy the reviewer?
 
 Solution (discussion): shape (a) optimizes for nothing except writing
 speed; its failure mode is that the audit surface *is* the
@@ -358,10 +357,10 @@ application, and every new call site is a new review. Shape (b)
 optimizes for the reviewer: the unsafe ring is one module, the grep
 from 9-1 returns one path, and the twenty safe functions are the
 complete list of claims the C code makes about itself. Its failure
-mode is worth naming honestly — the membrane can become a lie if the
-safe signatures promise more than the C delivers (a `str` that is not
-UTF-8, a buffer length the codec ignores), and `#[trusted]` marks
-exactly where that lie would live. The twenty-line rule buys
+mode is the membrane becoming a lie: the safe signatures can promise
+more than the C delivers (a `str` that is not UTF-8, a buffer length
+the codec ignores), and `#[trusted]` marks exactly where that lie
+would live. The twenty-line rule buys
 *proportionality*: a reviewer can hold twenty lines to the standard
 "I believe each one," which is the standard unsafe code requires and
 40,000 lines cannot meet. The door metaphor closes the argument:
@@ -369,12 +368,12 @@ doors work because buildings have few of them.
 
 ## Chapter batch
 
-**Exercise 9-13** *(extension (break-it-on-purpose) · lupin)* — Construct the
-shortest program you can in which the *assertion*, not any access, is
-the undefined behavior: use `assume noalias` on two pointers that
-alias. Predict the oracle's wording — what does it say overlaps what?
+**Exercise 9-13** *(extension (break-it-on-purpose) · lupin)*. Construct
+the shortest program you can in which the *assertion*, not any access,
+is the undefined behavior: use `assume noalias` on two pointers that
+alias. Predict the oracle's wording: what does it say overlaps what?
 
-Solution — `ch09/ex9-13.lu`:
+Solution. `ch09/ex9-13.lu`:
 
 ```wolf
 let p = c.malloc(8) as *u8
@@ -394,22 +393,22 @@ $ echo $?
 3
 ```
 
-The range overlaps *itself* — `alloc#0[0..1)` against `alloc#0[0..1)`
-— because `q` is `p`. This is the only assertion-created UB in the
+The range overlaps *itself* (`alloc#0[0..1)` against `alloc#0[0..1)`)
+because `q` is `p`. This is the only assertion-created UB in the
 raw tier: everything else about `*T` is unrestricted, but a spoken
 aliasing promise is kept or it is UB the moment the accesses disagree
-with it. It is also the exercise to remember when C's `restrict`
-comes up: wolf did not remove the footgun, it made the trigger
+with it. When C's `restrict` comes up, this is the comparison:
+wolf did not remove the footgun, it made the trigger
 visible and gave it an oracle.
 
-**Exercise 9-14** *(comprehension · lupin)* — The subtlest report in
-the chapter. Take §9.4's door program and add one line: after
+**Exercise 9-14** *(comprehension · lupin)*. The subtlest report in the
+chapter. Take §9.4's door program and add one line: after
 `let counts = borrow scratch from p`, write `p[0] = 1` through the raw
 pointer, and only then read `counts[0]`. Predict where the fault is
-reported and what the tag tree at the bottom of the report will have
-in it that no other report in this chapter has shown.
+reported and what the tag tree at the bottom of the report will have in
+it that no other report in this chapter has shown.
 
-Solution — `ch09/ex9-14.lu`:
+Solution. `ch09/ex9-14.lu`:
 
 ```console
 $ lupin ex9-14.lu
@@ -423,18 +422,17 @@ $ echo $?
 ```
 
 Two tags, one indented under the other: this is the first report in
-the chapter with a tree in it rather than a single root. The door
+the chapter with a tree in it, not a single root. The door
 minted `tag#1` as a child of the allocation's root tag, and that child
 is what safe code was handed. Writing through `p` afterward is a write
-through a tag that is *not* an ancestor of `tag#1` — foreign, in the
-model's word — so `tag#1` goes Disabled at the byte that was written,
-and the read through `counts` is P1. The per-byte spelling is the
-detail worth noticing: only byte 0 was written, so only byte 0's
+through a tag that is *not* an ancestor of `tag#1` (foreign, in the
+model's word), so `tag#1` goes Disabled at the byte that was written,
+and the read through `counts` is P1. Notice the per-byte spelling:
+only byte 0 was written, so only byte 0's
 permission died, and the other seven are still Reserved. Permissions
 are per location, not per pointer.
 
 The general lesson is the reason the door exists. Once safe code holds
-a value, the raw tier must stop touching those bytes — because
+a value, the raw tier must stop touching those bytes, because
 everything downstream is entitled to assume nobody is. Reaching around
-the door is not a slightly risky shortcut; it is the one thing the
-door's license forbids.
+the door is the one thing the door's license forbids.

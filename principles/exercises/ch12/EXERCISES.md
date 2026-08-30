@@ -8,12 +8,11 @@ a parse-rung error both implementations report; seeded runs use
 
 ## §12.1 — Typed channels
 
-**Exercise 12-1** *(fingers · lupin)* — A producer sends four squares
-and closes; `main` drains with a `for` loop. Type it, run it, then
-delete the `ch.close()` line and predict what the second run does
-before you try it.
+**Exercise 12-1** *(fingers · lupin)*. A producer sends four squares and
+closes; `main` drains with a `for` loop. Type it, run it, then delete the
+`ch.close()` line and predict what the second run does before you try it.
 
-Solution — `ch12/ex12-1.lu`:
+Solution. `ch12/ex12-1.lu`:
 
 ```wolf
 fn main() -> !int {
@@ -39,14 +38,14 @@ total=30
 Without the close, `main`'s `for` waits forever for a fifth value, the
 producer is already gone, and the deadlock trap fires. A `for` over a
 channel is a loop whose termination condition is *someone else's*
-promise — close is how that promise is kept.
+promise. Close is how that promise is kept.
 
-**Exercise 12-2** *(extension (break-it-on-purpose) · lupin)* — Using one task and
-one channel of capacity 1, write the shortest program you can whose
-second statement never finishes. Predict the trap kind and the roster
-before running.
+**Exercise 12-2** *(extension (break-it-on-purpose) · lupin)*. Using one
+task and one channel of capacity 1, write the shortest program you can
+whose second statement never finishes. Predict the trap kind and the
+roster before running.
 
-Solution — `ch12/ex12-2.lu`:
+Solution. `ch12/ex12-2.lu`:
 
 ```wolf
 fn main() -> !int {
@@ -67,12 +66,12 @@ $ echo $?
 
 The buffer holds one value; the second `send` blocks until a receive
 makes room, and the only task that could receive is the one blocked
-sending. A deadlock does not need two tasks — it needs a cycle of
-waiting, and `main` alone closes a cycle of length one.
+sending. A deadlock needs a cycle of waiting, not two tasks, and
+`main` alone closes a cycle of length one.
 
 ## §12.2 — `select` with timeouts
 
-**Exercise 12-3** *(comprehension · lupin)* — Two identical `select`s;
+**Exercise 12-3** *(comprehension · lupin)*. Two identical `select`s;
 between them, one `send`. Predict both printed lines:
 
 ```wolf
@@ -91,8 +90,8 @@ fn main() -> !int {
 }
 ```
 
-Solution: `timed out`, then `got 9`. A timeout arm is not a delay; it
-is the arm that wins when no other arm can. The first select has an
+Solution: `timed out`, then `got 9`. A timeout arm is the arm that
+wins when no other arm can, not a delay. The first select has an
 empty channel and nothing pending, so the timer is the only way out;
 the second finds a value ready and the timer never enters into it.
 
@@ -102,10 +101,9 @@ timed out
 got 9
 ```
 
-**Exercise 12-4** *(comprehension + schedule play · lupin)* — Both
-channels are ready before the `select` runs. Write down every output
-this program is *allowed* to print, then run it under seed 1 and seed
-2024:
+**Exercise 12-4** *(comprehension + schedule play · lupin)*. Both
+channels are ready before the `select` runs. Write down every output this
+program is *allowed* to print, then run it under seed 1 and seed 2024:
 
 ```wolf
 fn main() -> !int {
@@ -123,7 +121,7 @@ fn main() -> !int {
 }
 ```
 
-Solution: `1` and `2` are both conforming — two simultaneously ready
+Solution: `1` and `2` are both conforming: two simultaneously ready
 arms make the pick a recorded scheduler decision, drawn from the seed.
 
 ```console
@@ -137,7 +135,7 @@ Each seed replays byte-identically, forever. "Nondeterministic" in
 wolf means the *spec* admits more than one outcome; any single seeded
 run is as reproducible as arithmetic.
 
-**Exercise 12-5** *(spelunking · lupin)* — Run the explorer over 12-4
+**Exercise 12-5** *(spelunking · lupin)*. Run the explorer over 12-4
 and read its report line by line:
 
 ```console
@@ -156,26 +154,26 @@ $ echo $?
 Why "2 schedule(s)" and not eight? What is a `decision stream`, and
 why does the tool exit 1 when nothing failed?
 
-Solution (prose): the budget of 8 is a ceiling, not a quota — the
+Solution (prose): the budget of 8 is a ceiling, not a quota: the
 program contains exactly one decision with two choices, so the
 frontier closes after two schedules and `max depth: 1 decision(s)`
 says so. The decision stream (`ev:0`, `ev:1`) is the schedule written
 out as the sequence of choices taken; either replays exactly, and
 each outcome also carries a packed `--seed` spelling of the same
 stream. Exit 1 is the differential protocol's honesty: a
-schedule-dependent program is a *finding* — something a test suite
-should know about — even when every outcome is individually fine.
+schedule-dependent program is a *finding* (something a test suite
+should know about) even when every outcome is individually fine.
 Deterministic-under-every-schedule is the verdict that exits 0, and
 exercise 12-8 earns it.
 
 ## §12.3 — When channels are the wrong queue
 
-**Exercise 12-6** *(extension · lupin)* — Build a router: one task
-reads an inbox and forwards each value to an `evens` or `odds` sink.
-`main` feeds 1 through 8 and then sums both sinks. Mind the closes:
-who closes what, in what order?
+**Exercise 12-6** *(extension · lupin)*. Build a router: one task reads
+an inbox and forwards each value to an `evens` or `odds` sink. `main`
+feeds 1 through 8 and then sums both sinks. Mind the closes: who closes
+what, in what order?
 
-Solution — `ch12/ex12-6.lu`:
+Solution. `ch12/ex12-6.lu`:
 
 ```wolf
 fn main() -> !int {
@@ -210,10 +208,10 @@ evens 20, odds 16
 Close flows downstream: `main` closes `src` when the feed ends; the
 router's loop ends because of that close, and only then does the
 router close its two output channels. Each channel is closed by its
-only sender, and the close order is forced by the data flow — trace it
+only sender, and the close order is forced by the data flow: trace it
 backward from the sums and every close is where it must be.
 
-**Exercise 12-7** *(design)* — A single task maintains a work list it
+**Exercise 12-7** *(design)*. A single task maintains a work list it
 alone pushes to and pops from. Argue why a `channel` is the wrong type
 for that list even though it would work, and name the two properties a
 channel charges for that this task does not use. When does the answer
@@ -223,8 +221,8 @@ Solution (discussion): a channel buys synchronization (safe handoff
 between tasks) and blocking (a receiver waits for a sender). A
 single-task work list uses neither: nothing is handed off and waiting
 on yourself is exercise 12-2's one-task deadlock wearing work clothes.
-`List` push/pop states the actual invariant — one owner, no
-concurrency — and the type system holds you to it; a channel would
+`List` push/pop states the actual invariant (one owner, no
+concurrency) and the type system holds you to it; a channel would
 advertise a concurrency that does not exist to every future reader.
 The answer flips at the moment a second task appears: the day the work
 list is fed by a producer or drained by a pool, the channel's two
@@ -234,9 +232,9 @@ that is true.
 
 ## §12.4 — `when (a, b)`
 
-**Exercise 12-8** *(comprehension · lupin)* — Two tasks acquire the
+**Exercise 12-8** *(comprehension · lupin)*. Two tasks acquire the
 same two mutexes in *opposite* spellings. Predict the total, and
-predict what the explorer says about this program — then check both:
+predict what the explorer says about this program, then check both:
 
 ```wolf
 fn main() -> !int {
@@ -257,7 +255,7 @@ fn main() -> !int {
 }
 ```
 
-Solution: 223 — both bodies run whole, in some order, on both
+Solution: 223. Both bodies run whole, in some order, on both
 mutexes: 1+2 plus 110 plus 110. `when (b, a)` and `when (a, b)`
 perform identical acquisitions because `when` sorts its set into
 canonical order before taking anything; the spelling order is
@@ -278,12 +276,12 @@ ex12-8.lu: explored 2 schedule(s) in 2 execution(s) (DPOR; 0 slept, 0 pruned), f
 exercise 12-5's program could not earn. Addition commutes; that is
 doing part of the work here, and the stem's real lesson is in 12-9.
 
-**Exercise 12-9** *(extension (break-it-on-purpose) · lupin)* — Now construct the
-classic deadlock `when` was designed to kill: task one takes `a` then
-`b`, task two takes `b` then `a`, nested. Write it and report what
-actually happens — at what phase does this program die?
+**Exercise 12-9** *(extension (break-it-on-purpose) · lupin)*. Now
+construct the classic deadlock `when` was designed to kill: task one
+takes `a` then `b`, task two takes `b` then `a`, nested. Write it and
+report what actually happens: at what phase does this program die?
 
-Solution — `ch12/ex12-9.lu`:
+Solution. `ch12/ex12-9.lu`:
 
 ```wolf
 fn main() -> !int {
@@ -305,16 +303,15 @@ $ echo $?
 ```
 
 It dies in the parser. The AB-BA deadlock needs *incremental*
-acquisition — hold one lock while asking for another — and `when`'s
+acquisition (hold one lock while asking for another) and `when`'s
 grammar has no one-lock form to nest: E0201 says take the set whole or
 do not use `when`. The bug is not detected; it is unspellable, which
 is a stronger guarantee than any detector. (Deadlock through channels
-remains constructible — exercise 12-2 — because waiting for *data* is
-a program's own business; acquiring *locks* piecemeal was never
-anything but a bug factory.)
+remains constructible, as exercise 12-2 shows, because waiting for
+*data* is a program's own business; acquiring *locks* piecemeal was
+never anything but a bug factory.)
 
-Note: the two implementations once disagreed here — wolf rejecting the
-program as `E0201` where lupin said `E0203`. Both report E0201, with
-the same rule in their own words, one at the parse rung and one before
-the first line runs. The transcript above is lupin's at the current
-pin; §12.4 prints the compiler's half beside it.
+Note: both implementations report E0201, with the same rule in their
+own words, one at the parse rung and one before the first line runs.
+The transcript above is lupin's; §12.4 prints the compiler's half
+beside it.

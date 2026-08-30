@@ -171,7 +171,7 @@ fn solutions(root: &Path) -> Result<String> {
             where_printed.section, where_printed.chapter, where_printed.section
         );
         out.push_str(&format!(
-            "\n<details>\n<summary>Exercise {ch}-{num} — {link}</summary>\n\n{}\n</details>\n",
+            "\n<details>\n<summary>Exercise {ch}-{num}. {link}</summary>\n\n{}\n</details>\n",
             body.trim_end()
         ));
         published += 1;
@@ -217,6 +217,11 @@ fn harvest(path: &Path, into: &mut BTreeMap<(u32, u32), String>) -> Result<()> {
                 key = Some(k);
             } else if line.starts_with("## ") {
                 flush(&mut key, &mut buf, into);
+                continue;
+            } else if line.starts_with("### ") {
+                // Deeper headings are the same repo structure `## `
+                // already keeps off the reader's page; skip them
+                // without ending the block.
                 continue;
             }
         }

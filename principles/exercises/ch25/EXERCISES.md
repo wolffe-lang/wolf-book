@@ -16,7 +16,7 @@ with chapters 19 and 23 supplying the mechanisms the cases lean on.
 
 ## §25.1 — Editions per package
 
-**Exercise 25-1** *(comprehension · prose)* — Your package is edition
+**Exercise 25-1** *(comprehension · prose)*. Your package is edition
 2027. A dependency you rely on is edition 2026 and has no plans to
 move. A colleague warns this "holds back" your upgrade. What actually
 happens when both compile in one build, and what precisely is the
@@ -32,7 +32,7 @@ not a dependency constraint. "Holds back" imports the major-version
 worldview this section retires: nobody upgrades in lockstep because
 nobody's edition is anybody else's business.
 
-**Exercise 25-2** *(comprehension · prose)* — "No wolf 2.0, ever" is
+**Exercise 25-2** *(comprehension · prose)*. "No wolf 2.0, ever" is
 a sentence about two different futures. Name the thing it promises
 will never happen, the thing it conspicuously does *not* promise, and
 the mechanism that makes the first promise keepable without freezing
@@ -50,7 +50,7 @@ what you build when you have watched a 2.0.
 
 ## §25.2 — The stdlib posture
 
-**Exercise 25-3** *(comprehension · prose)* — Three imports:
+**Exercise 25-3** *(comprehension · prose)*. Three imports:
 `std.list`, `std.os.path`, and `std.x.http`. Rank them by the
 strength of the stability promise you are accepting, and answer the
 pointed one: which of the three can break your build on a toolchain
@@ -67,7 +67,7 @@ it; the `x` is the consent you gave. The posture's honesty is having
 a place whose instability is contractual instead of pretending the
 whole stdlib is equally settled.
 
-**Exercise 25-4** *(comprehension · prose)* — A library's public
+**Exercise 25-4** *(comprehension · prose)*. A library's public
 function returns `int ! {Parse}`. In v2.3 the author wants to add a
 `Range(int)` failure case. Two spellings were available back in
 chapter 6: widen the closed row to `{Parse, Range(int)}`, or have
@@ -88,7 +88,7 @@ choosing which callers to serve: the ones who want proofs, or the
 ones who want painless upgrades. Semver delivers the bill to the
 address chosen.
 
-**Exercise 25-5** *(comprehension · prose)* — Four changes to a
+**Exercise 25-5** *(comprehension · prose)*. Four changes to a
 published package; classify each under semver-with-teeth and name
 the fact source a registry check would consult (chapter 19 and this
 chapter supply them): (a) a `pub` function's parameter gains a
@@ -110,7 +110,7 @@ against the changelog's self-assessment.
 
 ## §25.3 — Publishing
 
-**Exercise 25-6** *(design)* — Design the registry's acceptance
+**Exercise 25-6** *(design)*. Design the registry's acceptance
 gate: list what it verifies *mechanically* before `owner/pkg@v` is
 served, ordered from cheapest to most expensive check, and then draw
 the line — name two things a registry must not claim to verify, and
@@ -133,7 +133,7 @@ implies "verified safe" sells what event-stream proved cannot be
 sold. Verification's job is to shrink what trust must cover, then
 say so — a smaller honest promise beats a larger decorative one.
 
-**Exercise 25-7** *(comprehension · prose)* — Under MVS (chapter
+**Exercise 25-7** *(comprehension · prose)*. Under MVS (chapter
 23), can the resolver hand you a dependency version whose *edition*
 is newer than your package's own? Answer, then explain why the
 question feels dangerous and is not.
@@ -152,7 +152,7 @@ and no arrow connects them.
 
 ## Chapter batch
 
-**Exercise 25-8** *(design)* — A published package's maintainer
+**Exercise 25-8** *(design)*. A published package's maintainer
 wants to retire the misnamed `pub fn parse_quick` in favor of
 `parse_lenient`. Under no-2.0 rules, write the retirement playbook —
 every step with its semver number — and then reconcile it with this
