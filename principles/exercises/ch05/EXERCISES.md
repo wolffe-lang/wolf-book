@@ -9,8 +9,8 @@ run from this directory; outputs are pasted from real runs.
 **Exercise 5-6** *(extension · lupin)*. `uniq` counts adjacent
 duplicates; yours will count all of them and keep first-seen order.
 Read a multiline block line by line and print each distinct line once,
-with its count, in the order lines first appeared. Two parallel lists —
-one of lines seen, one of counts — are enough. Why does a `Map` alone
+with its count, in the order lines first appeared. Two parallel lists
+(one of lines seen, one of counts) are enough. Why does a `Map` alone
 not solve this?
 
 Solution. `ch05/ex5-6.lu`:
@@ -60,7 +60,7 @@ $ lupin ex5-6.lu
 
 A `Map` alone loses the arrival order: its pairs come back in the map's
 order, not the input's. The list carries the order and the parallel
-list carries the tally — two simple structures composing beats one
+list carries the tally: two simple structures that compose beat one
 structure that almost fits.
 
 ## Chapter batch
@@ -111,7 +111,7 @@ $ lupin ex5-7.lu
 
 The trace: `[3]`, `[3 4]`, `[7]`, `[7 2]`, `[14]`. An input like
 `3 +` reaches the operator with one element on the stack, and the
-evaluator returns `Underflow` instead of trapping on `pop` — the error
+evaluator returns `Underflow` instead of trapping on `pop`: the error
 row is doing bounds-checking's job one level up, where the caller can
 do something about it. (The row previews chapter 6; reading it is
 enough here.)
@@ -136,7 +136,7 @@ best-so-far, and one comparison. Which of the two versions says *what*
 it wants, and which says *how* to get it?
 
 Solution (prose, pending the combinator surface): it prints
-`marmot 5` — sort descending by the pair's second element, keep one.
+`marmot 5`: sort descending by the pair's second element, keep one.
 The desugared version walks `pairs()` holding the best pair seen and
 compares as it goes; it allocates nothing and sorts nothing, which for
 top-1 is strictly less work than the chain performs. That is the
@@ -159,9 +159,9 @@ $ echo $?
 
 **Exercise 5-9** *(extension)*. Add a third shape to the `Draw`
 example, and then make `render` count its calls: what has to change,
-and what — pleasantly — does not?
+and what does not?
 
-Solution. The third impl is three lines, and that is the point:
+Solution. The third impl is three lines:
 
 ```wolf,run(exit=0)
 trait Draw {
@@ -191,10 +191,10 @@ fn main() -> !int {
 ```
 
 What changed: one struct, one impl, one binding, one call. What did
-not: `render`. That is erasure earning its keep — the function that
+not: `render`. That is erasure earning its keep: the function that
 takes `dyn Draw` never learns how many implementors exist. The counter
-lives at the call sites, because `render` has nowhere to keep state:
-it borrows its argument and owns nothing — the same ownership honesty
+lives at the call sites, because `render` has nowhere to keep state.
+It borrows its argument and owns nothing, the same ownership honesty
 Part 2 makes precise.
 
 **Exercise 5-10** *(design)*. The cast-a-binding rule exists because
@@ -206,7 +206,7 @@ Solution. The temporary needs a home that outlives the expression, so
 the language would have to invent one: a hidden allocation (a box the
 reader never wrote), or a compiler-synthesized binding with a lifetime
 the reader never chose. Both are costs paid silently, and wolf's
-temperament is that erasure may change dispatch but never ownership —
+temperament is that erasure may change dispatch but never ownership:
 the pair points at your value, in your frame or your region, and the
 `let home = …` the error asks for is the language declining to
 allocate behind your back. The reader pays one visible line; the

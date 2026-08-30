@@ -29,7 +29,7 @@ Predict both tools' behavior now, and name the sentence in the E1001
 diagnostic you saw in chapter 3 that already told you the answer.
 
 Solution: both accept it. Assigning to a moved-from place makes it
-live again — the diagnostic's note said exactly that, and this is that
+live again: the diagnostic's note said exactly that, and this is that
 note performed. Both implementations run it, and they print the same
 line, which is the differential doing its ordinary job:
 
@@ -76,7 +76,7 @@ awoo still works
 grace still here
 ```
 
-The move emptied exactly one path — `den.alpha.name` — and the tree's
+The move emptied exactly one path (`den.alpha.name`) and the tree's
 other four leaves never noticed. (`move` is the plain-expression
 spelling; `take` is the same act written at a call site.)
 
@@ -84,7 +84,7 @@ spelling; `take` is the same act written at a call site.)
 struct, one function taking `take`, and nothing else, write the
 smallest program that traps `use-after-move` *through a field*. Predict
 the compiler's E-code and the interpreter's trap kind before checking
-both. Why does the exercise say "through a field" — what would be
+both. Why does the exercise say "through a field": what would be
 different, and what the same, with a bare local?
 
 Solution. `ch07/ex7-3.lu`:
@@ -127,7 +127,7 @@ $ echo $?
 
 A bare local would produce the same E-code and the same trap kind; the
 field version is the stronger test because it proves the tracking is
-per-path, not per-variable — `s` as a whole is neither dead nor alive,
+per-path, not per-variable: `s` as a whole is neither dead nor alive,
 only `s.a` is dead. Both tools cite the same clause family,
 `[mem.tier0.move.2]`, which is the differential spine again.
 
@@ -144,7 +144,7 @@ fn main() -> !int {
 }
 ```
 
-Solution: it moves `a`, ints and all — the trap blames `a.x`'s read and
+Solution: it moves `a`, ints and all: the trap blames `a.x`'s read and
 points at `let b = a`. Structs move on assignment whatever they
 contain; there is no "cheap enough to copy silently" tier for
 user-defined types. The fix spells the duplication where it happens:
@@ -154,15 +154,15 @@ $ lupin ex7-4.lu
 ex7-4.lu: trap(use-after-move): `a.x` was moved out and is uninitialized here [mem.tier0.move.2] at 8:13; `a` moved here at 7:13
 ```
 
-`ch07/ex7-4b.lu` changes one word — `let b = copy a` — and:
+`ch07/ex7-4b.lu` changes one word (`let b = copy a`) and:
 
 ```console
 $ lupin ex7-4b.lu
 1 2
 ```
 
-The wrong answer worth ruling out: "ints are `Copy`, so the struct
-copies." Wolf's rule is per-*decision*, not per-*type*: the reader of
+The wrong answer is "ints are `Copy`, so the struct copies." Wolf's
+rule is per-*decision*, not per-*type*: the reader of
 `let b = copy a` knows a duplication happened without looking up what
 `P` contains.
 
@@ -185,19 +185,19 @@ fn main() -> !int {
 }
 ```
 
-The spec's answer is rejection — E1003, "borrow escapes activation."
+The spec's answer is rejection: E1003, "borrow escapes activation."
 lupin runs this program and exits 0. Before checking either claim,
 answer: is lupin *wrong*?
 
-Solution: lupin is not wrong; it is answering a different question. In
+Solution: no. lupin is answering a different question. In
 this particular run the borrow went into the channel and the program
-ended before anything read it dangling — dynamically, no fault
+ended before anything read it dangling: dynamically, no fault
 occurred. The static rule exists because some *other* run (a receiver
 on another task, a longer-lived channel) would read the borrow after
 `main`'s frame is gone, and a rule that only fails sometimes is not a
 rule callers can build on. The conservative tier rejects the *shape*;
 the dynamic tier faults the *event*. When the event never happens, the
-conservatism is visible — that is the price, paid on purpose.
+conservatism is visible. That is the price, paid on purpose.
 
 ```console
 $ lupin ex7-5.lu
@@ -205,9 +205,9 @@ $ echo $?
 0
 ```
 
-Today wolfc reports `unsupported` at resolve on this file (channels are
-s33); the directive header carries the expected E1003 so CI catches the
-day the verdict arrives.
+wolfc reaches no verdict on this file (`unsupported` at resolve); the
+directive header records the expected E1003, and CI enforces the
+directive.
 
 ## §7.4 — `mut` at both ends
 
@@ -242,7 +242,7 @@ $ lupin ex7-6.lu
 The search is `grep '(mut '` (X1's argument, from exercise 4-3, now
 stated as a rule): call-site `mut` is mandatory, so a call that can
 write through an argument *says so at the call*. Add `grep 'var '` for
-locals and the audit is the whole mutation surface — two searches, no
+locals and the audit is the whole mutation surface: two searches, no
 false negatives, which is what "required at both ends" buys.
 
 ## §7.5 — Field-granular exclusivity
@@ -263,7 +263,7 @@ fn main() -> !int {
 ```
 
 Predict what each tool says, then answer the design question hiding
-under it: if the call *were* allowed, what would `n` be afterward — and
+under it: if the call *were* allowed, what would `n` be afterward, and
 why is "it depends on the body" the real reason for the rule?
 
 Solution: wolf rejects, lupin traps, same rule:
@@ -286,7 +286,7 @@ ex7-7.lu: trap(exclusivity): `n` is accessed as `mut` while `n` is held as `mut`
 ```
 
 If allowed, `n` could be 1 or 2 depending on whether `a` and `b` are
-distinct copies written back in some order or two names for one cell —
+distinct copies written back in some order or two names for one cell:
 the body decides, and the caller cannot see the body. Exclusivity makes
 the answer not depend on the body: two `mut` claims must be provably
 disjoint places, so aliasing questions are settled at the call site,
@@ -302,7 +302,7 @@ each, before checking any:
 3. `f(mut p.a, mut p.a.n)`
 4. `f(mut p, mut p.b)`
 
-Solution: 1 and 2 are legal — disjoint fields, and leaves of disjoint
+Solution: 1 and 2 are legal: disjoint fields, and leaves of disjoint
 subtrees. 3 and 4 are rejected: in each, one path is a *prefix* of the
 other, and a place conflicts with every place inside it. The rule from
 exercise 4-4, one sentence: two paths conflict iff one is a prefix of
@@ -350,7 +350,7 @@ moved-from place makes it live again.
 
 The license is the last clause: "assigning to a moved-from place makes
 it live again." The granularity phrase is "moving `s.a` away leaves
-`s.b` usable." The one word is "move" itself — the text's first
+`s.b` usable." The one word is "move" itself: the text's first
 sentence puts assignment and argument passing under the same verb,
 which is why chapters 3 and 7 have been describing one mechanism, not
 two.
@@ -359,19 +359,19 @@ two.
 slices of an input buffer it does not own, with lifetimes proving the
 buffer outlives every slice. Wolf has no lifetime annotations, so that
 API shape is not expressible for arbitrary callers. Sketch the wolf
-alternatives — copying the token text, returning byte ranges
+alternatives (copying the token text, returning byte ranges
 `(start, end)` into a caller-held string, or parsing inside a region
-and freezing the result — and argue which one a tokenizer library
+and freezing the result) and argue which one a tokenizer library
 should ship. What does each cost, and who pays it?
 
 Solution (discussion): the range API is the honest default: tokens as
 `(start, end)` pairs are plain values, move freely, and cost eight
-bytes each; the caller pays one indirection — `input[t.0..t.1]` — at
+bytes each; the caller pays one indirection (`input[t.0..t.1]`) at
 each use, checked. Copying pays allocation per token to buy the
 simplest caller code; for a config-file parser nobody measures, that
 is the right trade, and for a log-ingest loop it is not. The
 freeze design is the interesting one: parse into a region, freeze it,
-and hand back *imm* tokens that reference the frozen input — sharing
+and hand back *imm* tokens that reference the frozen input: sharing
 without copies and without lifetimes, at the cost of making the input
 immutable forever and region-resident from the start; it fits a
 compiler front end, where the source text never changes after load.
@@ -403,7 +403,7 @@ wolf : str
 wolf> :quit
 ```
 
-The session takes the trap and keeps the world — `[repl.trap.alive]` —
+The session takes the trap and keeps the world (`[repl.trap.alive]`),
 so the state a fault left behind is inspectable, which is the REPL's
 whole advantage over a crashed process. The value is intact in `t`:
 a move is a transfer, never a destruction, and the machine-level story
@@ -459,7 +459,7 @@ $ lupin ex7-12.lu
 
 "the wolf runs" and "the elk listens" survive; the moon line does not.
 Note what the function signature says about ownership: both lists are
-borrowed — the caller keeps them, un-moved, and no annotation was
+borrowed. The caller keeps them, un-moved, and no annotation was
 spent saying so.
 
 **Exercise 7-13** *(comprehension + extension · lupin)*. Extend 7-12
@@ -498,5 +498,4 @@ The table's cell `(i, j)` only knows the best answer *up to* that
 point; which choice produced it is recoverable only by comparing a
 cell with its neighbors, and the neighbors that explain `(i, j)` are
 behind it. The recursion runs to the origin and prints on the way
-back out, so the output comes out forward — backward walk, forward
-story.
+back out, so the output comes out forward.
