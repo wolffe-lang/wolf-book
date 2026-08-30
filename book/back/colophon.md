@@ -28,7 +28,7 @@ in Appendix A is copied from the specification at the same revision, and
 the diagnostic codes in Appendix C are checked against the compiler's own
 catalog in the same run.
 
-Four chapters and five sections in this edition are reserved rather than
+Two chapters and five sections in this edition are reserved rather than
 written, each one saying on its own page what it covers and why it is not
 here. Their section numbers are anchors and will not move when the pages
 arrive.

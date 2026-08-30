@@ -32,8 +32,8 @@
 # Part 4 — Systems
 
 - [Comptime: one tier, no macros](ch18.md)
-- [Perf contracts](ch19.md)
-- [Reading `wolf bench diff`](ch20.md)
+- [Reading the release tier](ch19.md)
+- [Perf contracts](ch20.md)
 - [Beating C honestly](ch21.md)
 - [Modules: the shape of a wolf project](ch22.md)
 - [Packages and dependencies](ch23.md)

@@ -3,10 +3,13 @@
 # against today's pinned tools: the runner executes it report-only and
 # treats a pass as a FLIP (hard error) so a landing feature is noticed
 # in the same commit that bumps the pin. Rows are removed, never
-# silently absorbed. Workflow-only pending exercises (20-6, 21-8, 22-7,
-# 23-7, 24-6, B-10) have no .lu file and no row; 19-1's program runs
-# green today (its pending-ness is the unverified #[noalloc], not the
-# run) so it carries no row either.
+# silently absorbed. Workflow-only pending exercises (21-8, 22-7,
+# 23-7, 24-6, B-10) have no .lu file and no row; 20-5's program (19-1
+# until the bs18 re-draw renumbered the contracts corpus) runs green
+# today (its pending-ness is the unverified #[noalloc], not the run)
+# so it carries no row either. Old 20-6, the bench-baseline workflow
+# exercise, retired with its chapter at bs18 (EXERCISES-PENDING.md's
+# re-draw note).
 #
 # Removed at the bs10 pin bump, both as reported FLIPs: `ch13/ex13-3`
 # (E1101, unsynchronized mutable capture across tasks) and `ch16/ex16-9`

@@ -1,6 +1,6 @@
 //! check: run(exit=0, stdout="13")
 //! phase: run
-// Exercise 19-4: a promise the body keeps — arithmetic on fields, no
+// Exercise 20-8: a promise the body keeps — arithmetic on fields, no
 // allocation anywhere. Verification of the attribute is pending (I15);
 // the program's behavior is not.
 struct Vec3 { x: f64, y: f64, z: f64 }

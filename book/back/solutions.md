@@ -5918,6 +5918,226 @@ through the evaluator. *What* is read can be data; *that* it was read
 must be declaration.
 </details>
 
+## Chapter 19
+
+<details>
+<summary>Exercise 19-1. [§19.1](../ch19.md#19.1)</summary>
+
+**Exercise 19-1** *(fingers · wolf + lupin)*. Type the scanner and
+change the line to `"the  pack   hunts at dusk"`, with the doubled and
+tripled spaces. Predict the count on paper from the two-state rule,
+then build it with `--release`, run it, and run it under `lupin`.
+
+Solution. `ch19/ex19-1.lu`. Five: a word starts at each
+space-to-nonspace edge, and stretching a gap adds no edges. The
+scanner counts transitions, not spaces, which is why the doubled and
+tripled runs change nothing:
+
+```console
+$ wolf build --release ex19-1.lu
+$ ./ex19-1
+5 words
+$ lupin ex19-1.lu
+5 words
+```
+
+Both tiers, one answer, which is §19.1's first claim exercised: the
+flag may change everything about how the binary is made and nothing
+about what it means.
+</details>
+
+<details>
+<summary>Exercise 19-2. [§19.2](../ch19.md#19.2)</summary>
+
+**Exercise 19-2** *(comprehension · prose)*. A release of the
+compiler makes one benchmark kernel 11 percent faster, and the same
+release moves that kernel's handed-to-LLVM instruction count from 266
+to 309. Explain how both numbers can be progress, and name the
+transformation shape from this section that produces exactly this
+signature.
+
+Solution: loop versioning. The middle end emitted a guarded fast copy
+of the loop (its bounds checks proven and folded) beside the original
+slow copy that keeps every check, plus the guard chain that picks
+between them at the loop's door. Two loop bodies and a guard are more
+instructions than one loop body; the hot path through them is
+shorter. The ratio measures work delivered to the backend, not time,
+and this kernel spent 43 instructions to buy 11 percent; the numbers
+are the stencil kernel's own, from the loss ledger's entry for the
+versioning landing. The general lesson: any gate on a proxy metric
+needs a story for the cases where the proxy and the goal move apart,
+which is why the ratio is a ratchet with a paper trail rather than an
+objective function.
+</details>
+
+<details>
+<summary>Exercise 19-3. [§19.3](../ch19.md#19.3)</summary>
+
+**Exercise 19-3** *(comprehension · prose)*. Five timings of one
+benchmark, in nanoseconds: 1000, 1010, 990, 1005, 2400. Compute the
+mean and the median; state which one a careful report trusts and what
+the outlier most plausibly was. Then compute the median absolute
+deviation and say what it does with these five numbers that a
+standard deviation would not.
+
+Solution: mean 1281, median 1005. The report trusts the median, and
+the 2400 was most plausibly the machine, not the program: a scheduler
+preemption, a cache gone cold, a thermal step. The median absolute
+deviation takes each sample's distance from the median (5, 5, 15, 0,
+1395) and takes the median of those: 5. One wild sample barely moves
+it, where a standard deviation would be dominated by that sample's
+square. Robust statistics are the choice to measure the program
+instead of the machine's weather, which is also why the ledger's
+nightly numbers are medians and why §19.3 says a delta means nothing
+except against its own spread.
+</details>
+
+<details>
+<summary>Exercise 19-4. [§19.3](../ch19.md#19.3)</summary>
+
+**Exercise 19-4** *(comprehension · prose)*. Classify each loss into
+one of this section's four kinds, and name the fix path: (a) a kernel
+adds numbers that arrive over a socket, and the additions stay
+checked; (b) the compiler proves a parameter's buffer disjoint from
+every other, and the loop still reloads it after each store; (c) a
+kernel would tie C if the language allowed reading one byte past the
+end of a buffer when the read provably lands in the same page.
+
+Solution: (a) is "the fact does not exist," and its fix path is
+honesty, not code: no sound analysis can bound values the program did
+not compute, the checks are the promise, and if the price crosses the
+gate's line the entry goes to the exceptions file with the cost
+measured (chapter 21 prints exactly this kernel's entry). (b) is "the
+fact went unspent": the proof exists and the instruction stream shows
+it not arriving, so the fix is in the pipeline that carries facts to
+the backend, with this kernel as the regression test. (c) is "the win
+was renounced": the read past the end is undefined behavior wolf
+refuses regardless of page arithmetic, so the gap is a price, written
+down, never a bug filed on the checker for being right.
+</details>
+
+<details>
+<summary>Exercise 19-5. [§19.3](../ch19.md#19.3)</summary>
+
+**Exercise 19-5** *(design)*. A colleague's slide says "our runtime
+is 8 percent faster than C." Using this chapter's last paragraph,
+list the three pieces of provenance the claim needs before it is a
+measurement, and state what the sentence quietly becomes as each one
+is removed.
+
+Solution (discussion): it needs the suite (what programs, against
+which C, compiled how), the date with its noise discipline (medians
+over how many runs, on what machine, against what spread), and the
+commit (what exactly was measured). Remove the commit and it is a
+claim about nothing in particular: nobody can re-measure it, so it
+cannot be wrong, which is worse than being wrong. Remove the date and
+it is folklore: true once, quoted forever, immune to the compiler
+release that invalidated it. Remove the suite and it is advertising:
+"faster than C" with the workload chosen after the fact. The
+chapter's standard (a dated, gated, commit-pinned ledger line) is
+what remains when a sentence like the slide's is required to survive
+cross-examination.
+</details>
+
+## Chapter 20
+
+<details>
+<summary>Exercise 20-1. [§20.1](../ch20.md#20.1)</summary>
+
+**Exercise 20-1** *(fingers · lupin)*. Change the line to `"a"` and
+predict the printed value by hand before running: the seed is 7, the
+multiplier 31, and `"a"` is one byte, 97. Then explain why this
+function's signature would be a lie under plain `i32`.
+
+Solution. `ch20/ex20-1.lu`. By hand: 7 × 31 = 217, plus 97 is 314,
+no wrap on one byte:
+
+```console
+$ lupin ex20-1.lu
+314
+```
+
+Under plain `i32` the signature would promise checked arithmetic and
+the body would need it unchecked: a longer input overflows within a
+handful of bytes, by design, and the checked spelling traps exactly
+there. `wrapping[i32]` is the renegotiation written where the
+compiler can hold it and a caller can read it. One byte happens to
+stay under the ceiling either way; the signature is about every
+input, not the lucky ones.
+</details>
+
+<details>
+<summary>Exercise 20-2. [§20.2](../ch20.md#20.2)</summary>
+
+**Exercise 20-2** *(comprehension · prose)*. The ledger's history for
+2026-08-22 contains three HOLDS lines: 03:53 (counted, consecutive 1),
+04:11 (eighteen minutes later), and 06:30 (139 minutes after the
+counted hold). The next holds land 2026-08-23 at 03:36 and 2026-08-24
+at 03:39. State the consecutive count after each of the five lines,
+and name the rule that decides each step.
+
+Solution: 1, 1, 1, 2, 3. The 03:53 hold is counted; 04:11 and 06:30
+land inside the twelve-hour window that separates counted holds, so
+each records with the count unchanged (two samples of one thermal
+state are one sample, however many timestamps they wear). The
+2026-08-23 hold is 23.7 hours after the counted one and advances the
+count to 2; 2026-08-24 advances it to 3, the declaration threshold,
+at which the tool prints a banner and a human decides. The rule doing
+all the work is the tick rule: a second reading counts only when a
+night has actually passed, and the ledger, not the enthusiasm, judges
+what a night is.
+</details>
+
+<details>
+<summary>Exercise 20-3. [§20.3](../ch20.md#20.3)</summary>
+
+**Exercise 20-3** *(comprehension · prose)*. The emitted-IR ratio's
+original design target is half, and the recorded gate is a ceiling at
+the measured value instead of at the target. State what a hard gate
+at the unmet target would do to every pull request, what a team
+learns to do with a gate that is always red, and what the ratchet
+preserves that a red wall of shame would not.
+
+Solution: a hard gate at 0.5 against a measured 0.58 fails every
+commit, including the ones that improve the number, and tells none of
+them anything new. A team with a permanently red gate learns the only
+lesson a permanently red gate teaches: to stop reading it, and then
+to route around it, at which point the gate guards nothing. The
+ratchet preserves the two things a gate is for: regressions still
+fail (the ceiling is the measured value, so any backsliding is a red
+that means something), and progress is banked (each earned
+improvement tightens the ceiling behind it). The unmet target stays
+recorded beside the ratchet, which keeps the ambition without
+spending the signal.
+</details>
+
+<details>
+<summary>Exercise 20-4. [§20.4](../ch20.md#20.4)</summary>
+
+**Exercise 20-4** *(design)*. A teammate proposes an exception entry:
+your image-decoding kernel would match C if it could read eight bytes
+past the end of the input buffer, since the read provably stays in
+the same page. Draft the entry's five fields, then rule on it: does
+this qualify for the exceptions file, and if it does, what revisit
+condition keeps it honest? Then rule on a second candidate: a kernel
+that loses because the standard library lacks a bulk-copy method.
+
+Solution (discussion): the first candidate qualifies, and the entry
+writes itself. Kernel: the decoder. Root cause: the vectorized tail
+wants an over-read; every in-bounds spelling costs a scalar epilogue.
+Decision that renounced the win: out-of-bounds reads are undefined
+behavior wolf refuses, page arithmetic notwithstanding (the language
+has no "probably mapped" memory class). Measured cost: the A/B
+against the over-reading C, with the date and host. Revisit
+condition: a masked-load lowering or a padded-buffer idiom that gets
+the tail without the over-read, at which point the entry expires. The
+second candidate does not qualify: a missing library method is a bug
+with an owner, not a renounced win, and parking it in the exceptions
+file would spend a capped slot to make a to-do item stop looking like
+one. It goes to the loss ledger, classified, with the kernel as the
+regression test for the method's arrival.
+</details>
+
 ## Chapter 21
 
 <details>
@@ -6059,9 +6279,9 @@ Solution: three artifacts. A pinned, public benchmark suite: the
 kernels, their C twins, and the gate that reads them (this edition
 prints its verdict line in §21.4, with the repository path and the
 date). A variance discipline that can call a delta noise: medians,
-mean absolute deviation, a symmetric gate (the instrument that would
-put that discipline in your hands is chapter 20's subject, and this
-edition does not carry chapter 20). A dated, regenerated record wired
+mean absolute deviation, a symmetric gate (chapter 19 teaches the
+discipline; the instrument that would put it in your hands is not
+part of this edition's toolchain). A dated, regenerated record wired
 to CI so the claim expires when the world changes: the colophon's
 toolchain pin and the ledger line §21.4 quotes, which names its
 commit and its night. Remove any one and the sentence degrades to

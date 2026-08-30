@@ -1,6 +1,6 @@
 //! check: run(exit=0, stdout="45")
 //! phase: run
-// Exercise 19-9: the rewrite that could keep the promise — one List
+// Exercise 20-13: the rewrite that could keep the promise — one List
 // allocated by the caller, reused across every call.
 fn tally_into(mut acc: List[int], base: int) {
     var i = 0

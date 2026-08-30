@@ -1,19 +1,20 @@
-//! check: run(exit=0, stdout="3")
+//! check: run(exit=0, stdout="5 words")
 //! phase: run
-// Exercise 19-1: a broken promise. `build` allocates; the attribute says
-// it does not. PENDING: perf-contract verification (I15) — once the WIR
-// fact engine (s24–s26) feeds the checker, this program is a static
-// rejection; the fail code is unassigned in today's catalog.
-#[noalloc]
-fn build() -> List[int] {
-    var xs = List[int]()
-    (mut xs).push(1)
-    (mut xs).push(2)
-    (mut xs).push(3)
-    xs
+// Exercise 19-1: the scanner from §19.1 over stretched gaps. A word
+// starts at each space-to-nonspace edge; widening a gap adds no edge,
+// so the count is 5 under both tiers.
+fn count_words(text: str) -> int {
+    var n = 0
+    var in_word = false
+    for b in text.bytes() {
+        let inside = b != 32 && b != 10
+        if inside && !in_word { n += 1 }
+        in_word = inside
+    }
+    n
 }
 fn main() -> !int {
-    let xs = build()
-    print("{xs.len}")
+    let line = "the  pack   hunts at dusk"
+    print("{count_words(line)} words")
     0
 }

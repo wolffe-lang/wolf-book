@@ -254,20 +254,34 @@ an ecosystem with no build scripts to fear.*
   auditability, or the audit surface of a dependency.
 - Exercises 18-1 ….
 
-### Chapter 19 — Perf contracts
-- (held) 19.1 Four promises — break `#[noalloc]`, `#[inplace]`, `#[nopanic]`,
-  `#[bounded_stack]` one at a time and read the errors.
-- (held) 19.2 Contracts are API — see a dependency lose `#[noalloc]` and semver
-  notice.
-- (held) 19.3 When not to — smell contract noise.
-- Exercises 19-1 ….
+### Chapter 19 — Reading the release tier
+*written at bs18 (the ToC re-draw: the old ch19 subject, perf
+contracts, is chapter 20's; the old ch20 subject waits for its
+instrument — see the bs18 delta)*
+- 19.1 One program, two binaries — `--release` changes how the binary
+  is made and nothing it means: same answer, same traps, both tiers.
+- 19.2 The compiler hands LLVM less — the emitted-IR ratio, what it
+  measures, and what it deliberately does not (versioning buys time
+  with instructions).
+- 19.3 Reading a loss — disassembly-grounded diagnosis, the four
+  kinds of slow, two worked losses from the suite's own ledger.
+- Exercises 19-1 … 19-5.
 
-### Chapter 20 — Reading `wolf bench diff`
-- (held) 20.1 The format — read ns/op, allocs, and metadata; trust medians and
-  MAD.
-- (held) 20.2 The variance gate — watch a "3% win" get correctly called noise.
-- (held) 20.3 Your own baseline — run the `--baseline` workflow in your repo.
-- Exercises 20-1 ….
+### Chapter 20 — Perf contracts
+*written at bs18; the verified-contracts surface has no checker, so
+the chapter teaches the promises that are real (the language's own)
+and the discipline that holds them — scope stated in §20.1*
+- 20.1 The promises the language keeps — checked arithmetic in every
+  profile, proof-gated check elimination, `wrapping[T]` as the
+  renegotiation written in the signature; the v1 scope statement.
+- 20.2 The ledger and the clock — dated verdict lines, the tick rule,
+  three consecutive nightly holds and a human declaration.
+- 20.3 The floors and the ratchets — deterministic gates: floors
+  under what must not fall, ratchets over what must not grow back.
+- 20.4 Exceptions, written and capped — the five-field entry form,
+  the (d)-only class rule, the cap of three.
+- Exercises 20-1 … 20-4 (the contracts corpus, 20-5 … 20-13, is
+  written and unprinted until the checker lands).
 
 ### Chapter 21 — Beating C honestly
 *three sections of five shipped (rp02, the declaration pass); the held
@@ -1128,3 +1142,30 @@ sprint files remain the implementation contracts for everything else.
     qualified call does not resolve interpreted, comptime is the
     compiler's engine by design (ch18 ×3, ch22), and the interpreter
     has no filesystem by design (ch30 fence and its three exercises).
+- **bs18 (the numbers teach, 2026-08-30):** Part 4's held pair is
+  re-drawn and written. Chapter 19 is **Reading the release tier**
+  (`--release` in reader terms, the emitted-IR ratio, the
+  loss-reading discipline the compiler campaign practiced) and
+  chapter 20 is **Perf contracts** (the old ch19 subject, moved down
+  one). The re-draw's grounds, measured at the bs18 pins: `wolf build
+  --release` compiles, links and runs the book's programs with traps
+  intact (teachable), while the contract attributes still verify
+  nothing and `wolf bench` still refuses (exit 2) — so the release
+  tier teaches first, the contracts chapter teaches the language's
+  real promises plus the measurement discipline and states the v1
+  scope per R9, and the bench-diff reader chapter is retired from the
+  ToC rather than held (its instrument has no landing to wait on in
+  this ToC; the discipline it existed to teach lives in §19.3 and
+  §20.2–20.4, and the loss-table section §21.5 keeps waiting on the
+  instrument itself). Both chapters' old section numbering had never
+  been published (held stubs since bs08), which is the bs07/bs10
+  licence for renumbering their sections. The contracts exercise
+  corpus moved whole to `principles/exercises/ch20/` (19-x → 20-(x+4),
+  nine stems, still unprinted pending the checker); the bench-format
+  corpus retired except the three discipline stems re-homed into
+  ch19's set (EXERCISES-PENDING.md records both moves). The three
+  ch05 exit-4 refusal fences (Set construction, the `sorted_by`
+  chain, the map-index place) retire in the same wave with a
+  re-teach: the surfaces are still absent at the pins, so the prose
+  states scope and the scaffold refusals leave the pages (TONE's
+  scaffold-output rule, the wave-19 packet's routing).

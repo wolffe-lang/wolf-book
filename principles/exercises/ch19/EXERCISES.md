@@ -1,210 +1,114 @@
-# Chapter 19 — Perf contracts: exercises
+# Chapter 19 — Reading the release tier: exercises
 
 Commands run from this directory; outputs are pasted from real runs.
-One honesty governs this chapter's set: the four contract attributes
-parse today and are *verified* by nothing — the checker that proves
-them against WIR facts is I15's machinery, landing with s24–s26. The
-exercises below say which side of that line they stand on.
+This set landed with the bs18 re-draw of Part 4 (the old ch19 subject,
+perf contracts, is chapter 20's; the contracts corpus moved with it).
+19-3 and 19-5 are re-homed descendants of the retired bench-format
+corpus (old 20-3 and 20-8), rewritten without the worked-example
+format whose instrument does not exist: what survives is the
+discipline, which needs no harness.
 
-## §19.1 — Four promises
+## §19.1 — One program, two binaries
 
-**Exercise 19-1** *(comprehension · pending — blocker: perf-contract
-verification (I15); owner: s24–s26 WIR fact sprints)*. `build` carries
-`#[noalloc]` and allocates a `List` on its first line. State what the
-verifying compiler must do with this program, then run it under
-today's tools and record what actually happens.
+**Exercise 19-1** *(fingers · wolf + lupin)*. Type the scanner and
+change the line to `"the  pack   hunts at dusk"`, with the doubled and
+tripled spaces. Predict the count on paper from the two-state rule,
+then build it with `--release`, run it, and run it under `lupin`.
 
-Solution. `ch19/ex19-1.lu`. The verifying compiler rejects it: the
-attribute is a proof obligation, and the `List[int]()` in the body is
-a WIR allocation fact that contradicts it. (The fail code is
-unassigned in today's catalog; the `.lu` header states the expected
-outcome in prose.) Today, honestly:
+Solution. `ch19/ex19-1.lu`. Five: a word starts at each
+space-to-nonspace edge, and stretching a gap adds no edges. The
+scanner counts transitions, not spaces, which is why the doubled and
+tripled runs change nothing:
 
 ```console
+$ wolf build --release ex19-1.lu
+$ ./ex19-1
+5 words
 $ lupin ex19-1.lu
-3
-$ echo $?
-0
+5 words
 ```
 
-lupin executes the program — attributes are inert in the dynamic
-tier — and `wolf conform-run` reports `verdict=unsupported` at
-`phase_reached=mem`. Neither tool lies about checking the promise;
-neither checks it. That gap is this chapter's ledger entry, and CI
-flips these exercises to verified the day I15's checker lands.
+Both tiers, one answer, which is §19.1's first claim exercised: the
+flag may change everything about how the binary is made and nothing
+about what it means.
 
-**Exercise 19-2** *(comprehension · prose)*. Four bodies, one
-attribute. Which of these could carry `#[noalloc]` under a verifying
-compiler, and for each refusal, name the allocating expression:
+## §19.2 — The compiler hands LLVM less
 
-1. `fn mid(xs: List[int]) -> int { xs[xs.len / 2] }`
-2. `fn label(n: int) -> str { "item {n}" }`
-3. `fn double_all(mut xs: List[int])` — multiplies each element in place
-4. `fn tail(s: str) -> str { s[1..] }`
+**Exercise 19-2** *(comprehension · prose)*. A release of the
+compiler makes one benchmark kernel 11 percent faster, and the same
+release moves that kernel's handed-to-LLVM instruction count from 266
+to 309. Explain how both numbers can be progress, and name the
+transformation shape from this section that produces exactly this
+signature.
 
-Solution: 1, 3, and 4 qualify. Indexing reads; in-place mutation
-writes into storage the caller already owns; a byte slice is two words
-pointing into the original — chapter 2's claim, now earning its keep.
-Number 2 is the refusal: an f-string builds a new `str`, and a new
-`str` is an allocation no matter how small the sentence. The wrong
-answer worth ruling out is 4: "returns a str" is not "allocates a
-str" — the contract tracks allocation, not types.
+Solution: loop versioning. The middle end emitted a guarded fast copy
+of the loop (its bounds checks proven and folded) beside the original
+slow copy that keeps every check, plus the guard chain that picks
+between them at the loop's door. Two loop bodies and a guard are more
+instructions than one loop body; the hot path through them is
+shorter. The ratio measures work delivered to the backend, not time,
+and this kernel spent 43 instructions to buy 11 percent; the numbers
+are the stencil kernel's own, from the loss ledger's entry for the
+versioning landing. The general lesson: any gate on a proxy metric
+needs a story for the cases where the proxy and the goal move apart,
+which is why the ratio is a ratchet with a paper trail rather than an
+objective function.
 
-**Exercise 19-3** *(comprehension · prose)*. May a verifying compiler
-accept `#[nopanic]` on this function?
+## §19.3 — Reading a loss
 
-```wolf
-fn add_prices(a: i32, b: i32) -> i32 { a + b }
-```
+**Exercise 19-3** *(comprehension · prose)*. Five timings of one
+benchmark, in nanoseconds: 1000, 1010, 990, 1005, 2400. Compute the
+mean and the median; state which one a careful report trusts and what
+the outlier most plausibly was. Then compute the median absolute
+deviation and say what it does with these five numbers that a
+standard deviation would not.
 
-Solution: no, and the reason is chapter 3's oldest fact wearing a new
-coat: `+` on `i32` is checked, checked arithmetic traps on overflow,
-and a trap is exactly what `#[nopanic]` promises away. The function is
-one range analysis away from acceptable — prove `a` and `b` small
-enough and the trap is unreachable — which is why `#[nopanic]` is a
-hard contract to hold and why chapter 21 prices checked arithmetic
-separately. The cheap fixes each change the promise: `wrapping[i32]`
-keeps `nopanic` and changes the arithmetic; dropping the attribute
-keeps the arithmetic and changes the promise.
+Solution: mean 1281, median 1005. The report trusts the median, and
+the 2400 was most plausibly the machine, not the program: a scheduler
+preemption, a cache gone cold, a thermal step. The median absolute
+deviation takes each sample's distance from the median (5, 5, 15, 0,
+1395) and takes the median of those: 5. One wild sample barely moves
+it, where a standard deviation would be dominated by that sample's
+square. Robust statistics are the choice to measure the program
+instead of the machine's weather, which is also why the ledger's
+nightly numbers are medians and why §19.3 says a delta means nothing
+except against its own spread.
 
-**Exercise 19-4** *(fingers · lupin)*. Annotate a genuinely
-allocation-free function with `#[noalloc]` and run it. Then state
-precisely what today's toolchain claimed about your attribute.
+**Exercise 19-4** *(comprehension · prose)*. Classify each loss into
+one of this section's four kinds, and name the fix path: (a) a kernel
+adds numbers that arrive over a socket, and the additions stay
+checked; (b) the compiler proves a parameter's buffer disjoint from
+every other, and the loop still reloads it after each store; (c) a
+kernel would tie C if the language allowed reading one byte past the
+end of a buffer when the read provably lands in the same page.
 
-Solution. `ch19/ex19-4.lu`:
+Solution: (a) is "the fact does not exist," and its fix path is
+honesty, not code: no sound analysis can bound values the program did
+not compute, the checks are the promise, and if the price crosses the
+gate's line the entry goes to the exceptions file with the cost
+measured (chapter 21 prints exactly this kernel's entry). (b) is "the
+fact went unspent": the proof exists and the instruction stream shows
+it not arriving, so the fix is in the pipeline that carries facts to
+the backend, with this kernel as the regression test. (c) is "the win
+was renounced": the read past the end is undefined behavior wolf
+refuses regardless of page arithmetic, so the gap is a price, written
+down, never a bug filed on the checker for being right.
 
-```wolf
-struct Vec3 { x: f64, y: f64, z: f64 }
-#[noalloc]
-fn dot(a: Vec3, b: Vec3) -> f64 {
-    a.x * b.x + a.y * b.y + a.z * b.z
-}
-fn main() -> !int {
-    let d = dot(Vec3 { x: 1.0, y: 2.0, z: 3.0 }, Vec3 { x: 3.0, y: 2.0, z: 2.0 })
-    print("{d}")
-    0
-}
-```
+**Exercise 19-5** *(design)*. A colleague's slide says "our runtime
+is 8 percent faster than C." Using this chapter's last paragraph,
+list the three pieces of provenance the claim needs before it is a
+measurement, and state what the sentence quietly becomes as each one
+is removed.
 
-```console
-$ lupin ex19-4.lu
-13
-```
-
-Today's toolchain claimed nothing. The run proves the body computes a
-dot product; it proves nothing about the attribute, which no tool read.
-An unverified contract is a comment with better syntax — until I15,
-exactly that, and this book will not pretend otherwise.
-
-**Exercise 19-5** *(comprehension · prose)*. `#[inplace]` promises a
-function mutates through its `mut` parameters without allocating
-working storage. Which of these keeps that promise: (a) reversing a
-`List` with one temporary variable inside a swap loop; (b) reversing a
-`List` by building a second list backward and assigning it over the
-parameter?
-
-Solution: (a). The swap loop's temporary is a stack value — one
-element in flight, storage the frame already owns. (b) allocates a
-whole shadow list, and assigning it over the parameter afterward does
-not un-allocate it; the contract's subject is what the function
-*acquired*, not where the bytes ended up. The observable result of
-both versions is identical, which is the reason the contract exists:
-callers on a hot path cannot see the difference in the signature
-unless the signature says it.
-
-## §19.2 — Contracts are API
-
-**Exercise 19-6** *(spelunking · wolf)*. The pinned corpus states
-I15's rule in one comment (`upstream/corpus/comptime.lu`): "`#[noalloc]`
-is compiler-VERIFIED against WIR facts, not a comment that rots."
-Explain the "comment that rots" failure mode this contracts against,
-and then reconcile the claim with what `wolf conform-run` did to
-exercise 19-1 today.
-
-Solution: a performance comment rots because nothing fails when it
-stops being true — the function grows an allocation in a refactor,
-the comment stays, and callers keep budgeting against fiction. The
-contract moves the claim into the signature where a checker can
-contradict it. Reconciliation: the corpus comment states the *design*
-(I15, decided); today's `verdict=unsupported` states the
-*implementation* (the WIR fact engine is s24–s26's deliverable). The
-corpus and this book share one honesty model — expected outcomes are
-recorded before the machinery exists, and nothing reports green
-meanwhile.
-
-**Exercise 19-7** *(comprehension · prose)*. Your dependency's
-`parse_row` carried `#[noalloc]` in v1.3; v1.4 drops the attribute
-with no other signature change. Under semver with teeth, what version
-number must v1.4 actually be, and what breaks if the registry lets it
-sail as a minor?
-
-Solution: major. A caller was entitled to build on the promise — an
-audio callback that calls `parse_row` per sample chose it *because*
-allocation-free was in the signature. If the drop ships as 1.4, MVS
-upgrades that caller silently and the callback now allocates on a
-real-time path: no compile error, no diagnostic, a latency regression
-found in production. Contracts are API is not a slogan — it is the
-statement that removing one is the same event as removing a function.
-(Adding a contract is the minor direction: strictly more promise.)
-
-## §19.3 — When not to
-
-**Exercise 19-8** *(design)*. A colleague proposes `#[noalloc]` on
-every function in your utility library "since most of them qualify."
-Argue the other side using exactly two costs, then state the rule you
-would adopt instead.
-
-Solution (discussion): cost one is freedom — every attribute is a
-promise you must keep through every future refactor; the day one
-function wants a scratch buffer, its removal is a major version, per
-19-7, for a property no caller may ever have needed. Cost two is
-signal — when everything is annotated, annotation stops meaning
-"chosen for a hot path" and reads as boilerplate; the one contract
-that matters drowns in forty that do not. The rule that survives:
-annotate at the *boundary where a caller budgets* — the parse loop,
-the callback, the per-frame kernel — and leave interior helpers free
-to change. A contract is a price tag, and price tags belong on things
-that are for sale.
-
-## Chapter batch
-
-**Exercise 19-9** *(extension · lupin)*. Exercise 19-1's `build`
-cannot keep its promise because it allocates its own result. Refactor
-to the shape that could: the caller allocates once and lends the
-storage down with `mut`. Run it. Which function in your refactor could
-now honestly carry `#[noalloc]`, and which still cannot?
-
-Solution. `ch19/ex19-9.lu`:
-
-```wolf
-fn tally_into(mut acc: List[int], base: int) {
-    var i = 0
-    while i < acc.len {
-        acc[i] = acc[i] + base
-        i += 1
-    }
-}
-fn main() -> !int {
-    var acc = List[int]()
-    var i = 0
-    while i < 5 { (mut acc).push(i); i += 1 }
-    tally_into(mut acc, 3)
-    tally_into(mut acc, 4)
-    var sum = 0
-    for v in acc { sum += v }
-    print("{sum}")
-    0
-}
-```
-
-```console
-$ lupin ex19-9.lu
-45
-```
-
-`tally_into` qualifies: it writes through storage it was lent. `main`
-does not — someone must still allocate, and the refactor's point is
-choosing *who*: allocation moved from once-per-call to once-per-
-program, and the function on the hot path is the one that got to make
-the promise. (Verification of that promise remains pending per 19-1;
-the shape is ready for it.)
+Solution (discussion): it needs the suite (what programs, against
+which C, compiled how), the date with its noise discipline (medians
+over how many runs, on what machine, against what spread), and the
+commit (what exactly was measured). Remove the commit and it is a
+claim about nothing in particular: nobody can re-measure it, so it
+cannot be wrong, which is worse than being wrong. Remove the date and
+it is folklore: true once, quoted forever, immune to the compiler
+release that invalidated it. Remove the suite and it is advertising:
+"faster than C" with the workload chosen after the fact. The
+chapter's standard (a dated, gated, commit-pinned ledger line) is
+what remains when a sentence like the slide's is required to survive
+cross-examination.

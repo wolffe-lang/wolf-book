@@ -8,7 +8,7 @@ to be. The day a blocking feature lands, its exercises join the CI run
 their headers already describe; until then this manifest is the honest
 list. No aspirational green.
 
-Note for the compiler track: the whole corpus — 189 directive-headed
+Note for the compiler track: the whole corpus — 191 directive-headed
 `.lu` files under `principles/exercises/`, runnable and pending alike —
 is a seed farm for the toolchain's corpus and fuzz harnesses. The
 pending files are the most valuable seeds: each one encodes an expected
@@ -24,8 +24,7 @@ verdict for a feature that does not exist yet.
 | 13-6 | `run(exit=0)` | `par` absent from the interp std subset | s32-tasks-scheduler / s37-core-types |
 | 5-8 | `run(exit=0, stdout="marmot 5")` | `sorted_by` / `take` absent from the interp std subset | s37-core-types (std surface pinning) |
 | 17-6 | `run(exit=0)` | `--chaos` fault injection at declared effect points — and with it §17.3 of chapter 17, which is why this stem is written and **not printed** (TOC.md §Deltas, bs07) | s36-deterministic-scheduler |
-| 19-1 | `run(exit=0, stdout="3")` | perf-contract verification (I15) | s24–s26 WIR fact sprints |
-| 20-6 | none — workflow exercise | `wolf bench` harness and `--baseline` workflow | s01-test-and-bench-infrastructure / s44-perf-validation |
+| 20-5 (was 19-1 until bs18) | `run(exit=0, stdout="3")` | perf-contract verification (I15) | s24–s26 WIR fact sprints |
 | 21-8 | none — measurement exercise | bench rigs and CI perf gates | s44-perf-validation |
 | 23-7 | none — workflow exercise | script-mode dependency resolution | s51-package-manager with s31-driver-v0 |
 | B-10 | none — the absence is the exercise | `race` needs the dynamic race machine observing a real conflict; `alloc-contract` needs the wolf_rt quarantine allocator | s36-deterministic-scheduler; s23-memory-conformance / wolf_rt |
@@ -56,6 +55,34 @@ stays at three sections; `wolf bench` still answers `not yet`, so 19-1,
 are unmoved for the reasons their blockers name. Native concurrency and
 the compiler's mid-end are what this bump brought, and neither of them is
 what any of these rows is waiting on.
+
+## The bs18 re-draw (renumbers and one retirement, 2026-08-30)
+
+Part 4's held pair was re-drawn at bs18: chapter 19 is now *Reading
+the release tier* and chapter 20 is *Perf contracts* (the old ch19
+subject, moved down one). Bookkeeping consequences, recorded so the
+paragraphs above keep reading correctly as history:
+
+- The contracts corpus moved whole from `principles/exercises/ch19/`
+  to `principles/exercises/ch20/`, renumbered 19-x → 20-(x+4): the
+  pending row above that older paragraphs call **19-1** is **20-5**
+  now (same program, same directive, same blocker; still no
+  samples-pending row because its program runs green — the
+  pending-ness is the unverified attribute, not the run).
+- The old ch20 bench-format set (20-1 … 20-8, seven prose stems and
+  one spelunking run whose subject was the refusal itself) is
+  RETIRED, not flipped: its chapter left the ToC with its instrument
+  unshipped, and the two discipline stems that need no harness (old
+  20-3 and 20-8) were re-homed into the new ch19 set as 19-3 and
+  19-5, rewritten without the worked-example format (old 20-5's
+  symmetric-noise argument survives as §19.3 prose). **20-6**, this
+  table's old workflow row,
+  retires with the set: it had no `.lu` and no samples-pending row,
+  and the baseline-workflow exercise returns with the instrument and
+  whatever chapter then teaches it.
+- The new printed sets (19-1 … 19-5, 20-1 … 20-4) are green today;
+  ex19-1.lu and ex20-1.lu join the corpus (189 → 191 directive-headed
+  files).
 
 ## Retired entries
 

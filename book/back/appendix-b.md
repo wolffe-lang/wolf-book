@@ -44,8 +44,9 @@ book argues at length in chapters 13 and 17 that the shapes a data race
 is made of do not compile, so `race` never fires in a program these pages
 print. `assert` appears only in its compile-time form, where a failed
 assertion is a diagnostic rather than a trap (`E0710`, §18.1). And
-`alloc-contract` belongs to the perf contracts, which chapter 19 covers
-and this edition does not carry.
+`alloc-contract` belongs to function-level allocation contracts, a
+surface chapter 20 scopes out of v1 (§20.1), so no program in this
+edition can raise it.
 
 Detection is required for the first nine kinds in every profile. `race`
 detection is permitted rather than required, and `deadlock` detection is

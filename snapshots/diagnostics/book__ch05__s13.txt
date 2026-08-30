@@ -1,5 +1,5 @@
 error[E0810]: a temporary has no home — bind it first
-  --> ./s16.lu:13:18
+  --> ./s13.lu:13:18
    |
 13 |     print(render(Dot { x: 3 } as dyn Draw))
    |                  ^^^^^^^^^^^^^^^^^^^^^^^^ this value would not outlive the cast
