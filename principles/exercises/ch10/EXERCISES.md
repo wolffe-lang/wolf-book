@@ -54,7 +54,7 @@ fn main() -> !int {
 
 Solution: `child speaks` first, always. The scope's closing brace joins
 every child; `main speaks` sits after the brace, so it cannot run until
-the child has finished — under any seed. This is structure, not luck:
+the child has finished, under any seed. This is structure, not luck:
 
 ```console
 $ lupin ex10-2.lu
@@ -65,9 +65,9 @@ child speaks
 main speaks
 ```
 
-The wrong answer worth ruling out: "the child happened to be scheduled
-first." Move the `print` *inside* the scope and the order genuinely is
-the scheduler's to choose; after the brace, it is not.
+The wrong answer is "the child happened to be scheduled first." Move
+the `print` *inside* the scope and the order genuinely is the
+scheduler's to choose; after the brace, it is not.
 
 **Exercise 10-3** *(comprehension · lupin)*. A child's last expression
 is a value. Predict this program's exit code, and account for the 42:
@@ -81,7 +81,7 @@ fn main() -> !int {
 }
 ```
 
-Solution: exit 7. The child's value is discarded at the join — a scope
+Solution: exit 7. The child's value is discarded at the join: a scope
 joins its children for their *completion*, not their results. A child
 that has something to say sends it on a channel; the 42 evaporates.
 
@@ -123,7 +123,7 @@ $ echo $?
 
 The scope's closing brace must join the child; the child is blocked in
 `recv`; nothing can unblock it. Where Go leaks quietly, wolf's
-structure turns the same mistake into a deadlock the runtime can see —
+structure turns the same mistake into a deadlock the runtime can see:
 every live task blocked, so the trap fires and names them. The leak is
 not fixed; it is *retired*: this program cannot express "and the task
 lingers on unowned."
@@ -134,8 +134,8 @@ is the "blocked-task roster" for, and why does the trap name `main`
 itself as blocked?
 
 Solution (prose): the trap's condition is *every* live task blocked
-with nothing left that could wake one. A pending timer — a `timeout`
-arm in some `select` — would eventually fire and unblock somebody, so
+with nothing left that could wake one. A pending timer (a `timeout`
+arm in some `select`) would eventually fire and unblock somebody, so
 its absence is part of the proof; the roster is the evidence, one entry
 per blocked task with its id, which is the list you would otherwise
 assemble by hand from a hung process's stacks. `main` is on the roster
@@ -174,7 +174,7 @@ fn main() -> !int {
 
 Solution: `join surfaced the error`, then `7`. The failing child's `?`
 raises `Torn` inside the task; the error travels to the scope's closing
-brace — the join — and re-raises there, into `gather`'s own error row,
+brace (the join) and re-raises there, into `gather`'s own error row,
 where `main`'s `else` handles it. The crossing point is the brace. In
 Go this error dies in a goroutine unless you built machinery to carry
 it; here the structure is the machinery.
@@ -213,7 +213,7 @@ total=700
 ```
 
 After the brace, every child has completed, so every send that will
-ever happen has happened — `close` cannot cut anyone off. The join
+ever happen has happened: `close` cannot cut anyone off. The join
 converts "I hope they are done" into a fact you may compute with.
 
 ## §10.4 — Cancellation
@@ -243,11 +243,11 @@ fn main() -> !int {
 }
 ```
 
-Solution: yes — `sibling cleanup ran`, then `42`. The failing child
+Solution: yes. `sibling cleanup ran`, then `42`. The failing child
 makes the scope cancel its blocked sibling; cancellation lands at the
 sibling's blocking point (`recv`), and the task unwinds *its own*
 defers on the way out. Cancellation is polite. Chapter 14 shows the
-impolite variant — `kill` on a proc skips defers by design — and the
+impolite variant (`kill` on a proc skips defers by design), and the
 difference between those two rules is a decided thing, not an
 accident.
 
@@ -295,11 +295,11 @@ $ lupin run ex10-9.lu --seed=2024
 5 values through the pipeline
 ```
 
-Only the transformer knows when the last square has been sent — it
+Only the transformer knows when the last square has been sent: it
 learns it from its own `for` loop ending, which happens when `raw`
 closes and drains. If `main` closed `squared`, it would be guessing;
 close is the sender's verb, and each stage owns exactly one sending
-side. That ownership discipline is the whole pipeline pattern.
+side.
 
 **Exercise 10-10** *(design)*. Go has `go f()`; wolf deliberately has
 no detached spawn: a task needs a scope, and the scope must close. Take
@@ -308,15 +308,15 @@ serves well, sketch how wolf expresses it, and state what the wolf
 version pays and what it collects.
 
 Solution (discussion): the honest case for detachment is the
-fire-and-forget notifier — a metrics ping, a log ship — where the
+fire-and-forget notifier (a metrics ping, a log ship) where the
 caller genuinely does not want to wait and failure is acceptable. Go
 spells it in three characters. Wolf makes the lifetime explicit: the
-ping lives in some scope — a long-lived one owned by the subsystem
+ping lives in some scope, a long-lived one owned by the subsystem
 that cares about pings, with the pattern chapter 11 builds. The
 payment is real: you must decide *whose* scope, which is a design
 question Go let you skip. What it collects: the answer to "can this
 program exit with work still running" is knowable by reading the
 scopes, every error has an owner, and the leak of exercise 10-4 is
 unwritable. Wolf's position is that "whose is this task" was never
-optional — Go defers the question to a runtime that cannot answer it,
+optional: Go defers the question to a runtime that cannot answer it,
 and wolf asks it at the point where you still can.

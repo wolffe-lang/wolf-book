@@ -116,7 +116,7 @@ wolf> :quit
 ```
 
 Literal arithmetic infers `i32`; a function annotated `int` returns
-`i64`. Definitions persist for the whole session — the REPL is a
+`i64`. Definitions persist for the whole session. The REPL is a
 workbench, not a calculator.
 </details>
 
@@ -179,7 +179,7 @@ $ echo $?
 ```
 
 Exit 2 is a static-phase rejection: the program never ran. A trap exits
-3 and can only happen to a program that was legal and started — the two
+3 and can only happen to a program that was legal and started: the two
 codes divide "wolf refused" from "wolf obeyed, and the program hit a
 rule." The clause tag `[gram.expr.block]` names the grammar rule the
 file broke, and the span points at the end of the file, which is where
@@ -207,7 +207,7 @@ $ echo $?
 `diff` printing nothing is the whole result. Either run could have
 disagreed: the compiler lowered the f-string to a sequence of writes
 against the runtime's print shims, and the interpreter evaluated it
-against its own string model — two separate pieces of code, written
+against its own string model: two separate pieces of code, written
 from the specification rather than from each other. A byte of
 disagreement between them is a bug in one implementation or a hole in
 the specification, and it is found here rather than in your program.
@@ -230,11 +230,11 @@ wolf build: root: reused object (key a476d75665e8c37a)
 ```
 
 The second build compiles nothing. `.lu-cache/` beside the source holds
-the object file keyed by everything that could change its contents —
-the module's source, the compiler's own build id, the profile, and the
-interface surfaces of what it depends on — so an unchanged key is an
+the object file keyed by everything that could change its contents (the
+module's source, the compiler's own build id, the profile, and the
+interface surfaces of what it depends on), so an unchanged key is an
 answer already on disk. The key in your terminal will differ from the
-one above; what will not differ is the word `reused`.
+one above; the word `reused` will not.
 </details>
 
 ## Chapter 2
@@ -354,7 +354,7 @@ newlines — the dedent removed the leading spaces before counting.
 lengths before evaluating: `"\n".len`, `r"\n".len`, `r"C:\temp".len`.
 
 Solution: 1, 2, 7. In an ordinary literal `\n` is one byte, a newline.
-In a raw literal it is two bytes, a backslash and an `n` — raw means
+In a raw literal it is two bytes, a backslash and an `n`: raw means
 the escape table is off, not that backslashes are special some other
 way. `r"C:\temp"` is the seven bytes you can count.
 
@@ -392,8 +392,8 @@ trap(bounds): byte range 3..2 is outside a 4-byte string [mem.ub.defined] at 0..
 the session survives the trap; the world is as the fault left it [repl.trap.alive]
 ```
 
-The wrong answer worth ruling out: `[4..4]` does not trap. The boundary
-after the last byte is a real position — it is where appending happens.
+`[4..4]` does not trap: the boundary after the last byte is a real
+position, and it is where appending happens.
 </details>
 
 <details>
@@ -456,7 +456,7 @@ wolf> s[4..].len
 4 : i64
 ```
 
-Solution: `wolf`, 4, 8, 4 — and nothing copied. A slice is a *view*:
+Solution: `wolf`, 4, 8, 4, and nothing copied. A slice is a *view*:
 two words, a pointer and a length, aimed into bytes that already
 exist. `s` is untouched by every line here, which is why `s.len` is
 still 8 after `t` was made from it. The chapter's cost claim is
@@ -494,7 +494,7 @@ $ wolf run ex2-9.lu
 Five of the six are §2.3 material: `.len` counts bytes (4, 2, 3), and
 ASCII is the case where every scalar is one byte, so `"wolf"` counts 4
 either way and `"é"`'s two bytes are one scalar. The number that needed
-this section is the last: `"e\u{301}".chars().len` is 2 — a combining
+this section is the last: `"e\u{301}".chars().len` is 2. A combining
 accent is its own scalar, so the glyph a reader sees as one letter is
 two chars in a three-byte string. Bytes count storage, chars count
 scalars, and neither counts what the reader sees.
@@ -672,7 +672,7 @@ $ echo $?
 
 `i32`'s ceiling is 2147483647, whose square root is 46340.95…, so
 46341 is the smallest integer whose square leaves the type: 46340²
-is 2147395600 and fits. The trap reports the true product — the
+is 2147395600 and fits. The trap reports the true product: the
 machine computed it, checked it against the type, and refused to
 pretend it fit. The annotation is what makes the multiplication an
 `i32` multiplication: a bare literal is unconstrained until something
@@ -696,7 +696,7 @@ fn main() -> !int {
 ```
 
 Solution: `-3 -1`, then `-7`. Wolf's integer division truncates toward
-zero, so `-7 / 2` is −3, not Python's floored −4 — and the remainder
+zero, so `-7 / 2` is −3, not Python's floored −4. The remainder
 follows the division, so `-7 % 2` is −1, not 1. The second line is the
 law that binds them: `(a / b) * b + a % b == a` holds for every legal
 pair, whichever convention a language picks. Pick your division and the
@@ -727,17 +727,16 @@ fn main() -> !int {
 ```
 
 Solution: `ada grace`. The `let first = name` line handed the value
-over — `first` owns `"ada"` from that point, so the later rebinding of
+over: `first` owns `"ada"` from that point, so the later rebinding of
 `name` replaces what `name` holds without reaching anything `first`
-has. The deep story of "hands the value over" — what it means for the
-source afterward, and when it traps — is chapter 7's, on purpose; this
+has. The deep story of "hands the value over" (what it means for the
+source afterward, and when it traps) is chapter 7's, on purpose; this
 chapter needs only the direction of the handover.
 
-Audit note (authoring-time finding): a reassignment to a `let` binding
-(`let n = 1` then `n = 2`) is accepted and executes under both tools
-today — lupin prints `2`, wolfc reports no diagnostic. The book
-teaches `let` as single-assignment; the missing rejection is filed for
-the trackers.
+One honesty note: neither tool rejects a reassignment to a `let`
+binding (`let n = 1` then `n = 2`): lupin prints `2`, wolfc reports
+no diagnostic. The book teaches `let` as single-assignment; treat the
+reassignment as an error even where the tools let it pass.
 </details>
 
 ## Chapter 4
@@ -3278,7 +3277,7 @@ fn main() -> !int {
 
 Solution: `child speaks` first, always. The scope's closing brace joins
 every child; `main speaks` sits after the brace, so it cannot run until
-the child has finished — under any seed. This is structure, not luck:
+the child has finished, under any seed. This is structure, not luck:
 
 ```console
 $ lupin ex10-2.lu
@@ -3289,9 +3288,9 @@ child speaks
 main speaks
 ```
 
-The wrong answer worth ruling out: "the child happened to be scheduled
-first." Move the `print` *inside* the scope and the order genuinely is
-the scheduler's to choose; after the brace, it is not.
+The wrong answer is "the child happened to be scheduled first." Move
+the `print` *inside* the scope and the order genuinely is the
+scheduler's to choose; after the brace, it is not.
 </details>
 
 <details>
@@ -3309,7 +3308,7 @@ fn main() -> !int {
 }
 ```
 
-Solution: exit 7. The child's value is discarded at the join — a scope
+Solution: exit 7. The child's value is discarded at the join: a scope
 joins its children for their *completion*, not their results. A child
 that has something to say sends it on a channel; the 42 evaporates.
 
@@ -3353,7 +3352,7 @@ $ echo $?
 
 The scope's closing brace must join the child; the child is blocked in
 `recv`; nothing can unblock it. Where Go leaks quietly, wolf's
-structure turns the same mistake into a deadlock the runtime can see —
+structure turns the same mistake into a deadlock the runtime can see:
 every live task blocked, so the trap fires and names them. The leak is
 not fixed; it is *retired*: this program cannot express "and the task
 lingers on unowned."
@@ -3368,8 +3367,8 @@ is the "blocked-task roster" for, and why does the trap name `main`
 itself as blocked?
 
 Solution (prose): the trap's condition is *every* live task blocked
-with nothing left that could wake one. A pending timer — a `timeout`
-arm in some `select` — would eventually fire and unblock somebody, so
+with nothing left that could wake one. A pending timer (a `timeout`
+arm in some `select`) would eventually fire and unblock somebody, so
 its absence is part of the proof; the roster is the evidence, one entry
 per blocked task with its id, which is the list you would otherwise
 assemble by hand from a hung process's stacks. `main` is on the roster
@@ -3410,7 +3409,7 @@ fn main() -> !int {
 
 Solution: `join surfaced the error`, then `7`. The failing child's `?`
 raises `Torn` inside the task; the error travels to the scope's closing
-brace — the join — and re-raises there, into `gather`'s own error row,
+brace (the join) and re-raises there, into `gather`'s own error row,
 where `main`'s `else` handles it. The crossing point is the brace. In
 Go this error dies in a goroutine unless you built machinery to carry
 it; here the structure is the machinery.
@@ -3453,7 +3452,7 @@ total=700
 ```
 
 After the brace, every child has completed, so every send that will
-ever happen has happened — `close` cannot cut anyone off. The join
+ever happen has happened: `close` cannot cut anyone off. The join
 converts "I hope they are done" into a fact you may compute with.
 </details>
 
@@ -3485,11 +3484,11 @@ fn main() -> !int {
 }
 ```
 
-Solution: yes — `sibling cleanup ran`, then `42`. The failing child
+Solution: yes. `sibling cleanup ran`, then `42`. The failing child
 makes the scope cancel its blocked sibling; cancellation lands at the
 sibling's blocking point (`recv`), and the task unwinds *its own*
 defers on the way out. Cancellation is polite. Chapter 14 shows the
-impolite variant — `kill` on a proc skips defers by design — and the
+impolite variant (`kill` on a proc skips defers by design), and the
 difference between those two rules is a decided thing, not an
 accident.
 
@@ -3539,11 +3538,11 @@ $ lupin run ex10-9.lu --seed=2024
 5 values through the pipeline
 ```
 
-Only the transformer knows when the last square has been sent — it
+Only the transformer knows when the last square has been sent: it
 learns it from its own `for` loop ending, which happens when `raw`
 closes and drains. If `main` closed `squared`, it would be guessing;
 close is the sender's verb, and each stage owns exactly one sending
-side. That ownership discipline is the whole pipeline pattern.
+side.
 </details>
 
 <details>
@@ -3556,17 +3555,17 @@ serves well, sketch how wolf expresses it, and state what the wolf
 version pays and what it collects.
 
 Solution (discussion): the honest case for detachment is the
-fire-and-forget notifier — a metrics ping, a log ship — where the
+fire-and-forget notifier (a metrics ping, a log ship) where the
 caller genuinely does not want to wait and failure is acceptable. Go
 spells it in three characters. Wolf makes the lifetime explicit: the
-ping lives in some scope — a long-lived one owned by the subsystem
+ping lives in some scope, a long-lived one owned by the subsystem
 that cares about pings, with the pattern chapter 11 builds. The
 payment is real: you must decide *whose* scope, which is a design
 question Go let you skip. What it collects: the answer to "can this
 program exit with work still running" is knowable by reading the
 scopes, every error has an owner, and the leak of exercise 10-4 is
 unwritable. Wolf's position is that "whose is this task" was never
-optional — Go defers the question to a runtime that cannot answer it,
+optional: Go defers the question to a runtime that cannot answer it,
 and wolf asks it at the point where you still can.
 </details>
 
@@ -3628,8 +3627,8 @@ $ echo $?
 ```
 
 The buffered version worked because capacity 3 let every send complete
-without a receiver. Buffer size is not a tuning knob here; it is part
-of the program's correctness argument.
+without a receiver. Buffer size here is part of the program's
+correctness argument, not a tuning knob.
 </details>
 
 <details>
@@ -3642,7 +3641,7 @@ with that ability? (Chapter 7 asked the same question about mutation.)
 
 Solution (prose): `main` can spawn (it owns a `scope` block) and
 `launch` can spawn (it receives a `Scope`). Nothing else can. The
-search is for `Scope` in parameter lists plus `scope` blocks — the
+search is for `Scope` in parameter lists plus `scope` blocks: the
 spawn surface is exactly the set of functions the type system shows
 holding the capability, the same audit `grep '(mut '` performs for
 mutation. A capability you can grep for is a capability you can
@@ -3685,7 +3684,7 @@ $ lupin ex11-4.lu
 total=91
 ```
 
-A worker's loop ends when `jobs` closes and drains — the close *is*
+A worker's loop ends when `jobs` closes and drains: the close *is*
 the shutdown message, broadcast to every receiver at once. The scope's
 brace then proves all workers are gone before `results` is touched.
 Two channel closes and one join replace the ad-hoc "poison pill"
@@ -3730,7 +3729,7 @@ worker 0 took job 4
 
 The assignment is the schedule's: seed 1 lets worker 1 drain the whole
 queue, seed 2024 hands it to worker 0, and both are conforming runs of
-the same program. What the program owns is the *set* of results — four
+the same program. What the program owns is the *set* of results: four
 squares would be identical in every schedule, which is exercise 11-4's
 sum. Write programs whose meaning lives in what is computed, not in
 who computed it; the seeds exist to catch you when you have not.
@@ -3773,7 +3772,7 @@ wolf> :trace
 wolf> :quit
 ```
 
-From the trace alone, reconstruct the task tree — which tasks exist,
+From the trace alone, reconstruct the task tree: which tasks exist,
 who owns them, and in what order they completed.
 
 Solution (prose): three tasks. `main` is task 0; `task@33` (task 1)
@@ -3794,13 +3793,13 @@ suffix. At which event did the scheduler actually have a choice, and
 what does that tell you about how many *different* traces this
 one-line program could produce?
 
-Solution (prose): only ev#6 offered a choice — "picked 0 of 2 ready,"
+Solution (prose): only ev#6 offered a choice: "picked 0 of 2 ready,"
 with both children runnable. ev#8 and ev#11 each had one ready task,
 which is no decision at all. One binary choice, so two inequivalent
-schedules exist: task 1 first or task 2 first — precisely the two
+schedules exist: task 1 first or task 2 first, precisely the two
 outputs `a b` and `b a`. Counting the "of N ready" suffixes is a hand
 computation of what chapter 17's `--explore` computes for real
-programs, and it is worth doing once by eye to believe the tool.
+programs; do it once by eye to believe the tool.
 </details>
 
 <details>
@@ -3821,18 +3820,18 @@ and which caller is each one honest to?
 
 Solution (discussion): the internal-scope version is honest to the
 caller who wants a blocking call: when it returns, no task it started
-survives — the function is externally sequential, concurrency as an
+survives. The function is externally sequential, concurrency as an
 implementation detail, nothing to cancel from outside because nothing
 outlives the call. The `Scope` parameter is honest to the caller who
 wants to *compose* lifetimes: the fetches join when the caller's scope
 closes, so the caller can hang ten calls on one scope and cancel the
-lot by leaving it — but the signature now admits that tasks may
+lot by leaving it. But the signature now admits that tasks may
 outlive the call itself, and every reader of the call site must look
 up to find the brace those tasks die at. The library rule of thumb
 wolf's std follows: take a `Scope` when the work's lifetime is
 legitimately the caller's decision; keep the scope internal when the
 function's contract is "done means done." The wrong design is the
-secret third one — an internal scope that detaches work past its own
+secret third one: an internal scope that detaches work past its own
 return, which is the chapter 10 leak wearing a signature.
 </details>
 
@@ -5957,13 +5956,13 @@ plan for, and the optimization it therefore hesitates on. Then state
 what a wolf compiler knows about `saxpy(a, xs, mut ys)` from the
 signature alone, and who did the work of establishing it.
 
-Solution: the C compiler must assume `xs` and `ys` may overlap — a
+Solution: the C compiler must assume `xs` and `ys` may overlap: a
 store through `ys[i]` could change some later `xs[j]`, so reordering
 and vectorizing the loads requires either a runtime overlap check or
 giving up the transform. `restrict` is the programmer *promising*
 disjointness, unchecked: get it wrong and the program is undefined. In
-wolf, `mut ys` is an exclusive claim and `xs` a shared read — chapter
-7's rule — so disjointness is a fact the type system already proved at
+wolf, `mut ys` is an exclusive claim and `xs` a shared read (chapter
+7's rule), so disjointness is a fact the type system already proved at
 every call site. Same fact, different laborer: C trusts the
 programmer's word; wolf makes the caller demonstrate it, once, at
 compile time.
@@ -5993,7 +5992,7 @@ $ lupin ex21-2.lu
 12 20
 ```
 
-2·1 + 10 and 2·5 + 10, printed the way a whole-valued `f64` prints —
+2·1 + 10 and 2·5 + 10, printed the way a whole-valued `f64` prints:
 shortest round-trip, so `12` rather than `12.0`. The kernel is
 deliberately the same one as 21-1: what runs here is the semantics, on
 both machines and on the compiler's release tier alike. The suite
@@ -6011,16 +6010,16 @@ allocator interactions (calls into allocate and free machinery) for
 with one arena library, (c) a wolf region. Then name the cost in (c)
 that did *not* disappear and where it went.
 
-Solution: (a) 20,000 — every node allocated and freed retail. (b) on
-the order of a few dozen — the arena grabs slabs and frees them
+Solution: (a) 20,000: every node allocated and freed retail. (b) on
+the order of a few dozen: the arena grabs slabs and frees them
 wholesale; nodes are pointer bumps, which is the arena's entire trick.
-(c) matches (b) at runtime — bump allocation, one wholesale free at
-region end — with the checking moved to compile time: the guarantee
+(c) matches (b) at runtime (bump allocation, one wholesale free at
+region end) with the checking moved to compile time: the guarantee
 that no node pointer outlives the region is the region checker's
 proof, not a code review's hope. What did not disappear: the proof
 obligation. C's arena has the same lifetime rule and enforces it with
 discipline; wolf's region has it as a type fact. The allocator math is
-identical — chapter 8 said so — and the difference is who catches the
+identical (chapter 8 said so), and the difference is who catches the
 escapee.
 </details>
 
@@ -6045,9 +6044,9 @@ $ echo $?
 
 Every one of those two million additions carried the check that made
 the last one honest. What the check *costs* after optimization is a
-measured number with a date on it, and §21.4 prints it from CI's own
-ledger — the checked-adds exception in the suite's gate is that cost
-made explicit — rather than asserting it here.
+measured number with a date on it. §21.4 prints that number from CI's
+own ledger, not from an assertion here; the checked-adds exception in
+the suite's gate is the same cost made explicit.
 </details>
 
 <details>
@@ -6060,8 +6059,8 @@ Then state, in one sentence, why this trap firing "in every profile" is
 the chapter's honesty rather than the chapter's embarrassment.
 
 Solution: X3 is the decision; `[arith.checked]` the clause;
-`wrapping[i32]` the intended-overflow spelling — all three are in the
-line, which is the point of trap lines. The one sentence: a language
+`wrapping[i32]` the intended-overflow spelling. All three are printed
+in the line itself. The one sentence: a language
 claiming to beat C while quietly disabling its own safety checks in
 release builds would be rigging the race, and X3 is wolf agreeing to
 be benchmarked with the checks on.
@@ -6546,8 +6545,8 @@ evaluation. The sample is `ex24-4.lu` and CI checks it as a
 `fail(E0701)` with a reviewed snapshot, so the exact text is verified
 even where it is not printed.
 
-The covenant is not a policy document; it is this rejection, emitted
-before anything runs.
+The rejection lands before anything runs, which is what the covenant
+promises.
 </details>
 
 <details>

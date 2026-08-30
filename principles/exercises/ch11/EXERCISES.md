@@ -55,8 +55,8 @@ $ echo $?
 ```
 
 The buffered version worked because capacity 3 let every send complete
-without a receiver. Buffer size is not a tuning knob here; it is part
-of the program's correctness argument.
+without a receiver. Buffer size here is part of the program's
+correctness argument, not a tuning knob.
 
 **Exercise 11-3** *(comprehension · lupin)*. Using only the text of
 11-1's program, answer: which functions in it are able to spawn tasks,
@@ -65,7 +65,7 @@ with that ability? (Chapter 7 asked the same question about mutation.)
 
 Solution (prose): `main` can spawn (it owns a `scope` block) and
 `launch` can spawn (it receives a `Scope`). Nothing else can. The
-search is for `Scope` in parameter lists plus `scope` blocks — the
+search is for `Scope` in parameter lists plus `scope` blocks: the
 spawn surface is exactly the set of functions the type system shows
 holding the capability, the same audit `grep '(mut '` performs for
 mutation. A capability you can grep for is a capability you can
@@ -106,7 +106,7 @@ $ lupin ex11-4.lu
 total=91
 ```
 
-A worker's loop ends when `jobs` closes and drains — the close *is*
+A worker's loop ends when `jobs` closes and drains: the close *is*
 the shutdown message, broadcast to every receiver at once. The scope's
 brace then proves all workers are gone before `results` is touched.
 Two channel closes and one join replace the ad-hoc "poison pill"
@@ -147,7 +147,7 @@ worker 0 took job 4
 
 The assignment is the schedule's: seed 1 lets worker 1 drain the whole
 queue, seed 2024 hands it to worker 0, and both are conforming runs of
-the same program. What the program owns is the *set* of results — four
+the same program. What the program owns is the *set* of results: four
 squares would be identical in every schedule, which is exercise 11-4's
 sum. Write programs whose meaning lives in what is computed, not in
 who computed it; the seeds exist to catch you when you have not.
@@ -188,7 +188,7 @@ wolf> :trace
 wolf> :quit
 ```
 
-From the trace alone, reconstruct the task tree — which tasks exist,
+From the trace alone, reconstruct the task tree: which tasks exist,
 who owns them, and in what order they completed.
 
 Solution (prose): three tasks. `main` is task 0; `task@33` (task 1)
@@ -205,13 +205,13 @@ suffix. At which event did the scheduler actually have a choice, and
 what does that tell you about how many *different* traces this
 one-line program could produce?
 
-Solution (prose): only ev#6 offered a choice — "picked 0 of 2 ready,"
+Solution (prose): only ev#6 offered a choice: "picked 0 of 2 ready,"
 with both children runnable. ev#8 and ev#11 each had one ready task,
 which is no decision at all. One binary choice, so two inequivalent
-schedules exist: task 1 first or task 2 first — precisely the two
+schedules exist: task 1 first or task 2 first, precisely the two
 outputs `a b` and `b a`. Counting the "of N ready" suffixes is a hand
 computation of what chapter 17's `--explore` computes for real
-programs, and it is worth doing once by eye to believe the tool.
+programs; do it once by eye to believe the tool.
 
 ## Chapter batch
 
@@ -230,16 +230,16 @@ and which caller is each one honest to?
 
 Solution (discussion): the internal-scope version is honest to the
 caller who wants a blocking call: when it returns, no task it started
-survives — the function is externally sequential, concurrency as an
+survives. The function is externally sequential, concurrency as an
 implementation detail, nothing to cancel from outside because nothing
 outlives the call. The `Scope` parameter is honest to the caller who
 wants to *compose* lifetimes: the fetches join when the caller's scope
 closes, so the caller can hang ten calls on one scope and cancel the
-lot by leaving it — but the signature now admits that tasks may
+lot by leaving it. But the signature now admits that tasks may
 outlive the call itself, and every reader of the call site must look
 up to find the brace those tasks die at. The library rule of thumb
 wolf's std follows: take a `Scope` when the work's lifetime is
 legitimately the caller's decision; keep the scope internal when the
 function's contract is "done means done." The wrong design is the
-secret third one — an internal scope that detaches work past its own
+secret third one: an internal scope that detaches work past its own
 return, which is the chapter 10 leak wearing a signature.

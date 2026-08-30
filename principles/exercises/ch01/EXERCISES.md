@@ -32,7 +32,7 @@ wolf> :quit
 ```
 
 Literal arithmetic infers `i32`; a function annotated `int` returns
-`i64`. Definitions persist for the whole session — the REPL is a
+`i64`. Definitions persist for the whole session. The REPL is a
 workbench, not a calculator.
 
 ## §1.3 — Scripts before projects
@@ -91,7 +91,7 @@ $ echo $?
 ```
 
 Exit 2 is a static-phase rejection: the program never ran. A trap exits
-3 and can only happen to a program that was legal and started — the two
+3 and can only happen to a program that was legal and started: the two
 codes divide "wolf refused" from "wolf obeyed, and the program hit a
 rule." The clause tag `[gram.expr.block]` names the grammar rule the
 file broke, and the span points at the end of the file, which is where
@@ -111,11 +111,11 @@ wolf build: root: reused object (key a476d75665e8c37a)
 ```
 
 The second build compiles nothing. `.lu-cache/` beside the source holds
-the object file keyed by everything that could change its contents —
-the module's source, the compiler's own build id, the profile, and the
-interface surfaces of what it depends on — so an unchanged key is an
+the object file keyed by everything that could change its contents (the
+module's source, the compiler's own build id, the profile, and the
+interface surfaces of what it depends on), so an unchanged key is an
 answer already on disk. The key in your terminal will differ from the
-one above; what will not differ is the word `reused`.
+one above; the word `reused` will not.
 
 ## §1.2 — Two implementations, one language
 
@@ -137,7 +137,7 @@ $ echo $?
 `diff` printing nothing is the whole result. Either run could have
 disagreed: the compiler lowered the f-string to a sequence of writes
 against the runtime's print shims, and the interpreter evaluated it
-against its own string model — two separate pieces of code, written
+against its own string model: two separate pieces of code, written
 from the specification rather than from each other. A byte of
 disagreement between them is a bug in one implementation or a hole in
 the specification, and it is found here rather than in your program.

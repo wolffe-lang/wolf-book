@@ -31,7 +31,7 @@ $ echo $?
 
 `i32`'s ceiling is 2147483647, whose square root is 46340.95…, so
 46341 is the smallest integer whose square leaves the type: 46340²
-is 2147395600 and fits. The trap reports the true product — the
+is 2147395600 and fits. The trap reports the true product: the
 machine computed it, checked it against the type, and refused to
 pretend it fit. The annotation is what makes the multiplication an
 `i32` multiplication: a bare literal is unconstrained until something
@@ -51,7 +51,7 @@ fn main() -> !int {
 ```
 
 Solution: `-3 -1`, then `-7`. Wolf's integer division truncates toward
-zero, so `-7 / 2` is −3, not Python's floored −4 — and the remainder
+zero, so `-7 / 2` is −3, not Python's floored −4. The remainder
 follows the division, so `-7 % 2` is −1, not 1. The second line is the
 law that binds them: `(a / b) * b + a % b == a` holds for every legal
 pair, whichever convention a language picks. Pick your division and the
@@ -80,14 +80,13 @@ fn main() -> !int {
 ```
 
 Solution: `ada grace`. The `let first = name` line handed the value
-over — `first` owns `"ada"` from that point, so the later rebinding of
+over: `first` owns `"ada"` from that point, so the later rebinding of
 `name` replaces what `name` holds without reaching anything `first`
-has. The deep story of "hands the value over" — what it means for the
-source afterward, and when it traps — is chapter 7's, on purpose; this
+has. The deep story of "hands the value over" (what it means for the
+source afterward, and when it traps) is chapter 7's, on purpose; this
 chapter needs only the direction of the handover.
 
-Audit note (authoring-time finding): a reassignment to a `let` binding
-(`let n = 1` then `n = 2`) is accepted and executes under both tools
-today — lupin prints `2`, wolfc reports no diagnostic. The book
-teaches `let` as single-assignment; the missing rejection is filed for
-the trackers.
+One honesty note: neither tool rejects a reassignment to a `let`
+binding (`let n = 1` then `n = 2`): lupin prints `2`, wolfc reports
+no diagnostic. The book teaches `let` as single-assignment; treat the
+reassignment as an error even where the tools let it pass.

@@ -97,8 +97,8 @@ evaluation. The sample is `ex24-4.lu` and CI checks it as a
 `fail(E0701)` with a reviewed snapshot, so the exact text is verified
 even where it is not printed.
 
-The covenant is not a policy document; it is this rejection, emitted
-before anything runs.
+The rejection lands before anything runs, which is what the covenant
+promises.
 
 **Exercise 24-5** *(comprehension · wolf)*. The build step that reads
 your CI secrets: `env_var("CI_DEPLOY_TOKEN")` inside a `comptime fn`.

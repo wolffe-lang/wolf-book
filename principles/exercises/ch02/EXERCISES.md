@@ -10,7 +10,7 @@ run from this directory; outputs are pasted from real runs.
 lengths before evaluating: `"\n".len`, `r"\n".len`, `r"C:\temp".len`.
 
 Solution: 1, 2, 7. In an ordinary literal `\n` is one byte, a newline.
-In a raw literal it is two bytes, a backslash and an `n` — raw means
+In a raw literal it is two bytes, a backslash and an `n`: raw means
 the escape table is off, not that backslashes are special some other
 way. `r"C:\temp"` is the seven bytes you can count.
 
@@ -46,8 +46,8 @@ trap(bounds): byte range 3..2 is outside a 4-byte string [mem.ub.defined] at 0..
 the session survives the trap; the world is as the fault left it [repl.trap.alive]
 ```
 
-The wrong answer worth ruling out: `[4..4]` does not trap. The boundary
-after the last byte is a real position — it is where appending happens.
+`[4..4]` does not trap: the boundary after the last byte is a real
+position, and it is where appending happens.
 
 ## §2.4 — Iterating meaning
 
@@ -113,7 +113,7 @@ $ wolf run ex2-9.lu
 Five of the six are §2.3 material: `.len` counts bytes (4, 2, 3), and
 ASCII is the case where every scalar is one byte, so `"wolf"` counts 4
 either way and `"é"`'s two bytes are one scalar. The number that needed
-this section is the last: `"e\u{301}".chars().len` is 2 — a combining
+this section is the last: `"e\u{301}".chars().len` is 2. A combining
 accent is its own scalar, so the glyph a reader sees as one letter is
 two chars in a three-byte string. Bytes count storage, chars count
 scalars, and neither counts what the reader sees.
@@ -137,7 +137,7 @@ wolf> s[4..].len
 4 : i64
 ```
 
-Solution: `wolf`, 4, 8, 4 — and nothing copied. A slice is a *view*:
+Solution: `wolf`, 4, 8, 4, and nothing copied. A slice is a *view*:
 two words, a pointer and a length, aimed into bytes that already
 exist. `s` is untouched by every line here, which is why `s.len` is
 still 8 after `t` was made from it. The chapter's cost claim is

@@ -155,7 +155,7 @@ $ echo $?
 4
 ```
 
-## §5.5 — Traits: the system lands
+## §5.5 — Traits
 
 **Exercise 5-9** *(extension)*. Add a third shape to the `Draw`
 example, and then make `render` count its calls: what has to change,

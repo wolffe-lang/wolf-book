@@ -22,13 +22,13 @@ plan for, and the optimization it therefore hesitates on. Then state
 what a wolf compiler knows about `saxpy(a, xs, mut ys)` from the
 signature alone, and who did the work of establishing it.
 
-Solution: the C compiler must assume `xs` and `ys` may overlap — a
+Solution: the C compiler must assume `xs` and `ys` may overlap: a
 store through `ys[i]` could change some later `xs[j]`, so reordering
 and vectorizing the loads requires either a runtime overlap check or
 giving up the transform. `restrict` is the programmer *promising*
 disjointness, unchecked: get it wrong and the program is undefined. In
-wolf, `mut ys` is an exclusive claim and `xs` a shared read — chapter
-7's rule — so disjointness is a fact the type system already proved at
+wolf, `mut ys` is an exclusive claim and `xs` a shared read (chapter
+7's rule), so disjointness is a fact the type system already proved at
 every call site. Same fact, different laborer: C trusts the
 programmer's word; wolf makes the caller demonstrate it, once, at
 compile time.
@@ -54,7 +54,7 @@ $ lupin ex21-2.lu
 12 20
 ```
 
-2·1 + 10 and 2·5 + 10, printed the way a whole-valued `f64` prints —
+2·1 + 10 and 2·5 + 10, printed the way a whole-valued `f64` prints:
 shortest round-trip, so `12` rather than `12.0`. The kernel is
 deliberately the same one as 21-1: what runs here is the semantics, on
 both machines and on the compiler's release tier alike. The suite
@@ -70,16 +70,16 @@ allocator interactions (calls into allocate and free machinery) for
 with one arena library, (c) a wolf region. Then name the cost in (c)
 that did *not* disappear and where it went.
 
-Solution: (a) 20,000 — every node allocated and freed retail. (b) on
-the order of a few dozen — the arena grabs slabs and frees them
+Solution: (a) 20,000: every node allocated and freed retail. (b) on
+the order of a few dozen: the arena grabs slabs and frees them
 wholesale; nodes are pointer bumps, which is the arena's entire trick.
-(c) matches (b) at runtime — bump allocation, one wholesale free at
-region end — with the checking moved to compile time: the guarantee
+(c) matches (b) at runtime (bump allocation, one wholesale free at
+region end) with the checking moved to compile time: the guarantee
 that no node pointer outlives the region is the region checker's
 proof, not a code review's hope. What did not disappear: the proof
 obligation. C's arena has the same lifetime rule and enforces it with
 discipline; wolf's region has it as a type fact. The allocator math is
-identical — chapter 8 said so — and the difference is who catches the
+identical (chapter 8 said so), and the difference is who catches the
 escapee.
 
 ## §21.3 — Layout
@@ -90,12 +90,12 @@ escapee.
 under array-of-structs and under `Soa[Particle]`'s x-column, and the
 fraction of each fetched byte that was used.
 
-Solution: AoS — 24,000 contiguous bytes, ceil(24000/64) = 375 lines,
+Solution: AoS: 24,000 contiguous bytes, ceil(24000/64) = 375 lines,
 of which the pass uses 8,000 bytes: exactly one third of the traffic
-did work. SoA — the x-column is 8,000 contiguous bytes, 125 lines,
+did work. SoA: the x-column is 8,000 contiguous bytes, 125 lines,
 every byte used. Three times fewer lines is the mechanical claim
 behind §21.3's benchmark; nothing about it is wolf-specific except
-who builds the layout — `Soa[T]` is comptime machinery (chapter 18)
+who builds the layout. `Soa[T]` is comptime machinery (chapter 18)
 rather than a macro or a hand-maintained pair of parallel arrays,
 which is why "legally" appears in the section title.
 
@@ -119,9 +119,9 @@ $ echo $?
 
 Every one of those two million additions carried the check that made
 the last one honest. What the check *costs* after optimization is a
-measured number with a date on it, and §21.4 prints it from CI's own
-ledger — the checked-adds exception in the suite's gate is that cost
-made explicit — rather than asserting it here.
+measured number with a date on it. §21.4 prints that number from CI's
+own ledger, not from an assertion here; the checked-adds exception in
+the suite's gate is the same cost made explicit.
 
 **Exercise 21-6** *(spelunking · lupin)*. From exercise 21-5's trap
 line alone: name the decision id it cites, the clause tag it enforces,
@@ -130,8 +130,8 @@ Then state, in one sentence, why this trap firing "in every profile" is
 the chapter's honesty rather than the chapter's embarrassment.
 
 Solution: X3 is the decision; `[arith.checked]` the clause;
-`wrapping[i32]` the intended-overflow spelling — all three are in the
-line, which is the point of trap lines. The one sentence: a language
+`wrapping[i32]` the intended-overflow spelling. All three are printed
+in the line itself. The one sentence: a language
 claiming to beat C while quietly disabling its own safety checks in
 release builds would be rigging the race, and X3 is wolf agreeing to
 be benchmarked with the checks on.
