@@ -1,0 +1,18 @@
+//! check: run(exit=0, stdout="314")
+//! phase: run
+// Exercise 20-1: the wrapping tag over one byte. 7 * 31 = 217, plus
+// 97 ("a") is 314 — no wrap on one byte, and the signature is still
+// the honest one: the type promises wraparound for every input, not
+// the lucky ones.
+fn tag(s: str) -> wrapping[i32] {
+    var h: wrapping[i32] = 7
+    for b in s.bytes() {
+        h = h * 31 + (b as wrapping[i32])
+    }
+    h
+}
+fn main() -> !int {
+    let line = "a"
+    print("{tag(line)}")
+    0
+}

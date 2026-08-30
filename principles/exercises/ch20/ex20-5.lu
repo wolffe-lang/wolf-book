@@ -1,0 +1,19 @@
+//! check: run(exit=0, stdout="3")
+//! phase: run
+// Exercise 20-5: a broken promise. `build` allocates; the attribute says
+// it does not. PENDING: perf-contract verification (I15) — once the WIR
+// fact engine (s24–s26) feeds the checker, this program is a static
+// rejection; the fail code is unassigned in today's catalog.
+#[noalloc]
+fn build() -> List[int] {
+    var xs = List[int]()
+    (mut xs).push(1)
+    (mut xs).push(2)
+    (mut xs).push(3)
+    xs
+}
+fn main() -> !int {
+    let xs = build()
+    print("{xs.len}")
+    0
+}
