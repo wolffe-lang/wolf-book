@@ -28,16 +28,15 @@ $ lupin ex26-1.lu
        2       6      31 one.txt
 ```
 
-Two lines, six words, thirty-one bytes — the same three numbers §26.1
-prints. The exercise is worth doing because the prediction is the whole
-point: `32 | 9 | 10` is one arm, so the three characters are one concept,
-and a reader who has understood that arm knows the answer without running
-anything.
+Two lines, six words, thirty-one bytes: the same three numbers §26.1
+prints. The prediction is the exercise: `32 | 9 | 10` is one arm, so the
+three characters are one concept, and a reader who has understood that
+arm knows the answer without running anything.
 
 **Exercise 26-2** *(comprehension · lupin)*. `tally` counts a word every
 time it crosses from *between* to *inside*. Predict `lines`, `words`, and
-`bytes` for the text `"a  b\n\nc"` — two spaces, a blank line, no
-trailing newline — and name which of the three people get wrong.
+`bytes` for the text `"a  b\n\nc"` (two spaces, a blank line, no
+trailing newline) and name which of the three people get wrong.
 
 Solution. `ex26-2.lu`. The answer is `2 3 7`:
 
@@ -48,7 +47,7 @@ $ lupin ex26-2.lu
 
 Seven bytes: `a`, two spaces, `b`, two newlines, `c`. Three words: the two
 spaces are one gap, not two, because the second one finds `inword` already
-false. And two lines, which is the number people get wrong — there are
+false. And two lines, which is the number people get wrong: there are
 three *rows of text* and only two newlines, and this counter counts
 newlines. `wc` does the same thing for the same reason, and the reason is
 that a "line" without a terminator is a judgment call while a newline is a
@@ -69,13 +68,13 @@ $ lupin ex26-3.lu
       31 one.txt
 ```
 
-The C twin costs about the same *for the printing* — a second `row`-like
-function is four lines there too — and then costs more for the choosing,
+The C twin costs about the same *for the printing* (a second `row`-like
+function is four lines there too) and then costs more for the choosing,
 because the flag has to reach `main`'s loop from wherever it was decided.
 In our twin the choice is a local `int`, so it is one more declaration and
-one more `if`: call it six lines against four. That is not an interesting
-win, and this exercise exists to make the point that most of the difference
-in this chapter's totals is not in the parts that print things.
+one more `if`: call it six lines against four. The win is small because
+most of the difference in this chapter's totals is not in the parts that
+print things.
 
 **Exercise 26-4** *(comprehension · wolf)*. Narrow `count_file`'s row to
 `Tally ! {not_found, denied}` and predict the diagnostic's code and the
@@ -130,12 +129,12 @@ $ echo $?
 ```
 
 The complaint lands between the last file row and the total, which is where
-the name was in the list — the two streams are separate but they are written
+the name was in the list: the two streams are separate but they are written
 in program order.
 
 The two sentences: `-1` needs a convention because it is an ordinary value
 of the return type, so the *only* thing that makes it mean "failure" is an
-agreement between the author of `count` and the author of `main` — an
+agreement between the author of `count` and the author of `main`, an
 agreement no part of the program states and nothing checks. A row needs no
 convention because the failure is not a value of the success type at all:
 `Tally ! {…}` is a different type from `Tally`, the compiler will not let a
@@ -151,8 +150,8 @@ avoid it.
 Solution (discussion): the shape is `let fd = fs_open(name)?`, then a loop
 of `fs_read(fd, 8192)` until it answers the `eof` tag, feeding each chunk
 to a `tally` that takes the running `Tally` and the `inword` flag as
-parameters and returns both — because the state machine's whole point is
-that it carries state across bytes, and now the bytes arrive in batches.
+parameters and returns both, because the machine's job is to carry state
+across bytes and the bytes now arrive in batches.
 `defer fs_close(fd)` on the line after the open, so the descriptor closes
 on every path out.
 
@@ -160,12 +159,12 @@ The thing that gets harder is not the state machine. It is the chunk
 boundary: `fs_read` hands back a `str`, a `str` is UTF-8, and a fixed-size
 read can land in the middle of a multi-byte code point. The whole-file read
 never has that problem because a file is a whole document; a chunked reader
-either has to be handed bytes rather than text, or has to keep the tail of
+either has to be handed bytes, not text, or has to keep the tail of
 each chunk until the next one completes it.
 
-Would we pay one call to avoid it? For `count`, honestly, yes — the version
-in the chapter is the one worth writing first, and the chunked version is
-worth writing the day somebody points a 40-gigabyte file at it. The general
+Would we pay one call to avoid it? For `count`, honestly, yes. Write the
+chapter's version first; write the chunked one the day somebody points a
+40-gigabyte file at it. The general
 answer is the one §26.5 gives: know which of the two you copied.
 
 ## Stats

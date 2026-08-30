@@ -218,6 +218,11 @@ fn harvest(path: &Path, into: &mut BTreeMap<(u32, u32), String>) -> Result<()> {
             } else if line.starts_with("## ") {
                 flush(&mut key, &mut buf, into);
                 continue;
+            } else if line.starts_with("### ") {
+                // Deeper headings are the same repo structure `## `
+                // already keeps off the reader's page; skip them
+                // without ending the block.
+                continue;
             }
         }
         if key.is_some() {

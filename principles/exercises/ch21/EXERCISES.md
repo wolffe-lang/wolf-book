@@ -185,14 +185,14 @@ engineering content. Name the three artifacts that must exist for the
 claim to be falsifiable rather than promotional, and for each say
 whether this edition already prints it.
 
-Solution: a pinned, public benchmark suite — the kernels, their C
-twins, and the gate that reads them (this edition prints its verdict
-line in §21.4, with the repository path and the date); a variance
-discipline that can call a delta noise — medians, mean absolute
-deviation, a symmetric gate (the instrument that would put that
-discipline in your hands is chapter 20's subject, and this edition
-does not carry chapter 20); and a dated, regenerated record wired to
-CI so the claim expires when the world changes — the colophon's
+Solution: three artifacts. A pinned, public benchmark suite: the
+kernels, their C twins, and the gate that reads them (this edition
+prints its verdict line in §21.4, with the repository path and the
+date). A variance discipline that can call a delta noise: medians,
+mean absolute deviation, a symmetric gate (the instrument that would
+put that discipline in your hands is chapter 20's subject, and this
+edition does not carry chapter 20). A dated, regenerated record wired
+to CI so the claim expires when the world changes: the colophon's
 toolchain pin and the ledger line §21.4 quotes, which names its
 commit and its night. Remove any one and the sentence degrades to
 advertising: no suite and it is unmeasured, no variance gate and it

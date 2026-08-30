@@ -28,9 +28,9 @@ $ wc -l samples/projects/seqgrep/seqgrep.lu samples/projects/pargrep/pargrep.lu
   97 samples/projects/pargrep/pargrep.lu
 ```
 
-The sentence: for four files, ship the sequential one — the parallel
+The sentence: for four files, ship the sequential one. The parallel
 version costs forty lines and thirty-seven of them are the fan-out being
-written out by hand, so the version worth arguing about is the one that
+written out by hand, so the version to argue about is the one that
 takes its shard count from the input, and that is not the version on the
 page.
 
@@ -88,16 +88,16 @@ b.log:4: 09:44 the wolf wakes
 The prediction most readers write down is "it will not compile", and the
 useful part of this exercise is being wrong about it. `needles` is bound
 with `let` and never written, so the four tasks read a value nobody
-mutates and the program is correct — by inspection, and only by
+mutates and the program is correct: by inspection, and only by
 inspection.
 
 The two sentences. With `freeze`, the tasks read an `imm` graph: nothing
 anywhere can write it, the compiler knows that, and adding a write
 somewhere else in the program is a compile error rather than a race
 (§30.4's E1012 is that error). Without `freeze`, the tasks read ordinary
-data that happens not to be written today, and the guarantee is a property
-of the current text rather than of the type — which is exactly the
-distinction the whole of Part 3 is about.
+data the current text happens not to write, and the guarantee is a
+property of that text, not of the type. That distinction is Part 3's
+subject.
 
 **Exercise 30-4** *(extension · wolf)*. Instrument the collector: print
 each index as it arrives, before pushing it. Run the binary twenty times
@@ -119,14 +119,14 @@ b.log:4: 09:44 the wolf wakes
 ```
 
 That is one run. Over twenty, the four `arrive` lines came out in five
-different orders — `0 2 5 7` most often, then `0 2 7 5`, `0 5 2 7`,
-`0 5 7 2`, `0 7 2 5` — and the four report lines hashed to one value
+different orders (`0 2 5 7` most often, then `0 2 7 5`, `0 5 2 7`,
+`0 5 7 2`, `0 7 2 5`), and the four report lines hashed to one value
 twenty times out of twenty. Which one goes in a test is therefore not a
 matter of taste: the report is a property of the program, the arrival
 order is a property of the afternoon.
 
-Index `0` arrives first on nearly every run, which is worth not
-over-reading. The first shard's first line matches, and its task has the
+Index `0` arrives first on nearly every run; do not over-read
+it. The first shard's first line matches, and its task has the
 shortest path to a rendezvous. That is a bias, not a guarantee, and a test
 that assumed it would fail on a loaded machine.
 
@@ -155,7 +155,7 @@ two.
 
 In §30.5's terms: the four report lines used to be a fact about the
 program, and now they are a fact about the run. Nothing was added to the
-program to break this — something was removed. The collector was not
+program to break this; something was removed. The collector was not
 overhead; it was the single owner of the output, and a single owner is
 what made the output reproducible. The general form of the rule is that
 the last stage of a concurrent pipeline should be sequential, and the
@@ -173,13 +173,13 @@ value. The pattern list is built by `split` in one call; the table is
 accumulated by a loop over the files and then handed out as a `Table`.
 Neither is touched again.
 
-The second way out — keeping a mutable `copy` beside the frozen one — is a
+The second way out (keeping a mutable `copy` beside the frozen one) is a
 correct answer to a different question, and in a four-task program it is
 usually the wrong one. The copy is not shareable, so it cannot cross into
 a task, so the only place it can be used is the parent; and the moment
 what the parent has and what the tasks have can differ, the program has a
-consistency question it did not have before. The cost is not the memory.
-It is that "the frozen table" stops being a single noun.
+consistency question it did not have before. The cost is not the memory
+but the noun: "the frozen table" stops naming a single thing.
 
 **Exercise 30-7** *(design)*. The shard count is a constant. Sketch the
 version that takes it from the input: what the ranges become, what the
@@ -204,7 +204,7 @@ chose it for this input. Four is a plausible default for a machine and a
 poor one for two files of four lines, where a single task would finish
 before a second one started. The number a real version wants is the
 smaller of the worker count and the input's shard count, with a floor of
-one — and the interesting part is that the program cannot ask for the
+one, and the program cannot ask for the
 first of those two either. A tool that shards should take `-j` from the
 command line, the way `make` does, which makes this exercise's answer one
 more argument for the loop.
