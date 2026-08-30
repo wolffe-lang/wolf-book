@@ -32,7 +32,7 @@ Predict the compiler's verdict, and name the one-character change that
 fixes the program. What may an argument to a `comptime fn` be?
 
 Solution: `let x` is a runtime value, and a `comptime fn` cannot
-receive one — the fix is `const x = 21`. Arguments must be literals,
+receive one. The fix is `const x = 21`. Arguments must be literals,
 `const`s, types, or results of other comptime calls; the diagnostic
 recites the list:
 
@@ -60,7 +60,7 @@ comptime fn brim() -> i32 {
 }
 ```
 
-Solution: the same rule, moved earlier — what would trap at runtime is
+Solution: the same rule, moved earlier: what would trap at runtime is
 a compile error at comptime, and the diagnostic cites X3, the one
 checked-arithmetic semantics for every profile and now every phase:
 
@@ -81,8 +81,8 @@ error[E0706]: this `+` on `i32` faults at compile time: 2147483647 + 1 leaves `i
 ```
 
 **Exercise 18-3** *(fingers · pending — blocker: no lane executes a
-comptime fold's result; owner: c05-codegen / wolf-interp std subset)*
-— Write `sum_squares(n)` as
+comptime fold's result; owner: c05-codegen / wolf-interp std subset)*.
+Write `sum_squares(n)` as
 a `comptime fn` and bind `const T = sum_squares(9)`. The folded value
 is 285, and after s16 the program prints it having computed nothing at
 runtime.
@@ -112,7 +112,7 @@ struct of two `f64` fields is 16 on every target wolf supports. Predict
 the verdict of `const S = size_of(Vec2)` anyway, and then explain why a
 number that obvious is refused at comptime.
 
-Solution: E0708 — layout belongs to the code generator, and the
+Solution: E0708. Layout belongs to the code generator, and the
 checker refuses to promise a number another phase owns. The obviousness
 is the trap: field reordering, padding, and target ABIs make aggregate
 layout a codegen fact, and a comptime that guessed would have to be
@@ -141,8 +141,8 @@ program will print for a three-field struct once s16 lands.
 Solution. `ch18/ex18-5.lu` (expected `run(exit=0)`, printing `3`).
 The signature `fn field_count(T: type) -> int` is the section's whole
 point in four tokens: a type arrives as an argument, like any other
-value. The reflection itself runs today — §18.2's witness proves the
-field count at compile time and E0710 reports a wrong one — but the
+value. The reflection itself runs today (§18.2's witness proves the
+field count at compile time and E0710 reports a wrong one) but the
 count cannot be printed by a program. Today:
 
 ```console
@@ -160,9 +160,9 @@ them: a clock read, a network fetch, an environment variable.
 Solution: the two reasons are *confinement* (compiling a package must
 never act on or read the machine that compiles it) and *determinism*
 (the same program and target must produce bit-identical comptime
-results on every host). The clock is determinism — two identical
+results on every host). The clock is determinism: two identical
 builds must not observe different times. The network fetch is
-confinement — the entry's own example is that `wolf add` must never
+confinement: the entry's own example is that `wolf add` must never
 mean arbitrary code runs with your credentials. The environment
 variable is both, and the catalog files it under confinement: it reads
 the compiling machine, and it also varies host to host. From the real
@@ -194,7 +194,7 @@ file read; a clock read; a network fetch. Then check the three you
 sorted as refused, with three one-line programs. Do the three
 diagnostics give the same reason?
 
-Solution: arithmetic and type-to-type functions are admitted — pure
+Solution: arithmetic and type-to-type functions are admitted: pure
 computation over values the compiler already holds. The file read, the
 clock read, and the network fetch are refused, all as E0701, but not
 for one reason; each refusal names its own:
@@ -257,8 +257,8 @@ comptime fn spin() -> int {
 
 Solution: A recurses, so it hits the *depth* budget (E0704, 256 call
 frames); B loops in one frame, so it burns *fuel* (E0702, a step
-count). Both diagnostics end with the same shape of help — raise the
-budget at the use site — because the compiler cannot tell a runaway
+count). Both diagnostics end with the same shape of help (raise the
+budget at the use site) because the compiler cannot tell a runaway
 from a computation that is merely large; only you can:
 
 ```console
@@ -314,8 +314,8 @@ meters, and the first one exhausted names the failure.
 ## Chapter batch
 
 **Exercise 18-11** *(extension · pending — blocker: no lane executes a
-comptime fold's result; owner: c05-codegen / wolf-interp std subset)*
-— An L-system is a string
+comptime fold's result; owner: c05-codegen / wolf-interp std subset)*.
+An L-system is a string
 rewriting rule applied in rounds: here `A → A-B` and `B → -A`, with
 `-` carried through. Write `expand(axiom, steps)` as a `comptime fn`
 and fold `expand("A", 3)` into a `const`. Compute the expected string
@@ -324,8 +324,8 @@ by hand before reading the header.
 Solution. `ch18/ex18-11.lu` (expected `run(exit=0,
 stdout="A-B--A--A-B")`; the hand expansion is `A` → `A-B` → `A-B--A` →
 `A-B--A--A-B`). The expected stdout was verified by running the same
-function as a runtime `fn` under lupin, which prints `A-B--A--A-B` —
-the algorithm is ordinary wolf, which is the tier's whole pitch:
+function as a runtime `fn` under lupin, which prints `A-B--A--A-B`.
+The algorithm is ordinary wolf, which is the tier's whole pitch:
 nothing about the language changes at compile time, only the clock it
 runs on. Note the two spellings the language actually has: strings are
 joined by interpolation (`next = "{next}A-B"`) and not by `+=`, which
@@ -342,7 +342,7 @@ cross-machine reproducibility, and auditing a dependency you did not
 write.
 
 Solution (discussion): a declared input is part of the build's
-identity — it is hashed, so the cache can key on it; it is listed, so
+identity: it is hashed, so the cache can key on it; it is listed, so
 another machine can be handed the same bytes; it is visible, so an
 auditor reads the manifest instead of the evaluator's traffic. The
 ambient read defeats each in turn: a cache cannot know the file
@@ -350,8 +350,8 @@ mattered, so it serves stale artifacts; a second machine has a
 different file or none, so the "same" build diverges; and an auditor
 must now treat every comptime expression as a potential filesystem
 probe, which is the exact posture chapter 24 spends a chapter
-dismantling. The refusal is not a missing feature; it is the load-
-bearing wall of the caching, reproducibility, and audit stories, and
-the package manifest is where the need is threaded instead of through
-the evaluator. The distinction to hold onto: *what* is read can be
-data; *that* it was read must be declaration.
+dismantling. The refusal is not a missing feature; it is the
+load-bearing wall of the caching, reproducibility, and audit stories,
+and the package manifest is where the need is threaded instead of
+through the evaluator. *What* is read can be data; *that* it was read
+must be declaration.

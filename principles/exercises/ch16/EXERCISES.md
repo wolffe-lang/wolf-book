@@ -27,7 +27,7 @@ visible, and what synchronization made that true?
     got = in r2 { 42 }
 ```
 
-Solution: after — the `move` send happens-before the receive, so every
+Solution: after. The `move` send happens-before the receive, so every
 write into the region before the send is visible to the receiver, and
 no other synchronization exists or is needed. The channel carried one
 word (the region), not the data; the *ownership* is what moved. This
@@ -66,7 +66,7 @@ sum=42
 
 The receiver iterates a list allocated by someone else, in memory that
 changed owners, and reads exactly what was written. Nothing was
-serialized, nothing was copied — the graph moved as a graph. (Erlang
+serialized, nothing was copied: the graph moved as a graph. (Erlang
 gets this safety by deep-copying every message; the next section's
 lineup prices that.)
 
@@ -96,11 +96,12 @@ $ echo $?
 ```
 
 The trap is `use-after-move`, citing the same clause family as chapter
-7's moved string — because a region is a value and `move` into a
+7's moved string, because a region is a value and `move` into a
 channel is the same move as `take` into a function. No new rule was
-needed to make cross-task transfer safe; the old rule was enough, which
-is the design working as designed. (The compiler rejects the shape statically, at the send; lupin carries
-the same lesson dynamically, at the read.)
+needed to make cross-task transfer safe; the old rule was enough,
+which is the design working as designed. (The compiler rejects the
+shape statically, at the send; lupin carries the same lesson
+dynamically, at the read.)
 
 ## §16.2 — Freeze, then share
 
@@ -121,11 +122,11 @@ while both tasks read it?
     }
 ```
 
-Solution: `25` (9 + 16), and one copy — the frozen original. Both
+Solution: `25` (9 + 16), and one copy: the frozen original. Both
 tasks hold references into the same immutable memory; `freeze`
 happens-before every cross-task read, and immutability makes
 concurrent reading trivially safe. Where `move` gives the data one
-owner at a time, `freeze` gives it no owner that can write — two
+owner at a time, `freeze` gives it no owner that can write: two
 different ways to make "who else is touching this?" unaskable.
 
 ```console
@@ -139,17 +140,17 @@ every worker for the process lifetime; (b) a request's parse tree handed
 from parser to executor; (c) a routing table rebuilt every 30 seconds and
 read constantly; (d) a 2 GB index segment consulted by eight shards.
 
-Solution (discussion): (a) freeze — many readers, no writer, forever:
-the definitional freeze. (b) move — exactly one consumer, which will
+Solution (discussion): (a) freeze: many readers, no writer, forever;
+the definitional freeze. (b) move: exactly one consumer, which will
 mutate and then discard it; freezing would forbid the executor its
 annotations. (c) the interesting one: each rebuild is built mutable in
 a fresh region, then frozen and published; readers of the old table
-keep reading it until they pick up the new one — freeze does not mean
-one-forever, it means immutable-per-edition. (d) freeze, and the size
+keep reading it until they pick up the new one. Freeze means
+immutable-per-edition, not one-forever. (d) freeze, and the size
 is the argument: eight copies is 16 GB and one shared frozen segment
-is 2, with no lock on the read path. The pattern under all four:
-mutate privately, then either hand it over whole or make it
-untouchable — wolf gives no third verb, on purpose.
+is 2, with no lock on the read path. All four answers mutate
+privately, then either hand the data over whole or make it
+untouchable; wolf gives no third verb, on purpose.
 
 ## §16.3 — The honest lineup
 
@@ -160,21 +161,21 @@ send), Go (send a pointer), Rust (`Arc<Mutex<Tree>>`), wolf
 of send, and what it costs the *receiver* to be safe while reading. One
 of the four pays at a different time than the others: which?
 
-Solution (discussion): Erlang pays at send — a deep copy of a million
-nodes — and the receiver is then perfectly safe reading its private
+Solution (discussion): Erlang pays at send (a deep copy of a million
+nodes) and the receiver is then perfectly safe reading its private
 copy; safety was purchased in one large cash payment. Go pays nothing
 at send and the receiver is safe only by convention: nothing stops the
 producer from mutating the shared tree, and the race detector, not the
 compiler, is the enforcement. Rust's `Arc<Mutex>` pays a little at
-send (refcount) and then pays on every read — lock traffic on a tree
+send (refcount) and then pays on every read: lock traffic on a tree
 that will never be written again, unless the design graduates to
 `Arc<Tree>` frozen-by-construction, which is Rust spelling wolf's
 answer manually. Wolf pays one word at send and nothing at read; the
-compiler's move check is the whole bill, paid at compile time. That is
-the odd one out: three systems pay at runtime in copies, faith, or
+compiler's move check is the whole bill, paid at compile time. The odd
+one out is wolf: three systems pay at runtime in copies, faith, or
 locks; wolf pays before the program runs. The honest caveat: Erlang's
 copy buys process isolation across *machines* with the same
-semantics, which no move can — distribution is where the copy stops
+semantics, which no move can. Distribution is where the copy stops
 looking expensive.
 
 ## Chapter batch
@@ -216,7 +217,7 @@ distance=18
 Zero copies. The carver allocated the table, the stack, and the
 visited set into one region; the solver's BFS queue and distance table
 could live there too. One `move` later the solver owns all of it, and
-the answer — 18 steps for seed 1 — comes out of memory the solver
+the answer (18 steps for seed 1) comes out of memory the solver
 never allocated.
 
 **Exercise 16-8** *(comprehension + schedule play · lupin)*. Change the
@@ -236,17 +237,17 @@ $ lupin run ex16-8.lu --seed=7
 distance=10
 ```
 
-The carve seed changes the maze — seed 2 happens to carve a more
+The carve seed changes the maze: seed 2 happens to carve a more
 direct route, distance 10. The scheduler seed cannot change anything:
 the program has one send, one receive, and a join; every schedule
 orders them the same way, so the output is schedule-independent by
-construction. Determinism you can argue from the program's shape is
-worth more than determinism you observed in three runs — chapter 17
-is about the programs where you cannot argue it.
+construction. Determinism you can argue from the program's shape
+beats determinism you observed in three runs; chapter 17 is about
+the programs where you cannot argue it.
 
 **Exercise 16-9** *(comprehension · wolf + lupin)*. This program
-declares a channel of bare `List[int]` — not `Copy`, not imm, not a
-region, not sync:
+declares a channel of bare `List[int]` (not `Copy`, not imm, not a
+region, not sync):
 
 ```wolf
 fn main() -> !int {
@@ -281,16 +282,16 @@ receiver gets its own bits, so there is no shared location. `imm` data:
 there is a shared location and nobody may write it. A region value: the
 send is a move, so exactly one task owns it at any instant. A `sync`
 type: the sharing is real and the coordination is the type's own job. A
-bare `List` is none of these — sending it would give two tasks live
+bare `List` is none of these: sending it would give two tasks live
 access to one mutable buffer with no coordination, which is chapter 13's
 store-buffer program wearing a channel as a disguise.
 
 Note that the rejection is a property of the *declaration*: no `send`
 appears in the program, and none is needed. The type of the channel is
 already the claim, and E1102 is the compiler declining it. The
-interpreter takes the other route and constructs the channel — its
+interpreter takes the other route and constructs the channel (its
 dynamic machine catches an actual cross-task mutation rather than the
-declaration — so this is one more program the compiler stops and lupin
+declaration), so this is one more program the compiler stops and lupin
 runs:
 
 ```console

@@ -13,7 +13,7 @@ below is lupin's.
 50 into a balance that starts at 0, through a get-then-set protocol
 with the store loop in `main`. There is no shared mutable capture, no
 `Mutex`, nothing chapter 13 would reject. Predict the balance under
-the default FIFO schedule — and state what the correct answer would
+the default FIFO schedule, and state what the correct answer would
 be if deposits never interfered:
 
 ```wolf
@@ -46,11 +46,11 @@ fn main() -> !int {
 
 Solution: the correct total is 100; FIFO prints 50. Both tasks get 0
 before either set arrives, so both compute 0 + 50 and the second set
-overwrites the first — the lost update. Every individual message is
+overwrites the first: the lost update. Every individual message is
 delivered exactly once, in order, race-free; the *composite* operation
 get-then-set is what was never atomic. This is an ordering bug, not a
-data race, and no type system that admits channels can reject it —
-which the book says plainly, because the pitch for chapter 13 was
+data race, and no type system that admits channels can reject it.
+The book says so plainly, because the pitch for chapter 13 was
 narrower than folklore remembers.
 
 ```console
@@ -82,8 +82,8 @@ balance=100
 
 Seeds 1, 4, and 5 serialize the deposits: one task's set reaches the
 store before the other task's get, so the second deposit reads 50 and
-writes 100. The failing outcome is not rare — it is the *common* one
-here, which inverts the usual heisenbug story: in production this bug
+writes 100. The failing outcome is the *common* one here, not a rare
+one, which inverts the usual heisenbug story: in production this bug
 would look like a test that occasionally passes.
 
 The explorer agrees, and says which schedules do it:
@@ -101,9 +101,9 @@ $ echo $?
 1
 ```
 
-(The frontier claim is what §17.2 rests its argument on, so it is worth
-knowing that it is checked: an earlier interpreter release reported this
-program `observably deterministic` while a seeded run printed the wrong
+(The frontier claim is what §17.2 rests its argument on, and it is
+checked: an earlier interpreter release reported this program
+`observably deterministic` while a seeded run printed the wrong
 balance, and that disagreement was filed against the interpreter rather
 than written around here.)
 
@@ -124,7 +124,7 @@ pairs of those four runs are guaranteed to match?
     print("{a}{b}")
 ```
 
-Solution: the two `--seed=0` runs must match — a seed selects the
+Solution: the two `--seed=0` runs must match: a seed selects the
 whole decision stream, and the same seed replays byte-identically.
 The `ev:0,0,0` run matches them here because that stream is the one
 seed 0 selects. `--seed=3` carries no guarantee relative to the
@@ -142,8 +142,8 @@ $ lupin run ex17-3.lu --schedule=ev:0,0,0
 ```
 
 A schedule is a value. Two runs disagree only if their schedules
-disagree, and a schedule you can name is a schedule you can rerun —
-that is the entire mechanism this chapter's debugging story stands on.
+disagree, and a schedule you can name is a schedule you can rerun.
+That is the entire mechanism this chapter's debugging story stands on.
 
 **Exercise 17-4** *(comprehension · lupin)*. The explorer prints the two
 schedules of 17-3 as decision streams `ev:0,0,0` and `ev:1,0,0`. Three
@@ -152,7 +152,7 @@ decision choosing between, and why are the remaining two decisions no
 longer choices once it is made?
 
 Solution: the first decision picks which spawned task runs at the
-first scheduling point — task one's send or task two's send fires
+first scheduling point: task one's send or task two's send fires
 first. After that, the program has no freedom left: the other send is
 the only runnable step, and the two receives in `main` drain the
 channel in arrival order. A decision stream records *choices*, not
@@ -182,14 +182,14 @@ $ echo $?
 ```
 
 `explored 2 schedule(s)`: the program has two inequivalent orderings,
-and both were run. `DPOR` is dynamic partial-order reduction — the
+and both were run. `DPOR` is dynamic partial-order reduction, the
 algorithm that knew the other interleavings were equivalent to these
 two, so 2 executions covered the space a naive search would have
 enumerated. `frontier closed`: no reachable schedule was left
 untried within the budget. `SCHEDULE-DEPENDENT`: the outcomes differ
-across schedules — a finding, which is why the exit code is 1 even
+across schedules, a finding, which is why the exit code is 1 even
 though every individual run exited 0. Each outcome carries a
-`replay:` seed — the finding arrives with its own reproduction
+`replay:` seed: the finding arrives with its own reproduction
 command, which is the difference between a bug report and an anecdote.
 
 ## §17.3 (held) — `--chaos`
@@ -225,7 +225,7 @@ fn main() -> !int {
 
 Solution (prose): the campaign must show `v=41` (no injection) and
 `v=-1` (injected `Lost`, absorbed by the caller's handler), both
-exiting 0 — the assertion in `main` encodes "either outcome is
+exiting 0: the assertion in `main` encodes "either outcome is
 acceptable," which is what makes the program chaos-clean. The error
 path is code like any other code; untested, it is where the bugs
 retire to. Chaos runs it deterministically, on a seed, before an
@@ -263,9 +263,9 @@ $ echo $?
 ```
 
 With zero preemptions allowed, only the FIFO schedule is explored, and
-the report says "observably deterministic — every schedule agrees":
+the report says "observably deterministic (every schedule agrees)":
 true over the schedules it looked at, and wrong about the program, as
-17-5 proved. The tool is honest about the gap — `frontier OPEN` and
+17-5 proved. The tool is honest about the gap: `frontier OPEN` and
 the `note:` line say the search was cut short, and the exit code is 0
 only because no finding was reached. Read exploration reports the way
 you read benchmarks: the verdict is conditional on the budget line,
@@ -273,24 +273,24 @@ and "frontier open" is the condition talking.
 
 **Exercise 17-8** *(design)*. List three behaviors of a real
 concurrent service that seeded schedule exploration, as this chapter
-defines it, cannot find — and for each, name the tool or practice
+defines it, cannot find; for each, name the tool or practice
 that owns it instead. The chapter's own scope-honesty section (§17.4)
 claims v1 promises less than folklore expects; your answer is that
 claim, made concrete.
 
-Solution (discussion): first, value nondeterminism — a hash seed, a
-random backoff, an id from the OS: exploration permutes *scheduling*
+Solution (discussion): first, value nondeterminism (a hash seed, a
+random backoff, an id from the OS): exploration permutes *scheduling*
 decisions, not data, so property tests and fuzzing own that axis.
-Second, real time — a timeout that fires only when a peer takes 30
-actual seconds, kernel-buffer pressure, the network: the deterministic
+Second, real time (a timeout that fires only when a peer takes 30
+actual seconds, kernel-buffer pressure, the network): the deterministic
 scheduler virtualizes time, so what it validates is your *handling*
 of a timeout, never the calibration of one; load tests own the
-calibration. Third, anything past the FFI membrane — a C library's
+calibration. Third, anything past the FFI membrane: a C library's
 internal threads and its file-descriptor games are invisible to a
 scheduler that only sees wolf's blocking points; the audit boundary
 of chapter 9 and the C library's own test suite own that. Exploration
-proves ordering properties over the events it can see and permute —
-that sentence, with both clauses stressed, is §17.4's whole content.
+proves ordering properties over the events it can see and permute.
+That sentence, with both clauses stressed, is §17.4's whole content.
 
 ## Chapter batch
 
@@ -327,11 +327,11 @@ $ echo $?
 3
 ```
 
-Three, because `main` is blocked too — at the scope join, waiting for
+Three, because `main` is blocked too, at the scope join, waiting for
 children who are waiting for each other. The roster is the trap's gift:
 it names every task and where it blocked, which is the state a
 production deadlock never hands you. The trap fires because *every*
-live task is blocked with no timer pending — a quiet program and a
+live task is blocked with no timer pending: a quiet program and a
 deadlocked one differ in exactly that clause, and the runtime can tell
 them apart. (Compare 12.4: `when (a, b)` exists so lock-order
 deadlocks cannot be written; this exercise built the channel-order
