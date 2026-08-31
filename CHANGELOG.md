@@ -2,6 +2,18 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs20 — 2026-08-31 — the record on the page
+
+Chapter 25 gains its first printed section. §25.3 teaches `wolf
+publish` as measured at the pins: the one-line transparency record
+and its three content addresses (tree, manifest, interface), the
+maintainer's static-log append with its keyed head, and the refusal
+that makes a published version immutable — both transcripts replayed
+from a fixture in CI. The "this edition does not carry this chapter"
+stub retires; editions (§25.1) and the stdlib posture (§25.2) stay
+reserved with their reasons on record. 401 samples green, 196 of 198
+console blocks replayed (two new).
+
 ## bs19 — 2026-08-30 — the pin tells the truth
 
 The book's transcripts now show the released toolchain: wolf v0.2.0

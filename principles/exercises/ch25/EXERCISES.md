@@ -1,12 +1,16 @@
 # Chapter 25 — Editions, stability, publishing: exercises
 
-**None of this batch is printed.** Chapter 25 is held whole — editions
-are a manifest key with no behavior, the book has no std on the page,
-and there is no publish client — so its eight stems live here and land
-with the chapter (`book/ch25.md` carries the measurements; TOC.md
-§Deltas, bs09). They read correctly today because every one of them
-reasons from a locked decision rather than from a tool, which is also
-why none of them carries a pending row: there is no program to run.
+**None of this batch is printed.** §25.3 shipped at bs20 (the human's
+2026-08-31 ruling; `wolf publish` writes the transparency record at
+the pins), and the batch still waits, because every stem leans on a
+subject that is still held: 25-1 through 25-5 on §25.1's edition
+mechanism and §25.2's stdlib posture, 25-6 on §25.2's interface-fact
+grading and a hosted registry's acceptance flow, 25-7 on §23.2's MVS,
+and 25-8 on §25.1's no-2.0 rules (`book/ch25.md` carries the
+measurements; TOC.md §Deltas, bs09 and bs20). They read correctly
+today because every one of them reasons from a locked decision rather
+than from a tool, which is also why none of them carries a pending
+row: there is no program to run.
 
 This chapter's material is policy with teeth, and its exercises are
 worked the way policy is worked: by cases. Everything here is

@@ -337,14 +337,16 @@ pair's reasons are in `book/ch21.md`'s HOLD note*
 - Exercises 24-1 … 24-8.
 
 ### Chapter 25 — Editions, stability, publishing
-*held whole (bs09) · gate: an edition mechanism, a std on the page, and
-a publish client — measured reasons in `book/ch25.md`'s HOLD note*
+*one section of three shipped (bs20, by the human's 2026-08-31 ruling);
+the held pair's gate — an edition mechanism and a std on the page — is
+measured in `book/ch25.md`'s HOLD note*
 - (held) 25.1 Editions per package — upgrade on your clock; no wolf 2.0, ever.
 - (held) 25.2 The stdlib posture — depend on core, penumbra, or `std.x` with
   eyes open.
-- (held) 25.3 Publishing — ship `owner/pkg` with capabilities declared and
+- 25.3 Publishing — ship `owner/pkg` with capabilities declared and
   semver with teeth.
-- Exercises 25-1 ….
+- Exercises 25-1 … (all eight written and unprinted; the batch note in
+  the masters says which held subjects they lean on).
 
 ## Part 5 — Projects
 
@@ -1169,3 +1171,16 @@ sprint files remain the implementation contracts for everything else.
   re-teach: the surfaces are still absent at the pins, so the prose
   states scope and the scaffold refusals leave the pages (TONE's
   scaffold-output rule, the wave-19 packet's routing).
+- **bs20 (the record on the page, 2026-08-31):** chapter 25 ships
+  §25.3 alone, by the human's ruling — the bs09 "waits whole" posture
+  is amended for this chapter, not retired as a rule. Grounds: bs19
+  measured `wolf publish` writing the b3 transparency record at both
+  pins, so the section's gate is open while §25.1/§25.2's stay shut;
+  the section teaches the measured verb (record, bundle, static-log
+  append, immutability refusal) against `samples/pkg/record` and
+  carries the absent registry client as one R9 scope sentence. The
+  reader-facing "this edition does not carry this chapter" stub
+  retires; §25.1/§25.2 keep reserved numbers and `(held)` rows. The
+  exercise batch stays unprinted: every §25.3 stem leans on a held
+  subject (25-6 on §25.2's grading and the hosted registry, 25-7 on
+  §23.2's MVS).
