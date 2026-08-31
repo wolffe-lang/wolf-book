@@ -58,6 +58,7 @@ column says `both`, some page shows both readings of it side by side.
 | `E1503` | the manifest declares a build-time script hook — wolf has none, ever | wolf | 24.2 |
 | `E1504` | this package uses a capability its manifest does not declare | wolf | 24.3 |
 | `E1506` | a dependency's content hash does not match wolf.sum | wolf | 23.3 |
+| `W0313` | this `pub` item has no doc comment | wolf | 22.2 |
 | `W0603` | this row tag's case contradicts its payload | wolf | 27.5 |
 | `W1003` | this `take` parameter is returned unchanged | wolf | 7.2, Notation |
 | `W1101` | this write stays inside the task | wolf | 13.2 |

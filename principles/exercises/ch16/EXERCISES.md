@@ -300,3 +300,74 @@ $ echo $?
 ```
 
 The corpus carries the same expectation in `conc/chan_unsendable.lu`.
+
+**Exercise 16-10** *(extension · lupin)*. Seven wolves in a ring; every
+third one still standing leaves, until one remains. Build the ring as a
+list of alive-flags in its own region, run the elimination in `main`
+with `%` doing the wraparound, then hand the finished region to a
+reader task with one `send(move …)` — 16-7's shape — which finds the
+survivor in place and prints the seat. Compute the answer on paper
+first. How many times was the ring copied between builder and reader,
+and what would the copy count be in a language that made message
+passing mean copying?
+
+Solution. `ch16/ex16-10.lu`:
+
+```wolf
+fn eliminate(mut alive: List[int], every: int, seats: int) {
+    var living = seats
+    var cur = 0
+    var counted = 0
+    while living > 1 {
+        if alive[cur] == 1 {
+            counted += 1
+            if counted == every {
+                alive[cur] = 0
+                living -= 1
+                counted = 0
+            }
+        }
+        cur = (cur + 1) % seats
+    }
+}
+fn last_seat(alive: List[int], seats: int) -> int {
+    var seat = 0
+    for i in 0..seats {
+        if alive[i] == 1 { seat = i + 1 }
+    }
+    seat
+}
+fn main() -> !int {
+    let ch = channel[region](1)
+    let r = region()
+    var alive = in r { List[int]() }
+    for _ in 0..7 { (mut alive).push(1) }
+    eliminate(mut alive, 3, 7)
+    scope s {
+        s.spawn(fn() {
+            let r2 = ch.recv() else |_| { return }
+            let seat = in r2 { last_seat(alive, 7) }
+            print("seat {seat} survives")
+        })
+        ch.send(move r)
+    }
+    0
+}
+```
+
+```console
+$ lupin ex16-10.lu
+seat 4 survives
+```
+
+Seat 4 (the paper walk: seats 3, 6, 2, 7, 5, 1 leave, in that order).
+Zero copies: the flags were allocated in `r`, mutated in place by the
+builder, and the `move` handed the reader the same memory — `last_seat`
+reads flags it never allocated, 16-7's zero-copy claim on a different
+graph. Copy-passing (Erlang's choice, the honest lineup's first row)
+would copy the ring once per message: one copy here, but one per
+*handoff* in general, which for a pipeline of n stages is n copies of
+state that only ever has one interested party at a time. The elimination
+runs before the send on purpose: the builder finishes its writes, then
+ownership moves — the same "mutate, then share" order `freeze` enforces
+for the many-reader case.

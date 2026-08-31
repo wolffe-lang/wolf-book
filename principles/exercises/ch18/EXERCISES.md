@@ -1,16 +1,17 @@
 # Chapter 18 — Comptime: one tier, no macros: exercises
 
 Commands run from this directory; outputs are pasted from real runs.
-lupin is the interpreter `wolf-toolchain.toml` pins; wolf is the wolf-lang debug build
-at `impl_version 0.0.1`. The comptime engine is wolf's, and every
-verdict below is a real run of it: the sandbox refusals, the budget
-meters, the comptime-known rule, checked arithmetic at compile time, and
-the reflected witnesses all evaluate today. What no lane does yet is
-execute a fold's *result* — `wolf build`/`wolf run` decline a module
-holding a `comptime fn`, and lupin declines one outright — so the three
-exercises whose deliverable is a printed folded value stay pending with
-that blocker, and their expected outcomes ride in their directive
-headers. They are also the three the chapter does not print.
+lupin is the interpreter `wolf-toolchain.toml` pins; wolf is the
+compiler it pins. The comptime engine is wolf's, and every verdict
+below is a real run of it: the sandbox refusals, the budget meters,
+the comptime-known rule, checked arithmetic at compile time, and the
+reflected witnesses all evaluate today. The compiler also executes a
+fold's *result* now — `wolf run` builds and runs a module holding a
+`comptime fn`, which is the `wolf-run(…)` directive lane 18-3, 18-5
+and 18-11 moved to when their old blocker retired (the pending doc's
+retired-entries table has the accounting). lupin still declines
+`comptime fn` by design, exit 4, so this chapter is the compiler's
+territory end to end.
 
 ## §18.1 — Wolf at compile time
 
@@ -80,30 +81,19 @@ error[E0706]: this `+` on `i32` faults at compile time: 2147483647 + 1 leaves `i
     error at comptime — intended wraparound is spelled `wrapping[T]`, never a mode.
 ```
 
-**Exercise 18-3** *(fingers · pending — blocker: no lane executes a
-comptime fold's result; owner: c05-codegen / wolf-interp std subset)*.
-Write `sum_squares(n)` as
+**Exercise 18-3** *(fingers · wolf)*. Write `sum_squares(n)` as
 a `comptime fn` and bind `const T = sum_squares(9)`. The folded value
-is 285, and after s16 the program prints it having computed nothing at
-runtime.
+is 285, and the program prints it having computed nothing at runtime.
 
-Solution. `ch18/ex18-3.lu` carries the program with its expected
-directive header (`run(exit=0, stdout="285")`). The evaluator computes
-this fold; what is missing is a lane that runs a program holding the
-`comptime fn` afterward. Both reader-facing tools decline the module,
-and this is what pending looks like:
+Solution. `ch18/ex18-3.lu`, on the `wolf-run(…)` lane because the
+compiler both folds the table and runs the result; lupin declines a
+`comptime fn` by design (exit 4, outside scope stated rather than
+rejected), which keeps this exercise single-lane on purpose:
 
 ```console
-$ lupin ex18-3.lu
-ex18-3.lu: unsupported: `sum_squares` is a `comptime fn`; compile-time evaluation with its sandbox and budgets is the compiler's engine (s16), and nothing in `spec/` pins it — the `comptime` namespace is still a reserved forward one
-$ echo $?
-4
+$ wolf run ex18-3.lu
+285
 ```
-
-Under `wolf conform-run` the observation is `verdict=unsupported` at
-`phase_reached=mem`, and `wolf run` declines with the lowering gap
-named. The interpreter's exit code is 4, not 2 and not 3: outside
-scope, stated, rather than rejected or trapped.
 
 ## §18.2 — Types as values
 
@@ -131,23 +121,18 @@ error[E0708]: the size of `Vec2` is not resolved until codegen lays it out
     can answer for fixed-width primitives today, but not yet for aggregates.
 ```
 
-**Exercise 18-5** *(extension · pending — blocker: a `typeinfo` result
-reaching a runtime `const` is `calls outside the modelled surface` in
-the checked lane, on top of the comptime-fn lowering gap; owner:
-c05-codegen / wolf-interp std subset)*. Write `field_count(T: type)` using
-`typeinfo`, and apply it to a struct of your own. State what the
-program will print for a three-field struct once s16 lands.
+**Exercise 18-5** *(extension · wolf)*. Write `field_count(T: type)`
+using `typeinfo`, and apply it to a struct of your own. Predict what
+the program prints for a three-field struct.
 
-Solution. `ch18/ex18-5.lu` (expected `run(exit=0)`, printing `3`).
-The signature `fn field_count(T: type) -> int` is the section's whole
-point in four tokens: a type arrives as an argument, like any other
-value. The reflection itself runs today (§18.2's witness proves the
-field count at compile time and E0710 reports a wrong one) but the
-count cannot be printed by a program. Today:
+Solution. `ch18/ex18-5.lu`, on the `wolf-run(…)` lane. The signature
+`fn field_count(T: type) -> int` is the section's whole point in four
+tokens: a type arrives as an argument, like any other value. The
+reflected count folds into the `const` and the program prints it:
 
 ```console
-$ lupin ex18-5.lu
-ex18-5.lu: unsupported: `field_count` is a `comptime fn`; compile-time evaluation with its sandbox and budgets is the compiler's engine (s16), and nothing in `spec/` pins it — the `comptime` namespace is still a reserved forward one
+$ wolf run ex18-5.lu
+3
 ```
 
 ## §18.3 — Where comptime already touched your code
@@ -184,6 +169,69 @@ Compute the value at runtime instead; file contents belong in
 *declared build inputs* through the package manifest, never in an
 evaluator capability.
 ```
+
+**Exercise 18-13** *(spelunking · wolf)*. Misspell a format spec on
+purpose — `{total:>9.2z}` — and read the grammar out of the error.
+From the diagnostic alone: which one letter fixes this spec for a
+money column, and which *two* letters would print the same number in
+bases the chapter has not used yet?
+
+Solution. `ch18/ex18-13.lu` (broken on purpose):
+
+```console
+$ wolf conform-run ./ex18-13.lu
+error[E0412]: `z` has no place in a format spec — the grammar is `[[fill]align][+][0][width][.precision][type]` with type one of `b o x X e E f`
+ --> ./ex18-13.lu:7:18
+  |
+7 |     print("{total:>9.2z}")
+  |                  ^^^^^^ in this format spec
+  |
+```
+
+The fix is `f`: fixed-point, which with `.2` is the money column
+(`{total:>9.2f}`). The two unused letters are `b` and `o` — binary
+and octal — sitting in the grammar beside the `x`/`X` hex the string
+chapter did print. The diagnostic *is* the section's claim performed:
+the f-string compiled to checked calls, so a bad spec is a compile
+error with the whole grammar in it, not a runtime surprise — and the
+grammar line answers questions the chapter never got to.
+
+**Exercise 18-14** *(comprehension · wolf)*. Four `Buf[…]` parameter
+and return pairs: `Buf[N + 1]` with `Buf[1 + N]`; `Buf[N + 2 - 1]`
+with `Buf[1 + N]`; `Buf[2 + 2]` with `Buf[4]`; `Buf[N * 2]` with
+`Buf[2 * N]`. Predict which pairs the checker equates on its own and
+which one needs a witness, then check the odd one out and read which
+of the three steps the note says it fell past.
+
+Solution. `ch18/ex18-14.lu` (the `*` pair, broken on purpose; the
+first three are the chapter's own `shuffle`/`widen`/`closed`, all
+accepted):
+
+```console
+$ wolf conform-run ./ex18-14.lu
+error[E0707]: `Buf[N * 2]` and `Buf[2 * N]` may be equal, but proving it needs a witness
+ --> ./ex18-14.lu:6:51
+  |
+6 | fn double[N: type](b: Buf[N * 2]) -> Buf[2 * N] { b }
+  |                                   ------------- the return type is declared here
+  |                                                   ^ these const expressions differ beyond linear arithmetic
+  |
+  = note: const-expression equality is decided in three steps, and the line is fixed: (1) closed
+    expressions evaluate and compare by value; (2) `+`/`-` arithmetic over generic
+    parameters compares by ring normalization, so `N + 1` equals `1 + N`; (3) anything
+    beyond — `*`, `/`, `%`, shifts, bit operators — needs an explicit witness. This pair
+    sits at step 3.
+  = note: state the equality where the reader can see it: a comptime `assert` on the sizes
+    involved, or rewrite both spellings into the same `+`/`-` form.
+```
+
+Closed values (step 1) equate `2 + 2` with `4`; ring normalization
+(step 2) equates both `+`-shaped pairs. The `*` pair is mathematics
+any reader can do and the checker *will not*, because the line
+between "normalized" and "proved" is fixed where the chapter said it
+is: multiplication is step 3, witness territory, however trivial the
+instance. A checker that did easy multiplications would have a
+boundary nobody could state.
 
 ## §18.4 — What it refuses to do
 
@@ -313,25 +361,91 @@ meters, and the first one exhausted names the failure.
 
 ## Chapter batch
 
-**Exercise 18-11** *(extension · pending — blocker: no lane executes a
-comptime fold's result; owner: c05-codegen / wolf-interp std subset)*.
-An L-system is a string
+**Exercise 18-11** *(extension · wolf)*. An L-system is a string
 rewriting rule applied in rounds: here `A → A-B` and `B → -A`, with
 `-` carried through. Write `expand(axiom, steps)` as a `comptime fn`
 and fold `expand("A", 3)` into a `const`. Compute the expected string
-by hand before reading the header.
+by hand before running.
 
-Solution. `ch18/ex18-11.lu` (expected `run(exit=0,
-stdout="A-B--A--A-B")`; the hand expansion is `A` → `A-B` → `A-B--A` →
-`A-B--A--A-B`). The expected stdout was verified by running the same
-function as a runtime `fn` under lupin, which prints `A-B--A--A-B`.
-The algorithm is ordinary wolf, which is the tier's whole pitch:
-nothing about the language changes at compile time, only the clock it
-runs on. Note the solution's two spellings: the string grows by
-interpolation (`next = "{next}A-B"` — `+=` on two strings appends the
-same way), and the recoverable slice is `cur.get(i..i + 1)` with an
-`else`. Today the comptime spelling reports `unsupported` under both
-tools.
+Solution. `ch18/ex18-11.lu`, on the `wolf-run(…)` lane (the hand
+expansion is `A` → `A-B` → `A-B--A` → `A-B--A--A-B`). The algorithm
+is ordinary wolf, which is the tier's whole pitch: nothing about the
+language changes at compile time, only the clock it runs on. Note the
+solution's two spellings: the string grows by interpolation
+(`next = "{next}A-B"` — `+=` on two strings appends the same way),
+and the recoverable slice is `cur.get(i..i + 1)` with an `else`.
+
+```console
+$ wolf run ex18-11.lu
+A-B--A--A-B
+```
+
+**Exercise 18-15** *(extension · wolf)*. Roman numerals, both ways,
+folded: write `to_roman(n)` and `from_roman(s)` as `comptime fn`s
+(the value table as a pair of indexed helpers, subtractive pairs and
+all), and a witness `round_trips(n)` whose `assert` proves
+`from_roman(to_roman(n)) == n` at compile time. Fold a year each way
+into `const`s and print them. What does the witness buy that printing
+both values does not, and which famous wrong numeral — `IIII` — does
+your `from_roman` quietly accept, and why is that fine here?
+
+Solution. `ch18/ex18-15.lu` (excerpt — the table helpers are
+if-chains over an index, `glyph(at)`/`worth(at)`):
+
+```wolf
+comptime fn to_roman(n: int) -> str {
+    var out = ""
+    var rest = n
+    var at = 0
+    while at < 13 {
+        while rest >= worth(at) {
+            out = "{out}{glyph(at)}"
+            rest -= worth(at)
+        }
+        at += 1
+    }
+    out
+}
+comptime fn from_roman(s: str) -> int {
+    var total = 0
+    var i = 0
+    while i < s.len {
+        let here = one(s, i)
+        let next = if i + 1 < s.len { one(s, i + 1) } else { 0 }
+        total += if here < next { 0 - here } else { here }
+        i += 1
+    }
+    total
+}
+comptime fn round_trips(n: int) -> bool {
+    assert(from_roman(to_roman(n)) == n)
+    true
+}
+fn main() -> !int {
+    const YEAR = to_roman(1994)
+    const BACK = from_roman("MMXXVI")
+    const WITNESS = round_trips(3888)
+    print("{YEAR} {BACK}")
+    if WITNESS { 0 } else { 1 }
+}
+```
+
+```console
+$ wolf run ex18-15.lu
+MCMXCIV 2026
+```
+
+The witness buys a *build-breaking* claim: printed values need a
+reader to check them, but a failed comptime `assert` is E0710 and no
+binary exists — 3888 (`MMMDCCCLXXXVIII`, the longest numeral under
+4000) round-trips or the program is refused. `IIII` is accepted
+because `from_roman` implements the subtractive *reading* rule (a
+smaller value before a larger one subtracts), which maps every
+well-formed numeral correctly and some malformed ones charitably;
+rejecting non-canonical spellings is a validator's job, and the
+witness only claims the round trip from `to_roman`'s canonical
+output. Stating exactly what the assert proves — no more — is most of
+what writing one teaches.
 
 **Exercise 18-12** *(design)*. The sandbox refuses a file read
 (E0701) but the catalog entry points at *declared build inputs* through

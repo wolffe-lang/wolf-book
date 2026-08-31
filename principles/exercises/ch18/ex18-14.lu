@@ -1,0 +1,9 @@
+//! check: fail(E0707)
+//! phase: typecheck
+// Exercise 18-14: `+`/`-` normalize; `*` needs a witness.
+struct Buf[N: type] { len: int, }
+fn shuffle[N: type](b: Buf[N + 1]) -> Buf[1 + N] { b }
+fn double[N: type](b: Buf[N * 2]) -> Buf[2 * N] { b }
+fn main() -> !int {
+    0
+}

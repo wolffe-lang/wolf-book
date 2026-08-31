@@ -1,0 +1,12 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 2-12 solution: centering, by spec and by hand.
+fn main() -> !int {
+    let title = "DEN LOG"
+    print("{title:*^20}")
+    let pad = 20 - title.len
+    let left = pad / 2
+    let right = pad - left
+    print("{"*".repeat(left)}{title}{"*".repeat(right)}")
+    0
+}

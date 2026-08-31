@@ -1,6 +1,6 @@
 # EXERCISES-INDEX.md — the corpus ledger
 
-Generated view of every exercise in the corpus: 276 total. Sources:
+Generated view of every exercise in the corpus: 324 total. Sources:
 the exemplar batch in `principles/EXERCISES.md` §5 (26 exercises,
 folded in unchanged) and the per-chapter files
 `principles/exercises/chNN/EXERCISES.md` (+ `appx/` for the
@@ -29,7 +29,11 @@ either lane (`samples-pending.toml`); and ch05's 5-8, unprinted at bs11
 because its whole subject is the combinator chain, and a stem cannot
 carry a blocker note in a reader's text (TONE.md §Tense discipline).
 All of them stay in the corpus so the day their surface lands the stems
-and the sections arrive together. **231 of the 276 are printed**, and
+and the sections arrive together. Two more are master-only by curation
+rather than blockage, from the bs21 ladder: 2-15 (entab — the printed
+page carries detab, the master holds the mirror) and 3-13 (a
+`loop`/`break`-value drill beside §3.2's own example). **275 of the 324
+are printed**, and
 `cargo xtask verify-docs` fails the build if a printed stem has no
 published solution.
 
@@ -54,25 +58,30 @@ several of its stems are tagged `· wolf` while the distilled solution
 program on disk runs under lupin — the tier column says what CI
 executed, and the exercise file says which is which and why.
 
-Tier totals: 145 run (lupin) · 9 run (lupin REPL) · 27 run (wolf) · 12 run (wolf + lupin) · 73 prose · 10 pending. That is 276.
-Four of the 27 `run (wolf)` are the `wolf-run(…)` lane the bs09 bump
-added — 18-3, 18-5, 18-11 and 22-7, each holding a `comptime fn` that the
-reference interpreter declines by design. 24-6 is the fifth addition and
+Tier totals: 186 run (lupin) · 9 run (lupin REPL) · 32 run (wolf) · 12 run (wolf + lupin) · 75 prose · 10 pending. That is 324.
+(The totals and the tables were recounted mechanically against the
+masters at bs21 — the previous header said 276/231 while the tables
+had drifted from the marker count, ch05's 5-9 and 5-10 among the
+missing rows.)
+Five of the 32 `run (wolf)` are the `wolf-run(…)` lane the bs09 bump
+added — 18-3, 18-5, 18-11, 18-15 and 22-7, each holding a `comptime fn` that the
+reference interpreter declines by design. 24-6 is the sixth addition and
 is a package walkthrough rather than a file, so it has no `.lu`: its
 transcript is the verbs' own output, replayed against a fixture. Which
 lane executed a sample is bookkeeping; the claim is about the program.
-Taxonomy spread (tags, hybrids counted once per kind): fingers 39 ·
-comprehension 144 · extension 46 · spelunking 24 · design 33.
+Taxonomy spread (tags, hybrids counted once per kind): fingers 55 ·
+comprehension 151 · extension 69 · spelunking 26 · design 35.
 
-Three stems are printed under a section other than the one this index
+Four stems are printed under a section other than the one this index
 assigns them, each deliberately: 13-2 (printed in §13.2 while §13.1 is
-held), 18-6 (printed in §18.4), and 23-6 (printed in §23.1). Two more
+held), 18-6 (printed in §18.4), 18-15 (a chapter-batch stem printed at
+§18.4's end), and 23-6 (printed in §23.1). Two more
 are printed in another *chapter*: 4-3 and 4-4 end §7.4 and §7.5, because
 the call-site `mut` they need is taught there and the numbers are stable
 (EXERCISES.md §1). 24-8 is a chapter-batch stem printed inside §24.3,
 ahead of 24-7; the batch is the chapter's last two either way.
 
-## ch01 — 8 exercises
+## ch01 — 11 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
@@ -84,8 +93,11 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §1.5 — What `run` was doing for you | 1-6 | spelunking · lupin | run (lupin) |
 | §1.5 — What `run` was doing for you | 1-8 | comprehension · wolf + lupin | run (wolf + lupin) |
 | §1.2 — Two implementations, one language | 1-7 | fingers · wolf + lupin | run (wolf + lupin) |
+| §1.3 — Scripts before projects | 1-9 | fingers · lupin | run (lupin) |
+| §1.5 — What `run` was doing for you | 1-10 | comprehension · lupin | run (lupin) |
+| §1.1 — A program worth keeping | 1-11 | fingers · lupin | run (lupin) |
 
-## ch02 — 9 exercises
+## ch02 — 15 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
@@ -98,8 +110,14 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §2.4 — Iterating meaning | 2-7 | extension · lupin | run (lupin) |
 | §2.4 — Iterating meaning | 2-9 | comprehension · wolf | run (wolf) |
 | §2.5 — What the machine does | 2-8 | comprehension · lupin REPL | run (lupin REPL) |
+| §2.1 — Literals, methods, interpolation | 2-12 | comprehension + extension · lupin | run (lupin) |
+| §2.2 — Multiline and raw | 2-13 | fingers · lupin | run (lupin) |
+| §2.4 — Iterating meaning | 2-10 | fingers · lupin | run (lupin) |
+| §2.4 — Iterating meaning | 2-11 | fingers · lupin | run (lupin) |
+| §2.4 — Iterating meaning | 2-14 | fingers · lupin | run (lupin) |
+| §2.4 — Iterating meaning (master only, not printed) | 2-15 | extension · lupin | run (lupin) |
 
-## ch03 — 8 exercises
+## ch03 — 13 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
@@ -111,8 +129,13 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §3.3 — Arithmetic that traps | 3-6 | extension (break-it-on-purpose) · lupin | run (lupin) |
 | §3.3 — Arithmetic that traps | 3-7 | comprehension · lupin | run (lupin) |
 | §3.1 — `let`, `var`, and handing values over | 3-8 | comprehension · lupin | run (lupin) |
+| §3.2 — Everything is an expression | 3-9 | fingers · lupin | run (lupin) |
+| Chapter batch | 3-10 | extension · lupin | run (lupin) |
+| Chapter batch | 3-11 | fingers · lupin | run (lupin) |
+| Chapter batch | 3-12 | fingers · lupin | run (lupin) |
+| Chapter batch (master only, not printed) | 3-13 | comprehension · lupin | run (lupin) |
 
-## ch04 — 7 exercises
+## ch04 — 11 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
@@ -123,8 +146,12 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §4.1 — Signatures are the contract | 4-5 | comprehension · lupin | run (lupin) |
 | §4.3 — `defer` | 4-6 | comprehension · lupin | run (lupin) |
 | Chapter batch | 4-7 | extension · lupin | run (lupin) |
+| §4.1 — Signatures are the contract | 4-10 | fingers · lupin | run (lupin) |
+| §4.2 — Functions as values | 4-9 | extension · lupin | run (lupin) |
+| Chapter batch | 4-8 | fingers · lupin | run (lupin) |
+| Chapter batch | 4-11 | extension · lupin | run (lupin) |
 
-## ch05 — 8 exercises
+## ch05 — 15 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
@@ -136,8 +163,15 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §5.1 — `List`, `Map`, `Set`, tuples | 5-6 | extension · lupin | run (lupin) |
 | Chapter batch | 5-7 | comprehension + extension · lupin | run (lupin) |
 | §5.2 — The combinator style | 5-8 | comprehension · pending | pending |
+| §5.5 — Traits | 5-9 | extension | run (lupin) |
+| §5.5 — Traits | 5-10 | design | prose |
+| §5.1 — `List`, `Map`, `Set`, tuples | 5-12 | fingers · lupin | run (lupin) |
+| §5.1 — `List`, `Map`, `Set`, tuples | 5-14 | fingers · lupin | run (lupin) |
+| Chapter batch | 5-11 | extension · lupin | run (lupin) |
+| Chapter batch | 5-13 | extension · lupin | run (lupin) |
+| Chapter batch | 5-15 | extension · lupin | run (lupin) |
 
-## ch06 — 10 exercises
+## ch06 — 13 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
@@ -151,8 +185,11 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §6.4 — Hardening by refactor | 6-9 | extension · lupin | run (lupin) |
 | §6.5 — Capstone: wordcount | 6-10 | extension · lupin | run (lupin) |
 | Chapter batch | 6-8 | design | prose |
+| Chapter batch | 6-11 | extension · lupin | run (lupin) |
+| Chapter batch | 6-12 | extension · lupin | run (lupin) |
+| Chapter batch | 6-13 | extension · lupin | run (lupin) |
 
-## ch07 — 13 exercises
+## ch07 — 15 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
@@ -169,8 +206,10 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §7.7 — What the machine does | 7-11 | fingers · lupin REPL | run (lupin REPL) |
 | Chapter batch | 7-12 | extension · lupin | run (lupin) |
 | Chapter batch | 7-13 | comprehension + extension · lupin | run (lupin) |
+| Chapter batch | 7-14 | fingers · lupin | run (lupin) |
+| Chapter batch | 7-15 | extension · lupin | run (lupin) |
 
-## ch08 — 16 exercises
+## ch08 — 17 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
@@ -190,8 +229,9 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §8.8 — What the machine does | 8-14 | spelunking · wolf | run (wolf) |
 | Chapter batch | 8-15 | extension · lupin | run (lupin) |
 | Chapter batch | 8-16 | extension · lupin | run (lupin) |
+| Chapter batch | 8-17 | extension · lupin | run (lupin) |
 
-## ch09 — 14 exercises
+## ch09 — 15 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
@@ -209,6 +249,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §9.8 — The four-tier picture | 9-12 | design | prose |
 | Chapter batch | 9-13 | extension (break-it-on-purpose) · lupin | run (lupin) |
 | Chapter batch | 9-14 | comprehension · lupin | run (lupin) |
+| Chapter batch | 9-15 | fingers · lupin | run (lupin) |
 
 ## ch10 — 10 exercises
 
@@ -238,7 +279,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §11.3 — The structured dump | 11-7 | comprehension · lupin REPL | run (lupin REPL) |
 | Chapter batch | 11-8 | design | prose |
 
-## ch12 — 9 exercises
+## ch12 — 11 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
@@ -251,8 +292,10 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §12.3 — When channels are the wrong queue | 12-7 | design | prose |
 | §12.4 — `when (a, b)` | 12-8 | comprehension · lupin | run (lupin) |
 | §12.4 — `when (a, b)` | 12-9 | extension (break-it-on-purpose) · wolf + lupin | run (wolf + lupin) |
+| §12.3 — When channels are the wrong queue | 12-10 | extension · lupin | run (lupin) |
+| §12.3 — When channels are the wrong queue | 12-11 | extension · lupin | run (lupin) |
 
-## ch13 — 8 exercises
+## ch13 — 10 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
@@ -264,8 +307,10 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | Chapter batch (held with §13.1) | 13-6 | extension · pending | pending |
 | Chapter batch | 13-7 | comprehension · lupin | run (lupin) |
 | Chapter batch (held with §13.1) | 13-8 | design | prose |
+| Chapter batch | 13-9 | extension · lupin | run (lupin) |
+| Chapter batch | 13-10 | comprehension + extension · lupin | run (lupin) |
 
-## ch14 — 9 exercises
+## ch14 — 10 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
@@ -278,6 +323,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §14.3 — Mailboxes | 14-7 | extension · lupin | run (lupin) |
 | §14.3 — Mailboxes | 14-8 | design | prose |
 | Chapter batch | 14-9 | comprehension + schedule play · lupin | run (lupin) |
+| Chapter batch | 14-10 | extension · lupin | run (lupin) |
 
 ## ch15 — 9 exercises
 
@@ -293,7 +339,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §15.3 — The root supervisor | 15-8 | spelunking · corpus | prose |
 | Chapter batch | 15-9 | design | prose |
 
-## ch16 — 9 exercises
+## ch16 — 10 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
@@ -306,6 +352,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | Chapter batch | 16-7 | extension · lupin | run (lupin) |
 | Chapter batch | 16-8 | comprehension + schedule play · lupin | run (lupin) |
 | Chapter batch | 16-9 | comprehension · wolf + lupin | run (wolf + lupin) |
+| Chapter batch | 16-10 | extension · lupin | run (lupin) |
 
 ## ch17 — 9 exercises
 
@@ -321,7 +368,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §17.3 — Scope honesty (what exploration cannot see) | 17-8 | design | prose |
 | Chapter batch | 17-9 | extension (break-it-on-purpose) · lupin | run (lupin) |
 
-## ch18 — 12 exercises
+## ch18 — 15 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
@@ -337,6 +384,9 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §18.4 — What it refuses to do | 18-10 | extension (break-it-on-purpose) · wolf | run (wolf) |
 | Chapter batch (not printed; see the note at the head) | 18-11 | extension · wolf | run (wolf) |
 | Chapter batch | 18-12 | design | prose |
+| §18.3 — Where comptime already touched your code | 18-13 | spelunking · wolf | run (wolf) |
+| §18.3 — Where comptime already touched your code | 18-14 | comprehension · wolf | run (wolf) |
+| Chapter batch (printed in §18.4) | 18-15 | extension · wolf | run (wolf) |
 
 ## ch19 — 5 exercises
 
@@ -388,7 +438,7 @@ until the verifying compiler lands.)*
 | Chapter batch | 21-8 | comprehension · pending | pending |
 | Chapter batch | 21-9 | comprehension · prose | prose |
 
-## ch22 — 8 exercises
+## ch22 — 14 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
@@ -400,6 +450,12 @@ until the verifying compiler lands.)*
 | §22.2 — No cycles | 22-6 | comprehension · prose | prose |
 | §22.3 — No life before main | 22-7 | comprehension · wolf | run (wolf) |
 | Chapter batch | 22-8 | design | prose |
+| §22.1 — Directory = module | 22-11 | fingers · lupin | run (lupin) |
+| §22.1 — Directory = module | 22-12 | comprehension + extension · lupin | run (lupin) |
+| §22.2 — No cycles | 22-13 | spelunking · wolf | run (wolf) |
+| Chapter batch | 22-9 | extension · lupin | run (lupin) |
+| Chapter batch | 22-10 | extension · lupin | run (lupin) |
+| Chapter batch | 22-14 | design | prose |
 
 ## ch23 — 8 exercises
 

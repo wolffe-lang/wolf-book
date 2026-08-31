@@ -1,0 +1,9 @@
+//! check: fail(E0412)
+//! phase: typecheck
+// Exercise 18-13: one wrong letter in a format spec, and the grammar
+// arrives in the diagnostic.
+fn main() -> !int {
+    let total = 1249.5
+    print("{total:>9.2z}")
+    0
+}

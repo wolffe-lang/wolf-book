@@ -1,0 +1,42 @@
+//! check: run(exit=0, stdout="seat 4 survives")
+//! phase: run
+// Exercise 16-10 solution: the survivor ring, moved whole to its reader.
+fn eliminate(mut alive: List[int], every: int, seats: int) {
+    var living = seats
+    var cur = 0
+    var counted = 0
+    while living > 1 {
+        if alive[cur] == 1 {
+            counted += 1
+            if counted == every {
+                alive[cur] = 0
+                living -= 1
+                counted = 0
+            }
+        }
+        cur = (cur + 1) % seats
+    }
+}
+fn last_seat(alive: List[int], seats: int) -> int {
+    var seat = 0
+    for i in 0..seats {
+        if alive[i] == 1 { seat = i + 1 }
+    }
+    seat
+}
+fn main() -> !int {
+    let ch = channel[region](1)
+    let r = region()
+    var alive = in r { List[int]() }
+    for _ in 0..7 { (mut alive).push(1) }
+    eliminate(mut alive, 3, 7)
+    scope s {
+        s.spawn(fn() {
+            let r2 = ch.recv() else |_| { return }
+            let seat = in r2 { last_seat(alive, 7) }
+            print("seat {seat} survives")
+        })
+        ch.send(move r)
+    }
+    0
+}

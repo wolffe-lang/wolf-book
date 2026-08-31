@@ -6,11 +6,11 @@ disk with the outcome their directive headers claim, and the manifest
 names what blocks them. Nothing below shows an output that was not
 produced.
 
-Five of the eight are printed in the chapter: 13-2, 13-3 and 13-4 in
-§13.2, and 13-5 and 13-7 in the chapter batch. The other three are
-`par`'s — 13-1 and 13-6 hold pending rows, and 13-8's subject is
-`par`'s decomposition contract — so all three are written, on file, and
-not printed. They land with §13.1.
+Seven of the ten are printed in the chapter: 13-2, 13-3 and 13-4 in
+§13.2, and 13-5, 13-7, 13-9 and 13-10 in the chapter batch. The other
+three are `par`'s — 13-1 and 13-6 hold pending rows, and 13-8's
+subject is `par`'s decomposition contract — so all three are written,
+on file, and not printed. They land with §13.1.
 
 ## §13.1 — `par`
 
@@ -312,3 +312,102 @@ contract doing its work: because `par` returns results in input order
 and joins inside the call, the decomposition is unobservable (13-4's
 lesson as an API guarantee), so the runtime may re-decide it per run,
 per machine, per load, without changing the program's result.
+
+**Exercise 13-9** *(extension · lupin)*. The caesar shift, sequential
+on purpose: `shift(s, k)` moves each lowercase letter `k` places with
+wraparound (`chars`, casts, `% 26`) and passes everything else
+through. Encode a line with `k = 3`, decode with the *same function*,
+and make `main` exit nonzero if the round trip misses. Two questions:
+what number decodes for `k = 3`, and — the extension — if the shift
+instead came from the letters of a key word repeating along the
+message, what would decode have to do that it does not do now?
+
+Solution. `ch13/ex13-9.lu`:
+
+```wolf
+fn shift(s: str, k: int) -> str {
+    var out = ""
+    for c in s.chars() {
+        if c >= 'a' && c <= 'z' {
+            let at = (c as int) - ('a' as int)
+            let moved = (at + k) % 26
+            out = "{out}{(moved + ('a' as int)) as char}"
+        } else {
+            out = "{out}{c}"
+        }
+    }
+    out
+}
+fn main() -> !int {
+    let plain = "the wolf runs at dusk"
+    let coded = shift(plain, 3)
+    let back = shift(coded, 23)
+    print(coded)
+    print(back)
+    if back != plain { return 1 }
+    0
+}
+```
+
+```console
+$ lupin ex13-9.lu
+wkh zroi uxqv dw gxvn
+the wolf runs at dusk
+```
+
+23 decodes, because 3 + 23 is 26 and `% 26` makes 26 the identity —
+decode is encode with the complementary shift, one function doing
+both jobs. Under a repeating key the complement is *per position*:
+decode must walk the key alongside the message and complement each
+letter's own shift, so the one thing it needs that the fixed-shift
+version lacks is an index — the loop over `chars()` grows a counter,
+and everything else survives unchanged. (That per-position version is
+the Vigenère cipher, and the counter is the whole difference.)
+
+**Exercise 13-10** *(comprehension + extension · lupin)*. 13-5's byte
+scan found lines; this one counts hits. Write
+`count(hay, needle, overlapping)` — the same
+`hay[i..i + needle.len] == needle` probe — where the flag decides
+whether a hit advances `i` by one byte or by the needle's length.
+Predict both answers for `"aaaa"` / `"aa"` before running. Which
+convention does a text editor's find-and-replace need, and what goes
+wrong under the other one?
+
+Solution. `ch13/ex13-10.lu`:
+
+```wolf
+fn count(hay: str, needle: str, overlapping: bool) -> int {
+    var hits = 0
+    var i = 0
+    while i + needle.len <= hay.len {
+        if hay[i..i + needle.len] == needle {
+            hits += 1
+            i += if overlapping { 1 } else { needle.len }
+        } else {
+            i += 1
+        }
+    }
+    hits
+}
+fn main() -> !int {
+    print("{count("aaaa", "aa", true)} {count("aaaa", "aa", false)}")
+    print("{count("the wolf the ridge the creek", "the", true)}")
+    0
+}
+```
+
+```console
+$ lupin ex13-10.lu
+3 2
+3
+```
+
+Overlapping sees hits at offsets 0, 1, 2; non-overlapping consumes
+two bytes per hit and sees 0 and 2. Find-and-replace needs the
+non-overlapping convention: each replacement consumes its match, so
+the next search resumes *after* it. Under the overlapping count a
+replace of `"aa"` in `"aaaa"` would claim three sites where only two
+disjoint replacements exist — the second "hit" overlaps bytes the
+first replacement already rewrote. A count is only meaningful with
+its consumption rule attached, which is why the flag is in the
+signature and not in a comment.

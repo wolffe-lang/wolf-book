@@ -1,0 +1,10 @@
+//! check: fail(E0302)
+//! phase: parse
+// Exercise 22-12, before: two files of `labels` both define `title` —
+// a module's namespace is the union of its files.
+use labels
+
+fn main() -> !int {
+    print(labels.title("wolf"))
+    0
+}

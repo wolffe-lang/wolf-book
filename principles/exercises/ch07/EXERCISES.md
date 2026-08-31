@@ -499,3 +499,112 @@ point; which choice produced it is recoverable only by comparing a
 cell with its neighbors, and the neighbors that explain `(i, j)` are
 behind it. The recursion runs to the origin and prints on the way
 back out, so the output comes out forward.
+
+**Exercise 7-14** *(fingers · lupin)*. The plane-geometry kata: a
+`Point`, a `Rect` of two points (low corner in, high corner out), and
+an `impl` giving `Rect` three methods — `contains(self, p)`,
+`overlaps(self, o)`, `area(self)`. Probe the edges: a point on the low
+edge, a point on the high edge, a rectangle that shares only a corner
+line. Every method here borrows. How do you know that from the
+signatures alone?
+
+Solution. `ch07/ex7-14.lu`:
+
+```wolf
+struct Point { x: int, y: int }
+struct Rect { lo: Point, hi: Point }
+impl Rect {
+    fn contains(self, p: Point) -> bool {
+        p.x >= self.lo.x && p.x < self.hi.x && p.y >= self.lo.y && p.y < self.hi.y
+    }
+    fn overlaps(self, o: Rect) -> bool {
+        self.lo.x < o.hi.x && o.lo.x < self.hi.x && self.lo.y < o.hi.y && o.lo.y < self.hi.y
+    }
+    fn area(self) -> int {
+        (self.hi.x - self.lo.x) * (self.hi.y - self.lo.y)
+    }
+}
+fn main() -> !int {
+    let den = Rect { lo: Point { x: 0, y: 0 }, hi: Point { x: 4, y: 3 } }
+    let ridge = Rect { lo: Point { x: 3, y: 1 }, hi: Point { x: 6, y: 5 } }
+    let creek = Rect { lo: Point { x: 4, y: 3 }, hi: Point { x: 7, y: 6 } }
+    print("area {den.area()}")
+    print("{den.contains(Point { x: 3, y: 2 })} {den.contains(Point { x: 4, y: 2 })}")
+    print("{den.overlaps(ridge)} {den.overlaps(creek)}")
+    0
+}
+```
+
+```console
+$ lupin ex7-14.lu
+area 12
+true false
+true false
+```
+
+Half-open on purpose: the low edge is in (`>=`), the high edge is out
+(`<`), so `contains` at x = 4 in a rect that ends at 4 is `false`, and
+two rects that only touch (`creek` starts exactly where `den` ends)
+do not overlap — the same convention every slice in chapter 2 used,
+because shared edges double-count under closed intervals. The
+signatures carry no `mut`, no `take`: every parameter is the default
+mode, which chapter 7 defined as borrow-and-read. The absence *is*
+the documentation, and it is checkable — add a write to any method
+body and the compiler names the missing `mut` at both ends.
+
+**Exercise 7-15** *(extension · lupin)*. One job, two ownership
+stories: uppercase every string in a list. Write it consuming —
+`shouted(take xs)` returns a new list and the argument is gone — and
+lending — `shout(mut xs)` rewrites in place and returns nothing. Run
+both. Count what each costs at the call site and in allocations, then
+answer: which one should a library export, and does the other need to
+exist at all?
+
+Solution. `ch07/ex7-15.lu`:
+
+```wolf
+fn shouted(take xs: List[str]) -> List[str] {
+    var out = List[str]()
+    for x in xs {
+        (mut out).push(x.upper())
+    }
+    out
+}
+fn shout(mut xs: List[str]) {
+    var i = 0
+    while i < xs.len {
+        xs[i] = xs[i].upper()
+        i += 1
+    }
+}
+fn main() -> !int {
+    var a = List[str]()
+    (mut a).push("howl")
+    (mut a).push("scratch")
+    let b = shouted(take a)
+    print("{b[0]} {b[1]}")
+    var c = List[str]()
+    (mut c).push("howl")
+    (mut c).push("scratch")
+    shout(mut c)
+    print("{c[0]} {c[1]}")
+    0
+}
+```
+
+```console
+$ lupin ex7-15.lu
+HOWL SCRATCH
+HOWL SCRATCH
+```
+
+The consuming version costs a whole second list and takes the caller's
+original away — after `take a`, using `a` is the E1001 this chapter
+opened with. The lending version allocates only the strings it
+replaces and the caller keeps their binding; the price is one `mut` at
+each end, which is a price in *candor*, not in machinery. Export the
+lender: the caller who wanted the consuming shape can build it from
+the lender in two lines (`copy`, then `shout`), but the reverse is
+impossible — a consumed argument cannot be un-eaten. An API should
+take the least ownership that does the job, precisely so the bigger
+appetite stays the caller's decision.

@@ -1,0 +1,31 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 12-10 solution: the bracket matcher on the worklist stack.
+fn balanced(line: str) -> bool {
+    var stack = List[char]()
+    for c in line.chars() {
+        if c == '(' || c == '[' || c == '{' {
+            (mut stack).push(c)
+        } else if c == ')' || c == ']' || c == '}' {
+            if stack.len == 0 { return false }
+            let open = stack[stack.len - 1]
+            (mut stack).pop()
+            if c == ')' && open != '(' { return false }
+            if c == ']' && open != '[' { return false }
+            if c == '}' && open != '{' { return false }
+        }
+    }
+    stack.len == 0
+}
+fn main() -> !int {
+    var cases = List[str]()
+    (mut cases).push(r"when (a, b) { c[0] }")
+    (mut cases).push(r"select { (a from q => { ) }")
+    (mut cases).push(r"([{}])")
+    (mut cases).push(r"((")
+    for line in cases {
+        let verdict = if balanced(line) { "ok " } else { "BAD" }
+        print("{verdict} {line}")
+    }
+    0
+}

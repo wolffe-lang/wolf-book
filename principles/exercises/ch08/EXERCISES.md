@@ -564,3 +564,59 @@ copy of the text. Peak memory is the text plus a few dozen bytes of
 list. At the brace, even those go, wholesale. That is the region
 answer to a question `wc` authors in C solve with careful `free`
 bookkeeping: put the bookkeeping in the shape, then stop doing it.
+
+**Exercise 8-17** *(extension · lupin)*. A bounded window: keep only
+the last three of a stream of nine updates, in a three-slot
+`List[str]` that lives in its own region, slots overwritten with
+`next % 3`. When the stream ends, read the window oldest-first —
+`(next + i) % 3` — assemble the report, then freeze the region and
+print. Nine updates arrived and three strings exist. Where did the
+other six go, and *when* did each one go?
+
+Solution. `ch08/ex8-17.lu`:
+
+```wolf
+fn main() -> !int {
+    let updates = """
+        one
+        two
+        three
+        four
+        five
+        six
+        seven
+        eight
+        nine
+        """
+    let window = region()
+    var recent = in window { List[str]() }
+    for _ in 0..3 { (mut recent).push("") }
+    var next = 0
+    for line in updates.lines() {
+        recent[next % 3] = line
+        next += 1
+    }
+    var report = ""
+    for i in 0..3 {
+        report += "{recent[(next + i) % 3]} "
+    }
+    let snapshot = freeze window
+    print(report.trim())
+    0
+}
+```
+
+```console
+$ lupin ex8-17.lu
+seven eight nine
+```
+
+Each of the six was dropped at the assignment that overwrote its
+slot: `recent[next % 3] = line` replaces the slot's old value, and a
+replaced value with no other owner is gone then, not at the region's
+end. The region bounds the *worst case* — at no point does the window
+hold more than three strings plus the one in flight — and the freeze
+at the end is the §8.5 move: the finished window becomes permanent,
+readable, and closed to the overwriting that built it. A ring plus a
+region is "bounded memory" spelled twice, once in index arithmetic
+and once in the shape.

@@ -8,7 +8,7 @@ to be. The day a blocking feature lands, its exercises join the CI run
 their headers already describe; until then this manifest is the honest
 list. No aspirational green.
 
-Note for the compiler track: the whole corpus — 191 directive-headed
+Note for the compiler track: the whole corpus — 244 directive-headed
 `.lu` files under `principles/exercises/`, runnable and pending alike —
 is a seed farm for the toolchain's corpus and fuzz harnesses. The
 pending files are the most valuable seeds: each one encodes an expected
@@ -83,6 +83,18 @@ paragraphs above keep reading correctly as history:
 - The new printed sets (19-1 … 19-5, 20-1 … 20-4) are green today;
   ex19-1.lu and ex20-1.lu join the corpus (189 → 191 directive-headed
   files).
+
+## The bs21 ladder (2026-08-31)
+
+The K&R program ladder grew the corpus 191 → 244 `.lu` files (45 new
+exercises across chapters 1–9, 12–14, 16, 18 and 22, including the
+ch22 multi-file tier's directories and one proof file, ch03's
+`ex3-8b.lu`). No row above moved: every new sample runs green at the
+pins on the lane its directive claims, no new pending rows were filed,
+and the runner reported zero flips. The ch18 note in the index is
+worth repeating here so nobody re-derives it: 18-3, 18-5 and 18-11
+left this table at bs09, and at bs21 their master annotations caught
+up — `· wolf`, real `wolf run` transcripts, no pending language.
 
 ## Retired entries
 

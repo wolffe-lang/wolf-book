@@ -1,0 +1,48 @@
+//! check: wolf-run(exit=0, stdout="MCMXCIV 2026")
+//! phase: run
+// Exercise 18-15: roman numerals both ways, the round trip a compile-time witness.
+comptime fn glyph(at: int) -> str {
+    if at == 0 { "M" } else if at == 1 { "CM" } else if at == 2 { "D" } else if at == 3 { "CD" } else if at == 4 { "C" } else if at == 5 { "XC" } else if at == 6 { "L" } else if at == 7 { "XL" } else if at == 8 { "X" } else if at == 9 { "IX" } else if at == 10 { "V" } else if at == 11 { "IV" } else { "I" }
+}
+comptime fn worth(at: int) -> int {
+    if at == 0 { 1000 } else if at == 1 { 900 } else if at == 2 { 500 } else if at == 3 { 400 } else if at == 4 { 100 } else if at == 5 { 90 } else if at == 6 { 50 } else if at == 7 { 40 } else if at == 8 { 10 } else if at == 9 { 9 } else if at == 10 { 5 } else if at == 11 { 4 } else { 1 }
+}
+comptime fn to_roman(n: int) -> str {
+    var out = ""
+    var rest = n
+    var at = 0
+    while at < 13 {
+        while rest >= worth(at) {
+            out = "{out}{glyph(at)}"
+            rest -= worth(at)
+        }
+        at += 1
+    }
+    out
+}
+comptime fn one(s: str, i: int) -> int {
+    let ch = s.get(i..i + 1) else |_| { "" }
+    if ch == "M" { 1000 } else if ch == "D" { 500 } else if ch == "C" { 100 } else if ch == "L" { 50 } else if ch == "X" { 10 } else if ch == "V" { 5 } else if ch == "I" { 1 } else { 0 }
+}
+comptime fn from_roman(s: str) -> int {
+    var total = 0
+    var i = 0
+    while i < s.len {
+        let here = one(s, i)
+        let next = if i + 1 < s.len { one(s, i + 1) } else { 0 }
+        total += if here < next { 0 - here } else { here }
+        i += 1
+    }
+    total
+}
+comptime fn round_trips(n: int) -> bool {
+    assert(from_roman(to_roman(n)) == n)
+    true
+}
+fn main() -> !int {
+    const YEAR = to_roman(1994)
+    const BACK = from_roman("MMXXVI")
+    const WITNESS = round_trips(3888)
+    print("{YEAR} {BACK}")
+    if WITNESS { 0 } else { 1 }
+}

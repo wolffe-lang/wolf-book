@@ -1,0 +1,31 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 4-11 solution: Zeller's congruence, checked against three
+// dates whose weekday is a matter of record.
+fn weekday(y: int, m: int, d: int) -> str {
+    var mm = m
+    var yy = y
+    if m < 3 {
+        mm = m + 12
+        yy = y - 1
+    }
+    let k = yy % 100
+    let j = yy / 100
+    let h = (d + 13 * (mm + 1) / 5 + k + k / 4 + j / 4 + 5 * j) % 7
+    match h {
+        0 => "saturday",
+        1 => "sunday",
+        2 => "monday",
+        3 => "tuesday",
+        4 => "wednesday",
+        5 => "thursday",
+        6 => "friday",
+        _ => "never",
+    }
+}
+fn main() -> !int {
+    print("{weekday(2026, 8, 31)}")
+    print("{weekday(2000, 1, 1)}")
+    print("{weekday(1969, 7, 20)}")
+    0
+}

@@ -2,6 +2,35 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs21 — 2026-08-31 — the exercises multiply
+
+The K&R ladder: 45 new program-shaped exercises (43 printed, two held
+to the masters as drills), each a self-contained tool the reader
+leaves owning — temperature tables and a longest-line finder in
+chapter 1; reverse, squeeze, centering, visible escapes and
+detab/entab in chapter 2; the pack drill, a binary table, one-pass
+statistics and arithmetic palindromes in chapter 3; Collatz, a
+closure factory, `rtrim` and Zeller's weekday in chapter 4; the
+run-length pair round-tripped by exit code, a histogram, `any_index`,
+a CSV ledger and a line folder in chapter 5; `itoa`, a hardened
+decoder row and a date validator in chapter 6; the Point/Rect kata
+and a consume-versus-lend rewrite in chapter 7; a region ring window,
+a little-endian byte round trip, a bracket matcher and infix→postfix
+on the worklist stack, a caesar round trip, substring counting both
+ways, a stockroom proc, the Josephus ring moved whole, and — filling
+chapter 18's own ledger asks — the E0412 grammar spelunk, the
+`Buf[…]` identity drill, and roman numerals folded both ways with a
+compile-time witness. Chapter 22 gains the multi-file tier: a
+two-module word counter, a calculator behind an `ops` seam, the
+`//! member: false` scratch pair with its one-marker trap, an
+in-module name clash and its fix, an export-hash spelunk, and a
+what-earns-`pub` design. The Notation chapter now states the
+directive-header and member-marker rules it was long cited for;
+Appendix C gains `W0313`. The corpus grows 191 → 244 files, the index
+recounts mechanically at 324 exercises (275 printed), and every new
+sample replays green: 448 passed against bs20's 401, zero failures,
+zero flips, no new pending rows.
+
 ## bs20 — 2026-08-31 — the record on the page
 
 Chapter 25 gains its first printed section. §25.3 teaches `wolf

@@ -73,6 +73,43 @@ every Celsius entry here is rounded toward warm. K&R's version had the
 same bug and fixed it with floats; wolf gets there in chapter 2's
 format specs.
 
+**Exercise 1-9** *(fingers · lupin)*. Drive 1-5's table the other way:
+Celsius −20 to 40 in steps of 10, Fahrenheit beside it, both columns
+right-aligned. This direction has no rounding bug. Say why not before
+you run it.
+
+Solution. `ch01/ex1-9.lu`:
+
+```wolf
+fn main() -> !int {
+    var c = -20
+    while c <= 40 {
+        let f = c * 9 / 5 + 32
+        print("{c:>4}{f:>6}")
+        c += 10
+    }
+    0
+}
+```
+
+```console
+$ lupin ex1-9.lu
+ -20    -4
+ -10    14
+   0    32
+  10    50
+  20    68
+  30    86
+  40   104
+```
+
+The multiply happens first, and every Celsius entry here is a multiple
+of 5, so `c * 9` is a multiple of 45 and the division by 5 is exact.
+1-5 divided a number that was not a multiple of 9 by 9 and lost the
+remainder. Same operators, opposite order, and one direction tells the
+truth by accident of the inputs — which is why chapter 2's format
+specs, not luck, are the durable fix.
+
 ## §1.5 — What `run` was doing for you
 
 **Exercise 1-6** *(spelunking · lupin)*. Delete the closing brace of a
@@ -117,6 +154,37 @@ interface surfaces of what it depends on), so an unchanged key is an
 answer already on disk. The key in your terminal will differ from the
 one above; the word `reused` will not.
 
+**Exercise 1-10** *(comprehension · lupin)*. Before running, write down
+what this program prints and what `echo $?` shows afterward:
+
+```wolf
+fn main() -> !int {
+    let amounts = """
+        3
+        four
+        5
+        """
+    var total = 0
+    for row in amounts.lines() {
+        total += row.to_int() else 0
+    }
+    print("counted")
+    total
+}
+```
+
+Solution: it prints `counted` and exits `8`. The middle row is not a
+number, `else 0` makes it worth nothing, and the sum of the other two
+rides out of `main` as the exit code — the same last-expression rule
+1-2 established, with the value computed instead of literal.
+
+```console
+$ lupin ex1-10.lu
+counted
+$ echo $?
+8
+```
+
 ## §1.2 — Two implementations, one language
 
 **Exercise 1-7** *(fingers · wolf + lupin)*. Compile the greeting with
@@ -141,3 +209,38 @@ against its own string model: two separate pieces of code, written
 from the specification rather than from each other. A byte of
 disagreement between them is a bug in one implementation or a hole in
 the specification, and it is found here rather than in your program.
+
+## §1.1 — A program worth keeping
+
+**Exercise 1-11** *(fingers · lupin)*. Find the longest line of a
+multiline block and print its length and the line itself, in that
+order. One pass, one comparison. What does your program print when two
+lines tie, and which line of your code decided that?
+
+Solution. `ch01/ex1-11.lu`:
+
+```wolf
+fn main() -> !int {
+    let log = """
+        the wolf runs
+        the moon watches the ridge
+        dawn
+        """
+    var best = ""
+    for line in log.lines() {
+        if line.len > best.len { best = line }
+    }
+    print("{best.len} {best}")
+    0
+}
+```
+
+```console
+$ lupin ex1-11.lu
+26 the moon watches the ridge
+```
+
+On a tie the first of the tied lines wins, and the `>` decided it: a
+later line replaces `best` only by being strictly longer. Writing `>=`
+hands the tie to the last line instead. One character of the program is
+the whole policy, which is the reason to know where it is.

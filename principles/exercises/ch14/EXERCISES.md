@@ -281,3 +281,66 @@ enters it. What varies is the interleaving of the two clients' sends
 addition commutes. Replace `total += c` with an operation that does
 not commute and the seeds stop agreeing; chapter 17 hunts exactly that
 program.
+
+**Exercise 14-10** *(extension · lupin)*. A stockroom proc: its mailbox
+carries lines like `put 40` and `take 15`, each handled to completion —
+parse the verb and the number with `words()`, keep a running count,
+floor it at zero when a `take` overdraws. `main` sends five commands,
+closes, and learns the final count the way 14-6's shelver reported its
+words: riding home in the exit reason. Why does the overdraw rule live
+in the proc rather than in the senders, and what does that placement
+buy when a second sender appears?
+
+Solution. `ch14/ex14-10.lu`:
+
+```wolf
+fn stockroom(cmds: channel[str]) -> int {
+    var held = 0
+    for c in cmds {
+        var verb = ""
+        var n = 0
+        var i = 0
+        for w in c.words() {
+            if i == 0 { verb = w }
+            if i == 1 { n = w.to_int() else 0 }
+            i += 1
+        }
+        if verb == "put" { held += n }
+        if verb == "take" {
+            if n > held { held = 0 } else { held -= n }
+        }
+    }
+    held
+}
+fn main() -> !int {
+    let cmds = channel[str](8)
+    let keeper = spawn proc stockroom(cmds)
+    let m = keeper.monitor()
+    cmds.send("put 40")
+    cmds.send("take 15")
+    cmds.send("put 6")
+    cmds.send("take 90")
+    cmds.send("put 12")
+    cmds.close()
+    select {
+        exit(reason) from m => { print("stockroom closed: {reason}") },
+        timeout(1.s) => { print("stuck") },
+    }
+    0
+}
+```
+
+```console
+$ lupin ex14-10.lu
+stockroom closed: normal(12)
+```
+
+The trace: 40, 25, 31, floored to 0 by the 90, then 12. The overdraw
+rule lives in the proc because the count does: a sender enforcing "do
+not take more than is held" would need to *ask* first, and between its
+ask and its take another sender can move the count — the check-then-act
+race every shared ledger invents. Inside the handler the rule is
+atomic for free, §14.3's law (one message at a time, to completion)
+doing the work of a lock. A second sender therefore costs nothing:
+senders stay ignorant of the invariant, and the one place that owns
+the count is the one place that defends it.

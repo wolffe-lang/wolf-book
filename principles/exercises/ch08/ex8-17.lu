@@ -1,0 +1,31 @@
+//! check: run(exit=0, stdout="seven eight nine")
+//! phase: run
+// Exercise 8-17 solution: a three-slot window over nine updates.
+fn main() -> !int {
+    let updates = """
+        one
+        two
+        three
+        four
+        five
+        six
+        seven
+        eight
+        nine
+        """
+    let window = region()
+    var recent = in window { List[str]() }
+    for _ in 0..3 { (mut recent).push("") }
+    var next = 0
+    for line in updates.lines() {
+        recent[next % 3] = line
+        next += 1
+    }
+    var report = ""
+    for i in 0..3 {
+        report += "{recent[(next + i) % 3]} "
+    }
+    let snapshot = freeze window
+    print(report.trim())
+    0
+}

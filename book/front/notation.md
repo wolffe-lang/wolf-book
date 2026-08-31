@@ -163,3 +163,14 @@ Every exercise has a solution, and every solution program is a sample
 like any other: extracted, executed, and snapshot-checked in the same CI
 run as the chapters. A solution that stops compiling fails the book's
 build.
+
+Solution files on disk open with a `//!` header stating the outcome CI
+holds them to — the directive-header rule. From the modules chapter on,
+some solutions are directories rather than files, and the header then
+also says what each file *is*: `//! member: true` on a file that exists
+only as part of its directory's module, `//! member: false` on a whole
+program that merely shares the directory. Sibling files are one module
+unless they say otherwise, so the marker is load-bearing — two
+standalone programs in one directory each mark themselves
+`member: false`, or the loader reads them as one module with two
+`main`s and refuses.

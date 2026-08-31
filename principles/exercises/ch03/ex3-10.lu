@@ -1,0 +1,15 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 3-10 solution: binary spellings built by hand.
+fn main() -> !int {
+    for n in 1..17 {
+        var bits = ""
+        var rest = n
+        while rest > 0 {
+            bits = "{rest % 2}" + bits
+            rest = rest / 2
+        }
+        print("{n:>3} {bits:>6}")
+    }
+    0
+}

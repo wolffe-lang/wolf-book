@@ -1,0 +1,25 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 7-14 solution: the Point/Rect kata.
+struct Point { x: int, y: int }
+struct Rect { lo: Point, hi: Point }
+impl Rect {
+    fn contains(self, p: Point) -> bool {
+        p.x >= self.lo.x && p.x < self.hi.x && p.y >= self.lo.y && p.y < self.hi.y
+    }
+    fn overlaps(self, o: Rect) -> bool {
+        self.lo.x < o.hi.x && o.lo.x < self.hi.x && self.lo.y < o.hi.y && o.lo.y < self.hi.y
+    }
+    fn area(self) -> int {
+        (self.hi.x - self.lo.x) * (self.hi.y - self.lo.y)
+    }
+}
+fn main() -> !int {
+    let den = Rect { lo: Point { x: 0, y: 0 }, hi: Point { x: 4, y: 3 } }
+    let ridge = Rect { lo: Point { x: 3, y: 1 }, hi: Point { x: 6, y: 5 } }
+    let creek = Rect { lo: Point { x: 4, y: 3 }, hi: Point { x: 7, y: 6 } }
+    print("area {den.area()}")
+    print("{den.contains(Point { x: 3, y: 2 })} {den.contains(Point { x: 4, y: 2 })}")
+    print("{den.overlaps(ridge)} {den.overlaps(creek)}")
+    0
+}

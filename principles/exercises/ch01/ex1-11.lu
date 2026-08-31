@@ -1,0 +1,16 @@
+//! check: run(exit=0, stdout="26 the moon watches the ridge")
+//! phase: run
+// Exercise 1-11 solution: the longest line wins.
+fn main() -> !int {
+    let log = """
+        the wolf runs
+        the moon watches the ridge
+        dawn
+        """
+    var best = ""
+    for line in log.lines() {
+        if line.len > best.len { best = line }
+    }
+    print("{best.len} {best}")
+    0
+}

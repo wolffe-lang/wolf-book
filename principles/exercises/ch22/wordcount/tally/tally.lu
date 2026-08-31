@@ -1,0 +1,27 @@
+//! member: true
+/// Counting words; nothing here knows what a line is.
+
+/// Distinct words in first-seen order, with their counts, as two
+/// parallel lists (the pair composes where a `Map` forgets order).
+pub fn count(words: List[str]) -> (List[str], List[int]) {
+    var seen = List[str]()
+    var counts = List[int]()
+    for w in words {
+        let at = index_of(seen, w)
+        if at < 0 {
+            (mut seen).push(w)
+            (mut counts).push(1)
+        } else {
+            counts[at] = counts[at] + 1
+        }
+    }
+    (seen, counts)
+}
+fn index_of(xs: List[str], s: str) -> int {
+    var i = 0
+    for x in xs {
+        if x == s { return i }
+        i += 1
+    }
+    0 - 1
+}

@@ -1,0 +1,21 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 13-10 solution: substring counting, both conventions.
+fn count(hay: str, needle: str, overlapping: bool) -> int {
+    var hits = 0
+    var i = 0
+    while i + needle.len <= hay.len {
+        if hay[i..i + needle.len] == needle {
+            hits += 1
+            i += if overlapping { 1 } else { needle.len }
+        } else {
+            i += 1
+        }
+    }
+    hits
+}
+fn main() -> !int {
+    print("{count("aaaa", "aa", true)} {count("aaaa", "aa", false)}")
+    print("{count("the wolf the ridge the creek", "the", true)}")
+    0
+}

@@ -1,0 +1,10 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 22-12, after: one name per job; the files stay.
+use labels
+
+fn main() -> !int {
+    print(labels.title("wolf"))
+    print(labels.banner("wolf"))
+    0
+}

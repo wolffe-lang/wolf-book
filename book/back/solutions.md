@@ -235,6 +235,119 @@ answer already on disk. The key in your terminal will differ from the
 one above; the word `reused` will not.
 </details>
 
+<details>
+<summary>Exercise 1-9. [§1.3](../ch01.md#1.3)</summary>
+
+**Exercise 1-9** *(fingers · lupin)*. Drive 1-5's table the other way:
+Celsius −20 to 40 in steps of 10, Fahrenheit beside it, both columns
+right-aligned. This direction has no rounding bug. Say why not before
+you run it.
+
+Solution. `ch01/ex1-9.lu`:
+
+```wolf
+fn main() -> !int {
+    var c = -20
+    while c <= 40 {
+        let f = c * 9 / 5 + 32
+        print("{c:>4}{f:>6}")
+        c += 10
+    }
+    0
+}
+```
+
+```console
+$ lupin ex1-9.lu
+ -20    -4
+ -10    14
+   0    32
+  10    50
+  20    68
+  30    86
+  40   104
+```
+
+The multiply happens first, and every Celsius entry here is a multiple
+of 5, so `c * 9` is a multiple of 45 and the division by 5 is exact.
+1-5 divided a number that was not a multiple of 9 by 9 and lost the
+remainder. Same operators, opposite order, and one direction tells the
+truth by accident of the inputs — which is why chapter 2's format
+specs, not luck, are the durable fix.
+</details>
+
+<details>
+<summary>Exercise 1-10. [§1.5](../ch01.md#1.5)</summary>
+
+**Exercise 1-10** *(comprehension · lupin)*. Before running, write down
+what this program prints and what `echo $?` shows afterward:
+
+```wolf
+fn main() -> !int {
+    let amounts = """
+        3
+        four
+        5
+        """
+    var total = 0
+    for row in amounts.lines() {
+        total += row.to_int() else 0
+    }
+    print("counted")
+    total
+}
+```
+
+Solution: it prints `counted` and exits `8`. The middle row is not a
+number, `else 0` makes it worth nothing, and the sum of the other two
+rides out of `main` as the exit code — the same last-expression rule
+1-2 established, with the value computed instead of literal.
+
+```console
+$ lupin ex1-10.lu
+counted
+$ echo $?
+8
+```
+</details>
+
+<details>
+<summary>Exercise 1-11. [§1.1](../ch01.md#1.1)</summary>
+
+**Exercise 1-11** *(fingers · lupin)*. Find the longest line of a
+multiline block and print its length and the line itself, in that
+order. One pass, one comparison. What does your program print when two
+lines tie, and which line of your code decided that?
+
+Solution. `ch01/ex1-11.lu`:
+
+```wolf
+fn main() -> !int {
+    let log = """
+        the wolf runs
+        the moon watches the ridge
+        dawn
+        """
+    var best = ""
+    for line in log.lines() {
+        if line.len > best.len { best = line }
+    }
+    print("{best.len} {best}")
+    0
+}
+```
+
+```console
+$ lupin ex1-11.lu
+26 the moon watches the ridge
+```
+
+On a tie the first of the tied lines wins, and the `>` decided it: a
+later line replaces `best` only by being strictly longer. Writing `>=`
+hands the tie to the last line instead. One character of the program is
+the whole policy, which is the reason to know where it is.
+</details>
+
 ## Chapter 2
 
 <details>
@@ -268,9 +381,9 @@ Solution. `ch02/ex2-2.lu`:
 ```wolf
 fn main() -> !int {
     var names = List[str]()
-    names.push("wolf")
-    names.push("marmot")
-    names.push("elk")
+    (mut names).push("wolf")
+    (mut names).push("marmot")
+    (mut names).push("elk")
     var i = 0
     for n in names {
         i += 1
@@ -494,6 +607,194 @@ this section is the last: `"e\u{301}".chars().len` is 2. A combining
 accent is its own scalar, so the glyph a reader sees as one letter is
 two chars in a three-byte string. Bytes count storage, chars count
 scalars, and neither counts what the reader sees.
+</details>
+
+<details>
+<summary>Exercise 2-10. [§2.4](../ch02.md#2.4)</summary>
+
+**Exercise 2-10** *(fingers · lupin)*. Reverse each word of
+`"the wolf runs"`, keeping the words in order. Build each reversal with
+`chars()` and string joins alone. Then say why reversing the *bytes*
+instead would wreck `"éland"` while this version does not.
+
+Solution. `ch02/ex2-10.lu`:
+
+```wolf
+fn main() -> !int {
+    var out = ""
+    for w in "the wolf runs".words() {
+        var r = ""
+        for c in w.chars() {
+            r = "{c}" + r
+        }
+        if out.is_empty() { out = r } else { out = out + " " + r }
+    }
+    print(out)
+    0
+}
+```
+
+```console
+$ lupin ex2-10.lu
+eht flow snur
+```
+
+`é` is two bytes in a fixed order; reversing bytes would emit them
+backward, and the result is not UTF-8 at all. `chars()` yields whole
+scalars, so prepending each one keeps every multi-byte sequence intact.
+Reversal is the smallest program that shows why "a string is bytes" and
+"a string is text" need different loops.
+</details>
+
+<details>
+<summary>Exercise 2-11. [§2.4](../ch02.md#2.4)</summary>
+
+**Exercise 2-11** *(fingers · lupin)*. Squeeze: delete from
+`"howling at the moon"` every character that appears in a second
+string, here `"aeiou"`. One pass, `contains`, and a growing result.
+Which of the two strings does your loop walk, and what happens to the
+program's cost if you walk the other one?
+
+Solution. `ch02/ex2-11.lu`:
+
+```wolf
+fn main() -> !int {
+    let s = "howling at the moon"
+    let drop = "aeiou"
+    var t = ""
+    for c in s.chars() {
+        if drop.contains("{c}") == false {
+            t += "{c}"
+        }
+    }
+    print(t)
+    0
+}
+```
+
+```console
+$ lupin ex2-11.lu
+hwlng t th mn
+```
+
+The loop walks `s` and probes `drop`, so the work is the text's length
+times the (tiny, fixed) drop set. Walked the other way — for each
+character of `drop`, scan and rebuild `s` — the cost multiplies by the
+number of rebuilds and the code needs a mutable copy per pass. Same
+answer, different bill; the loop order is the algorithm.
+</details>
+
+<details>
+<summary>Exercise 2-12. [§2.1](../ch02.md#2.1)</summary>
+
+**Exercise 2-12** *(comprehension + extension · lupin)*. Center
+`"DEN LOG"` in twenty columns of stars, twice: once with a fill-align
+spec, once by hand with `repeat` and `len`. The padding is thirteen,
+which does not halve. Predict which side gets the extra star under
+each spelling before you run them, then state the rule.
+
+Solution. `ch02/ex2-12.lu`:
+
+```wolf
+fn main() -> !int {
+    let title = "DEN LOG"
+    print("{title:*^20}")
+    let pad = 20 - title.len
+    let left = pad / 2
+    let right = pad - left
+    print("{"*".repeat(left)}{title}{"*".repeat(right)}")
+    0
+}
+```
+
+```console
+$ lupin ex2-12.lu
+******DEN LOG*******
+******DEN LOG*******
+```
+
+Both give the extra star to the right. The spec's rule is exactly the
+hand version's arithmetic: left gets `pad / 2`, truncation rounds the
+left side down, and the remainder lands on the right. The two lines
+matching is the point — `^` is not magic, it is the division you would
+have written.
+</details>
+
+<details>
+<summary>Exercise 2-13. [§2.2](../ch02.md#2.2)</summary>
+
+**Exercise 2-13** *(fingers · lupin)*. Make the invisible visible:
+print `"howl\tat\nthe moon"` as one line in which each tab shows as
+`<tab>` and each newline as `<nl>`. Two `replace` calls chain. Why
+must the program spell its markers in ordinary literals but would
+have needed raw ones to *match* `\t` if the text had carried a real
+backslash?
+
+Solution. `ch02/ex2-13.lu`:
+
+```wolf
+fn main() -> !int {
+    let mixed = "howl\tat\nthe moon"
+    let visible = mixed.replace("\t", "<tab>").replace("\n", "<nl>")
+    print(visible)
+    0
+}
+```
+
+```console
+$ lupin ex2-13.lu
+howl<tab>at<nl>the moon
+```
+
+`"\t"` in the pattern position is the one-byte tab itself, which is
+what the text contains, so the ordinary literal is the right spelling.
+Had the text carried a literal backslash-t — two bytes — the pattern
+would need `r"\t"` to mean those two bytes, because in an ordinary
+literal that spelling collapses to the tab. The escape table applies
+where the literal is written, not where the string is used.
+</details>
+
+<details>
+<summary>Exercise 2-14. [§2.4](../ch02.md#2.4)</summary>
+
+**Exercise 2-14** *(fingers · lupin)*. Detab: replace each tab in
+`"a\tbb\tccc"` with the spaces that carry the column to the next tab
+stop, stops every four columns. Print the result in brackets so the
+spacing is checkable. Why is "replace each tab with four spaces"
+wrong, and which input proves it?
+
+Solution. `ch02/ex2-14.lu`:
+
+```wolf
+fn main() -> !int {
+    let line = "a\tbb\tccc"
+    var out = ""
+    var col = 0
+    for c in line.chars() {
+        if c == '\t' {
+            let stop = (col / 4 + 1) * 4
+            out += " ".repeat(stop - col)
+            col = stop
+        } else {
+            out += "{c}"
+            col += 1
+        }
+    }
+    print("[{out}]")
+    0
+}
+```
+
+```console
+$ lupin ex2-14.lu
+[a   bb  ccc]
+```
+
+A tab's width depends on where it sits: after `a` (column 1) it is
+three spaces; after `bb` (column 6) it is two. "Four spaces" is right
+only when the tab lands on a stop already — the input above proves it
+by needing two different widths for its two tabs. The tab stop is a
+*destination*, not a distance.
 </details>
 
 ## Chapter 3
@@ -727,10 +1028,228 @@ has. The deep story of "hands the value over" (what it means for the
 source afterward, and when it traps) is chapter 7's, on purpose; this
 chapter needs only the direction of the handover.
 
-One honesty note: neither tool rejects a reassignment to a `let`
-binding (`let n = 1` then `n = 2`): lupin prints `2`, wolfc reports
-no diagnostic. The book teaches `let` as single-assignment; treat the
-reassignment as an error even where the tools let it pass.
+A historical honesty note, retired: at this batch's authoring pins
+neither tool rejected a reassignment to a `let` binding. Both do now —
+E0410, naming the `var` fix and the shadowing alternative — so the
+single-assignment rule the book taught on trust is enforced where it
+was written:
+
+```console
+$ lupin ex3-8b.lu
+ex3-8b.lu: E0410: `n` is bound with `let`, so it cannot be assigned again; declare the binding with `var` to update it in place (machine-applicable), or shadow it with a second `let` if the next value is really a new thing [gram.item.let] at 7:5
+$ echo $?
+2
+```
+</details>
+
+<details>
+<summary>Exercise 3-9. [§3.2](../ch03.md#3.2)</summary>
+
+**Exercise 3-9** *(fingers · lupin)*. The pack drill: print 1 through
+15, except that multiples of 3 print `howl`, multiples of 5 print
+`scratch`, and multiples of both print `howlscratch`. One `if`-chain
+as a value, one `print`. Why must the `both` test come first, and
+what prints if it comes last?
+
+Solution. `ch03/ex3-9.lu`:
+
+```wolf
+fn main() -> !int {
+    for i in 1..16 {
+        let word = if i % 15 == 0 {
+            "howlscratch"
+        } else if i % 3 == 0 {
+            "howl"
+        } else if i % 5 == 0 {
+            "scratch"
+        } else {
+            "{i}"
+        }
+        print(word)
+    }
+    0
+}
+```
+
+```console
+$ lupin ex3-9.lu
+1
+2
+howl
+4
+scratch
+howl
+7
+8
+howl
+scratch
+11
+howl
+13
+14
+howlscratch
+```
+
+An `if`-chain takes the first arm whose test passes. 15 is a multiple
+of 3, so with the `both` test last, 15 prints `howl` and the
+`howlscratch` arm is unreachable — no diagnostic says so, because
+every arm is still type-correct. Order is logic here, not style.
+</details>
+
+<details>
+<summary>Exercise 3-10. [§3.4](../ch03.md#3.4)</summary>
+
+**Exercise 3-10** *(extension · lupin)*. Print 1 through 16 with each
+number's binary spelling right-aligned beside it. No format spec you
+have met writes base 2, so build the bits yourself: `% 2` peels the
+low bit, `/ 2` shifts, and prepending assembles them in the right
+order. What does your loop produce for zero, and is that a spelling
+or an absence?
+
+Solution. `ch03/ex3-10.lu`:
+
+```wolf
+fn main() -> !int {
+    for n in 1..17 {
+        var bits = ""
+        var rest = n
+        while rest > 0 {
+            bits = "{rest % 2}" + bits
+            rest = rest / 2
+        }
+        print("{n:>3} {bits:>6}")
+    }
+    0
+}
+```
+
+```console
+$ lupin ex3-10.lu
+  1      1
+  2     10
+  3     11
+  4    100
+  5    101
+  6    110
+  7    111
+  8   1000
+  9   1001
+ 10   1010
+ 11   1011
+ 12   1100
+ 13   1101
+ 14   1110
+ 15   1111
+ 16  10000
+```
+
+For zero the loop body never runs and `bits` stays empty: an absence.
+The conventional spelling is `"0"`, and honesty about the boundary
+costs one `if` before the print. The table above never reaches it;
+your extension should, and should decide.
+</details>
+
+<details>
+<summary>Exercise 3-11. [§3.4](../ch03.md#3.4)</summary>
+
+**Exercise 3-11** *(fingers · lupin)*. One pass over a block of
+readings: lowest, highest, and mean, integer arithmetic throughout.
+The first reading has to seed `lowest` and `highest` — why is
+starting them at zero wrong, and which of the two inputs in the block
+below would have exposed it?
+
+Solution. `ch03/ex3-11.lu`:
+
+```wolf
+fn main() -> !int {
+    let readings = """
+        18
+        4
+        31
+        22
+        7
+        """
+    var lowest = 0
+    var highest = 0
+    var total = 0
+    var count = 0
+    for row in readings.lines() {
+        let n = row.to_int() else 0
+        count += 1
+        total += n
+        if count == 1 {
+            lowest = n
+            highest = n
+        }
+        if n < lowest { lowest = n }
+        if n > highest { highest = n }
+    }
+    print("low {lowest} high {highest} mean {total / count}")
+    0
+}
+```
+
+```console
+$ lupin ex3-11.lu
+low 4 high 31 mean 16
+```
+
+Zero-seeded, `lowest` would stay 0 against this all-positive block —
+every reading loses to it — so the all-positive data is exactly what
+exposes the bug (an all-negative block would expose `highest`
+instead). Seeding from the first element makes the answer a fact
+about the data, not about the seed. The mean truncates: 82 / 5 is 16
+here, and chapter 2's precision specs are how a report would say
+16.4.
+</details>
+
+<details>
+<summary>Exercise 3-12. [§3.4](../ch03.md#3.4)</summary>
+
+**Exercise 3-12** *(fingers · lupin)*. Print every three-digit
+palindrome divisible by 7, using arithmetic only: `/` and `%` take
+the digits, and a flipped number is three multiplies away. No
+strings. How many are there, and why does your divisibility test not
+need the middle digit?
+
+Solution. `ch03/ex3-12.lu`:
+
+```wolf
+fn main() -> !int {
+    for n in 100..1000 {
+        let flipped = n % 10 * 100 + n / 10 % 10 * 10 + n / 100
+        if n == flipped {
+            if n % 7 == 0 {
+                print("{n}")
+            }
+        }
+    }
+    0
+}
+```
+
+```console
+$ lupin ex3-12.lu
+161
+252
+343
+434
+525
+595
+616
+686
+707
+777
+868
+959
+```
+
+Twelve. The trick question dissolves on inspection: the test is
+`n % 7 == 0` on the whole number, so no digit is special — the middle
+digit needed no test *anywhere*, because a palindrome check by
+arithmetic compares `n` to its flip rather than digit to digit. The
+question is a nudge to notice your own program did less work than the
+problem statement implied.
 </details>
 
 ## Chapter 4
@@ -966,6 +1485,199 @@ In a leap year, day 60 is February 29th, and March 1st moves to 61. The
 difference lives in exactly one arm of `days_in` (the `2 =>` arm) and
 nowhere else, which is the argument for writing the table as a `match`
 instead of scattering the leap rule through the loop.
+</details>
+
+<details>
+<summary>Exercise 4-8. [§4.4](../ch04.md#4.4)</summary>
+
+**Exercise 4-8** *(fingers · lupin)*. The Collatz walk: halve an even
+number, triple-and-add-one an odd one, count the steps to reach 1.
+Write `steps(n)` and print a two-column table for 1 through 10. Which
+starting point under 11 takes the longest, and is the answer where you
+expected it in the table?
+
+Solution. `ch04/ex4-8.lu`:
+
+```wolf
+fn steps(n: int) -> int {
+    var v = n
+    var count = 0
+    while v != 1 {
+        v = if v % 2 == 0 { v / 2 } else { 3 * v + 1 }
+        count += 1
+    }
+    count
+}
+fn main() -> !int {
+    for n in 1..11 {
+        print("{n:>3}{steps(n):>5}")
+    }
+    0
+}
+```
+
+```console
+$ lupin ex4-8.lu
+  1    0
+  2    1
+  3    7
+  4    2
+  5    5
+  6    8
+  7   16
+  8    3
+  9   19
+ 10    6
+```
+
+9 takes the longest, at 19 steps, and it is not where intuition puts
+it: 7 (at 16) beats everything larger in the table, and 8 — bigger
+than 7 — finishes in 3. The walk's length has no visible relation to
+the starting size, which is precisely why the function earns a table
+instead of a guess. (Whether *every* start reaches 1 is a famous open
+question; your loop assumes it, and for 1 through 10 the assumption is
+checked by termination.)
+</details>
+
+<details>
+<summary>Exercise 4-9. [§4.2](../ch04.md#4.2)</summary>
+
+**Exercise 4-9** *(extension · lupin)*. Write `clamp_to(lo, hi)`, a
+function that returns the clamping function for that range, and use
+`clamp_to(0, 100)` to sanitize a list of parsed percentages. The
+closure captures `lo` and `hi` by value. What would break, and what
+would not, if it captured them by place?
+
+Solution. `ch04/ex4-9.lu`:
+
+```wolf
+fn clamp_to(lo: int, hi: int) -> fn(int) -> int {
+    fn(n) if n < lo { lo } else if n > hi { hi } else { n }
+}
+fn main() -> !int {
+    let percent = clamp_to(0, 100)
+    let rows = "40\n-12\n130"
+    for row in rows.lines() {
+        let n = row.to_int() else 0
+        print("{n:>5} -> {percent(n)}")
+    }
+    0
+}
+```
+
+```console
+$ lupin ex4-9.lu
+   40 -> 40
+  -12 -> 0
+  130 -> 100
+```
+
+Nothing here would break by-place, because `lo` and `hi` never change
+after the closure is made — the difference is unobservable in this
+program. What by-value buys is that the claim holds *by construction*:
+`percent` means 0..100 forever, even if a later edit reassigns some
+`var` the bounds came from. Capture by value makes the closure a
+sealed fact rather than a live reference to the caller's mood.
+</details>
+
+<details>
+<summary>Exercise 4-10. [§4.1](../ch04.md#4.1)</summary>
+
+**Exercise 4-10** *(fingers · lupin)*. Write `rtrim`: trailing blanks
+and tabs gone, everything else kept. Walk backward from the end with
+byte slices and return one slice of the original. Print each result in
+brackets so the trimming is visible. What does your function return
+for a line that is all blanks, and did that case cost you code?
+
+Solution. `ch04/ex4-10.lu`:
+
+```wolf
+fn rtrim(s: str) -> str {
+    var end = s.len
+    while end > 0 && (s[end - 1..end] == " " || s[end - 1..end] == "\t") {
+        end -= 1
+    }
+    s[..end]
+}
+fn main() -> !int {
+    for line in "howl   \nden\t\t\nmoon".lines() {
+        print("[{rtrim(line)}]")
+    }
+    0
+}
+```
+
+```console
+$ lupin ex4-10.lu
+[howl]
+[den]
+[moon]
+```
+
+An all-blank line walks `end` down to 0 and returns `s[..0]`, the
+empty string — no extra code, because `while end > 0` is already the
+guard the case needs. The return value is a slice of the input, two
+words aimed at bytes that already exist: `rtrim` allocates nothing,
+which is the honest cost §2.5 promised a slice would have.
+</details>
+
+<details>
+<summary>Exercise 4-11. [§4.4](../ch04.md#4.4)</summary>
+
+**Exercise 4-11** *(extension · lupin)*. Zeller's congruence names the
+weekday of any date in four lines of arithmetic — January and February
+count as months 13 and 14 of the year before. Write `weekday(y, m, d)`
+returning the day's name from one `match`, and check it against three
+dates whose weekday is a matter of record. Why does the month shift
+exist: what property of the calendar is it buying back?
+
+Solution. `ch04/ex4-11.lu`:
+
+```wolf
+fn weekday(y: int, m: int, d: int) -> str {
+    var mm = m
+    var yy = y
+    if m < 3 {
+        mm = m + 12
+        yy = y - 1
+    }
+    let k = yy % 100
+    let j = yy / 100
+    let h = (d + 13 * (mm + 1) / 5 + k + k / 4 + j / 4 + 5 * j) % 7
+    match h {
+        0 => "saturday",
+        1 => "sunday",
+        2 => "monday",
+        3 => "tuesday",
+        4 => "wednesday",
+        5 => "thursday",
+        6 => "friday",
+        _ => "never",
+    }
+}
+fn main() -> !int {
+    print("{weekday(2026, 8, 31)}")
+    print("{weekday(2000, 1, 1)}")
+    print("{weekday(1969, 7, 20)}")
+    0
+}
+```
+
+```console
+$ lupin ex4-11.lu
+monday
+saturday
+sunday
+```
+
+The shift moves February — the month whose length changes — to the
+*end* of the counting year, so the leap day sits after every month the
+formula counts across. That buys back a uniform month-length pattern:
+`13 * (mm + 1) / 5` is a fixed staircase (the 31-30-31-30-31 rhythm
+from March onward), which no formula can be over a year that keeps
+February in the middle. The `_ => "never"` arm is the price of
+matching on an `int`: `% 7` proves the range to you, but the checker
+wants the row closed, and "never" is the honest name for it.
 </details>
 
 ## Chapter 5
@@ -1269,6 +1981,282 @@ the pair points at your value, in your frame or your region, and the
 `let home = …` the error asks for is the language declining to
 allocate behind your back. The reader pays one visible line; the
 alternative is every reader paying an invisible allocation.
+</details>
+
+<details>
+<summary>Exercise 5-11. [§5.5](../ch05.md#5.5)</summary>
+
+**Exercise 5-11** *(extension · lupin)*. Exercise 2-7 encoded runs
+with byte slices; a coder without a decoder is half a tool. Respell
+`encode` over `chars()`, growing the output with `"{prev}{run_len}"`,
+then write `decode`, and round-trip both `"wwwwoooolf"` and a string
+whose runs reach two digits. Make `main` exit nonzero on any
+mismatch, so the round trip is a check the machine performs rather
+than a claim. Where in `decode` does the two-digit case live?
+
+Solution. `ch05/ex5-11.lu`:
+
+```wolf
+fn encode(s: str) -> str {
+    var out = ""
+    var run_len = 0
+    var prev = ' '
+    for c in s.chars() {
+        if run_len > 0 && c == prev {
+            run_len += 1
+        } else {
+            if run_len > 0 { out += "{prev}{run_len}" }
+            prev = c
+            run_len = 1
+        }
+    }
+    if run_len > 0 { out += "{prev}{run_len}" }
+    out
+}
+fn decode(s: str) -> str {
+    var out = ""
+    var cur = ' '
+    var seen = false
+    var n = 0
+    for c in s.chars() {
+        if c >= '0' && c <= '9' {
+            n = n * 10 + (c as int) - ('0' as int)
+        } else {
+            if seen {
+                for _ in 0..n { out += "{cur}" }
+            }
+            cur = c
+            seen = true
+            n = 0
+        }
+    }
+    if seen {
+        for _ in 0..n { out += "{cur}" }
+    }
+    out
+}
+fn main() -> !int {
+    var inputs = List[str]()
+    (mut inputs).push("wwwwoooolf")
+    (mut inputs).push("aaaaaaaaaaab")
+    for plain in inputs {
+        let coded = encode(plain)
+        let back = decode(coded)
+        print("{plain} -> {coded} -> {back}")
+        if back != plain { return 1 }
+    }
+    0
+}
+```
+
+```console
+$ lupin ex5-11.lu
+wwwwoooolf -> w4o4l1f1 -> wwwwoooolf
+aaaaaaaaaaab -> a11b1 -> aaaaaaaaaaab
+```
+
+The two-digit case lives in one line: `n = n * 10 + …`. A decoder that
+read "the digit after the letter" instead of accumulating would pass
+the first input and shred the second — which is why the round trip
+tests both, and why the exit code carries the verdict: a printed
+`a11b1` looks right to a reader skimming; `!=` does not skim.
+</details>
+
+<details>
+<summary>Exercise 5-12. [§5.1](../ch05.md#5.1)</summary>
+
+**Exercise 5-12** *(fingers · lupin)*. Histogram the word lengths of a
+two-line block, bars of `#` growing sideways, one row per length. A
+`List[int]` indexed by length is the whole data structure — grow it to
+fit as you go. One of your rows prints an empty bar. Which, and why
+does it print at all?
+
+Solution. `ch05/ex5-12.lu`:
+
+```wolf
+fn main() -> !int {
+    let text = """
+        the moon watches the long ridge
+        a wolf runs past the frozen creek
+        """
+    var tally = List[int]()
+    for w in text.words() {
+        while tally.len < w.len + 1 { (mut tally).push(0) }
+        tally[w.len] = tally[w.len] + 1
+    }
+    for n in 1..tally.len {
+        print("{n:>2} {"#".repeat(tally[n])}")
+    }
+    0
+}
+```
+
+```console
+$ lupin ex5-12.lu
+ 1 #
+ 2 
+ 3 ###
+ 4 #####
+ 5 ##
+ 6 #
+ 7 #
+```
+
+Length 2: the block has one one-letter word (`a`) and words of three
+letters and up, but nothing two letters long. The row prints because
+the list was grown by *maximum length seen*, not by lengths seen — the
+gap is a real zero, and `repeat(0)` spells it as an empty bar. A
+histogram that skipped empty rows would hide the shape it exists to
+show.
+</details>
+
+<details>
+<summary>Exercise 5-13. [§5.5](../ch05.md#5.5)</summary>
+
+**Exercise 5-13** *(extension · lupin)*. Write `any_index(s, set)`:
+the byte index in `s` of the first character that appears in `set`,
+or −1 for none. Probe it with a vowel set against a line that has
+vowels, one that does not, and the empty string. Why do the last two
+answers have to be the same, and what would distinguishing them cost
+your callers?
+
+Solution. `ch05/ex5-13.lu`:
+
+```wolf
+fn any_index(s: str, set: str) -> int {
+    var i = 0
+    for c in s.chars() {
+        if set.contains("{c}") { return i }
+        i += 1
+    }
+    0 - 1
+}
+fn main() -> !int {
+    print("{any_index("the wolf runs", "aeiou")}")
+    print("{any_index("dry glyph", "aeiou")}")
+    print("{any_index("", "aeiou")}")
+    0
+}
+```
+
+```console
+$ lupin ex5-13.lu
+2
+-1
+-1
+```
+
+Both mean "no position holds a hit", and a position is the only thing
+the function promises. Splitting them ("empty input" versus "searched
+and missed") would force every caller to handle a case that changes
+nothing about what they can do next — the chapter after this one is
+about rows, and the first lesson there is that a distinction worth a
+tag is one the caller would *branch on*. This one is not.
+</details>
+
+<details>
+<summary>Exercise 5-14. [§5.1](../ch05.md#5.1)</summary>
+
+**Exercise 5-14** *(fingers · lupin)*. A comma-separated ledger, three
+rows of `name,cents`. Split each row, table it with format specs, and
+end with a total row. What does your program do with a row that has no
+comma, and which single spelling in your source decided that?
+
+Solution. `ch05/ex5-14.lu`:
+
+```wolf
+fn main() -> !int {
+    let ledger = """
+        drink,340
+        pastry,275
+        stew,900
+        """
+    var total = 0
+    for row in ledger.lines() {
+        var name = ""
+        var cents = 0
+        var i = 0
+        for field in row.split(",") {
+            if i == 0 { name = field }
+            if i == 1 { cents = field.to_int() else 0 }
+            i += 1
+        }
+        total += cents
+        print("{name:<10}{cents:>6}")
+    }
+    print("{"total":<10}{total:>6}")
+    0
+}
+```
+
+```console
+$ lupin ex5-14.lu
+drink        340
+pastry       275
+stew         900
+total       1515
+```
+
+A commaless row arrives as one field: `name` takes the whole row,
+`cents` keeps its initial 0, and the row costs the total nothing. The
+deciding spelling is `var cents = 0` — the initializer *is* the
+missing-field policy. If the right answer for your ledger is "refuse
+the row instead", that policy has a chapter of its own next.
+</details>
+
+<details>
+<summary>Exercise 5-15. [§5.5](../ch05.md#5.5)</summary>
+
+**Exercise 5-15** *(extension · lupin)*. Fold a long line at twelve
+columns: greedy fill, words never split, each output line as full as
+the width allows. Return the lines as a `List[str]` and print them.
+One comparison in your loop encodes the whole policy — which one, and
+what single change makes ragged-right into one-word-per-line?
+
+Solution. `ch05/ex5-15.lu`:
+
+```wolf
+fn fold(text: str, width: int) -> List[str] {
+    var out = List[str]()
+    var line = ""
+    for w in text.words() {
+        if line.is_empty() {
+            line = w
+        } else if line.len + 1 + w.len <= width {
+            line = line + " " + w
+        } else {
+            (mut out).push(line)
+            line = w
+        }
+    }
+    if line.is_empty() == false { (mut out).push(line) }
+    out
+}
+fn main() -> !int {
+    let text = "the wolf runs the long ridge past the frozen creek at dusk"
+    for line in fold(text, 12) {
+        print(line)
+    }
+    0
+}
+```
+
+```console
+$ lupin ex5-15.lu
+the wolf
+runs the
+long ridge
+past the
+frozen creek
+at dusk
+```
+
+The policy is `line.len + 1 + w.len <= width` — "does this word, plus
+its separating space, still fit". Replace `width` with 0 (or the test
+with `false`) and every word overflows immediately: one word per
+line. The greedy fill and the degenerate layout are the same loop
+with one comparison's verdict flipped, which is the honest way to see
+that a formatter is a policy wearing a loop.
 </details>
 
 ## Chapter 6
@@ -1637,6 +2625,226 @@ four bytes. The filter is one `if` inside the loop the capstone
 already has, which is the shape of most real requirements: the
 skeleton absorbs them without growing a second loop. In part 3 this
 same loop parallelizes by changing one call; the boxed promise stands.
+</details>
+
+<details>
+<summary>Exercise 6-11. [§6.5](../ch06.md#6.5)</summary>
+
+**Exercise 6-11** *(extension · lupin)*. `to_int` has no inverse on
+this shelf, so build one: `itoa(n)`, peeling digits with `% 10` and
+`/ 10` and prepending. Handle zero and negatives, then close the loop:
+feed each result back through `to_int` and make `main` exit nonzero on
+any mismatch. Which of your three test values forced a line of code
+the other two never touch?
+
+Solution. `ch06/ex6-11.lu`:
+
+```wolf
+fn itoa(n: int) -> str {
+    if n == 0 { return "0" }
+    var v = n
+    var sign = ""
+    if n < 0 {
+        sign = "-"
+        v = 0 - n
+    }
+    var digits = ""
+    while v > 0 {
+        digits = "{v % 10}" + digits
+        v = v / 10
+    }
+    "{sign}{digits}"
+}
+fn main() -> !int {
+    var cases = List[int]()
+    (mut cases).push(340)
+    (mut cases).push(0)
+    (mut cases).push(0 - 275)
+    for n in cases {
+        let s = itoa(n)
+        let back = s.to_int() else 999999
+        print("{n} -> {s}")
+        if back != n { return 1 }
+    }
+    0
+}
+```
+
+```console
+$ lupin ex6-11.lu
+340 -> 340
+0 -> 0
+-275 -> -275
+```
+
+Zero forced its own line: the peel loop runs while `v > 0`, so zero
+peels no digits and would come out as the empty string — the early
+`return "0"` is that case's whole cost, the same absence 3-10's binary
+table met. The negative forced two more (the sign, and `0 - n`).
+Round-tripping through `to_int` is what promotes "looks right" to
+"is right": the else-arm's 999999 can never equal a real input, so a
+parse failure fails the run instead of passing by coincidence.
+</details>
+
+<details>
+<summary>Exercise 6-12. [§6.5](../ch06.md#6.5)</summary>
+
+**Exercise 6-12** *(extension · lupin)*. Exercise 5-11's decoder
+answers garbage with garbage: `"4w"` decodes to nothing, silently.
+Harden it by refactor: `decode(s) -> str ! {Empty, BadRun}`, where
+empty input, a count with no letter before it, and a zero-length run
+are refusals with names. Table four malformed inputs through
+`else |err|` and a `match`. Which refusal required *adding* a check,
+and which two fell out of checks the loop already had?
+
+Solution. `ch06/ex6-12.lu`:
+
+```wolf
+fn decode(s: str) -> str ! {Empty, BadRun} {
+    if s.is_empty() { return Empty }
+    var out = ""
+    var cur = ' '
+    var seen = false
+    var n = 0
+    for c in s.chars() {
+        if c >= '0' && c <= '9' {
+            if seen == false { return BadRun }
+            n = n * 10 + (c as int) - ('0' as int)
+        } else {
+            if seen {
+                if n == 0 { return BadRun }
+                for _ in 0..n { out += "{cur}" }
+            }
+            cur = c
+            seen = true
+            n = 0
+        }
+    }
+    if n == 0 { return BadRun }
+    for _ in 0..n { out += "{cur}" }
+    out
+}
+fn main() -> !int {
+    var cases = List[str]()
+    (mut cases).push("w4o4l1f1")
+    (mut cases).push("")
+    (mut cases).push("4w")
+    (mut cases).push("w0")
+    (mut cases).push("ab2")
+    for coded in cases {
+        let plain = decode(coded) else |err| {
+            let why = match err {
+                Empty => "empty",
+                BadRun => "bad run",
+            }
+            print("[{coded}] refused: {why}")
+            continue
+        }
+        print("[{coded}] -> {plain}")
+    }
+    0
+}
+```
+
+```console
+$ lupin ex6-12.lu
+[w4o4l1f1] -> wwwwoooolf
+[] refused: empty
+[4w] refused: bad run
+[w0] refused: bad run
+[ab2] refused: bad run
+```
+
+`"4w"` needed the new check (`if seen == false`): the soft decoder
+simply ignored digits with no letter to bind to. The other two were
+already half-present: the loop tracked `n` and `seen` anyway, so
+`w0` and `ab2` (a letter whose run count never arrived) are one
+`n == 0` comparison promoted from "silently emit nothing" to a named
+refusal. Hardening rarely means new machinery; it means the checks
+the loop was implicitly making become answers the caller can hold.
+</details>
+
+<details>
+<summary>Exercise 6-13. [§6.5](../ch06.md#6.5)</summary>
+
+**Exercise 6-13** *(extension · lupin)*. A date validator:
+`parse_date("2026-02-29")` should refuse, and say *why*. Split on
+`-`, parse the three fields, and return
+`(int, int, int) ! {BadShape, BadMonth, BadDay}` — reusing 4-7's
+`days_in` for the day ceiling, leap rule included. Why is `BadShape`
+checked first, and what happens to your month test if it is not?
+
+Solution. `ch06/ex6-13.lu`:
+
+```wolf
+fn days_in(month: int, leap: bool) -> int {
+    match month {
+        2 => if leap { 29 } else { 28 },
+        4 => 30,
+        6 => 30,
+        9 => 30,
+        11 => 30,
+        _ => 31,
+    }
+}
+fn parse_date(s: str) -> (int, int, int) ! {BadShape, BadMonth, BadDay} {
+    var y = 0
+    var m = 0
+    var d = 0
+    var i = 0
+    for field in s.split("-") {
+        let n = field.to_int() else { return BadShape }
+        if i == 0 { y = n }
+        if i == 1 { m = n }
+        if i == 2 { d = n }
+        i += 1
+    }
+    if i != 3 { return BadShape }
+    if m < 1 || m > 12 { return BadMonth }
+    let leap = if y % 400 == 0 { true } else if y % 100 == 0 { false } else { y % 4 == 0 }
+    if d < 1 || d > days_in(m, leap) { return BadDay }
+    (y, m, d)
+}
+fn main() -> !int {
+    var cases = List[str]()
+    (mut cases).push("2026-08-31")
+    (mut cases).push("2024-02-29")
+    (mut cases).push("2026-02-29")
+    (mut cases).push("2026-13-01")
+    (mut cases).push("soon")
+    for s in cases {
+        let (y, m, d) = parse_date(s) else |err| {
+            let why = match err {
+                BadShape => "not a date shape",
+                BadMonth => "no such month",
+                BadDay => "no such day",
+            }
+            print("{s:<12} refused: {why}")
+            continue
+        }
+        print("{s:<12} ok: day {d} of month {m}, {y}")
+    }
+    0
+}
+```
+
+```console
+$ lupin ex6-13.lu
+2026-08-31   ok: day 31 of month 8, 2026
+2024-02-29   ok: day 29 of month 2, 2024
+2026-02-29   refused: no such day
+2026-13-01   refused: no such month
+soon         refused: not a date shape
+```
+
+Shape first because the later tests read `m` and `d`, and those
+variables only mean anything once three numeric fields actually
+arrived. Skip the shape check and `"soon"` reaches the month test
+with `m` still 0 — refused as `BadMonth`, which is a *lie about the
+input*: the caller fixing "no such month" would stare at a string
+with no month in it. Refusal order is part of a validator's honesty,
+not a style choice. (2024-02-29 passing while 2026-02-29 refuses is
+`days_in` earning its `leap` parameter back from 4-7.)
 </details>
 
 ## Chapter 7
@@ -2124,6 +3332,123 @@ point; which choice produced it is recoverable only by comparing a
 cell with its neighbors, and the neighbors that explain `(i, j)` are
 behind it. The recursion runs to the origin and prints on the way
 back out, so the output comes out forward.
+</details>
+
+<details>
+<summary>Exercise 7-14. [§7.7](../ch07.md#7.7)</summary>
+
+**Exercise 7-14** *(fingers · lupin)*. The plane-geometry kata: a
+`Point`, a `Rect` of two points (low corner in, high corner out), and
+an `impl` giving `Rect` three methods — `contains(self, p)`,
+`overlaps(self, o)`, `area(self)`. Probe the edges: a point on the low
+edge, a point on the high edge, a rectangle that shares only a corner
+line. Every method here borrows. How do you know that from the
+signatures alone?
+
+Solution. `ch07/ex7-14.lu`:
+
+```wolf
+struct Point { x: int, y: int }
+struct Rect { lo: Point, hi: Point }
+impl Rect {
+    fn contains(self, p: Point) -> bool {
+        p.x >= self.lo.x && p.x < self.hi.x && p.y >= self.lo.y && p.y < self.hi.y
+    }
+    fn overlaps(self, o: Rect) -> bool {
+        self.lo.x < o.hi.x && o.lo.x < self.hi.x && self.lo.y < o.hi.y && o.lo.y < self.hi.y
+    }
+    fn area(self) -> int {
+        (self.hi.x - self.lo.x) * (self.hi.y - self.lo.y)
+    }
+}
+fn main() -> !int {
+    let den = Rect { lo: Point { x: 0, y: 0 }, hi: Point { x: 4, y: 3 } }
+    let ridge = Rect { lo: Point { x: 3, y: 1 }, hi: Point { x: 6, y: 5 } }
+    let creek = Rect { lo: Point { x: 4, y: 3 }, hi: Point { x: 7, y: 6 } }
+    print("area {den.area()}")
+    print("{den.contains(Point { x: 3, y: 2 })} {den.contains(Point { x: 4, y: 2 })}")
+    print("{den.overlaps(ridge)} {den.overlaps(creek)}")
+    0
+}
+```
+
+```console
+$ lupin ex7-14.lu
+area 12
+true false
+true false
+```
+
+Half-open on purpose: the low edge is in (`>=`), the high edge is out
+(`<`), so `contains` at x = 4 in a rect that ends at 4 is `false`, and
+two rects that only touch (`creek` starts exactly where `den` ends)
+do not overlap — the same convention every slice in chapter 2 used,
+because shared edges double-count under closed intervals. The
+signatures carry no `mut`, no `take`: every parameter is the default
+mode, which chapter 7 defined as borrow-and-read. The absence *is*
+the documentation, and it is checkable — add a write to any method
+body and the compiler names the missing `mut` at both ends.
+</details>
+
+<details>
+<summary>Exercise 7-15. [§7.7](../ch07.md#7.7)</summary>
+
+**Exercise 7-15** *(extension · lupin)*. One job, two ownership
+stories: uppercase every string in a list. Write it consuming —
+`shouted(take xs)` returns a new list and the argument is gone — and
+lending — `shout(mut xs)` rewrites in place and returns nothing. Run
+both. Count what each costs at the call site and in allocations, then
+answer: which one should a library export, and does the other need to
+exist at all?
+
+Solution. `ch07/ex7-15.lu`:
+
+```wolf
+fn shouted(take xs: List[str]) -> List[str] {
+    var out = List[str]()
+    for x in xs {
+        (mut out).push(x.upper())
+    }
+    out
+}
+fn shout(mut xs: List[str]) {
+    var i = 0
+    while i < xs.len {
+        xs[i] = xs[i].upper()
+        i += 1
+    }
+}
+fn main() -> !int {
+    var a = List[str]()
+    (mut a).push("howl")
+    (mut a).push("scratch")
+    let b = shouted(take a)
+    print("{b[0]} {b[1]}")
+    var c = List[str]()
+    (mut c).push("howl")
+    (mut c).push("scratch")
+    shout(mut c)
+    print("{c[0]} {c[1]}")
+    0
+}
+```
+
+```console
+$ lupin ex7-15.lu
+HOWL SCRATCH
+HOWL SCRATCH
+```
+
+The consuming version costs a whole second list and takes the caller's
+original away — after `take a`, using `a` is the E1001 this chapter
+opened with. The lending version allocates only the strings it
+replaces and the caller keeps their binding; the price is one `mut` at
+each end, which is a price in *candor*, not in machinery. Export the
+lender: the caller who wanted the consuming shape can build it from
+the lender in two lines (`copy`, then `shout`), but the reverse is
+impossible — a consumed argument cannot be un-eaten. An API should
+take the least ownership that does the job, precisely so the bigger
+appetite stays the caller's decision.
 </details>
 
 ## Chapter 8
@@ -2735,6 +4060,66 @@ answer to a question `wc` authors in C solve with careful `free`
 bookkeeping: put the bookkeeping in the shape, then stop doing it.
 </details>
 
+<details>
+<summary>Exercise 8-17. [§8.8](../ch08.md#8.8)</summary>
+
+**Exercise 8-17** *(extension · lupin)*. A bounded window: keep only
+the last three of a stream of nine updates, in a three-slot
+`List[str]` that lives in its own region, slots overwritten with
+`next % 3`. When the stream ends, read the window oldest-first —
+`(next + i) % 3` — assemble the report, then freeze the region and
+print. Nine updates arrived and three strings exist. Where did the
+other six go, and *when* did each one go?
+
+Solution. `ch08/ex8-17.lu`:
+
+```wolf
+fn main() -> !int {
+    let updates = """
+        one
+        two
+        three
+        four
+        five
+        six
+        seven
+        eight
+        nine
+        """
+    let window = region()
+    var recent = in window { List[str]() }
+    for _ in 0..3 { (mut recent).push("") }
+    var next = 0
+    for line in updates.lines() {
+        recent[next % 3] = line
+        next += 1
+    }
+    var report = ""
+    for i in 0..3 {
+        report += "{recent[(next + i) % 3]} "
+    }
+    let snapshot = freeze window
+    print(report.trim())
+    0
+}
+```
+
+```console
+$ lupin ex8-17.lu
+seven eight nine
+```
+
+Each of the six was dropped at the assignment that overwrote its
+slot: `recent[next % 3] = line` replaces the slot's old value, and a
+replaced value with no other owner is gone then, not at the region's
+end. The region bounds the *worst case* — at no point does the window
+hold more than three strings plus the one in flight — and the freeze
+at the end is the §8.5 move: the finished window becomes permanent,
+readable, and closed to the overwriting that built it. A ring plus a
+region is "bounded memory" spelled twice, once in index arithmetic
+and once in the shape.
+</details>
+
 ## Chapter 9
 
 <details>
@@ -3206,6 +4591,76 @@ The general lesson is the reason the door exists. Once safe code holds
 a value, the raw tier must stop touching those bytes, because
 everything downstream is entitled to assume nobody is. Reaching around
 the door is the one thing the door's license forbids.
+</details>
+
+<details>
+<summary>Exercise 9-15. [§9.8](../ch09.md#9.8)</summary>
+
+**Exercise 9-15** *(fingers · lupin)*. Put an integer through raw
+memory and bring it back: `malloc` sixteen bytes, write the four bytes
+of `305419896` little-endian by hand (`% 256` and `/ 256` are the only
+tools you need), read them back, reassemble, free. Print the four
+bytes and the round-trip verdict, and make `main` exit nonzero on a
+mismatch. Before running: 305419896 is `0x12345678` — which byte does
+`p[0]` hold, and why is that the *low* one?
+
+Solution. `ch09/ex9-15.lu`:
+
+```wolf
+import c "stdlib.h"
+
+fn main() -> !int {
+    let n = 305419896
+    let p = unsafe {
+        // # Safety: sixteen fresh bytes; the cast makes a pointer to
+        // memory malloc just handed us.
+        c.malloc(16) as *u8
+    }
+    unsafe {
+        // # Safety: indices 0..4 stay inside the allocation.
+        p[0] = n % 256
+        p[1] = n / 256 % 256
+        p[2] = n / 65536 % 256
+        p[3] = n / 16777216 % 256
+    }
+    var b0 = 0
+    var b1 = 0
+    var b2 = 0
+    var b3 = 0
+    unsafe {
+        // # Safety: reads the four bytes just written.
+        b0 = p[0] as int
+        b1 = p[1] as int
+        b2 = p[2] as int
+        b3 = p[3] as int
+    }
+    let back = b0 + b1 * 256 + b2 * 65536 + b3 * 16777216
+    print("{b0} {b1} {b2} {b3}")
+    print("{back == n}")
+    unsafe {
+        // # Safety: allocated above, freed once, not used after.
+        c.free(p)
+    }
+    if back != n { return 1 }
+    0
+}
+```
+
+```console
+$ lupin ex9-15.lu
+120 86 52 18
+true
+```
+
+`p[0]` holds 120 — `0x78`, the low byte — because the program *chose*
+little-endian: `n % 256` is arithmetic for "the low eight bits", and
+the loop of divisions walks upward from there. Nothing about `malloc`
+or the machine decided this; the byte order is wholly in the four
+write lines, which is the honest way to meet endianness — as a
+serialization decision some code made, checkable by reading it. The
+round trip closes over three `unsafe` blocks, each one operation
+wide, each with its `# Safety:` line: the ring is for operations, not
+for programs.
 </details>
 
 ## Chapter 10
@@ -4162,6 +5617,125 @@ The transcript above is lupin's; §12.4 prints the compiler's half
 beside it.
 </details>
 
+<details>
+<summary>Exercise 12-10. [§12.3](../ch12.md#12.3)</summary>
+
+**Exercise 12-10** *(extension · lupin)*. The worklist as a checker:
+`balanced(line)` walks a line's characters with a `List[char]` stack —
+push every opener among `([{`, pop and compare on every closer. Table
+four lines, two of them wolf-shaped code fragments. Three ways to be
+unbalanced hide in one function; name all three and the line of your
+program that catches each.
+
+Solution. `ch12/ex12-10.lu`:
+
+```wolf
+fn balanced(line: str) -> bool {
+    var stack = List[char]()
+    for c in line.chars() {
+        if c == '(' || c == '[' || c == '{' {
+            (mut stack).push(c)
+        } else if c == ')' || c == ']' || c == '}' {
+            if stack.len == 0 { return false }
+            let open = stack[stack.len - 1]
+            (mut stack).pop()
+            if c == ')' && open != '(' { return false }
+            if c == ']' && open != '[' { return false }
+            if c == '}' && open != '{' { return false }
+        }
+    }
+    stack.len == 0
+}
+fn main() -> !int {
+    var cases = List[str]()
+    (mut cases).push(r"when (a, b) { c[0] }")
+    (mut cases).push(r"select { (a from q => { ) }")
+    (mut cases).push(r"([{}])")
+    (mut cases).push(r"((")
+    for line in cases {
+        let verdict = if balanced(line) { "ok " } else { "BAD" }
+        print("{verdict} {line}")
+    }
+    0
+}
+```
+
+```console
+$ lupin ex12-10.lu
+ok  when (a, b) { c[0] }
+BAD select { (a from q => { ) }
+ok  ([{}])
+BAD ((
+```
+
+The three failures: a closer with nothing open (`stack.len == 0` —
+the early `return false`), a closer of the wrong kind (the three
+comparisons against the popped opener — the second case dies here,
+`)` against `{`), and openers left over at the end (the final
+`stack.len == 0`, which is the whole return expression — the fourth
+case). The raw-string test data is not decoration: the braces in
+`{ c[0] }` would be interpolations in an ordinary literal, so the
+checker's own input demonstrates §2.2's reason raw literals exist.
+</details>
+
+<details>
+<summary>Exercise 12-11. [§12.3](../ch12.md#12.3)</summary>
+
+**Exercise 12-11** *(extension · lupin)*. Two stacks make a compiler
+front half: convert `3 + 4 * 2 - 6 / 3` from infix to postfix with
+one operator stack — pop while the stack's top has precedence at
+least the incoming operator's, then push; drain at the end. Feed the
+result to 5-7's RPN evaluator in your head to check it. Which single
+comparison in your loop decides that `3 + 4 * 2` is 11 and not 14?
+
+Solution. `ch12/ex12-11.lu`:
+
+```wolf
+fn prec(op: str) -> int {
+    if op == "*" || op == "/" { 2 } else { 1 }
+}
+fn is_op(t: str) -> bool {
+    t == "+" || t == "-" || t == "*" || t == "/"
+}
+fn main() -> !int {
+    let infix = "3 + 4 * 2 - 6 / 3"
+    var ops = List[str]()
+    var out = ""
+    for t in infix.words() {
+        if is_op(t) {
+            while ops.len > 0 && prec(ops[ops.len - 1]) >= prec(t) {
+                out += "{ops[ops.len - 1]} "
+                (mut ops).pop()
+            }
+            (mut ops).push(t)
+        } else {
+            out += "{t} "
+        }
+    }
+    while ops.len > 0 {
+        out += "{ops[ops.len - 1]} "
+        (mut ops).pop()
+    }
+    print(out.trim())
+    0
+}
+```
+
+```console
+$ lupin ex12-11.lu
+3 4 2 * + 6 3 / -
+```
+
+`prec(ops[ops.len - 1]) >= prec(t)` is the whole grammar. When `*`
+arrives with `+` on the stack, 1 >= 2 is false, so `+` stays put and
+`*` stacks on top — emitted first, which is what binds `4 * 2` before
+the add. Flip the comparison's verdict (or make all precedences
+equal) and the output evaluates left to right: 14. One integer
+comparison is carrying operator precedence for the whole language,
+which is the honest size of that famous feature. The `>=` (rather
+than `>`) is left-associativity, checkable on the `- … /` tail.
+</details>
+
 ## Chapter 13
 
 <details>
@@ -4394,6 +5968,113 @@ property of sharing one rounding, not of infinite precision: compute
 the two accelerations separately with different roundings and the
 symmetry is gone. That observation is the seed of every reproducible
 n-body benchmark in Part 4.
+</details>
+
+<details>
+<summary>Exercise 13-9. [§13.2](../ch13.md#13.2)</summary>
+
+**Exercise 13-9** *(extension · lupin)*. The caesar shift, sequential
+on purpose: `shift(s, k)` moves each lowercase letter `k` places with
+wraparound (`chars`, casts, `% 26`) and passes everything else
+through. Encode a line with `k = 3`, decode with the *same function*,
+and make `main` exit nonzero if the round trip misses. Two questions:
+what number decodes for `k = 3`, and — the extension — if the shift
+instead came from the letters of a key word repeating along the
+message, what would decode have to do that it does not do now?
+
+Solution. `ch13/ex13-9.lu`:
+
+```wolf
+fn shift(s: str, k: int) -> str {
+    var out = ""
+    for c in s.chars() {
+        if c >= 'a' && c <= 'z' {
+            let at = (c as int) - ('a' as int)
+            let moved = (at + k) % 26
+            out = "{out}{(moved + ('a' as int)) as char}"
+        } else {
+            out = "{out}{c}"
+        }
+    }
+    out
+}
+fn main() -> !int {
+    let plain = "the wolf runs at dusk"
+    let coded = shift(plain, 3)
+    let back = shift(coded, 23)
+    print(coded)
+    print(back)
+    if back != plain { return 1 }
+    0
+}
+```
+
+```console
+$ lupin ex13-9.lu
+wkh zroi uxqv dw gxvn
+the wolf runs at dusk
+```
+
+23 decodes, because 3 + 23 is 26 and `% 26` makes 26 the identity —
+decode is encode with the complementary shift, one function doing
+both jobs. Under a repeating key the complement is *per position*:
+decode must walk the key alongside the message and complement each
+letter's own shift, so the one thing it needs that the fixed-shift
+version lacks is an index — the loop over `chars()` grows a counter,
+and everything else survives unchanged. (That per-position version is
+the Vigenère cipher, and the counter is the whole difference.)
+</details>
+
+<details>
+<summary>Exercise 13-10. [§13.2](../ch13.md#13.2)</summary>
+
+**Exercise 13-10** *(comprehension + extension · lupin)*. 13-5's byte
+scan found lines; this one counts hits. Write
+`count(hay, needle, overlapping)` — the same
+`hay[i..i + needle.len] == needle` probe — where the flag decides
+whether a hit advances `i` by one byte or by the needle's length.
+Predict both answers for `"aaaa"` / `"aa"` before running. Which
+convention does a text editor's find-and-replace need, and what goes
+wrong under the other one?
+
+Solution. `ch13/ex13-10.lu`:
+
+```wolf
+fn count(hay: str, needle: str, overlapping: bool) -> int {
+    var hits = 0
+    var i = 0
+    while i + needle.len <= hay.len {
+        if hay[i..i + needle.len] == needle {
+            hits += 1
+            i += if overlapping { 1 } else { needle.len }
+        } else {
+            i += 1
+        }
+    }
+    hits
+}
+fn main() -> !int {
+    print("{count("aaaa", "aa", true)} {count("aaaa", "aa", false)}")
+    print("{count("the wolf the ridge the creek", "the", true)}")
+    0
+}
+```
+
+```console
+$ lupin ex13-10.lu
+3 2
+3
+```
+
+Overlapping sees hits at offsets 0, 1, 2; non-overlapping consumes
+two bytes per hit and sees 0 and 2. Find-and-replace needs the
+non-overlapping convention: each replacement consumes its match, so
+the next search resumes *after* it. Under the overlapping count a
+replace of `"aa"` in `"aaaa"` would claim three sites where only two
+disjoint replacements exist — the second "hit" overlaps bytes the
+first replacement already rewrote. A count is only meaningful with
+its consumption rule attached, which is why the flag is in the
+signature and not in a comment.
 </details>
 
 ## Chapter 14
@@ -4701,6 +6382,73 @@ enters it. What varies is the interleaving of the two clients' sends
 addition commutes. Replace `total += c` with an operation that does
 not commute and the seeds stop agreeing; chapter 17 hunts exactly that
 program.
+</details>
+
+<details>
+<summary>Exercise 14-10. [§14.3](../ch14.md#14.3)</summary>
+
+**Exercise 14-10** *(extension · lupin)*. A stockroom proc: its mailbox
+carries lines like `put 40` and `take 15`, each handled to completion —
+parse the verb and the number with `words()`, keep a running count,
+floor it at zero when a `take` overdraws. `main` sends five commands,
+closes, and learns the final count the way 14-6's shelver reported its
+words: riding home in the exit reason. Why does the overdraw rule live
+in the proc rather than in the senders, and what does that placement
+buy when a second sender appears?
+
+Solution. `ch14/ex14-10.lu`:
+
+```wolf
+fn stockroom(cmds: channel[str]) -> int {
+    var held = 0
+    for c in cmds {
+        var verb = ""
+        var n = 0
+        var i = 0
+        for w in c.words() {
+            if i == 0 { verb = w }
+            if i == 1 { n = w.to_int() else 0 }
+            i += 1
+        }
+        if verb == "put" { held += n }
+        if verb == "take" {
+            if n > held { held = 0 } else { held -= n }
+        }
+    }
+    held
+}
+fn main() -> !int {
+    let cmds = channel[str](8)
+    let keeper = spawn proc stockroom(cmds)
+    let m = keeper.monitor()
+    cmds.send("put 40")
+    cmds.send("take 15")
+    cmds.send("put 6")
+    cmds.send("take 90")
+    cmds.send("put 12")
+    cmds.close()
+    select {
+        exit(reason) from m => { print("stockroom closed: {reason}") },
+        timeout(1.s) => { print("stuck") },
+    }
+    0
+}
+```
+
+```console
+$ lupin ex14-10.lu
+stockroom closed: normal(12)
+```
+
+The trace: 40, 25, 31, floored to 0 by the 90, then 12. The overdraw
+rule lives in the proc because the count does: a sender enforcing "do
+not take more than is held" would need to *ask* first, and between its
+ask and its take another sender can move the count — the check-then-act
+race every shared ledger invents. Inside the handler the rule is
+atomic for free, §14.3's law (one message at a time, to completion)
+doing the work of a lock. A second sender therefore costs nothing:
+senders stay ignorant of the invariant, and the one place that owns
+the count is the one place that defends it.
 </details>
 
 ## Chapter 15
@@ -5302,6 +7050,81 @@ $ echo $?
 ```
 
 The corpus carries the same expectation in `conc/chan_unsendable.lu`.
+</details>
+
+<details>
+<summary>Exercise 16-10. [§16.3](../ch16.md#16.3)</summary>
+
+**Exercise 16-10** *(extension · lupin)*. Seven wolves in a ring; every
+third one still standing leaves, until one remains. Build the ring as a
+list of alive-flags in its own region, run the elimination in `main`
+with `%` doing the wraparound, then hand the finished region to a
+reader task with one `send(move …)` — 16-7's shape — which finds the
+survivor in place and prints the seat. Compute the answer on paper
+first. How many times was the ring copied between builder and reader,
+and what would the copy count be in a language that made message
+passing mean copying?
+
+Solution. `ch16/ex16-10.lu`:
+
+```wolf
+fn eliminate(mut alive: List[int], every: int, seats: int) {
+    var living = seats
+    var cur = 0
+    var counted = 0
+    while living > 1 {
+        if alive[cur] == 1 {
+            counted += 1
+            if counted == every {
+                alive[cur] = 0
+                living -= 1
+                counted = 0
+            }
+        }
+        cur = (cur + 1) % seats
+    }
+}
+fn last_seat(alive: List[int], seats: int) -> int {
+    var seat = 0
+    for i in 0..seats {
+        if alive[i] == 1 { seat = i + 1 }
+    }
+    seat
+}
+fn main() -> !int {
+    let ch = channel[region](1)
+    let r = region()
+    var alive = in r { List[int]() }
+    for _ in 0..7 { (mut alive).push(1) }
+    eliminate(mut alive, 3, 7)
+    scope s {
+        s.spawn(fn() {
+            let r2 = ch.recv() else |_| { return }
+            let seat = in r2 { last_seat(alive, 7) }
+            print("seat {seat} survives")
+        })
+        ch.send(move r)
+    }
+    0
+}
+```
+
+```console
+$ lupin ex16-10.lu
+seat 4 survives
+```
+
+Seat 4 (the paper walk: seats 3, 6, 2, 7, 5, 1 leave, in that order).
+Zero copies: the flags were allocated in `r`, mutated in place by the
+builder, and the `move` handed the reader the same memory — `last_seat`
+reads flags it never allocated, 16-7's zero-copy claim on a different
+graph. Copy-passing (Erlang's choice, the honest lineup's first row)
+would copy the ring once per message: one copy here, but one per
+*handoff* in general, which for a pipeline of n stages is n copies of
+state that only ever has one interested party at a time. The elimination
+runs before the send on purpose: the builder finishes its writes, then
+ownership moves — the same "mutate, then share" order `freeze` enforces
+for the many-reader case.
 </details>
 
 ## Chapter 17
@@ -5917,6 +7740,148 @@ through the evaluator. *What* is read can be data; *that* it was read
 must be declaration.
 </details>
 
+<details>
+<summary>Exercise 18-13. [§18.3](../ch18.md#18.3)</summary>
+
+**Exercise 18-13** *(spelunking · wolf)*. Misspell a format spec on
+purpose — `{total:>9.2z}` — and read the grammar out of the error.
+From the diagnostic alone: which one letter fixes this spec for a
+money column, and which *two* letters would print the same number in
+bases the chapter has not used yet?
+
+Solution. `ch18/ex18-13.lu` (broken on purpose):
+
+```console
+$ wolf conform-run ./ex18-13.lu
+error[E0412]: `z` has no place in a format spec — the grammar is `[[fill]align][+][0][width][.precision][type]` with type one of `b o x X e E f`
+ --> ./ex18-13.lu:7:18
+  |
+7 |     print("{total:>9.2z}")
+  |                  ^^^^^^ in this format spec
+  |
+```
+
+The fix is `f`: fixed-point, which with `.2` is the money column
+(`{total:>9.2f}`). The two unused letters are `b` and `o` — binary
+and octal — sitting in the grammar beside the `x`/`X` hex the string
+chapter did print. The diagnostic *is* the section's claim performed:
+the f-string compiled to checked calls, so a bad spec is a compile
+error with the whole grammar in it, not a runtime surprise — and the
+grammar line answers questions the chapter never got to.
+</details>
+
+<details>
+<summary>Exercise 18-14. [§18.3](../ch18.md#18.3)</summary>
+
+**Exercise 18-14** *(comprehension · wolf)*. Four `Buf[…]` parameter
+and return pairs: `Buf[N + 1]` with `Buf[1 + N]`; `Buf[N + 2 - 1]`
+with `Buf[1 + N]`; `Buf[2 + 2]` with `Buf[4]`; `Buf[N * 2]` with
+`Buf[2 * N]`. Predict which pairs the checker equates on its own and
+which one needs a witness, then check the odd one out and read which
+of the three steps the note says it fell past.
+
+Solution. `ch18/ex18-14.lu` (the `*` pair, broken on purpose; the
+first three are the chapter's own `shuffle`/`widen`/`closed`, all
+accepted):
+
+```console
+$ wolf conform-run ./ex18-14.lu
+error[E0707]: `Buf[N * 2]` and `Buf[2 * N]` may be equal, but proving it needs a witness
+ --> ./ex18-14.lu:6:51
+  |
+6 | fn double[N: type](b: Buf[N * 2]) -> Buf[2 * N] { b }
+  |                                   ------------- the return type is declared here
+  |                                                   ^ these const expressions differ beyond linear arithmetic
+  |
+  = note: const-expression equality is decided in three steps, and the line is fixed: (1) closed
+    expressions evaluate and compare by value; (2) `+`/`-` arithmetic over generic
+    parameters compares by ring normalization, so `N + 1` equals `1 + N`; (3) anything
+    beyond — `*`, `/`, `%`, shifts, bit operators — needs an explicit witness. This pair
+    sits at step 3.
+  = note: state the equality where the reader can see it: a comptime `assert` on the sizes
+    involved, or rewrite both spellings into the same `+`/`-` form.
+```
+
+Closed values (step 1) equate `2 + 2` with `4`; ring normalization
+(step 2) equates both `+`-shaped pairs. The `*` pair is mathematics
+any reader can do and the checker *will not*, because the line
+between "normalized" and "proved" is fixed where the chapter said it
+is: multiplication is step 3, witness territory, however trivial the
+instance. A checker that did easy multiplications would have a
+boundary nobody could state.
+</details>
+
+<details>
+<summary>Exercise 18-15. [§18.4](../ch18.md#18.4)</summary>
+
+**Exercise 18-15** *(extension · wolf)*. Roman numerals, both ways,
+folded: write `to_roman(n)` and `from_roman(s)` as `comptime fn`s
+(the value table as a pair of indexed helpers, subtractive pairs and
+all), and a witness `round_trips(n)` whose `assert` proves
+`from_roman(to_roman(n)) == n` at compile time. Fold a year each way
+into `const`s and print them. What does the witness buy that printing
+both values does not, and which famous wrong numeral — `IIII` — does
+your `from_roman` quietly accept, and why is that fine here?
+
+Solution. `ch18/ex18-15.lu` (excerpt — the table helpers are
+if-chains over an index, `glyph(at)`/`worth(at)`):
+
+```wolf
+comptime fn to_roman(n: int) -> str {
+    var out = ""
+    var rest = n
+    var at = 0
+    while at < 13 {
+        while rest >= worth(at) {
+            out = "{out}{glyph(at)}"
+            rest -= worth(at)
+        }
+        at += 1
+    }
+    out
+}
+comptime fn from_roman(s: str) -> int {
+    var total = 0
+    var i = 0
+    while i < s.len {
+        let here = one(s, i)
+        let next = if i + 1 < s.len { one(s, i + 1) } else { 0 }
+        total += if here < next { 0 - here } else { here }
+        i += 1
+    }
+    total
+}
+comptime fn round_trips(n: int) -> bool {
+    assert(from_roman(to_roman(n)) == n)
+    true
+}
+fn main() -> !int {
+    const YEAR = to_roman(1994)
+    const BACK = from_roman("MMXXVI")
+    const WITNESS = round_trips(3888)
+    print("{YEAR} {BACK}")
+    if WITNESS { 0 } else { 1 }
+}
+```
+
+```console
+$ wolf run ex18-15.lu
+MCMXCIV 2026
+```
+
+The witness buys a *build-breaking* claim: printed values need a
+reader to check them, but a failed comptime `assert` is E0710 and no
+binary exists — 3888 (`MMMDCCCLXXXVIII`, the longest numeral under
+4000) round-trips or the program is refused. `IIII` is accepted
+because `from_roman` implements the subtractive *reading* rule (a
+smaller value before a larger one subtracts), which maps every
+well-formed numeral correctly and some malformed ones charitably;
+rejecting non-canonical spellings is a validator's job, and the
+witness only claims the round trip from `to_roman`'s canonical
+output. Stating exactly what the assert proves — no more — is most of
+what writing one teaches.
+</details>
+
 ## Chapter 19
 
 <details>
@@ -6402,7 +8367,7 @@ tangle/main.lu: E0303: this import completes a cycle: `store` → `index` → `s
 ```
 
 After, `ch22/untangled/` adds `kinds/`, which imports nothing;
-`index` now consumes `kinds.classify` instead of calling back into
+`index` now consumes `kinds.in_batch` instead of calling back into
 `store`, and the arrows form a DAG:
 
 ```console
@@ -6511,6 +8476,249 @@ into folklore. The warned-about cycle outlives its excuse, new code
 grows onto it, and the migration never happens. The forty-file cost is
 paid once; the cycle's cost is paid on every build and every read,
 indefinitely, by people who did not create it.
+</details>
+
+<details>
+<summary>Exercise 22-9. [§22.3](../ch22.md#22.3)</summary>
+
+**Exercise 22-9** *(extension · lupin)*. The word counter, split along
+its seam: a `tokens/` module that turns text into words and knows
+nothing about counting, a `tally/` module that counts a `List[str]`
+and knows nothing about lines, and an entry that owns the text and the
+report loop. Build it in `ch22/wordcount/` and run it. Then defend the
+seam: why does `tokens` return a `List[str]` instead of taking `tally`
+as an import and counting as it splits?
+
+Solution. `ch22/wordcount/` — the entry:
+
+```wolf
+// wordcount/main.lu
+use tokens
+use tally
+
+fn main() -> !int {
+    let log = """
+        the wolf runs and the moon watches
+        the wolf sleeps
+        """
+    let words = tokens.split_words(log)
+    let pairs = tally.count(words)
+    var i = 0
+    while i < pairs.0.len {
+        print("{pairs.1[i]:>3} {pairs.0[i]}")
+        i += 1
+    }
+    0
+}
+```
+
+```console
+$ lupin main.lu
+  3 the
+  2 wolf
+  1 runs
+  1 and
+  1 moon
+  1 watches
+  1 sleeps
+```
+
+The `List[str]` between them is the whole contract, and its poverty is
+the point: `tokens` importing `tally` would weld the two jobs into one
+module wearing two directories — counting-while-splitting cannot be
+reused to split without counting, and the import edge would put
+`tally` in every future importer's build graph whether they count or
+not. A seam earns its module boundary exactly when the value crossing
+it is duller than either side's insides. (`tally` returns two parallel
+lists for 5-6's reason: first-seen order is data a `Map` forgets.)
+</details>
+
+<details>
+<summary>Exercise 22-10. [§22.3](../ch22.md#22.3)</summary>
+
+**Exercise 22-10** *(extension · lupin)*. A calculator whose
+arithmetic lives behind a seam: an `ops/` module exporting one
+function, `apply(op, a, b) -> int ! {BadOp, DivZero}`, and an entry
+that parses `a b op` lines and reports. Build it in `ch22/calc/`,
+with `9 0 /` among the inputs. The row crosses the module boundary —
+what does the entry know about *why* a line was refused, and what
+would it take to start caring?
+
+Solution. `ch22/calc/` — the module:
+
+```wolf
+// calc/ops/ops.lu
+pub fn apply(op: str, a: int, b: int) -> int ! {BadOp, DivZero} {
+    if op == "+" { return a + b }
+    if op == "-" { return a - b }
+    if op == "*" { return a * b }
+    if op == "/" {
+        if b == 0 { return DivZero }
+        return a / b
+    }
+    BadOp
+}
+```
+
+```console
+$ lupin main.lu
+7 3 - = 4
+9 0 /: refused
+6 7 * = 42
+```
+
+The entry's handler is `else |err| { … }` with no `match`: it knows a
+line was refused and prints so, and the tag's identity dies unread in
+`err`. That is a legitimate posture — chapter 6's coarse consumer —
+and the row's two tags are still load-bearing, because the day the
+entry wants `9 0 /: division by zero` instead, the change is one
+`match` in the handler and nothing in `ops`: the information was
+already crossing the seam, typed, waiting for a caller that cares.
+An error row in a `pub` signature is the module promising its callers
+room to grow into.
+</details>
+
+<details>
+<summary>Exercise 22-11. [§22.1](../ch22.md#22.1)</summary>
+
+**Exercise 22-11** *(fingers · lupin)*. Two scratch programs, one
+directory, on purpose: `sum.lu` totals three numbers, `widest.lu`
+finds the longest of four words, and each is a whole program with its
+own `main`. Mark each `//! member: false` and run both by name. Then
+remove the marker from *one* of them and run the other. Why does the
+diagnostic land on the program that kept its marker?
+
+Solution. `ch22/scratch/`, both files opening with the marker:
+
+```wolf
+// scratch/sum.lu (first lines)
+//! member: false
+fn main() -> !int {
+```
+
+```console
+$ lupin scratch/sum.lu
+sum 15
+$ lupin scratch/widest.lu
+widest marmot
+```
+
+With `widest.lu`'s marker removed, running `sum.lu` refuses:
+
+```console
+$ lupin sum.lu
+sum.lu: E0302: the name `main` is defined twice in this module (defined again in `./widest.lu`); file boundaries create no scopes (D32) — two separate programs sharing a directory each mark themselves `//! member: false` (D59) [mod.dup] at 1:4
+```
+
+The marker is a property of the *file*, not of the invocation: an
+unmarked sibling defaults to membership in whatever module the entry
+anchors, so the bare `widest.lu` joins `sum.lu`'s module and brings
+its `main` along. The diagnostic lands on the marked program because
+that is the program you ran — its module is where the collision
+happened. E0302's hint says "each mark themselves" with "each" doing
+real work: standalone-ness is declared per file, never inferred from
+a neighbor's declaration.
+</details>
+
+<details>
+<summary>Exercise 22-12. [§22.1](../ch22.md#22.1)</summary>
+
+**Exercise 22-12** *(comprehension + extension · lupin)*. In
+`ch22/clash/`, the `labels` module is two files — `upper.lu` and
+`banner.lu` — and both define `pub fn title`. Predict the diagnostic
+before running (22-3 is the same law; what differs here?). Then fix
+it in a copy *without deleting either file*, and say what the fix's
+choices were.
+
+Solution. Before:
+
+```console
+$ lupin clash/main.lu
+clash/main.lu: E0302: the name `title` is defined twice in this module (defined again in `./labels/upper.lu`); file boundaries create no scopes (D32) — two separate programs sharing a directory each mark themselves `//! member: false` (D59) [mod.dup] at 3:14
+```
+
+What differs from 22-3 is only where the union happens: these two
+files are members of a *named* module rather than the entry's own,
+and the module's namespace is still the union of its files, so the
+second `title` is a duplicate wherever it sits. The `member: false`
+hint in the message is a red herring here, on purpose — these files
+are not two programs, they are two halves of one module with one name
+too many. After, `ch22/unclashed/` renames `banner.lu`'s function to
+`banner`:
+
+```console
+$ lupin unclashed/main.lu
+== wolf ==
+** wolf **
+```
+
+The choices were exactly two, because the collision is one name with
+two owners: rename one function (taken), or merge the two spellings
+into one file under one `title` with a parameter. Moving `banner.lu`
+to another directory is not a fix — it is a new module, and callers
+would have to know which spelling lives where, which is the coupling
+the rename avoids.
+</details>
+
+<details>
+<summary>Exercise 22-13. [§22.2](../ch22.md#22.2)</summary>
+
+**Exercise 22-13** *(spelunking · wolf)*. 22-6 argued from the export
+hash; now hold it in your hands. Run `wolf interface` on 22-9's
+`tokens` module, add a private helper to the file, and run it again.
+Two things to explain from the output: why the hash did not move, and
+what the `W0313` warning beside it is asking for.
+
+Solution. Both runs, one item and one number between them:
+
+```console
+$ wolf interface ./tokens/tokens.lu
+module pkg :: (root)
+  wolfi v0 · toolchain 0.2.0 · edition v1
+  export_hash 1162b8ca497b116d3139fc538883355880cb097760d5e098d31b457fd1366e62
+  pkg_hash    1162b8ca497b116d3139fc538883355880cb097760d5e098d31b457fd1366e62
+  deps: (none)
+  items:
+    [0] pub split_words — fn split_words(text: str) -> prelude.List[str] · regions (-) -> ρ_caller
+```
+
+After `fn spare() -> int { 0 }` is appended, the output is
+byte-identical: the hash digests the `pub` surface alone, `spare` is
+private, and a private item is invisible to the number for the same
+reason it is invisible to importers. (The doc comments on the `pub`
+items do not move the hash either — contracts travel with the
+interface, but the digest is over the signatures.) `W0313` fires when
+a `pub` item has no `///` line: "exported, but undocumented", with
+the note that an item not worth documenting is rarely worth
+exporting. The warning and the hash are the same doctrine at two
+strengths — the module's public face is a contract, the hash makes
+its *shape* checkable, and the doc comment is where its *meaning*
+goes.
+</details>
+
+<details>
+<summary>Exercise 22-14. [§22.3](../ch22.md#22.3)</summary>
+
+**Exercise 22-14** *(design)*. 22-9's `tokens` exports one function;
+its `index_of` helper in `tally` is private; 22-10's `ops` exports
+`apply` and nothing else. State the rule these three choices follow,
+then argue against the tempting alternative: why not export the
+helpers too, since a future caller might want them? Name what every
+`pub` costs its module under 22-6's hash, and when the answer flips.
+
+Solution (discussion): the rule is the interface chapter's — export
+what callers need to do their job, keep everything whose *shape you
+might change*. Every `pub` widens the export hash: it becomes a
+signature importers may depend on, a name W0313 wants documented, a
+row in every future "can we change this?" conversation, and — under
+22-6's proof — a thing whose alteration is *visible* in the number.
+The speculative export costs all of that now against a caller who may
+never arrive; and when that caller does arrive, promoting a private
+helper to `pub` is a one-line diff whose hash change tells the truth
+about what happened. The answer flips when the helper *is* the
+product — a utility module whose whole reason is its helpers — and
+the honest test is whether you can write the `///` contract W0313
+asks for without the word "internal" in it.
 </details>
 
 ## Chapter 23

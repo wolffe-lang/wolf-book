@@ -1,0 +1,37 @@
+//! check: run(exit=0, stdout="stockroom closed: normal(12)")
+//! phase: run
+// Exercise 14-10 solution: a stockroom proc; the answer rides the exit.
+fn stockroom(cmds: channel[str]) -> int {
+    var held = 0
+    for c in cmds {
+        var verb = ""
+        var n = 0
+        var i = 0
+        for w in c.words() {
+            if i == 0 { verb = w }
+            if i == 1 { n = w.to_int() else 0 }
+            i += 1
+        }
+        if verb == "put" { held += n }
+        if verb == "take" {
+            if n > held { held = 0 } else { held -= n }
+        }
+    }
+    held
+}
+fn main() -> !int {
+    let cmds = channel[str](8)
+    let keeper = spawn proc stockroom(cmds)
+    let m = keeper.monitor()
+    cmds.send("put 40")
+    cmds.send("take 15")
+    cmds.send("put 6")
+    cmds.send("take 90")
+    cmds.send("put 12")
+    cmds.close()
+    select {
+        exit(reason) from m => { print("stockroom closed: {reason}") },
+        timeout(1.s) => { print("stuck") },
+    }
+    0
+}

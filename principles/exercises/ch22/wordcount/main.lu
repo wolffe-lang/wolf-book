@@ -1,0 +1,20 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 22-9 entry: the counter is two modules and a report loop.
+use tokens
+use tally
+
+fn main() -> !int {
+    let log = """
+        the wolf runs and the moon watches
+        the wolf sleeps
+        """
+    let words = tokens.split_words(log)
+    let pairs = tally.count(words)
+    var i = 0
+    while i < pairs.0.len {
+        print("{pairs.1[i]:>3} {pairs.0[i]}")
+        i += 1
+    }
+    0
+}

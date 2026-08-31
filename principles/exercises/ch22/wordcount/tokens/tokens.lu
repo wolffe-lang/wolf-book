@@ -1,0 +1,13 @@
+//! member: true
+/// Turning text into words; nothing here counts anything.
+
+/// Every word of every line, in reading order.
+pub fn split_words(text: str) -> List[str] {
+    var out = List[str]()
+    for line in text.lines() {
+        for w in line.words() {
+            (mut out).push(w)
+        }
+    }
+    out
+}

@@ -1,0 +1,25 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 5-14 solution: a comma-separated ledger, tabled.
+fn main() -> !int {
+    let ledger = """
+        drink,340
+        pastry,275
+        stew,900
+        """
+    var total = 0
+    for row in ledger.lines() {
+        var name = ""
+        var cents = 0
+        var i = 0
+        for field in row.split(",") {
+            if i == 0 { name = field }
+            if i == 1 { cents = field.to_int() else 0 }
+            i += 1
+        }
+        total += cents
+        print("{name:<10}{cents:>6}")
+    }
+    print("{"total":<10}{total:>6}")
+    0
+}

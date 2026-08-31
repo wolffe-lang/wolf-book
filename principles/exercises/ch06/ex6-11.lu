@@ -1,0 +1,31 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 6-11 solution: itoa by hand, round-tripped.
+fn itoa(n: int) -> str {
+    if n == 0 { return "0" }
+    var v = n
+    var sign = ""
+    if n < 0 {
+        sign = "-"
+        v = 0 - n
+    }
+    var digits = ""
+    while v > 0 {
+        digits = "{v % 10}" + digits
+        v = v / 10
+    }
+    "{sign}{digits}"
+}
+fn main() -> !int {
+    var cases = List[int]()
+    (mut cases).push(340)
+    (mut cases).push(0)
+    (mut cases).push(0 - 275)
+    for n in cases {
+        let s = itoa(n)
+        let back = s.to_int() else 999999
+        print("{n} -> {s}")
+        if back != n { return 1 }
+    }
+    0
+}

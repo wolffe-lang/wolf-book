@@ -1,0 +1,20 @@
+//! check: run(exit=0, stdout="[a   bb  ccc]")
+//! phase: run
+// Exercise 2-14 solution: detab — tab stops every four columns.
+fn main() -> !int {
+    let line = "a\tbb\tccc"
+    var out = ""
+    var col = 0
+    for c in line.chars() {
+        if c == '\t' {
+            let stop = (col / 4 + 1) * 4
+            out += " ".repeat(stop - col)
+            col = stop
+        } else {
+            out += "{c}"
+            col += 1
+        }
+    }
+    print("[{out}]")
+    0
+}

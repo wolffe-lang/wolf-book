@@ -1,0 +1,22 @@
+warning[W0314]: `labels` holds exactly one item
+ --> ./labels/banner.lu:3:8
+  |
+3 | pub fn title(s: str) -> str { "** {s} **" }
+  |        ^^^^^ a directory of ceremony around it
+  |
+  = note: fold the item into the module that uses it, or grow the module into the family its name
+    promises; a deliberate seam says so with `#[allow(w0314)]` and a reason.
+
+error[E0302]: the name `title` is defined twice in this module
+ --> ./labels/upper.lu:3:8
+  |
+3 | pub fn title(s: str) -> str { "== {s} ==" }
+  |        ^^^^^ defined again here
+  |
+ ::: ./labels/banner.lu:3:8
+  |
+3 | pub fn title(s: str) -> str { "** {s} **" }
+  |        ----- first defined here
+  |
+  = note: every `.lu` file in a directory is one module (D32), so a top-level name may be defined
+    only once across all of them; rename or remove one of the definitions.

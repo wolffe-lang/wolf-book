@@ -1,0 +1,30 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 7-15 solution: the same job, consuming and lending.
+fn shouted(take xs: List[str]) -> List[str] {
+    var out = List[str]()
+    for x in xs {
+        (mut out).push(x.upper())
+    }
+    out
+}
+fn shout(mut xs: List[str]) {
+    var i = 0
+    while i < xs.len {
+        xs[i] = xs[i].upper()
+        i += 1
+    }
+}
+fn main() -> !int {
+    var a = List[str]()
+    (mut a).push("howl")
+    (mut a).push("scratch")
+    let b = shouted(take a)
+    print("{b[0]} {b[1]}")
+    var c = List[str]()
+    (mut c).push("howl")
+    (mut c).push("scratch")
+    shout(mut c)
+    print("{c[0]} {c[1]}")
+    0
+}

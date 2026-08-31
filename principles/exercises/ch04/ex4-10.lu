@@ -1,0 +1,16 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 4-10 solution: rtrim — trailing blanks and tabs, gone.
+fn rtrim(s: str) -> str {
+    var end = s.len
+    while end > 0 && (s[end - 1..end] == " " || s[end - 1..end] == "\t") {
+        end -= 1
+    }
+    s[..end]
+}
+fn main() -> !int {
+    for line in "howl   \nden\t\t\nmoon".lines() {
+        print("[{rtrim(line)}]")
+    }
+    0
+}
