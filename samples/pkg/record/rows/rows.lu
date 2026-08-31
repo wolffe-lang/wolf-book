@@ -1,0 +1,11 @@
+/// Row arithmetic for a log search: the widths a report has to fit.
+
+/// The wider of two column widths.
+pub fn widest(a: int, b: int) -> int {
+    if a > b { a } else { b }
+}
+
+/// How many rows fit in `height` lines once the header is charged for.
+pub fn fit(height: int, header: int) -> int {
+    if height > header { height - header } else { 0 }
+}
