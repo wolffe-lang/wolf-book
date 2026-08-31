@@ -8367,7 +8367,7 @@ tangle/main.lu: E0303: this import completes a cycle: `store` → `index` → `s
 ```
 
 After, `ch22/untangled/` adds `kinds/`, which imports nothing;
-`index` now consumes `kinds.classify` instead of calling back into
+`index` now consumes `kinds.in_batch` instead of calling back into
 `store`, and the arrows form a DAG:
 
 ```console
@@ -8476,6 +8476,249 @@ into folklore. The warned-about cycle outlives its excuse, new code
 grows onto it, and the migration never happens. The forty-file cost is
 paid once; the cycle's cost is paid on every build and every read,
 indefinitely, by people who did not create it.
+</details>
+
+<details>
+<summary>Exercise 22-9. [§22.3](../ch22.md#22.3)</summary>
+
+**Exercise 22-9** *(extension · lupin)*. The word counter, split along
+its seam: a `tokens/` module that turns text into words and knows
+nothing about counting, a `tally/` module that counts a `List[str]`
+and knows nothing about lines, and an entry that owns the text and the
+report loop. Build it in `ch22/wordcount/` and run it. Then defend the
+seam: why does `tokens` return a `List[str]` instead of taking `tally`
+as an import and counting as it splits?
+
+Solution. `ch22/wordcount/` — the entry:
+
+```wolf
+// wordcount/main.lu
+use tokens
+use tally
+
+fn main() -> !int {
+    let log = """
+        the wolf runs and the moon watches
+        the wolf sleeps
+        """
+    let words = tokens.split_words(log)
+    let pairs = tally.count(words)
+    var i = 0
+    while i < pairs.0.len {
+        print("{pairs.1[i]:>3} {pairs.0[i]}")
+        i += 1
+    }
+    0
+}
+```
+
+```console
+$ lupin main.lu
+  3 the
+  2 wolf
+  1 runs
+  1 and
+  1 moon
+  1 watches
+  1 sleeps
+```
+
+The `List[str]` between them is the whole contract, and its poverty is
+the point: `tokens` importing `tally` would weld the two jobs into one
+module wearing two directories — counting-while-splitting cannot be
+reused to split without counting, and the import edge would put
+`tally` in every future importer's build graph whether they count or
+not. A seam earns its module boundary exactly when the value crossing
+it is duller than either side's insides. (`tally` returns two parallel
+lists for 5-6's reason: first-seen order is data a `Map` forgets.)
+</details>
+
+<details>
+<summary>Exercise 22-10. [§22.3](../ch22.md#22.3)</summary>
+
+**Exercise 22-10** *(extension · lupin)*. A calculator whose
+arithmetic lives behind a seam: an `ops/` module exporting one
+function, `apply(op, a, b) -> int ! {BadOp, DivZero}`, and an entry
+that parses `a b op` lines and reports. Build it in `ch22/calc/`,
+with `9 0 /` among the inputs. The row crosses the module boundary —
+what does the entry know about *why* a line was refused, and what
+would it take to start caring?
+
+Solution. `ch22/calc/` — the module:
+
+```wolf
+// calc/ops/ops.lu
+pub fn apply(op: str, a: int, b: int) -> int ! {BadOp, DivZero} {
+    if op == "+" { return a + b }
+    if op == "-" { return a - b }
+    if op == "*" { return a * b }
+    if op == "/" {
+        if b == 0 { return DivZero }
+        return a / b
+    }
+    BadOp
+}
+```
+
+```console
+$ lupin main.lu
+7 3 - = 4
+9 0 /: refused
+6 7 * = 42
+```
+
+The entry's handler is `else |err| { … }` with no `match`: it knows a
+line was refused and prints so, and the tag's identity dies unread in
+`err`. That is a legitimate posture — chapter 6's coarse consumer —
+and the row's two tags are still load-bearing, because the day the
+entry wants `9 0 /: division by zero` instead, the change is one
+`match` in the handler and nothing in `ops`: the information was
+already crossing the seam, typed, waiting for a caller that cares.
+An error row in a `pub` signature is the module promising its callers
+room to grow into.
+</details>
+
+<details>
+<summary>Exercise 22-11. [§22.1](../ch22.md#22.1)</summary>
+
+**Exercise 22-11** *(fingers · lupin)*. Two scratch programs, one
+directory, on purpose: `sum.lu` totals three numbers, `widest.lu`
+finds the longest of four words, and each is a whole program with its
+own `main`. Mark each `//! member: false` and run both by name. Then
+remove the marker from *one* of them and run the other. Why does the
+diagnostic land on the program that kept its marker?
+
+Solution. `ch22/scratch/`, both files opening with the marker:
+
+```wolf
+// scratch/sum.lu (first lines)
+//! member: false
+fn main() -> !int {
+```
+
+```console
+$ lupin scratch/sum.lu
+sum 15
+$ lupin scratch/widest.lu
+widest marmot
+```
+
+With `widest.lu`'s marker removed, running `sum.lu` refuses:
+
+```console
+$ lupin sum.lu
+sum.lu: E0302: the name `main` is defined twice in this module (defined again in `./widest.lu`); file boundaries create no scopes (D32) — two separate programs sharing a directory each mark themselves `//! member: false` (D59) [mod.dup] at 1:4
+```
+
+The marker is a property of the *file*, not of the invocation: an
+unmarked sibling defaults to membership in whatever module the entry
+anchors, so the bare `widest.lu` joins `sum.lu`'s module and brings
+its `main` along. The diagnostic lands on the marked program because
+that is the program you ran — its module is where the collision
+happened. E0302's hint says "each mark themselves" with "each" doing
+real work: standalone-ness is declared per file, never inferred from
+a neighbor's declaration.
+</details>
+
+<details>
+<summary>Exercise 22-12. [§22.1](../ch22.md#22.1)</summary>
+
+**Exercise 22-12** *(comprehension + extension · lupin)*. In
+`ch22/clash/`, the `labels` module is two files — `upper.lu` and
+`banner.lu` — and both define `pub fn title`. Predict the diagnostic
+before running (22-3 is the same law; what differs here?). Then fix
+it in a copy *without deleting either file*, and say what the fix's
+choices were.
+
+Solution. Before:
+
+```console
+$ lupin clash/main.lu
+clash/main.lu: E0302: the name `title` is defined twice in this module (defined again in `./labels/upper.lu`); file boundaries create no scopes (D32) — two separate programs sharing a directory each mark themselves `//! member: false` (D59) [mod.dup] at 3:14
+```
+
+What differs from 22-3 is only where the union happens: these two
+files are members of a *named* module rather than the entry's own,
+and the module's namespace is still the union of its files, so the
+second `title` is a duplicate wherever it sits. The `member: false`
+hint in the message is a red herring here, on purpose — these files
+are not two programs, they are two halves of one module with one name
+too many. After, `ch22/unclashed/` renames `banner.lu`'s function to
+`banner`:
+
+```console
+$ lupin unclashed/main.lu
+== wolf ==
+** wolf **
+```
+
+The choices were exactly two, because the collision is one name with
+two owners: rename one function (taken), or merge the two spellings
+into one file under one `title` with a parameter. Moving `banner.lu`
+to another directory is not a fix — it is a new module, and callers
+would have to know which spelling lives where, which is the coupling
+the rename avoids.
+</details>
+
+<details>
+<summary>Exercise 22-13. [§22.2](../ch22.md#22.2)</summary>
+
+**Exercise 22-13** *(spelunking · wolf)*. 22-6 argued from the export
+hash; now hold it in your hands. Run `wolf interface` on 22-9's
+`tokens` module, add a private helper to the file, and run it again.
+Two things to explain from the output: why the hash did not move, and
+what the `W0313` warning beside it is asking for.
+
+Solution. Both runs, one item and one number between them:
+
+```console
+$ wolf interface ./tokens/tokens.lu
+module pkg :: (root)
+  wolfi v0 · toolchain 0.2.0 · edition v1
+  export_hash 1162b8ca497b116d3139fc538883355880cb097760d5e098d31b457fd1366e62
+  pkg_hash    1162b8ca497b116d3139fc538883355880cb097760d5e098d31b457fd1366e62
+  deps: (none)
+  items:
+    [0] pub split_words — fn split_words(text: str) -> prelude.List[str] · regions (-) -> ρ_caller
+```
+
+After `fn spare() -> int { 0 }` is appended, the output is
+byte-identical: the hash digests the `pub` surface alone, `spare` is
+private, and a private item is invisible to the number for the same
+reason it is invisible to importers. (The doc comments on the `pub`
+items do not move the hash either — contracts travel with the
+interface, but the digest is over the signatures.) `W0313` fires when
+a `pub` item has no `///` line: "exported, but undocumented", with
+the note that an item not worth documenting is rarely worth
+exporting. The warning and the hash are the same doctrine at two
+strengths — the module's public face is a contract, the hash makes
+its *shape* checkable, and the doc comment is where its *meaning*
+goes.
+</details>
+
+<details>
+<summary>Exercise 22-14. [§22.3](../ch22.md#22.3)</summary>
+
+**Exercise 22-14** *(design)*. 22-9's `tokens` exports one function;
+its `index_of` helper in `tally` is private; 22-10's `ops` exports
+`apply` and nothing else. State the rule these three choices follow,
+then argue against the tempting alternative: why not export the
+helpers too, since a future caller might want them? Name what every
+`pub` costs its module under 22-6's hash, and when the answer flips.
+
+Solution (discussion): the rule is the interface chapter's — export
+what callers need to do their job, keep everything whose *shape you
+might change*. Every `pub` widens the export hash: it becomes a
+signature importers may depend on, a name W0313 wants documented, a
+row in every future "can we change this?" conversation, and — under
+22-6's proof — a thing whose alteration is *visible* in the number.
+The speculative export costs all of that now against a caller who may
+never arrive; and when that caller does arrive, promoting a private
+helper to `pub` is a one-line diff whose hash change tells the truth
+about what happened. The answer flips when the helper *is* the
+product — a utility module whose whole reason is its helpers — and
+the honest test is whether you can write the `///` contract W0313
+asks for without the word "internal" in it.
 </details>
 
 ## Chapter 23

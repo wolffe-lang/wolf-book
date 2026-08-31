@@ -1,0 +1,3 @@
+//! member: true
+/// The starred spelling, under its own name.
+pub fn banner(s: str) -> str { "** {s} **" }

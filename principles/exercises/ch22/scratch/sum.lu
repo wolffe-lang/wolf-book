@@ -1,0 +1,13 @@
+//! member: false
+//! check: run(exit=0, stdout="sum 15")
+//! phase: run
+// Exercise 22-11: a standalone scratch program that shares a directory
+// with another, on purpose — the marker is the whole mechanism.
+fn main() -> !int {
+    var total = 0
+    for n in "4\n9\n2".lines() {
+        total += n.to_int() else 0
+    }
+    print("sum {total}")
+    0
+}

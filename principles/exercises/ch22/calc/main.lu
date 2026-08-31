@@ -1,0 +1,30 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 22-10 entry: the arithmetic lives behind a module seam.
+use ops
+
+fn main() -> !int {
+    let program = """
+        7 3 -
+        9 0 /
+        6 7 *
+        """
+    for line in program.lines() {
+        var a = 0
+        var b = 0
+        var op = ""
+        var i = 0
+        for tok in line.words() {
+            if i == 0 { a = tok.to_int() else 0 }
+            if i == 1 { b = tok.to_int() else 0 }
+            if i == 2 { op = tok }
+            i += 1
+        }
+        let v = ops.apply(op, a, b) else |err| {
+            print("{line}: refused")
+            continue
+        }
+        print("{line} = {v}")
+    }
+    0
+}

@@ -1,0 +1,12 @@
+//! member: false
+//! check: run(exit=0, stdout="widest marmot")
+//! phase: run
+// Exercise 22-11, the other half of the shared directory.
+fn main() -> !int {
+    var best = ""
+    for w in "owl wolf marmot elk".words() {
+        if w.len > best.len { best = w }
+    }
+    print("widest {best}")
+    0
+}

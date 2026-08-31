@@ -1,0 +1,15 @@
+//! member: true
+/// The four operators, one refusal row.
+
+/// Apply `op` to two operands; unknown operators and division by zero
+/// come back as tags, not as traps.
+pub fn apply(op: str, a: int, b: int) -> int ! {BadOp, DivZero} {
+    if op == "+" { return a + b }
+    if op == "-" { return a - b }
+    if op == "*" { return a * b }
+    if op == "/" {
+        if b == 0 { return DivZero }
+        return a / b
+    }
+    BadOp
+}
