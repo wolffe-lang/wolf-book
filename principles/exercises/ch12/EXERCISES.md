@@ -230,7 +230,116 @@ costs become exactly the two features you need, and the refactor is
 chapter 11's worker pool. Types are claims; make the cheapest claim
 that is true.
 
-## §12.4 — `when (a, b)`
+**Exercise 12-10** *(extension · lupin)*. The worklist as a checker:
+`balanced(line)` walks a line's characters with a `List[char]` stack —
+push every opener among `([{`, pop and compare on every closer. Table
+four lines, two of them wolf-shaped code fragments. Three ways to be
+unbalanced hide in one function; name all three and the line of your
+program that catches each.
+
+Solution. `ch12/ex12-10.lu`:
+
+```wolf
+fn balanced(line: str) -> bool {
+    var stack = List[char]()
+    for c in line.chars() {
+        if c == '(' || c == '[' || c == '{' {
+            (mut stack).push(c)
+        } else if c == ')' || c == ']' || c == '}' {
+            if stack.len == 0 { return false }
+            let open = stack[stack.len - 1]
+            (mut stack).pop()
+            if c == ')' && open != '(' { return false }
+            if c == ']' && open != '[' { return false }
+            if c == '}' && open != '{' { return false }
+        }
+    }
+    stack.len == 0
+}
+fn main() -> !int {
+    var cases = List[str]()
+    (mut cases).push(r"when (a, b) { c[0] }")
+    (mut cases).push(r"select { (a from q => { ) }")
+    (mut cases).push(r"([{}])")
+    (mut cases).push(r"((")
+    for line in cases {
+        let verdict = if balanced(line) { "ok " } else { "BAD" }
+        print("{verdict} {line}")
+    }
+    0
+}
+```
+
+```console
+$ lupin ex12-10.lu
+ok  when (a, b) { c[0] }
+BAD select { (a from q => { ) }
+ok  ([{}])
+BAD ((
+```
+
+The three failures: a closer with nothing open (`stack.len == 0` —
+the early `return false`), a closer of the wrong kind (the three
+comparisons against the popped opener — the second case dies here,
+`)` against `{`), and openers left over at the end (the final
+`stack.len == 0`, which is the whole return expression — the fourth
+case). The raw-string test data is not decoration: the braces in
+`{ c[0] }` would be interpolations in an ordinary literal, so the
+checker's own input demonstrates §2.2's reason raw literals exist.
+
+**Exercise 12-11** *(extension · lupin)*. Two stacks make a compiler
+front half: convert `3 + 4 * 2 - 6 / 3` from infix to postfix with
+one operator stack — pop while the stack's top has precedence at
+least the incoming operator's, then push; drain at the end. Feed the
+result to 5-7's RPN evaluator in your head to check it. Which single
+comparison in your loop decides that `3 + 4 * 2` is 11 and not 14?
+
+Solution. `ch12/ex12-11.lu`:
+
+```wolf
+fn prec(op: str) -> int {
+    if op == "*" || op == "/" { 2 } else { 1 }
+}
+fn is_op(t: str) -> bool {
+    t == "+" || t == "-" || t == "*" || t == "/"
+}
+fn main() -> !int {
+    let infix = "3 + 4 * 2 - 6 / 3"
+    var ops = List[str]()
+    var out = ""
+    for t in infix.words() {
+        if is_op(t) {
+            while ops.len > 0 && prec(ops[ops.len - 1]) >= prec(t) {
+                out += "{ops[ops.len - 1]} "
+                (mut ops).pop()
+            }
+            (mut ops).push(t)
+        } else {
+            out += "{t} "
+        }
+    }
+    while ops.len > 0 {
+        out += "{ops[ops.len - 1]} "
+        (mut ops).pop()
+    }
+    print(out.trim())
+    0
+}
+```
+
+```console
+$ lupin ex12-11.lu
+3 4 2 * + 6 3 / -
+```
+
+`prec(ops[ops.len - 1]) >= prec(t)` is the whole grammar. When `*`
+arrives with `+` on the stack, 1 >= 2 is false, so `+` stays put and
+`*` stacks on top — emitted first, which is what binds `4 * 2` before
+the add. Flip the comparison's verdict (or make all precedences
+equal) and the output evaluates left to right: 14. One integer
+comparison is carrying operator precedence for the whole language,
+which is the honest size of that famous feature. The `>=` (rather
+than `>`) is left-associativity, checkable on the `- … /` tail.
 
 **Exercise 12-8** *(comprehension · lupin)*. Two tasks acquire the
 same two mutexes in *opposite* spellings. Predict the total, and

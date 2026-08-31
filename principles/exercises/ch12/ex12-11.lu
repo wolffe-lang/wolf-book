@@ -1,0 +1,31 @@
+//! check: run(exit=0, stdout="3 4 2 * + 6 3 / -")
+//! phase: run
+// Exercise 12-11 solution: infix to postfix with one operator stack.
+fn prec(op: str) -> int {
+    if op == "*" || op == "/" { 2 } else { 1 }
+}
+fn is_op(t: str) -> bool {
+    t == "+" || t == "-" || t == "*" || t == "/"
+}
+fn main() -> !int {
+    let infix = "3 + 4 * 2 - 6 / 3"
+    var ops = List[str]()
+    var out = ""
+    for t in infix.words() {
+        if is_op(t) {
+            while ops.len > 0 && prec(ops[ops.len - 1]) >= prec(t) {
+                out += "{ops[ops.len - 1]} "
+                (mut ops).pop()
+            }
+            (mut ops).push(t)
+        } else {
+            out += "{t} "
+        }
+    }
+    while ops.len > 0 {
+        out += "{ops[ops.len - 1]} "
+        (mut ops).pop()
+    }
+    print(out.trim())
+    0
+}

@@ -5617,6 +5617,125 @@ The transcript above is lupin's; §12.4 prints the compiler's half
 beside it.
 </details>
 
+<details>
+<summary>Exercise 12-10. [§12.3](../ch12.md#12.3)</summary>
+
+**Exercise 12-10** *(extension · lupin)*. The worklist as a checker:
+`balanced(line)` walks a line's characters with a `List[char]` stack —
+push every opener among `([{`, pop and compare on every closer. Table
+four lines, two of them wolf-shaped code fragments. Three ways to be
+unbalanced hide in one function; name all three and the line of your
+program that catches each.
+
+Solution. `ch12/ex12-10.lu`:
+
+```wolf
+fn balanced(line: str) -> bool {
+    var stack = List[char]()
+    for c in line.chars() {
+        if c == '(' || c == '[' || c == '{' {
+            (mut stack).push(c)
+        } else if c == ')' || c == ']' || c == '}' {
+            if stack.len == 0 { return false }
+            let open = stack[stack.len - 1]
+            (mut stack).pop()
+            if c == ')' && open != '(' { return false }
+            if c == ']' && open != '[' { return false }
+            if c == '}' && open != '{' { return false }
+        }
+    }
+    stack.len == 0
+}
+fn main() -> !int {
+    var cases = List[str]()
+    (mut cases).push(r"when (a, b) { c[0] }")
+    (mut cases).push(r"select { (a from q => { ) }")
+    (mut cases).push(r"([{}])")
+    (mut cases).push(r"((")
+    for line in cases {
+        let verdict = if balanced(line) { "ok " } else { "BAD" }
+        print("{verdict} {line}")
+    }
+    0
+}
+```
+
+```console
+$ lupin ex12-10.lu
+ok  when (a, b) { c[0] }
+BAD select { (a from q => { ) }
+ok  ([{}])
+BAD ((
+```
+
+The three failures: a closer with nothing open (`stack.len == 0` —
+the early `return false`), a closer of the wrong kind (the three
+comparisons against the popped opener — the second case dies here,
+`)` against `{`), and openers left over at the end (the final
+`stack.len == 0`, which is the whole return expression — the fourth
+case). The raw-string test data is not decoration: the braces in
+`{ c[0] }` would be interpolations in an ordinary literal, so the
+checker's own input demonstrates §2.2's reason raw literals exist.
+</details>
+
+<details>
+<summary>Exercise 12-11. [§12.3](../ch12.md#12.3)</summary>
+
+**Exercise 12-11** *(extension · lupin)*. Two stacks make a compiler
+front half: convert `3 + 4 * 2 - 6 / 3` from infix to postfix with
+one operator stack — pop while the stack's top has precedence at
+least the incoming operator's, then push; drain at the end. Feed the
+result to 5-7's RPN evaluator in your head to check it. Which single
+comparison in your loop decides that `3 + 4 * 2` is 11 and not 14?
+
+Solution. `ch12/ex12-11.lu`:
+
+```wolf
+fn prec(op: str) -> int {
+    if op == "*" || op == "/" { 2 } else { 1 }
+}
+fn is_op(t: str) -> bool {
+    t == "+" || t == "-" || t == "*" || t == "/"
+}
+fn main() -> !int {
+    let infix = "3 + 4 * 2 - 6 / 3"
+    var ops = List[str]()
+    var out = ""
+    for t in infix.words() {
+        if is_op(t) {
+            while ops.len > 0 && prec(ops[ops.len - 1]) >= prec(t) {
+                out += "{ops[ops.len - 1]} "
+                (mut ops).pop()
+            }
+            (mut ops).push(t)
+        } else {
+            out += "{t} "
+        }
+    }
+    while ops.len > 0 {
+        out += "{ops[ops.len - 1]} "
+        (mut ops).pop()
+    }
+    print(out.trim())
+    0
+}
+```
+
+```console
+$ lupin ex12-11.lu
+3 4 2 * + 6 3 / -
+```
+
+`prec(ops[ops.len - 1]) >= prec(t)` is the whole grammar. When `*`
+arrives with `+` on the stack, 1 >= 2 is false, so `+` stays put and
+`*` stacks on top — emitted first, which is what binds `4 * 2` before
+the add. Flip the comparison's verdict (or make all precedences
+equal) and the output evaluates left to right: 14. One integer
+comparison is carrying operator precedence for the whole language,
+which is the honest size of that famous feature. The `>=` (rather
+than `>`) is left-associativity, checkable on the `- … /` tail.
+</details>
+
 ## Chapter 13
 
 <details>
@@ -5849,6 +5968,113 @@ property of sharing one rounding, not of infinite precision: compute
 the two accelerations separately with different roundings and the
 symmetry is gone. That observation is the seed of every reproducible
 n-body benchmark in Part 4.
+</details>
+
+<details>
+<summary>Exercise 13-9. [§13.2](../ch13.md#13.2)</summary>
+
+**Exercise 13-9** *(extension · lupin)*. The caesar shift, sequential
+on purpose: `shift(s, k)` moves each lowercase letter `k` places with
+wraparound (`chars`, casts, `% 26`) and passes everything else
+through. Encode a line with `k = 3`, decode with the *same function*,
+and make `main` exit nonzero if the round trip misses. Two questions:
+what number decodes for `k = 3`, and — the extension — if the shift
+instead came from the letters of a key word repeating along the
+message, what would decode have to do that it does not do now?
+
+Solution. `ch13/ex13-9.lu`:
+
+```wolf
+fn shift(s: str, k: int) -> str {
+    var out = ""
+    for c in s.chars() {
+        if c >= 'a' && c <= 'z' {
+            let at = (c as int) - ('a' as int)
+            let moved = (at + k) % 26
+            out = "{out}{(moved + ('a' as int)) as char}"
+        } else {
+            out = "{out}{c}"
+        }
+    }
+    out
+}
+fn main() -> !int {
+    let plain = "the wolf runs at dusk"
+    let coded = shift(plain, 3)
+    let back = shift(coded, 23)
+    print(coded)
+    print(back)
+    if back != plain { return 1 }
+    0
+}
+```
+
+```console
+$ lupin ex13-9.lu
+wkh zroi uxqv dw gxvn
+the wolf runs at dusk
+```
+
+23 decodes, because 3 + 23 is 26 and `% 26` makes 26 the identity —
+decode is encode with the complementary shift, one function doing
+both jobs. Under a repeating key the complement is *per position*:
+decode must walk the key alongside the message and complement each
+letter's own shift, so the one thing it needs that the fixed-shift
+version lacks is an index — the loop over `chars()` grows a counter,
+and everything else survives unchanged. (That per-position version is
+the Vigenère cipher, and the counter is the whole difference.)
+</details>
+
+<details>
+<summary>Exercise 13-10. [§13.2](../ch13.md#13.2)</summary>
+
+**Exercise 13-10** *(comprehension + extension · lupin)*. 13-5's byte
+scan found lines; this one counts hits. Write
+`count(hay, needle, overlapping)` — the same
+`hay[i..i + needle.len] == needle` probe — where the flag decides
+whether a hit advances `i` by one byte or by the needle's length.
+Predict both answers for `"aaaa"` / `"aa"` before running. Which
+convention does a text editor's find-and-replace need, and what goes
+wrong under the other one?
+
+Solution. `ch13/ex13-10.lu`:
+
+```wolf
+fn count(hay: str, needle: str, overlapping: bool) -> int {
+    var hits = 0
+    var i = 0
+    while i + needle.len <= hay.len {
+        if hay[i..i + needle.len] == needle {
+            hits += 1
+            i += if overlapping { 1 } else { needle.len }
+        } else {
+            i += 1
+        }
+    }
+    hits
+}
+fn main() -> !int {
+    print("{count("aaaa", "aa", true)} {count("aaaa", "aa", false)}")
+    print("{count("the wolf the ridge the creek", "the", true)}")
+    0
+}
+```
+
+```console
+$ lupin ex13-10.lu
+3 2
+3
+```
+
+Overlapping sees hits at offsets 0, 1, 2; non-overlapping consumes
+two bytes per hit and sees 0 and 2. Find-and-replace needs the
+non-overlapping convention: each replacement consumes its match, so
+the next search resumes *after* it. Under the overlapping count a
+replace of `"aa"` in `"aaaa"` would claim three sites where only two
+disjoint replacements exist — the second "hit" overlaps bytes the
+first replacement already rewrote. A count is only meaningful with
+its consumption rule attached, which is why the flag is in the
+signature and not in a comment.
 </details>
 
 ## Chapter 14
@@ -6156,6 +6382,73 @@ enters it. What varies is the interleaving of the two clients' sends
 addition commutes. Replace `total += c` with an operation that does
 not commute and the seeds stop agreeing; chapter 17 hunts exactly that
 program.
+</details>
+
+<details>
+<summary>Exercise 14-10. [§14.3](../ch14.md#14.3)</summary>
+
+**Exercise 14-10** *(extension · lupin)*. A stockroom proc: its mailbox
+carries lines like `put 40` and `take 15`, each handled to completion —
+parse the verb and the number with `words()`, keep a running count,
+floor it at zero when a `take` overdraws. `main` sends five commands,
+closes, and learns the final count the way 14-6's shelver reported its
+words: riding home in the exit reason. Why does the overdraw rule live
+in the proc rather than in the senders, and what does that placement
+buy when a second sender appears?
+
+Solution. `ch14/ex14-10.lu`:
+
+```wolf
+fn stockroom(cmds: channel[str]) -> int {
+    var held = 0
+    for c in cmds {
+        var verb = ""
+        var n = 0
+        var i = 0
+        for w in c.words() {
+            if i == 0 { verb = w }
+            if i == 1 { n = w.to_int() else 0 }
+            i += 1
+        }
+        if verb == "put" { held += n }
+        if verb == "take" {
+            if n > held { held = 0 } else { held -= n }
+        }
+    }
+    held
+}
+fn main() -> !int {
+    let cmds = channel[str](8)
+    let keeper = spawn proc stockroom(cmds)
+    let m = keeper.monitor()
+    cmds.send("put 40")
+    cmds.send("take 15")
+    cmds.send("put 6")
+    cmds.send("take 90")
+    cmds.send("put 12")
+    cmds.close()
+    select {
+        exit(reason) from m => { print("stockroom closed: {reason}") },
+        timeout(1.s) => { print("stuck") },
+    }
+    0
+}
+```
+
+```console
+$ lupin ex14-10.lu
+stockroom closed: normal(12)
+```
+
+The trace: 40, 25, 31, floored to 0 by the 90, then 12. The overdraw
+rule lives in the proc because the count does: a sender enforcing "do
+not take more than is held" would need to *ask* first, and between its
+ask and its take another sender can move the count — the check-then-act
+race every shared ledger invents. Inside the handler the rule is
+atomic for free, §14.3's law (one message at a time, to completion)
+doing the work of a lock. A second sender therefore costs nothing:
+senders stay ignorant of the invariant, and the one place that owns
+the count is the one place that defends it.
 </details>
 
 ## Chapter 15
@@ -6757,6 +7050,81 @@ $ echo $?
 ```
 
 The corpus carries the same expectation in `conc/chan_unsendable.lu`.
+</details>
+
+<details>
+<summary>Exercise 16-10. [§16.3](../ch16.md#16.3)</summary>
+
+**Exercise 16-10** *(extension · lupin)*. Seven wolves in a ring; every
+third one still standing leaves, until one remains. Build the ring as a
+list of alive-flags in its own region, run the elimination in `main`
+with `%` doing the wraparound, then hand the finished region to a
+reader task with one `send(move …)` — 16-7's shape — which finds the
+survivor in place and prints the seat. Compute the answer on paper
+first. How many times was the ring copied between builder and reader,
+and what would the copy count be in a language that made message
+passing mean copying?
+
+Solution. `ch16/ex16-10.lu`:
+
+```wolf
+fn eliminate(mut alive: List[int], every: int, seats: int) {
+    var living = seats
+    var cur = 0
+    var counted = 0
+    while living > 1 {
+        if alive[cur] == 1 {
+            counted += 1
+            if counted == every {
+                alive[cur] = 0
+                living -= 1
+                counted = 0
+            }
+        }
+        cur = (cur + 1) % seats
+    }
+}
+fn last_seat(alive: List[int], seats: int) -> int {
+    var seat = 0
+    for i in 0..seats {
+        if alive[i] == 1 { seat = i + 1 }
+    }
+    seat
+}
+fn main() -> !int {
+    let ch = channel[region](1)
+    let r = region()
+    var alive = in r { List[int]() }
+    for _ in 0..7 { (mut alive).push(1) }
+    eliminate(mut alive, 3, 7)
+    scope s {
+        s.spawn(fn() {
+            let r2 = ch.recv() else |_| { return }
+            let seat = in r2 { last_seat(alive, 7) }
+            print("seat {seat} survives")
+        })
+        ch.send(move r)
+    }
+    0
+}
+```
+
+```console
+$ lupin ex16-10.lu
+seat 4 survives
+```
+
+Seat 4 (the paper walk: seats 3, 6, 2, 7, 5, 1 leave, in that order).
+Zero copies: the flags were allocated in `r`, mutated in place by the
+builder, and the `move` handed the reader the same memory — `last_seat`
+reads flags it never allocated, 16-7's zero-copy claim on a different
+graph. Copy-passing (Erlang's choice, the honest lineup's first row)
+would copy the ring once per message: one copy here, but one per
+*handoff* in general, which for a pipeline of n stages is n copies of
+state that only ever has one interested party at a time. The elimination
+runs before the send on purpose: the builder finishes its writes, then
+ownership moves — the same "mutate, then share" order `freeze` enforces
+for the many-reader case.
 </details>
 
 ## Chapter 17
@@ -7370,6 +7738,148 @@ load-bearing wall of the caching, reproducibility, and audit stories,
 and the package manifest is where the need is threaded instead of
 through the evaluator. *What* is read can be data; *that* it was read
 must be declaration.
+</details>
+
+<details>
+<summary>Exercise 18-13. [§18.3](../ch18.md#18.3)</summary>
+
+**Exercise 18-13** *(spelunking · wolf)*. Misspell a format spec on
+purpose — `{total:>9.2z}` — and read the grammar out of the error.
+From the diagnostic alone: which one letter fixes this spec for a
+money column, and which *two* letters would print the same number in
+bases the chapter has not used yet?
+
+Solution. `ch18/ex18-13.lu` (broken on purpose):
+
+```console
+$ wolf conform-run ./ex18-13.lu
+error[E0412]: `z` has no place in a format spec — the grammar is `[[fill]align][+][0][width][.precision][type]` with type one of `b o x X e E f`
+ --> ./ex18-13.lu:7:18
+  |
+7 |     print("{total:>9.2z}")
+  |                  ^^^^^^ in this format spec
+  |
+```
+
+The fix is `f`: fixed-point, which with `.2` is the money column
+(`{total:>9.2f}`). The two unused letters are `b` and `o` — binary
+and octal — sitting in the grammar beside the `x`/`X` hex the string
+chapter did print. The diagnostic *is* the section's claim performed:
+the f-string compiled to checked calls, so a bad spec is a compile
+error with the whole grammar in it, not a runtime surprise — and the
+grammar line answers questions the chapter never got to.
+</details>
+
+<details>
+<summary>Exercise 18-14. [§18.3](../ch18.md#18.3)</summary>
+
+**Exercise 18-14** *(comprehension · wolf)*. Four `Buf[…]` parameter
+and return pairs: `Buf[N + 1]` with `Buf[1 + N]`; `Buf[N + 2 - 1]`
+with `Buf[1 + N]`; `Buf[2 + 2]` with `Buf[4]`; `Buf[N * 2]` with
+`Buf[2 * N]`. Predict which pairs the checker equates on its own and
+which one needs a witness, then check the odd one out and read which
+of the three steps the note says it fell past.
+
+Solution. `ch18/ex18-14.lu` (the `*` pair, broken on purpose; the
+first three are the chapter's own `shuffle`/`widen`/`closed`, all
+accepted):
+
+```console
+$ wolf conform-run ./ex18-14.lu
+error[E0707]: `Buf[N * 2]` and `Buf[2 * N]` may be equal, but proving it needs a witness
+ --> ./ex18-14.lu:6:51
+  |
+6 | fn double[N: type](b: Buf[N * 2]) -> Buf[2 * N] { b }
+  |                                   ------------- the return type is declared here
+  |                                                   ^ these const expressions differ beyond linear arithmetic
+  |
+  = note: const-expression equality is decided in three steps, and the line is fixed: (1) closed
+    expressions evaluate and compare by value; (2) `+`/`-` arithmetic over generic
+    parameters compares by ring normalization, so `N + 1` equals `1 + N`; (3) anything
+    beyond — `*`, `/`, `%`, shifts, bit operators — needs an explicit witness. This pair
+    sits at step 3.
+  = note: state the equality where the reader can see it: a comptime `assert` on the sizes
+    involved, or rewrite both spellings into the same `+`/`-` form.
+```
+
+Closed values (step 1) equate `2 + 2` with `4`; ring normalization
+(step 2) equates both `+`-shaped pairs. The `*` pair is mathematics
+any reader can do and the checker *will not*, because the line
+between "normalized" and "proved" is fixed where the chapter said it
+is: multiplication is step 3, witness territory, however trivial the
+instance. A checker that did easy multiplications would have a
+boundary nobody could state.
+</details>
+
+<details>
+<summary>Exercise 18-15. [§18.4](../ch18.md#18.4)</summary>
+
+**Exercise 18-15** *(extension · wolf)*. Roman numerals, both ways,
+folded: write `to_roman(n)` and `from_roman(s)` as `comptime fn`s
+(the value table as a pair of indexed helpers, subtractive pairs and
+all), and a witness `round_trips(n)` whose `assert` proves
+`from_roman(to_roman(n)) == n` at compile time. Fold a year each way
+into `const`s and print them. What does the witness buy that printing
+both values does not, and which famous wrong numeral — `IIII` — does
+your `from_roman` quietly accept, and why is that fine here?
+
+Solution. `ch18/ex18-15.lu` (excerpt — the table helpers are
+if-chains over an index, `glyph(at)`/`worth(at)`):
+
+```wolf
+comptime fn to_roman(n: int) -> str {
+    var out = ""
+    var rest = n
+    var at = 0
+    while at < 13 {
+        while rest >= worth(at) {
+            out = "{out}{glyph(at)}"
+            rest -= worth(at)
+        }
+        at += 1
+    }
+    out
+}
+comptime fn from_roman(s: str) -> int {
+    var total = 0
+    var i = 0
+    while i < s.len {
+        let here = one(s, i)
+        let next = if i + 1 < s.len { one(s, i + 1) } else { 0 }
+        total += if here < next { 0 - here } else { here }
+        i += 1
+    }
+    total
+}
+comptime fn round_trips(n: int) -> bool {
+    assert(from_roman(to_roman(n)) == n)
+    true
+}
+fn main() -> !int {
+    const YEAR = to_roman(1994)
+    const BACK = from_roman("MMXXVI")
+    const WITNESS = round_trips(3888)
+    print("{YEAR} {BACK}")
+    if WITNESS { 0 } else { 1 }
+}
+```
+
+```console
+$ wolf run ex18-15.lu
+MCMXCIV 2026
+```
+
+The witness buys a *build-breaking* claim: printed values need a
+reader to check them, but a failed comptime `assert` is E0710 and no
+binary exists — 3888 (`MMMDCCCLXXXVIII`, the longest numeral under
+4000) round-trips or the program is refused. `IIII` is accepted
+because `from_roman` implements the subtractive *reading* rule (a
+smaller value before a larger one subtracts), which maps every
+well-formed numeral correctly and some malformed ones charitably;
+rejecting non-canonical spellings is a validator's job, and the
+witness only claims the round trip from `to_roman`'s canonical
+output. Stating exactly what the assert proves — no more — is most of
+what writing one teaches.
 </details>
 
 ## Chapter 19

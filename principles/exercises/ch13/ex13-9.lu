@@ -1,0 +1,25 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 13-9 solution: the caesar shift, round-tripped.
+fn shift(s: str, k: int) -> str {
+    var out = ""
+    for c in s.chars() {
+        if c >= 'a' && c <= 'z' {
+            let at = (c as int) - ('a' as int)
+            let moved = (at + k) % 26
+            out = "{out}{(moved + ('a' as int)) as char}"
+        } else {
+            out = "{out}{c}"
+        }
+    }
+    out
+}
+fn main() -> !int {
+    let plain = "the wolf runs at dusk"
+    let coded = shift(plain, 3)
+    let back = shift(coded, 23)
+    print(coded)
+    print(back)
+    if back != plain { return 1 }
+    0
+}
