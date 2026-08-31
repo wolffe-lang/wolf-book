@@ -21,8 +21,10 @@ retired, two re-homed as 19-3 and 19-5 —
 EXERCISES-PENDING.md's re-draw note has the accounting); ch21's 21-4, 21-7 and 21-8, whose sections §21.3 and
 §21.5 are held while the rest of that chapter ships
 (`book/ch21.md`); ch23's 23-2, 23-3, 23-4 and 23-7, whose two sections
-are held (`book/ch23.md`); ch25's eight, whose chapter is held whole
-(`book/ch25.md`); ch07's 7-5, whose static verdict does not exist on
+are held (`book/ch23.md`); ch25's eight, unprinted although §25.3
+shipped at bs20, because every stem leans on a subject still held
+(`book/ch25.md`; the masters' header has the accounting); ch07's 7-5,
+whose static verdict does not exist on
 either lane (`samples-pending.toml`); and ch05's 5-8, unprinted at bs11
 because its whole subject is the combinator chain, and a stem cannot
 carry a blocker note in a reader's text (TONE.md §Tense discipline).
@@ -427,7 +429,8 @@ until the verifying compiler lands.)*
 
 ## ch25 — 8 exercises
 
-*Chapter held whole (bs09); none of these eight is printed.*
+*§25.3 shipped at bs20; none of these eight is printed — each leans on
+a held subject (the masters' header has the accounting).*
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
