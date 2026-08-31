@@ -327,11 +327,11 @@ stdout="A-B--A--A-B")`; the hand expansion is `A` → `A-B` → `A-B--A` →
 function as a runtime `fn` under lupin, which prints `A-B--A--A-B`.
 The algorithm is ordinary wolf, which is the tier's whole pitch:
 nothing about the language changes at compile time, only the clock it
-runs on. Note the two spellings the language actually has: strings are
-joined by interpolation (`next = "{next}A-B"`) and not by `+=`, which
-`wolf` rejects with E0409; and the recoverable slice is
-`cur.get(i..i + 1)` with an `else`. Today the comptime spelling reports
-`unsupported` under both tools.
+runs on. Note the solution's two spellings: the string grows by
+interpolation (`next = "{next}A-B"` — `+=` on two strings appends the
+same way), and the recoverable slice is `cur.get(i..i + 1)` with an
+`else`. Today the comptime spelling reports `unsupported` under both
+tools.
 
 **Exercise 18-12** *(design)*. The sandbox refuses a file read
 (E0701) but the catalog entry points at *declared build inputs* through
