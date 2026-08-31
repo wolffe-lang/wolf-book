@@ -381,9 +381,9 @@ Solution. `ch02/ex2-2.lu`:
 ```wolf
 fn main() -> !int {
     var names = List[str]()
-    names.push("wolf")
-    names.push("marmot")
-    names.push("elk")
+    (mut names).push("wolf")
+    (mut names).push("marmot")
+    (mut names).push("elk")
     var i = 0
     for n in names {
         i += 1

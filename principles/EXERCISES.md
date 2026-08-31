@@ -43,19 +43,20 @@ earned; chapters end with a batch that mixes the chapter's sections.
 
 Every section that teaches something ends with at least one exercise. A
 chapter ends with three to six more. The book-wide target was
-order-of-150+ as a floor; the corpus filled it at full scale: **275
-exercises** — 49 in part 1, 43 in part 2, 71 in part 3, 70 in part 4, 28
+order-of-150+ as a floor; the corpus filled it at full scale and then
+grew a second ladder of self-contained programs (the K&R rung): **324
+exercises** — 78 in part 1, 47 in part 2, 77 in part 3, 80 in part 4, 28
 in part 5, and 14 on the appendices. Chapter 31 brings none by design
 (§4) and chapter 32 none at all; chapter 29's batch lands with its
 chapter. The per-chapter sets live in
 `principles/exercises/chNN/EXERCISES.md` (this file's §5 remains the
 chapters 1–6 exemplar batch, folded in unchanged; the chapter files
 continue its numbering); `EXERCISES-INDEX.md` maps section → exercise →
-tier, and `EXERCISES-PENDING.md` is the honest list of the eleven whose
+tier, and `EXERCISES-PENDING.md` is the honest list of the ones whose
 blocking features have not landed, each named with its blocker and
-owner. 189 exercises have a solution program that CI executes; 72 are
-discussion solutions by design, 9 live in a REPL transcript, and the
-rest re-run a sibling's program or read a tool's output.
+owner. 230 exercises have a solution program that CI executes (the run
+tiers); 75 are discussion solutions or read a tool's output, 9 live in
+a REPL transcript, and 10 are pending their feature.
 
 ## 3. Taxonomy
 
@@ -207,9 +208,9 @@ Solution. `ch02/ex2-2.lu`:
 ```wolf
 fn main() -> !int {
     var names = List[str]()
-    names.push("wolf")
-    names.push("marmot")
-    names.push("elk")
+    (mut names).push("wolf")
+    (mut names).push("marmot")
+    (mut names).push("elk")
     var i = 0
     for n in names {
         i += 1
