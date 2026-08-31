@@ -4,101 +4,90 @@
 # doc-truth CI job compares them.
 
 [wolf]
-# wolf-lang at M1 plus the concurrency runtime, the std unblock,
-# `wolf test`, the warning system, the lived lint corpus, and
-# deterministic checked-lane verdicts: `wolf build`/`wolf run` compile
-# and execute real programs, and the runtime carries tasks, channels,
-# select, `when`, and procs. The wave-four close put the `str` method
-# set, `List` operations, value-position interpolation with format
-# specs, and the nine `fs_*` builtins into native lowering, which is
-# what makes Part 5's first three chapters buildable; wave five's first
-# lane added the deterministic scheduler; the package manager (chapters
-# 22, 23 and 24 are written on it), the idiom arbiter's eleven
-# convention lints, argv and env, and the release tier arrived with the
-# c09 wave. Native concurrency landed with c09 too: `scope`/`s.spawn`/
-# `channel`/`select`/`freeze` lower and link. The traits-era pass
-# crossed the dispatch campaigns (static trait dispatch, default
-# bodies, `v as dyn Trait`, primitive impls, explicit application) and
-# moved the stamped pairing line for the first time since 0.1.8.
+# wolf-lang at the v0.2.0 release tag — the first pin this book can
+# verify from the binary itself. D57 (r03): a build made exactly at its
+# own release tag prints the bare version with a pin clause —
+# `wolf 0.2.0 (wolfgang, pin c88ab64)` — and every other build prints
+# `+dev.<commit>` and claims nothing; unverifiable is dev. The stamp is
+# the dist builder's, never a build script's (D33): `cargo xtask dist`
+# probes git and sets WOLF_COMMIT/WOLF_RELEASE at compile time, so a
+# plain `cargo build` at this same rev answers `0.2.0+dev.unknown`.
+# The book's version transcripts print the bare release string, so the
+# pinned wolf must be built with the dist builder or with its stamp
+# reproduced (release profile, WOLF_COMMIT=c88ab64 WOLF_RELEASE=v0.2.0
+# — what book.yml's samples lane does since this bump; the debug-build
+# recipe of the a900b8c/addcd7f eras produces an unstamped binary and
+# fails the two transcripts).
 #
-# This bump (bs17) crosses the s122–s127 wave plus the CI sweep. The
-# headline for the book is s125: a compiled trap now names its site —
-# the first stderr line stays the byte-identical `wolf-trap: <kind>`
-# ABI, and a second line says `  at <file>:<line>:<col>`
-# ([conf.trap.report]). D60 rides with it: a trap's exit status is
-# per-machine and documented (native 134, reference interpreter 3;
-# [conf.trap.exit]) and the KIND is the only comparison surface. The
-# other half of the wave is the machine's: s59/s127 bring the native
-# and release tiers to macOS/aarch64, so the compile-lane samples run
-# on this book's development host as well as on the linux CI runner.
-# s126/D61 adds the index-origin marker (`#![index(1)]`).
+# This bump (bs19) crosses s128 plus the r03 release wave. s128 is the
+# headline for the book: D62 makes `str + str` and `str += str`
+# interpolation-append on every lane (a mix like `"a" + 1` keeps its
+# E0409 refusal by name), D63 admits comma-grouped binders, tuple
+# destructuring moves element-wise, and a list slice is a fresh-List
+# copy that `for` can walk. r03 is the release's own honesty: the D57
+# version stamp above, the spec-extract bracket scanner fixed, and the
+# pairing moved to lupin 0.1.17.
 #
-# What the bump changes for the book, measured at this sha:
-#   * The catalog grows 164 -> 168: E0211, E0415, E0813, W0317. The
-#     anchors grow 393 -> 397: [conf.trap.render], [conf.trap.report],
-#     [conf.directive.standalone], [gram.attr.index],
-#     [gram.expr.index.origin] arrive; [gram.lex.ident] DROPS OUT of
-#     the regenerated set — a spec-extract scanner defect at this rev
-#     (s126's bare `[` literals derail its bracket scanner, filed
-#     wolf-lang#170); the clause text stands, the book cites the tag
-#     nowhere, and the anchor rides the fix. The grammar gains
-#     inner_attribute; Appendix A regenerates.
-#   * `wolf --version`'s pairing line names lupin 0.1.15 at pin
-#     a900b8c — the interpreter release the s122–s125 differential ran
-#     against — while the lupin beside it is the 0.1.16 release naming
-#     pin e561c6f back. The two lines name different releases on
-#     purpose, one release apart (the is27 release rode AFTER the last
-#     differential stamp); the colophon and §1.2 print them as they
-#     are, the way the 0.1.8/0.1.10 era did.
-#   * 34 console rows re-record at this bump, all classified, residue
-#     empty: 31 are lupin file-door diagnostic lines re-spelled
-#     line:col by is27 (with the corpus EXERCISES.md hand-lane rows
-#     that feed the Solutions page), 2 are the version transcripts
-#     above, and 1 is §21.4's native trap gaining its site line. In
-#     the other direction the host's own ledger empties: the 34
-#     compile-lane rows that were environmental failures on
-#     macOS/aarch64 at the old pin (native codegen was linux-only)
-#     now build, run, and byte-compare on this machine — linux CI
-#     keeps the gate either way.
+# What the bump changes for the book, measured at this tag:
+#   * The catalog HOLDS at 168 codes — E0409's domain narrowed (two
+#     strs now pass), no code arrived or left; Appendix C stands.
+#   * The anchors grow 397 -> 403: [gram.lex.ident] RETURNS (F-0100,
+#     wolf-lang#170/#177 — the bs17 note said the anchor rides the
+#     fix, and this is the fix), and s128 registers [mem.list.slice],
+#     [type.str], [type.str.concat], [type.str.concat.cost],
+#     [type.str.concat.mix]. The grammar's let/var admit binder
+#     groups; Appendix A regenerates.
+#   * `wolf --version` answers the bare release string with its pin
+#     clause, and its pairing line names lupin 0.1.17 at pin addcd7f —
+#     the release the r03 differential ran against — while the lupin
+#     beside it is 0.1.18 naming the same spec pin back. One release
+#     apart, on purpose: the 0.1.15/0.1.16-era asymmetry precedent;
+#     the colophon and §1.2 print both as they are.
+#   * `wolf interface` embeds the toolchain version by design, so
+#     ch22's interface transcript re-records (toolchain 0.1.0 ->
+#     0.2.0, both hashes move with it).
+#   * 4 console rows re-record at this bump, all classified, residue
+#     empty: the 2 version transcripts above, ch22's interface stamp,
+#     and ch22's E0302 line (the lupin half — see [lupin]). Samples
+#     hold 401 passed / 5 pending / 0 failed with zero pending flips,
+#     and the hand-checked corpus lane replayed clean everywhere else.
 #
-# This sha is the newest non-bot commit on trunk; all six wolf-lang CI
-# jobs are green on it, which is what the gate asks for.
+# This rev IS the tag, so the transcripts stay clean (D57).
 repo = "wolffe-lang/wolf-lang"
-rev = "addcd7f0bd90b16bfa8bec429ab7f27c46a2c1bb"
-impl_version = "0.1.0"
+rev = "c88ab6441b2706e20375deeec86eaf6da9bde25b"
+impl_version = "0.2.0"
 
 [lupin]
-# wolf-interp at the v0.1.16 release tag (is27, released at pin
-# e561c6f): the stamped line names lupin 0.1.16 at pin e561c6f. The
-# compiler's pairing line at this book's [wolf] rev names lupin 0.1.15
-# at pin a900b8c — one release behind, because the is27 release
-# followed the last differential stamp; each line is that tool's own
-# documented fact, the two version transcripts (colophon, §1.2) print
-# them as they are, and the KIND-level agreement the pairing exists
-# for is unaffected. The book's [wolf] rev sits past e561c6f on the
-# same trunk (s127, s126, the CI sweep); a release's pin is its
-# identity, not this book's sample pin.
+# wolf-interp at the v0.1.18 release tag (is29): the stamped line names
+# lupin 0.1.18 at pin addcd7f. A lupin release's pin is the wolf-lang
+# revision it was built and differentially tested against — wolf-lang's
+# v0.2.0 tag postdates the is29 release, so both this release and the
+# 0.1.17 the compiler pairs with name the addcd7f trunk rev (the is30
+# release owns the re-pin question). The compiler's pairing line names
+# lupin 0.1.17 (is28, same pin) — one release apart, each line that
+# tool's own documented fact, exactly the asymmetry the 0.1.15/0.1.16
+# era taught the colophon to print as it is.
 #
-# What 0.1.16 carries, as the book meets it — is27, the lupin half of
-# s125's trap-site pair: every file-door human fault line (trap, UB
-# finding, static diagnostic, secondary spans included) spells its
-# location `line:col` — 1-based line, 1-based column counted in
-# characters — where 0.1.14 printed entry-relative byte offsets. That
-# re-records 31 chapter console lines and the corpus's hand-checked
-# solutions rows in this repo, and it closes the book's oldest
-# diagnostic complaint (a learner counting bytes; wolf-lang#158). The
-# REPL door deliberately keeps byte offsets (a session has no stable
-# line numbering; documented in wolf-interp docs/repl.md), so the
-# book's ~6 REPL-transcript span lines stay byte-span. Beneath it,
-# 0.1.15 (is26) taught this machine `char` from the spec: `'…'`
-# literals lex (E0110 refuses the malformed shapes by name), casts
-# trap per D58, `chars()` yields `List[char]` — so chapter 2's §2.4
-# no longer needs its compiler-lane scoping note, and both machines
-# read every char sample in this book. D57 discipline: this rev IS
-# the tag, so the transcripts stay clean.
+# What 0.1.17 + 0.1.18 carry, as the book meets them:
+#   * is28's D59 module story: E0302's teach-note grew a hint — "two
+#     separate programs sharing a directory each mark themselves
+#     `//! member: false` (D59)" — which re-records ch22's console
+#     block, its corpus master row, and the Solutions page. This is
+#     the bump's ONE lupin human-line drift, measured across the
+#     runner's 190 replayed console blocks and every hand-checked
+#     corpus row.
+#   * D59's membership defaulting also reads a lone entry file
+#     honestly now: a directory of standalone programs no longer
+#     cross-trips [mod.dup] when one of them is run by name (observed
+#     against the corpus exercise directories; at 0.1.16 the same
+#     invocation refused E0302 on the sibling mains).
+#   * is29 makes the first `match` arm yield (the wolf-interp #47/#48
+#     take-reuse pair). Zero book samples, console rows, or corpus
+#     rows move on it — measured, both lanes.
+# D57 discipline: this rev IS the tag, so the transcript stays clean.
 repo = "wolffe-lang/wolf-interp"
-rev = "2777fa3a57aa6bcf4505b9e33e4b47d97936d19a"
-version = "lupin 0.1.16 (wolf-interp, reference interpreter at pin e561c6f)"
+rev = "66dc06c500df20b23320843bd1c3f065899a230c"
+version = "lupin 0.1.18 (wolf-interp, reference interpreter at pin addcd7f)"
 
 [wolf-lsp]
 # Source of the vendored tmLanguage grammars under highlight/.
