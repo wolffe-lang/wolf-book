@@ -1,0 +1,40 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 9-15 solution: an int through raw bytes and back.
+import c "stdlib.h"
+
+fn main() -> !int {
+    let n = 305419896
+    let p = unsafe {
+        // # Safety: sixteen fresh bytes; the cast makes a pointer to
+        // memory malloc just handed us.
+        c.malloc(16) as *u8
+    }
+    unsafe {
+        // # Safety: indices 0..4 stay inside the allocation.
+        p[0] = n % 256
+        p[1] = n / 256 % 256
+        p[2] = n / 65536 % 256
+        p[3] = n / 16777216 % 256
+    }
+    var b0 = 0
+    var b1 = 0
+    var b2 = 0
+    var b3 = 0
+    unsafe {
+        // # Safety: reads the four bytes just written.
+        b0 = p[0] as int
+        b1 = p[1] as int
+        b2 = p[2] as int
+        b3 = p[3] as int
+    }
+    let back = b0 + b1 * 256 + b2 * 65536 + b3 * 16777216
+    print("{b0} {b1} {b2} {b3}")
+    print("{back == n}")
+    unsafe {
+        // # Safety: allocated above, freed once, not used after.
+        c.free(p)
+    }
+    if back != n { return 1 }
+    0
+}

@@ -1,0 +1,18 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 5-12 solution: a histogram of word lengths.
+fn main() -> !int {
+    let text = """
+        the moon watches the long ridge
+        a wolf runs past the frozen creek
+        """
+    var tally = List[int]()
+    for w in text.words() {
+        while tally.len < w.len + 1 { (mut tally).push(0) }
+        tally[w.len] = tally[w.len] + 1
+    }
+    for n in 1..tally.len {
+        print("{n:>2} {"#".repeat(tally[n])}")
+    }
+    0
+}

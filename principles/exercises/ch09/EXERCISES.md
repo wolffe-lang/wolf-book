@@ -436,3 +436,69 @@ The general lesson is the reason the door exists. Once safe code holds
 a value, the raw tier must stop touching those bytes, because
 everything downstream is entitled to assume nobody is. Reaching around
 the door is the one thing the door's license forbids.
+
+**Exercise 9-15** *(fingers · lupin)*. Put an integer through raw
+memory and bring it back: `malloc` sixteen bytes, write the four bytes
+of `305419896` little-endian by hand (`% 256` and `/ 256` are the only
+tools you need), read them back, reassemble, free. Print the four
+bytes and the round-trip verdict, and make `main` exit nonzero on a
+mismatch. Before running: 305419896 is `0x12345678` — which byte does
+`p[0]` hold, and why is that the *low* one?
+
+Solution. `ch09/ex9-15.lu`:
+
+```wolf
+import c "stdlib.h"
+
+fn main() -> !int {
+    let n = 305419896
+    let p = unsafe {
+        // # Safety: sixteen fresh bytes; the cast makes a pointer to
+        // memory malloc just handed us.
+        c.malloc(16) as *u8
+    }
+    unsafe {
+        // # Safety: indices 0..4 stay inside the allocation.
+        p[0] = n % 256
+        p[1] = n / 256 % 256
+        p[2] = n / 65536 % 256
+        p[3] = n / 16777216 % 256
+    }
+    var b0 = 0
+    var b1 = 0
+    var b2 = 0
+    var b3 = 0
+    unsafe {
+        // # Safety: reads the four bytes just written.
+        b0 = p[0] as int
+        b1 = p[1] as int
+        b2 = p[2] as int
+        b3 = p[3] as int
+    }
+    let back = b0 + b1 * 256 + b2 * 65536 + b3 * 16777216
+    print("{b0} {b1} {b2} {b3}")
+    print("{back == n}")
+    unsafe {
+        // # Safety: allocated above, freed once, not used after.
+        c.free(p)
+    }
+    if back != n { return 1 }
+    0
+}
+```
+
+```console
+$ lupin ex9-15.lu
+120 86 52 18
+true
+```
+
+`p[0]` holds 120 — `0x78`, the low byte — because the program *chose*
+little-endian: `n % 256` is arithmetic for "the low eight bits", and
+the loop of divisions walks upward from there. Nothing about `malloc`
+or the machine decided this; the byte order is wholly in the four
+write lines, which is the honest way to meet endianness — as a
+serialization decision some code made, checkable by reading it. The
+round trip closes over three `unsafe` blocks, each one operation
+wide, each with its `# Safety:` line: the ring is for operations, not
+for programs.

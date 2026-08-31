@@ -1,0 +1,26 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 5-15 solution: fold — greedy fill to a width.
+fn fold(text: str, width: int) -> List[str] {
+    var out = List[str]()
+    var line = ""
+    for w in text.words() {
+        if line.is_empty() {
+            line = w
+        } else if line.len + 1 + w.len <= width {
+            line = line + " " + w
+        } else {
+            (mut out).push(line)
+            line = w
+        }
+    }
+    if line.is_empty() == false { (mut out).push(line) }
+    out
+}
+fn main() -> !int {
+    let text = "the wolf runs the long ridge past the frozen creek at dusk"
+    for line in fold(text, 12) {
+        print(line)
+    }
+    0
+}

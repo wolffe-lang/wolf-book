@@ -1,0 +1,47 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 6-12 solution: the decoder, hardened with a row.
+fn decode(s: str) -> str ! {Empty, BadRun} {
+    if s.is_empty() { return Empty }
+    var out = ""
+    var cur = ' '
+    var seen = false
+    var n = 0
+    for c in s.chars() {
+        if c >= '0' && c <= '9' {
+            if seen == false { return BadRun }
+            n = n * 10 + (c as int) - ('0' as int)
+        } else {
+            if seen {
+                if n == 0 { return BadRun }
+                for _ in 0..n { out += "{cur}" }
+            }
+            cur = c
+            seen = true
+            n = 0
+        }
+    }
+    if n == 0 { return BadRun }
+    for _ in 0..n { out += "{cur}" }
+    out
+}
+fn main() -> !int {
+    var cases = List[str]()
+    (mut cases).push("w4o4l1f1")
+    (mut cases).push("")
+    (mut cases).push("4w")
+    (mut cases).push("w0")
+    (mut cases).push("ab2")
+    for coded in cases {
+        let plain = decode(coded) else |err| {
+            let why = match err {
+                Empty => "empty",
+                BadRun => "bad run",
+            }
+            print("[{coded}] refused: {why}")
+            continue
+        }
+        print("[{coded}] -> {plain}")
+    }
+    0
+}
