@@ -6363,7 +6363,7 @@ second definition is a duplicate wherever it sits:
 
 ```console
 $ lupin twice/main.lu
-twice/main.lu: E0302: the name `describe` is defined twice in this module (defined again in `twice/main.lu`); file boundaries create no scopes (D32) [mod.dup] at 4:4
+twice/main.lu: E0302: the name `describe` is defined twice in this module (defined again in `twice/main.lu`); file boundaries create no scopes (D32) — two separate programs sharing a directory each mark themselves `//! member: false` (D59) [mod.dup] at 4:4
 ```
 </details>
 
