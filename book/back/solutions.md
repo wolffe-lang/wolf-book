@@ -5290,16 +5290,15 @@ store-buffer program wearing a channel as a disguise.
 
 Note that the rejection is a property of the *declaration*: no `send`
 appears in the program, and none is needed. The type of the channel is
-already the claim, and E1102 is the compiler declining it. The
-interpreter takes the other route and constructs the channel (its
-dynamic machine catches an actual cross-task mutation rather than the
-declaration), so this is one more program the compiler stops and lupin
-runs:
+already the claim, and both machines decline it there — the compiler
+with the report above, the interpreter with its one-line spelling of
+the same code, clause, and span:
 
 ```console
 $ lupin ex16-9.lu
+ex16-9.lu: E1102: `List[int]` cannot be sent through a channel: a payload must be `Copy`, `imm`, a moved region, or a `sync` type — a bare region-interior `List` is none of those. Send the region instead [conc.chan.type] at 7:22
 $ echo $?
-0
+2
 ```
 
 The corpus carries the same expectation in `conc/chan_unsendable.lu`.
@@ -6363,7 +6362,7 @@ second definition is a duplicate wherever it sits:
 
 ```console
 $ lupin twice/main.lu
-twice/main.lu: E0302: the name `describe` is defined twice in this module (defined again in `twice/main.lu`); file boundaries create no scopes (D32) [mod.dup] at 4:4
+twice/main.lu: E0302: the name `describe` is defined twice in this module (defined again in `twice/main.lu`); file boundaries create no scopes (D32) — two separate programs sharing a directory each mark themselves `//! member: false` (D59) [mod.dup] at 4:4
 ```
 </details>
 

@@ -47,7 +47,7 @@ jobs:
         shell: bash
         run: cargo test
 
-  # Lane 2 — sample execution: build wolf (debug, per the pin note) and
+  # Lane 2 — sample execution: build wolf (release, D57-stamped) and
   # lupin (release) at the wolf-toolchain.toml revs, run every sample,
   # then prove the rig catches deliberate breakage. 3-OS.
   samples:
@@ -98,15 +98,26 @@ jobs:
             wolf-lang
             wolf-interp
       # `wolf build` links against the runtime staticlib and looks for it
-      # beside the driver; `--bin wolf` alone does not emit it, so the
-      # native console blocks (ch01, ch09) need this second target.
-      - name: build pinned wolf (debug) + the runtime staticlib
+      # beside the driver; the driver alone does not emit it, so the
+      # native console blocks (ch01, ch09) need the wolf_rt target too.
+      # The build is release-profile and carries the D57 stamp: the
+      # book's version transcripts print the BARE release string, which
+      # only a stamped build answers (an unstamped build says
+      # `+dev.unknown` and claims nothing). The stamp is the same pair
+      # `cargo xtask dist` computes — the commit, plus the release tag
+      # exactly when one points at the pin — reproduced here because
+      # dist's archive staging is not needed (and its windows staging
+      # step fails at the v0.2.0 tag; fixed upstream at s60).
+      - name: build pinned wolf (release, D57-stamped) + the runtime staticlib
         if: steps.acquire.outputs.toolchain == 'full'
         shell: bash
         working-directory: wolf-lang
         run: |
-          cargo build --bin wolf
-          cargo build -p wolf_rt
+          WOLF_COMMIT="$(git rev-parse --short HEAD)"
+          export WOLF_COMMIT
+          WOLF_RELEASE="$(git tag --points-at HEAD | grep -E '^v[0-9]' | head -1 || true)"
+          if [ -n "$WOLF_RELEASE" ]; then export WOLF_RELEASE; fi
+          cargo build --release -p wolf_driver -p wolf_rt -p wolf_cimport
       - name: build pinned lupin (release)
         if: steps.acquire.outputs.toolchain == 'full'
         shell: bash
@@ -117,7 +128,7 @@ jobs:
         shell: bash
         working-directory: wolf-book
         env:
-          WOLF: ${{ github.workspace }}/wolf-lang/target/debug/wolf${{ runner.os == 'Windows' && '.exe' || '' }}
+          WOLF: ${{ github.workspace }}/wolf-lang/target/release/wolf${{ runner.os == 'Windows' && '.exe' || '' }}
           LUPIN: ${{ github.workspace }}/wolf-interp/target/release/lupin${{ runner.os == 'Windows' && '.exe' || '' }}
         run: cargo xtask samples
       - name: self-test (a deliberately-broken sample must fail)
@@ -125,7 +136,7 @@ jobs:
         shell: bash
         working-directory: wolf-book
         env:
-          WOLF: ${{ github.workspace }}/wolf-lang/target/debug/wolf${{ runner.os == 'Windows' && '.exe' || '' }}
+          WOLF: ${{ github.workspace }}/wolf-lang/target/release/wolf${{ runner.os == 'Windows' && '.exe' || '' }}
           LUPIN: ${{ github.workspace }}/wolf-interp/target/release/lupin${{ runner.os == 'Windows' && '.exe' || '' }}
         run: cargo xtask samples --self-test
       - name: doc truth
