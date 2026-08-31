@@ -1,0 +1,18 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 3-9 solution: the pack drill, one if-chain as a value.
+fn main() -> !int {
+    for i in 1..16 {
+        let word = if i % 15 == 0 {
+            "howlscratch"
+        } else if i % 3 == 0 {
+            "howl"
+        } else if i % 5 == 0 {
+            "scratch"
+        } else {
+            "{i}"
+        }
+        print(word)
+    }
+    0
+}

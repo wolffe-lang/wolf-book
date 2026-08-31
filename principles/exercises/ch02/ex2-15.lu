@@ -1,0 +1,27 @@
+//! check: run(exit=0, stdout="[a<tab>bb<tab>ccc]")
+//! phase: run
+// Exercise 2-15 solution: entab — runs of blanks fold back to tabs.
+fn main() -> !int {
+    let line = "a   bb  ccc"
+    var out = ""
+    var col = 0
+    var blanks = 0
+    for c in line.chars() {
+        if c == ' ' {
+            blanks += 1
+            col += 1
+            if col % 4 == 0 {
+                if blanks == 1 { out += " " } else { out += "\t" }
+                blanks = 0
+            }
+        } else {
+            out += " ".repeat(blanks)
+            blanks = 0
+            out += "{c}"
+            col += 1
+        }
+    }
+    out += " ".repeat(blanks)
+    print("[{out.replace("\t", "<tab>")}]")
+    0
+}

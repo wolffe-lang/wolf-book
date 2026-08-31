@@ -1,0 +1,10 @@
+//! check: fail(E0410)
+//! phase: resolve
+// Exercise 3-8, the retired honesty note's proof: reassigning a `let`
+// is a static rejection on both machines now.
+fn main() -> !int {
+    let n = 1
+    n = 2
+    print("{n}")
+    0
+}

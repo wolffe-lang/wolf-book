@@ -1,0 +1,29 @@
+//! check: run(exit=0, stdout="low 4 high 31 mean 16")
+//! phase: run
+// Exercise 3-11 solution: min, max, and mean in one pass.
+fn main() -> !int {
+    let readings = """
+        18
+        4
+        31
+        22
+        7
+        """
+    var lowest = 0
+    var highest = 0
+    var total = 0
+    var count = 0
+    for row in readings.lines() {
+        let n = row.to_int() else 0
+        count += 1
+        total += n
+        if count == 1 {
+            lowest = n
+            highest = n
+        }
+        if n < lowest { lowest = n }
+        if n > highest { highest = n }
+    }
+    print("low {lowest} high {highest} mean {total / count}")
+    0
+}

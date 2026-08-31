@@ -1,0 +1,13 @@
+//! check: run(exit=0, stdout="1024")
+//! phase: run
+// Exercise 3-13 solution: `break` carries the answer out.
+fn main() -> !int {
+    let limit = 1000
+    var p = 1
+    let first_past = loop {
+        p = p * 2
+        if p > limit { break p }
+    }
+    print("{first_past}")
+    0
+}

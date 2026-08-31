@@ -1,0 +1,15 @@
+//! check: run(exit=0, stdout="eht flow snur")
+//! phase: run
+// Exercise 2-10 solution: each word reversed, char by char.
+fn main() -> !int {
+    var out = ""
+    for w in "the wolf runs".words() {
+        var r = ""
+        for c in w.chars() {
+            r = "{c}" + r
+        }
+        if out.is_empty() { out = r } else { out = out + " " + r }
+    }
+    print(out)
+    0
+}

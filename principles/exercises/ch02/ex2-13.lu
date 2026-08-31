@@ -1,0 +1,9 @@
+//! check: run(exit=0, stdout="howl<tab>at<nl>the moon")
+//! phase: run
+// Exercise 2-13 solution: the invisible characters, made visible.
+fn main() -> !int {
+    let mixed = "howl\tat\nthe moon"
+    let visible = mixed.replace("\t", "<tab>").replace("\n", "<nl>")
+    print(visible)
+    0
+}

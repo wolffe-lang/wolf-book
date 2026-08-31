@@ -1,0 +1,15 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 4-9 solution: a function that makes clamps.
+fn clamp_to(lo: int, hi: int) -> fn(int) -> int {
+    fn(n) if n < lo { lo } else if n > hi { hi } else { n }
+}
+fn main() -> !int {
+    let percent = clamp_to(0, 100)
+    let rows = "40\n-12\n130"
+    for row in rows.lines() {
+        let n = row.to_int() else 0
+        print("{n:>5} -> {percent(n)}")
+    }
+    0
+}

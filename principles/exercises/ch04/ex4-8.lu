@@ -1,0 +1,18 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 4-8 solution: the Collatz step counter.
+fn steps(n: int) -> int {
+    var v = n
+    var count = 0
+    while v != 1 {
+        v = if v % 2 == 0 { v / 2 } else { 3 * v + 1 }
+        count += 1
+    }
+    count
+}
+fn main() -> !int {
+    for n in 1..11 {
+        print("{n:>3}{steps(n):>5}")
+    }
+    0
+}

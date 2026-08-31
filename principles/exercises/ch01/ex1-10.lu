@@ -1,0 +1,16 @@
+//! check: run(exit=8, stdout="counted")
+//! phase: run
+// Exercise 1-10 solution: the sum rides out as the exit code.
+fn main() -> !int {
+    let amounts = """
+        3
+        four
+        5
+        """
+    var total = 0
+    for row in amounts.lines() {
+        total += row.to_int() else 0
+    }
+    print("counted")
+    total
+}

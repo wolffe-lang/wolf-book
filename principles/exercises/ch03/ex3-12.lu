@@ -1,0 +1,14 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 3-12 solution: palindromes by arithmetic alone.
+fn main() -> !int {
+    for n in 100..1000 {
+        let flipped = n % 10 * 100 + n / 10 % 10 * 10 + n / 100
+        if n == flipped {
+            if n % 7 == 0 {
+                print("{n}")
+            }
+        }
+    }
+    0
+}

@@ -1,0 +1,16 @@
+//! check: run(exit=0, stdout="hwlng t th mn")
+//! phase: run
+// Exercise 2-11 solution: squeeze — delete every character of one
+// string from another.
+fn main() -> !int {
+    let s = "howling at the moon"
+    let drop = "aeiou"
+    var t = ""
+    for c in s.chars() {
+        if drop.contains("{c}") == false {
+            t += "{c}"
+        }
+    }
+    print(t)
+    0
+}

@@ -86,7 +86,243 @@ has. The deep story of "hands the value over" (what it means for the
 source afterward, and when it traps) is chapter 7's, on purpose; this
 chapter needs only the direction of the handover.
 
-One honesty note: neither tool rejects a reassignment to a `let`
-binding (`let n = 1` then `n = 2`): lupin prints `2`, wolfc reports
-no diagnostic. The book teaches `let` as single-assignment; treat the
-reassignment as an error even where the tools let it pass.
+A historical honesty note, retired: at this batch's authoring pins
+neither tool rejected a reassignment to a `let` binding. Both do now —
+E0410, naming the `var` fix and the shadowing alternative — so the
+single-assignment rule the book taught on trust is enforced where it
+was written:
+
+```console
+$ lupin ex3-8b.lu
+ex3-8b.lu: E0410: `n` is bound with `let`, so it cannot be assigned again; declare the binding with `var` to update it in place (machine-applicable), or shadow it with a second `let` if the next value is really a new thing [gram.item.let] at 7:5
+$ echo $?
+2
+```
+
+## §3.2 — Everything is an expression
+
+**Exercise 3-9** *(fingers · lupin)*. The pack drill: print 1 through
+15, except that multiples of 3 print `howl`, multiples of 5 print
+`scratch`, and multiples of both print `howlscratch`. One `if`-chain
+as a value, one `print`. Why must the `both` test come first, and
+what prints if it comes last?
+
+Solution. `ch03/ex3-9.lu`:
+
+```wolf
+fn main() -> !int {
+    for i in 1..16 {
+        let word = if i % 15 == 0 {
+            "howlscratch"
+        } else if i % 3 == 0 {
+            "howl"
+        } else if i % 5 == 0 {
+            "scratch"
+        } else {
+            "{i}"
+        }
+        print(word)
+    }
+    0
+}
+```
+
+```console
+$ lupin ex3-9.lu
+1
+2
+howl
+4
+scratch
+howl
+7
+8
+howl
+scratch
+11
+howl
+13
+14
+howlscratch
+```
+
+An `if`-chain takes the first arm whose test passes. 15 is a multiple
+of 3, so with the `both` test last, 15 prints `howl` and the
+`howlscratch` arm is unreachable — no diagnostic says so, because
+every arm is still type-correct. Order is logic here, not style.
+
+## Chapter batch
+
+**Exercise 3-10** *(extension · lupin)*. Print 1 through 16 with each
+number's binary spelling right-aligned beside it. No format spec you
+have met writes base 2, so build the bits yourself: `% 2` peels the
+low bit, `/ 2` shifts, and prepending assembles them in the right
+order. What does your loop produce for zero, and is that a spelling
+or an absence?
+
+Solution. `ch03/ex3-10.lu`:
+
+```wolf
+fn main() -> !int {
+    for n in 1..17 {
+        var bits = ""
+        var rest = n
+        while rest > 0 {
+            bits = "{rest % 2}" + bits
+            rest = rest / 2
+        }
+        print("{n:>3} {bits:>6}")
+    }
+    0
+}
+```
+
+```console
+$ lupin ex3-10.lu
+  1      1
+  2     10
+  3     11
+  4    100
+  5    101
+  6    110
+  7    111
+  8   1000
+  9   1001
+ 10   1010
+ 11   1011
+ 12   1100
+ 13   1101
+ 14   1110
+ 15   1111
+ 16  10000
+```
+
+For zero the loop body never runs and `bits` stays empty: an absence.
+The conventional spelling is `"0"`, and honesty about the boundary
+costs one `if` before the print. The table above never reaches it;
+your extension should, and should decide.
+
+**Exercise 3-11** *(fingers · lupin)*. One pass over a block of
+readings: lowest, highest, and mean, integer arithmetic throughout.
+The first reading has to seed `lowest` and `highest` — why is
+starting them at zero wrong, and which of the two inputs in the block
+below would have exposed it?
+
+Solution. `ch03/ex3-11.lu`:
+
+```wolf
+fn main() -> !int {
+    let readings = """
+        18
+        4
+        31
+        22
+        7
+        """
+    var lowest = 0
+    var highest = 0
+    var total = 0
+    var count = 0
+    for row in readings.lines() {
+        let n = row.to_int() else 0
+        count += 1
+        total += n
+        if count == 1 {
+            lowest = n
+            highest = n
+        }
+        if n < lowest { lowest = n }
+        if n > highest { highest = n }
+    }
+    print("low {lowest} high {highest} mean {total / count}")
+    0
+}
+```
+
+```console
+$ lupin ex3-11.lu
+low 4 high 31 mean 16
+```
+
+Zero-seeded, `lowest` would stay 0 against this all-positive block —
+every reading loses to it — so the all-positive data is exactly what
+exposes the bug (an all-negative block would expose `highest`
+instead). Seeding from the first element makes the answer a fact
+about the data, not about the seed. The mean truncates: 82 / 5 is 16
+here, and chapter 2's precision specs are how a report would say
+16.4.
+
+**Exercise 3-12** *(fingers · lupin)*. Print every three-digit
+palindrome divisible by 7, using arithmetic only: `/` and `%` take
+the digits, and a flipped number is three multiplies away. No
+strings. How many are there, and why does your divisibility test not
+need the middle digit?
+
+Solution. `ch03/ex3-12.lu`:
+
+```wolf
+fn main() -> !int {
+    for n in 100..1000 {
+        let flipped = n % 10 * 100 + n / 10 % 10 * 10 + n / 100
+        if n == flipped {
+            if n % 7 == 0 {
+                print("{n}")
+            }
+        }
+    }
+    0
+}
+```
+
+```console
+$ lupin ex3-12.lu
+161
+252
+343
+434
+525
+595
+616
+686
+707
+777
+868
+959
+```
+
+Twelve. The trick question dissolves on inspection: the test is
+`n % 7 == 0` on the whole number, so no digit is special — the middle
+digit needed no test *anywhere*, because a palindrome check by
+arithmetic compares `n` to its flip rather than digit to digit. The
+question is a nudge to notice your own program did less work than the
+problem statement implied.
+
+**Exercise 3-13** *(comprehension · lupin)*. `loop` with `break v` is
+the expression form of "search until found". Predict the one line this
+prints, then answer: what would the program do if `limit` were
+negative, and which keyword is missing from this loop that `while`
+has?
+
+```wolf
+fn main() -> !int {
+    let limit = 1000
+    var p = 1
+    let first_past = loop {
+        p = p * 2
+        if p > limit { break p }
+    }
+    print("{first_past}")
+    0
+}
+```
+
+Solution: `1024` — the first power of two past 1000. With a negative
+`limit` the very first doubling (to 2) is already past it, so the loop
+answers 2 immediately; no hang. The missing keyword is the condition
+itself: `loop` has no test at the top, so termination lives wholly in
+the `break`, which is why the value can ride out on it.
+
+```console
+$ lupin ex3-13.lu
+1024
+```

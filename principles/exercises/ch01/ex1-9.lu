@@ -1,0 +1,12 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 1-9 solution: 1-5's table, driven the other way.
+fn main() -> !int {
+    var c = -20
+    while c <= 40 {
+        let f = c * 9 / 5 + 32
+        print("{c:>4}{f:>6}")
+        c += 10
+    }
+    0
+}
