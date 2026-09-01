@@ -326,3 +326,87 @@ the `break`, which is why the value can ride out on it.
 $ lupin ex3-13.lu
 1024
 ```
+
+**Exercise 3-14** *(fingers · lupin)*. 3-9's pack drill again, decided
+once instead of in a chain. That version's order was load-bearing and
+nothing checked it: put the `both` test last and an arm goes dead in
+silence. Write the same 1-through-15 drill as a single `match` over
+the *pair* `(n % 3, n % 5)`. Then move `(_, 0)` above `(0, 0)`, run it
+again, and say what is different this time about being wrong.
+
+Solution. `ch03/ex3-14.lu`:
+
+```wolf
+fn fizzbuzz(n: int) -> str {
+    match (n % 3, n % 5) {
+        (0, 0) => "fizzbuzz",
+        (0, _) => "fizz",
+        (_, 0) => "buzz",
+        _ => "{n}",
+    }
+}
+fn main() -> !int {
+    for n in 1..16 {
+        print(fizzbuzz(n))
+    }
+    0
+}
+```
+
+```console
+$ lupin ex3-14.lu
+1
+2
+fizz
+4
+buzz
+fizz
+7
+8
+fizz
+buzz
+11
+fizz
+13
+14
+fizzbuzz
+```
+
+The pair is the whole trick. Each arm is a conjunction of column
+tests — `(0, 0)` says "the first element is zero *and* so is the
+second" — so the three interesting cases are three arms rather than a
+nested `if` whose branches have to remember what the outer test
+already decided. The `_` arm catches every other pair and is what
+makes the `match` exhaustive; without it the checker hands back a
+witness pair the arms do not cover.
+
+Put `(_, 0)` above `(0, 0)` and the `(0, 0)` arm can never run: every
+pair it would match, the arm above already took. That is redundancy,
+not incompleteness, and it has its own name. `ch03/ex3-14b.lu` is that
+program, and it still runs — an unreachable arm is a warning, not a
+refusal:
+
+```console
+$ wolf build ./ex3-14b.lu
+warning[E0802]: this arm can never match — the arms above already cover it
+ --> ./ex3-14b.lu:8:9
+  |
+7 |         (_, 0) => "buzz",
+  |         ------ this arm already matches those values
+8 |         (0, 0) => "fizzbuzz",
+  |         ^^^^^^ unreachable arm
+  |
+  = note: delete the arm, or reorder the arms so the more specific pattern comes first.
+```
+
+The reachability walk reads column by column, which is how it knows
+that `(_, 0)` swallows `(0, 0)` without being handed the values.
+
+That is the whole difference from 3-9. Both programs can be written
+with a dead branch in them, and both still run; only one of them says
+so. An `if`-chain's dead arm is type-correct and therefore invisible —
+3-9's answer says as much — while a `match` arm's coverage is a
+property the checker already computes, so the same mistake arrives
+named, located, and with the repair in the note. The order of arms is
+still logic rather than style, but it is logic the compiler reads
+too.

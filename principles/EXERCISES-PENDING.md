@@ -8,7 +8,7 @@ to be. The day a blocking feature lands, its exercises join the CI run
 their headers already describe; until then this manifest is the honest
 list. No aspirational green.
 
-Note for the compiler track: the whole corpus — 244 directive-headed
+Note for the compiler track: the whole corpus — 248 directive-headed
 `.lu` files under `principles/exercises/`, runnable and pending alike —
 is a seed farm for the toolchain's corpus and fuzz harnesses. The
 pending files are the most valuable seeds: each one encodes an expected
@@ -95,6 +95,18 @@ and the runner reported zero flips. The ch18 note in the index is
 worth repeating here so nobody re-derives it: 18-3, 18-5 and 18-11
 left this table at bs09, and at bs21 their master annotations caught
 up — `· wolf`, real `wolf run` transcripts, no pending language.
+
+## The bs22 pattern trio (2026-09-01)
+
+The pin move to wolf v0.2.1 / lupin 0.1.20 made struct patterns and
+product match arms legal, and three exercises cash that: 3-14
+(FizzBuzz as one `match` over `(n % 3, n % 5)`), 7-16 (7-14's plane
+geometry respelled with struct-pattern arms) and 13-11 (a substring
+scan whose window is a slice of a *lent* byte view). The corpus grows
+244 → 248 `.lu` files: the three solutions plus `ex3-14b.lu`, the
+reordered-arms proof 3-14 sends the reader to. No row above moved, no
+new pending rows were filed, and every one of the four runs green at
+the pins on the lane its directive claims.
 
 ## Retired entries
 

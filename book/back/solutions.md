@@ -1252,6 +1252,94 @@ question is a nudge to notice your own program did less work than the
 problem statement implied.
 </details>
 
+<details>
+<summary>Exercise 3-14. [§3.4](../ch03.md#3.4)</summary>
+
+**Exercise 3-14** *(fingers · lupin)*. 3-9's pack drill again, decided
+once instead of in a chain. That version's order was load-bearing and
+nothing checked it: put the `both` test last and an arm goes dead in
+silence. Write the same 1-through-15 drill as a single `match` over
+the *pair* `(n % 3, n % 5)`. Then move `(_, 0)` above `(0, 0)`, run it
+again, and say what is different this time about being wrong.
+
+Solution. `ch03/ex3-14.lu`:
+
+```wolf
+fn fizzbuzz(n: int) -> str {
+    match (n % 3, n % 5) {
+        (0, 0) => "fizzbuzz",
+        (0, _) => "fizz",
+        (_, 0) => "buzz",
+        _ => "{n}",
+    }
+}
+fn main() -> !int {
+    for n in 1..16 {
+        print(fizzbuzz(n))
+    }
+    0
+}
+```
+
+```console
+$ lupin ex3-14.lu
+1
+2
+fizz
+4
+buzz
+fizz
+7
+8
+fizz
+buzz
+11
+fizz
+13
+14
+fizzbuzz
+```
+
+The pair is the whole trick. Each arm is a conjunction of column
+tests — `(0, 0)` says "the first element is zero *and* so is the
+second" — so the three interesting cases are three arms rather than a
+nested `if` whose branches have to remember what the outer test
+already decided. The `_` arm catches every other pair and is what
+makes the `match` exhaustive; without it the checker hands back a
+witness pair the arms do not cover.
+
+Put `(_, 0)` above `(0, 0)` and the `(0, 0)` arm can never run: every
+pair it would match, the arm above already took. That is redundancy,
+not incompleteness, and it has its own name. `ch03/ex3-14b.lu` is that
+program, and it still runs — an unreachable arm is a warning, not a
+refusal:
+
+```console
+$ wolf build ./ex3-14b.lu
+warning[E0802]: this arm can never match — the arms above already cover it
+ --> ./ex3-14b.lu:8:9
+  |
+7 |         (_, 0) => "buzz",
+  |         ------ this arm already matches those values
+8 |         (0, 0) => "fizzbuzz",
+  |         ^^^^^^ unreachable arm
+  |
+  = note: delete the arm, or reorder the arms so the more specific pattern comes first.
+```
+
+The reachability walk reads column by column, which is how it knows
+that `(_, 0)` swallows `(0, 0)` without being handed the values.
+
+That is the whole difference from 3-9. Both programs can be written
+with a dead branch in them, and both still run; only one of them says
+so. An `if`-chain's dead arm is type-correct and therefore invisible —
+3-9's answer says as much — while a `match` arm's coverage is a
+property the checker already computes, so the same mistake arrives
+named, located, and with the repair in the note. The order of arms is
+still logic rather than style, but it is logic the compiler reads
+too.
+</details>
+
 ## Chapter 4
 
 <details>
@@ -3449,6 +3537,81 @@ the lender in two lines (`copy`, then `shout`), but the reverse is
 impossible — a consumed argument cannot be un-eaten. An API should
 take the least ownership that does the job, precisely so the bigger
 appetite stays the caller's decision.
+</details>
+
+<details>
+<summary>Exercise 7-16. [§7.7](../ch07.md#7.7)</summary>
+
+**Exercise 7-16** *(fingers · lupin)*. The same plane geometry as
+7-14, asked of the arms instead of the fields. Write `corner(p)`,
+which names where a `Point` sits relative to the axes, and `kind(r)`,
+which describes a `Rect` — both as a single `match` whose arms take
+the value apart by field name rather than reading `p.x` and
+`self.lo.y` through the value. Two questions when it runs: which arm
+of `corner` would become unreachable if you moved it to the top, and
+why does `kind`'s second arm need no `_` beside it?
+
+Solution. `ch07/ex7-16.lu`:
+
+```wolf
+struct Point { x: int, y: int }
+struct Rect { lo: Point, hi: Point }
+fn corner(p: Point) -> str {
+    match p {
+        Point { x: 0, y: 0 } => "the origin",
+        Point { x: 0, .. } => "on the y axis",
+        Point { y: 0, .. } => "on the x axis",
+        Point { x, y } => "{x} {y}",
+    }
+}
+fn kind(r: Rect) -> str {
+    match r {
+        Rect { lo: Point { x: 0, y: 0 }, hi: Point { x, y } } => "anchored, {x} by {y}",
+        Rect { lo: Point { x: lx, y: ly }, hi: Point { x: hx, y: hy } } =>
+            "{hx - lx} by {hy - ly} at {lx} {ly}",
+    }
+}
+fn main() -> !int {
+    let den = Rect { lo: Point { x: 0, y: 0 }, hi: Point { x: 4, y: 3 } }
+    let ridge = Rect { lo: Point { x: 3, y: 1 }, hi: Point { x: 6, y: 5 } }
+    print(corner(den.lo))
+    print(corner(ridge.lo))
+    print(corner(Point { x: 0, y: 3 }))
+    print(kind(den))
+    print(kind(ridge))
+    0
+}
+```
+
+```console
+$ lupin ex7-16.lu
+the origin
+3 1
+on the y axis
+anchored, 4 by 3
+3 by 4 at 3 1
+```
+
+An arm is a conjunction of field tests over the value's own shape.
+`Point { x: 0, y: 0 }` tests both fields against literals;
+`Point { x: 0, .. }` tests one and says the rest is deliberately
+ignored; `Point { x, y }` tests nothing and binds both under their own
+names. The comma before `..` is not decoration — the field list
+separates its members with commas and `..` is one more member, so
+`Point { x: 0, .. }` is the spelling.
+
+Move `Point { x, y }` to the top of `corner` and every arm below it
+dies: an all-binder product covers everything, which is exactly what
+makes it a catch-all and exactly why it goes last. `kind`'s second arm
+needs no `_` for the same reason in reverse — it binds all four
+coordinates and constrains none of them, so it already *is* the
+catch-all and the `match` is exhaustive without one.
+
+The signatures still carry no `mut` and no `take`, so 7-14's answer
+survives unchanged: every parameter is the default mode, and testing a
+value is not taking it. An arm that binds a non-`Copy` piece would move
+the whole scrutinee; every field here is an `int`, so nothing moves and
+`den` is still readable on the line after.
 </details>
 
 ## Chapter 8
@@ -6075,6 +6238,74 @@ disjoint replacements exist — the second "hit" overlaps bytes the
 first replacement already rewrote. A count is only meaningful with
 its consumption rule attached, which is why the flag is in the
 signature and not in a comment.
+</details>
+
+<details>
+<summary>Exercise 13-11. [§13.2](../ch13.md#13.2)</summary>
+
+**Exercise 13-11** *(extension · lupin)*. 13-5 searched a `str` with
+`str` slices. Do it a layer down, over bytes, and lend the haystack
+rather than handing it over: `find(hay, needle) -> int` takes two
+`List[int]` byte views and answers the first index where the needle
+starts, or `-1`. The window comparison belongs in its own function, so
+the slice happens inside a callee working on a view it does not own.
+Two questions: what does the caller still hold after the call, and how
+many bytes does one window cost?
+
+Solution. `ch13/ex13-11.lu`:
+
+```wolf
+fn matches_at(hay: List[int], needle: List[int], i: int) -> bool {
+    let window = hay[i..i + needle.len]
+    var k = 0
+    while k < needle.len {
+        if window[k] != needle[k] { return false }
+        k += 1
+    }
+    true
+}
+fn find(hay: List[int], needle: List[int]) -> int {
+    if needle.len == 0 { return -1 }
+    var i = 0
+    while i + needle.len <= hay.len {
+        if matches_at(hay, needle, i) { return i }
+        i += 1
+    }
+    -1
+}
+fn main() -> !int {
+    let text = "the wolf runs the long ridge"
+    let hay = text.bytes()
+    print("{find(hay, "wolf".bytes())}")
+    print("{find(hay, "ridge".bytes())}")
+    print("{find(hay, "moon".bytes())}")
+    print("{hay.len}")
+    0
+}
+```
+
+```console
+$ lupin ex13-11.lu
+4
+23
+-1
+28
+```
+
+`hay` crosses two signatures without a `take` and without a `mut`, so
+both callees borrow it and `main` still owns it — the last line proves
+that by reading `hay.len` after every search has finished with it. The
+slice inside `matches_at` is the point: a lent view can be sliced, and
+the subscript range is the same endpoint surface a `str` slice takes.
+
+What a window costs is the second half of the answer, and it is not
+free. `hay[i..i + needle.len]` is a fresh `List` of that many
+elements, so the scan allocates one window per position tried rather
+than walking the haystack in place. That is the honest price of
+spelling the comparison as a slice, and it is why a real substring
+search compares element by element from `i` without cutting anything
+out. Write that version too and the loop body loses its allocation
+entirely; the answer it prints does not change.
 </details>
 
 ## Chapter 14
