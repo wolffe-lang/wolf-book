@@ -1,6 +1,6 @@
 # EXERCISES-INDEX.md — the corpus ledger
 
-Generated view of every exercise in the corpus: 324 total. Sources:
+Generated view of every exercise in the corpus: 327 total. Sources:
 the exemplar batch in `principles/EXERCISES.md` §5 (26 exercises,
 folded in unchanged) and the per-chapter files
 `principles/exercises/chNN/EXERCISES.md` (+ `appx/` for the
@@ -32,7 +32,7 @@ All of them stay in the corpus so the day their surface lands the stems
 and the sections arrive together. Two more are master-only by curation
 rather than blockage, from the bs21 ladder: 2-15 (entab — the printed
 page carries detab, the master holds the mirror) and 3-13 (a
-`loop`/`break`-value drill beside §3.2's own example). **275 of the 324
+`loop`/`break`-value drill beside §3.2's own example). **278 of the 327
 are printed**, and
 `cargo xtask verify-docs` fails the build if a printed stem has no
 published solution.
@@ -117,7 +117,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §2.4 — Iterating meaning | 2-14 | fingers · lupin | run (lupin) |
 | §2.4 — Iterating meaning (master only, not printed) | 2-15 | extension · lupin | run (lupin) |
 
-## ch03 — 13 exercises
+## ch03 — 14 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
@@ -134,6 +134,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | Chapter batch | 3-11 | fingers · lupin | run (lupin) |
 | Chapter batch | 3-12 | fingers · lupin | run (lupin) |
 | Chapter batch (master only, not printed) | 3-13 | comprehension · lupin | run (lupin) |
+| Chapter batch | 3-14 | fingers · lupin | run (lupin) |
 
 ## ch04 — 11 exercises
 
@@ -189,7 +190,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | Chapter batch | 6-12 | extension · lupin | run (lupin) |
 | Chapter batch | 6-13 | extension · lupin | run (lupin) |
 
-## ch07 — 15 exercises
+## ch07 — 16 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
@@ -208,6 +209,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | Chapter batch | 7-13 | comprehension + extension · lupin | run (lupin) |
 | Chapter batch | 7-14 | fingers · lupin | run (lupin) |
 | Chapter batch | 7-15 | extension · lupin | run (lupin) |
+| Chapter batch | 7-16 | fingers · lupin | run (lupin) |
 
 ## ch08 — 17 exercises
 
@@ -295,7 +297,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §12.3 — When channels are the wrong queue | 12-10 | extension · lupin | run (lupin) |
 | §12.3 — When channels are the wrong queue | 12-11 | extension · lupin | run (lupin) |
 
-## ch13 — 10 exercises
+## ch13 — 11 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
@@ -309,6 +311,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | Chapter batch (held with §13.1) | 13-8 | design | prose |
 | Chapter batch | 13-9 | extension · lupin | run (lupin) |
 | Chapter batch | 13-10 | comprehension + extension · lupin | run (lupin) |
+| Chapter batch | 13-11 | extension · lupin | run (lupin) |
 
 ## ch14 — 10 exercises
 

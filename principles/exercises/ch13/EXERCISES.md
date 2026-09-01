@@ -411,3 +411,67 @@ disjoint replacements exist — the second "hit" overlaps bytes the
 first replacement already rewrote. A count is only meaningful with
 its consumption rule attached, which is why the flag is in the
 signature and not in a comment.
+
+**Exercise 13-11** *(extension · lupin)*. 13-5 searched a `str` with
+`str` slices. Do it a layer down, over bytes, and lend the haystack
+rather than handing it over: `find(hay, needle) -> int` takes two
+`List[int]` byte views and answers the first index where the needle
+starts, or `-1`. The window comparison belongs in its own function, so
+the slice happens inside a callee working on a view it does not own.
+Two questions: what does the caller still hold after the call, and how
+many bytes does one window cost?
+
+Solution. `ch13/ex13-11.lu`:
+
+```wolf
+fn matches_at(hay: List[int], needle: List[int], i: int) -> bool {
+    let window = hay[i..i + needle.len]
+    var k = 0
+    while k < needle.len {
+        if window[k] != needle[k] { return false }
+        k += 1
+    }
+    true
+}
+fn find(hay: List[int], needle: List[int]) -> int {
+    if needle.len == 0 { return -1 }
+    var i = 0
+    while i + needle.len <= hay.len {
+        if matches_at(hay, needle, i) { return i }
+        i += 1
+    }
+    -1
+}
+fn main() -> !int {
+    let text = "the wolf runs the long ridge"
+    let hay = text.bytes()
+    print("{find(hay, "wolf".bytes())}")
+    print("{find(hay, "ridge".bytes())}")
+    print("{find(hay, "moon".bytes())}")
+    print("{hay.len}")
+    0
+}
+```
+
+```console
+$ lupin ex13-11.lu
+4
+23
+-1
+28
+```
+
+`hay` crosses two signatures without a `take` and without a `mut`, so
+both callees borrow it and `main` still owns it — the last line proves
+that by reading `hay.len` after every search has finished with it. The
+slice inside `matches_at` is the point: a lent view can be sliced, and
+the subscript range is the same endpoint surface a `str` slice takes.
+
+What a window costs is the second half of the answer, and it is not
+free. `hay[i..i + needle.len]` is a fresh `List` of that many
+elements, so the scan allocates one window per position tried rather
+than walking the haystack in place. That is the honest price of
+spelling the comparison as a slice, and it is why a real substring
+search compares element by element from `i` without cutting anything
+out. Write that version too and the loop body loses its allocation
+entirely; the answer it prints does not change.

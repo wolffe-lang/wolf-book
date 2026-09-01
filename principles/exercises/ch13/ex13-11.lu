@@ -1,0 +1,30 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 13-11 solution: the substring scan over a lent byte view.
+fn matches_at(hay: List[int], needle: List[int], i: int) -> bool {
+    let window = hay[i..i + needle.len]
+    var k = 0
+    while k < needle.len {
+        if window[k] != needle[k] { return false }
+        k += 1
+    }
+    true
+}
+fn find(hay: List[int], needle: List[int]) -> int {
+    if needle.len == 0 { return -1 }
+    var i = 0
+    while i + needle.len <= hay.len {
+        if matches_at(hay, needle, i) { return i }
+        i += 1
+    }
+    -1
+}
+fn main() -> !int {
+    let text = "the wolf runs the long ridge"
+    let hay = text.bytes()
+    print("{find(hay, "wolf".bytes())}")
+    print("{find(hay, "ridge".bytes())}")
+    print("{find(hay, "moon".bytes())}")
+    print("{hay.len}")
+    0
+}

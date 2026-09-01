@@ -4,90 +4,100 @@
 # doc-truth CI job compares them.
 
 [wolf]
-# wolf-lang at the v0.2.0 release tag — the first pin this book can
-# verify from the binary itself. D57 (r03): a build made exactly at its
-# own release tag prints the bare version with a pin clause —
-# `wolf 0.2.0 (wolfgang, pin c88ab64)` — and every other build prints
+# wolf-lang at the v0.2.1 release tag. D57 (r03): a build made exactly
+# at its own release tag prints the bare version with a pin clause —
+# `wolf 0.2.1 (wolfgang, pin 75fd2d0)` — and every other build prints
 # `+dev.<commit>` and claims nothing; unverifiable is dev. The stamp is
 # the dist builder's, never a build script's (D33): `cargo xtask dist`
 # probes git and sets WOLF_COMMIT/WOLF_RELEASE at compile time, so a
-# plain `cargo build` at this same rev answers `0.2.0+dev.unknown`.
+# plain `cargo build` at this same rev answers `0.2.1+dev.unknown`.
 # The book's version transcripts print the bare release string, so the
 # pinned wolf must be built with the dist builder or with its stamp
-# reproduced (release profile, WOLF_COMMIT=c88ab64 WOLF_RELEASE=v0.2.0
-# — what book.yml's samples lane does since this bump; the debug-build
-# recipe of the a900b8c/addcd7f eras produces an unstamped binary and
-# fails the two transcripts).
+# reproduced (release profile, WOLF_COMMIT=75fd2d0 WOLF_RELEASE=v0.2.1
+# — what book.yml's samples lane does; the debug-build recipe of the
+# a900b8c/addcd7f eras produces an unstamped binary and fails the two
+# transcripts). At THIS tag `cargo xtask dist` completes on every
+# tier-1 target, windows included — the staticlib-naming defect that
+# made v0.2.0's own dist a three-of-four is fixed in the release.
 #
-# This bump (bs19) crosses s128 plus the r03 release wave. s128 is the
-# headline for the book: D62 makes `str + str` and `str += str`
-# interpolation-append on every lane (a mix like `"a" + 1` keeps its
-# E0409 refusal by name), D63 admits comma-grouped binders, tuple
-# destructuring moves element-wise, and a list slice is a fresh-List
-# copy that `for` can walk. r03 is the release's own honesty: the D57
-# version stamp above, the spec-extract bracket scanner fixed, and the
-# pairing moved to lupin 0.1.17.
+# This bump (bs22) crosses s129 + s130 plus the r04 release wave. The
+# headline for the book is patterns: struct patterns go through the
+# whole pipe ([gram.pat.struct]) in every binder position and then in
+# match arms, arms take the full product domain (tuple and struct
+# patterns, @-bindings, literals at product depth, products nested
+# through enum payloads), and a callee's slice of a lent byte view
+# resolves per [mem.list.slice] instead of meeting a misattributed
+# refusal. r04 is the release's own honesty: four places where the
+# written language and the built one had drifted, each measured on
+# the tools first.
 #
 # What the bump changes for the book, measured at this tag:
-#   * The catalog HOLDS at 168 codes — E0409's domain narrowed (two
-#     strs now pass), no code arrived or left; Appendix C stands.
-#   * The anchors grow 397 -> 403: [gram.lex.ident] RETURNS (F-0100,
-#     wolf-lang#170/#177 — the bs17 note said the anchor rides the
-#     fix, and this is the fix), and s128 registers [mem.list.slice],
-#     [type.str], [type.str.concat], [type.str.concat.cost],
-#     [type.str.concat.mix]. The grammar's let/var admit binder
-#     groups; Appendix A regenerates.
+#   * The catalog grows 168 -> 169: E0814 arrives ("struct pattern
+#     fields do not match the struct" — the lean E0408 takes at
+#     construction, taken at destructuring). Appendix C's count
+#     re-records; no code left.
+#   * The anchors grow 403 -> 404: [gram.pat.struct] registers. The
+#     grammar gains the struct-pattern production and its `field_pat`,
+#     and `UNI_ESC` splits out of `CHAR_ESC` bounded at one to six hex
+#     digits (the prose was the letter, the production said
+#     `HEX_DIGIT+`); Appendix A regenerates on both.
 #   * `wolf --version` answers the bare release string with its pin
-#     clause, and its pairing line names lupin 0.1.17 at pin addcd7f —
-#     the release the r03 differential ran against — while the lupin
-#     beside it is 0.1.18 naming the same spec pin back. One release
-#     apart, on purpose: the 0.1.15/0.1.16-era asymmetry precedent;
-#     the colophon and §1.2 print both as they are.
+#     clause, and for the first time since the 0.1.15/0.1.16 era the
+#     two tools name the SAME interpreter release: the compiler pairs
+#     with lupin 0.1.20 at pin b80d239 and the lupin beside it is
+#     0.1.20 naming b80d239 back. The colophon's asymmetry paragraph
+#     retires with the fact that produced it.
 #   * `wolf interface` embeds the toolchain version by design, so
-#     ch22's interface transcript re-records (toolchain 0.1.0 ->
-#     0.2.0, both hashes move with it).
-#   * 4 console rows re-record at this bump, all classified, residue
-#     empty: the 2 version transcripts above, ch22's interface stamp,
-#     and ch22's E0302 line (the lupin half — see [lupin]). Samples
-#     hold 401 passed / 5 pending / 0 failed with zero pending flips,
-#     and the hand-checked corpus lane replayed clean everywhere else.
+#     ch22's interface transcript re-records (toolchain 0.2.0 ->
+#     0.2.1, both hashes move with it), and ch25's publish record
+#     carries the same moved interface hash.
+#   * W1001 stopped lying (#192): it claimed a region "never
+#     allocates" on blocks whose callees allocate through it, and now
+#     requires no call in the region's extent either. ch09's s11
+#     snapshot loses the warning and keeps its E1401.
+#   * 5 runner movers at this bump, all classified, residue empty: the
+#     2 version transcripts above, ch22's interface stamp, ch25's
+#     publish record, and ch09/s11's snapshot. Samples hold 448
+#     passed / 5 pending / 0 failed with zero pending flips.
 #
 # This rev IS the tag, so the transcripts stay clean (D57).
 repo = "wolffe-lang/wolf-lang"
-rev = "c88ab6441b2706e20375deeec86eaf6da9bde25b"
-impl_version = "0.2.0"
+rev = "75fd2d0b25b6ed995ec7293053bc32fb3497e272"
+impl_version = "0.2.1"
 
 [lupin]
-# wolf-interp at the v0.1.18 release tag (is29): the stamped line names
-# lupin 0.1.18 at pin addcd7f. A lupin release's pin is the wolf-lang
-# revision it was built and differentially tested against — wolf-lang's
-# v0.2.0 tag postdates the is29 release, so both this release and the
-# 0.1.17 the compiler pairs with name the addcd7f trunk rev (the is30
-# release owns the re-pin question). The compiler's pairing line names
-# lupin 0.1.17 (is28, same pin) — one release apart, each line that
-# tool's own documented fact, exactly the asymmetry the 0.1.15/0.1.16
-# era taught the colophon to print as it is.
+# wolf-interp at the v0.1.20 release tag (is31): the stamped line names
+# lupin 0.1.20 at pin b80d239. A lupin release's pin is the wolf-lang
+# revision it was built and differentially tested against; no v0.2.1
+# tag existed at the is31 release step, so the pin is wolf-lang's s130
+# merge sha, whose spec tree is byte-identical to the tag's (404
+# anchors, nothing gained, nothing dropped). The compiler's pairing
+# line names lupin 0.1.20 at the same b80d239, so both lines agree for
+# the first time since the 0.1.15/0.1.16 era, and the asymmetry the
+# colophon printed as it was is simply not there to print.
 #
-# What 0.1.17 + 0.1.18 carry, as the book meets them:
-#   * is28's D59 module story: E0302's teach-note grew a hint — "two
-#     separate programs sharing a directory each mark themselves
-#     `//! member: false` (D59)" — which re-records ch22's console
-#     block, its corpus master row, and the Solutions page. This is
-#     the bump's ONE lupin human-line drift, measured across the
-#     runner's 190 replayed console blocks and every hand-checked
-#     corpus row.
-#   * D59's membership defaulting also reads a lone entry file
-#     honestly now: a directory of standalone programs no longer
-#     cross-trips [mod.dup] when one of them is run by name (observed
-#     against the corpus exercise directories; at 0.1.16 the same
-#     invocation refused E0302 on the sibling mains).
-#   * is29 makes the first `match` arm yield (the wolf-interp #47/#48
-#     take-reuse pair). Zero book samples, console rows, or corpus
-#     rows move on it — measured, both lanes.
+# What 0.1.19 + 0.1.20 carry, as the book meets them:
+#   * Struct patterns in every binder position (is30) and then in
+#     match arms (is31), field-set rules the same in both: an unknown
+#     field declines by E0403's name, a missing-without-`..`,
+#     duplicate or empty one by E0814's. The seven struct-bearing
+#     witnesses of the #179 table move from `unsupported` to running;
+#     six join the agreement class and the seventh is honest
+#     conservatism (exhaustiveness is the type checker's).
+#   * Destructures move element-wise (is30): `let (x, _) = p` moves
+#     `p.0` only, and the untouched elements stay readable.
+#   * An arm takes the WHOLE scrutinee when it binds a non-`Copy`
+#     piece. The field-wise partial-move story is a binder rule on
+#     both machines; neither invents finer-grained arm semantics.
+#   * The lent-view byte slice joins the agreement class (#184), and
+#     the net byte tier resolves (wolf-interp#52).
+#   * Zero book samples, console rows, or corpus rows move on the
+#     lupin half of this bump — measured, both lanes. Every one of the
+#     455 files carried from 0.1.19 is verdict-identical.
 # D57 discipline: this rev IS the tag, so the transcript stays clean.
 repo = "wolffe-lang/wolf-interp"
-rev = "66dc06c500df20b23320843bd1c3f065899a230c"
-version = "lupin 0.1.18 (wolf-interp, reference interpreter at pin addcd7f)"
+rev = "e3736c154dad2d5c4bdb7b7ad706b74b56a903f0"
+version = "lupin 0.1.20 (wolf-interp, reference interpreter at pin b80d239)"
 
 [wolf-lsp]
 # Source of the vendored tmLanguage grammars under highlight/.

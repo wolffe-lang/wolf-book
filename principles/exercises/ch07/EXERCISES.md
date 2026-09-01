@@ -608,3 +608,74 @@ the lender in two lines (`copy`, then `shout`), but the reverse is
 impossible — a consumed argument cannot be un-eaten. An API should
 take the least ownership that does the job, precisely so the bigger
 appetite stays the caller's decision.
+
+**Exercise 7-16** *(fingers · lupin)*. The same plane geometry as
+7-14, asked of the arms instead of the fields. Write `corner(p)`,
+which names where a `Point` sits relative to the axes, and `kind(r)`,
+which describes a `Rect` — both as a single `match` whose arms take
+the value apart by field name rather than reading `p.x` and
+`self.lo.y` through the value. Two questions when it runs: which arm
+of `corner` would become unreachable if you moved it to the top, and
+why does `kind`'s second arm need no `_` beside it?
+
+Solution. `ch07/ex7-16.lu`:
+
+```wolf
+struct Point { x: int, y: int }
+struct Rect { lo: Point, hi: Point }
+fn corner(p: Point) -> str {
+    match p {
+        Point { x: 0, y: 0 } => "the origin",
+        Point { x: 0, .. } => "on the y axis",
+        Point { y: 0, .. } => "on the x axis",
+        Point { x, y } => "{x} {y}",
+    }
+}
+fn kind(r: Rect) -> str {
+    match r {
+        Rect { lo: Point { x: 0, y: 0 }, hi: Point { x, y } } => "anchored, {x} by {y}",
+        Rect { lo: Point { x: lx, y: ly }, hi: Point { x: hx, y: hy } } =>
+            "{hx - lx} by {hy - ly} at {lx} {ly}",
+    }
+}
+fn main() -> !int {
+    let den = Rect { lo: Point { x: 0, y: 0 }, hi: Point { x: 4, y: 3 } }
+    let ridge = Rect { lo: Point { x: 3, y: 1 }, hi: Point { x: 6, y: 5 } }
+    print(corner(den.lo))
+    print(corner(ridge.lo))
+    print(corner(Point { x: 0, y: 3 }))
+    print(kind(den))
+    print(kind(ridge))
+    0
+}
+```
+
+```console
+$ lupin ex7-16.lu
+the origin
+3 1
+on the y axis
+anchored, 4 by 3
+3 by 4 at 3 1
+```
+
+An arm is a conjunction of field tests over the value's own shape.
+`Point { x: 0, y: 0 }` tests both fields against literals;
+`Point { x: 0, .. }` tests one and says the rest is deliberately
+ignored; `Point { x, y }` tests nothing and binds both under their own
+names. The comma before `..` is not decoration — the field list
+separates its members with commas and `..` is one more member, so
+`Point { x: 0, .. }` is the spelling.
+
+Move `Point { x, y }` to the top of `corner` and every arm below it
+dies: an all-binder product covers everything, which is exactly what
+makes it a catch-all and exactly why it goes last. `kind`'s second arm
+needs no `_` for the same reason in reverse — it binds all four
+coordinates and constrains none of them, so it already *is* the
+catch-all and the `match` is exhaustive without one.
+
+The signatures still carry no `mut` and no `take`, so 7-14's answer
+survives unchanged: every parameter is the default mode, and testing a
+value is not taking it. An arm that binds a non-`Copy` piece would move
+the whole scrutinee; every field here is an `int`, so nothing moves and
+`den` is still readable on the line after.

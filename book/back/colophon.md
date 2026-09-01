@@ -6,22 +6,22 @@ against:
 
 ```console
 $ wolf --version
-wolf 0.2.0 (wolfgang, pin c88ab64)
-paired with lupin 0.1.17 (reference interpreter), pin addcd7f
+wolf 0.2.1 (wolfgang, pin 75fd2d0)
+paired with lupin 0.1.20 (reference interpreter), pin b80d239
 $ lupin --version
-lupin 0.1.18 (wolf-interp, reference interpreter at pin addcd7f)
+lupin 0.1.20 (wolf-interp, reference interpreter at pin b80d239)
 ```
 
-The two lines name different interpreter releases on purpose. Each tool
-reports the revision of the other that it was differentially tested
-against, and those tests happen one release apart: the interpreter here
-is 0.1.18, and the compiler's last differential run was against 0.1.17.
-§1.2 teaches the reader to read the pair that way. This page prints them
-as they are. The compiler's first line is also this page's proof: a
-build made exactly at its release tag prints the bare version and the
-commit it was built from, and any other build names itself
-`+dev.<commit>` instead, so the line above is a claim only the release
-binary can make.
+The two lines name the same interpreter release here, and that is worth
+a sentence because it is not guaranteed. Each tool reports the revision
+of the other it was differentially tested against, the two releases are
+cut on their own schedules, and printings where those differ by a
+release are ordinary. §1.2 teaches the reader to read the pair either
+way. This page prints them as they are. The compiler's first line is
+also this page's proof: a build made exactly at its release tag prints
+the bare version and the commit it was built from, and any other build
+names itself `+dev.<commit>` instead, so the line above is a claim only
+the release binary can make.
 
 The exact revisions (the compiler, the interpreter, and the wolf
 grammar vendored from wolf-lsp) are recorded in `wolf-toolchain.toml`

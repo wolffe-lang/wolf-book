@@ -1,0 +1,17 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 3-14 solution: FizzBuzz as one match over a pair.
+fn fizzbuzz(n: int) -> str {
+    match (n % 3, n % 5) {
+        (0, 0) => "fizzbuzz",
+        (0, _) => "fizz",
+        (_, 0) => "buzz",
+        _ => "{n}",
+    }
+}
+fn main() -> !int {
+    for n in 1..16 {
+        print(fizzbuzz(n))
+    }
+    0
+}

@@ -27,7 +27,8 @@ INTERP     ::= '{' expr FORMAT_SPEC? '}'
 FORMAT_SPEC ::= ':' /* fill/align/sign/width/precision/type, spec §7.4 */
 
 CHAR_LIT  ::= "'" (CHAR_TEXT | CHAR_ESC) "'"
-CHAR_ESC  ::= '\' ('n' | 't' | 'r' | '0' | '\' | "'" | '"') | '\x' HEX_DIGIT HEX_DIGIT | '\u{' HEX_DIGIT+ '}'
+CHAR_ESC  ::= '\' ('n' | 't' | 'r' | '0' | '\' | "'" | '"') | '\x' HEX_DIGIT HEX_DIGIT | UNI_ESC
+UNI_ESC   ::= '\u{' HEX_DIGIT HEX_DIGIT? HEX_DIGIT? HEX_DIGIT? HEX_DIGIT? HEX_DIGIT? '}'
 
 unit  ::= inner_doc* inner_attribute* item*
 item  ::= attribute* visibility? bare_item
@@ -190,8 +191,10 @@ row_entry ::= path ('(' type (',' type)* ')')?
 pattern ::= closed_pattern ('|' closed_pattern)*
 closed_pattern ::= '_' | literal | IDENT
           | path '(' pattern (',' pattern)* ','? ')'
+          | path '{' field_pat (',' field_pat)* ','? '..'? '}'
           | '(' pattern (',' pattern)* ','? ')'
           | IDENT '@' closed_pattern
+field_pat ::= IDENT (':' pattern)?
 
 reserved_kw ::= 'as' | 'asm' | 'assume' | 'borrow' | 'break' | 'comptime'
   | 'const' | 'continue' | 'copy' | 'defer' | 'distinct' | 'dyn' | 'else'

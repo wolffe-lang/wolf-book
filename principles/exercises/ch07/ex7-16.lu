@@ -1,0 +1,31 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 7-16 solution: the plane-geometry kata, respelled with
+// struct-pattern match arms.
+struct Point { x: int, y: int }
+struct Rect { lo: Point, hi: Point }
+fn corner(p: Point) -> str {
+    match p {
+        Point { x: 0, y: 0 } => "the origin",
+        Point { x: 0, .. } => "on the y axis",
+        Point { y: 0, .. } => "on the x axis",
+        Point { x, y } => "{x} {y}",
+    }
+}
+fn kind(r: Rect) -> str {
+    match r {
+        Rect { lo: Point { x: 0, y: 0 }, hi: Point { x, y } } => "anchored, {x} by {y}",
+        Rect { lo: Point { x: lx, y: ly }, hi: Point { x: hx, y: hy } } =>
+            "{hx - lx} by {hy - ly} at {lx} {ly}",
+    }
+}
+fn main() -> !int {
+    let den = Rect { lo: Point { x: 0, y: 0 }, hi: Point { x: 4, y: 3 } }
+    let ridge = Rect { lo: Point { x: 3, y: 1 }, hi: Point { x: 6, y: 5 } }
+    print(corner(den.lo))
+    print(corner(ridge.lo))
+    print(corner(Point { x: 0, y: 3 }))
+    print(kind(den))
+    print(kind(ridge))
+    0
+}
