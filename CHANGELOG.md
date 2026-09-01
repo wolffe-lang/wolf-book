@@ -2,6 +2,29 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs22 — 2026-09-01 — the book takes up arms
+
+The pins move to wolf v0.2.1 and lupin 0.1.20, and for the first time
+since the 0.1.15 era both tools name the same interpreter release:
+the colophon's paragraph explaining why they differed retires with
+the fact behind it. §4.3's `defer` teaching is corrected where it was
+wrong — a `defer` in a loop body runs at the end of every turn, not
+when the function returns — and the section's sample now prints an
+interleaved transcript that can tell the two readings apart, which no
+sample in the book could before. Patterns arrive at the ladder rather
+than at a new section: exercise 3-14 rewrites 3-9's pack drill as one
+`match` over the pair `(n % 3, n % 5)` and shows the compiler naming
+the unreachable arm that the `if`-chain version could only leave
+silent; 7-16 respells the Point/Rect kata so the arms take the value
+apart by field name; 13-11 scans for a substring through a slice of a
+*lent* byte view. Appendix A regenerates on the struct-pattern
+production and a `\u{…}` escape now bounded at six hex digits;
+Appendix C's catalog grows 168 → 169 with `E0814`. The corpus grows
+244 → 248 files, the index recounts mechanically at 327 exercises
+(278 printed), and 452 samples pass against bs21's 448 — five
+transcripts re-recorded at the bump, every one classified, zero
+failures and zero flips.
+
 ## bs21 — 2026-08-31 — the exercises multiply
 
 The K&R ladder: 45 new program-shaped exercises (43 printed, two held
