@@ -1,0 +1,24 @@
+//! check: run(exit=0, stdout="zero true | charged true | never down true | steady true")
+//! phase: run
+// Exercise 8-18 solution: one region's ledger, read four times and
+// printed as the relations the clause guarantees rather than as bytes.
+fn main() -> !int {
+    var zero = false
+    var charged = false
+    var never_down = false
+    var steady = false
+    region counting {
+        let open = region_bytes(counting)
+        zero = open == 0
+        var xs = List[int]()
+        for i in 0..100 { (mut xs).push(i) }
+        let first = region_bytes(counting)
+        charged = first > open
+        steady = region_bytes(counting) == first
+        for i in 0..100 { (mut xs).push(i) }
+        let second = region_bytes(counting)
+        never_down = second >= first
+    }
+    print("zero {zero} | charged {charged} | never down {never_down} | steady {steady}")
+    0
+}

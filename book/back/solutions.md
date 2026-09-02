@@ -4141,7 +4141,7 @@ unbreakable.
 </details>
 
 <details>
-<summary>Exercise 8-15. [§8.8](../ch08.md#8.8)</summary>
+<summary>Exercise 8-15. [§8.9](../ch08.md#8.9)</summary>
 
 **Exercise 8-15** *(extension · lupin)*. A text adventure's world is a
 cyclic graph: rooms point at each other in four directions, and "north
@@ -4177,7 +4177,7 @@ the game ends, cycles and all.
 </details>
 
 <details>
-<summary>Exercise 8-16. [§8.8](../ch08.md#8.8)</summary>
+<summary>Exercise 8-16. [§8.9](../ch08.md#8.9)</summary>
 
 **Exercise 8-16** *(extension · lupin)*. `wc`, wolfished: count the
 lines and words of a multiline block, but store every line in a scratch
@@ -4224,7 +4224,7 @@ bookkeeping: put the bookkeeping in the shape, then stop doing it.
 </details>
 
 <details>
-<summary>Exercise 8-17. [§8.8](../ch08.md#8.8)</summary>
+<summary>Exercise 8-17. [§8.9](../ch08.md#8.9)</summary>
 
 **Exercise 8-17** *(extension · lupin)*. A bounded window: keep only
 the last three of a stream of nine updates, in a three-slot
@@ -4281,6 +4281,135 @@ at the end is the §8.5 move: the finished window becomes permanent,
 readable, and closed to the overwriting that built it. A ring plus a
 region is "bounded memory" spelled twice, once in index arithmetic
 and once in the shape.
+</details>
+
+<details>
+<summary>Exercise 8-18. [§8.9](../ch08.md#8.9)</summary>
+
+**Exercise 8-18** *(fingers · lupin)*. Read one region's ledger four
+times: at the open, after pushing a hundred integers, immediately
+again with nothing in between, and after a hundred more pushes. Print
+the four relations rather than the four numbers — zero at the open,
+charged after the first hundred, unchanged between the two adjacent
+reads, and not lower after the second hundred. One of those four has
+to be written `>=` where a reader would expect `>`. Say which one, and
+why the strict spelling is a drill that passes on your machine and
+fails on somebody else's.
+
+Solution. `ch08/ex8-18.lu`:
+
+```wolf
+fn main() -> !int {
+    var zero = false
+    var charged = false
+    var never_down = false
+    var steady = false
+    region counting {
+        let open = region_bytes(counting)
+        zero = open == 0
+        var xs = List[int]()
+        for i in 0..100 { (mut xs).push(i) }
+        let first = region_bytes(counting)
+        charged = first > open
+        steady = region_bytes(counting) == first
+        for i in 0..100 { (mut xs).push(i) }
+        let second = region_bytes(counting)
+        never_down = second >= first
+    }
+    print("zero {zero} | charged {charged} | never down {never_down} | steady {steady}")
+    0
+}
+```
+
+```console
+$ lupin ex8-18.lu
+zero true | charged true | never down true | steady true
+```
+
+The last one, `never_down`. Monotone is what the ledger promises: it
+does not fall while the region lives. Strictly rising is not promised
+and is not true — the second hundred pushes charge only if the list has
+to grow its buffer to hold them, and a list with room to spare charges
+nothing at all. A drill written against `>` there passes on the machine
+it was written on and fails on the next one, which is the same mistake
+in miniature as writing a cap in payload bytes.
+
+Nothing can make that comparison false. To break it the ledger would
+have to fall inside the region's lifetime, and nothing in the language
+does that — a region gives memory back at its brace and at no other
+moment. Dropping a value inside the region does not uncharge it;
+neither does letting the list go out of scope. That is the trade §8.8
+named: one free, not one per object, and the price of the one free is
+that nothing is freed early.
+</details>
+
+<details>
+<summary>Exercise 8-19. [§8.9](../ch08.md#8.9)</summary>
+
+**Exercise 8-19** *(extension · lupin)*. A cap kata. Measure what
+building a list of fifty documents charges, uncapped. Then run the same
+build twice more: once in a region capped at exactly the measured
+reading, once capped one byte under it. Predict which of the two
+finishes before you run them, and predict the exit code of the program.
+Then explain why a cap written as `50 * 24` — fifty documents at a
+plausible size each — is a bug even when it happens to work on your
+machine.
+
+Solution. `ch08/ex8-19.lu`:
+
+```wolf
+struct Doc { title: str, words: int }
+fn shelve(n: int) {
+    var docs = List[Doc]()
+    for i in 0..n { (mut docs).push(Doc { title: "regions", words: i }) }
+}
+fn main() -> !int {
+    let probe = region()
+    var measured = 0
+    in probe {
+        shelve(50)
+        measured = region_bytes(probe)
+    }
+    region exact(cap: measured) {
+        shelve(50)
+    }
+    print("at the measured budget: served")
+    region short(cap: measured - 1) {
+        shelve(50)
+    }
+    print("one byte under: served")
+    0
+}
+```
+
+```console
+$ lupin ex8-19.lu
+at the measured budget: served
+ex8-19.lu: trap(alloc-contract): struct literal `Doc` would charge 64 ledger byte(s) to `short` (region #3), taking it to 5216 — past its 5215-byte cap (5152 already charged) [mem.region.cap.1] at 8:37; `short` (region #3)'s budget is set here at 21:23
+$ echo $?
+3
+```
+
+The first capped region finishes: a ledger standing exactly at the cap
+is not a breach. The second dies at the allocation that would have
+taken it one byte past, and the program's exit code is the
+interpreter's trap status, 3 — not the `0` the last `print` would have
+produced, which never runs. A compiled binary ends the same trap with
+its own documented status; the kind is the contract, and the kind is
+`alloc-contract` on both.
+
+`50 * 24` is a bug because it is arithmetic in the wrong units. The
+budget is spent in ledger bytes, and the ledger charges what the
+implementation allocates: element storage rounded to alignment, the
+list's growth history (every buffer the list outgrew is still charged),
+and the region's own blocks. The trap line above says `64 ledger
+byte(s)` for one two-field document — read that number against the
+`24` a reader would have estimated from the fields, and then remember
+that the number itself is this interpreter's, not the compiler's, and
+not the next release's. A budget derived from `region_bytes` is written
+in the units it will be spent in; a budget derived from `sizeof`
+reasoning is a guess that traps on the machine you did not test, or
+never traps at all, which is worse.
 </details>
 
 ## Chapter 9
