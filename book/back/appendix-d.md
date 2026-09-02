@@ -27,6 +27,7 @@ The specification is seven documents:
 | 2.3 Bytes, honestly | `[mem.ub.defined]` | 02 |
 | 3.1 `let`, `var`, and handing values over | `[mem.tier0.move.2]` | 02 |
 | 3.3 Arithmetic that traps | `[mem.ub.defined]` | 02 |
+| 4.2 Functions as values | `[gram.expr.closure]` | 01 |
 | 5.4 Indexing that traps | `[mem.ub.defined]` | 02 |
 | 6.4 Hardening by refactor | `[mem.ub.defined]` | 02 |
 | 7.1 The error we owed you | `[mem.tier0.move.2]` | 02 |
