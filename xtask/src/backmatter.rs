@@ -166,9 +166,21 @@ fn solutions(root: &Path) -> Result<String> {
             current_chapter = *ch;
             out.push_str(&format!("\n## Chapter {ch}\n"));
         }
+        // The backlink to the section that set the exercise, written as
+        // raw HTML rather than markdown (wolf-book#3). The `<summary>`
+        // line is inside a raw-HTML block, so a markdown parser leaves
+        // its contents alone: `[§3.4](../ch03.md#3.4)` reached the web
+        // edition as punctuation, on all 280 of them. An `<a>` is what
+        // the block's own grammar can carry — mdBook rewrites the `.md`
+        // to `.html` in an href it did not itself build, so the target
+        // is still written the way every other link in this repository
+        // is — and the print edition turns the same element into a
+        // typst cross-reference to the section's label
+        // (`render::typst_inline`), which is the half the site lane
+        // declined to guess at.
         let link = format!(
-            "[§{}](../ch{:02}.md#{})",
-            where_printed.section, where_printed.chapter, where_printed.section
+            "<a href=\"../ch{:02}.md#{}\">§{}</a>",
+            where_printed.chapter, where_printed.section, where_printed.section
         );
         out.push_str(&format!(
             "\n<details>\n<summary>Exercise {ch}-{num}. {link}</summary>\n\n{}\n</details>\n",

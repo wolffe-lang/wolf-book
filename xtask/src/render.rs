@@ -445,7 +445,15 @@ fn typst_prose(text: &str) -> String {
         }
         let hashes = trimmed.chars().take_while(|&c| c == '#').count();
         if (1..=6).contains(&hashes) && trimmed[hashes..].starts_with(' ') {
-            let mut title = trimmed[hashes..].trim().to_string();
+            // The web edition's section anchors are the print edition's
+            // labels, and they are the same decision: `preprocess`
+            // owns the rule (`8.4 Title` → id `8.4`) and both renders
+            // read it. Until bs26 only mdBook ran it, so the `{#id}`
+            // branch below was reachable from explicit ids alone and
+            // no heading in the book carried one — which meant the
+            // print edition had nothing to cross-reference TO.
+            let anchored = crate::preprocess::anchor_heading_line(trimmed);
+            let mut title = anchored[hashes..].trim().to_string();
             let mut label = String::new();
             if let Some(idx) = title.find("{#") {
                 if let Some(close) = title[idx..].find('}') {
@@ -540,9 +548,57 @@ fn typst_epigraph(block: &str) -> String {
     }
 }
 
-/// Inline markdown → typst: code spans pass through as typst raw
-/// (same backtick syntax), emphasis converts, everything else escapes.
+/// Inline markdown → typst: a raw-HTML `<a>` becomes a typst link,
+/// code spans pass through as typst raw (same backtick syntax),
+/// emphasis converts, everything else escapes.
 fn typst_inline(line: &str) -> String {
+    let mut out = String::new();
+    let mut rest = line;
+    // Raw-HTML anchors reach this path from the Solutions page's
+    // `<summary>` backlinks (wolf-book#3). Print has no hrefs and no
+    // `.html` files: an in-book target becomes a cross-reference to the
+    // heading's label, which is a real internal link in the PDF and
+    // reads as the section number on paper. A label that does not exist
+    // fails the typst compile, which is the gate wanting it to.
+    while let Some((start, end, href, text)) = html_anchor(rest) {
+        out.push_str(&typst_spans(&rest[..start]));
+        out.push_str(&typst_link(href, text));
+        rest = &rest[end..];
+    }
+    out.push_str(&typst_spans(rest));
+    out
+}
+
+/// `<a href="X">TEXT</a>` in `s`: (start, end, X, TEXT).
+fn html_anchor(s: &str) -> Option<(usize, usize, &str, &str)> {
+    let start = s.find("<a href=\"")?;
+    let after = &s[start + 9..];
+    let quote = after.find('"')?;
+    let href = &after[..quote];
+    let rest = &after[quote..];
+    let gt = rest.find('>')?;
+    let body = &rest[gt + 1..];
+    let close = body.find("</a>")?;
+    let text = &body[..close];
+    let end = start + 9 + quote + gt + 1 + close + 4;
+    Some((start, end, href, text))
+}
+
+/// One anchor → typst. `../ch03.md#3.4` is a section of this book and
+/// becomes a reference to its label; anything else is an ordinary URL.
+fn typst_link(href: &str, text: &str) -> String {
+    let body = typst_spans(text);
+    match href.split_once('#') {
+        Some((page, frag)) if page.ends_with(".md") && !frag.is_empty() => {
+            format!("#link(<sec-{}>)[{}]", frag.replace('.', "-"), body)
+        }
+        _ => format!("#link({})[{}]", typst_str(href), body),
+    }
+}
+
+/// Inline markdown with no raw HTML in it: code spans, emphasis, the
+/// rest escaped.
+fn typst_spans(line: &str) -> String {
     let mut out = String::new();
     let mut rest = line;
     while let Some(start) = rest.find('`') {
@@ -681,6 +737,43 @@ mod tests {
         let out = strip_directives(md);
         assert!(out.starts_with("```wolf\n"));
         assert!(!out.contains("run(exit"));
+    }
+
+    #[test]
+    fn a_section_backlink_becomes_a_typst_cross_reference() {
+        // wolf-book#3: the Solutions page's `<summary>` is a raw-HTML
+        // block, so the backlink is an `<a>` there. Print has no href.
+        let out = typst_inline("Exercise 3-14. <a href=\"../ch03.md#3.4\">§3.4</a>");
+        assert_eq!(out, "Exercise 3-14. #link(<sec-3-4>)[§3.4]");
+    }
+
+    #[test]
+    fn an_offsite_anchor_stays_a_url() {
+        let out = typst_inline("<a href=\"https://lupp.us/install/\">the page</a>");
+        assert_eq!(out, "#link(\"https://lupp.us/install/\")[the page]");
+    }
+
+    #[test]
+    fn the_summary_line_carries_its_backlink_into_print() {
+        let md = "<details>\n<summary>Exercise 3-14. \
+                  <a href=\"../ch03.md#3.4\">§3.4</a></summary>\n";
+        let out = typst_prose(md);
+        assert!(
+            out.contains("==== Exercise 3-14. #link(<sec-3-4>)[§3.4]"),
+            "got: {out}"
+        );
+        assert!(!out.contains("details"), "got: {out}");
+    }
+
+    #[test]
+    fn a_numbered_heading_carries_the_label_the_backlink_names() {
+        // The same rule the web edition anchors with (preprocess), so a
+        // reference and a target cannot drift apart.
+        let out = typst_prose("## 3.4 `match`, exhaustively\n");
+        assert!(out.trim_end().ends_with("<sec-3-4>"), "got: {out}");
+        // An unnumbered heading anchors nowhere and labels nothing.
+        let plain = typst_prose("## Exercises\n");
+        assert!(!plain.contains("<sec-"), "got: {plain}");
     }
 
     #[test]
