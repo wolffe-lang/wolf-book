@@ -118,9 +118,10 @@ code, and nothing runs them.
 
 One other kind of block carries no dialect label, and it is the one to
 read carefully: a *quoted transcript*, a command and its output
-measured somewhere this edition's own CI cannot reach. There are four
-in the book, all in §1.2, all Windows, and the section says where each
-came from and who measures it. Everything else set at a prompt in these
+measured by a job outside this book's own run. There are four in the
+book, all in §1.2, all Windows: an installation rather than a program,
+which is the one thing the book's runner does not perform on any host.
+The section says where each came from and who measures it. Everything else set at a prompt in these
 pages was produced by the run that built the page you are reading.
 
 ## Reading the dialects
