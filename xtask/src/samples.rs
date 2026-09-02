@@ -42,6 +42,14 @@ struct Sample {
 struct Outcome {
     passed: bool,
     detail: String,
+    /// The exit status this sample's own process carried, where the
+    /// sample IS one process (`run`, `wolf-run`, `run(exit=trap(…))`).
+    /// `None` where the verdict comes from `wolf conform-run` instead,
+    /// which reports a verdict rather than an exit.
+    exit: Option<i32>,
+    /// That process's stderr, verbatim — what a declared refusal in
+    /// `samples-os.toml` is compared against.
+    stderr: String,
     /// Rendered diagnostic text (fail samples), for snapshots and
     /// `diagnostic,from(…)` cross-checks.
     diagnostic: Option<String>,
@@ -135,6 +143,10 @@ pub fn run(root: &Path, args: &[String]) -> Result<()> {
             .collect()
     };
 
+    // The per-host ledger. Rows for other hosts are inert here; every
+    // row's subject is still checked for existence on every lane.
+    let os_ledger = crate::oslane::Ledger::load(root)?;
+
     // ---- Collect ----
     let (corpus, member_count) = collect_corpus(root)?;
     let book = collect_book(root)?;
@@ -153,6 +165,7 @@ pub fn run(root: &Path, args: &[String]) -> Result<()> {
     let mut flips: Vec<String> = Vec::new();
     let mut pass = 0usize;
     let mut pending_seen = 0usize;
+    let mut refused_seen = 0usize;
     let mut diagnostics: BTreeMap<String, String> = BTreeMap::new();
     let mut phases: BTreeMap<String, String> = BTreeMap::new();
     let started = Instant::now();
@@ -166,6 +179,51 @@ pub fn run(root: &Path, args: &[String]) -> Result<()> {
             phases.insert(s.id.clone(), p.clone());
         }
         let is_pending = pending.contains_key(&s.id);
+        // A declared per-host refusal answers first: on THIS host the
+        // sample is expected to be refused, by name, in exactly these
+        // words. Enforced both ways — wrong words fail, a pass flips.
+        if let Some(row) = os_ledger.refusal(&s.id) {
+            if is_pending {
+                failures.push(format!(
+                    "{}: named by both samples-pending.toml and samples-os.toml — \
+                     a sample is pending everywhere or refused on one host, not both",
+                    s.id
+                ));
+            } else if outcome.passed {
+                flips.push(format!(
+                    "{}: samples-os.toml declares `{}` refused on {} at this pin, and it \
+                     now PASSES — the host grew the feature; remove the row in the \
+                     pin-bump commit (it was retiring at {})",
+                    s.id, s.check, row.os, row.retires
+                ));
+            } else if outcome.exit == Some(row.exit) && outcome.stderr.trim_end() == row.stderr {
+                refused_seen += 1;
+                println!(
+                    "samples: REFUSED({}) {} [{}] — declared: exit {}, retires at {} ({})",
+                    row.os, s.id, s.check, row.exit, row.retires, row.note
+                );
+            } else {
+                failures.push(format!(
+                    "{}: the {} refusal drifted from samples-os.toml — the row is the \
+                     book's claim about this host and it is now wrong\n     \
+                     declared: exit {}\n       {}\n     actual: exit {:?}\n       {}",
+                    s.id,
+                    row.os,
+                    row.exit,
+                    row.stderr,
+                    outcome.exit,
+                    if outcome.stderr.trim().is_empty() {
+                        "<no stderr captured — this check reports a verdict, not one \
+                         process's exit; a refusal row here needs execute() to \
+                         say which machine's stderr it means>"
+                            .to_string()
+                    } else {
+                        outcome.stderr.trim_end().to_string()
+                    },
+                ));
+            }
+            continue;
+        }
         match (outcome.passed, is_pending) {
             (true, false) => {
                 // Snapshot check for every sample whose subject is a
@@ -219,6 +277,16 @@ pub fn run(root: &Path, args: &[String]) -> Result<()> {
             ));
         }
     }
+    // So are per-host rows — checked on every lane, not only the lane
+    // the row applies to, so a typo cannot hide on two thirds of the
+    // matrix.
+    for id in os_ledger.all_refusal_ids() {
+        if !samples.iter().any(|s| &s.id == id) && filter.is_none() {
+            failures.push(format!(
+                "samples-os.toml [[refusal]] names `{id}` but no such sample exists"
+            ));
+        }
+    }
 
     // ---- diagnostic,from(…) cross-checks (doc truth) ----
     for (md, from_id, block_text) in &diag_checks {
@@ -261,14 +329,29 @@ pub fn run(root: &Path, args: &[String]) -> Result<()> {
 
     // ---- Console blocks (the prompt lines are output too) ----
     let console = if filter.is_none() {
-        crate::console::check(root, &tools, &console_blocks, &programs)?
+        crate::console::check(root, &tools, &console_blocks, &programs, &os_ledger)?
     } else {
         crate::console::Report {
             checked: 0,
             skipped: Vec::new(),
+            declared: Vec::new(),
             failures: Vec::new(),
         }
     };
+    // A [[transcript]] row naming no block is stale, on every lane.
+    if filter.is_none() {
+        for key in os_ledger.all_transcript_blocks() {
+            if !console_blocks
+                .iter()
+                .any(|b| &crate::console::block_key(root, b) == key)
+            {
+                failures.push(format!(
+                    "samples-os.toml [[transcript]] names `{key}` but no console block \
+                     opens there"
+                ));
+            }
+        }
+    }
     failures.extend(console.failures.iter().cloned());
 
     // ---- Corpus export (the rot-proofing running both ways) ----
@@ -301,6 +384,19 @@ pub fn run(root: &Path, args: &[String]) -> Result<()> {
         console.checked,
         console_blocks.len(),
     );
+    if os_ledger.here() > 0 {
+        println!(
+            "samples: samples-os.toml: {} row(s) apply to {} — {} declared \
+             refusal(s) and {} declared transcript(s) held",
+            os_ledger.here(),
+            crate::oslane::host_os(),
+            refused_seen,
+            console.declared.len(),
+        );
+    }
+    for d in &console.declared {
+        println!("samples: DECLARED console {d}");
+    }
     for s in &console.skipped {
         println!("samples: SKIP console {s}");
     }
@@ -727,6 +823,8 @@ fn execute(tools: &Tools, s: &Sample) -> Result<Outcome> {
             Ok(Outcome {
                 passed,
                 detail,
+                exit: code,
+                stderr: err,
                 diagnostic: None,
                 phase_reached: None,
             })
@@ -754,6 +852,8 @@ fn execute(tools: &Tools, s: &Sample) -> Result<Outcome> {
             Ok(Outcome {
                 passed,
                 detail,
+                exit: code,
+                stderr: err.clone(),
                 diagnostic: Some(err.trim_end().to_string()),
                 phase_reached: None,
             })
@@ -764,6 +864,9 @@ fn execute(tools: &Tools, s: &Sample) -> Result<Outcome> {
             Ok(Outcome {
                 passed: verdict == want,
                 detail: format!("wolf verdict `{verdict}`, expected `{want}`"),
+                // A conformance verdict is not one process's exit.
+                exit: None,
+                stderr: String::new(),
                 diagnostic: Some(diag),
                 phase_reached: phase,
             })
@@ -792,6 +895,8 @@ fn execute(tools: &Tools, s: &Sample) -> Result<Outcome> {
             Ok(Outcome {
                 passed: oracle && named,
                 detail,
+                exit: None,
+                stderr: String::new(),
                 diagnostic: Some(checked.diagnostic),
                 phase_reached: checked.phase,
             })
@@ -816,6 +921,8 @@ fn execute(tools: &Tools, s: &Sample) -> Result<Outcome> {
                     "`wolf audit-surface` did not report {code}; stderr: {}",
                     err.trim()
                 ),
+                exit: None,
+                stderr: String::new(),
                 diagnostic: Some(normalize(&diag)),
                 phase_reached: None,
             })
@@ -843,6 +950,8 @@ fn execute(tools: &Tools, s: &Sample) -> Result<Outcome> {
             Ok(Outcome {
                 passed,
                 detail,
+                exit: code,
+                stderr: err,
                 diagnostic: None,
                 phase_reached: None,
             })
@@ -853,6 +962,8 @@ fn execute(tools: &Tools, s: &Sample) -> Result<Outcome> {
             Ok(Outcome {
                 passed,
                 detail: format!("wolf verdict `{verdict}` — the block must compile clean"),
+                exit: None,
+                stderr: String::new(),
                 diagnostic: Some(diag),
                 phase_reached: phase,
             })

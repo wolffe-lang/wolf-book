@@ -1,0 +1,98 @@
+# The per-host expectation ledger (bs25) — the twin of
+# samples-pending.toml, turned sideways.
+#
+# samples-pending.toml answers "not yet, anywhere". This file answers
+# "not here, and here is exactly what here says instead". Both refuse
+# the third answer, which is a skip: the book does not print a
+# transcript it has not executed, and it does not execute a program
+# without saying what came out.
+#
+# Two row kinds, both byte-exact and both enforced in both directions:
+#
+#   [[refusal]]   a SAMPLE the pinned toolchain refuses by name on one
+#                 host. `exit` and `stderr` are the whole verdict. Wrong
+#                 words are a FAIL — a refusal that changes its wording
+#                 is news. A pass is a FLIP — the host grew the feature
+#                 and the row goes in the pin-bump commit.
+#
+#   [[transcript]] a CONSOLE BLOCK whose tool text differs on one host.
+#                 The block is still replayed and still byte-compared,
+#                 against `expect` instead of against the page. If the
+#                 host starts printing the book's own transcript, the
+#                 row is stale and that is a hard error too.
+#
+# A row names the release or the issue that ends it. Rows for other
+# hosts are inert, but every row's subject is checked for existence on
+# EVERY lane, so a typo cannot hide on two thirds of the matrix.
+#
+# Both kinds landed at bs25, the sprint where the samples lane first
+# executed in CI (run 33628773436, 2026-09-02): ubuntu and windows had
+# never run, and the failures they found were not all one kind. The
+# ubuntu 19 were environment and were fixed in the environment (the
+# lane installs lld, ch01 §1.2 tells the reader why). These six are
+# not: they are true statements about a host at this pin.
+
+[[refusal]]
+id = "ch30/ex30-3"
+os = "windows"
+exit = 1
+stderr = '''wolf run: cannot compile this yet — windows-native serves no channels and `select` at the s60a bring-up (the runtime's task layer, io reactor, and signal delivery are s60b's — the IOCP road); `__wolf_rt_chan_new` would not link (pipeline is honest through `wir`; the conservatism ledger, not a bug in your program)'''
+retires = "wolf 0.2.3 (s60b — the windows task layer on VirtualAlloc stacks and the IOCP reactor)"
+note = '''declared 2026-09-02 at the v0.2.2 pin; the pattern list that four tasks read from a channel. docs/platforms.md at v0.2.2 lists the task layer under "What refuses, by name" — spawn/scopes, proc, channels and select, sync/when, region_transfer. bs26 removes this row at the v0.2.3 bump'''
+
+[[refusal]]
+id = "ch30/ex30-4"
+os = "windows"
+exit = 1
+stderr = '''wolf run: cannot compile this yet — windows-native serves no channels and `select` at the s60a bring-up (the runtime's task layer, io reactor, and signal delivery are s60b's — the IOCP road); `__wolf_rt_chan_new` would not link (pipeline is honest through `wir`; the conservatism ledger, not a bug in your program)'''
+retires = "wolf 0.2.3 (s60b — the windows task layer on VirtualAlloc stacks and the IOCP reactor)"
+note = '''declared 2026-09-02 at the v0.2.2 pin; the instrumented collector, same channel construct as 30-3. bs26 removes this row at the v0.2.3 bump'''
+
+[[refusal]]
+id = "ch30/ex30-5"
+os = "windows"
+exit = 1
+stderr = '''wolf run: cannot compile this yet — windows-native serves no `spawn`/scopes (the task layer) at the s60a bring-up (the runtime's task layer, io reactor, and signal delivery are s60b's — the IOCP road); `__wolf_rt_scope_new` would not link (pipeline is honest through `wir`; the conservatism ledger, not a bug in your program)'''
+retires = "wolf 0.2.3 (s60b — the windows task layer on VirtualAlloc stacks and the IOCP reactor)"
+note = '''declared 2026-09-02 at the v0.2.2 pin; each task printing its own matches, so this one refuses on the scope rather than the channel — a different symbol, and the row records which. bs26 removes this row at the v0.2.3 bump'''
+
+[[refusal]]
+id = "book/ch30/part-pargrep"
+os = "windows"
+exit = 1
+stderr = '''wolf run: cannot compile this yet — windows-native serves no channels and `select` at the s60a bring-up (the runtime's task layer, io reactor, and signal delivery are s60b's — the IOCP road); `__wolf_rt_chan_new` would not link (pipeline is honest through `wir`; the conservatism ledger, not a bug in your program)'''
+retires = "wolf 0.2.3 (s60b — the windows task layer on VirtualAlloc stacks and the IOCP reactor)"
+note = '''declared 2026-09-02 at the v0.2.2 pin; the chapter's parallel capstone, the program §30.4 and §30.5 both replay. ch01 §1.2 names chapter 30 beside chapters 10-17 as the part of the book that needs a host with the task layer. bs26 removes this row at the v0.2.3 bump'''
+
+# The two windows console drifts. Not a pin story and not the book's
+# error: one binary spells the same project's paths two ways. Every
+# diagnostic path in wolf is slash-normalized on windows (RawFile's
+# `display` does the replace in both producers), and these two verbs
+# hand `path.display()` straight to the message instead. Filed rather
+# than papered over, and the book keeps byte-comparing both hosts in the
+# meantime. If wolf-lang decides native separators are intended, these
+# rows stay and their notes get rewritten; if it fixes them, the rows
+# are stale and the rig says so on the next windows run.
+
+[[transcript]]
+block = "book/ch23.md:117"
+os = "windows"
+filed = "wolf-lang#222"
+retires = "the wolf-lang#222 decision — a fix, or the note rewritten to say native separators are the answer"
+note = '''§23.4, `wolf add` writing the minimal manifest — the tool prints the host's separator where the page prints a slash; every other line of both blocks is byte-identical to the book on all three hosts'''
+expect = '''
+$ wolf add rows --path ../rows --dir app
+wolf add: created app\wolf.pkg (minimal manifest)
+wolf add: rows 1.4.0 — capabilities []'''
+
+[[transcript]]
+block = "book/ch25.md:141"
+os = "windows"
+filed = "wolf-lang#222"
+retires = "the wolf-lang#222 decision — a fix, or the note rewritten to say native separators are the answer"
+note = '''§25.3, `wolf publish` writing the record — the tool prints the host's separator where the page prints a slash; every other line of both blocks is byte-identical to the book on all three hosts'''
+expect = '''
+$ wolf publish --dir app
+den/logsearch@0.1.0 tree=b3:f8ce5f5b7ea6bb1b367c55b39e00b55c19086f035fc38866b8ede419e9523039 manifest=b3:d932b3c6008a901a5dc0135b1f816183d0b0abd881a2a82eb5acf8323ae1e8e7 interface=b3:807281bc377102e03d383f52d3c27d96ff7cefd6e6218d304d41f272e5cbc026
+wolf publish: record written to app\.wolf-publish\den-logsearch-at-0.1.0.record — submit it to your log's maintainer'''
+

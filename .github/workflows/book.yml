@@ -123,6 +123,32 @@ jobs:
         shell: bash
         working-directory: wolf-interp
         run: cargo build --release --bin lupin
+      # The book's transcripts say `wolf build` prints nothing on its way
+      # to a binary, and that is true when the toolchain finds the linker
+      # it expects. Without `ld.lld` on PATH the driver notes the
+      # substitution on stderr — real output, which a reader on a stock
+      # linux box would see too — and the replay counts it as drift,
+      # correctly (bs25: 19 of the first executing lane's failures were
+      # this one line). Two ways out, and the book took this one: make
+      # the lane match what ch01 §1.2 now tells the reader to install,
+      # rather than teach the replay to delete a line of tool output.
+      # The byte-compare stays a byte-compare. macOS links through
+      # Apple's ld BY DESIGN (the automatic ad-hoc signature) and says
+      # nothing; windows chooses its COFF linker by its own documented
+      # order. So this is the linux lane's step alone.
+      - name: lld, the linker the toolchain expects (linux)
+        if: steps.acquire.outputs.toolchain == 'full' && runner.os == 'Linux'
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq lld
+          # Loud, and fatal when absent: an lld that quietly failed to
+          # install would put the driver's note back into 19 transcripts
+          # and the lane would report it as book drift.
+          command -v ld.lld
+          ld.lld --version
+
       - name: run every sample
         if: steps.acquire.outputs.toolchain == 'full'
         shell: bash

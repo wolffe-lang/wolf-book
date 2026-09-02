@@ -2,6 +2,60 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs25 — 2026-09-02 — the samples lane is real
+
+CI ran the samples on three machines for the first time. It had been
+able to for months; the credential that lets it read the pinned
+compiler was set today, and the lane that had been loudly skipping went
+and did the work. macOS agreed with the machine the book is written on,
+459 samples to nothing. The other two hosts had never been asked, and
+they had 25 things to say.
+
+Nineteen of them were one sentence. On Linux, `wolf build` looks for the
+LLVM linker and says so when it does not find it, and the runner did not
+have it — so nineteen transcripts across nine chapters gained a line the
+book does not print. The rig was right to fail: the line is real output.
+The question was what to do about it, and there were two answers. The
+book could teach the replay to drop `note:` lines, or the lane could
+have the linker. Dropping them is the answer that makes CI quieter and
+the reader's terminal no different — a book that hides a line its reader
+will see is a book that lied about the byte it saved. So the lane
+installs `lld`, and chapter 1 §1.2 now tells you to install it too,
+prints the note you get if you do not, and says the build still
+succeeds. Every console block in this book is still compared byte for
+byte with nothing subtracted.
+
+Six were true statements about a host. Four programs in chapter 30
+cannot be built on Windows at this pin — the parallel capstone and three
+of its exercises, all of them the task layer, which wolf refuses there
+by name and by symbol until the runtime lands on IOCP. Two console
+blocks in chapters 23 and 25 differ by one character each, where `wolf
+add` and `wolf publish` print the host's path separator while every
+diagnostic in the same compiler prints a slash.
+
+A skip would have covered all six, and the book does not skip. There is
+a new ledger instead, `samples-os.toml`, which is the pending manifest
+turned sideways: where that file says "not yet, anywhere", this one says
+"not here — and here is exactly what here says instead". Each row
+carries the outcome verbatim, and the rig holds the row to it in both
+directions. A refusal that changes its wording fails. A program that
+starts working flips, hard, naming the row to delete — the same
+discipline that has caught every feature landing since bs09. The four
+chapter 30 rows carry v0.2.2's refusal sentence whole, down to the
+runtime symbol that would not link, and the date they were declared;
+they come out at v0.2.3. The two transcript rows carry the Windows text
+in full and cite wolf-lang#222, which was filed rather than worked
+around, because one binary spelling the same project's paths two ways is
+the compiler's business and not the book's.
+
+Chapter 1 gained one correction it owed the reader independently. It
+said chapters 10 through 17 were the ones needing a host with the task
+layer and the rest of the book runs anywhere. Chapter 30's parallel
+capstone needs it too — measured, on the Windows lane, the day the lane
+first ran. The sentence now says so, and names the sequential twin that
+does run anywhere. The print edition sets to 510 pages, one more than
+bs24, all of it §1.2's.
+
 ## bs24 — 2026-09-02 — the book sees the comma
 
 The syntax highlighting is re-pinned. Every code block in the book is
