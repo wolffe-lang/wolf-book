@@ -217,9 +217,9 @@ Solution. Both runs, one item and one number between them:
 ```console
 $ wolf interface ./tokens/tokens.lu
 module pkg :: (root)
-  wolfi v0 · toolchain 0.2.1 · edition v1
-  export_hash 1f9708a3102ff3350314d9e3c73c16f7b7f3827161312b1fd16070c6d933eb81
-  pkg_hash    1f9708a3102ff3350314d9e3c73c16f7b7f3827161312b1fd16070c6d933eb81
+  wolfi v0 · toolchain 0.2.2 · edition v1
+  export_hash b86a3c4a8ec67f9edf3e5345769f357359533f9d6cb3b090cec8b58fb629e8da
+  pkg_hash    b86a3c4a8ec67f9edf3e5345769f357359533f9d6cb3b090cec8b58fb629e8da
   deps: (none)
   items:
     [0] pub split_words — fn split_words(text: str) -> prelude.List[str] · regions (-) -> ρ_caller
