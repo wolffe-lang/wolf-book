@@ -136,6 +136,9 @@ this, and how big is the granule?" — asked at four sizes.*
   contract, from the half-page decision table.
 - 8.8 What the machine does — see bump allocation, wholesale free, and
   the aliasing fact C cannot state.
+- 8.9 The ledger, and a budget on it — read what a region holds, cap
+  what it may hold, and watch one over-budget request die without
+  taking the process with it.
 - Exercises 8-1 ….
 
 ### Chapter 9 — The escape hatch is a door, not a cliff

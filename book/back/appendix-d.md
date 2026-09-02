@@ -37,6 +37,7 @@ The specification is seven documents:
 | 8.5 Freeze | `[mem.region.freeze.1]` | 02 |
 | 8.6 Open, and open again | `[mem.region.multiopen]` | 02 |
 | 8.7 `shared` and `handle` | `[mem.shared.handle.2]`, `[mem.shared.rc.2]`, `[mem.region.intra.1]` | 02 |
+| 8.9 The ledger, and a budget on it | `[mem.region.cap.1]` | 02 |
 | 9.3 The oracle you actually run | `[mem.ub]`, `[mem.prov.state]` | 02 |
 | 9.4 The one door back | `[mem.unsafe.door]` | 02 |
 | 9.6 FFI and regions | `[mem.prov.region]` | 02 |
