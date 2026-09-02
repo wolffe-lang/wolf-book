@@ -115,14 +115,52 @@ version = "lupin 0.1.22 (wolf-interp, reference interpreter at pin 2bfbe5e)"
 [wolf-lsp]
 # Source of the vendored tmLanguage grammars under highlight/.
 # `cargo xtask grammar-sync --check` fails on drift against this pin.
-# Bumped with the bs13 pin move: the grammar at this rev carries the
-# full operator set and the numeric-type keywords (the old pin knew
-# `Self|bool|int|str` and a fraction of the operators). It does NOT yet
-# know `char` or the `'…'` literal — s121 postdates it — so char code
-# highlights as plain text until wolf-lsp regenerates its grammar; a
-# rendering gap, not a truth gap, and it rides the next wolf-lsp bump.
+# Bumped with the bs24 pin move (le05, wolf-lsp trunk). The bs13 pin
+# predated s121: it knew no `char` type and no `'…'` literal, so every
+# char literal in the book painted as body ink — the rendering gap
+# bs13 recorded and bs23 re-stated at its closeout. This rev closes it.
+# The vendored tmLanguage moves in exactly three places, all in
+# wolf.tmLanguage.json (wolfi and wolf-pkg are byte-identical):
+#   * a `chars` rule — `'a'`, `'\n'`, `'\x41'`, `'\u{1F41B}'` — scoped
+#     `constant.character.wolf`, which is a NEW scope for the book's
+#     map: highlight.rs gains `constant.character` → hl-string beneath
+#     the `constant.character.escape` → hl-number entry that must keep
+#     winning (first hit wins, so order is load-bearing).
+#   * `char` joins the type keywords (`support.type.wolf`).
+#   * attributes begin `#!?\[`, so an inner attribute `#![…]` paints
+#     as an attribute instead of leaving `#!` as ink.
+# What the tree-sitter grammar gained at le05 and the book does NOT
+# see: `invalid_escape` (`@error`), `region_cap`, and the D67/D69
+# separator work are tree-sitter nodes. The book's highlighter is the
+# tmLanguage interpreter in xtask/src/tm.rs (highlight/README.md); the
+# tree-sitter queries are the editors' path, not the book's. A
+# `@error` entry in the book's palette waits on a tmLanguage rule that
+# emits `invalid.illegal.*` — there is none at this rev, and the book
+# holds no invalid escape in any rendered block to paint (measured:
+# zero across 991 blocks), so the palette gains no error entry here.
+# `cap`/`rc`/`pool` stay body ink: the spec calls them CONTEXTUAL
+# keywords ([gram.inv.ctx]), which a regex grammar cannot tell from an
+# identifier, so `region r(cap: n)` paints `region` and nothing else.
+# That is correct, not a gap.
+#
+# TWO WRONG PAINTS carried at this pin, filed rather than worked around
+# (the bs13 precedent: a rendering gap is recorded here, in the pin, not
+# patched in the prose):
+#   * wolf-lsp#4 — `raw-string` and `generalized-string` include
+#     `#interpolation`, and the spec says both are raw-mode ([gram.lex.
+#     str.raw], [gram.lex.str.gen]); tree-sitter agrees. So ch02 §2.2's
+#     `r"C:\logs\{today}\wolf.log"` paints `{today}` as an interpolation
+#     hole three lines above the sentence "the braces are two more
+#     characters, not an interpolation", and the brace-balancer solution
+#     paints its raw `r"([{}])"` data as syntax.
+#   * wolf-lsp#5 — the interpolation hole's pattern list carries no
+#     `#chars` and no `#strings`, so `"{(m + ('a' as int)) as char}"`
+#     paints `as` and `char` but leaves `'a'` as ink, and `"{"total"}"`
+#     leaves the nested literal as ink.
+# Both are pre-existing at bs13's pin too; bs24 is the sprint that
+# looked. Neither is worked around in the book.
 repo = "wolffe-lang/wolf-lsp"
-rev = "2b89cfbd0071aa9aa26d18b0483334743faeb29e"
+rev = "c97b81c36e23f53f539dad6de5e9e2a12c63c6e8"
 
 [wolf-repl]
 # REPL transcript replay is pending(is08): wolf-repl blocks are counted

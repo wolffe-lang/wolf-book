@@ -2,6 +2,44 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs24 — 2026-09-02 — the book sees the comma
+
+The syntax highlighting is re-pinned. Every code block in the book is
+painted at build time by a grammar vendored from wolf-lsp, and that
+grammar had been sitting at a revision older than the `char` type: a
+char literal was body ink, and so was the word `char` itself. Both now
+paint — `char` in the type blue, `'a'` in the same green as `"a"`,
+because a char literal is quoted text and the palette sorts by kind.
+The escape inside a string keeps its own bronze, which is the one
+ordering that had to be got right.
+
+Six blocks change colour and no page moves: 991 rendered blocks
+compared before and after, six differ, and the print edition sets to
+509 pages either way — colour is ink, not metrics. The six are the
+`n as char` cast in chapter 2 and five solutions in the back matter,
+where the brace-balancer and the Caesar shift are made of char
+literals. The print edition takes the same six changes from the same
+grammar and the same palette, which is the single-source rule working
+rather than being asserted.
+
+Ten blocks were then read by eye against what they mean, and two of
+them are painted wrongly by the pinned grammar. In a raw literal the
+braces are two more characters — chapter 2 says so in a sentence, and
+the sample's own output proves it — but the grammar paints them as an
+interpolation, and it does the same to the raw strings the brace
+balancer is scanning. And inside an interpolation a char literal goes
+unpainted while the `as char` beside it paints. Neither is patched
+around in the book: both are filed upstream (wolf-lsp#4, wolf-lsp#5)
+and recorded in the pin, where the last rendering gap was recorded and
+from where this one was closed.
+
+Nothing else was needed. The grammar's new error node has nothing to
+mark — no rendered block in the book carries an invalid escape — and
+the region keywords `cap`, `rc` and `pool` are contextual by the
+specification, which a grammar made of regular expressions cannot tell
+from a name, so `region r(cap: n)` paints the word `region` and stops.
+Measured, both of them, rather than assumed.
+
 ## bs23 — 2026-09-02 — the book holds a budget
 
 The pins move to wolf v0.2.2 and lupin 0.1.22, the learners' release,
