@@ -93,6 +93,6 @@ retires = "the wolf-lang#222 decision — a fix, or the note rewritten to say na
 note = '''§25.3, `wolf publish` writing the record — the tool prints the host's separator where the page prints a slash; every other line of both blocks is byte-identical to the book on all three hosts'''
 expect = '''
 $ wolf publish --dir app
-den/logsearch@0.1.0 tree=b3:f8ce5f5b7ea6bb1b367c55b39e00b55c19086f035fc38866b8ede419e9523039 manifest=b3:d932b3c6008a901a5dc0135b1f816183d0b0abd881a2a82eb5acf8323ae1e8e7 interface=b3:807281bc377102e03d383f52d3c27d96ff7cefd6e6218d304d41f272e5cbc026
+den/logsearch@0.1.0 tree=b3:f8ce5f5b7ea6bb1b367c55b39e00b55c19086f035fc38866b8ede419e9523039 manifest=b3:d932b3c6008a901a5dc0135b1f816183d0b0abd881a2a82eb5acf8323ae1e8e7 interface=b3:3290b9183fc5b59a10fffc7bbcaa64d08081bbf277c868672c9513be6f653920
 wolf publish: record written to app\.wolf-publish\den-logsearch-at-0.1.0.record — submit it to your log's maintainer'''
 
