@@ -18,6 +18,7 @@ mod directives;
 mod fence;
 mod highlight;
 mod ledger;
+mod oslane;
 mod preprocess;
 mod render;
 mod samples;
