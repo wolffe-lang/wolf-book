@@ -1,0 +1,26 @@
+//! check: run(exit=trap(alloc-contract), stdout="at the measured budget: served")
+//! phase: run
+// Exercise 8-19 solution: a cap kata — measure first, then cap at the
+// reading and one byte under it.
+struct Doc { title: str, words: int }
+fn shelve(n: int) {
+    var docs = List[Doc]()
+    for i in 0..n { (mut docs).push(Doc { title: "regions", words: i }) }
+}
+fn main() -> !int {
+    let probe = region()
+    var measured = 0
+    in probe {
+        shelve(50)
+        measured = region_bytes(probe)
+    }
+    region exact(cap: measured) {
+        shelve(50)
+    }
+    print("at the measured budget: served")
+    region short(cap: measured - 1) {
+        shelve(50)
+    }
+    print("one byte under: served")
+    0
+}

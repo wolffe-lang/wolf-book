@@ -1,6 +1,6 @@
 # EXERCISES-INDEX.md — the corpus ledger
 
-Generated view of every exercise in the corpus: 327 total. Sources:
+Generated view of every exercise in the corpus: 329 total. Sources:
 the exemplar batch in `principles/EXERCISES.md` §5 (26 exercises,
 folded in unchanged) and the per-chapter files
 `principles/exercises/chNN/EXERCISES.md` (+ `appx/` for the
@@ -211,7 +211,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | Chapter batch | 7-15 | extension · lupin | run (lupin) |
 | Chapter batch | 7-16 | fingers · lupin | run (lupin) |
 
-## ch08 — 17 exercises
+## ch08 — 19 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
@@ -232,6 +232,8 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | Chapter batch | 8-15 | extension · lupin | run (lupin) |
 | Chapter batch | 8-16 | extension · lupin | run (lupin) |
 | Chapter batch | 8-17 | extension · lupin | run (lupin) |
+| §8.9 — The ledger, and a budget on it | 8-18 | fingers · lupin | run (lupin) |
+| §8.9 — The ledger, and a budget on it | 8-19 | extension · lupin | run (lupin) |
 
 ## ch09 — 15 exercises
 

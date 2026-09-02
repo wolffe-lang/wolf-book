@@ -116,6 +116,13 @@ Figures (ownership trees, tables of boxes and arrows) are set in the
 same monospaced ground with no dialect label. They are drawings, not
 code, and nothing runs them.
 
+One other kind of block carries no dialect label, and it is the one to
+read carefully: a *quoted transcript*, a command and its output
+measured somewhere this edition's own CI cannot reach. There are four
+in the book, all in §1.2, all Windows, and the section says where each
+came from and who measures it. Everything else set at a prompt in these
+pages was produced by the run that built the page you are reading.
+
 ## Reading the dialects
 
 The distinction that matters is who is speaking. Program and part blocks

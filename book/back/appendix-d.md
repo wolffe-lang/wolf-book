@@ -27,6 +27,7 @@ The specification is seven documents:
 | 2.3 Bytes, honestly | `[mem.ub.defined]` | 02 |
 | 3.1 `let`, `var`, and handing values over | `[mem.tier0.move.2]` | 02 |
 | 3.3 Arithmetic that traps | `[mem.ub.defined]` | 02 |
+| 4.2 Functions as values | `[gram.expr.closure]` | 01 |
 | 5.4 Indexing that traps | `[mem.ub.defined]` | 02 |
 | 6.4 Hardening by refactor | `[mem.ub.defined]` | 02 |
 | 7.1 The error we owed you | `[mem.tier0.move.2]` | 02 |
@@ -37,6 +38,7 @@ The specification is seven documents:
 | 8.5 Freeze | `[mem.region.freeze.1]` | 02 |
 | 8.6 Open, and open again | `[mem.region.multiopen]` | 02 |
 | 8.7 `shared` and `handle` | `[mem.shared.handle.2]`, `[mem.shared.rc.2]`, `[mem.region.intra.1]` | 02 |
+| 8.9 The ledger, and a budget on it | `[mem.region.cap.1]` | 02 |
 | 9.3 The oracle you actually run | `[mem.ub]`, `[mem.prov.state]` | 02 |
 | 9.4 The one door back | `[mem.unsafe.door]` | 02 |
 | 9.6 FFI and regions | `[mem.prov.region]` | 02 |

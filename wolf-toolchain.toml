@@ -4,100 +4,113 @@
 # doc-truth CI job compares them.
 
 [wolf]
-# wolf-lang at the v0.2.1 release tag. D57 (r03): a build made exactly
+# wolf-lang at the v0.2.2 release tag. D57 (r03): a build made exactly
 # at its own release tag prints the bare version with a pin clause —
-# `wolf 0.2.1 (wolfgang, pin 75fd2d0)` — and every other build prints
+# `wolf 0.2.2 (wolfgang, pin 8cda3aa)` — and every other build prints
 # `+dev.<commit>` and claims nothing; unverifiable is dev. The stamp is
 # the dist builder's, never a build script's (D33): `cargo xtask dist`
 # probes git and sets WOLF_COMMIT/WOLF_RELEASE at compile time, so a
-# plain `cargo build` at this same rev answers `0.2.1+dev.unknown`.
+# plain `cargo build` at this same rev answers `0.2.2+dev.unknown`.
 # The book's version transcripts print the bare release string, so the
 # pinned wolf must be built with the dist builder or with its stamp
-# reproduced (release profile, WOLF_COMMIT=75fd2d0 WOLF_RELEASE=v0.2.1
-# — what book.yml's samples lane does; the debug-build recipe of the
-# a900b8c/addcd7f eras produces an unstamped binary and fails the two
-# transcripts). At THIS tag `cargo xtask dist` completes on every
-# tier-1 target, windows included — the staticlib-naming defect that
-# made v0.2.0's own dist a three-of-four is fixed in the release.
+# reproduced (release profile, WOLF_COMMIT=8cda3aa WOLF_RELEASE=v0.2.2
+# — what book.yml's samples lane does; a debug build produces an
+# unstamped binary and fails the two version transcripts). At THIS tag
+# `cargo xtask dist` unpacks its own archive and builds and runs
+# `corpus/hello.lu` from it on every host it serves.
 #
-# This bump (bs22) crosses s129 + s130 plus the r04 release wave. The
-# headline for the book is patterns: struct patterns go through the
-# whole pipe ([gram.pat.struct]) in every binder position and then in
-# match arms, arms take the full product domain (tuple and struct
-# patterns, @-bindings, literals at product depth, products nested
-# through enum payloads), and a callee's slice of a lent byte view
-# resolves per [mem.list.slice] instead of meeting a misattributed
-# refusal. r04 is the release's own honesty: four places where the
-# written language and the built one had drifted, each measured on
-# the tools first.
+# This bump (bs23) crosses s60a + s131 + s132 + s133 plus the r05
+# release wave — the learners' release. Three headlines reach the book.
 #
 # What the bump changes for the book, measured at this tag:
-#   * The catalog grows 168 -> 169: E0814 arrives ("struct pattern
-#     fields do not match the struct" — the lean E0408 takes at
-#     construction, taken at destructuring). Appendix C's count
-#     re-records; no code left.
-#   * The anchors grow 403 -> 404: [gram.pat.struct] registers. The
-#     grammar gains the struct-pattern production and its `field_pat`,
-#     and `UNI_ESC` splits out of `CHAR_ESC` bounded at one to six hex
-#     digits (the prose was the letter, the production said
-#     `HEX_DIGIT+`); Appendix A regenerates on both.
-#   * `wolf --version` answers the bare release string with its pin
-#     clause, and for the first time since the 0.1.15/0.1.16 era the
-#     two tools name the SAME interpreter release: the compiler pairs
-#     with lupin 0.1.20 at pin b80d239 and the lupin beside it is
-#     0.1.20 naming b80d239 back. The colophon's asymmetry paragraph
-#     retires with the fact that produced it.
+#   * WINDOWS COMPILES. `wolf build hello.lu` writes `hello.exe` and
+#     `wolf run hello.lu` compiles and executes it, natively, on
+#     windows x86-64 — every release through v0.2.1 refused that host
+#     by name. One thing must be installed beside it (Visual Studio
+#     Build Tools, "Desktop development with C++"), and without it the
+#     driver refuses BEFORE the link, in words that name what to
+#     install. ch01 §1.2 gains the archive path, mirroring
+#     lupp.us/install/ — which is itself measured weekly on a Windows
+#     runner against the published archive. The book's own samples
+#     lane cannot replay a Windows console block on this box, so those
+#     blocks are quoted from the measured page and marked as such.
+#   * THE REGION ANSWERS AND HOLDS. `region_bytes(r)` and
+#     `live_region_bytes()` surface the ledger `wolf_rt` has kept
+#     since s76, and `region r(cap: n)` bounds it. The clause leaves
+#     the UNITS a per-tier measured fact and pins the RELATIONS, so
+#     ch08's new §8.9 teaches relations and derives its budget from a
+#     measured reading. A charge past the budget is trap
+#     (alloc-contract) at the allocating site; inside a proc the trap
+#     is contained at the boundary and reaches the join as
+#     `fault(kind)` — `is_fault()` / `is_alloc_contract()`.
+#   * THE COMMA INSISTS. D67's pattern family and D69's literals,
+#     closure parameters and inline-C capture lists all refuse the
+#     comma-less spelling now, at E0201, with a machine-applicable
+#     "add the comma" fix. Blast radius across the world was measured
+#     first and was zero working code — wolf-book's 1,129 files
+#     included. §4.2 shows the refusal and the fix.
+#   * A trap runs no defers, at the root too ([conf.trap.exit], #209).
+#     MEASURED DIVERGENCE, recorded rather than hidden: every wolfc
+#     lane abandons a pending root defer; lupin 0.1.22 runs it. ch04
+#     §4.3 teaches the letter with wolfc's transcript and names the
+#     interpreter's lag in tool voice (is34 closes it).
+#   * The anchors grow 404 -> 411: [mem.region.account] with .1/.2 and
+#     [mem.region.cap] with .1/.2/.3 register. The grammar gains
+#     STR_ESC (with UNI_ESC beside it and CHAR_ESC derived from both),
+#     `region_cap` on all three region forms, and D67's tightened
+#     struct-pattern member list; Appendix A regenerates on all three.
+#   * The catalog does NOT move: 169 codes at v0.2.1 and 169 at
+#     v0.2.2, identical. The comma work reuses E0201 and the cap
+#     breach is a trap, not a diagnostic. Appendix C's count stands.
 #   * `wolf interface` embeds the toolchain version by design, so
-#     ch22's interface transcript re-records (toolchain 0.2.0 ->
-#     0.2.1, both hashes move with it), and ch25's publish record
+#     ch22's interface transcript re-records (toolchain 0.2.1 ->
+#     0.2.2, both hashes move with it), and ch25's publish record
 #     carries the same moved interface hash.
-#   * W1001 stopped lying (#192): it claimed a region "never
-#     allocates" on blocks whose callees allocate through it, and now
-#     requires no call in the region's extent either. ch09's s11
-#     snapshot loses the warning and keeps its E1401.
-#   * 5 runner movers at this bump, all classified, residue empty: the
-#     2 version transcripts above, ch22's interface stamp, ch25's
-#     publish record, and ch09/s11's snapshot. Samples hold 448
-#     passed / 5 pending / 0 failed with zero pending flips.
+#   * 4 runner movers at this bump, all classified, residue empty: the
+#     2 version transcripts (ch01 §1.2, the colophon), ch22's
+#     interface stamp, and ch25's publish record. Samples hold at
+#     452 passed / 5 pending / 0 failed with zero pending flips before
+#     the sprint's own additions.
 #
 # This rev IS the tag, so the transcripts stay clean (D57).
 repo = "wolffe-lang/wolf-lang"
-rev = "75fd2d0b25b6ed995ec7293053bc32fb3497e272"
-impl_version = "0.2.1"
+rev = "8cda3aa41004775bb4a4c0a600d7fb673143b7d0"
+impl_version = "0.2.2"
 
 [lupin]
-# wolf-interp at the v0.1.20 release tag (is31): the stamped line names
-# lupin 0.1.20 at pin b80d239. A lupin release's pin is the wolf-lang
-# revision it was built and differentially tested against; no v0.2.1
-# tag existed at the is31 release step, so the pin is wolf-lang's s130
-# merge sha, whose spec tree is byte-identical to the tag's (404
-# anchors, nothing gained, nothing dropped). The compiler's pairing
-# line names lupin 0.1.20 at the same b80d239, so both lines agree for
-# the first time since the 0.1.15/0.1.16 era, and the asymmetry the
-# colophon printed as it was is simply not there to print.
+# wolf-interp at the v0.1.22 release tag (is33): the stamped line names
+# lupin 0.1.22 at pin 2bfbe5e. A lupin release's pin is the wolf-lang
+# revision it was built and differentially tested against; no v0.2.2 tag
+# existed at the is33 release step, so the pin is wolf-lang's s132 merge
+# sha. The compiler's pairing line names lupin 0.1.22 at that same
+# 2bfbe5e, so both lines agree, as they have since the 0.2.1 bump.
 #
-# What 0.1.19 + 0.1.20 carry, as the book meets them:
-#   * Struct patterns in every binder position (is30) and then in
-#     match arms (is31), field-set rules the same in both: an unknown
-#     field declines by E0403's name, a missing-without-`..`,
-#     duplicate or empty one by E0814's. The seven struct-bearing
-#     witnesses of the #179 table move from `unsupported` to running;
-#     six join the agreement class and the seventh is honest
-#     conservatism (exhaustiveness is the type checker's).
-#   * Destructures move element-wise (is30): `let (x, _) = p` moves
-#     `p.0` only, and the untouched elements stay readable.
-#   * An arm takes the WHOLE scrutinee when it binds a non-`Copy`
-#     piece. The field-wise partial-move story is a binder rule on
-#     both machines; neither invents finer-grained arm semantics.
-#   * The lent-view byte slice joins the agreement class (#184), and
-#     the net byte tier resolves (wolf-interp#52).
-#   * Zero book samples, console rows, or corpus rows move on the
-#     lupin half of this bump — measured, both lanes. Every one of the
-#     455 files carried from 0.1.19 is verdict-identical.
+# What 0.1.21 + 0.1.22 carry, as the book meets them:
+#   * The region ledger and the cap, whole-pipe: `region_bytes(r)`,
+#     `live_region_bytes()`, `region r(cap: n)` and `region(cap: n)`,
+#     the breach as trap(alloc-contract) at the allocating site, the
+#     contained proc trap reaching the join as `fault(alloc-contract)`,
+#     and free-then-deliver teardown. The book's ch08 §8.9 and ch14
+#     transcripts run on this machine.
+#   * The comma: lupin always refused the comma-less spellings, so
+#     D67/D69 change nothing here. It is wolfgang that moved to meet
+#     it, which is why §4.2's refusal is shown under the compiler.
+#   * DIVERGENCE, NAMED (wolf-lang#209, is34's to close). A trap in
+#     the ROOT domain runs no pending defers on every wolfc lane;
+#     lupin 0.1.22 runs them. The two machines are verdict-identical
+#     (`trap(assert)`) and the differential record cannot see the
+#     difference, because a trapping program's record carries no
+#     stdout. ch04 §4.3 teaches the spec's letter with the compiler's
+#     transcript and states the interpreter's lag in tool voice; it
+#     does not print an interpreter transcript that would read as the
+#     rule.
+#   * Census at this release: 479 files / 446 entries / 33 members;
+#     every one of the 474 files carried from 0.1.21 is
+#     verdict-identical, class for class.
 # D57 discipline: this rev IS the tag, so the transcript stays clean.
 repo = "wolffe-lang/wolf-interp"
-rev = "e3736c154dad2d5c4bdb7b7ad706b74b56a903f0"
-version = "lupin 0.1.20 (wolf-interp, reference interpreter at pin b80d239)"
+rev = "753d686b923859562a6dd443d2bfbba3c06db745"
+version = "lupin 0.1.22 (wolf-interp, reference interpreter at pin 2bfbe5e)"
 
 [wolf-lsp]
 # Source of the vendored tmLanguage grammars under highlight/.

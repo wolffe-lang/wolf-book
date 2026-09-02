@@ -2,6 +2,60 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs23 — 2026-09-02 — the book holds a budget
+
+The pins move to wolf v0.2.2 and lupin 0.1.22, the learners' release,
+and three things arrive with them. Chapter 8 gains §8.9: a region will
+now tell you what it holds, and you can tell it what it may hold.
+`region_bytes` and `live_region_bytes` are taught as the four relations
+the specification guarantees on every implementation — zero at the
+open, charged after a build, unchanged between two adjacent reads, and
+gone wholesale at the brace — and deliberately not as a byte count,
+because the unit is the machine's and the section says so. `region
+r(cap: n)` puts a ceiling on the ledger, a charge past it traps at the
+allocation that asked for it, and the budget in every sample is
+*measured* rather than estimated, which is the section's other lesson.
+The last part is the one a server wants: a request that breaches its
+budget inside a proc dies alone. The reason reaches the join as a value
+(`is_fault()`, `is_alloc_contract()`), the memory is back before the
+reason is delivered, and the `defer` below the proc boundary never
+runs, which the transcript proves by the line that is missing. Chapter
+14's per-proc accounting aside and §8.1's per-request arena both point
+at it, and two exercises land beside it: 8-18 reads the ledger four
+times, 8-19 is the cap kata.
+
+Chapter 1 gains an install path. Both projects now publish a per-host
+archive at every tag, so §1.2 leads with "unpack it and put it on your
+PATH" instead of two cargo builds, and Windows — where the compiler
+produces and runs a native `hello.exe` for the first time — is spelled
+out exactly as the project's own measured page states it: the Visual
+Studio Build Tools requirement, the refusal quoted whole for a machine
+without them, `lupin.exe` as one file with no installer, and the two
+things that still refuse there. Those four blocks are labelled for what
+they are — transcripts measured elsewhere, not replays — because this
+book's sample runner has no Windows lane, and the Notation chapter now
+says how to spot one.
+
+§4.3 answers a question its own sentence raised: `defer` runs when the
+scope exits "whichever way it exits", and a trap is the way out that
+runs nothing. The compiler's transcript shows an inner block's `defer`
+firing on time and the outer one abandoned; the interpreter at this
+pin still runs the outer one, and the section names that as a recorded
+divergence rather than a second reading of the rule. §4.2 teaches the
+separator law that landed with this release: a comma between closure
+parameters is required, the refusal quotes the production it enforces
+and writes the repair out, and the same sentence governs struct
+literals, patterns and capture lists. The book's own prose was swept
+for the comma-less spellings and had none.
+
+Appendix A regenerates on three grammar changes, Appendix B gives
+`alloc-contract` and `assert` the sections they now have and states
+what a trap does to a pending `defer`, and the anchors grow 404 → 411
+while the diagnostic catalog holds at 169. Four transcripts re-recorded
+at the bump, every one classified, zero failures and zero flips. The
+corpus grows 248 → 250 files, the index recounts at 329 exercises (280
+printed), and 459 samples pass against bs22's 452.
+
 ## bs22 — 2026-09-01 — the book takes up arms
 
 The pins move to wolf v0.2.1 and lupin 0.1.20, and for the first time

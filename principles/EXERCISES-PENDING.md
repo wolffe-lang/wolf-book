@@ -8,7 +8,7 @@ to be. The day a blocking feature lands, its exercises join the CI run
 their headers already describe; until then this manifest is the honest
 list. No aspirational green.
 
-Note for the compiler track: the whole corpus — 248 directive-headed
+Note for the compiler track: the whole corpus — 250 directive-headed
 `.lu` files under `principles/exercises/`, runnable and pending alike —
 is a seed farm for the toolchain's corpus and fuzz harnesses. The
 pending files are the most valuable seeds: each one encodes an expected
@@ -97,6 +97,16 @@ left this table at bs09, and at bs21 their master annotations caught
 up — `· wolf`, real `wolf run` transcripts, no pending language.
 
 ## The bs22 pattern trio (2026-09-01)
+
+The pin move to wolf v0.2.2 / lupin 0.1.22 opened the region ledger and
+the region cap, and two exercises cash that: 8-18 reads one region's
+ledger four times and prints the RELATIONS the clause guarantees
+(`[mem.region.account.1]` leaves the units a per-tier measured fact),
+and 8-19 is the cap kata — measure the charge uncapped, then run the
+same work at exactly the measured budget and one byte under it. The
+corpus grows 248 → 250 `.lu` files. No row above moved, no new pending
+rows were filed, and both run green at the pins on the lane their
+directives claim.
 
 The pin move to wolf v0.2.1 / lupin 0.1.20 made struct patterns and
 product match arms legal, and three exercises cash that: 3-14

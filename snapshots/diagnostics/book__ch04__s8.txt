@@ -1,0 +1,12 @@
+error[E0201]: expected `,` between the closure's parameters
+ --> ./s8.lu:6:20
+  |
+6 |     let add = fn(x y) x + y
+  |                    ^
+  |
+  = note: the separating comma is required between closure parameters ([gram.expr.closure]:
+    closure_param (',' closure_param)* ','?)
+help: add the comma
+  |
+6 |     let add = fn(x, y) x + y
+  |
