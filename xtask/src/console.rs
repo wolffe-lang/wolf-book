@@ -233,10 +233,27 @@ fn stage(from: &Path, to: &Path) -> Result<()> {
     Ok(())
 }
 
+/// The ledger key for a block: repo-relative, forward slashes, and the
+/// opening fence's line — `book/ch23.md:117`. The absolute path the
+/// messages carry is the runner's; the key has to be the same three
+/// characters on all three hosts.
+pub fn block_key(root: &Path, block: &ConsoleBlock) -> String {
+    let rel = block
+        .md
+        .strip_prefix(root)
+        .unwrap_or(&block.md)
+        .to_string_lossy()
+        .replace('\\', "/");
+    format!("{rel}:{}", block.line)
+}
+
 /// What a console-check pass found.
 pub struct Report {
     pub checked: usize,
     pub skipped: Vec<String>,
+    /// Blocks that matched a per-host declared transcript rather than
+    /// the book's — reported by name, never silent.
+    pub declared: Vec<String>,
     pub failures: Vec<String>,
 }
 
@@ -245,12 +262,14 @@ pub fn check(
     tools: &Tools,
     blocks: &[ConsoleBlock],
     programs: &std::collections::BTreeMap<String, String>,
+    os: &crate::oslane::Ledger,
 ) -> Result<Report> {
     let base = root.join("samples/extracted/console");
     let _ = std::fs::remove_dir_all(&base);
     let mut report = Report {
         checked: 0,
         skipped: Vec::new(),
+        declared: Vec::new(),
         failures: Vec::new(),
     };
     for block in blocks {
@@ -309,6 +328,38 @@ pub fn check(
             .lines()
             .map(|l| l.trim_end().to_string())
             .collect();
+        // A host whose tool text differs declares the difference in
+        // full (samples-os.toml). The block is still replayed and still
+        // byte-compared — against the declaration instead of the page.
+        if let Some(row) = os.transcript(&block_key(root, block)) {
+            let declared: Vec<String> = row
+                .expect
+                .lines()
+                .map(|l| l.trim_end().to_string())
+                .collect();
+            match declared_verdict(&actual, &expected, &declared) {
+                Declared::Stale => report.failures.push(format!(
+                    "{where_}: this host now prints the book's own transcript, so \
+                     samples-os.toml's {} row for this block is stale — {} \
+                     landed; remove the row",
+                    row.os, row.filed
+                )),
+                Declared::Held => {
+                    report.checked += 1;
+                    report.declared.push(format!(
+                        "{where_} ({}): {} — {}, retires at {}",
+                        row.os, row.note, row.filed, row.retires
+                    ));
+                }
+                Declared::Drifted => report.failures.push(format!(
+                    "{where_}: the declared {} transcript drifted from the real run\n     declared:\n{}\n     actual:\n{}",
+                    row.os,
+                    indent(&declared),
+                    indent(&actual),
+                )),
+            }
+            continue;
+        }
         if actual != expected {
             report.failures.push(format!(
                 "{where_}: console block drifted from the real run\n     expected:\n{}\n     actual:\n{}",
@@ -320,6 +371,35 @@ pub fn check(
         report.checked += 1;
     }
     Ok(report)
+}
+
+/// What a declared per-host transcript row is worth on this run.
+#[derive(Debug, PartialEq, Eq)]
+enum Declared {
+    /// The host said what the row says. The row still earns its keep.
+    Held,
+    /// The host said what the BOOK says: the difference the row exists
+    /// to record is gone, so the row is a lie now. Hard error — the
+    /// same discipline `samples-pending.toml` applies to a flip.
+    Stale,
+    /// The host said a third thing. The row was the book's claim about
+    /// this host, and the claim is wrong.
+    Drifted,
+}
+
+/// The order matters: `Stale` is decided FIRST, so a host that starts
+/// agreeing with the page is never reported as mere drift, and a row
+/// whose `expect` was written to equal the book's own transcript reads
+/// as stale rather than passing quietly. That is the safe direction: it
+/// makes a useless row loud.
+fn declared_verdict(actual: &[String], book: &[String], declared: &[String]) -> Declared {
+    if actual == book {
+        Declared::Stale
+    } else if actual == declared {
+        Declared::Held
+    } else {
+        Declared::Drifted
+    }
 }
 
 fn indent(lines: &[String]) -> String {
@@ -372,6 +452,54 @@ mod tests {
     fn the_pinned_tools_are_replayable() {
         let steps = parse_steps("$ lupin hello.lu\nhello, wolf\n$ echo $?\n0\n").unwrap();
         assert!(replayable(&steps).is_ok());
+    }
+
+    #[test]
+    fn a_declared_transcript_holds_when_the_host_says_it() {
+        let book = vec!["$ wolf add".to_string(), "created app/wolf.pkg".to_string()];
+        let win = vec![
+            "$ wolf add".to_string(),
+            r"created app\wolf.pkg".to_string(),
+        ];
+        assert_eq!(declared_verdict(&win, &book, &win), Declared::Held);
+    }
+
+    #[test]
+    fn a_declared_transcript_is_stale_once_the_host_agrees_with_the_page() {
+        // wolf-lang#222 lands: the row is a lie now, and it must not
+        // pass quietly on its way out.
+        let book = vec!["$ wolf add".to_string(), "created app/wolf.pkg".to_string()];
+        let win = vec![
+            "$ wolf add".to_string(),
+            r"created app\wolf.pkg".to_string(),
+        ];
+        assert_eq!(declared_verdict(&book, &book, &win), Declared::Stale);
+    }
+
+    #[test]
+    fn a_third_answer_is_drift_not_a_shrug() {
+        let book = vec!["$ wolf add".to_string(), "created app/wolf.pkg".to_string()];
+        let win = vec![
+            "$ wolf add".to_string(),
+            r"created app\wolf.pkg".to_string(),
+        ];
+        let other = vec!["$ wolf add".to_string(), "created APP/WOLF.PKG".to_string()];
+        assert_eq!(declared_verdict(&other, &book, &win), Declared::Drifted);
+    }
+
+    #[test]
+    fn a_block_key_is_repo_relative_with_forward_slashes() {
+        let root = Path::new("/w/wolf-book");
+        let block = ConsoleBlock {
+            stem: "ch23".into(),
+            md: root.join("book").join("ch23.md"),
+            line: 117,
+            text: String::new(),
+            program: None,
+            from: None,
+            fixture: None,
+        };
+        assert_eq!(block_key(root, &block), "book/ch23.md:117");
     }
 
     #[test]
