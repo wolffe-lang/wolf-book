@@ -90,6 +90,12 @@ const SCOPE_CLASSES: &[(&str, &str)] = &[
     ("string.", "hl-string"),
     ("constant.numeric", "hl-number"),
     ("constant.character.escape", "hl-number"),
+    // A char literal is quoted text, so it takes the string green —
+    // `'a'` beside `"a"` reads as the same kind of thing. It MUST stay
+    // below `constant.character.escape`: prefix matching is first-hit,
+    // and an escape inside a string keeps the bronze that sets it off
+    // from the green around it (bs24, the wolf-lsp c97b81c pin).
+    ("constant.character", "hl-string"),
     ("constant.other.format-spec", "hl-number"),
     ("constant.language", "hl-kw"),
     ("keyword.control", "hl-kw"),
@@ -369,6 +375,40 @@ mod tests {
             Some("hl-comment")
         );
         assert_eq!(class_for_scope("storage.type.wolf"), Some("hl-kw"));
+    }
+
+    /// A char literal is green; an escape INSIDE a string stays bronze.
+    /// The two scopes share a prefix, so the order in `SCOPE_CLASSES`
+    /// is the whole contract (bs24).
+    #[test]
+    fn char_literal_is_string_green_but_escapes_stay_bronze() {
+        assert_eq!(
+            class_for_scope("constant.character.wolf"),
+            Some("hl-string")
+        );
+        assert_eq!(
+            class_for_scope("constant.character.escape.wolf"),
+            Some("hl-number")
+        );
+    }
+
+    /// The pinned grammar knows `char` and the `'…'` literal; bs13's
+    /// pin knew neither, and every char in the book painted as ink.
+    #[test]
+    fn char_type_and_char_literal_paint() {
+        let root = crate::repo_root().unwrap();
+        let json = std::fs::read_to_string(root.join("highlight/wolf.tmLanguage.json")).unwrap();
+        let g = Grammar::load(&json).unwrap();
+        let html = render_code_html(&g, "let c: char = '\\n'\n").unwrap();
+        assert!(
+            html.contains(r#"<span class="hl-type">char</span>"#),
+            "{html}"
+        );
+        assert!(
+            html.contains(r#"<span class="hl-string">&#39;\n&#39;</span>"#)
+                || html.contains(r#"<span class="hl-string">'\n'</span>"#),
+            "{html}"
+        );
     }
 
     #[test]
