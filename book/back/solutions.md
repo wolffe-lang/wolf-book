@@ -18,7 +18,7 @@ withholds one. The coda sets no exercises.
 ## Chapter 1
 
 <details>
-<summary>Exercise 1-1. [§1.1](../ch01.md#1.1)</summary>
+<summary>Exercise 1-1. <a href="../ch01.md#1.1">§1.1</a></summary>
 
 **Exercise 1-1** *(fingers · lupin)*. Type the hello program exactly as
 printed and run it. Then make it print a second line of your choosing.
@@ -41,7 +41,7 @@ the moon is up
 </details>
 
 <details>
-<summary>Exercise 1-2. [§1.3](../ch01.md#1.3)</summary>
+<summary>Exercise 1-2. <a href="../ch01.md#1.3">§1.3</a></summary>
 
 **Exercise 1-2** *(comprehension · lupin)*. Before running, write down
 what this program prints and what `echo $?` shows afterward:
@@ -65,7 +65,7 @@ $ echo $?
 </details>
 
 <details>
-<summary>Exercise 1-3. [§1.1](../ch01.md#1.1)</summary>
+<summary>Exercise 1-3. <a href="../ch01.md#1.1">§1.1</a></summary>
 
 **Exercise 1-3** *(fingers · lupin)*. Braces interpolate expressions,
 not only names. Print a sentence that computes `6 * 7` twice inside one
@@ -88,7 +88,7 @@ hello, reader — 42 is still 42
 </details>
 
 <details>
-<summary>Exercise 1-4. [§1.4](../ch01.md#1.4)</summary>
+<summary>Exercise 1-4. <a href="../ch01.md#1.4">§1.4</a></summary>
 
 **Exercise 1-4** *(fingers · lupin REPL)*. Open the REPL. Compute the
 number of seconds in a day, ask `:type` what type that expression has,
@@ -119,7 +119,7 @@ workbench, not a calculator.
 </details>
 
 <details>
-<summary>Exercise 1-5. [§1.3](../ch01.md#1.3)</summary>
+<summary>Exercise 1-5. <a href="../ch01.md#1.3">§1.3</a></summary>
 
 **Exercise 1-5** *(fingers + extension · lupin)*. The first table in
 *The C Programming Language* converts Fahrenheit to Celsius. Write
@@ -159,7 +159,7 @@ format specs.
 </details>
 
 <details>
-<summary>Exercise 1-6. [§1.5](../ch01.md#1.5)</summary>
+<summary>Exercise 1-6. <a href="../ch01.md#1.5">§1.5</a></summary>
 
 **Exercise 1-6** *(spelunking · lupin)*. Delete the closing brace of a
 working program's `main` and run it. Read the whole diagnostic: the
@@ -185,7 +185,7 @@ the absence lives.
 </details>
 
 <details>
-<summary>Exercise 1-7. [§1.2](../ch01.md#1.2)</summary>
+<summary>Exercise 1-7. <a href="../ch01.md#1.2">§1.2</a></summary>
 
 **Exercise 1-7** *(fingers · wolf + lupin)*. Compile the greeting with
 `wolf build`, run the binary, then run the source under `lupin`. Compare
@@ -212,7 +212,7 @@ the specification, and it is found here rather than in your program.
 </details>
 
 <details>
-<summary>Exercise 1-8. [§1.5](../ch01.md#1.5)</summary>
+<summary>Exercise 1-8. <a href="../ch01.md#1.5">§1.5</a></summary>
 
 **Exercise 1-8** *(comprehension · wolf + lupin)*. Build the greeting,
 then run `wolf build hello.lu --verbose` a second time without editing
@@ -236,7 +236,7 @@ one above; the word `reused` will not.
 </details>
 
 <details>
-<summary>Exercise 1-9. [§1.3](../ch01.md#1.3)</summary>
+<summary>Exercise 1-9. <a href="../ch01.md#1.3">§1.3</a></summary>
 
 **Exercise 1-9** *(fingers · lupin)*. Drive 1-5's table the other way:
 Celsius −20 to 40 in steps of 10, Fahrenheit beside it, both columns
@@ -277,7 +277,7 @@ specs, not luck, are the durable fix.
 </details>
 
 <details>
-<summary>Exercise 1-10. [§1.5](../ch01.md#1.5)</summary>
+<summary>Exercise 1-10. <a href="../ch01.md#1.5">§1.5</a></summary>
 
 **Exercise 1-10** *(comprehension · lupin)*. Before running, write down
 what this program prints and what `echo $?` shows afterward:
@@ -312,7 +312,7 @@ $ echo $?
 </details>
 
 <details>
-<summary>Exercise 1-11. [§1.1](../ch01.md#1.1)</summary>
+<summary>Exercise 1-11. <a href="../ch01.md#1.1">§1.1</a></summary>
 
 **Exercise 1-11** *(fingers · lupin)*. Find the longest line of a
 multiline block and print its length and the line itself, in that
@@ -351,7 +351,7 @@ the whole policy, which is the reason to know where it is.
 ## Chapter 2
 
 <details>
-<summary>Exercise 2-1. [§2.3](../ch02.md#2.3)</summary>
+<summary>Exercise 2-1. <a href="../ch02.md#2.3">§2.3</a></summary>
 
 **Exercise 2-1** *(comprehension · lupin REPL)*. Predict all three
 before evaluating: `"wolf".len`, `"é".len`, `"🐺".len`.
@@ -370,7 +370,7 @@ $ lupin eval '"🐺".len'
 </details>
 
 <details>
-<summary>Exercise 2-2. [§2.1](../ch02.md#2.1)</summary>
+<summary>Exercise 2-2. <a href="../ch02.md#2.1">§2.1</a></summary>
 
 **Exercise 2-2** *(fingers · lupin)*. Using format specs, print a
 two-column table: names left-aligned in 10 columns, numbers
@@ -402,7 +402,7 @@ elk          3
 </details>
 
 <details>
-<summary>Exercise 2-3. [§2.3](../ch02.md#2.3)</summary>
+<summary>Exercise 2-3. <a href="../ch02.md#2.3">§2.3</a></summary>
 
 **Exercise 2-3** *(comprehension · lupin)*. `"wolf"` has four bytes.
 Predict the exact behavior of:
@@ -425,7 +425,7 @@ $ echo $?
 </details>
 
 <details>
-<summary>Exercise 2-4. [§2.4](../ch02.md#2.4)</summary>
+<summary>Exercise 2-4. <a href="../ch02.md#2.4">§2.4</a></summary>
 
 **Exercise 2-4** *(extension · lupin)*. Extend the word counter to also
 report lines and bytes for a `"""` multiline block. Predict which of the
@@ -457,7 +457,7 @@ newlines (the dedent removed the leading spaces before counting).
 </details>
 
 <details>
-<summary>Exercise 2-5. [§2.2](../ch02.md#2.2)</summary>
+<summary>Exercise 2-5. <a href="../ch02.md#2.2">§2.2</a></summary>
 
 **Exercise 2-5** *(comprehension · lupin REPL)*. Predict all three
 lengths before evaluating: `"\n".len`, `r"\n".len`, `r"C:\temp".len`.
@@ -478,7 +478,7 @@ $ lupin eval 'r"C:\temp".len'
 </details>
 
 <details>
-<summary>Exercise 2-6. [§2.3](../ch02.md#2.3)</summary>
+<summary>Exercise 2-6. <a href="../ch02.md#2.3">§2.3</a></summary>
 
 **Exercise 2-6** *(comprehension · lupin REPL)*. `"wolf"` has four
 bytes. Predict each of these, precisely, as a value or an event: `"wolf"[..2]`,
@@ -506,7 +506,7 @@ position, and it is where appending happens.
 </details>
 
 <details>
-<summary>Exercise 2-7. [§2.4](../ch02.md#2.4)</summary>
+<summary>Exercise 2-7. <a href="../ch02.md#2.4">§2.4</a></summary>
 
 **Exercise 2-7** *(extension · lupin)*. Write `encode`, a run-length
 encoder over bytes: `"aaabcc"` becomes `"a3b1c2"`. Walk the string with
@@ -546,7 +546,7 @@ arithmetic, not by an `if` bolted on the front.
 </details>
 
 <details>
-<summary>Exercise 2-8. [§2.5](../ch02.md#2.5)</summary>
+<summary>Exercise 2-8. <a href="../ch02.md#2.5">§2.5</a></summary>
 
 **Exercise 2-8** *(comprehension · lupin REPL)*. `s` is `"wolfpack"`.
 Predict all four values, then say what slicing `s` cost: did any of
@@ -575,7 +575,7 @@ costs the same whether `s` is eight bytes or eight megabytes.
 </details>
 
 <details>
-<summary>Exercise 2-9. [§2.4](../ch02.md#2.4)</summary>
+<summary>Exercise 2-9. <a href="../ch02.md#2.4">§2.4</a></summary>
 
 **Exercise 2-9** *(comprehension · wolf)*. Predict all six numbers
 before running: for each of `"wolf"`, `"é"`, and `"e\u{301}"`, both
@@ -610,7 +610,7 @@ scalars, and neither counts what the reader sees.
 </details>
 
 <details>
-<summary>Exercise 2-10. [§2.4](../ch02.md#2.4)</summary>
+<summary>Exercise 2-10. <a href="../ch02.md#2.4">§2.4</a></summary>
 
 **Exercise 2-10** *(fingers · lupin)*. Reverse each word of
 `"the wolf runs"`, keeping the words in order. Build each reversal with
@@ -647,7 +647,7 @@ Reversal is the smallest program that shows why "a string is bytes" and
 </details>
 
 <details>
-<summary>Exercise 2-11. [§2.4](../ch02.md#2.4)</summary>
+<summary>Exercise 2-11. <a href="../ch02.md#2.4">§2.4</a></summary>
 
 **Exercise 2-11** *(fingers · lupin)*. Squeeze: delete from
 `"howling at the moon"` every character that appears in a second
@@ -685,7 +685,7 @@ answer, different bill; the loop order is the algorithm.
 </details>
 
 <details>
-<summary>Exercise 2-12. [§2.1](../ch02.md#2.1)</summary>
+<summary>Exercise 2-12. <a href="../ch02.md#2.1">§2.1</a></summary>
 
 **Exercise 2-12** *(comprehension + extension · lupin)*. Center
 `"DEN LOG"` in twenty columns of stars, twice: once with a fill-align
@@ -721,7 +721,7 @@ have written.
 </details>
 
 <details>
-<summary>Exercise 2-13. [§2.2](../ch02.md#2.2)</summary>
+<summary>Exercise 2-13. <a href="../ch02.md#2.2">§2.2</a></summary>
 
 **Exercise 2-13** *(fingers · lupin)*. Make the invisible visible:
 print `"howl\tat\nthe moon"` as one line in which each tab shows as
@@ -755,7 +755,7 @@ where the literal is written, not where the string is used.
 </details>
 
 <details>
-<summary>Exercise 2-14. [§2.4](../ch02.md#2.4)</summary>
+<summary>Exercise 2-14. <a href="../ch02.md#2.4">§2.4</a></summary>
 
 **Exercise 2-14** *(fingers · lupin)*. Detab: replace each tab in
 `"a\tbb\tccc"` with the spaces that carry the column to the next tab
@@ -800,7 +800,7 @@ by needing two different widths for its two tabs. The tab stop is a
 ## Chapter 3
 
 <details>
-<summary>Exercise 3-1. [§3.4](../ch03.md#3.4)</summary>
+<summary>Exercise 3-1. <a href="../ch03.md#3.4">§3.4</a></summary>
 
 **Exercise 3-1** *(comprehension · lupin)*. Predict the one line this
 prints. Both `match` and `if` are expressions here; nothing is a
@@ -829,7 +829,7 @@ many and odd
 </details>
 
 <details>
-<summary>Exercise 3-2. [§3.1](../ch03.md#3.1)</summary>
+<summary>Exercise 3-2. <a href="../ch03.md#3.1">§3.1</a></summary>
 
 **Exercise 3-2** *(comprehension · wolf + lupin)*. The pack loses its
 lead:
@@ -887,7 +887,7 @@ here first.
 </details>
 
 <details>
-<summary>Exercise 3-3. [§3.3](../ch03.md#3.3)</summary>
+<summary>Exercise 3-3. <a href="../ch03.md#3.3">§3.3</a></summary>
 
 **Exercise 3-3** *(comprehension · lupin)*. `2147483647` is `i32`'s
 ceiling. Predict what `big + 1` does in a release build. (Trick warning:
@@ -903,7 +903,7 @@ ex3-3.lu: trap(overflow): `+` produced 2147483648, outside `i32` — checked ari
 </details>
 
 <details>
-<summary>Exercise 3-4. [§3.3](../ch03.md#3.3)</summary>
+<summary>Exercise 3-4. <a href="../ch03.md#3.3">§3.3</a></summary>
 
 **Exercise 3-4** *(comprehension · lupin)*. The divisor is computed,
 not literal. Does that change anything?
@@ -924,7 +924,7 @@ ex3-4.lu: trap(div-zero): division by zero is defined behavior in wolf: it traps
 </details>
 
 <details>
-<summary>Exercise 3-5. [§3.2](../ch03.md#3.2)</summary>
+<summary>Exercise 3-5. <a href="../ch03.md#3.2">§3.2</a></summary>
 
 **Exercise 3-5** *(design)*. Wolf has no ternary operator. Write the
 expression you would have used one for, in wolf, and then argue either
@@ -940,7 +940,7 @@ production and a style war; the book spends neither.
 </details>
 
 <details>
-<summary>Exercise 3-6. [§3.4](../ch03.md#3.4)</summary>
+<summary>Exercise 3-6. <a href="../ch03.md#3.4">§3.4</a></summary>
 
 **Exercise 3-6** *(extension (break-it-on-purpose) · lupin)*. Using one
 `i32` binding and one `*`, write the smallest program that traps with
@@ -975,7 +975,7 @@ gives it a type, and `let n: i32` is that something.
 </details>
 
 <details>
-<summary>Exercise 3-7. [§3.4](../ch03.md#3.4)</summary>
+<summary>Exercise 3-7. <a href="../ch03.md#3.4">§3.4</a></summary>
 
 **Exercise 3-7** *(comprehension · lupin)*. Predict both lines. If you
 arrived from Python, predict them twice:
@@ -1005,7 +1005,7 @@ $ lupin ex3-7.lu
 </details>
 
 <details>
-<summary>Exercise 3-8. [§3.1](../ch03.md#3.1)</summary>
+<summary>Exercise 3-8. <a href="../ch03.md#3.1">§3.1</a></summary>
 
 **Exercise 3-8** *(comprehension · lupin)*. Predict the one printed
 line, then answer the pointed part: after `name = "grace"`, what
@@ -1043,7 +1043,7 @@ $ echo $?
 </details>
 
 <details>
-<summary>Exercise 3-9. [§3.2](../ch03.md#3.2)</summary>
+<summary>Exercise 3-9. <a href="../ch03.md#3.2">§3.2</a></summary>
 
 **Exercise 3-9** *(fingers · lupin)*. The pack drill: print 1 through
 15, except that multiples of 3 print `howl`, multiples of 5 print
@@ -1097,7 +1097,7 @@ every arm is still type-correct. Order is logic here, not style.
 </details>
 
 <details>
-<summary>Exercise 3-10. [§3.4](../ch03.md#3.4)</summary>
+<summary>Exercise 3-10. <a href="../ch03.md#3.4">§3.4</a></summary>
 
 **Exercise 3-10** *(extension · lupin)*. Print 1 through 16 with each
 number's binary spelling right-aligned beside it. No format spec you
@@ -1150,7 +1150,7 @@ your extension should, and should decide.
 </details>
 
 <details>
-<summary>Exercise 3-11. [§3.4](../ch03.md#3.4)</summary>
+<summary>Exercise 3-11. <a href="../ch03.md#3.4">§3.4</a></summary>
 
 **Exercise 3-11** *(fingers · lupin)*. One pass over a block of
 readings: lowest, highest, and mean, integer arithmetic throughout.
@@ -1204,7 +1204,7 @@ here, and chapter 2's precision specs are how a report would say
 </details>
 
 <details>
-<summary>Exercise 3-12. [§3.4](../ch03.md#3.4)</summary>
+<summary>Exercise 3-12. <a href="../ch03.md#3.4">§3.4</a></summary>
 
 **Exercise 3-12** *(fingers · lupin)*. Print every three-digit
 palindrome divisible by 7, using arithmetic only: `/` and `%` take
@@ -1253,7 +1253,7 @@ problem statement implied.
 </details>
 
 <details>
-<summary>Exercise 3-14. [§3.4](../ch03.md#3.4)</summary>
+<summary>Exercise 3-14. <a href="../ch03.md#3.4">§3.4</a></summary>
 
 **Exercise 3-14** *(fingers · lupin)*. 3-9's pack drill again, decided
 once instead of in a chain. That version's order was load-bearing and
@@ -1343,7 +1343,7 @@ too.
 ## Chapter 4
 
 <details>
-<summary>Exercise 4-1. [§4.2](../ch04.md#4.2)</summary>
+<summary>Exercise 4-1. <a href="../ch04.md#4.2">§4.2</a></summary>
 
 **Exercise 4-1** *(fingers · lupin)*. Functions are values. Write
 `compose` so that `compose(double, double)` returns a function, and apply
@@ -1368,7 +1368,7 @@ $ lupin ex4-1.lu
 </details>
 
 <details>
-<summary>Exercise 4-2. [§4.3](../ch04.md#4.3)</summary>
+<summary>Exercise 4-2. <a href="../ch04.md#4.3">§4.3</a></summary>
 
 **Exercise 4-2** *(comprehension · lupin)*. Predict the order of the
 three lines:
@@ -1394,7 +1394,7 @@ first registered
 </details>
 
 <details>
-<summary>Exercise 4-3. [§7.4](../ch07.md#7.4)</summary>
+<summary>Exercise 4-3. <a href="../ch07.md#7.4">§7.4</a></summary>
 
 **Exercise 4-3** *(extension · lupin)*. Give the list a `shrink`
 function to pair with `grow`. Then, without running anything, state how
@@ -1426,7 +1426,7 @@ entire argument, performed on your own file.
 </details>
 
 <details>
-<summary>Exercise 4-4. [§7.5](../ch07.md#7.5)</summary>
+<summary>Exercise 4-4. <a href="../ch07.md#7.5">§7.5</a></summary>
 
 **Exercise 4-4** *(comprehension + spelunking · wolf)*. One of these
 calls is legal and one is not:
@@ -1464,7 +1464,7 @@ too, and check it.
 </details>
 
 <details>
-<summary>Exercise 4-5. [§4.1](../ch04.md#4.1)</summary>
+<summary>Exercise 4-5. <a href="../ch04.md#4.1">§4.1</a></summary>
 
 **Exercise 4-5** *(comprehension · lupin)*. Euclid's algorithm, in the
 expression style:
@@ -1490,7 +1490,7 @@ $ lupin ex4-5.lu
 </details>
 
 <details>
-<summary>Exercise 4-6. [§4.3](../ch04.md#4.3)</summary>
+<summary>Exercise 4-6. <a href="../ch04.md#4.3">§4.3</a></summary>
 
 **Exercise 4-6** *(comprehension · lupin)*. A `defer` is registered
 when execution reaches it. Predict all five output lines, in order:
@@ -1526,7 +1526,7 @@ one
 </details>
 
 <details>
-<summary>Exercise 4-7. [§4.4](../ch04.md#4.4)</summary>
+<summary>Exercise 4-7. <a href="../ch04.md#4.4">§4.4</a></summary>
 
 **Exercise 4-7** *(extension · lupin)*. Build `day_of_year(month, day,
 leap)` from two functions: `days_in(month, leap)` as one `match`, and a
@@ -1576,7 +1576,7 @@ instead of scattering the leap rule through the loop.
 </details>
 
 <details>
-<summary>Exercise 4-8. [§4.4](../ch04.md#4.4)</summary>
+<summary>Exercise 4-8. <a href="../ch04.md#4.4">§4.4</a></summary>
 
 **Exercise 4-8** *(fingers · lupin)*. The Collatz walk: halve an even
 number, triple-and-add-one an odd one, count the steps to reach 1.
@@ -1628,7 +1628,7 @@ checked by termination.)
 </details>
 
 <details>
-<summary>Exercise 4-9. [§4.2](../ch04.md#4.2)</summary>
+<summary>Exercise 4-9. <a href="../ch04.md#4.2">§4.2</a></summary>
 
 **Exercise 4-9** *(extension · lupin)*. Write `clamp_to(lo, hi)`, a
 function that returns the clamping function for that range, and use
@@ -1669,7 +1669,7 @@ sealed fact rather than a live reference to the caller's mood.
 </details>
 
 <details>
-<summary>Exercise 4-10. [§4.1](../ch04.md#4.1)</summary>
+<summary>Exercise 4-10. <a href="../ch04.md#4.1">§4.1</a></summary>
 
 **Exercise 4-10** *(fingers · lupin)*. Write `rtrim`: trailing blanks
 and tabs gone, everything else kept. Walk backward from the end with
@@ -1710,7 +1710,7 @@ which is the honest cost §2.5 promised a slice would have.
 </details>
 
 <details>
-<summary>Exercise 4-11. [§4.4](../ch04.md#4.4)</summary>
+<summary>Exercise 4-11. <a href="../ch04.md#4.4">§4.4</a></summary>
 
 **Exercise 4-11** *(extension · lupin)*. Zeller's congruence names the
 weekday of any date in four lines of arithmetic — January and February
@@ -1771,7 +1771,7 @@ wants the row closed, and "never" is the honest name for it.
 ## Chapter 5
 
 <details>
-<summary>Exercise 5-1. [§5.1](../ch05.md#5.1)</summary>
+<summary>Exercise 5-1. <a href="../ch05.md#5.1">§5.1</a></summary>
 
 **Exercise 5-1** *(fingers · lupin)*. A `List` is also a stack. Push
 three values, pop one, and print the popped value and the remaining
@@ -1798,7 +1798,7 @@ top=3 len=2
 </details>
 
 <details>
-<summary>Exercise 5-2. [§5.1](../ch05.md#5.1)</summary>
+<summary>Exercise 5-2. <a href="../ch05.md#5.1">§5.1</a></summary>
 
 **Exercise 5-2** *(fingers · lupin)*. Score the pack: write two scores
 into a `Map`, raise one by reading it back, and print the table with
@@ -1827,7 +1827,7 @@ marmot    5
 </details>
 
 <details>
-<summary>Exercise 5-3. [§5.3](../ch05.md#5.3)</summary>
+<summary>Exercise 5-3. <a href="../ch05.md#5.3">§5.3</a></summary>
 
 **Exercise 5-3** *(extension · lupin)*. Write `first[T]` with a
 fallback for the empty case, and call it twice: once with the type named,
@@ -1858,7 +1858,7 @@ documentation, not a requirement, because the arguments already pin `T`.
 </details>
 
 <details>
-<summary>Exercise 5-4. [§5.4](../ch05.md#5.4)</summary>
+<summary>Exercise 5-4. <a href="../ch05.md#5.4">§5.4</a></summary>
 
 **Exercise 5-4** *(comprehension · lupin)*. The list has one element.
 Predict `xs[10]`, precisely: what kind of event, and what exit code.
@@ -1875,7 +1875,7 @@ $ echo $?
 </details>
 
 <details>
-<summary>Exercise 5-5. [§5.3](../ch05.md#5.3)</summary>
+<summary>Exercise 5-5. <a href="../ch05.md#5.3">§5.3</a></summary>
 
 **Exercise 5-5** *(design)*. Wolf writes generics `top[T]` and indexing
 `m["k"]` with the same brackets. Rust chose `::<T>` partly to avoid that
@@ -1893,7 +1893,7 @@ holds the compiler to it.
 </details>
 
 <details>
-<summary>Exercise 5-6. [§5.2](../ch05.md#5.2)</summary>
+<summary>Exercise 5-6. <a href="../ch05.md#5.2">§5.2</a></summary>
 
 **Exercise 5-6** *(extension · lupin)*. `uniq` counts adjacent
 duplicates; yours will count all of them and keep first-seen order.
@@ -1954,7 +1954,7 @@ structure that almost fits.
 </details>
 
 <details>
-<summary>Exercise 5-7. [§5.4](../ch05.md#5.4)</summary>
+<summary>Exercise 5-7. <a href="../ch05.md#5.4">§5.4</a></summary>
 
 **Exercise 5-7** *(comprehension + extension · lupin)*. An RPN
 evaluator is a loop and a stack, and the stack is a `List`. Given the
@@ -2009,7 +2009,7 @@ enough here.)
 </details>
 
 <details>
-<summary>Exercise 5-9. [§5.5](../ch05.md#5.5)</summary>
+<summary>Exercise 5-9. <a href="../ch05.md#5.5">§5.5</a></summary>
 
 **Exercise 5-9** *(extension)*. Add a third shape to the `Draw`
 example, and then make `render` count its calls: what has to change,
@@ -2053,7 +2053,7 @@ Part 2 makes precise.
 </details>
 
 <details>
-<summary>Exercise 5-10. [§5.5](../ch05.md#5.5)</summary>
+<summary>Exercise 5-10. <a href="../ch05.md#5.5">§5.5</a></summary>
 
 **Exercise 5-10** *(design)*. The cast-a-binding rule exists because
 the dyn pair points at its operand rather than owning it. What would
@@ -2072,7 +2072,7 @@ alternative is every reader paying an invisible allocation.
 </details>
 
 <details>
-<summary>Exercise 5-11. [§5.5](../ch05.md#5.5)</summary>
+<summary>Exercise 5-11. <a href="../ch05.md#5.5">§5.5</a></summary>
 
 **Exercise 5-11** *(extension · lupin)*. Exercise 2-7 encoded runs
 with byte slices; a coder without a decoder is half a tool. Respell
@@ -2151,7 +2151,7 @@ tests both, and why the exit code carries the verdict: a printed
 </details>
 
 <details>
-<summary>Exercise 5-12. [§5.1](../ch05.md#5.1)</summary>
+<summary>Exercise 5-12. <a href="../ch05.md#5.1">§5.1</a></summary>
 
 **Exercise 5-12** *(fingers · lupin)*. Histogram the word lengths of a
 two-line block, bars of `#` growing sideways, one row per length. A
@@ -2199,7 +2199,7 @@ show.
 </details>
 
 <details>
-<summary>Exercise 5-13. [§5.5](../ch05.md#5.5)</summary>
+<summary>Exercise 5-13. <a href="../ch05.md#5.5">§5.5</a></summary>
 
 **Exercise 5-13** *(extension · lupin)*. Write `any_index(s, set)`:
 the byte index in `s` of the first character that appears in `set`,
@@ -2243,7 +2243,7 @@ tag is one the caller would *branch on*. This one is not.
 </details>
 
 <details>
-<summary>Exercise 5-14. [§5.1](../ch05.md#5.1)</summary>
+<summary>Exercise 5-14. <a href="../ch05.md#5.1">§5.1</a></summary>
 
 **Exercise 5-14** *(fingers · lupin)*. A comma-separated ledger, three
 rows of `name,cents`. Split each row, table it with format specs, and
@@ -2293,7 +2293,7 @@ the row instead", that policy has a chapter of its own next.
 </details>
 
 <details>
-<summary>Exercise 5-15. [§5.5](../ch05.md#5.5)</summary>
+<summary>Exercise 5-15. <a href="../ch05.md#5.5">§5.5</a></summary>
 
 **Exercise 5-15** *(extension · lupin)*. Fold a long line at twelve
 columns: greedy fill, words never split, each output line as full as
@@ -2350,7 +2350,7 @@ that a formatter is a policy wearing a loop.
 ## Chapter 6
 
 <details>
-<summary>Exercise 6-1. [§6.2](../ch06.md#6.2)</summary>
+<summary>Exercise 6-1. <a href="../ch06.md#6.2">§6.2</a></summary>
 
 **Exercise 6-1** *(fingers · lupin)*. Write `parse` so empty input is an
 error, and give two call sites: one defaulting with `else 0`, one with
@@ -2378,7 +2378,7 @@ a=42 b=7
 </details>
 
 <details>
-<summary>Exercise 6-2. [§6.2](../ch06.md#6.2)</summary>
+<summary>Exercise 6-2. <a href="../ch06.md#6.2">§6.2</a></summary>
 
 **Exercise 6-2** *(comprehension · lupin)*. `chain` calls `parse`
 through `?`. Predict `a` and `b`, and name which row variant `b`'s
@@ -2414,7 +2414,7 @@ a=43 b=-2
 </details>
 
 <details>
-<summary>Exercise 6-3. [§6.1](../ch06.md#6.1)</summary>
+<summary>Exercise 6-3. <a href="../ch06.md#6.1">§6.1</a></summary>
 
 **Exercise 6-3** *(extension · lupin)*. Grow the row: add a `TooLong`
 variant for inputs over four bytes and handle it. What else did you have
@@ -2448,7 +2448,7 @@ that a handler fell behind its row.
 </details>
 
 <details>
-<summary>Exercise 6-4. [§6.1](../ch06.md#6.1)</summary>
+<summary>Exercise 6-4. <a href="../ch06.md#6.1">§6.1</a></summary>
 
 **Exercise 6-4** *(comprehension · lupin)*. The error carries a
 payload. Predict both printed lines:
@@ -2485,7 +2485,7 @@ v=-1
 </details>
 
 <details>
-<summary>Exercise 6-5. [§6.3](../ch06.md#6.3)</summary>
+<summary>Exercise 6-5. <a href="../ch06.md#6.3">§6.3</a></summary>
 
 **Exercise 6-5** *(comprehension · lupin)*. `errdefer` runs only on
 the error path. `work(true)` succeeds; `work(false)` fails after the
@@ -2514,7 +2514,7 @@ b=-1
 </details>
 
 <details>
-<summary>Exercise 6-6. [§6.1](../ch06.md#6.1)</summary>
+<summary>Exercise 6-6. <a href="../ch06.md#6.1">§6.1</a></summary>
 
 **Exercise 6-6** *(comprehension · lupin)*. The row below ends in
 `..`, which makes it *open*: `probe` may return tags the signature
@@ -2551,7 +2551,7 @@ $ lupin ex6-6.lu
 </details>
 
 <details>
-<summary>Exercise 6-7. [§6.2](../ch06.md#6.2)</summary>
+<summary>Exercise 6-7. <a href="../ch06.md#6.2">§6.2</a></summary>
 
 **Exercise 6-7** *(extension · lupin)*. `head` prints a file's first
 `n` lines, and a file with fewer than `n` lines is not a crash, it is an
@@ -2610,7 +2610,7 @@ for every caller it will ever have.
 </details>
 
 <details>
-<summary>Exercise 6-8. [§6.5](../ch06.md#6.5)</summary>
+<summary>Exercise 6-8. <a href="../ch06.md#6.5">§6.5</a></summary>
 
 **Exercise 6-8** *(design)*. Chapter 6's `parse` exposes the row
 `{Empty, NotDigit(Bad), TooLong}`. Suppose `parse` moves into a
@@ -2639,7 +2639,7 @@ small and kept.
 </details>
 
 <details>
-<summary>Exercise 6-9. [§6.4](../ch06.md#6.4)</summary>
+<summary>Exercise 6-9. <a href="../ch06.md#6.4">§6.4</a></summary>
 
 **Exercise 6-9** *(extension · lupin)*. Three postures toward the
 input `"7x"`: trap on it, default it to zero, or refuse it out loud.
@@ -2678,7 +2678,7 @@ section in one function.
 </details>
 
 <details>
-<summary>Exercise 6-10. [§6.5](../ch06.md#6.5)</summary>
+<summary>Exercise 6-10. <a href="../ch06.md#6.5">§6.5</a></summary>
 
 **Exercise 6-10** *(extension · lupin)*. The wordcount loop, grown by
 one requirement: count words, and separately count words of four bytes
@@ -2716,7 +2716,7 @@ same loop parallelizes by changing one call; the boxed promise stands.
 </details>
 
 <details>
-<summary>Exercise 6-11. [§6.5](../ch06.md#6.5)</summary>
+<summary>Exercise 6-11. <a href="../ch06.md#6.5">§6.5</a></summary>
 
 **Exercise 6-11** *(extension · lupin)*. `to_int` has no inverse on
 this shelf, so build one: `itoa(n)`, peeling digits with `% 10` and
@@ -2775,7 +2775,7 @@ parse failure fails the run instead of passing by coincidence.
 </details>
 
 <details>
-<summary>Exercise 6-12. [§6.5](../ch06.md#6.5)</summary>
+<summary>Exercise 6-12. <a href="../ch06.md#6.5">§6.5</a></summary>
 
 **Exercise 6-12** *(extension · lupin)*. Exercise 5-11's decoder
 answers garbage with garbage: `"4w"` decodes to nothing, silently.
@@ -2853,7 +2853,7 @@ the loop was implicitly making become answers the caller can hold.
 </details>
 
 <details>
-<summary>Exercise 6-13. [§6.5](../ch06.md#6.5)</summary>
+<summary>Exercise 6-13. <a href="../ch06.md#6.5">§6.5</a></summary>
 
 **Exercise 6-13** *(extension · lupin)*. A date validator:
 `parse_date("2026-02-29")` should refuse, and say *why*. Split on
@@ -2938,7 +2938,7 @@ not a style choice. (2024-02-29 passing while 2026-02-29 refuses is
 ## Chapter 7
 
 <details>
-<summary>Exercise 7-1. [§7.1](../ch07.md#7.1)</summary>
+<summary>Exercise 7-1. <a href="../ch07.md#7.1">§7.1</a></summary>
 
 **Exercise 7-1** *(comprehension · wolf + lupin)*. Chapter 3's broken
 `Pack` program, with one line added:
@@ -2977,7 +2977,7 @@ anyway and prints `ada lin grace`.
 </details>
 
 <details>
-<summary>Exercise 7-2. [§7.2](../ch07.md#7.2)</summary>
+<summary>Exercise 7-2. <a href="../ch07.md#7.2">§7.2</a></summary>
 
 **Exercise 7-2** *(fingers · lupin)*. Draw the ownership tree of `den`
 below before running anything: one box per value, one arrow per field.
@@ -3016,7 +3016,7 @@ spelling; `take` is the same act written at a call site.)
 </details>
 
 <details>
-<summary>Exercise 7-3. [§7.2](../ch07.md#7.2)</summary>
+<summary>Exercise 7-3. <a href="../ch07.md#7.2">§7.2</a></summary>
 
 **Exercise 7-3** *(extension (break-it-on-purpose) · wolf + lupin)*. Using one
 struct, one function taking `take`, and nothing else, write the
@@ -3071,7 +3071,7 @@ only `s.a` is dead. Both tools cite the same clause family,
 </details>
 
 <details>
-<summary>Exercise 7-4. [§7.2](../ch07.md#7.2)</summary>
+<summary>Exercise 7-4. <a href="../ch07.md#7.2">§7.2</a></summary>
 
 **Exercise 7-4** *(comprehension · lupin)*. Every field of `P` is an
 `int`. Predict what the second line of `main` does to `a`:
@@ -3110,7 +3110,7 @@ rule is per-*decision*, not per-*type*: the reader of
 </details>
 
 <details>
-<summary>Exercise 7-6. [§7.4](../ch07.md#7.4)</summary>
+<summary>Exercise 7-6. <a href="../ch07.md#7.4">§7.4</a></summary>
 
 **Exercise 7-6** *(fingers + spelunking · lupin)*. Write `swap` for two
 `int`s using `mut` at both ends, and verify it. Then state the single
@@ -3148,7 +3148,7 @@ false negatives, which is what "required at both ends" buys.
 </details>
 
 <details>
-<summary>Exercise 7-7. [§7.5](../ch07.md#7.5)</summary>
+<summary>Exercise 7-7. <a href="../ch07.md#7.5">§7.5</a></summary>
 
 **Exercise 7-7** *(comprehension · wolf + lupin)*. The simplest
 possible exclusivity violation: one place, claimed twice.
@@ -3198,7 +3198,7 @@ optimizer (§7.7's subject).
 </details>
 
 <details>
-<summary>Exercise 7-8. [§7.5](../ch07.md#7.5)</summary>
+<summary>Exercise 7-8. <a href="../ch07.md#7.5">§7.5</a></summary>
 
 **Exercise 7-8** *(comprehension + fingers · lupin)*. Four call shapes
 against `struct P { a: Q, b: Q }`, `struct Q { n: int }`. Verdict for
@@ -3231,7 +3231,7 @@ $ lupin ex7-8.lu
 </details>
 
 <details>
-<summary>Exercise 7-9. [§7.6](../ch07.md#7.6)</summary>
+<summary>Exercise 7-9. <a href="../ch07.md#7.6">§7.6</a></summary>
 
 **Exercise 7-9** *(spelunking · wolf)*. Run `wolf --explain E1001` and
 read all of it. Quote the sentence that licenses re-initialization
@@ -3266,7 +3266,7 @@ two.
 </details>
 
 <details>
-<summary>Exercise 7-10. [§7.6](../ch07.md#7.6)</summary>
+<summary>Exercise 7-10. <a href="../ch07.md#7.6">§7.6</a></summary>
 
 **Exercise 7-10** *(design)*. Rust's zero-copy parser hands out `&str`
 slices of an input buffer it does not own, with lifetimes proving the
@@ -3296,7 +3296,7 @@ that no signature in this paragraph mentions anything but values.
 </details>
 
 <details>
-<summary>Exercise 7-11. [§7.7](../ch07.md#7.7)</summary>
+<summary>Exercise 7-11. <a href="../ch07.md#7.7">§7.7</a></summary>
 
 **Exercise 7-11** *(fingers · lupin REPL)*. In the REPL, move a string
 out of one binding into another, then read both, the corpse first. What
@@ -3326,7 +3326,7 @@ a move is a transfer, never a destruction, and the machine-level story
 </details>
 
 <details>
-<summary>Exercise 7-12. [§7.7](../ch07.md#7.7)</summary>
+<summary>Exercise 7-12. <a href="../ch07.md#7.7">§7.7</a></summary>
 
 **Exercise 7-12** *(extension · lupin)*. The longest common
 subsequence of two line lists is the skeleton every diff tool hangs
@@ -3381,7 +3381,7 @@ spent saying so.
 </details>
 
 <details>
-<summary>Exercise 7-13. [§7.7](../ch07.md#7.7)</summary>
+<summary>Exercise 7-13. <a href="../ch07.md#7.7">§7.7</a></summary>
 
 **Exercise 7-13** *(comprehension + extension · lupin)*. Extend 7-12
 into a printing diff: walk the finished table backward from the corner,
@@ -3423,7 +3423,7 @@ back out, so the output comes out forward.
 </details>
 
 <details>
-<summary>Exercise 7-14. [§7.7](../ch07.md#7.7)</summary>
+<summary>Exercise 7-14. <a href="../ch07.md#7.7">§7.7</a></summary>
 
 **Exercise 7-14** *(fingers · lupin)*. The plane-geometry kata: a
 `Point`, a `Rect` of two points (low corner in, high corner out), and
@@ -3479,7 +3479,7 @@ body and the compiler names the missing `mut` at both ends.
 </details>
 
 <details>
-<summary>Exercise 7-15. [§7.7](../ch07.md#7.7)</summary>
+<summary>Exercise 7-15. <a href="../ch07.md#7.7">§7.7</a></summary>
 
 **Exercise 7-15** *(extension · lupin)*. One job, two ownership
 stories: uppercase every string in a list. Write it consuming —
@@ -3540,7 +3540,7 @@ appetite stays the caller's decision.
 </details>
 
 <details>
-<summary>Exercise 7-16. [§7.7](../ch07.md#7.7)</summary>
+<summary>Exercise 7-16. <a href="../ch07.md#7.7">§7.7</a></summary>
 
 **Exercise 7-16** *(fingers · lupin)*. The same plane geometry as
 7-14, asked of the arms instead of the fields. Write `corner(p)`,
@@ -3617,7 +3617,7 @@ the whole scrutinee; every field here is an `int`, so nothing moves and
 ## Chapter 8
 
 <details>
-<summary>Exercise 8-1. [§8.1](../ch08.md#8.1)</summary>
+<summary>Exercise 8-1. <a href="../ch08.md#8.1">§8.1</a></summary>
 
 **Exercise 8-1** *(comprehension · prose)*. Three programs you have met
 or written: (a) a web server handling one request (parse the headers,
@@ -3641,7 +3641,7 @@ which is the chapter's opening argument.
 </details>
 
 <details>
-<summary>Exercise 8-2. [§8.2](../ch08.md#8.2)</summary>
+<summary>Exercise 8-2. <a href="../ch08.md#8.2">§8.2</a></summary>
 
 **Exercise 8-2** *(fingers · lupin)*. Sum the first hundred integers
 using a list a helper function builds (the helper writing no
@@ -3680,7 +3680,7 @@ an allocation in the region.
 </details>
 
 <details>
-<summary>Exercise 8-3. [§8.2](../ch08.md#8.2)</summary>
+<summary>Exercise 8-3. <a href="../ch08.md#8.2">§8.2</a></summary>
 
 **Exercise 8-3** *(comprehension · wolf)*. One assignment tries to
 smuggle a region value past the brace:
@@ -3743,7 +3743,7 @@ between "this could dangle" and "this did."
 </details>
 
 <details>
-<summary>Exercise 8-4. [§8.3](../ch08.md#8.3)</summary>
+<summary>Exercise 8-4. <a href="../ch08.md#8.3">§8.3</a></summary>
 
 **Exercise 8-4** *(fingers · lupin REPL)*. In the REPL: define a
 one-field struct, create a region with `region(rc)`, allocate one value
@@ -3779,7 +3779,7 @@ property of any binding.
 </details>
 
 <details>
-<summary>Exercise 8-5. [§8.3](../ch08.md#8.3)</summary>
+<summary>Exercise 8-5. <a href="../ch08.md#8.3">§8.3</a></summary>
 
 **Exercise 8-5** *(comprehension · lupin)*. A region is being sent
 somewhere while a window into it is still open:
@@ -3816,7 +3816,7 @@ cites the compiler's number so the two tiers stay one story.
 </details>
 
 <details>
-<summary>Exercise 8-6. [§8.4](../ch08.md#8.4)</summary>
+<summary>Exercise 8-6. <a href="../ch08.md#8.4">§8.4</a></summary>
 
 **Exercise 8-6** *(fingers · lupin)*. Build a five-node doubly-linked
 ring in a pool region: each node points `next` and `prev`. Then prove
@@ -3855,7 +3855,7 @@ in sight.
 </details>
 
 <details>
-<summary>Exercise 8-7. [§8.4](../ch08.md#8.4)</summary>
+<summary>Exercise 8-7. <a href="../ch08.md#8.4">§8.4</a></summary>
 
 **Exercise 8-7** *(extension · prose)*. Grow the ring into the real
 folklore program: an LRU cache with sentinel head and tail, `unlink`
@@ -3873,7 +3873,7 @@ which is the entire aliasing surface a reviewer must read.
 </details>
 
 <details>
-<summary>Exercise 8-8. [§8.5](../ch08.md#8.5)</summary>
+<summary>Exercise 8-8. <a href="../ch08.md#8.5">§8.5</a></summary>
 
 **Exercise 8-8** *(comprehension · wolf + lupin)*. A struct type with a
 strong `shared` edge back to itself:
@@ -3921,7 +3921,7 @@ chapter in miniature: `weak`, `handle`, or put the cycle in a region.
 </details>
 
 <details>
-<summary>Exercise 8-9. [§8.5](../ch08.md#8.5)</summary>
+<summary>Exercise 8-9. <a href="../ch08.md#8.5">§8.5</a></summary>
 
 **Exercise 8-9** *(comprehension + spelunking · wolf)*. One write after
 a freeze:
@@ -3970,7 +3970,7 @@ $ echo $?
 </details>
 
 <details>
-<summary>Exercise 8-10. [§8.5](../ch08.md#8.5)</summary>
+<summary>Exercise 8-10. <a href="../ch08.md#8.5">§8.5</a></summary>
 
 **Exercise 8-10** *(comprehension · lupin)*. The dynamic half of the
 same contract: create a pool region, freeze the region value, then call
@@ -4002,7 +4002,7 @@ of the region's interior, and frozen means frozen all the way down.
 </details>
 
 <details>
-<summary>Exercise 8-11. [§8.6](../ch08.md#8.6)</summary>
+<summary>Exercise 8-11. <a href="../ch08.md#8.6">§8.6</a></summary>
 
 **Exercise 8-11** *(comprehension · lupin)*. Two region values, two
 nested `in` windows, reads and writes crossing both:
@@ -4043,7 +4043,7 @@ $ lupin ex8-11.lu
 </details>
 
 <details>
-<summary>Exercise 8-12. [§8.7](../ch08.md#8.7)</summary>
+<summary>Exercise 8-12. <a href="../ch08.md#8.7">§8.7</a></summary>
 
 **Exercise 8-12** *(comprehension · lupin)*. A handle is used after its
 slot is gone:
@@ -4079,7 +4079,7 @@ a handle and a C pointer into a freed arena.
 </details>
 
 <details>
-<summary>Exercise 8-13. [§8.7](../ch08.md#8.7)</summary>
+<summary>Exercise 8-13. <a href="../ch08.md#8.7">§8.7</a></summary>
 
 **Exercise 8-13** *(design)*. Four fields, one decision each: (a) a
 parent pointer in a tree whose nodes a region owns; (b) an edge in a
@@ -4105,7 +4105,7 @@ should look like, which is the part the type system holds you to.
 </details>
 
 <details>
-<summary>Exercise 8-14. [§8.8](../ch08.md#8.8)</summary>
+<summary>Exercise 8-14. <a href="../ch08.md#8.8">§8.8</a></summary>
 
 **Exercise 8-14** *(spelunking · wolf)*. Run `wolf --explain E1012` and
 read it against exercise 8-9. Find: the sentence that explains why
@@ -4141,7 +4141,7 @@ unbreakable.
 </details>
 
 <details>
-<summary>Exercise 8-15. [§8.9](../ch08.md#8.9)</summary>
+<summary>Exercise 8-15. <a href="../ch08.md#8.9">§8.9</a></summary>
 
 **Exercise 8-15** *(extension · lupin)*. A text adventure's world is a
 cyclic graph: rooms point at each other in four directions, and "north
@@ -4177,7 +4177,7 @@ the game ends, cycles and all.
 </details>
 
 <details>
-<summary>Exercise 8-16. [§8.9](../ch08.md#8.9)</summary>
+<summary>Exercise 8-16. <a href="../ch08.md#8.9">§8.9</a></summary>
 
 **Exercise 8-16** *(extension · lupin)*. `wc`, wolfished: count the
 lines and words of a multiline block, but store every line in a scratch
@@ -4224,7 +4224,7 @@ bookkeeping: put the bookkeeping in the shape, then stop doing it.
 </details>
 
 <details>
-<summary>Exercise 8-17. [§8.9](../ch08.md#8.9)</summary>
+<summary>Exercise 8-17. <a href="../ch08.md#8.9">§8.9</a></summary>
 
 **Exercise 8-17** *(extension · lupin)*. A bounded window: keep only
 the last three of a stream of nine updates, in a three-slot
@@ -4284,7 +4284,7 @@ and once in the shape.
 </details>
 
 <details>
-<summary>Exercise 8-18. [§8.9](../ch08.md#8.9)</summary>
+<summary>Exercise 8-18. <a href="../ch08.md#8.9">§8.9</a></summary>
 
 **Exercise 8-18** *(fingers · lupin)*. Read one region's ledger four
 times: at the open, after pushing a hundred integers, immediately
@@ -4344,7 +4344,7 @@ that nothing is freed early.
 </details>
 
 <details>
-<summary>Exercise 8-19. [§8.9](../ch08.md#8.9)</summary>
+<summary>Exercise 8-19. <a href="../ch08.md#8.9">§8.9</a></summary>
 
 **Exercise 8-19** *(extension · lupin)*. A cap kata. Measure what
 building a list of fifty documents charges, uncapped. Then run the same
@@ -4415,7 +4415,7 @@ never traps at all, which is worse.
 ## Chapter 9
 
 <details>
-<summary>Exercise 9-1. [§9.1](../ch09.md#9.1)</summary>
+<summary>Exercise 9-1. <a href="../ch09.md#9.1">§9.1</a></summary>
 
 **Exercise 9-1** *(fingers + spelunking · wolf)*. The complete unsafe audit
 of every program in this book's first eight chapters is one command.
@@ -4440,7 +4440,7 @@ audit's subject, which is to say the audit is the whole program.
 </details>
 
 <details>
-<summary>Exercise 9-2. [§9.2](../ch09.md#9.2)</summary>
+<summary>Exercise 9-2. <a href="../ch09.md#9.2">§9.2</a></summary>
 
 **Exercise 9-2** *(fingers · lupin)*. Your first unsafe block, kept
 legal: allocate eight bytes from C, set them all to 5, read one back,
@@ -4480,7 +4480,7 @@ checks the body against.
 </details>
 
 <details>
-<summary>Exercise 9-3. [§9.2](../ch09.md#9.2)</summary>
+<summary>Exercise 9-3. <a href="../ch09.md#9.2">§9.2</a></summary>
 
 **Exercise 9-3** *(comprehension · lupin)*. One character changes in
 9-2: the write is `p[8] = 1`. The allocation holds eight bytes. Predict
@@ -4508,7 +4508,7 @@ that the rule purchases. UB is not a punishment; it is a price list.
 </details>
 
 <details>
-<summary>Exercise 9-4. [§9.2](../ch09.md#9.2)</summary>
+<summary>Exercise 9-4. <a href="../ch09.md#9.2">§9.2</a></summary>
 
 **Exercise 9-4** *(comprehension · lupin)*. The pointer is laundered
 through an integer before the read:
@@ -4546,7 +4546,7 @@ somewhere might name its address.
 </details>
 
 <details>
-<summary>Exercise 9-5. [§9.3](../ch09.md#9.3)</summary>
+<summary>Exercise 9-5. <a href="../ch09.md#9.3">§9.3</a></summary>
 
 **Exercise 9-5** *(fingers + comprehension · lupin)*. Inject the
 classic: write, free, read, through one pointer. Run it twice. What is
@@ -4586,7 +4586,7 @@ escape hatch *debuggable*. That is §9.3's pitch, performed.
 </details>
 
 <details>
-<summary>Exercise 9-6. [§9.3](../ch09.md#9.3)</summary>
+<summary>Exercise 9-6. <a href="../ch09.md#9.3">§9.3</a></summary>
 
 **Exercise 9-6** *(comprehension · lupin)*. Allocate 64 bytes with
 `c.malloc` and read one of them before anything writes it:
@@ -4623,7 +4623,7 @@ all three is that the bytes `malloc` hands back are not a value yet.
 </details>
 
 <details>
-<summary>Exercise 9-7. [§9.4](../ch09.md#9.4)</summary>
+<summary>Exercise 9-7. <a href="../ch09.md#9.4">§9.4</a></summary>
 
 **Exercise 9-7** *(comprehension · lupin)*. Two programs differ by
 one line's position. Both allocate eight C bytes, both cross back to
@@ -4657,7 +4657,7 @@ the language.
 </details>
 
 <details>
-<summary>Exercise 9-8. [§9.5](../ch09.md#9.5)</summary>
+<summary>Exercise 9-8. <a href="../ch09.md#9.5">§9.5</a></summary>
 
 **Exercise 9-8** *(fingers · wolf + lupin)*. Take §9.5's `pack` and
 spell its second allocation the other way round: `c.calloc(1, bytes)`
@@ -4687,7 +4687,7 @@ technique bolted on afterward.
 </details>
 
 <details>
-<summary>Exercise 9-9. [§9.6](../ch09.md#9.6)</summary>
+<summary>Exercise 9-9. <a href="../ch09.md#9.6">§9.6</a></summary>
 
 **Exercise 9-9** *(comprehension · lupin)*. A C allocation made while
 a region was ambient, escaping the region that owned it:
@@ -4727,7 +4727,7 @@ death calls it in, wholesale.
 </details>
 
 <details>
-<summary>Exercise 9-10. [§9.7](../ch09.md#9.7)</summary>
+<summary>Exercise 9-10. <a href="../ch09.md#9.7">§9.7</a></summary>
 
 **Exercise 9-10** *(spelunking · lupin)*. `ch09/ex9-10.lu` wraps its
 unsafe block in a `#[trusted]` function carrying its obligation as a
@@ -4759,7 +4759,7 @@ English, for a person.
 </details>
 
 <details>
-<summary>Exercise 9-11. [§9.8](../ch09.md#9.8)</summary>
+<summary>Exercise 9-11. <a href="../ch09.md#9.8">§9.8</a></summary>
 
 **Exercise 9-11** *(comprehension · prose)*. Five fragments; place
 each on the four-tier map (safe values, regions, unsafe raw,
@@ -4783,7 +4783,7 @@ its tier or crosses at the door, and nothing else crosses at all.
 </details>
 
 <details>
-<summary>Exercise 9-12. [§9.8](../ch09.md#9.8)</summary>
+<summary>Exercise 9-12. <a href="../ch09.md#9.8">§9.8</a></summary>
 
 **Exercise 9-12** *(design)*. A team wraps a 40,000-line C codec behind
 wolf FFI. Debate the two candidate shapes: (a) one `unsafe` block per
@@ -4809,7 +4809,7 @@ doors work because buildings have few of them.
 </details>
 
 <details>
-<summary>Exercise 9-13. [§9.8](../ch09.md#9.8)</summary>
+<summary>Exercise 9-13. <a href="../ch09.md#9.8">§9.8</a></summary>
 
 **Exercise 9-13** *(extension (break-it-on-purpose) · lupin)*. Construct
 the shortest program you can in which the *assertion*, not any access,
@@ -4846,7 +4846,7 @@ visible and gave it an oracle.
 </details>
 
 <details>
-<summary>Exercise 9-14. [§9.8](../ch09.md#9.8)</summary>
+<summary>Exercise 9-14. <a href="../ch09.md#9.8">§9.8</a></summary>
 
 **Exercise 9-14** *(comprehension · lupin)*. The subtlest report in the
 chapter. Take §9.4's door program and add one line: after
@@ -4886,7 +4886,7 @@ the door is the one thing the door's license forbids.
 </details>
 
 <details>
-<summary>Exercise 9-15. [§9.8](../ch09.md#9.8)</summary>
+<summary>Exercise 9-15. <a href="../ch09.md#9.8">§9.8</a></summary>
 
 **Exercise 9-15** *(fingers · lupin)*. Put an integer through raw
 memory and bring it back: `malloc` sixteen bytes, write the four bytes
@@ -4958,7 +4958,7 @@ for programs.
 ## Chapter 10
 
 <details>
-<summary>Exercise 10-1. [§10.1](../ch10.md#10.1)</summary>
+<summary>Exercise 10-1. <a href="../ch10.md#10.1">§10.1</a></summary>
 
 **Exercise 10-1** *(fingers · lupin)*. Type and run your first scope:
 two children each send a number into a channel, and `main` adds what it
@@ -4993,7 +4993,7 @@ both values are already in the buffer either way.
 </details>
 
 <details>
-<summary>Exercise 10-2. [§10.1](../ch10.md#10.1)</summary>
+<summary>Exercise 10-2. <a href="../ch10.md#10.1">§10.1</a></summary>
 
 **Exercise 10-2** *(comprehension · lupin)*. Predict the order of the
 two lines, then say what enforces it: the scheduler, or something
@@ -5028,7 +5028,7 @@ scheduler's to choose; after the brace, it is not.
 </details>
 
 <details>
-<summary>Exercise 10-3. [§10.1](../ch10.md#10.1)</summary>
+<summary>Exercise 10-3. <a href="../ch10.md#10.1">§10.1</a></summary>
 
 **Exercise 10-3** *(comprehension · lupin)*. A child's last expression
 is a value. Predict this program's exit code, and account for the 42:
@@ -5054,7 +5054,7 @@ $ echo $?
 </details>
 
 <details>
-<summary>Exercise 10-4. [§10.2](../ch10.md#10.2)</summary>
+<summary>Exercise 10-4. <a href="../ch10.md#10.2">§10.2</a></summary>
 
 **Exercise 10-4** *(extension (break-it-on-purpose) · lupin)*. Port
 Go's classic leak: spawn a receiver on a channel that nobody will ever
@@ -5093,7 +5093,7 @@ lingers on unowned."
 </details>
 
 <details>
-<summary>Exercise 10-5. [§10.2](../ch10.md#10.2)</summary>
+<summary>Exercise 10-5. <a href="../ch10.md#10.2">§10.2</a></summary>
 
 **Exercise 10-5** *(spelunking · lupin)*. Read exercise 10-4's trap
 line clause by clause. What does "no timer is pending" rule out, what
@@ -5113,7 +5113,7 @@ tasks are exactly what a deadlock is made of. The clause tag
 </details>
 
 <details>
-<summary>Exercise 10-6. [§10.3](../ch10.md#10.3)</summary>
+<summary>Exercise 10-6. <a href="../ch10.md#10.3">§10.3</a></summary>
 
 **Exercise 10-6** *(comprehension · lupin)*. Three children compute
 through `?`; one of them fails. Predict both printed lines, and name
@@ -5156,7 +5156,7 @@ join surfaced the error
 </details>
 
 <details>
-<summary>Exercise 10-7. [§10.3](../ch10.md#10.3)</summary>
+<summary>Exercise 10-7. <a href="../ch10.md#10.3">§10.3</a></summary>
 
 **Exercise 10-7** *(extension · lupin)*. Change 10-6 so no child fails
 (use 1, 2, and 4), then finish the job: close the channel, drain it, and
@@ -5191,7 +5191,7 @@ converts "I hope they are done" into a fact you may compute with.
 </details>
 
 <details>
-<summary>Exercise 10-8. [§10.4](../ch10.md#10.4)</summary>
+<summary>Exercise 10-8. <a href="../ch10.md#10.4">§10.4</a></summary>
 
 **Exercise 10-8** *(comprehension · lupin)*. One sibling blocks
 forever; the other fails immediately. Predict all the output, and answer
@@ -5234,7 +5234,7 @@ sibling cleanup ran
 </details>
 
 <details>
-<summary>Exercise 10-9. [§10.4](../ch10.md#10.4)</summary>
+<summary>Exercise 10-9. <a href="../ch10.md#10.4">§10.4</a></summary>
 
 **Exercise 10-9** *(extension · lupin)*. Build a two-stage pipeline: a
 producer sends 1 through 5 into `raw`; a transformer squares each into
@@ -5280,7 +5280,7 @@ side.
 </details>
 
 <details>
-<summary>Exercise 10-10. [§10.4](../ch10.md#10.4)</summary>
+<summary>Exercise 10-10. <a href="../ch10.md#10.4">§10.4</a></summary>
 
 **Exercise 10-10** *(design)*. Go has `go f()`; wolf deliberately has
 no detached spawn: a task needs a scope, and the scope must close. Take
@@ -5306,7 +5306,7 @@ and wolf asks it at the point where you still can.
 ## Chapter 11
 
 <details>
-<summary>Exercise 11-1. [§11.1](../ch11.md#11.1)</summary>
+<summary>Exercise 11-1. <a href="../ch11.md#11.1">§11.1</a></summary>
 
 **Exercise 11-1** *(fingers · lupin)*. A function cannot spawn unless
 somebody hands it a scope. Write `launch(s, ch, n)` that spawns into a
@@ -5341,7 +5341,7 @@ $ lupin ex11-1.lu
 </details>
 
 <details>
-<summary>Exercise 11-2. [§11.1](../ch11.md#11.1)</summary>
+<summary>Exercise 11-2. <a href="../ch11.md#11.1">§11.1</a></summary>
 
 **Exercise 11-2** *(comprehension · lupin)*. Take 11-1 and change one
 character: make the channel a rendezvous, `channel[int](0)`. Predict
@@ -5366,7 +5366,7 @@ correctness argument, not a tuning knob.
 </details>
 
 <details>
-<summary>Exercise 11-3. [§11.1](../ch11.md#11.1)</summary>
+<summary>Exercise 11-3. <a href="../ch11.md#11.1">§11.1</a></summary>
 
 **Exercise 11-3** *(comprehension · lupin)*. Using only the text of
 11-1's program, answer: which functions in it are able to spawn tasks,
@@ -5383,7 +5383,7 @@ review.
 </details>
 
 <details>
-<summary>Exercise 11-4. [§11.2](../ch11.md#11.2)</summary>
+<summary>Exercise 11-4. <a href="../ch11.md#11.2">§11.2</a></summary>
 
 **Exercise 11-4** *(extension · lupin)*. Build a worker pool: three
 workers share one `jobs` channel and one `results` channel; `main` feeds
@@ -5426,7 +5426,7 @@ protocols other ecosystems teach.
 </details>
 
 <details>
-<summary>Exercise 11-5. [§11.2](../ch11.md#11.2)</summary>
+<summary>Exercise 11-5. <a href="../ch11.md#11.2">§11.2</a></summary>
 
 **Exercise 11-5** *(comprehension + schedule play · lupin)*. Shrink the
 pool to two workers and four jobs, and tag each result with the worker
@@ -5470,7 +5470,7 @@ who computed it; the seeds exist to catch you when you have not.
 </details>
 
 <details>
-<summary>Exercise 11-6. [§11.3](../ch11.md#11.3)</summary>
+<summary>Exercise 11-6. <a href="../ch11.md#11.3">§11.3</a></summary>
 
 **Exercise 11-6** *(spelunking · lupin REPL)*. Turn on the trace and
 run a scope with two children, then read the scheduler's own account:
@@ -5519,7 +5519,7 @@ defined, reported by the machine that enforced it.
 </details>
 
 <details>
-<summary>Exercise 11-7. [§11.3](../ch11.md#11.3)</summary>
+<summary>Exercise 11-7. <a href="../ch11.md#11.3">§11.3</a></summary>
 
 **Exercise 11-7** *(comprehension · lupin REPL)*. In 11-6's trace,
 find every `SchedDecision` line and read its "picked 0 of N ready"
@@ -5537,7 +5537,7 @@ programs; do it once by eye to believe the tool.
 </details>
 
 <details>
-<summary>Exercise 11-8. [§11.3](../ch11.md#11.3)</summary>
+<summary>Exercise 11-8. <a href="../ch11.md#11.3">§11.3</a></summary>
 
 **Exercise 11-8** *(design)*. A library offers
 `fetch_all(urls: List[str]) -> List[Response]` and wants to fetch
@@ -5572,7 +5572,7 @@ return, which is the chapter 10 leak wearing a signature.
 ## Chapter 12
 
 <details>
-<summary>Exercise 12-1. [§12.1](../ch12.md#12.1)</summary>
+<summary>Exercise 12-1. <a href="../ch12.md#12.1">§12.1</a></summary>
 
 **Exercise 12-1** *(fingers · lupin)*. A producer sends four squares and
 closes; `main` drains with a `for` loop. Type it, run it, then delete the
@@ -5608,7 +5608,7 @@ promise. Close is how that promise is kept.
 </details>
 
 <details>
-<summary>Exercise 12-2. [§12.1](../ch12.md#12.1)</summary>
+<summary>Exercise 12-2. <a href="../ch12.md#12.1">§12.1</a></summary>
 
 **Exercise 12-2** *(extension (break-it-on-purpose) · lupin)*. Using one
 task and one channel of capacity 1, write the shortest program you can
@@ -5641,7 +5641,7 @@ sending. A deadlock needs a cycle of waiting, not two tasks, and
 </details>
 
 <details>
-<summary>Exercise 12-3. [§12.2](../ch12.md#12.2)</summary>
+<summary>Exercise 12-3. <a href="../ch12.md#12.2">§12.2</a></summary>
 
 **Exercise 12-3** *(comprehension · lupin)*. Two identical `select`s;
 between them, one `send`. Predict both printed lines:
@@ -5675,7 +5675,7 @@ got 9
 </details>
 
 <details>
-<summary>Exercise 12-4. [§12.2](../ch12.md#12.2)</summary>
+<summary>Exercise 12-4. <a href="../ch12.md#12.2">§12.2</a></summary>
 
 **Exercise 12-4** *(comprehension + schedule play · lupin)*. Both
 channels are ready before the `select` runs. Write down every output this
@@ -5713,7 +5713,7 @@ run is as reproducible as arithmetic.
 </details>
 
 <details>
-<summary>Exercise 12-5. [§12.2](../ch12.md#12.2)</summary>
+<summary>Exercise 12-5. <a href="../ch12.md#12.2">§12.2</a></summary>
 
 **Exercise 12-5** *(spelunking · lupin)*. Run the explorer over 12-4
 and read its report line by line:
@@ -5748,7 +5748,7 @@ exercise 12-8 earns it.
 </details>
 
 <details>
-<summary>Exercise 12-6. [§12.3](../ch12.md#12.3)</summary>
+<summary>Exercise 12-6. <a href="../ch12.md#12.3">§12.3</a></summary>
 
 **Exercise 12-6** *(extension · lupin)*. Build a router: one task reads
 an inbox and forwards each value to an `evens` or `odds` sink. `main`
@@ -5795,7 +5795,7 @@ backward from the sums and every close is where it must be.
 </details>
 
 <details>
-<summary>Exercise 12-7. [§12.3](../ch12.md#12.3)</summary>
+<summary>Exercise 12-7. <a href="../ch12.md#12.3">§12.3</a></summary>
 
 **Exercise 12-7** *(design)*. A single task maintains a work list it
 alone pushes to and pops from. Argue why a `channel` is the wrong type
@@ -5818,7 +5818,7 @@ that is true.
 </details>
 
 <details>
-<summary>Exercise 12-8. [§12.4](../ch12.md#12.4)</summary>
+<summary>Exercise 12-8. <a href="../ch12.md#12.4">§12.4</a></summary>
 
 **Exercise 12-8** *(comprehension · lupin)*. Two tasks acquire the
 same two mutexes in *opposite* spellings. Predict the total, and
@@ -5866,7 +5866,7 @@ doing part of the work here, and the stem's real lesson is in 12-9.
 </details>
 
 <details>
-<summary>Exercise 12-9. [§12.4](../ch12.md#12.4)</summary>
+<summary>Exercise 12-9. <a href="../ch12.md#12.4">§12.4</a></summary>
 
 **Exercise 12-9** *(extension (break-it-on-purpose) · lupin)*. Now
 construct the classic deadlock `when` was designed to kill: task one
@@ -5910,7 +5910,7 @@ beside it.
 </details>
 
 <details>
-<summary>Exercise 12-10. [§12.3](../ch12.md#12.3)</summary>
+<summary>Exercise 12-10. <a href="../ch12.md#12.3">§12.3</a></summary>
 
 **Exercise 12-10** *(extension · lupin)*. The worklist as a checker:
 `balanced(line)` walks a line's characters with a `List[char]` stack —
@@ -5971,7 +5971,7 @@ checker's own input demonstrates §2.2's reason raw literals exist.
 </details>
 
 <details>
-<summary>Exercise 12-11. [§12.3](../ch12.md#12.3)</summary>
+<summary>Exercise 12-11. <a href="../ch12.md#12.3">§12.3</a></summary>
 
 **Exercise 12-11** *(extension · lupin)*. Two stacks make a compiler
 front half: convert `3 + 4 * 2 - 6 / 3` from infix to postfix with
@@ -6031,7 +6031,7 @@ than `>`) is left-associativity, checkable on the `- … /` tail.
 ## Chapter 13
 
 <details>
-<summary>Exercise 13-2. [§13.2](../ch13.md#13.2)</summary>
+<summary>Exercise 13-2. <a href="../ch13.md#13.2">§13.2</a></summary>
 
 **Exercise 13-2** *(fingers · lupin)*. Nine numbers, squared and
 summed, on one core: build the list, square each into a second list, add
@@ -6062,7 +6062,7 @@ $ lupin ex13-2.lu
 </details>
 
 <details>
-<summary>Exercise 13-3. [§13.2](../ch13.md#13.2)</summary>
+<summary>Exercise 13-3. <a href="../ch13.md#13.2">§13.2</a></summary>
 
 **Exercise 13-3** *(comprehension · wolf + lupin)*. Two tasks
 increment a captured `var`:
@@ -6139,7 +6139,7 @@ story now lives.
 </details>
 
 <details>
-<summary>Exercise 13-4. [§13.2](../ch13.md#13.2)</summary>
+<summary>Exercise 13-4. <a href="../ch13.md#13.2">§13.2</a></summary>
 
 **Exercise 13-4** *(spelunking · lupin)*. Two programs differ in one
 `print`. Explore both and read the verdicts:
@@ -6181,7 +6181,7 @@ in input order.
 </details>
 
 <details>
-<summary>Exercise 13-5. [§13.2](../ch13.md#13.2)</summary>
+<summary>Exercise 13-5. <a href="../ch13.md#13.2">§13.2</a></summary>
 
 **Exercise 13-5** *(extension · lupin)*. grep, wolfished: write
 `grep(text, pattern) -> List[str] ! {EmptyPattern}` returning the
@@ -6228,7 +6228,7 @@ defaults should serve its likeliest accident, not its cleverest use.
 </details>
 
 <details>
-<summary>Exercise 13-7. [§13.2](../ch13.md#13.2)</summary>
+<summary>Exercise 13-7. <a href="../ch13.md#13.2">§13.2</a></summary>
 
 **Exercise 13-7** *(comprehension · lupin)*. One Euler step for two
 bodies on a line, gravity only, equal masses. Before running: what is
@@ -6263,7 +6263,7 @@ n-body benchmark in Part 4.
 </details>
 
 <details>
-<summary>Exercise 13-9. [§13.2](../ch13.md#13.2)</summary>
+<summary>Exercise 13-9. <a href="../ch13.md#13.2">§13.2</a></summary>
 
 **Exercise 13-9** *(extension · lupin)*. The caesar shift, sequential
 on purpose: `shift(s, k)` moves each lowercase letter `k` places with
@@ -6318,7 +6318,7 @@ the Vigenère cipher, and the counter is the whole difference.)
 </details>
 
 <details>
-<summary>Exercise 13-10. [§13.2](../ch13.md#13.2)</summary>
+<summary>Exercise 13-10. <a href="../ch13.md#13.2">§13.2</a></summary>
 
 **Exercise 13-10** *(comprehension + extension · lupin)*. 13-5's byte
 scan found lines; this one counts hits. Write
@@ -6370,7 +6370,7 @@ signature and not in a comment.
 </details>
 
 <details>
-<summary>Exercise 13-11. [§13.2](../ch13.md#13.2)</summary>
+<summary>Exercise 13-11. <a href="../ch13.md#13.2">§13.2</a></summary>
 
 **Exercise 13-11** *(extension · lupin)*. 13-5 searched a `str` with
 `str` slices. Do it a layer down, over bytes, and lend the haystack
@@ -6440,7 +6440,7 @@ entirely; the answer it prints does not change.
 ## Chapter 14
 
 <details>
-<summary>Exercise 14-1. [§14.1](../ch14.md#14.1)</summary>
+<summary>Exercise 14-1. <a href="../ch14.md#14.1">§14.1</a></summary>
 
 **Exercise 14-1** *(comprehension · lupin)*. A proc's function returns
 `3`. Before running, predict both fields of the line this prints:
@@ -6474,7 +6474,7 @@ normal=true killed=false
 </details>
 
 <details>
-<summary>Exercise 14-2. [§14.1](../ch14.md#14.1)</summary>
+<summary>Exercise 14-2. <a href="../ch14.md#14.1">§14.1</a></summary>
 
 **Exercise 14-2** *(design)*. A log-search service has three concerns:
 an HTTP listener, a query planner, and one index shard per disk. Argue
@@ -6497,7 +6497,7 @@ Armstrong's argument, applied.
 </details>
 
 <details>
-<summary>Exercise 14-3. [§14.2](../ch14.md#14.2)</summary>
+<summary>Exercise 14-3. <a href="../ch14.md#14.2">§14.2</a></summary>
 
 **Exercise 14-3** *(comprehension · lupin)*. `build_then_crash`
 allocates a hundred integers into a region, then returns an error.
@@ -6530,7 +6530,7 @@ with no unwinding and no per-object teardown. The monitor's
 </details>
 
 <details>
-<summary>Exercise 14-4. [§14.2](../ch14.md#14.2)</summary>
+<summary>Exercise 14-4. <a href="../ch14.md#14.2">§14.2</a></summary>
 
 **Exercise 14-4** *(comprehension · lupin)*. `sleeper` registers a
 defer and then blocks forever on an empty channel; the owner kills it.
@@ -6573,7 +6573,7 @@ released
 </details>
 
 <details>
-<summary>Exercise 14-5. [§14.2](../ch14.md#14.2)</summary>
+<summary>Exercise 14-5. <a href="../ch14.md#14.2">§14.2</a></summary>
 
 **Exercise 14-5** *(comprehension · lupin)*. The same shape at task
 granularity. One sibling blocks on a channel with a defer registered; the
@@ -6612,7 +6612,7 @@ which one you are holding.
 </details>
 
 <details>
-<summary>Exercise 14-6. [§14.3](../ch14.md#14.3)</summary>
+<summary>Exercise 14-6. <a href="../ch14.md#14.3">§14.3</a></summary>
 
 **Exercise 14-6** *(fingers · lupin)*. Build a counting service: a proc
 that reads commands from a channel, where `0` means "reply with the
@@ -6655,7 +6655,7 @@ lives in exactly one proc.
 </details>
 
 <details>
-<summary>Exercise 14-7. [§14.3](../ch14.md#14.3)</summary>
+<summary>Exercise 14-7. <a href="../ch14.md#14.3">§14.3</a></summary>
 
 **Exercise 14-7** *(extension · lupin)*. Grow the protocol: `-1` resets
 the counter. Report the total, reset, add 3, and report again. Predict
@@ -6683,7 +6683,7 @@ a type, which is where rows and enums earn their keep.
 </details>
 
 <details>
-<summary>Exercise 14-8. [§14.3](../ch14.md#14.3)</summary>
+<summary>Exercise 14-8. <a href="../ch14.md#14.3">§14.3</a></summary>
 
 **Exercise 14-8** *(design)*. Erlang mailboxes offer *selective
 receive*: a proc can pluck the first message matching a pattern,
@@ -6706,7 +6706,7 @@ every queue in the program has a name and a bound.
 </details>
 
 <details>
-<summary>Exercise 14-9. [§14.3](../ch14.md#14.3)</summary>
+<summary>Exercise 14-9. <a href="../ch14.md#14.3">§14.3</a></summary>
 
 **Exercise 14-9** *(comprehension + schedule play · lupin)*. Two client
 tasks each send two increments to the counting proc; the scope joins, then
@@ -6745,7 +6745,7 @@ program.
 </details>
 
 <details>
-<summary>Exercise 14-10. [§14.3](../ch14.md#14.3)</summary>
+<summary>Exercise 14-10. <a href="../ch14.md#14.3">§14.3</a></summary>
 
 **Exercise 14-10** *(extension · lupin)*. A stockroom proc: its mailbox
 carries lines like `put 40` and `take 15`, each handled to completion —
@@ -6814,7 +6814,7 @@ the count is the one place that defends it.
 ## Chapter 15
 
 <details>
-<summary>Exercise 15-1. [§15.1](../ch15.md#15.1)</summary>
+<summary>Exercise 15-1. <a href="../ch15.md#15.1">§15.1</a></summary>
 
 **Exercise 15-1** *(comprehension · lupin)*. Chapter 14 showed a proc
 returning a value: `is_normal()` was true. This proc returns an error
@@ -6850,7 +6850,7 @@ normal=false killed=false
 </details>
 
 <details>
-<summary>Exercise 15-2. [§15.1](../ch15.md#15.1)</summary>
+<summary>Exercise 15-2. <a href="../ch15.md#15.1">§15.1</a></summary>
 
 **Exercise 15-2** *(comprehension · lupin)*. `monitor` delivers a
 message; `link` shares fate. This program links to a proc that fails,
@@ -6885,7 +6885,7 @@ $ echo $?
 </details>
 
 <details>
-<summary>Exercise 15-3. [§15.1](../ch15.md#15.1)</summary>
+<summary>Exercise 15-3. <a href="../ch15.md#15.1">§15.1</a></summary>
 
 **Exercise 15-3** *(design)*. A pipeline proc feeds a compressor
 proc, which feeds an uploader proc. For each of the three pairs,
@@ -6908,7 +6908,7 @@ nobody drew.
 </details>
 
 <details>
-<summary>Exercise 15-4. [§15.2](../ch15.md#15.2)</summary>
+<summary>Exercise 15-4. <a href="../ch15.md#15.2">§15.2</a></summary>
 
 **Exercise 15-4** *(fingers · lupin)*. Build the smallest supervisor:
 spawn a worker that fails on its first attempt and succeeds on its
@@ -6958,7 +6958,7 @@ You have now built the thing the next section hands you.
 </details>
 
 <details>
-<summary>Exercise 15-5. [§15.2](../ch15.md#15.2)</summary>
+<summary>Exercise 15-5. <a href="../ch15.md#15.2">§15.2</a></summary>
 
 **Exercise 15-5** *(comprehension · lupin)*. Same supervisor, but the
 worker fails every time. Predict the full output and the exit code
@@ -6982,7 +6982,7 @@ $ echo $?
 </details>
 
 <details>
-<summary>Exercise 15-6. [§15.2](../ch15.md#15.2)</summary>
+<summary>Exercise 15-6. <a href="../ch15.md#15.2">§15.2</a></summary>
 
 **Exercise 15-6** *(extension · lupin)*. Change the worker to fail
 twice and succeed on the third attempt (the flappy dependency
@@ -7014,7 +7014,7 @@ this exercise is that bet lost by one.
 </details>
 
 <details>
-<summary>Exercise 15-7. [§15.3](../ch15.md#15.3)</summary>
+<summary>Exercise 15-7. <a href="../ch15.md#15.3">§15.3</a></summary>
 
 **Exercise 15-7** *(design)*. Every proc in wolf lives under the root
 supervisor; there is no unsupervised spawn. Sketch the supervision tree
@@ -7038,7 +7038,7 @@ procs are only its leaves.
 </details>
 
 <details>
-<summary>Exercise 15-8. [§15.3](../ch15.md#15.3)</summary>
+<summary>Exercise 15-8. <a href="../ch15.md#15.3">§15.3</a></summary>
 
 **Exercise 15-8** *(spelunking · corpus)*. The pinned corpus checks
 the kill rule with this directive header, from
@@ -7065,7 +7065,7 @@ directive that checks the wrong observable verifies nothing.
 </details>
 
 <details>
-<summary>Exercise 15-9. [§15.3](../ch15.md#15.3)</summary>
+<summary>Exercise 15-9. <a href="../ch15.md#15.3">§15.3</a></summary>
 
 **Exercise 15-9** *(design)*. A teammate proposes: "monitors are
 strictly better: a link is a monitor whose handler calls exit, so
@@ -7089,7 +7089,7 @@ scheduler material is where that becomes checkable.)
 ## Chapter 16
 
 <details>
-<summary>Exercise 16-1. [§16.1](../ch16.md#16.1)</summary>
+<summary>Exercise 16-1. <a href="../ch16.md#16.1">§16.1</a></summary>
 
 **Exercise 16-1** *(comprehension · lupin)*. The sender builds a list
 inside a region (two pushes) and sends the region. Predict: does the
@@ -7125,7 +7125,7 @@ received
 </details>
 
 <details>
-<summary>Exercise 16-2. [§16.1](../ch16.md#16.1)</summary>
+<summary>Exercise 16-2. <a href="../ch16.md#16.1">§16.1</a></summary>
 
 **Exercise 16-2** *(fingers · lupin)*. Make the transfer carry real
 freight: build the two-element list in `main`, send the region to a
@@ -7160,7 +7160,7 @@ lineup prices that.)
 </details>
 
 <details>
-<summary>Exercise 16-3. [§16.1](../ch16.md#16.1)</summary>
+<summary>Exercise 16-3. <a href="../ch16.md#16.1">§16.1</a></summary>
 
 **Exercise 16-3** *(extension (break-it-on-purpose) · lupin)*. Construct
 the smallest program in which a sender touches a region *after* sending
@@ -7197,7 +7197,7 @@ dynamically, at the read.)
 </details>
 
 <details>
-<summary>Exercise 16-4. [§16.2](../ch16.md#16.2)</summary>
+<summary>Exercise 16-4. <a href="../ch16.md#16.2">§16.2</a></summary>
 
 **Exercise 16-4** *(comprehension · lupin)*. Ten squares are frozen into
 `table`; two tasks each read one entry and send it back. Predict the
@@ -7230,7 +7230,7 @@ $ lupin ex16-4.lu
 </details>
 
 <details>
-<summary>Exercise 16-5. [§16.2](../ch16.md#16.2)</summary>
+<summary>Exercise 16-5. <a href="../ch16.md#16.2">§16.2</a></summary>
 
 **Exercise 16-5** *(design)*. For each payload, choose `move` or
 `freeze` and defend it in one sentence: (a) a parsed configuration read by
@@ -7252,7 +7252,7 @@ untouchable; wolf gives no third verb, on purpose.
 </details>
 
 <details>
-<summary>Exercise 16-6. [§16.3](../ch16.md#16.3)</summary>
+<summary>Exercise 16-6. <a href="../ch16.md#16.3">§16.3</a></summary>
 
 **Exercise 16-6** *(design)*. The same workload (a producer builds a
 million-node tree, a consumer walks it) in four systems: Erlang (copying
@@ -7280,7 +7280,7 @@ looking expensive.
 </details>
 
 <details>
-<summary>Exercise 16-7. [§16.3](../ch16.md#16.3)</summary>
+<summary>Exercise 16-7. <a href="../ch16.md#16.3">§16.3</a></summary>
 
 **Exercise 16-7** *(extension · lupin)*. A maze is a graph, and a graph
 is a region's favorite payload. Carve a 5×5 maze with a seeded generator
@@ -7324,7 +7324,7 @@ never allocated.
 </details>
 
 <details>
-<summary>Exercise 16-8. [§16.3](../ch16.md#16.3)</summary>
+<summary>Exercise 16-8. <a href="../ch16.md#16.3">§16.3</a></summary>
 
 **Exercise 16-8** *(comprehension + schedule play · lupin)*. Change the
 carve seed to 2 and run the program three times, including once under
@@ -7353,7 +7353,7 @@ the programs where you cannot argue it.
 </details>
 
 <details>
-<summary>Exercise 16-9. [§16.3](../ch16.md#16.3)</summary>
+<summary>Exercise 16-9. <a href="../ch16.md#16.3">§16.3</a></summary>
 
 **Exercise 16-9** *(comprehension · wolf + lupin)*. This program
 declares a channel of bare `List[int]` (not `Copy`, not imm, not a
@@ -7413,7 +7413,7 @@ The corpus carries the same expectation in `conc/chan_unsendable.lu`.
 </details>
 
 <details>
-<summary>Exercise 16-10. [§16.3](../ch16.md#16.3)</summary>
+<summary>Exercise 16-10. <a href="../ch16.md#16.3">§16.3</a></summary>
 
 **Exercise 16-10** *(extension · lupin)*. Seven wolves in a ring; every
 third one still standing leaves, until one remains. Build the ring as a
@@ -7490,7 +7490,7 @@ for the many-reader case.
 ## Chapter 17
 
 <details>
-<summary>Exercise 17-1. [§17.1](../ch17.md#17.1)</summary>
+<summary>Exercise 17-1. <a href="../ch17.md#17.1">§17.1</a></summary>
 
 **Exercise 17-1** *(comprehension · lupin)*. Two tasks each deposit
 50 into a balance that starts at 0, through a get-then-set protocol
@@ -7543,7 +7543,7 @@ balance=50
 </details>
 
 <details>
-<summary>Exercise 17-2. [§17.1](../ch17.md#17.1)</summary>
+<summary>Exercise 17-2. <a href="../ch17.md#17.1">§17.1</a></summary>
 
 **Exercise 17-2** *(comprehension (schedule play) · lupin)*. Hunt it:
 run 17-1 under seeds 0 through 5. Record each balance. Which seeds
@@ -7596,7 +7596,7 @@ than written around here.)
 </details>
 
 <details>
-<summary>Exercise 17-3. [§17.2](../ch17.md#17.2)</summary>
+<summary>Exercise 17-3. <a href="../ch17.md#17.2">§17.2</a></summary>
 
 **Exercise 17-3** *(fingers · lupin)*. Two sends race into one channel;
 main prints the arrival order. Run it twice with `--seed=0`, once with
@@ -7636,7 +7636,7 @@ That is the entire mechanism this chapter's debugging story stands on.
 </details>
 
 <details>
-<summary>Exercise 17-4. [§17.2](../ch17.md#17.2)</summary>
+<summary>Exercise 17-4. <a href="../ch17.md#17.2">§17.2</a></summary>
 
 **Exercise 17-4** *(comprehension · lupin)*. The explorer prints the two
 schedules of 17-3 as decision streams `ev:0,0,0` and `ev:1,0,0`. Three
@@ -7655,7 +7655,7 @@ one.
 </details>
 
 <details>
-<summary>Exercise 17-5. [§17.2](../ch17.md#17.2)</summary>
+<summary>Exercise 17-5. <a href="../ch17.md#17.2">§17.2</a></summary>
 
 **Exercise 17-5** *(spelunking · lupin)*. Run
 `lupin conform-run ex17-3.lu --explore=64` and read the report back:
@@ -7691,7 +7691,7 @@ command, which is the difference between a bug report and an anecdote.
 </details>
 
 <details>
-<summary>Exercise 17-7. [§17.3](../ch17.md#17.3)</summary>
+<summary>Exercise 17-7. <a href="../ch17.md#17.3">§17.3</a></summary>
 
 **Exercise 17-7** *(comprehension · lupin)*. Rerun 17-3's exploration
 with `--explore-preemptions=0`. Predict what the report will claim about
@@ -7721,7 +7721,7 @@ and "frontier open" is the condition talking.
 </details>
 
 <details>
-<summary>Exercise 17-8. [§17.3](../ch17.md#17.3)</summary>
+<summary>Exercise 17-8. <a href="../ch17.md#17.3">§17.3</a></summary>
 
 **Exercise 17-8** *(design)*. List three behaviors of a real
 concurrent service that seeded schedule exploration, as this chapter
@@ -7746,7 +7746,7 @@ That sentence, with both clauses stressed, is §17.4's whole content.
 </details>
 
 <details>
-<summary>Exercise 17-9. [§17.3](../ch17.md#17.3)</summary>
+<summary>Exercise 17-9. <a href="../ch17.md#17.3">§17.3</a></summary>
 
 **Exercise 17-9** *(extension (break-it-on-purpose) · lupin)*. Construct
 a deadlock from two tasks and two rendezvous channels, each task
@@ -7795,7 +7795,7 @@ equivalent by hand, on purpose.)
 ## Chapter 18
 
 <details>
-<summary>Exercise 18-1. [§18.1](../ch18.md#18.1)</summary>
+<summary>Exercise 18-1. <a href="../ch18.md#18.1">§18.1</a></summary>
 
 **Exercise 18-1** *(comprehension · wolf)*. One binding keeps this
 program out of compile time:
@@ -7834,7 +7834,7 @@ error[E0705]: `x` is a runtime value, so this cannot evaluate at compile time
 </details>
 
 <details>
-<summary>Exercise 18-2. [§18.1](../ch18.md#18.1)</summary>
+<summary>Exercise 18-2. <a href="../ch18.md#18.1">§18.1</a></summary>
 
 **Exercise 18-2** *(comprehension · wolf)*. Chapter 3 taught you what
 `2147483647 + 1` does at runtime. Predict what it does inside a
@@ -7869,7 +7869,7 @@ error[E0706]: this `+` on `i32` faults at compile time: 2147483647 + 1 leaves `i
 </details>
 
 <details>
-<summary>Exercise 18-4. [§18.2](../ch18.md#18.2)</summary>
+<summary>Exercise 18-4. <a href="../ch18.md#18.2">§18.2</a></summary>
 
 **Exercise 18-4** *(comprehension · wolf)*. `size_of(Vec2)` for a
 struct of two `f64` fields is 16 on every target wolf supports. Predict
@@ -7897,7 +7897,7 @@ error[E0708]: the size of `Vec2` is not resolved until codegen lays it out
 </details>
 
 <details>
-<summary>Exercise 18-6. [§18.4](../ch18.md#18.4)</summary>
+<summary>Exercise 18-6. <a href="../ch18.md#18.4">§18.4</a></summary>
 
 **Exercise 18-6** *(spelunking · wolf)*. Run `wolf --explain E0701`
 and read the entry in full. It names two distinct reasons a comptime
@@ -7934,7 +7934,7 @@ evaluator capability.
 </details>
 
 <details>
-<summary>Exercise 18-7. [§18.4](../ch18.md#18.4)</summary>
+<summary>Exercise 18-7. <a href="../ch18.md#18.4">§18.4</a></summary>
 
 **Exercise 18-7** *(comprehension · wolf)*. Five expression tiles.
 Sort each onto the comptime side of the boundary or the runtime side
@@ -7968,7 +7968,7 @@ outputs are in `ex18-7a.lu` through `ex18-7c.lu`'s runs.)
 </details>
 
 <details>
-<summary>Exercise 18-8. [§18.4](../ch18.md#18.4)</summary>
+<summary>Exercise 18-8. <a href="../ch18.md#18.4">§18.4</a></summary>
 
 **Exercise 18-8** *(comprehension · wolf)*. A reader decides budgets
 are noise and writes `#[budget(fuel = 0)]` to turn the meter off.
@@ -7994,7 +7994,7 @@ error[E0709]: a comptime budget cannot be turned off — `fuel = 0` would disabl
 </details>
 
 <details>
-<summary>Exercise 18-9. [§18.4](../ch18.md#18.4)</summary>
+<summary>Exercise 18-9. <a href="../ch18.md#18.4">§18.4</a></summary>
 
 **Exercise 18-9** *(comprehension · wolf)*. Two runaway programs, two
 different budgets. Before running, match each to the resource it
@@ -8029,7 +8029,7 @@ help: raise the budget here: `#[budget(fuel = 2000000)]`
 </details>
 
 <details>
-<summary>Exercise 18-10. [§18.4](../ch18.md#18.4)</summary>
+<summary>Exercise 18-10. <a href="../ch18.md#18.4">§18.4</a></summary>
 
 **Exercise 18-10** *(extension (break-it-on-purpose) · wolf)*. Earn
 E0703 (the *heap* budget) using only a `while` loop and a `var`,
@@ -8074,7 +8074,7 @@ meters, and the first one exhausted names the failure.
 </details>
 
 <details>
-<summary>Exercise 18-12. [§18.4](../ch18.md#18.4)</summary>
+<summary>Exercise 18-12. <a href="../ch18.md#18.4">§18.4</a></summary>
 
 **Exercise 18-12** *(design)*. The sandbox refuses a file read
 (E0701) but the catalog entry points at *declared build inputs* through
@@ -8101,7 +8101,7 @@ must be declaration.
 </details>
 
 <details>
-<summary>Exercise 18-13. [§18.3](../ch18.md#18.3)</summary>
+<summary>Exercise 18-13. <a href="../ch18.md#18.3">§18.3</a></summary>
 
 **Exercise 18-13** *(spelunking · wolf)*. Misspell a format spec on
 purpose — `{total:>9.2z}` — and read the grammar out of the error.
@@ -8131,7 +8131,7 @@ grammar line answers questions the chapter never got to.
 </details>
 
 <details>
-<summary>Exercise 18-14. [§18.3](../ch18.md#18.3)</summary>
+<summary>Exercise 18-14. <a href="../ch18.md#18.3">§18.3</a></summary>
 
 **Exercise 18-14** *(comprehension · wolf)*. Four `Buf[…]` parameter
 and return pairs: `Buf[N + 1]` with `Buf[1 + N]`; `Buf[N + 2 - 1]`
@@ -8172,7 +8172,7 @@ boundary nobody could state.
 </details>
 
 <details>
-<summary>Exercise 18-15. [§18.4](../ch18.md#18.4)</summary>
+<summary>Exercise 18-15. <a href="../ch18.md#18.4">§18.4</a></summary>
 
 **Exercise 18-15** *(extension · wolf)*. Roman numerals, both ways,
 folded: write `to_roman(n)` and `from_roman(s)` as `comptime fn`s
@@ -8245,7 +8245,7 @@ what writing one teaches.
 ## Chapter 19
 
 <details>
-<summary>Exercise 19-1. [§19.1](../ch19.md#19.1)</summary>
+<summary>Exercise 19-1. <a href="../ch19.md#19.1">§19.1</a></summary>
 
 **Exercise 19-1** *(fingers · wolf + lupin)*. Type the scanner and
 change the line to `"the  pack   hunts at dusk"`, with the doubled and
@@ -8271,7 +8271,7 @@ about what it means.
 </details>
 
 <details>
-<summary>Exercise 19-2. [§19.2](../ch19.md#19.2)</summary>
+<summary>Exercise 19-2. <a href="../ch19.md#19.2">§19.2</a></summary>
 
 **Exercise 19-2** *(comprehension · prose)*. A release of the
 compiler makes one benchmark kernel 11 percent faster, and the same
@@ -8295,7 +8295,7 @@ objective function.
 </details>
 
 <details>
-<summary>Exercise 19-3. [§19.3](../ch19.md#19.3)</summary>
+<summary>Exercise 19-3. <a href="../ch19.md#19.3">§19.3</a></summary>
 
 **Exercise 19-3** *(comprehension · prose)*. Five timings of one
 benchmark, in nanoseconds: 1000, 1010, 990, 1005, 2400. Compute the
@@ -8317,7 +8317,7 @@ except against its own spread.
 </details>
 
 <details>
-<summary>Exercise 19-4. [§19.3](../ch19.md#19.3)</summary>
+<summary>Exercise 19-4. <a href="../ch19.md#19.3">§19.3</a></summary>
 
 **Exercise 19-4** *(comprehension · prose)*. Classify each loss into
 one of this section's four kinds, and name the fix path: (a) a kernel
@@ -8341,7 +8341,7 @@ down, never a bug filed on the checker for being right.
 </details>
 
 <details>
-<summary>Exercise 19-5. [§19.3](../ch19.md#19.3)</summary>
+<summary>Exercise 19-5. <a href="../ch19.md#19.3">§19.3</a></summary>
 
 **Exercise 19-5** *(design)*. A colleague's slide says "our runtime
 is 8 percent faster than C." Using this chapter's last paragraph,
@@ -8366,7 +8366,7 @@ cross-examination.
 ## Chapter 20
 
 <details>
-<summary>Exercise 20-1. [§20.1](../ch20.md#20.1)</summary>
+<summary>Exercise 20-1. <a href="../ch20.md#20.1">§20.1</a></summary>
 
 **Exercise 20-1** *(fingers · lupin)*. Change the line to `"a"` and
 predict the printed value by hand before running: the seed is 7, the
@@ -8391,7 +8391,7 @@ input, not the lucky ones.
 </details>
 
 <details>
-<summary>Exercise 20-2. [§20.2](../ch20.md#20.2)</summary>
+<summary>Exercise 20-2. <a href="../ch20.md#20.2">§20.2</a></summary>
 
 **Exercise 20-2** *(comprehension · prose)*. The ledger's history for
 2026-08-22 contains three HOLDS lines: 03:53 (counted, consecutive 1),
@@ -8413,7 +8413,7 @@ what a night is.
 </details>
 
 <details>
-<summary>Exercise 20-3. [§20.3](../ch20.md#20.3)</summary>
+<summary>Exercise 20-3. <a href="../ch20.md#20.3">§20.3</a></summary>
 
 **Exercise 20-3** *(comprehension · prose)*. The emitted-IR ratio's
 original design target is half, and the recorded gate is a ceiling at
@@ -8436,7 +8436,7 @@ spending the signal.
 </details>
 
 <details>
-<summary>Exercise 20-4. [§20.4](../ch20.md#20.4)</summary>
+<summary>Exercise 20-4. <a href="../ch20.md#20.4">§20.4</a></summary>
 
 **Exercise 20-4** *(design)*. A teammate proposes an exception entry:
 your image-decoding kernel would match C if it could read eight bytes
@@ -8465,7 +8465,7 @@ regression test for the method's arrival.
 ## Chapter 21
 
 <details>
-<summary>Exercise 21-1. [§21.1](../ch21.md#21.1)</summary>
+<summary>Exercise 21-1. <a href="../ch21.md#21.1">§21.1</a></summary>
 
 **Exercise 21-1** *(comprehension · prose)*. Here is saxpy in C:
 
@@ -8493,7 +8493,7 @@ compile time.
 </details>
 
 <details>
-<summary>Exercise 21-2. [§21.1](../ch21.md#21.1)</summary>
+<summary>Exercise 21-2. <a href="../ch21.md#21.1">§21.1</a></summary>
 
 **Exercise 21-2** *(fingers · lupin)*. Type the wolf saxpy and run it:
 five elements, `a = 2.0`, `ys` all tens. Predict both printed values
@@ -8525,7 +8525,7 @@ numbers on the page stay CI's.
 </details>
 
 <details>
-<summary>Exercise 21-3. [§21.2](../ch21.md#21.2)</summary>
+<summary>Exercise 21-3. <a href="../ch21.md#21.2">§21.2</a></summary>
 
 **Exercise 21-3** *(comprehension · prose)*. A request handler builds
 a parse tree of 10,000 nodes, reads it, and discards it. Count the
@@ -8548,7 +8548,7 @@ escapee.
 </details>
 
 <details>
-<summary>Exercise 21-5. [§21.4](../ch21.md#21.4)</summary>
+<summary>Exercise 21-5. <a href="../ch21.md#21.4">§21.4</a></summary>
 
 **Exercise 21-5** *(comprehension · lupin)*. The bill and the payout
 in one program: `sum_to(n)` adds 1,000,000 to an `i32` accumulator `n`
@@ -8574,7 +8574,7 @@ the suite's gate is the same cost made explicit.
 </details>
 
 <details>
-<summary>Exercise 21-6. [§21.4](../ch21.md#21.4)</summary>
+<summary>Exercise 21-6. <a href="../ch21.md#21.4">§21.4</a></summary>
 
 **Exercise 21-6** *(spelunking · lupin)*. From exercise 21-5's trap
 line alone: name the decision id it cites, the clause tag it enforces,
@@ -8591,7 +8591,7 @@ be benchmarked with the checks on.
 </details>
 
 <details>
-<summary>Exercise 21-9. [§21.4](../ch21.md#21.4)</summary>
+<summary>Exercise 21-9. <a href="../ch21.md#21.4">§21.4</a></summary>
 
 **Exercise 21-9** *(comprehension · prose)*. "Beats naive C, and the
 claim is a falsifiable CI gate" is a sentence with a specific
@@ -8616,7 +8616,7 @@ is cherry-picked, no date and it is folklore.
 ## Chapter 22
 
 <details>
-<summary>Exercise 22-1. [§22.1](../ch22.md#22.1)</summary>
+<summary>Exercise 22-1. <a href="../ch22.md#22.1">§22.1</a></summary>
 
 **Exercise 22-1** *(fingers · lupin)*. Build the two-module project:
 an entry file and a `stats/` directory exporting `mean`, with a
@@ -8652,7 +8652,7 @@ reorganization. That non-event is the design.
 </details>
 
 <details>
-<summary>Exercise 22-2. [§22.1](../ch22.md#22.1)</summary>
+<summary>Exercise 22-2. <a href="../ch22.md#22.1">§22.1</a></summary>
 
 **Exercise 22-2** *(comprehension · lupin)*. `vault/keys.lu` defines
 `pub fn count()`, `pub fn loaded()`, and private `fn secrets()` and
@@ -8673,7 +8673,7 @@ $ echo $?
 </details>
 
 <details>
-<summary>Exercise 22-3. [§22.1](../ch22.md#22.1)</summary>
+<summary>Exercise 22-3. <a href="../ch22.md#22.1">§22.1</a></summary>
 
 **Exercise 22-3** *(comprehension · lupin)*. `twice/main.lu` and its
 sibling `twice/extra.lu` each define `fn describe()`. Neither file
@@ -8692,7 +8692,7 @@ twice/main.lu: E0302: the name `describe` is defined twice in this module (defin
 </details>
 
 <details>
-<summary>Exercise 22-4. [§22.1](../ch22.md#22.1)</summary>
+<summary>Exercise 22-4. <a href="../ch22.md#22.1">§22.1</a></summary>
 
 **Exercise 22-4** *(comprehension · lupin)*. The entry imports `tools`
 and never mentions it again. Predict: warning or error, and what the
@@ -8710,7 +8710,7 @@ unused/main.lu: E0305: the import `tools` is never used in `unused/main.lu`; an 
 </details>
 
 <details>
-<summary>Exercise 22-5. [§22.2](../ch22.md#22.2)</summary>
+<summary>Exercise 22-5. <a href="../ch22.md#22.2">§22.2</a></summary>
 
 **Exercise 22-5** *(comprehension + extension · lupin)*. In
 `ch22/tangle/`, `store` imports `index` to log entries and `index`
@@ -8741,7 +8741,7 @@ things, the tangle is reassembling under a new name.
 </details>
 
 <details>
-<summary>Exercise 22-6. [§22.2](../ch22.md#22.2)</summary>
+<summary>Exercise 22-6. <a href="../ch22.md#22.2">§22.2</a></summary>
 
 **Exercise 22-6** *(comprehension · prose)*. A library refactor
 splits one 900-line module file into four files in the same directory,
@@ -8761,7 +8761,7 @@ you can prove invisible is a refactor you can make on a Friday.
 </details>
 
 <details>
-<summary>Exercise 22-7. [§22.3](../ch22.md#22.3)</summary>
+<summary>Exercise 22-7. <a href="../ch22.md#22.3">§22.3</a></summary>
 
 **Exercise 22-7** *(comprehension · wolf)*. The `init()` idiom §22.3
 retires: a plugin system where each module's `init()` registers a handler
@@ -8812,7 +8812,7 @@ handler short, which is the second thing `init()` never gave you.
 </details>
 
 <details>
-<summary>Exercise 22-8. [§22.3](../ch22.md#22.3)</summary>
+<summary>Exercise 22-8. <a href="../ch22.md#22.3">§22.3</a></summary>
 
 **Exercise 22-8** *(design)*. Import cycles are errors (D32). A
 colleague argues the compiler should permit cycles and merely warn,
@@ -8839,7 +8839,7 @@ indefinitely, by people who did not create it.
 </details>
 
 <details>
-<summary>Exercise 22-9. [§22.3](../ch22.md#22.3)</summary>
+<summary>Exercise 22-9. <a href="../ch22.md#22.3">§22.3</a></summary>
 
 **Exercise 22-9** *(extension · lupin)*. The word counter, split along
 its seam: a `tokens/` module that turns text into words and knows
@@ -8894,7 +8894,7 @@ lists for 5-6's reason: first-seen order is data a `Map` forgets.)
 </details>
 
 <details>
-<summary>Exercise 22-10. [§22.3](../ch22.md#22.3)</summary>
+<summary>Exercise 22-10. <a href="../ch22.md#22.3">§22.3</a></summary>
 
 **Exercise 22-10** *(extension · lupin)*. A calculator whose
 arithmetic lives behind a seam: an `ops/` module exporting one
@@ -8939,7 +8939,7 @@ room to grow into.
 </details>
 
 <details>
-<summary>Exercise 22-11. [§22.1](../ch22.md#22.1)</summary>
+<summary>Exercise 22-11. <a href="../ch22.md#22.1">§22.1</a></summary>
 
 **Exercise 22-11** *(fingers · lupin)*. Two scratch programs, one
 directory, on purpose: `sum.lu` totals three numbers, `widest.lu`
@@ -8981,7 +8981,7 @@ a neighbor's declaration.
 </details>
 
 <details>
-<summary>Exercise 22-12. [§22.1](../ch22.md#22.1)</summary>
+<summary>Exercise 22-12. <a href="../ch22.md#22.1">§22.1</a></summary>
 
 **Exercise 22-12** *(comprehension + extension · lupin)*. In
 `ch22/clash/`, the `labels` module is two files — `upper.lu` and
@@ -9021,7 +9021,7 @@ the rename avoids.
 </details>
 
 <details>
-<summary>Exercise 22-13. [§22.2](../ch22.md#22.2)</summary>
+<summary>Exercise 22-13. <a href="../ch22.md#22.2">§22.2</a></summary>
 
 **Exercise 22-13** *(spelunking · wolf)*. 22-6 argued from the export
 hash; now hold it in your hands. Run `wolf interface` on 22-9's
@@ -9034,9 +9034,9 @@ Solution. Both runs, one item and one number between them:
 ```console
 $ wolf interface ./tokens/tokens.lu
 module pkg :: (root)
-  wolfi v0 · toolchain 0.2.2 · edition v1
-  export_hash b86a3c4a8ec67f9edf3e5345769f357359533f9d6cb3b090cec8b58fb629e8da
-  pkg_hash    b86a3c4a8ec67f9edf3e5345769f357359533f9d6cb3b090cec8b58fb629e8da
+  wolfi v0 · toolchain 0.2.3 · edition v1
+  export_hash 5e861f2235ff8d9e79fd0403a4346ad0afe0693f0524822b644f83f234bd0ed0
+  pkg_hash    5e861f2235ff8d9e79fd0403a4346ad0afe0693f0524822b644f83f234bd0ed0
   deps: (none)
   items:
     [0] pub split_words — fn split_words(text: str) -> prelude.List[str] · regions (-) -> ρ_caller
@@ -9057,7 +9057,7 @@ goes.
 </details>
 
 <details>
-<summary>Exercise 22-14. [§22.3](../ch22.md#22.3)</summary>
+<summary>Exercise 22-14. <a href="../ch22.md#22.3">§22.3</a></summary>
 
 **Exercise 22-14** *(design)*. 22-9's `tokens` exports one function;
 its `index_of` helper in `tally` is private; 22-10's `ops` exports
@@ -9084,7 +9084,7 @@ asks for without the word "internal" in it.
 ## Chapter 23
 
 <details>
-<summary>Exercise 23-1. [§23.1](../ch23.md#23.1)</summary>
+<summary>Exercise 23-1. <a href="../ch23.md#23.1">§23.1</a></summary>
 
 **Exercise 23-1** *(comprehension · prose)*. The manifest §23.1
 prints, which is a real file in the book's fixtures:
@@ -9118,7 +9118,7 @@ which is the mechanical version of this exercise.
 </details>
 
 <details>
-<summary>Exercise 23-5. [§23.3](../ch23.md#23.3)</summary>
+<summary>Exercise 23-5. <a href="../ch23.md#23.3">§23.3</a></summary>
 
 **Exercise 23-5** *(comprehension · prose)*. An upstream author
 force-pushes tag `v1.4.0` of `den/rows` so the same version name now
@@ -9151,7 +9151,7 @@ saying so.
 </details>
 
 <details>
-<summary>Exercise 23-6. [§23.1](../ch23.md#23.1)</summary>
+<summary>Exercise 23-6. <a href="../ch23.md#23.1">§23.1</a></summary>
 
 **Exercise 23-6** *(spelunking · wolf)*. Run `wolf tree` and then
 `wolf why` on a project with one dependency, and then run `wolf why` for
@@ -9186,7 +9186,7 @@ tree.
 </details>
 
 <details>
-<summary>Exercise 23-8. [§23.3](../ch23.md#23.3)</summary>
+<summary>Exercise 23-8. <a href="../ch23.md#23.3">§23.3</a></summary>
 
 **Exercise 23-8** *(design)*. Wolf's determinism has a price: your
 users do not receive a dependency's bug fixes until you raise a
@@ -9214,7 +9214,7 @@ path, and silent is what the attacker was renting.
 ## Chapter 24
 
 <details>
-<summary>Exercise 24-1. [§24.1](../ch24.md#24.1)</summary>
+<summary>Exercise 24-1. <a href="../ch24.md#24.1">§24.1</a></summary>
 
 **Exercise 24-1** *(spelunking · prose)*. The event-stream incident
 (2018), from §24.1's sourcing: a maintainer handed a popular npm
@@ -9243,7 +9243,7 @@ must still review, and that part becomes small enough to review.
 </details>
 
 <details>
-<summary>Exercise 24-2. [§24.1](../ch24.md#24.1)</summary>
+<summary>Exercise 24-2. <a href="../ch24.md#24.1">§24.1</a></summary>
 
 **Exercise 24-2** *(comprehension · prose)*. Left-pad (2016) took
 thousands of builds down without executing a byte of anyone's code.
@@ -9264,7 +9264,7 @@ Tuesday.
 </details>
 
 <details>
-<summary>Exercise 24-3. [§24.1](../ch24.md#24.1)</summary>
+<summary>Exercise 24-3. <a href="../ch24.md#24.1">§24.1</a></summary>
 
 **Exercise 24-3** *(comprehension · prose)*. `build.rs` is the
 mechanism §24.1's third paragraph indicts. Name three legitimate jobs
@@ -9288,7 +9288,7 @@ to execute it. That refusal is priced in §24.4, not hidden.
 </details>
 
 <details>
-<summary>Exercise 24-4. [§24.2](../ch24.md#24.2)</summary>
+<summary>Exercise 24-4. <a href="../ch24.md#24.2">§24.2</a></summary>
 
 **Exercise 24-4** *(comprehension · wolf)*. The dependency that
 phones home at build time, spelled as directly as wolf's syntax
@@ -9316,7 +9316,7 @@ promises.
 </details>
 
 <details>
-<summary>Exercise 24-5. [§24.2](../ch24.md#24.2)</summary>
+<summary>Exercise 24-5. <a href="../ch24.md#24.2">§24.2</a></summary>
 
 **Exercise 24-5** *(comprehension · wolf)*. The build step that reads
 your CI secrets: `env_var("CI_DEPLOY_TOKEN")` inside a `comptime fn`.
@@ -9342,7 +9342,7 @@ knows. Here that code does not get to run at all.
 </details>
 
 <details>
-<summary>Exercise 24-6. [§24.3](../ch24.md#24.3)</summary>
+<summary>Exercise 24-6. <a href="../ch24.md#24.3">§24.3</a></summary>
 
 **Exercise 24-6** *(comprehension · wolf)*. Take a project with one
 dependency whose manifest declares no capabilities, record the world with
@@ -9388,7 +9388,7 @@ run time on your machines with your network.
 </details>
 
 <details>
-<summary>Exercise 24-7. [§24.4](../ch24.md#24.4)</summary>
+<summary>Exercise 24-7. <a href="../ch24.md#24.4">§24.4</a></summary>
 
 **Exercise 24-7** *(design)*. Pick the strongest real case against
 the covenant: a widely-needed C library whose build is a thicket of
@@ -9421,7 +9421,7 @@ reading a manifest.
 </details>
 
 <details>
-<summary>Exercise 24-8. [§24.3](../ch24.md#24.3)</summary>
+<summary>Exercise 24-8. <a href="../ch24.md#24.3">§24.3</a></summary>
 
 **Exercise 24-8** *(comprehension · prose)*. "It's only a
 dev-dependency": a teammate waves through a test-helper package whose
@@ -9447,7 +9447,7 @@ their schedule, not their trust level.
 ## Chapter 26
 
 <details>
-<summary>Exercise 26-1. [§26.5](../ch26.md#26.5)</summary>
+<summary>Exercise 26-1. <a href="../ch26.md#26.5">§26.5</a></summary>
 
 **Exercise 26-1** *(fingers · wolf)*. Build `count` as printed and run
 it. Then put a tab in the middle of `one.txt`'s first line and predict all
@@ -9470,7 +9470,7 @@ arm knows the answer without running anything.
 </details>
 
 <details>
-<summary>Exercise 26-2. [§26.5](../ch26.md#26.5)</summary>
+<summary>Exercise 26-2. <a href="../ch26.md#26.5">§26.5</a></summary>
 
 **Exercise 26-2** *(comprehension · lupin)*. `tally` counts a word every
 time it crosses from *between* to *inside*. Predict `lines`, `words`, and
@@ -9494,7 +9494,7 @@ byte.
 </details>
 
 <details>
-<summary>Exercise 26-3. [§26.5](../ch26.md#26.5)</summary>
+<summary>Exercise 26-3. <a href="../ch26.md#26.5">§26.5</a></summary>
 
 **Exercise 26-3** *(extension · wolf)*. Give `count` a bytes-only mode: a
 second row function that prints the byte column alone, and a `bool` at the
@@ -9519,7 +9519,7 @@ print things.
 </details>
 
 <details>
-<summary>Exercise 26-4. [§26.5](../ch26.md#26.5)</summary>
+<summary>Exercise 26-4. <a href="../ch26.md#26.5">§26.5</a></summary>
 
 **Exercise 26-4** *(comprehension · wolf)*. Narrow `count_file`'s row to
 `Tally ! {not_found, denied}` and predict the diagnostic's code and the
@@ -9557,7 +9557,7 @@ is internal and the caller is going to widen it again anyway.
 </details>
 
 <details>
-<summary>Exercise 26-5. [§26.5](../ch26.md#26.5)</summary>
+<summary>Exercise 26-5. <a href="../ch26.md#26.5">§26.5</a></summary>
 
 **Exercise 26-5** *(spelunking · wolf)*. Add a third name that does not
 exist, run the program, and read the exit status. Then read the E0602
@@ -9592,7 +9592,7 @@ a call boundary rather than remembered across one.
 </details>
 
 <details>
-<summary>Exercise 26-6. [§26.5](../ch26.md#26.5)</summary>
+<summary>Exercise 26-6. <a href="../ch26.md#26.5">§26.5</a></summary>
 
 **Exercise 26-6** *(design)*. `count` reads each file whole. Sketch the
 version that does not: `fs_open`, a loop of `fs_read` over fixed-size
@@ -9624,7 +9624,7 @@ answer is the one §26.5 gives: know which of the two you copied.
 ## Chapter 27
 
 <details>
-<summary>Exercise 27-1. [§27.5](../ch27.md#27.5)</summary>
+<summary>Exercise 27-1. <a href="../ch27.md#27.5">§27.5</a></summary>
 
 **Exercise 27-1** *(fingers · lupin)*. Add `%` to the dispatch. Then
 predict what your arm does for `7 0 %` before you run it, and say whether
@@ -9656,7 +9656,7 @@ one byte in `is_operator` and one arm.
 </details>
 
 <details>
-<summary>Exercise 27-2. [§27.5](../ch27.md#27.5)</summary>
+<summary>Exercise 27-2. <a href="../ch27.md#27.5">§27.5</a></summary>
 
 **Exercise 27-2** *(comprehension · lupin)*. `eval` returns `Empty` for
 both an underflowing operator and an expression that leaves two values on
@@ -9688,7 +9688,7 @@ problem with a wording fix, and 27-3 is the fix.
 </details>
 
 <details>
-<summary>Exercise 27-3. [§27.5](../ch27.md#27.5)</summary>
+<summary>Exercise 27-3. <a href="../ch27.md#27.5">§27.5</a></summary>
 
 **Exercise 27-3** *(extension · lupin)*. Give `Empty` a payload: which
 operator ran out of operands, and how many it found. You will have to
@@ -9720,7 +9720,7 @@ arm, and it is the version to write if this were a real calculator.
 </details>
 
 <details>
-<summary>Exercise 27-4. [§27.5](../ch27.md#27.5)</summary>
+<summary>Exercise 27-4. <a href="../ch27.md#27.5">§27.5</a></summary>
 
 **Exercise 27-4** *(comprehension · lupin)*. Feed it `007` and `-0` and
 `- 3`. Predict all three results before running, then explain which of the
@@ -9749,7 +9749,7 @@ shows it.
 </details>
 
 <details>
-<summary>Exercise 27-5. [§27.5](../ch27.md#27.5)</summary>
+<summary>Exercise 27-5. <a href="../ch27.md#27.5">§27.5</a></summary>
 
 **Exercise 27-5** *(spelunking · the C twin)*. Take a census of
 `broken` in `rpn.c`: count the places that can set it and the places
@@ -9780,7 +9780,7 @@ type.
 </details>
 
 <details>
-<summary>Exercise 27-6. [§27.5](../ch27.md#27.5)</summary>
+<summary>Exercise 27-6. <a href="../ch27.md#27.5">§27.5</a></summary>
 
 **Exercise 27-6** *(extension · lupin)*. Add two stack words that are not
 operators: `dup` duplicates the top value, `swap` exchanges the top two.
@@ -9804,7 +9804,7 @@ because a stack word that only moves values around cannot fail in a way the
 </details>
 
 <details>
-<summary>Exercise 27-7. [§27.5](../ch27.md#27.5)</summary>
+<summary>Exercise 27-7. <a href="../ch27.md#27.5">§27.5</a></summary>
 
 **Exercise 27-7** *(design)*. Wolf's stack holds `int` and K&R's holds
 `double`. Argue the other choice: what would the wolf column have to give
@@ -9834,7 +9834,7 @@ you want fractions you are writing the parser.
 </details>
 
 <details>
-<summary>Exercise 27-8. [§27.5](../ch27.md#27.5)</summary>
+<summary>Exercise 27-8. <a href="../ch27.md#27.5">§27.5</a></summary>
 
 **Exercise 27-8** *(design)*. Sketch the REPL: read a line, evaluate it,
 print the answer, and stop at end of input. `read_line()` returns
@@ -9869,7 +9869,7 @@ slowly.
 ## Chapter 28
 
 <details>
-<summary>Exercise 28-1. [§28.5](../ch28.md#28.5)</summary>
+<summary>Exercise 28-1. <a href="../ch28.md#28.5">§28.5</a></summary>
 
 **Exercise 28-1** *(fingers · lupin)*. Build the tree as printed and run
 it. Then add a word that sorts before `moon` and one that sorts after
@@ -9897,7 +9897,7 @@ node it did not have to.
 </details>
 
 <details>
-<summary>Exercise 28-2. [§28.5](../ch28.md#28.5)</summary>
+<summary>Exercise 28-2. <a href="../ch28.md#28.5">§28.5</a></summary>
 
 **Exercise 28-2** *(comprehension · lupin)*. `add` compares with `w <
 n.word` on `str`. Predict the order of `Wolf`, `wolf`, `WOLF`, and `wolfs`
@@ -9926,7 +9926,7 @@ Byte order is not alphabetical order, and chapter 2 says so plainly.
 </details>
 
 <details>
-<summary>Exercise 28-3. [§28.5](../ch28.md#28.5)</summary>
+<summary>Exercise 28-3. <a href="../ch28.md#28.5">§28.5</a></summary>
 
 **Exercise 28-3** *(extension · lupin)*. Add a `-n` mode: print the words
 in descending order of count instead of alphabetically, with ties broken
@@ -9962,7 +9962,7 @@ per iteration, but it is not the one a reader would reach for first.
 </details>
 
 <details>
-<summary>Exercise 28-4. [§28.5](../ch28.md#28.5)</summary>
+<summary>Exercise 28-4. <a href="../ch28.md#28.5">§28.5</a></summary>
 
 **Exercise 28-4** *(comprehension · lupin)*. Delete the `is_empty()` guard
 in `walk` and predict the exact failure: which trap kind, which exit code,
@@ -9988,7 +9988,7 @@ the book's subject, in a two-line function.
 </details>
 
 <details>
-<summary>Exercise 28-5. [§28.5](../ch28.md#28.5)</summary>
+<summary>Exercise 28-5. <a href="../ch28.md#28.5">§28.5</a></summary>
 
 **Exercise 28-5** *(spelunking · the C twin)*. Count, in `wordtree.c`,
 every line that would disappear if `malloc` could not fail, and then every
@@ -10023,7 +10023,7 @@ half is bigger.
 </details>
 
 <details>
-<summary>Exercise 28-6. [§28.5](../ch28.md#28.5)</summary>
+<summary>Exercise 28-6. <a href="../ch28.md#28.5">§28.5</a></summary>
 
 **Exercise 28-6** *(extension · lupin)*. Take the tree's census: write
 `nodes` and `depth` and print both after the walk. Then multiply the node
@@ -10056,7 +10056,7 @@ about the other column.
 </details>
 
 <details>
-<summary>Exercise 28-7. [§28.5](../ch28.md#28.5)</summary>
+<summary>Exercise 28-7. <a href="../ch28.md#28.5">§28.5</a></summary>
 
 **Exercise 28-7** *(design)*. K&R's `addtree` returns the new subtree
 root; wolf's `add` takes `mut n` and returns nothing. Both are answers to
@@ -10093,7 +10093,7 @@ charging once for something the C column pays for at every dereference.
 ## Chapter 30
 
 <details>
-<summary>Exercise 30-1. [§30.5](../ch30.md#30.5)</summary>
+<summary>Exercise 30-1. <a href="../ch30.md#30.5">§30.5</a></summary>
 
 **Exercise 30-1** *(fingers · wolf)*. Build both programs and run them
 against the same two files with three patterns of your own. Then run
@@ -10117,7 +10117,7 @@ page.
 </details>
 
 <details>
-<summary>Exercise 30-2. [§30.5](../ch30.md#30.5)</summary>
+<summary>Exercise 30-2. <a href="../ch30.md#30.5">§30.5</a></summary>
 
 **Exercise 30-2** *(comprehension · wolf)*. `hits` and `done` are both
 `channel[int](0)`. Give `hits` a buffer (`channel[int](64)`) and predict
@@ -10156,7 +10156,7 @@ exercise is for; the program is three seconds of your own editing.
 </details>
 
 <details>
-<summary>Exercise 30-3. [§30.5](../ch30.md#30.5)</summary>
+<summary>Exercise 30-3. <a href="../ch30.md#30.5">§30.5</a></summary>
 
 **Exercise 30-3** *(comprehension · wolf)*. Delete `freeze` from the
 `needles` binding, leaving `let needles = pattern.split("|")`. Predict
@@ -10190,7 +10190,7 @@ subject.
 </details>
 
 <details>
-<summary>Exercise 30-4. [§30.5](../ch30.md#30.5)</summary>
+<summary>Exercise 30-4. <a href="../ch30.md#30.5">§30.5</a></summary>
 
 **Exercise 30-4** *(extension · wolf)*. Instrument the collector: print
 each index as it arrives, before pushing it. Run the binary twenty times
@@ -10225,7 +10225,7 @@ that assumed it would fail on a loaded machine.
 </details>
 
 <details>
-<summary>Exercise 30-5. [§30.5](../ch30.md#30.5)</summary>
+<summary>Exercise 30-5. <a href="../ch30.md#30.5">§30.5</a></summary>
 
 **Exercise 30-5** *(extension · wolf)*. Make the report order-dependent
 on purpose: delete both channels and the collector, and have each task
@@ -10260,7 +10260,7 @@ cheapest way to obey it is to let exactly one task print.
 </details>
 
 <details>
-<summary>Exercise 30-6. [§30.5](../ch30.md#30.5)</summary>
+<summary>Exercise 30-6. <a href="../ch30.md#30.5">§30.5</a></summary>
 
 **Exercise 30-6** *(spelunking · wolf)*. Read the E1012 note in §30.4 in
 full. It offers two ways out: build the value completely before freezing,
@@ -10284,7 +10284,7 @@ but the noun: "the frozen table" stops naming a single thing.
 </details>
 
 <details>
-<summary>Exercise 30-7. [§30.5](../ch30.md#30.5)</summary>
+<summary>Exercise 30-7. <a href="../ch30.md#30.5">§30.5</a></summary>
 
 **Exercise 30-7** *(design)*. The shard count is a constant. Sketch the
 version that takes it from the input: what the ranges become, what the

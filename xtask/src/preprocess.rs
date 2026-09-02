@@ -63,7 +63,7 @@ pub fn rewrite_heading_anchors(content: &str) -> String {
     out
 }
 
-fn anchor_heading_line(line: &str) -> String {
+pub fn anchor_heading_line(line: &str) -> String {
     let hashes = line.chars().take_while(|&c| c == '#').count();
     if hashes == 0 || hashes > 6 {
         return line.to_string();
