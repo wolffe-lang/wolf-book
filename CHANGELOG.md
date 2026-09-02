@@ -2,6 +2,80 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs26 — 2026-09-02 — the rows retire, and the links come back
+
+The pins move to wolf v0.2.3 and lupin 0.1.23, and the headline is a
+table that no longer exists. One release ago Windows compiled and ran
+your program for the first time, and refused twenty-one programs of the
+compiler's own corpus by name — everything built on the task layer,
+which that host had none of. It has one now. `spawn` and scopes, `proc`,
+channels and `select`, `sync`/`when`, region transfer, signals and
+network deadlines all compile and run there, measured at the same corpus
+parity as macOS. Chapter 1 said Windows readers should expect to meet
+that limit; it does not say so any more, because they will not.
+
+The book found out the way it was built to. Four programs of chapter 30
+were written down last sprint in `samples-os.toml` as refused on
+Windows, in the refusal's exact words, with the release that would end
+them named in the row. At the new pin the Windows lane ran them, they
+passed, and the run went red — four FLIPs, each naming the row to
+delete and the release it was dated to. Then the rows came out, in the
+commit that moved the pin, which is the rule they were written under.
+455 passed and 4 flipped on that lane; 455 + 4 is the 459 the other two
+hosts report. A skip would have gone on passing quietly through the
+release that made the claim false. Two rows are left, the ones that were
+never about a version: `wolf add` and `wolf publish` still print
+Windows' own path separator where every diagnostic in the same compiler
+prints a slash, and that is still filed rather than papered over.
+
+**The Solutions page has its links back.** Every one of the 280 collapsed
+solutions is headed by the exercise number and the section that set it,
+and on the web that section reference had been rendering as its own
+markdown punctuation — `[§3.4](../ch03.md#3.4)`, on all 280 of them,
+because the line sits inside a raw-HTML block and a markdown parser
+does not look inside those. It is a real link now, on the web and in the
+PDF both. The print half is why the fix waited: a printed page has no
+hyperlinks to give and no `.html` to point at, so the same source line
+becomes an internal cross-reference to the section's own label — which
+meant the print edition had to start labelling its headings at all, with
+the very same rule the web edition has always anchored them by. One
+rule, two renders, 280 references that cannot drift from their targets
+because a reference to a section that moved fails the build.
+
+Chapter 1's install section was re-measured against the project's own
+install page for this release. Four archives at the tag now, one per
+tier-1 host — the ARM one came back after a release that built it and
+threw it away — so the section says four instead of hedging, and says
+what the ARM archive serves, which is less than the other three. Two
+limits are left on Windows and both are quoted rather than reasoned
+about: the optimizing release tier still refuses that host, and a
+`reload` or `upgrade` signal sent from *another process* has nothing on
+Windows to arrive through. And a sentence this book got wrong about
+itself is fixed: chapter 1 and the Notation page both explained the four
+quoted Windows transcripts by saying the book's runner has no Windows
+lane. It has had one since the previous edition. The real reason is
+narrower — the runner replays programs, and an installation is not one —
+and that is what both pages now say.
+
+The rest of the bump was quiet, which is worth reporting. The compiler
+changed the width of a parse error's underline this release, and its own
+measurement predicted seven of this book's printed diagnostics would
+widen. None did: every E0201 in the book points at a single-character
+token, where the old shape and the new shape draw the same one caret.
+That was probed both ways rather than assumed. The clause anchors hold
+at 411 and the diagnostic catalogue at 169, neither moving by one. The
+grammar appendix grew twelve productions the specification had been
+citing without defining, so three of the six ways to write a string in
+wolf can now be derived from the appendix instead of inferred from
+prose. Two version transcripts, chapter 22's interface stamp and chapter
+25's publish record re-record as they do at every bump. And chapter 4
+§4.3 loses a caveat: the one place in that chapter where the two
+implementations disagreed — whether a trap runs the outermost pending
+`defer` — is a place where they agree now, and the section says which
+one moved.
+
+The print edition sets to 510 pages, the same as the previous one.
+
 ## bs25 — 2026-09-02 — the samples lane is real
 
 CI ran the samples on three machines for the first time. It had been
