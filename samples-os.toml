@@ -29,40 +29,43 @@
 # executed in CI (run 33628773436, 2026-09-02): ubuntu and windows had
 # never run, and the failures they found were not all one kind. The
 # ubuntu 19 were environment and were fixed in the environment (the
-# lane installs lld, ch01 §1.2 tells the reader why). These six are
-# not: they are true statements about a host at this pin.
+# lane installs lld, ch01 §1.2 tells the reader why). The other six
+# were not: they were true statements about a host at that pin. Four
+# have since come true the other way and are gone; the note below says
+# how, and the two that are left are the two that were never a pin
+# story.
 
-[[refusal]]
-id = "ch30/ex30-3"
-os = "windows"
-exit = 1
-stderr = '''wolf run: cannot compile this yet — windows-native serves no channels and `select` at the s60a bring-up (the runtime's task layer, io reactor, and signal delivery are s60b's — the IOCP road); `__wolf_rt_chan_new` would not link (pipeline is honest through `wir`; the conservatism ledger, not a bug in your program)'''
-retires = "wolf 0.2.3 (s60b — the windows task layer on VirtualAlloc stacks and the IOCP reactor)"
-note = '''declared 2026-09-02 at the v0.2.2 pin; the pattern list that four tasks read from a channel. docs/platforms.md at v0.2.2 lists the task layer under "What refuses, by name" — spawn/scopes, proc, channels and select, sync/when, region_transfer. bs26 removes this row at the v0.2.3 bump'''
-
-[[refusal]]
-id = "ch30/ex30-4"
-os = "windows"
-exit = 1
-stderr = '''wolf run: cannot compile this yet — windows-native serves no channels and `select` at the s60a bring-up (the runtime's task layer, io reactor, and signal delivery are s60b's — the IOCP road); `__wolf_rt_chan_new` would not link (pipeline is honest through `wir`; the conservatism ledger, not a bug in your program)'''
-retires = "wolf 0.2.3 (s60b — the windows task layer on VirtualAlloc stacks and the IOCP reactor)"
-note = '''declared 2026-09-02 at the v0.2.2 pin; the instrumented collector, same channel construct as 30-3. bs26 removes this row at the v0.2.3 bump'''
-
-[[refusal]]
-id = "ch30/ex30-5"
-os = "windows"
-exit = 1
-stderr = '''wolf run: cannot compile this yet — windows-native serves no `spawn`/scopes (the task layer) at the s60a bring-up (the runtime's task layer, io reactor, and signal delivery are s60b's — the IOCP road); `__wolf_rt_scope_new` would not link (pipeline is honest through `wir`; the conservatism ledger, not a bug in your program)'''
-retires = "wolf 0.2.3 (s60b — the windows task layer on VirtualAlloc stacks and the IOCP reactor)"
-note = '''declared 2026-09-02 at the v0.2.2 pin; each task printing its own matches, so this one refuses on the scope rather than the channel — a different symbol, and the row records which. bs26 removes this row at the v0.2.3 bump'''
-
-[[refusal]]
-id = "book/ch30/part-pargrep"
-os = "windows"
-exit = 1
-stderr = '''wolf run: cannot compile this yet — windows-native serves no channels and `select` at the s60a bring-up (the runtime's task layer, io reactor, and signal delivery are s60b's — the IOCP road); `__wolf_rt_chan_new` would not link (pipeline is honest through `wir`; the conservatism ledger, not a bug in your program)'''
-retires = "wolf 0.2.3 (s60b — the windows task layer on VirtualAlloc stacks and the IOCP reactor)"
-note = '''declared 2026-09-02 at the v0.2.2 pin; the chapter's parallel capstone, the program §30.4 and §30.5 both replay. ch01 §1.2 names chapter 30 beside chapters 10-17 as the part of the book that needs a host with the task layer. bs26 removes this row at the v0.2.3 bump'''
+# THE FOUR CHAPTER-30 REFUSAL ROWS RETIRED HERE, at bs26 (2026-09-02),
+# at the wolf 0.2.3 pin they were dated to and in the pin-bump commit,
+# which is the rule they were written under. They were declared one
+# sprint earlier against v0.2.2, the release that refused twenty-one
+# corpus rows on windows by construct name; s60b built that host's task
+# layer — Win32 workers on the kernel's own reserve-and-guard stacks, a
+# WSAPoll reactor behind the s35 interface, SetConsoleCtrlHandler for
+# signals — and v0.2.3 measures windows at macOS parity with no row
+# refused by construct name at all.
+#
+# The rig said so before anything was deleted. On the windows lane at
+# the new pin (run 33693011057, 2026-09-02), `cargo xtask samples`
+# answered 455 passed / 5 pending / 0 failed / 4 FLIPS, and named every
+# row:
+#
+#   samples: FLIP ch30/ex30-3: samples-os.toml declares `wolf-run(exit=0)`
+#   refused on windows at this pin, and it now PASSES — the host grew the
+#   feature; remove the row in the pin-bump commit (it was retiring at
+#   wolf 0.2.3 (s60b — the windows task layer on VirtualAlloc stacks and
+#   the IOCP reactor))
+#
+# — and the same line for ex30-4, ex30-5 and book/ch30/part-pargrep. A
+# hard error naming the row to delete is the whole reason a declared
+# outcome is worth more than a skip: a skip would have gone on passing
+# quietly through the release that made it false. 455 + 4 = the 459 the
+# other two hosts report, which is the arithmetic that says nothing else
+# moved.
+#
+# The `[[refusal]]` machinery stays. There is nothing for it to hold on
+# any host at this pin, and the next host that refuses something by name
+# will be written down the same way.
 
 # The two windows console drifts. Not a pin story and not the book's
 # error: one binary spells the same project's paths two ways. Every
@@ -73,6 +76,12 @@ note = '''declared 2026-09-02 at the v0.2.2 pin; the chapter's parallel capstone
 # meantime. If wolf-lang decides native separators are intended, these
 # rows stay and their notes get rewritten; if it fixes them, the rows
 # are stale and the rig says so on the next windows run.
+#
+# bs26 re-verify (wolf v0.2.3 / lupin 0.1.23): both HELD, byte for byte,
+# on the windows lane at the new pin — `samples-os.toml: 6 row(s) apply
+# to windows — 0 declared refusal(s) and 2 declared transcript(s) held`.
+# wolf-lang#222 is open at this release: v0.2.3 predates the sprint that
+# would answer it, so these two do not retire here. Next look is bs27.
 
 [[transcript]]
 block = "book/ch23.md:117"
