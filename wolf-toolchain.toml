@@ -58,10 +58,12 @@
 #     type, and it now has a measured exception with a name.
 #   * UNIX-DOMAIN SOCKETS (#227, `[os.net.unix]`). `net_listen_unix` /
 #     `net_connect_unix` on linux and macOS, in the TCP pair's exact
-#     shape; windows answers `unsupported` by name.
-#     `corpus/net/unix_echo.lu` runs green here on macOS at this pin
-#     (`unix sockets | served_or_named true | echo true | port_is_io
-#     true | cleaned true`). NO PAGE PRINTS IT: this edition has no
+#     shape; windows answers `unsupported` by name, which is the
+#     clause's statement and not a reading taken here.
+#     `corpus/net/unix_echo.lu` runs green at this pin on the one host
+#     this repository measures from, macOS (`unix sockets |
+#     served_or_named true | echo true | port_is_io true |
+#     cleaned true`). NO PAGE PRINTS IT: this edition has no
 #     network chapter and no `net_*` call on any page, so there is no
 #     transport list for the family to join. Recorded here, where the
 #     book records a toolchain fact it does not teach.
