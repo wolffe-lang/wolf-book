@@ -30,10 +30,12 @@
 # never run, and the failures they found were not all one kind. The
 # ubuntu 19 were environment and were fixed in the environment (the
 # lane installs lld, ch01 §1.2 tells the reader why). The other six
-# were not: they were true statements about a host at that pin. Four
-# have since come true the other way and are gone; the note below says
-# how, and the two that are left are the two that were never a pin
-# story.
+# were not: they were true statements about a host at that pin. All six
+# have since come true the other way and are gone — four at bs26 by
+# FLIP, two at bs27 by staleness — and the two notes below say how. The
+# file holds no row today, which is a measurement and not a milestone:
+# it means every declared per-host difference this book found has been
+# answered by the toolchain.
 
 # THE FOUR CHAPTER-30 REFUSAL ROWS RETIRED HERE, at bs26 (2026-09-02),
 # at the wolf 0.2.3 pin they were dated to and in the pin-bump commit,
@@ -67,41 +69,38 @@
 # any host at this pin, and the next host that refuses something by name
 # will be written down the same way.
 
-# The two windows console drifts. Not a pin story and not the book's
-# error: one binary spells the same project's paths two ways. Every
-# diagnostic path in wolf is slash-normalized on windows (RawFile's
-# `display` does the replace in both producers), and these two verbs
-# hand `path.display()` straight to the message instead. Filed rather
-# than papered over, and the book keeps byte-comparing both hosts in the
-# meantime. If wolf-lang decides native separators are intended, these
-# rows stay and their notes get rewritten; if it fixes them, the rows
-# are stale and the rig says so on the next windows run.
+# THE TWO ch23/ch25 TRANSCRIPT ROWS RETIRED HERE, at bs27 (2026-09-03),
+# at the pin that made them false and in the pin-bump sprint, which is
+# the rule they were written under. They were the last rows in this file
+# and they were never a pin story: one binary spelled the same project's
+# paths two ways — every diagnostic path in wolf is slash-normalized on
+# windows, and `wolf add` and `wolf publish` handed `path.display()`
+# straight to their status messages. Filed as wolf-lang#222 at bs25 by
+# the samples lane the week it was first lit, held byte for byte at
+# bs26, and answered at v0.2.4: every path a package verb prints —
+# `add`, `rm`, `init`, `vendor`, `publish`, and their error lines — goes
+# through the diagnostics' own spelling now.
 #
-# bs26 re-verify (wolf v0.2.3 / lupin 0.1.23): both HELD, byte for byte,
-# on the windows lane at the new pin — `samples-os.toml: 6 row(s) apply
-# to windows — 0 declared refusal(s) and 2 declared transcript(s) held`.
-# wolf-lang#222 is open at this release: v0.2.3 predates the sprint that
-# would answer it, so these two do not retire here. Next look is bs27.
-
-[[transcript]]
-block = "book/ch23.md:117"
-os = "windows"
-filed = "wolf-lang#222"
-retires = "the wolf-lang#222 decision — a fix, or the note rewritten to say native separators are the answer"
-note = '''§23.4, `wolf add` writing the minimal manifest — the tool prints the host's separator where the page prints a slash; every other line of both blocks is byte-identical to the book on all three hosts'''
-expect = '''
-$ wolf add rows --path ../rows --dir app
-wolf add: created app\wolf.pkg (minimal manifest)
-wolf add: rows 1.4.0 — capabilities []'''
-
-[[transcript]]
-block = "book/ch25.md:141"
-os = "windows"
-filed = "wolf-lang#222"
-retires = "the wolf-lang#222 decision — a fix, or the note rewritten to say native separators are the answer"
-note = '''§25.3, `wolf publish` writing the record — the tool prints the host's separator where the page prints a slash; every other line of both blocks is byte-identical to the book on all three hosts'''
-expect = '''
-$ wolf publish --dir app
-den/logsearch@0.1.0 tree=b3:f8ce5f5b7ea6bb1b367c55b39e00b55c19086f035fc38866b8ede419e9523039 manifest=b3:d932b3c6008a901a5dc0135b1f816183d0b0abd881a2a82eb5acf8323ae1e8e7 interface=b3:3290b9183fc5b59a10fffc7bbcaa64d08081bbf277c868672c9513be6f653920
-wolf publish: record written to app\.wolf-publish\den-logsearch-at-0.1.0.record — submit it to your log's maintainer'''
-
+# The rig said so before anything was deleted. On the windows lane at
+# the new pin (run 33742585877, 2026-09-03), `cargo xtask samples`
+# reported 459 passed / 5 pending / 2 failed and named both rows:
+#
+#   samples: FAIL book\ch23.md:117: this host now prints the book's own
+#   transcript, so samples-os.toml's windows row for this block is stale
+#   — wolf-lang#222 landed; remove the row
+#
+# — and the same line for book\ch25.md:141, followed by
+#
+#   samples: samples-os.toml: 2 row(s) apply to windows — 0 declared
+#   refusal(s) and 0 declared transcript(s) held
+#
+# A declared outcome that goes stale is a hard error naming the row to
+# delete. A skip would have gone on passing quietly through the release
+# that made it false, on the one host nobody develops on. That is the
+# whole argument for this file, and it has now made it twice: four rows
+# at bs26 by FLIP, two here by staleness.
+#
+# This file is empty of rows and stays. Both kinds of machinery are
+# live, both directions are enforced, and the next host that refuses
+# something by name — or prints its own words where the book prints the
+# book's — will be written down the same way.
