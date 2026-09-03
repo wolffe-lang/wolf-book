@@ -140,14 +140,21 @@ impl_version = "0.2.4"
 # `run(…)` at the bump that takes is36.
 #
 # What 0.1.24 otherwise carries, as the book meets it:
-#   * The `byte` type is spelled in the mirror's own surface (is35), so
-#     the divergence is the cast and the producers, not the name.
-#   * D74's half rides is36 and is NOT in this release: the interpreter
-#     still answers E0109 where §2.2's page prints wolfc's E0104, and
-#     it invents `E_BYTE_ORDER_MARK` under E0105 where the ruling says
-#     a leading BOM is no diagnostic at all. §2.2's diagnostic block is
-#     the compiler's rendering and says so in the `Shown by` column of
-#     Appendix C, which is what that column is for.
+#   * The refusal above is a RESOLVE refusal, not a cast refusal: the
+#     name `byte` reaches no type in the interpreter at this release,
+#     which is what E0301's own note says and what the probe measured.
+#     Whatever is36 released into the mirror, the book meets a machine
+#     that does not know the name.
+#   * D74's half rides is36 and is NOT in this release, measured on
+#     §2.2's own program: the interpreter answers `E0109: every line of
+#     a `"""` literal must be indented at least to the closing
+#     delimiter's column (8) [gram.lex.str.multi]` where the page
+#     prints wolfc's E0104. §2.2's diagnostic block is therefore the
+#     compiler's rendering and says so in Appendix C's `Shown by`
+#     column, which is what that column is for. (D74 also retires an
+#     invented `E_BYTE_ORDER_MARK` on the interpreter's side; that is
+#     the ruling's word, not a reading taken here — no book page
+#     carries a BOM for either machine to answer.)
 # D57 discipline: this rev IS the tag, so the transcript stays clean.
 repo = "wolffe-lang/wolf-interp"
 rev = "294e75c1c9b9db8c7d65e0f346bd52407471210a"
