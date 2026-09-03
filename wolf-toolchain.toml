@@ -38,13 +38,18 @@
 #     byte against an int literal (E0401), 43 match-arm literals over a
 #     byte scrutinee (E0401), 6 `List[byte]` values handed to a
 #     `List[int]` parameter (E0401), and 2 `b as wrapping[i32]` casts
-#     outside the ruled bridge (E0805). wolf-lang#231 predicted 87 in
-#     13 files from its own tree; the extra sites are the two
-#     ch20-family casts, the six ch13 `find` arguments, and the arms a
-#     first-error-per-line count does not separate. Every one is healed
-#     in this sprint by the spelling the note names: `b as int` where
-#     the byte meets a number, `as byte` where a number goes back into
-#     a byte list.
+#     outside the ruled bridge (E0805). wolf-lang#231's release note
+#     says 87 in 13 of wolf-book's files, counted from that side; this
+#     is 98 in 17, counted here by compiling every program in the
+#     export tree at the new pin and reading the compiler's own
+#     diagnostics. The two are not reconciled site by site and no claim
+#     is made that they should be — a count taken by pattern over a
+#     repository and a count taken from a type-checker's output are
+#     different measurements. The one that governs this sprint is the
+#     one the compiler makes HERE, and it is 98, healed to zero: `b as
+#     int` where the byte meets a number, `List[byte]` where a
+#     signature followed the producer, `b as int as wrapping[i32]`
+#     where the width is not one the byte bridges to.
 #   * A READ CHARGES WHAT IT HOLDS. The same 64 KiB of octets that
 #     charged 1,048,560 ledger bytes at v0.2.3 charge 65,584 here (one
 #     list header plus the payload, minted at exact capacity), measured
