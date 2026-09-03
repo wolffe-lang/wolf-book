@@ -415,7 +415,7 @@ signature and not in a comment.
 **Exercise 13-11** *(extension · lupin)*. 13-5 searched a `str` with
 `str` slices. Do it a layer down, over bytes, and lend the haystack
 rather than handing it over: `find(hay, needle) -> int` takes two
-`List[int]` byte views and answers the first index where the needle
+`List[byte]` byte views and answers the first index where the needle
 starts, or `-1`. The window comparison belongs in its own function, so
 the slice happens inside a callee working on a view it does not own.
 Two questions: what does the caller still hold after the call, and how
@@ -424,7 +424,7 @@ many bytes does one window cost?
 Solution. `ch13/ex13-11.lu`:
 
 ```wolf
-fn matches_at(hay: List[int], needle: List[int], i: int) -> bool {
+fn matches_at(hay: List[byte], needle: List[byte], i: int) -> bool {
     let window = hay[i..i + needle.len]
     var k = 0
     while k < needle.len {
@@ -433,7 +433,7 @@ fn matches_at(hay: List[int], needle: List[int], i: int) -> bool {
     }
     true
 }
-fn find(hay: List[int], needle: List[int]) -> int {
+fn find(hay: List[byte], needle: List[byte]) -> int {
     if needle.len == 0 { return -1 }
     var i = 0
     while i + needle.len <= hay.len {

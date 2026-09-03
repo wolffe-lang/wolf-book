@@ -1,19 +1,26 @@
 # Appendix C — Diagnostics
 
 Every diagnostic the book shows, with the one-line summary the compiler's
-own catalog carries for it. The catalog holds 169 codes; these 48 are the
-ones a page in this edition prints. A code is stable: it identifies a
+own catalog carries for it. The catalog holds 169 codes; these 54 are the
+ones a page in this edition names. A code is stable: it identifies a
 rule, not a message, and `wolf --explain E1001` prints the whole entry
 for any of them (the summary, the reasoning, and the fix) whether or
 not this book shows it.
 
 The *Shown by* column names which implementation printed the text on the
-page. Both tools use the same codes for the same rules, so a code the
-book shows under one prompt is the same rule under the other. Where the
-column says `both`, some page shows both readings of it side by side.
+page — or, for a code a section names as a rule without printing its
+output, whose catalog the rule is quoted from. Both tools use the same
+codes for the same rules, so a code the book shows under one prompt is
+the same rule under the other. Where the column says `both`, some page
+shows both readings of it side by side.
 
 | Code | What it says | Shown by | Sections |
 |------|--------------|----------|----------|
+| `E0102` | unterminated string literal or interpolation | wolf | 2.2 |
+| `E0103` | a `"""` delimiter shares its line with text | wolf | 2.2 |
+| `E0104` | a multiline string line sits left of the margin | wolf | 2.2 |
+| `E0105` | margin tabs and spaces do not match the closing `"""` | wolf | 2.2 |
+| `E0107` | a stray character that fits no token | wolf | 2.3 |
 | `E0110` | a malformed `char` literal | wolf | 2.4 |
 | `E0201` | the parser expected a different token or construct here | both | 1.5, 4.1, 12.4, 14.1 |
 | `E0202` | an opening delimiter is never closed | both | 1.5, Notation |
@@ -67,10 +74,10 @@ column says `both`, some page shows both readings of it side by side.
 Two conventions run through that table. `E`-numbered codes stop
 the build or the run; `W`-numbered codes are advice, and the artifact is
 produced anyway (§27.5 shows a binary built over two warnings). And the
-families are blocked by hundreds: `E02xx` is the parser, `E03xx`
-resolution and modules, `E04xx` types, `E05xx` generics, `E06xx` error
-rows, `E07xx` comptime, `E08xx` exhaustiveness, `E10xx` memory, `E11xx`
-concurrency, `E13xx` the unsafe tier, `E15xx` packages.
+families are blocked by hundreds: `E01xx` is the lexer, `E02xx` the
+parser, `E03xx` resolution and modules, `E04xx` types, `E05xx` generics,
+`E06xx` error rows, `E07xx` comptime, `E08xx` exhaustiveness, `E10xx`
+memory, `E11xx` concurrency, `E13xx` the unsafe tier, `E15xx` packages.
 
 Warnings the book does not print but the compiler emits often enough to
 recognize: `W1001` (a region that never allocates) and `W1002` (a `mut`

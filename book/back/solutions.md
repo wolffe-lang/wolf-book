@@ -6375,7 +6375,7 @@ signature and not in a comment.
 **Exercise 13-11** *(extension · lupin)*. 13-5 searched a `str` with
 `str` slices. Do it a layer down, over bytes, and lend the haystack
 rather than handing it over: `find(hay, needle) -> int` takes two
-`List[int]` byte views and answers the first index where the needle
+`List[byte]` byte views and answers the first index where the needle
 starts, or `-1`. The window comparison belongs in its own function, so
 the slice happens inside a callee working on a view it does not own.
 Two questions: what does the caller still hold after the call, and how
@@ -6384,7 +6384,7 @@ many bytes does one window cost?
 Solution. `ch13/ex13-11.lu`:
 
 ```wolf
-fn matches_at(hay: List[int], needle: List[int], i: int) -> bool {
+fn matches_at(hay: List[byte], needle: List[byte], i: int) -> bool {
     let window = hay[i..i + needle.len]
     var k = 0
     while k < needle.len {
@@ -6393,7 +6393,7 @@ fn matches_at(hay: List[int], needle: List[int], i: int) -> bool {
     }
     true
 }
-fn find(hay: List[int], needle: List[int]) -> int {
+fn find(hay: List[byte], needle: List[byte]) -> int {
     if needle.len == 0 { return -1 }
     var i = 0
     while i + needle.len <= hay.len {
@@ -9034,9 +9034,9 @@ Solution. Both runs, one item and one number between them:
 ```console
 $ wolf interface ./tokens/tokens.lu
 module pkg :: (root)
-  wolfi v0 · toolchain 0.2.3 · edition v1
-  export_hash 5e861f2235ff8d9e79fd0403a4346ad0afe0693f0524822b644f83f234bd0ed0
-  pkg_hash    5e861f2235ff8d9e79fd0403a4346ad0afe0693f0524822b644f83f234bd0ed0
+  wolfi v0 · toolchain 0.2.4 · edition v1
+  export_hash 7dfddf994d80bf2a264e1d59fa0bf394beeb54cb839d39936ada4b28ad8654bc
+  pkg_hash    7dfddf994d80bf2a264e1d59fa0bf394beeb54cb839d39936ada4b28ad8654bc
   deps: (none)
   items:
     [0] pub split_words — fn split_words(text: str) -> prelude.List[str] · regions (-) -> ρ_caller

@@ -7,7 +7,7 @@ fn count_words(text: str) -> int {
     var n = 0
     var in_word = false
     for b in text.bytes() {
-        let inside = b != 32 && b != 10
+        let inside = b as int != 32 && b as int != 10
         if inside && !in_word { n += 1 }
         in_word = inside
     }

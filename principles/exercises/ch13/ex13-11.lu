@@ -1,7 +1,7 @@
 //! check: run(exit=0)
 //! phase: run
 // Exercise 13-11 solution: the substring scan over a lent byte view.
-fn matches_at(hay: List[int], needle: List[int], i: int) -> bool {
+fn matches_at(hay: List[byte], needle: List[byte], i: int) -> bool {
     let window = hay[i..i + needle.len]
     var k = 0
     while k < needle.len {
@@ -10,7 +10,7 @@ fn matches_at(hay: List[int], needle: List[int], i: int) -> bool {
     }
     true
 }
-fn find(hay: List[int], needle: List[int]) -> int {
+fn find(hay: List[byte], needle: List[byte]) -> int {
     if needle.len == 0 { return -1 }
     var i = 0
     while i + needle.len <= hay.len {
