@@ -1,0 +1,10 @@
+error[E0104]: this line starts left of the string's margin
+ --> ./s4.lu:7:1
+  |
+7 |       lost
+  | ^^^^^^ the line starts here
+8 |         """
+  | -------- the margin is set here
+  |
+  = note: the whitespace before the closing `"""` is the margin stripped from every content line.
+    Indent this line at least that far, or move the closing `"""` left.
