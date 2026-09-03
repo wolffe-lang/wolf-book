@@ -28,8 +28,9 @@ release-tier scanner of chapter 19 and the `wrapping[i32]` hash of
 chapter 20 all say `as int` where they meet a number, and read the same
 as they did.
 
-**Why bother, when a byte fits an integer sixteen times over?** Because
-the sixteen is the cost, and §8.9 now measures it instead of asserting
+**Why bother, when every octet fits an integer with seven bytes to
+spare?** Because those seven bytes are the price and they are not the
+whole of it, and §8.9 now measures the whole of it instead of asserting
 it. A region holding 65,536 octets charges 65,536 octets and one list
 header — the runtime knows the length before it allocates, so there is
 no growth history to pay for — and the same 65,536 values pushed into a
