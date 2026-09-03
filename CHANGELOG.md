@@ -10,12 +10,12 @@ through `255`, one byte of storage — and every builtin that hands you
 raw bytes now speaks it: `bytes()`, the file readers, the socket pair.
 Chapter 2 has had a section called "Bytes, honestly" since the first
 edition, and no byte in it. It has one now, taught where the reader is
-already counting them, with
-six numbers on the page doing the whole job: the widening cast that
-cannot fail, the narrowing one that keeps the low eight bits and never
-traps (`256 as byte` is `0`, `-1 as byte` is `255`), and `200 as byte`
-added to itself printing `400`, because arithmetic on a byte is an
-`int`'s arithmetic and nothing overflows eight bits by staying in them.
+already counting them, with ten numbers on three printed lines doing the
+whole job: the widening cast that cannot fail, the narrowing one that
+keeps the low eight bits and never traps (`256 as byte` is `0`, `-1 as
+byte` is `255`), and `200 as byte` added to itself printing `400`,
+because arithmetic on a byte is an `int`'s arithmetic and nothing
+overflows eight bits by staying in them.
 
 That is a breaking change and the book wore it. Ninety-eight refusals
 across seventeen files, measured at the new pin before a line was
