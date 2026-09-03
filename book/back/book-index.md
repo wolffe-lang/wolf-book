@@ -30,7 +30,9 @@ appendices, how to read them, Notation · arena, as the C construct 8.1, 8.2,
 ## B
 
 borrow, why the word is absent 7.3 · `bounds` (trap) 1.4, 1.5, 2.3, 5.4, 6.4
-· bump allocation 8.8 · bytes, strings counted in 2.3
+· bump allocation 8.8 · `byte` (type) 2.3 · `byte`, arithmetic widens 2.3 ·
+`byte`, casts 2.3 · byte order mark 2.3 · bytes, strings counted in 2.3 ·
+bytes, what a buffer of them charges 8.9
 
 ## C
 
@@ -56,7 +58,9 @@ exclusivity 7.4, 7.5 · `exclusivity` (trap) 7.5 · exercises, how they are
 numbered, Notation · exhaustiveness 3.4 · exit codes 1.5, Notation ·
 expressions, everything is one 3.2 · export hash 22.2
 
-`E0201` 1.5, 4.1, 12.4, 14.1 · `E0202` 1.5 · `E0301` 10.1 · `E0302` 22.1 ·
+`E0102` 2.2 · `E0103` 2.2 · `E0104` 2.2 · `E0105` 2.2 · `E0107` 2.3 ·
+`E0110` 2.4 · `E0201` 1.5, 4.1, 12.4, 14.1 · `E0202` 1.5 · `E0301` 10.1 ·
+`E0302` 22.1 ·
 `E0303` 22.2 · `E0304` 22.1 · `E0305` 22.1 · `E0401` 3.2, 4.1 · `E0410` 3.1
 · `E0412` 18.3 · `E0501` 5.3 · `E0602` 26.4, 26.5 · `E0701` 18.4, 24.2 ·
 `E0702` 18.4 · `E0703` 18.4 · `E0704` 18.4 · `E0705` 18.1 · `E0706` 18.1 ·
