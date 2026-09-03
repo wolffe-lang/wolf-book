@@ -2,6 +2,98 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs27 — 2026-09-03 — the scalar table grows
+
+The pins move to wolf v0.2.4 and lupin 0.1.24, and the language has a
+new scalar in it. A *byte* is one octet — eight bits, unsigned, `0`
+through `255`, one byte of storage — and every builtin that hands you
+raw bytes now speaks it: `bytes()`, the file readers, the socket pair.
+Chapter 2 was already called "Bytes, honestly" and had no byte in it.
+It has one now, taught where the reader is already counting them, with
+six numbers on the page doing the whole job: the widening cast that
+cannot fail, the narrowing one that keeps the low eight bits and never
+traps (`256 as byte` is `0`, `-1 as byte` is `255`), and `200 as byte`
+added to itself printing `400`, because arithmetic on a byte is an
+`int`'s arithmetic and nothing overflows eight bits by staying in them.
+
+That is a breaking change and the book wore it. Ninety-eight refusals
+across seventeen files, measured at the new pin before a line was
+touched: forty-seven comparisons of a byte against a number, forty-three
+`match` arms written as bare literals, six byte views handed to
+parameters that wanted integers, and two casts to a width the byte does
+not bridge to directly. Every one is one line, and every one is now the
+spelling the compiler's own note asks for. The word counters of chapter
+26, the RPN calculator of chapter 27 and its five exercise variants, the
+release-tier scanner of chapter 19 and the `wrapping[i32]` hash of
+chapter 20 all say `as int` where they meet a number, and read the same
+as they did.
+
+**Why bother, when a byte fits an integer sixteen times over?** Because
+the sixteen is the cost, and §8.9 now measures it instead of asserting
+it. A region holding 65,536 octets charges 65,536 octets and one list
+header — the runtime knows the length before it allocates, so there is
+no growth history to pay for — and the same 65,536 values pushed into a
+list of integers charge at least seven times that, and on the machine
+this printing was built on, sixteen. The section prints those as
+relations rather than as numbers, the way it prints every other ledger
+reading, and the sentence in its budget half that warned "a
+sixty-four-kilobyte buffer's worth of elements can charge a megabyte of
+ledger" now points at the measurement two paragraphs above it, which is
+exactly that megabyte.
+
+Chapter 2's multiline strings gained their refusals. §2.2 has stated
+three layout rules since the first edition and enforced none of them on
+the page; each has a code now, one rule per code, and the margin rule is
+printed in full because its rendering shows both ends of the comparison
+— the line that sits too far left, and the closing delimiter whose
+column decided how far that was. A `"""` that shares its line with text
+is one refusal whether it is the opening one or the closing one. And a
+tolerance worth knowing sits at the end of §2.3: a byte order mark at
+the very start of a source file is stripped and is never a diagnostic,
+so an editor that insists on writing one cannot break your build.
+Appendix C gains all five codes, and its count was re-measured rather
+than incremented — it claimed 48 while the table held 49, and it says 54
+over 54 now.
+
+**`samples-os.toml` holds no rows.** The file of per-host differences
+opened last sprint with six, four of which retired at the previous pin
+when Windows grew a task layer. The last two were never about a version:
+one compiler spelled the same project's paths two ways, `wolf add` and
+`wolf publish` printing the host's separator where every diagnostic in
+the same binary prints a slash. That is fixed at this release, and the
+Windows lane said so before anything was deleted — it failed both rows
+by name, as stale, and named the issue that had landed. The machinery
+stays and both directions stay enforced. An empty file is a measurement:
+every declared per-host difference this book has found has been answered
+by the toolchain.
+
+Two blocks in this edition run on the compiler alone and say so: the new
+byte-cast transcript and the new ledger reading. The reference
+interpreter's release predates the type, so it answers `65 as byte` with
+"nothing with this name is in scope" — probed at the bump in both
+directions rather than assumed, recorded in the pin file, and retiring at
+that project's next release. Neither block is skipped; both are executed
+and byte-compared on every lane that has a compiler.
+
+wolf also learned unix-domain sockets this release, and no page prints
+one, which is worth saying plainly: this edition has no network chapter
+and makes no socket call anywhere, so there is no list of transports for
+the family to join. It was measured on this host at the pin and recorded
+where the book keeps toolchain facts it does not teach. What it did
+retire is a stale sentence in chapter 11's own ledger, which had been
+explaining a design choice with "there is no network surface at this
+toolchain" long after there was one.
+
+The clause anchors grow 411 to 417 — four for the new scalar, two for
+the socket clause — with none dropped and none retargeted. The
+diagnostic catalogue does not move at all: this release re-ruled four
+codes and minted none. The grammar appendix regenerates to itself, since
+`byte` is a type name and not a keyword. Two version transcripts,
+chapter 22's interface stamp and chapter 25's publish record re-record
+as they do at every bump, and no printed diagnostic moved.
+
+The print edition sets to 513 pages, three more than the previous one.
+
 ## bs26 — 2026-09-02 — the rows retire, and the links come back
 
 The pins move to wolf v0.2.3 and lupin 0.1.23, and the headline is a
