@@ -8,8 +8,9 @@ The pins move to wolf v0.2.4 and lupin 0.1.24, and the language has a
 new scalar in it. A *byte* is one octet — eight bits, unsigned, `0`
 through `255`, one byte of storage — and every builtin that hands you
 raw bytes now speaks it: `bytes()`, the file readers, the socket pair.
-Chapter 2 was already called "Bytes, honestly" and had no byte in it.
-It has one now, taught where the reader is already counting them, with
+Chapter 2 has had a section called "Bytes, honestly" since the first
+edition, and no byte in it. It has one now, taught where the reader is
+already counting them, with
 six numbers on the page doing the whole job: the widening cast that
 cannot fail, the narrowing one that keeps the low eight bits and never
 traps (`256 as byte` is `0`, `-1 as byte` is `255`), and `200 as byte`
