@@ -6,10 +6,10 @@ against:
 
 ```console
 $ wolf --version
-wolf 0.2.3 (wolfgang, pin 3befc3e)
-paired with lupin 0.1.23 (reference interpreter), pin 8cda3aa
+wolf 0.2.4 (wolfgang, pin 982f857)
+paired with lupin 0.1.24 (reference interpreter), pin 3befc3e
 $ lupin --version
-lupin 0.1.23 (wolf-interp, reference interpreter at pin 8cda3aa)
+lupin 0.1.24 (wolf-interp, reference interpreter at pin 3befc3e)
 ```
 
 The two lines name the same interpreter release here, and that is worth
