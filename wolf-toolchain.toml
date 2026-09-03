@@ -110,55 +110,106 @@ rev = "982f857885b991e686c6b045de213d10cab013c1"
 impl_version = "0.2.4"
 
 [lupin]
-# wolf-interp at the v0.1.24 release tag (is35): the stamped line names
-# lupin 0.1.24 at pin 3befc3e. A lupin release's pin is the wolf-lang
-# revision it was built and differentially tested against; is35 released
-# against the v0.2.3 tag itself, so the pin is 3befc3e and not the
-# v0.2.4 sha this file pins above. The compiler's pairing line names
-# lupin 0.1.24 at that same 3befc3e, so both lines agree, as they have
-# since the 0.2.1 bump.
+# wolf-interp at the v0.1.25 release tag (is36): the stamped line names
+# lupin 0.1.25 at pin 982f857. A lupin release's pin is the wolf-lang
+# revision it was built and differentially tested against, and is36
+# released against the v0.2.4 TAG ITSELF — the same sha this file pins
+# for wolf above — so the interpreter names this book's compiler
+# exactly.
 #
-# THIS IS THE ONE BUMP WHERE THE PAIRING IS HONESTLY BEHIND, and the
-# book says so in the only place it can be measured — here. `byte`
-# reached the mirror at is35, but the type landed at s135 and its
-# producers at s136, both AFTER v0.1.24 was cut, so at this pin:
-#   * `65 as byte` is E0301 on the interpreter ("nothing with this name
-#     is in scope, so this cast names no target type"). Probed at the
-#     bump, both directions.
-#   * `b as int` over `s.bytes()` runs identically on both machines —
-#     which is why the whole 98-site heal is a two-machine heal and not
-#     one page went dark. The interpreter's `bytes()` still yields
-#     `int`s, and an `int as int` is the identity cast it looks like.
-#   * `let bs = s.bytes()` charges the interpreter's region ledger ZERO
-#     where the compiled tier charges 65,584 for 65,536 octets. Probed
-#     at the bump.
-# Two blocks in this sprint are therefore the compiler's lane alone and
-# are declared `wolf-run(…)` rather than `run(…)`: §2.3's cast
-# transcript and §8.9's byte-ledger reading. That is the lane bs09
-# opened for exactly this case — a program only one implementation
-# runs, executed and byte-compared, never skipped. Both return to
-# `run(…)` at the bump that takes is36.
+# THE TWO STAMPED LINES DISAGREE HERE, for the first time since the
+# 0.2.1 bump, and they disagree in the healthy direction. wolfc's
+# pairing line still reads `paired with lupin 0.1.24 (reference
+# interpreter), pin 3befc3e`, because v0.2.4 was cut before 0.1.25
+# existed; lupin's reads `pin 982f857`, which is v0.2.4. The colophon
+# has carried a sentence since the first edition saying that a printing
+# whose two lines differ by a release is ordinary; this is that
+# printing, so the sentence states the fact instead of anticipating it.
+# Both version transcripts re-record (ch01 §1.2 and the colophon) and
+# the wolf half of each is byte-identical to bs27's.
 #
-# What 0.1.24 otherwise carries, as the book meets it:
-#   * The refusal above is a RESOLVE refusal, not a cast refusal: the
-#     name `byte` reaches no type in the interpreter at this release,
-#     which is what E0301's own note says and what the probe measured.
-#     Whatever is36 released into the mirror, the book meets a machine
-#     that does not know the name.
-#   * D74's half rides is36 and is NOT in this release, measured on
-#     §2.2's own program: the interpreter answers `E0109: every line of
-#     a `"""` literal must be indented at least to the closing
-#     delimiter's column (8) [gram.lex.str.multi]` where the page
-#     prints wolfc's E0104. §2.2's diagnostic block is therefore the
-#     compiler's rendering and says so in Appendix C's `Shown by`
-#     column, which is what that column is for. (D74 also retires an
-#     invented `E_BYTE_ORDER_MARK` on the interpreter's side; that is
-#     the ruling's word, not a reading taken here — no book page
-#     carries a BOM for either machine to answer.)
+# THE BYTE LADDER LIGHTS. bs27 pinned an interpreter that answered
+# `65 as byte` with E0301 and put two of the book's blocks into the
+# compiler-only lane for exactly that reason. At this pin both run on
+# both machines, MEASURED here before either fence was touched:
+#   * §2.3's cast transcript is BYTE-IDENTICAL across the two —
+#     `65 65 200` / `255 0 44 255` / `400 66 66`, exit 0 under
+#     `wolf run byte.lu` and under `lupin byte.lu`. The fence
+#     graduates `wolf-run(…)` -> `run(…)`, and the page keeps ONE
+#     console block, because there is nothing to set side by side.
+#   * §8.9's byte-ledger reading answers `true` to all three relations
+#     on both. The fence graduates with it.
+#   Neither block was ever skipped, which is the point of the bs09
+#   lane: they were executed and byte-compared on one machine for one
+#   release and are executed on two now.
+#
+# THE UNITS BEHIND §8.9's RELATIONS, both machines, this host (macOS
+# aarch64), measured at this bump on the section's own program with the
+# numbers printed instead of the relations:
+#
+#           header   65,536 octets   the same as List[int]   pushed byte
+#   wolf        48          65,584               1,048,560       131,120
+#   lupin       32          65,568               2,097,120       131,120
+#
+# Every relation the page prints holds on both — the payload is held,
+# a header is the whole overhead, and `List[int]` charges at least
+# seven times the octets. The MULTIPLE is not a relation and is not the
+# same number: sixteen on the compiled tier and thirty-two on the
+# interpreted one, which is why §8.9 prints relations and why the
+# sentence that names sixteen now names whose sixteen it is. The
+# interpreter's own 0.1.25 note reports 131,120 for the push-grown byte
+# list, to the byte the same as native's; that agreement is a
+# coincidence of two arenas and is recorded, not claimed.
+#
+# wolf-interp#62 — THE DOMAIN IS NOT THE TYPE, and no page meets it.
+# `byte` resolves here and the casts hold, but `0..=255` is not
+# enforced dynamically: `(mut bs).push(256)` into a `List[byte]` stores
+# 256 and prints it, exit 0, where wolfc refuses E0401 by name with the
+# D72 teach-note. PREDICTED from the corpus before the suite was run:
+# ZERO of this book's samples can reach it. The book pushes into no
+# `List[byte]` anywhere — the one construction of one, §8.9's
+# `let e = List[byte]()`, is measured empty and never appended to — it
+# writes no `let b: byte = <int>` annotation, and passes a `List[byte]`
+# only to a parameter declared over it (13-11's substring search). So
+# the ONLY int-to-byte flows on any page are §2.3's four explicit
+# `as byte` casts, which #62 excludes by clause: it truncates to the low
+# eight bits and both machines agree on all four (255/0/44/255).
+# MEASURED: zero. The whole suite at this pin moved by exactly the two
+# version transcripts above and nothing else — 462 passed / 5 pending
+# / 0 failed / 0 flips before the heal, with the two console blocks
+# the only failures. The witness is recorded here rather than on a
+# page, because a program the compiler refuses is not one the book can
+# print. is37 is fixing it toward 0.1.26; no fence in this edition
+# waits on it.
+#
+# D74's INTERPRETER HALF IS IN. bs27 recorded that lupin answered
+# `E0109: every line of a `"""` literal must be indented at least to
+# the closing delimiter's column (8)` where §2.2's page prints wolfc's
+# E0104. Re-measured on §2.2's own program at this pin: lupin answers
+# `E0104: this line sits left of the margin …
+# [gram.lex.str.multi]`, on the same line as wolfc, with the code the
+# page prints. The two renderings still differ in wording, as they do
+# everywhere, so Appendix C's `Shown by` column still says `wolf` —
+# that column names who printed the text on the page and it is still
+# wolfc's text. What retires is the REASON bs27 gave for it.
+#
+# UNIX-DOMAIN SOCKETS REACH THE MIRROR (`[os.net.unix]`, #227). bs27
+# recorded the family as the compiler's alone. lupin serves it now,
+# measured on this host at this pin — `net_listen_unix` /
+# `net_connect_unix`, `net_accept`, the byte read/write pair, and a
+# listener `net_close` that unlinks its path (`unix served true |
+# echo true | roundtrip true`, exit 0, no socket left behind). The
+# `fs_*` half is still declined by design, which is what wolf-lang's
+# own `corpus/net/unix_echo.lu` uses to arrange its path, so that
+# witness stays the compiler's; the FAMILY does not. STILL NO PAGE
+# PRINTS ONE: this edition has no network chapter and makes no `net_*`
+# call anywhere. What the reading changes is ch11's ledger row, which
+# had been saying that a socket sample would have to be a `wolf-run`
+# fence.
 # D57 discipline: this rev IS the tag, so the transcript stays clean.
 repo = "wolffe-lang/wolf-interp"
-rev = "294e75c1c9b9db8c7d65e0f346bd52407471210a"
-version = "lupin 0.1.24 (wolf-interp, reference interpreter at pin 3befc3e)"
+rev = "ae341158c43e0b0219e346591293e24838a793f0"
+version = "lupin 0.1.25 (wolf-interp, reference interpreter at pin 982f857)"
 
 [wolf-lsp]
 # Source of the vendored tmLanguage grammars under highlight/.
