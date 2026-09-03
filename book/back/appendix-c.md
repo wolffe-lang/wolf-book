@@ -75,9 +75,9 @@ Two conventions run through that table. `E`-numbered codes stop
 the build or the run; `W`-numbered codes are advice, and the artifact is
 produced anyway (§27.5 shows a binary built over two warnings). And the
 families are blocked by hundreds: `E01xx` is the lexer, `E02xx` the
-parser, `E03xx` resolution and modules, `E04xx` types, `E05xx` generics, `E06xx` error
-rows, `E07xx` comptime, `E08xx` exhaustiveness, `E10xx` memory, `E11xx`
-concurrency, `E13xx` the unsafe tier, `E15xx` packages.
+parser, `E03xx` resolution and modules, `E04xx` types, `E05xx` generics,
+`E06xx` error rows, `E07xx` comptime, `E08xx` exhaustiveness, `E10xx`
+memory, `E11xx` concurrency, `E13xx` the unsafe tier, `E15xx` packages.
 
 Warnings the book does not print but the compiler emits often enough to
 recognize: `W1001` (a region that never allocates) and `W1002` (a `mut`
