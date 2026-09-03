@@ -5,7 +5,7 @@ fn number(tok: str) -> int ! {NotNumber(Bad)} {
     if body.is_empty() { return NotNumber(Bad { token: tok }) }
     var n = 0
     for b in body.bytes() {
-        if b < 48 || b > 57 { return NotNumber(Bad { token: tok }) }
+        if b as int < 48 || b as int > 57 { return NotNumber(Bad { token: tok }) }
         n = n * 10 + (b - 48)
     }
     if tok.starts_with("-") { 0 - n } else { n }
@@ -13,7 +13,7 @@ fn number(tok: str) -> int ! {NotNumber(Bad)} {
 
 fn is_operator(tok: str) -> bool {
     if tok.len != 1 { return false }
-    let b = tok.bytes()[0]
+    let b = tok.bytes()[0] as int
     b == 43 || b == 45 || b == 42 || b == 47
 }
 
@@ -26,7 +26,7 @@ fn eval(line: str) -> int ! {NotNumber(Bad), Unknown(Bad), Empty, DivZero} {
             if stack.len < 2 { return Empty }
             let b = (mut stack).pop() else { return Empty }
             let a = (mut stack).pop() else { return Empty }
-            let r = match tok.bytes()[0] {
+            let r = match tok.bytes()[0] as int {
                 43 => a + b,
                 45 => a - b,
                 42 => a * b,

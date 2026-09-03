@@ -7,8 +7,8 @@ fn tally(text: str) -> Tally {
     var inword = false
     for b in text.bytes() {
         t.bytes += 1
-        if b == 10 { t.lines += 1 }
-        match b {
+        if b as int == 10 { t.lines += 1 }
+        match b as int {
             32 | 9 | 10 => { inword = false },
             _ => {
                 if !inword {
