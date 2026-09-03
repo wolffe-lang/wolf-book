@@ -69,8 +69,10 @@ stays and both directions stay enforced. An empty file is a measurement:
 every declared per-host difference this book has found has been answered
 by the toolchain.
 
-Two blocks in this edition run on the compiler alone and say so: the new
-byte-cast transcript and the new ledger reading. The reference
+Two of this sprint's blocks run on the compiler alone and say so — the
+book has had that lane since bs09, for exactly the programs one
+implementation runs: the new byte-cast transcript and the new ledger
+reading. The reference
 interpreter's release predates the type, so it answers `65 as byte` with
 "nothing with this name is in scope" — probed at the bump in both
 directions rather than assumed, recorded in the pin file, and retiring at
