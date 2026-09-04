@@ -8,9 +8,9 @@ The compiler does not move this sprint. The interpreter does, from lupin
 0.1.24 to 0.1.25, and what it brings is the half of last sprint's
 release that had not reached it yet: `byte`. One release ago this book
 taught a scalar that only one of its two machines could read, and it
-said so on the page rather than quietly running the blocks once. Both
-machines read it now, and the two blocks that were waiting are executed
-on both.
+wrote that down where it records what it measured rather than quietly
+running the blocks once. Both machines read it now, and the two blocks
+that were waiting are executed on both.
 
 **§2.3's byte transcript is byte-identical across the pair.** `65 65
 200`, `255 0 44 255`, `400 66 66`, exit 0, under `wolf run byte.lu` and
@@ -19,15 +19,14 @@ was touched. So the page shows one transcript and not two, which is the
 book's rule for a program whose machines agree, and the fence moves out
 of the compiler-only lane into the shape §2.4 has used for `char` since
 bs17: the interpreter runs the program, the compiler runs the console
-block beside it, and both readings have to match the same six lines. The
-same graduation happens two hundred pages later, where §8.9's byte-
-ledger reading answers `true` to all three of its relations on the
-interpreter too.
+block beside it, and both readings have to match the same three printed
+lines. The same graduation happens two hundred pages later, where
+§8.9's byte-ledger reading answers `true` to all three of its relations
+on the interpreter too.
 
 A third fence went with them, and it is older than the byte. Chapter
-4's trap-abandons-your-defers program has printed `counting` and
-`drawer locked` under the compiler since the book had a compiler, and
-its paragraph has said "both machines do this now" since the
+4's trap-abandons-your-defers program has been the compiler's block,
+and its paragraph has said "both machines do this now" since the
 interpreter's divergence was fixed — but nothing was checking the
 second machine. It is checked now: lupin names the same `assert` and
 exits `3` where the compiler exits `134`, which is the per-machine
@@ -55,11 +54,12 @@ existed, so `wolf --version` still reports being paired with lupin
 stamp, to the exact compiler revision this book pins. The colophon has
 carried a sentence since the first edition saying a printing whose two
 lines differ by a release is ordinary; this is that printing, so the
-sentence states the fact rather than anticipating it, and §1.2 gains
-three lines telling the reader how to read a pair that disagrees. Those
-two transcripts are the whole of the bump's blast radius: 462 passed, 5
-pending, 0 failed and 0 flips at the raw new pin, with the version
-blocks the only two failures, and nothing else in the book moved.
+sentence states the fact rather than anticipating it, and §1.2 gains a
+paragraph telling the reader how to read a pair that disagrees. Those
+two transcripts are the whole of the bump's blast radius: at the raw
+new pin, before a line was healed, the suite reported 462 passed, 5
+pending, 2 failed and 0 flips — and the two failures were those two
+blocks. Nothing else in the book moved.
 
 **A gap in the interpreter that no page can reach.** lupin 0.1.25 has
 the byte type but not its domain: `push(256)` into a `List[byte]`

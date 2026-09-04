@@ -175,9 +175,10 @@ impl_version = "0.2.4"
 # `as byte` casts, which #62 excludes by clause: it truncates to the low
 # eight bits and both machines agree on all four (255/0/44/255).
 # MEASURED: zero. The whole suite at this pin moved by exactly the two
-# version transcripts above and nothing else — 462 passed / 5 pending
-# / 0 failed / 0 flips before the heal, with the two console blocks
-# the only failures. The witness is recorded here rather than on a
+# version transcripts above and nothing else — at the raw bump, before
+# a line was healed, `cargo xtask samples` on this host reported 462
+# passed / 5 pending / 2 failed / 0 flips, and both failures were those
+# console blocks. The witness is recorded here rather than on a
 # page, because a program the compiler refuses is not one the book can
 # print. is37 is fixing it toward 0.1.26; no fence in this edition
 # waits on it.
