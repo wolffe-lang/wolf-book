@@ -2,6 +2,93 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs28 — 2026-09-03 — the ladder lights
+
+The compiler does not move this sprint. The interpreter does, from lupin
+0.1.24 to 0.1.25, and what it brings is the half of last sprint's
+release that had not reached it yet: `byte`. One release ago this book
+taught a scalar that only one of its two machines could read, and it
+said so on the page rather than quietly running the blocks once. Both
+machines read it now, and the two blocks that were waiting are executed
+on both.
+
+**§2.3's byte transcript is byte-identical across the pair.** `65 65
+200`, `255 0 44 255`, `400 66 66`, exit 0, under `wolf run byte.lu` and
+under `lupin byte.lu` alike — measured at the bump, before the fence
+was touched. So the page shows one transcript and not two, which is the
+book's rule for a program whose machines agree, and the fence moves out
+of the compiler-only lane into the shape §2.4 has used for `char` since
+bs17: the interpreter runs the program, the compiler runs the console
+block beside it, and both readings have to match the same six lines. The
+same graduation happens two hundred pages later, where §8.9's byte-
+ledger reading answers `true` to all three of its relations on the
+interpreter too.
+
+A third fence went with them, and it is older than the byte. Chapter
+4's trap-abandons-your-defers program has printed `counting` and
+`drawer locked` under the compiler since the book had a compiler, and
+its paragraph has said "both machines do this now" since the
+interpreter's divergence was fixed — but nothing was checking the
+second machine. It is checked now: lupin names the same `assert` and
+exits `3` where the compiler exits `134`, which is the per-machine
+status D60 rules and the same kind either way. Three fences into the
+two-machine form, and one printed block is left that the compiler runs
+alone: chapter 30's parallel grep, which writes files. The exercise
+corpus keeps eight more, five of them comptime folds the interpreter
+declines by design and three of them chapter 30's.
+
+**A price with two numbers is a relation, not a number.** §8.9's byte
+ledger exists to prove that holding octets as `int`s costs real memory,
+and it prints relations because the units belong to whichever arena you
+ran in. Running it on a second arena is what makes that argument
+visible instead of merely stated: the same 65,536 octets that charge
+65,584 ledger bytes compiled charge 65,568 interpreted, and the same
+values pushed into a `List[int]` charge sixteen times the octets on one
+machine and thirty-two on the other. All three printed relations hold
+on both. The section names both multiples now, and §2.3's one-sentence
+version of the argument stops quoting a single machine's sixteen.
+
+**The two version lines no longer name the same interpreter, and that
+is fine.** The compiler was tagged before this interpreter release
+existed, so `wolf --version` still reports being paired with lupin
+0.1.24 while `lupin --version` reports 0.1.25 — pinned, in its own
+stamp, to the exact compiler revision this book pins. The colophon has
+carried a sentence since the first edition saying a printing whose two
+lines differ by a release is ordinary; this is that printing, so the
+sentence states the fact rather than anticipating it, and §1.2 gains
+three lines telling the reader how to read a pair that disagrees. Those
+two transcripts are the whole of the bump's blast radius: 462 passed, 5
+pending, 0 failed and 0 flips at the raw new pin, with the version
+blocks the only two failures, and nothing else in the book moved.
+
+**A gap in the interpreter that no page can reach.** lupin 0.1.25 has
+the byte type but not its domain: `push(256)` into a `List[byte]`
+stores 256 and prints it, where the compiler refuses the same line by
+name. That is filed as wolf-interp#62 and it was predicted to touch
+nothing here before the suite was run — this book pushes into no
+`List[byte]` anywhere, annotates no `byte` from an integer, and hands a
+`List[byte]` only to a parameter declared over one, so the only
+integer-to-byte flows on any page are §2.3's four explicit casts, which
+truncate by clause and agree on both machines. Measured after: nothing.
+A program the compiler refuses is not one this book can print, which is
+why the gap is recorded in the pin file and on no page.
+
+Two more claims narrow because a second machine can finally be asked.
+D74's string-layout codes reached the interpreter with this release, so
+lupin answers `E0104` on §2.2's own program where it answered an
+invented `E0109` one release ago — the same line, the same code the
+page prints, in its own words. Appendix C still says the block was
+shown by the compiler, because it was; the reason last sprint gave for
+that has retired. And chapter 11's connection-pool row, which lost its
+premise last sprint when the toolchain grew a network surface, loses
+its replacement clause here: the interpreter serves the unix-domain
+family too, measured on this host — listen, connect, accept, the byte
+read and write pair, and a listener close that unlinks its own path.
+The row stays open on the editorial call it has always rested on: this
+edition has no network chapter, and no page makes a socket call.
+
+The print edition holds at 513 pages.
+
 ## bs27 — 2026-09-03 — the scalar table grows
 
 The pins move to wolf v0.2.4 and lupin 0.1.24, and the language has a
