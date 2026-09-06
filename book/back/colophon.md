@@ -6,25 +6,26 @@ against:
 
 ```console
 $ wolf --version
-wolf 0.2.4 (wolfgang, pin 982f857)
-paired with lupin 0.1.24 (reference interpreter), pin 3befc3e
+wolf 0.2.5 (wolfgang, pin 6ade878)
+paired with lupin 0.1.26 (reference interpreter), pin 982f857
 $ lupin --version
-lupin 0.1.25 (wolf-interp, reference interpreter at pin 982f857)
+lupin 0.1.26 (wolf-interp, reference interpreter at pin 982f857)
 ```
 
-The two lines name different interpreter releases here, and that is
-worth a sentence rather than a correction. Each tool reports the
-revision of the other it was differentially tested against, the two
-releases are cut on their own schedules, and a printing whose lines
-differ by one of them is ordinary. This is one. The compiler was tagged
-before this interpreter existed, so it names the release before this
-one; the interpreter was built and tested against this exact compiler,
-so its pin is the sha on the line above it. §1.2 teaches the reader to
-read the pair either way. This page prints them as they are. The
-compiler's first line is also this page's proof: a build made exactly at
-its release tag prints the bare version and the commit it was built
-from, and any other build names itself `+dev.<commit>` instead, so the
-line above is a claim only the release binary can make.
+The two lines name the same interpreter release here, and the shas
+under them do not. That is worth a sentence rather than a correction.
+Each tool reports the revision of the other it was differentially
+tested against, the two releases are cut on their own schedules, and a
+printing whose halves are a release apart is ordinary. This is one, and
+the lag is on the sha: the compiler was tagged after this interpreter
+existed and names it exactly, while the interpreter was tested against
+the compiler before this one, so the `982f857` it carries is the
+previous tag and not the line above it. §1.2 teaches the reader to read
+the pair either way. This page prints them as they are. The compiler's
+first line is also this page's proof: a build made exactly at its
+release tag prints the bare version and the commit it was built from,
+and any other build names itself `+dev.<commit>` instead, so the line
+above is a claim only the release binary can make.
 
 The exact revisions (the compiler, the interpreter, and the wolf
 grammar vendored from wolf-lsp) are recorded in `wolf-toolchain.toml`

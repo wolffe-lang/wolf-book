@@ -1187,3 +1187,36 @@ sprint files remain the implementation contracts for everything else.
   exercise batch stays unprinted: every §25.3 stem leans on a held
   subject (25-6 on §25.2's grading and the hosted registry, 25-7 on
   §23.2's MVS).
+- **bs29 (the serving loop has no chapter, 2026-09-06):** wolf v0.2.5
+  gives the toolchain `net_wait`, `net_listen_with`, `os_spawn_with` /
+  `net_adopt_listener` and `os_cpus`, and with them the argument a
+  serving loop is written from: a loop that WAITS costs about what a
+  program that only sleeps costs, and a loop that LOOKS — a short
+  deadline on the listener, another on every open connection, around
+  and around — is descheduled about fifteen hundred times in five idle
+  seconds to learn that nothing happened (measured on this repository's
+  own probe at this pin; the numbers are in `wolf-toolchain.toml` and
+  in ch11's ledger). bs29's contract asked for that paragraph and this
+  ToC has no chapter to put it in. **The nearest section is §12.2's
+  "The million idle connections", and it is deliberately not the
+  home.** That section asks what an idle connection costs and answers
+  it about the concurrency runtime — an arm in a wait set is a
+  registration, not a task — over channels and timers, and it closes by
+  handing throughput and latency to Part 4 by name. `net_wait` is the
+  same argument about a different machine: it is what a program that
+  spawns nothing has instead of a scheduler. Writing it into §12.2
+  would put this edition's first socket call three sections after
+  `select`, in a chapter that teaches no transport, and the honest
+  ordering is a transport first and a serving loop after it. So the
+  paragraph is ROUTED here and not written: it belongs to whatever
+  chapter this book eventually gives the network, which is the same
+  editorial call chapter 11's connection-pool row has rested on since
+  bs27 and which no lane has made. Nothing in this ToC moves at bs29.
+  Two consequences a future author should not have to rediscover:
+  §12.2's closing sentence ("those are measurements, and Part 4 is
+  where the book makes claims it can measure") is now a promise the
+  toolchain can keep, and Appendix D's document table — corrected at
+  this sprint from seven documents to the eleven the specification has
+  — is the only route this edition gives a reader to the OS surface,
+  because there is no builtin reference appendix and no plan for one in
+  these pages.

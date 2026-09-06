@@ -2,6 +2,97 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs29 — 2026-09-06 — the cores land outside the book
+
+Both halves of the toolchain move this sprint, the compiler to v0.2.5
+and the interpreter to lupin 0.1.26, and between them they close the one
+gap the previous printing recorded and open a surface no page in this
+edition can reach. The suite does not move at all: 462 passed, 5
+pending, 0 failed, 0 flips, the same reading as at the pins before it.
+
+**The byte's domain is a rule on both machines now.** Last printing
+recorded a hole with no page in it: lupin had the `byte` type and not
+its range, so `push(256)` into a `List[byte]` stored 256 and printed it
+where the compiler refused the same line by name. lupin 0.1.26 refuses
+it — `E0401`, at the `256` and not at the list it was going into, the
+same column the compiler underlines — and the prediction that went with
+the hole is re-run at its closing rather than recalled, because a gap
+closing can move a page as easily as a gap opening. The corpus reason
+is unchanged: this book pushes into no `List[byte]` anywhere, writes no
+`byte` annotation over an integer, and hands a `List[byte]` only to a
+parameter declared over one, so the only int-to-byte flows on any page
+are §2.3's explicit casts, which the rule excludes by clause. Predicted
+zero at the opening, measured zero. Predicted zero at the closing,
+measured zero.
+
+**The release's headline lands entirely outside this book, and that is
+the sprint's finding.** v0.2.5 is the release where a server becomes a
+program you can write in wolf: `net_wait` waits on a whole set of
+sockets at once, `net_listen_with` lets several processes hold one
+address, `os_spawn_with` and `net_adopt_listener` hand a listener down
+to a child, and `os_cpus` says how many hands the machine will actually
+schedule. Five clauses, and not one printed page. This edition makes no
+socket call and no process call anywhere: three operating-system
+builtins are executed on any page — `fs_read_text` and `fs_write_text`
+in Part 5's projects, and a `net_fetch` that appears three times and is
+refused all three — and three more are named in an answer and never
+run. So the surface is recorded where this book records a toolchain
+fact it does not teach, in the pin file, and Appendix D is corrected so
+that a reader has somewhere to go for it.
+
+**A loop that waits against a loop that looks, measured here and
+printed nowhere.** The argument behind `net_wait` is the one a serving
+loop is written from, and it was measured on this repository's own
+programs rather than quoted from the release: hold one connection open
+and idle for five seconds, and a loop that time-slices a 25 ms deadline
+on the listener and a 12 ms one on the connection makes 130 passes and
+is descheduled about 1,560 times to learn that nothing happened, where
+one `net_wait` over the same two handles makes one pass and is
+descheduled about ten times — which is what a program that only sleeps
+for those five seconds costs. **No chapter in this edition holds that
+paragraph.** The nearest is §12.2's "The million idle connections",
+which asks exactly this question and answers it about the concurrency
+runtime, over channels and timers, and hands throughput to Part 4 by
+name; `net_wait` is the same argument about a different machine, the
+one a program that spawns nothing uses instead of a scheduler, and
+writing it there would put this book's first socket call three sections
+after `select` in a chapter that teaches no transport. The paragraph is
+routed rather than written — to whatever chapter this book eventually
+gives the network, which is the editorial call chapter 11's ledger has
+carried since bs27 and which this sprint does not make.
+
+**Appendix D said the specification is seven documents.** It has been
+eleven for the whole of the 0.2 line. The four that were missing are
+Packages, Constant-Time, Types and the OS surface, and the last of
+those is where every call named above is ruled, so the one route this
+book gives a reader out of its own pages and into the normative text
+did not reach the release's whole subject. The table names all eleven
+now, and says plainly that there is no builtin reference in this book
+and no appendix that lists the surface.
+
+**The two version lines name one interpreter again, and the lag has
+moved onto the sha.** Last printing they disagreed by name: the
+compiler said `paired with lupin 0.1.24` while the interpreter beside
+it was 0.1.25. This compiler was tagged after this interpreter existed,
+so it names it exactly, pin clause and all — and the interpreter, cut
+first, was tested against the compiler before this one, so the sha it
+carries is the previous tag rather than the line above it. A pair one
+release apart is the ordinary case and it can lag on either side. Both
+transcripts re-record, and the colophon and §1.2 say which side it is
+on this time.
+
+Those two version blocks are two of the four the pin move touched. The
+other two are stamps that carry the toolchain version by construction:
+chapter 22's `wolf interface` output and chapter 25's publish record,
+with 22-13's pair of runs re-measured beside them. Nothing else in the
+book moved, no diagnostic snapshot re-records, the diagnostic catalog
+holds at 169 codes identical line for line, and the grammar is
+byte-identical, so Appendix A regenerates to itself. The clause anchors
+grow 417 to 422 — the five the new calls are ruled by — with nothing
+dropped and nothing retargeted.
+
+The print edition holds at 513 pages.
+
 ## bs28 — 2026-09-03 — the ladder lights
 
 The compiler does not move this sprint. The interpreter does, from lupin
