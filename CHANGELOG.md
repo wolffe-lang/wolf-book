@@ -34,8 +34,9 @@ to a child, and `os_cpus` says how many hands the machine will actually
 schedule. Five clauses, and not one printed page. This edition makes no
 socket call and no process call anywhere: three operating-system
 builtins are executed on any page — `fs_read_text` and `fs_write_text`
-in Part 5's projects, and one `net_fetch` that is there to be refused —
-and three more are named in an answer and never run. So the surface is
+in Part 5's projects, and a `net_fetch` that appears three times and is
+refused all three — and three more are named in an answer and never
+run. So the surface is
 recorded where this book records a toolchain fact it does not teach,
 in the pin file, and Appendix D is corrected so that a reader has
 somewhere to go for it.

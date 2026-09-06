@@ -29,14 +29,14 @@ The last of those is where to go for something this edition does not
 teach. Files, processes, sockets, and the core count a program asks the
 machine for are one document, and the book reaches three of its calls:
 `fs_read_text` and `fs_write_text`, which the projects of Part 5 read
-their inputs with, and one `net_fetch` that is on the page to be
-refused (§18.4, §24.3). Three more are named in an answer and never
-run, in 26-6's. There is no builtin reference in this book and no
-appendix that lists the surface, so a program that wants to listen on
-an address, share that listener across processes, wait on a set of
-sockets, or ask how many cores it may be scheduled on is reading
-`os.net.listen.opts`, `os.proc.inherit`, `os.net.wait` and `os.cpus`,
-and it is reading them in document 11.
+their inputs with, and a `net_fetch` that is on the page only to be
+refused — §18.4's block and exercises 18-7c and 24-4, E0701 every time.
+Three more are named in an answer and never run, in 26-6's. There is no
+builtin reference in this book and no appendix that lists the surface,
+so a program that wants to listen on an address, share that listener
+across processes, wait on a set of sockets, or ask how many cores it
+may be scheduled on is reading `os.net.listen.opts`, `os.proc.inherit`,
+`os.net.wait` and `os.cpus`, and it is reading them in document 11.
 
 ## Book section to clause
 

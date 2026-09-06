@@ -26,10 +26,12 @@
 #     `[os.cpus]`). This edition makes no `os_*` call and no socket
 #     call anywhere. Counted over the export tree at this bump, THREE
 #     os-tier builtins are executed on any page: `fs_write_text` 14,
-#     `fs_read_text` 10, and `net_fetch` 4 — and every `net_fetch` is
-#     there to be stopped, three refused at typecheck by E0701 (§18.4,
-#     ex18-7c, ex24-4) and the fourth being the program §24.3's
-#     `wolf audit` catches. Three more are NAMED and never run, in
+#     `fs_read_text` 10, and `net_fetch` 4 — four samples over THREE
+#     distinct programs, every one of them a refusal at typecheck,
+#     E0701: §18.4's page block, ex18-7c, and 24-4, whose stem is
+#     extracted from the chapter as well as from the exercise corpus,
+#     which is where the fourth sample comes from. Three more are
+#     NAMED and never run, in
 #     26-6's discussion answer (`fs_open`, `fs_read`, `fs_close`). So
 #     the release's headline surface lands entirely outside the book,
 #     and this file is where it is recorded.
