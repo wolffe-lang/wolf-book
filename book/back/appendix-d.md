@@ -6,7 +6,10 @@ is how you find the normative text behind it. Clause anchors are stable, so
 a tag printed by a tool in your terminal is findable in the spec even when
 the tool's wording changes.
 
-The specification is seven documents:
+The specification is eleven documents. The table below this one cites
+four of them; all eleven are listed, because a tag can reach you from a
+tool's own output rather than from a page here, and it has to be
+findable either way.
 
 | Document | Anchors |
 |----------|---------|
@@ -17,6 +20,23 @@ The specification is seven documents:
 | 05. Conformance | `conf.*` |
 | 06. Differential Protocol | `proto.*` |
 | 07. Schedule Points | `sched.*` |
+| 08. Packages | `pkg.*` |
+| 09. Constant-Time | `ct.*` |
+| 10. Types | `type.*` |
+| 11. OS Surface | `os.*` |
+
+The last of those is where to go for something this edition does not
+teach. Files, processes, sockets, and the core count a program asks the
+machine for are one document, and the book reaches three of its calls:
+`fs_read_text` and `fs_write_text`, which the projects of Part 5 read
+their inputs with, and one `net_fetch` that is on the page to be
+refused (§18.4, §24.3). Three more are named in an answer and never
+run, in 26-6's. There is no builtin reference in this book and no
+appendix that lists the surface, so a program that wants to listen on
+an address, share that listener across processes, wait on a set of
+sockets, or ask how many cores it may be scheduled on is reading
+`os.net.listen.opts`, `os.proc.inherit`, `os.net.wait` and `os.cpus`,
+and it is reading them in document 11.
 
 ## Book section to clause
 
