@@ -1187,7 +1187,7 @@ sprint files remain the implementation contracts for everything else.
   exercise batch stays unprinted: every §25.3 stem leans on a held
   subject (25-6 on §25.2's grading and the hosted registry, 25-7 on
   §23.2's MVS).
-- **bs29 (the serving loop has no chapter, 2026-09-05):** wolf v0.2.5
+- **bs29 (the serving loop has no chapter, 2026-09-06):** wolf v0.2.5
   gives the toolchain `net_wait`, `net_listen_with`, `os_spawn_with` /
   `net_adopt_listener` and `os_cpus`, and with them the argument a
   serving loop is written from: a loop that WAITS costs about what a
