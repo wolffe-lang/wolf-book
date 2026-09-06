@@ -36,10 +36,9 @@ socket call and no process call anywhere: three operating-system
 builtins are executed on any page — `fs_read_text` and `fs_write_text`
 in Part 5's projects, and a `net_fetch` that appears three times and is
 refused all three — and three more are named in an answer and never
-run. So the surface is
-recorded where this book records a toolchain fact it does not teach,
-in the pin file, and Appendix D is corrected so that a reader has
-somewhere to go for it.
+run. So the surface is recorded where this book records a toolchain
+fact it does not teach, in the pin file, and Appendix D is corrected so
+that a reader has somewhere to go for it.
 
 **A loop that waits against a loop that looks, measured here and
 printed nowhere.** The argument behind `net_wait` is the one a serving
