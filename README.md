@@ -5,12 +5,13 @@ to look like a printed page. The single-file markdown and the PDF come
 from the same source and inherit the same decisions.
 `principles/DESIGN.md` is the binding contract.
 
-28 of the 32 chapters are written. Four are reserved: chapters 19 and 20
-need a benchmark instrument the toolchain does not ship, chapter 25
-needs an edition mechanism and a publish client, and chapter 29 needs
-`Pool` and `handle` to execute on one lane. Each of the four says so on
-its own page. Chapters 13, 21 and 23 each reserve sections for the same
-kind of reason.
+29 of the 33 chapters are written. Chapter 29 is reserved whole — it
+needs `Pool` and `handle` to execute on one lane — and says so on its
+own page; chapters 13, 21, 23 and 25 each reserve sections for the same
+kind of reason. Chapter 33 is the book's newest and sits at the end of
+part 4 with a number out of order, because section numbers are
+permanent anchors and a late chapter takes the next free number instead
+of moving thirty others (`principles/TOC.md` §Deltas, bs30).
 
 Code samples are [GPL-3.0-or-later](LICENSE) with the [wolf Runtime
 Library Exception](LICENSE-EXCEPTION), matching the runtime, so code you

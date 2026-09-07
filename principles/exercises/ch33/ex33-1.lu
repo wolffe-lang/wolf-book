@@ -1,0 +1,27 @@
+//! check: run(exit=0, stdout="shelves: unknown")
+//! phase: run
+// Exercise 33-1: the cold open, asking for a title the shelf does not
+// hold. `words_in` has one answer for that and it is a string, not a
+// row: the shelf is complete, so a miss is data rather than an error.
+struct Doc { title: str, words: int }
+fn words_in(docs: List[Doc], title: str) -> str {
+    for d in docs {
+        if d.title == title { return "{d.words}" }
+    }
+    "unknown"
+}
+fn main() -> !int {
+    var docs = List[Doc]()
+    (mut docs).push(Doc { title: "regions", words: 900 })
+    let door = net_listen("127.0.0.1:0")?
+    let caller = net_connect("127.0.0.1:{net_port(door)?}")?
+    net_write(caller, "shelves")?
+    let conn = net_accept(door)?
+    let ask = net_read(conn, 64)?
+    net_write(conn, words_in(docs, ask))?
+    print("{ask}: {net_read(caller, 64)?}")
+    net_close(conn)?
+    net_close(caller)?
+    net_close(door)?
+    0
+}

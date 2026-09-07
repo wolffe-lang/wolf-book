@@ -1,0 +1,22 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 33-2: §33.2's program with the accept removed. The door is
+// still holding the connection, so the last wait names it again:
+// readiness follows the socket's state, and nothing was consumed by
+// looking at it three times.
+fn main() -> !int {
+    let door = net_listen("127.0.0.1:0")?
+    var watched = List[int]()
+    (mut watched).push(door)
+
+    print("nobody there: {net_wait(watched, 20)?.len} ready")
+    let caller = net_connect("127.0.0.1:{net_port(door)?}")?
+    let ready = net_wait(watched, 5000)?
+    print("someone there: {ready.len} ready, and it is the door: {ready[0] == door}")
+    print("looking took nothing: {net_wait(watched, 0)?.len} still ready")
+    print("still nobody took it: {net_wait(watched, 20)?.len} ready")
+
+    net_close(caller)?
+    net_close(door)?
+    0
+}

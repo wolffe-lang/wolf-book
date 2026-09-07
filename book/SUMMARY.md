@@ -39,6 +39,7 @@
 - [Packages and dependencies](ch23.md)
 - [The covenant: no build scripts](ch24.md)
 - [Editions, stability, publishing](ch25.md)
+- [The serving loop](ch33.md)
 
 # Part 5 — Projects
 
