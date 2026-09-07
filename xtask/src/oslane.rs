@@ -52,6 +52,14 @@ pub struct Refusal {
     pub exit: i32,
     /// The refusal sentence, verbatim — the whole of stderr.
     pub stderr: String,
+    /// The whole of stdout, verbatim, when the refusal reaches the
+    /// program as a D30 ROW instead of a driver message: `main`
+    /// propagating one prints `error: <tag>` there and exits 1, and
+    /// stderr stays empty, so a row that declared only stderr would
+    /// pin an exit code and none of the words. Omitted where the
+    /// refusal is a driver message and stdout carries nothing.
+    #[serde(default)]
+    pub stdout: Option<String>,
     /// The release expected to end this row.
     pub retires: String,
     /// Why, dated, in the book's voice.

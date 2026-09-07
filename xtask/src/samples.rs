@@ -50,6 +50,13 @@ struct Outcome {
     /// That process's stderr, verbatim — what a declared refusal in
     /// `samples-os.toml` is compared against.
     stderr: String,
+    /// That process's stdout, verbatim. A refusal that reaches the
+    /// program as a D30 ROW rather than as a driver message arrives
+    /// here — `main` propagating one prints `error: <tag>` on stdout
+    /// and exits 1 — so a `samples-os.toml` row can pin the words of a
+    /// host refusal that never touches stderr (bs30, chapter 33's
+    /// inherit set on windows).
+    stdout: String,
     /// Rendered diagnostic text (fail samples), for snapshots and
     /// `diagnostic,from(…)` cross-checks.
     diagnostic: Option<String>,
@@ -196,22 +203,40 @@ pub fn run(root: &Path, args: &[String]) -> Result<()> {
                      pin-bump commit (it was retiring at {})",
                     s.id, s.check, row.os, row.retires
                 ));
-            } else if outcome.exit == Some(row.exit) && outcome.stderr.trim_end() == row.stderr {
+            } else if outcome.exit == Some(row.exit)
+                && outcome.stderr.trim_end() == row.stderr
+                && row
+                    .stdout
+                    .as_ref()
+                    .is_none_or(|want| outcome.stdout.trim_end() == want)
+            {
                 refused_seen += 1;
                 println!(
-                    "samples: REFUSED({}) {} [{}] — declared: exit {}, retires at {} ({})",
-                    row.os, s.id, s.check, row.exit, row.retires, row.note
+                    "samples: REFUSED({}) {} [{}] — declared: exit {}{}, retires at {} ({})",
+                    row.os,
+                    s.id,
+                    s.check,
+                    row.exit,
+                    match row.stdout.as_deref() {
+                        Some(w) => format!(", stdout {w:?}"),
+                        None => String::new(),
+                    },
+                    row.retires,
+                    row.note
                 );
             } else {
                 failures.push(format!(
                     "{}: the {} refusal drifted from samples-os.toml — the row is the \
                      book's claim about this host and it is now wrong\n     \
-                     declared: exit {}\n       {}\n     actual: exit {:?}\n       {}",
+                     declared: exit {}, stdout {:?}\n       {}\n     actual: exit {:?}, \
+                     stdout {:?}\n       {}",
                     s.id,
                     row.os,
                     row.exit,
+                    row.stdout.as_deref().unwrap_or("<not declared>"),
                     row.stderr,
                     outcome.exit,
+                    outcome.stdout.trim_end(),
                     if outcome.stderr.trim().is_empty() {
                         "<no stderr captured — this check reports a verdict, not one \
                          process's exit; a refusal row here needs execute() to \
@@ -825,6 +850,7 @@ fn execute(tools: &Tools, s: &Sample) -> Result<Outcome> {
                 detail,
                 exit: code,
                 stderr: err,
+                stdout: out,
                 diagnostic: None,
                 phase_reached: None,
             })
@@ -832,7 +858,7 @@ fn execute(tools: &Tools, s: &Sample) -> Result<Outcome> {
         Check::Trap { kind } => {
             let mut cmd = Command::new(&tools.lupin);
             cmd.arg(&s.file_name).current_dir(&s.dir);
-            let (code, _out, err) = run_with_timeout(cmd)?;
+            let (code, out, err) = run_with_timeout(cmd)?;
             // lupin spells defined faults `trap(kind)`; the UB checker's
             // faults come out as `file: ub(clause)` — the corpus directive
             // for those is `run(exit=trap(ub))`.
@@ -854,6 +880,7 @@ fn execute(tools: &Tools, s: &Sample) -> Result<Outcome> {
                 detail,
                 exit: code,
                 stderr: err.clone(),
+                stdout: out,
                 diagnostic: Some(err.trim_end().to_string()),
                 phase_reached: None,
             })
@@ -867,6 +894,7 @@ fn execute(tools: &Tools, s: &Sample) -> Result<Outcome> {
                 // A conformance verdict is not one process's exit.
                 exit: None,
                 stderr: String::new(),
+                stdout: String::new(),
                 diagnostic: Some(diag),
                 phase_reached: phase,
             })
@@ -897,6 +925,7 @@ fn execute(tools: &Tools, s: &Sample) -> Result<Outcome> {
                 detail,
                 exit: None,
                 stderr: String::new(),
+                stdout: String::new(),
                 diagnostic: Some(checked.diagnostic),
                 phase_reached: checked.phase,
             })
@@ -923,6 +952,7 @@ fn execute(tools: &Tools, s: &Sample) -> Result<Outcome> {
                 ),
                 exit: None,
                 stderr: String::new(),
+                stdout: String::new(),
                 diagnostic: Some(normalize(&diag)),
                 phase_reached: None,
             })
@@ -952,6 +982,7 @@ fn execute(tools: &Tools, s: &Sample) -> Result<Outcome> {
                 detail,
                 exit: code,
                 stderr: err,
+                stdout: out,
                 diagnostic: None,
                 phase_reached: None,
             })
@@ -964,6 +995,7 @@ fn execute(tools: &Tools, s: &Sample) -> Result<Outcome> {
                 detail: format!("wolf verdict `{verdict}` — the block must compile clean"),
                 exit: None,
                 stderr: String::new(),
+                stdout: String::new(),
                 diagnostic: Some(diag),
                 phase_reached: phase,
             })
