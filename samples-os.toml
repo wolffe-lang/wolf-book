@@ -104,3 +104,41 @@
 # live, both directions are enforced, and the next host that refuses
 # something by name — or prints its own words where the book prints the
 # book's — will be written down the same way.
+
+# bs30 — THE FILE HAS A ROW AGAIN, and it is the first one whose refusal
+# reaches the program as a D30 ROW rather than as a driver message.
+#
+# Chapter 33 §33.4 prints a prefork server: a parent binds one listener,
+# hands it down with `os_spawn_with`, and a re-executed child picks it
+# up with `net_adopt_listener` and serves on it. That is the shape s137
+# added the calls for, and the chapter runs it rather than describing
+# it. Two of the three lanes serve the handoff and the block passes
+# there. Windows does not, and the refusal is BY NAME: the runtime's
+# own windows suite measured that a socket marked inheritable and named
+# to a re-executed child is not a usable socket in that child at all —
+# `std::process::Command` publishes only stdio handles on that host —
+# and that a windows SOCKET is not a small stable descriptor a parent
+# can hand over by position, which is the numbering `[os.proc.inherit]`
+# promises. So `os_spawn_with` answers `unsupported`, the block's `?`
+# makes that the documented process outcome, and the program exits 1
+# with the tag on stdout.
+#
+# THE ROW DECLARES STDOUT, which is new here and is why `Refusal` grew
+# the field at this sprint. A row that named only stderr would have
+# pinned an exit code and none of the words, because a propagated row
+# never touches stderr — and "this host prints exactly this" is the
+# whole doctrine of this file. The `stdout` field is optional and every
+# older row shape still parses.
+#
+# The row retires when the crossing lands: wolf-lang#235 names the work
+# (a `PROC_THREAD_ATTRIBUTE_HANDLE_LIST` spawn of the runtime's own,
+# which `Command` cannot express). The day it does, this block passes on
+# windows and the rig FLIPS the row rather than letting it pass quietly.
+[[refusal]]
+id = "book/ch33/part-prefork"
+os = "windows"
+exit = 1
+stderr = ""
+stdout = "error: unsupported"
+retires = "the windows descriptor crossing (wolf-lang#235)"
+note = "bs30, 2026-09-07: `os_spawn_with` with a non-empty inherit set is the `unsupported` row on this host — a socket there is not a descriptor a parent can hand over by position — so §33.4's prefork block runs on linux and macOS and is refused here, by name."
