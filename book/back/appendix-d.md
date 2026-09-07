@@ -7,10 +7,11 @@ a tag printed by a tool in your terminal is findable in the spec even when
 the tool's wording changes.
 
 The specification is eleven documents, and they publish eleven anchor
-namespaces between them — one document owns two. The table below this
-one cites five of the documents; all eleven are listed, because a tag
-can reach you from a tool's own output rather than from a page here, and
-it has to be findable either way.
+namespaces between them, because one of the eleven owns two namespaces
+and one publishes none. The table below this one cites five of the
+documents; all eleven are listed, because a tag can reach you from a
+tool's own output rather than from a page here, and it has to be
+findable either way.
 
 | Document | Anchors |
 |----------|---------|
