@@ -22,10 +22,12 @@ Colophon
 
 ## A
 
-appendices, how to read them, Notation · arena, as the C construct 8.1, 8.2,
-32.2 · argv, see `env_args()` · Armstrong, Joe 14.1 · arithmetic, checked
-3.3 · `assert`, comptime 18.1, 18.2, 22.3 · audit surface 9.1, 9.7, 32.3 ·
-`wolf audit` 23.3, 24.3, 24.4 · `wolf audit-surface` 9.1, 9.7, 32.3
+accept race, and what a lost one costs 33.4 · address, loopback and port
+zero 33.1 · appendices, how to read them, Notation · arena, as the C
+construct 8.1, 8.2, 32.2 · argv, see `env_args()` · Armstrong, Joe 14.1 ·
+arithmetic, checked 3.3 · `assert`, comptime 18.1, 18.2, 22.3 · audit
+surface 9.1, 9.7, 32.3 · `wolf audit` 23.3, 24.3, 24.4 ·
+`wolf audit-surface` 9.1, 9.7, 32.3
 
 ## B
 
@@ -115,23 +117,29 @@ modules 22.1, 22.2, 22.3 · monitors 15.1 · moves 3.1, 7.1, 7.2 · `mut` 7.4,
 
 ## N
 
-no life before main 22.3 · `noalias`, and what `mut` compiles to 7.7 ·
-notation, the seven dialects, Notation
+`net_accept` 33.1, 33.2, 33.4 · `net_adopt_listener` 33.4 · `net_close`
+33.1 · `net_connect` 33.1 · `net_deadline` 33.4 · `net_listen` 33.1 ·
+`net_listen_with` 33.4 · `net_port` 33.1 · `net_read` 33.1, 33.3 ·
+`net_wait` 33.2, 33.3 · `net_write` 33.1 · no life before main 22.3 ·
+`noalias`, and what `mut` compiles to 7.7 · notation, the seven dialects,
+Notation
 
 ## O
 
-oracle, the UB checker 9.3 · overflow 3.3 · `overflow` (trap) 3.3 ·
-ownership 7.1, 7.2
+oracle, the UB checker 9.3 · `os_cpus` 33.4 · `os_exe` 33.4 ·
+`os_spawn_with` 33.4 · `os_wait` 33.4 · overflow 3.3 · `overflow` (trap)
+3.3 · ownership 7.1, 7.2
 
 ## P
 
 packages 23.1 · parallelism, and one job divided 13.2, 30.2 · pool 8.4, 8.7
-· procs 14.1, 14.2, 14.3 · profiles, and what traps in them 3.3 · provenance
-9.3
+· ports, why zero 33.1 · prefork 33.4 · procs 14.1, 14.2, 14.3 · profiles,
+and what traps in them 3.3 · provenance 9.3
 
 ## R
 
-raw tier 9.2 · `region` (block form) 8.2 · `region-fault` (trap) 8.3, 8.5,
+raw tier 9.2 · readiness, and what it is not 33.2 · `refused` (row) 33.1 ·
+`region` (block form) 8.2 · `region-fault` (trap) 8.3, 8.5,
 8.6 · regions, as values 8.3 · regions, transferred between procs 16.1 ·
 REPL 1.4 · rings, the three 9.1 · rows, error 6.1 · Rust, compared 7.6, 16.3
 · Ritchie's state machine 26.2
@@ -140,10 +148,11 @@ REPL 1.4 · rings, the three 9.1 · rows, error 6.1 · Rust, compared 7.6, 16.3
 
 scheduler, the deterministic one 17.2 · schedules, replaying 17.2, 30.5 ·
 scopes 10.1 · scopes, as values 11.1 · scripts, running `.lu` files 1.3 ·
-seeds 12.2, 17.2, 30.5 · `select` 12.2 · `Set` 5.1 · `shared` 8.7 · shards
-30.1 · slices 2.3, 2.5 · solutions, where they are, Solutions · spawning
-10.1, 11.1 · specification, citing it, Appendix D · `stale-handle` (trap)
-8.7 · strings 2.1, 2.2, 2.3 · supervision 15.2, 15.3 · `sync` 12.4
+seeds 12.2, 17.2, 30.5 · `select` 12.2 · serving loop 33.3 · `Set` 5.1 ·
+`shared` 8.7 · shards 30.1 · slices 2.3, 2.5 · sockets, as handles 33.1 ·
+solutions, where they are, Solutions · spawning 10.1, 11.1 ·
+specification, citing it, Appendix D · `stale-handle` (trap) 8.7 ·
+strings 2.1, 2.2, 2.3 · supervision 15.2, 15.3 · `sync` 12.4
 
 ## T
 

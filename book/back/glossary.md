@@ -39,6 +39,10 @@ iterators spell their unit: `words()`, `lines()`, `pairs()`.
 **join** (10.1): the wait a scope performs at its closing brace for
 every task it spawned. One arrow in, one arrow out.
 
+**listener** (33.1): a socket that accepts connections rather than
+carrying one. It is an `int` the runtime owns, and closing it is what
+ends the door.
+
 **mode** (7.3): what a parameter says about the caller's value: read for
 the duration of the call, `mut` for exclusive access, `take` for
 ownership.
@@ -50,6 +54,10 @@ importers, and the package root is the entry file's directory.
 afterward, and reading it is a static error or a trap.
 
 **open row** (6.1): a row ending in `..`: these tags, and possibly more.
+
+**prefork** (33.4): starting several processes that share one listener,
+sized before any of them serves. The oldest server architecture, and the
+one `os_spawn_with` and `reuse_port` exist for.
 
 **package** (23.0): a directory outside your project, with its own
 manifest; contrast *module*.
@@ -67,6 +75,10 @@ from, distinct from its address.
 together, with the compiler proving nothing escapes alive. "Arena" in
 this book is always the C construct a region is compared to.
 
+**readiness** (33.2): the property `net_wait` reports — that a socket
+can be read without blocking. Asking consumes nothing, and a connection
+whose peer has closed is ready.
+
 **rendezvous** (30.3): a zero-capacity channel, where a send blocks
 until a receiver takes the value.
 
@@ -77,6 +89,9 @@ hands. Wolf has exactly three.
 braces after `!` and complete. Part 1's running example prints a receipt
 whose lines are also called rows; the error row is always the one with
 braces.
+
+**serving loop** (33.3): one process that builds a set of sockets, waits
+on it, answers what is ready, and goes around. It spawns nothing.
 
 **scope** (10.1): the block that owns one or more tasks and joins them
 at its closing brace. The word also has its ordinary lexical sense, and
