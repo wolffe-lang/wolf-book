@@ -1,0 +1,12 @@
+//! check: run(exit=1, stdout="error: io")
+//! phase: run
+// Exercise 33-4: an empty set and a deadline that never expires. There
+// is no handle that could become ready and no clock that could end the
+// wait, so `net_wait` answers the one row it declares rather than
+// parking forever. A program that meant to sleep calls `time_sleep_ms`.
+fn main() -> !int {
+    let nothing = List[int]()
+    let ready = net_wait(nothing, 0 - 1)?
+    print("unreachable: {ready.len}")
+    0
+}

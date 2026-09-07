@@ -24,7 +24,10 @@ pub struct Printed {
 /// Chapters whose exercises the Solutions page publishes. Chapter 31 is
 /// the one exception in the book (EXERCISES.md §4: the solo publishes
 /// milestone checkpoints instead of answers) and chapter 32 sets none.
-const SOLUTION_CHAPTERS: std::ops::RangeInclusive<u32> = 1..=30;
+/// The range runs past both because chapter 33 arrived after them and
+/// took the next free number rather than moving any (TOC.md §Deltas,
+/// bs30); the `is_file` guard below is what skips 31 and 32.
+const SOLUTION_CHAPTERS: std::ops::RangeInclusive<u32> = 1..=33;
 
 pub fn run(root: &Path, args: &[String]) -> Result<()> {
     let check = args.iter().any(|a| a == "--check");
@@ -95,7 +98,7 @@ fn appendix_a(root: &Path) -> Result<String> {
 /// was never asked.
 pub fn printed_exercises(root: &Path) -> Result<BTreeMap<(u32, u32), Printed>> {
     let mut found = BTreeMap::new();
-    for ch in 1..=32u32 {
+    for ch in 1..=33u32 {
         let path = root.join(format!("book/ch{ch:02}.md"));
         let Ok(text) = std::fs::read_to_string(&path) else {
             continue;

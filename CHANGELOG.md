@@ -2,6 +2,86 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs30 — 2026-09-07 — the book serves
+
+**This edition has a chapter about writing a server.** Chapter 33, The
+serving loop, is the book's first transport and its first executed
+socket call: bind a loopback listener and take one connection, ask
+`net_wait` which of a whole set of sockets can be read, serve several
+callers from one process with no task and no channel anywhere in it,
+and then hand that listener to a child process and read what a lost
+accept race costs. Seven exercises, five of them with programs, all
+solved and all replayed by CI in the same commit as the prose. The
+suite goes from 462 samples passing to 473.
+
+**The paragraph the last printing measured and could not place is now a
+section.** Last time this book recorded, in its own notes, that a loop
+which waits costs about what a program that only sleeps costs, while a
+loop that takes turns — a short deadline on the door, another on every
+open connection, around and around — is descheduled about fifteen
+hundred times in five idle seconds to learn that nothing happened. No
+chapter held that argument. §33.3 holds it now, and it cites §12.2's
+costing of an idle connection by name, because the two are the same
+argument about two different machines: one about the concurrency
+runtime, where an arm in a wait set is a registration and not a task,
+and one about the kernel, where the program spawns nothing at all.
+
+**Where the chapter sits, and the number that will look wrong.**
+Chapter 33 is at the end of part 4, between chapters 25 and 26. Section
+numbers in this book are permanent links — `#8.4` is section 8.4 for
+good — so a chapter that arrives after the other thirty-two were
+numbered takes the next free number rather than moving everyone else's.
+The alternative was renumbering fourteen chapters, every section anchor
+under them, and every exercise number in part 5, which is the trade the
+language specification makes the same way and for the same reason.
+"How to read this book" says so in one sentence, and nothing else in
+the book was renumbered.
+
+**The accept is fair, and the chapter says when that became true.**
+Several processes can hold one listening socket; one connection wakes
+more than one of them and exactly one takes it. Until the compiler
+release this printing is true for, the hands that lost went back into a
+blocking accept with their budget already spent and stayed there until
+the next connection arrived — microseconds on a busy server, and on a
+quiet one, never: alive, using no cpu, answering nothing. The honest
+advice for that arrangement was to not build it. Now a hand that loses
+comes back inside the budget it already armed, so §33.4 teaches the
+mechanism instead of the warning, and says in plain past tense that it
+could not have.
+
+**What serves everywhere, said in the same breath as what does not.**
+Two of the chapter's calls are the host's to decline, and both decline
+by name: sharing one address across processes with `reuse_port`, and
+passing a descriptor to a child, are refused on Windows for reasons the
+section states. The rest of the chapter is portable — listen, connect,
+accept, read, write, close, arm a deadline, ask how many cores you may
+be scheduled on, and wait on a set — and `net_wait` in particular names
+no refusal on any host at all, which is why the chapter is built on it.
+
+**Appendix D counts the specification correctly again.** The eleven
+documents publish eleven namespaces between them, and one document owns
+two: the grammar owns both its own anchors and the diagnostics
+namespace a tool prints at you, which had no row on the one page that
+routes a reader to the normative text. The schedule-points document is
+the other correction — it declares anchors the specification's registry
+does not carry, so a search for one finds the document and not the
+anchor, and the table says so rather than implying a prefix that can be
+looked up. Chapter 33's five clause citations are in the section table
+now, so the operating-system document is reachable from a page and not
+only from a tool's output.
+
+**The toolchain moves to wolf 0.2.6 and lupin 0.1.27.** The two version
+lines disagree twice this printing, and both disagreements say the same
+thing: the compiler names the interpreter release before the one beside
+it, and the interpreter names the compiler release before the one above
+it. The two were cut within a day of each other and neither had seen
+the other's latest when it was tested. That is a pair one release
+apart, wearing the lag on the name in one direction and on the sha in
+the other, and §1.2 and the colophon both say which is which. Four
+transcripts re-record and no diagnostic snapshot does; the diagnostic
+catalog holds at 169 codes and the grammar is byte-identical, so
+Appendix A regenerates to itself.
+
 ## bs29 — 2026-09-06 — the cores land outside the book
 
 Both halves of the toolchain move this sprint, the compiler to v0.2.5

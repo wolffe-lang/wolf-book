@@ -6,22 +6,22 @@ against:
 
 ```console
 $ wolf --version
-wolf 0.2.5 (wolfgang, pin 6ade878)
+wolf 0.2.6 (wolfgang, pin 398e5f5)
 paired with lupin 0.1.26 (reference interpreter), pin 982f857
 $ lupin --version
-lupin 0.1.26 (wolf-interp, reference interpreter at pin 982f857)
+lupin 0.1.27 (wolf-interp, reference interpreter at pin 6ade878)
 ```
 
-The two lines name the same interpreter release here, and the shas
-under them do not. That is worth a sentence rather than a correction.
-Each tool reports the revision of the other it was differentially
-tested against, the two releases are cut on their own schedules, and a
-printing whose halves are a release apart is ordinary. This is one, and
-the lag is on the sha: the compiler was tagged after this interpreter
-existed and names it exactly, while the interpreter was tested against
-the compiler before this one, so the `982f857` it carries is the
-previous tag and not the line above it. §1.2 teaches the reader to read
-the pair either way. This page prints them as they are. The compiler's
+The two lines name different releases of each other, and that is worth
+a sentence rather than a correction. Each tool reports the revision of
+the other it was differentially tested against, the two releases are cut
+on their own schedules, and a printing whose halves are one release
+apart is ordinary. This is one, and this time it shows on both lines:
+the compiler names `lupin 0.1.26` where the interpreter beside it is
+`0.1.27`, and the interpreter names `6ade878`, which is the compiler
+release before the one above it. Neither had seen the other's latest
+when it was tested. §1.2 teaches the reader to read the pair either
+way. This page prints them as they are. The compiler's
 first line is also this page's proof: a build made exactly at its
 release tag prints the bare version and the commit it was built from,
 and any other build names itself `+dev.<commit>` instead, so the line

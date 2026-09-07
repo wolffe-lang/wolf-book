@@ -8,7 +8,7 @@ to be. The day a blocking feature lands, its exercises join the CI run
 their headers already describe; until then this manifest is the honest
 list. No aspirational green.
 
-Note for the compiler track: the whole corpus — 250 directive-headed
+Note for the compiler track: the whole corpus — 255 directive-headed
 `.lu` files under `principles/exercises/`, runnable and pending alike —
 is a seed farm for the toolchain's corpus and fuzz harnesses. The
 pending files are the most valuable seeds: each one encodes an expected
@@ -163,3 +163,12 @@ a history rather than a snapshot:
   with both increments lost — and the differential is gone. Its stem now
   asks about the one thing that still differs, which is how much output
   each tool gives for two offending spawns.
+
+## bs30 — chapter 33 joins the corpus (2026-09-07)
+
+`ex33-1.lu`, `ex33-2.lu`, `ex33-3.lu`, `ex33-4.lu` and `ex33-7.lu` join
+the corpus (250 → 255 directive-headed files). None of them is pending
+and none carries a manifest row: every one runs green under the pinned
+interpreter, and each was also run under the compiler in an isolated
+directory and agreed byte for byte. 33-5 and 33-6 carry prose solutions
+and no program, which is the 30-6/30-7 shape.

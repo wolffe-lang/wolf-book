@@ -1,0 +1,70 @@
+//! check: run(exit=0, stdout="served 2, dropped 2")
+//! phase: run
+// Exercise 33-3: §33.3's loop with the other half. A connection whose
+// peer has gone is READY every time the set is asked, so a loop that
+// never reads it spins; the read is what answers `closed`, and the
+// close-and-remove is what makes the readiness stop. Both callers hang
+// up once they have their answers, and the loop drops both.
+struct Doc { title: str, words: int }
+fn words_in(docs: List[Doc], title: str) -> str {
+    for d in docs {
+        if d.title == title { return "{d.words}" }
+    }
+    "unknown"
+}
+fn without(open: List[int], gone: int) -> List[int] {
+    var kept = List[int]()
+    for h in open {
+        if h != gone { (mut kept).push(h) }
+    }
+    kept
+}
+fn main() -> !int {
+    var docs = List[Doc]()
+    (mut docs).push(Doc { title: "regions", words: 900 })
+    (mut docs).push(Doc { title: "moves", words: 640 })
+    let door = net_listen("127.0.0.1:0")?
+    let addr = "127.0.0.1:{net_port(door)?}"
+    var callers = List[int]()
+    (mut callers).push(net_connect(addr)?)
+    (mut callers).push(net_connect(addr)?)
+    net_write(callers[0], "regions")?
+    net_write(callers[1], "moves")?
+
+    var open = List[int]()
+    var served = 0
+    var dropped = 0
+    var hung_up = false
+    while dropped < 2 {
+        if served == 2 && !hung_up {
+            net_close(callers[0])?
+            net_close(callers[1])?
+            hung_up = true
+        }
+        var watched = List[int]()
+        (mut watched).push(door)
+        for c in open { (mut watched).push(c) }
+        for h in net_wait(watched, 1000)? {
+            if h == door {
+                (mut open).push(net_accept(door)?)
+            } else {
+                var gone = false
+                let ask = net_read(h, 64) else |_| {
+                    gone = true
+                    ""
+                }
+                if gone {
+                    net_close(h)?
+                    open = without(open, h)
+                    dropped = dropped + 1
+                } else {
+                    net_write(h, words_in(docs, ask))?
+                    served = served + 1
+                }
+            }
+        }
+    }
+    print("served {served}, dropped {dropped}")
+    net_close(door)?
+    0
+}

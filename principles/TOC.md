@@ -6,9 +6,11 @@ this document disagree, this document wins and the delta is recorded in
 §Deltas for that sprint's future author. Each section carries a one-line
 promise: what the reader can *do* after it that they could not before.
 
-Numbering: parts are numbered 1–5; chapters run continuously 1–32;
-sections are `N.M` and their numbers are the stable anchors of the web
-edition (see DESIGN.md §Navigation).
+Numbering: parts are numbered 1–5; chapters run 1–33, continuously
+except for chapter 33, which arrived after the other thirty-two were
+numbered and took the next free number rather than moving any of them
+(§Deltas, bs30); sections are `N.M` and their numbers are the stable
+anchors of the web edition (see DESIGN.md §Navigation).
 
 ---
 
@@ -351,6 +353,19 @@ measured in `book/ch25.md`'s HOLD note*
 - Exercises 25-1 … (all eight written and unprinted; the batch note in
   the masters says which held subjects they lean on).
 
+### Chapter 33 — The serving loop
+*shipped (bs30) · the part's late arrival, numbered at the end rather
+than inserted — see §Deltas, bs30 · the book's first transport*
+- 33.1 A door of your own — bind a loopback listener, take one
+  connection, and read a network failure as a row you can name.
+- 33.2 Waiting on the whole set — ask which of many sockets can be read
+  without blocking, and learn that an empty answer is an answer.
+- 33.3 The loop — serve several connections from one process with no
+  task, no channel, and no scheduler.
+- 33.4 Many hands on one door — size the hands with `os_cpus`, hand a
+  listener to a child, and read what a lost accept race costs.
+- Exercises 33-1 … 33-7.
+
 ## Part 5 — Projects
 
 *The reader builds five programs guided, one alone, and reads the
@@ -462,7 +477,7 @@ part's fourth project and its only concurrent one*
   cross-checked against the compiler's catalog in CI.
 - **Appendix D — Spec cross-reference** — book section → spec clause,
   for readers who want the normative text.
-- **Solutions** — every exercise in chapters 1–30, collapsed by default
+- **Solutions** — every exercise in chapters 1–30 and 33, collapsed by default
   in the web edition, extracted and CI-run like all samples. The solo
   (chapter 31) publishes milestone checkpoints instead — the one
   exception, and the only one.
@@ -1220,3 +1235,43 @@ sprint files remain the implementation contracts for everything else.
   — is the only route this edition gives a reader to the OS surface,
   because there is no builtin reference appendix and no plan for one in
   these pages.
+- **bs30 (the serving loop gets a chapter, and it is numbered 33,
+  2026-09-07):** the paragraph bs29 measured and routed is written, and
+  the route it was waiting for is a chapter of its own. Chapter 33 —
+  The serving loop — ships whole: a loopback listener and one
+  connection, `net_wait` over a set, a one-process loop serving several
+  callers with no task and no channel, and a prefork section that hands
+  a listener to a child and reads what a lost accept race costs. It is
+  this book's first transport and its first executed socket call.
+  Three decisions a future author should not have to re-derive:
+  - **The number is 33 and the position is the end of Part 4.** Both
+    halves of that are deliberate and they disagree with each other on
+    purpose. The subject is a systems subject and belongs in Part 4;
+    the number could not be 26, because section numbers are the web
+    edition's permanent anchors (DESIGN.md §3) and inserting a chapter
+    there renumbers fourteen chapters, every `N.M` anchor under them,
+    and every exercise identifier in Part 5. That is the same trade the
+    specification makes in `[conf.anchor.stable]` and prices the same
+    way. So the chapter grows at the end of the numbering the way §17.4
+    is reserved to grow at the end of chapter 17, and it sits where it
+    belongs in the reading order. `front/how-to-read.md` carries the one
+    reader-facing sentence about it; nothing else in the book is
+    renumbered, and no shipped anchor moved.
+  - **§12.2 stays where bs29 left it.** The routing decision is
+    unchanged and is now cashed rather than reversed: §12.2 costs an
+    idle connection in the concurrency runtime and §33.3 makes the same
+    argument about the kernel, with a paragraph in §33.3 naming §12.2
+    so a reader who read that section meets the pair. The socket call
+    did not move into the channels chapter; the channels chapter got a
+    neighbour that earned one.
+  - **The prefork block is a `wolf-run(…)` block, and one lane holds a
+    refusal row.** Five of the chapter's six executed blocks are
+    ordinary two-machine samples. The sixth hands a listener to a child,
+    which the reference interpreter declines by name (it is a binary
+    interpreting a program, so the child would be its own) and which
+    windows declines by name (a socket there is not a small stable
+    number a parent can pass by position). The chapter's ledger carries
+    the measurement and `samples-os.toml` carries the lane row. A
+    chapter that teaches prefork without ever running one would have
+    been the alternative, and it was refused: the shape is executed on
+    the two lanes that serve it and asserted on the one that does not.

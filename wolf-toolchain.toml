@@ -4,188 +4,181 @@
 # doc-truth CI job compares them.
 
 [wolf]
-# wolf-lang at the v0.2.5 release tag. D57 (r03): a build made exactly
+# wolf-lang at the v0.2.6 release tag. D57 (r03): a build made exactly
 # at its own release tag prints the bare version with a pin clause —
-# `wolf 0.2.5 (wolfgang, pin 6ade878)` — and every other build prints
+# `wolf 0.2.6 (wolfgang, pin 398e5f5)` — and every other build prints
 # `+dev.<commit>` and claims nothing; unverifiable is dev. The stamp is
 # the dist builder's, never a build script's (D33): `cargo xtask dist`
 # probes git and sets WOLF_COMMIT/WOLF_RELEASE at compile time, so a
-# plain `cargo build` at this same rev answers `0.2.5+dev.unknown`.
+# plain `cargo build` at this same rev answers `0.2.6+dev.unknown` —
+# re-measured here rather than carried forward, in a separate target
+# directory so the stamped binary was not clobbered to learn it.
 # The book's version transcripts print the bare release string, so the
 # pinned wolf must be built with the dist builder or with its stamp
-# reproduced (release profile, WOLF_COMMIT=6ade878 WOLF_RELEASE=v0.2.5
+# reproduced (release profile, WOLF_COMMIT=398e5f5 WOLF_RELEASE=v0.2.6
 # — what book.yml's samples lane does; a debug build produces an
 # unstamped binary and fails the two version transcripts).
 #
-# This bump (bs29) crosses s137 and the r08 release wave — the server
-# gets its calls. What it changes for the book, measured at this tag:
-#   * FIVE NEW CLAUSES AND NOT ONE PRINTED PAGE. `net_wait` (#127,
-#     `[os.net.wait]`), `net_listen_with` (#234/#235,
-#     `[os.net.listen.opts]`), `os_spawn_with` and
-#     `net_adopt_listener` (`[os.proc.inherit]`), and `os_cpus` (#233,
-#     `[os.cpus]`). This edition makes no `os_*` call and no socket
-#     call anywhere. Counted over the export tree at this bump, THREE
-#     os-tier builtins are executed on any page: `fs_write_text` 14,
-#     `fs_read_text` 10, and `net_fetch` 4 — four samples over THREE
-#     distinct programs, every one of them a refusal at typecheck,
-#     E0701: §18.4's page block, ex18-7c, and 24-4, whose stem is
-#     extracted from the chapter as well as from the exercise corpus,
-#     which is where the fourth sample comes from. Three more are
-#     NAMED and never run, in
-#     26-6's discussion answer (`fs_open`, `fs_read`, `fs_close`). So
-#     the release's headline surface lands entirely outside the book,
-#     and this file is where it is recorded.
-#   * A LOOP THAT WAITS AGAINST A LOOP THAT LOOKS, measured HERE
-#     rather than quoted from the release note, because bs29's target 2
-#     asked for the book's own transcript and found no page to put it
-#     on. Three programs written for this bump, one connection held
-#     open and idle for five seconds, native at this pin on this host
-#     (macOS aarch64), `/usr/bin/time -l`, three runs each:
-#
-#                            loop passes   involuntary switches      cycles
-#       deadline slicing         129-130           1,556-1,573   46.7-51.0 M
-#       one net_wait on the set        1                 10-11    7.6-9.8 M
-#       a program that only sleeps     —                   5-8    5.6-8.1 M
-#
-#     The switch column is the clean signal and it is three orders of
-#     magnitude: a loop that time-slices a 25 ms deadline on the
-#     listener and a 12 ms one on the connection is descheduled about
-#     1,560 times to learn that nothing happened, where the loop that
-#     waits is descheduled about ten times, which is what a program
-#     that only sleeps costs. The cycle column carries about 2 M of
-#     run-to-run noise on this host, so the honest reading of it is
-#     that the waiting loop sits inside the sleeping program's spread
-#     and the looking loop sits 40 M above it. wolf-lang's own note
-#     reports 37x net of that floor from a bench harness; this is a
-#     different instrument on a different day and the two are not
-#     reconciled. NO PAGE PRINTS EITHER: see ch11's ledger row and
-#     TOC.md's bs29 delta for where the paragraph is routed.
-#   * The ANCHORS grow 417 -> 422: `os.cpus`, `os.net.listen.opts`,
-#     `os.net.wait`, `os.proc`, `os.proc.inherit`. Nothing dropped,
-#     nothing retargeted (both key sets diffed, per the is30 lesson),
+# This bump (bs30) crosses s138/s139 and the r09 release wave. It is
+# the first bump in five whose headline surface lands ON A PRINTED
+# PAGE: chapter 33 ships in the same sprint, so the paragraph bs29
+# measured and routed is written, and the calls s137 gave the
+# toolchain are executed by CI for the first time in this book's life.
+# What this tag changes for the book, measured here:
+#   * THE ACCEPT IS FAIR (#242, `[os.net.accept]`, new clause). A
+#     listener now lives non-blocking under the runtime, `net_accept`
+#     takes without blocking, and a hand that finds nothing there waits
+#     again AGAINST THE SAME BUDGET — the one computed when the call
+#     began — instead of re-entering a blocking `accept(2)` with its
+#     deadline already spent. Before this release N hands on one shared
+#     listener meant N-1 of them parked in the kernel until the NEXT
+#     connection: microseconds on a busy server and never on a quiet
+#     one. Nothing in `net_accept`'s signature or its rows moved, so
+#     the guarantee a single hand can observe — with a budget armed the
+#     call returns within it — is the same on both machines and at both
+#     releases. THAT IS WHY chapter 33 can print the fix's history in
+#     the past tense and its behaviour in the present: §33.4's runnable
+#     block tests the shared guarantee, and the lost race itself is
+#     stated from the release's own measurement (macOS arm64, three
+#     hands free-for-all on one inherited listener, `ab -n 6000 -c 32`:
+#     about 30,000 req/s before and after, the difference being what
+#     happens when traffic stops) rather than re-measured here, because
+#     this repository has no two-process sample rig.
+#   * THE ANCHORS grow 422 -> 424: `conf.anchor.ns.admit` (#239) and
+#     `os.net.accept` (#242). Nothing dropped, nothing retargeted —
+#     BOTH key sets diffed in both directions, per the is30 lesson —
 #     and all six of Appendix D's unanchored tags are still unanchored.
-#     Appendix D's document table moves with them, for the reason in
-#     its own commit: it said the specification is seven documents and
-#     the specification has been eleven for the whole 0.2 line, so the
-#     one route this book gives a reader into the normative text did
-#     not reach `os.*` at all.
-#   * The catalog does NOT move: 169 codes at v0.2.4 and 169 here,
-#     identical line for line, so `vendor/spec/diagnostic-codes.txt`
-#     is unchanged and Appendix C's count stands. s137 minted no code
-#     — its refusals are D30 error ROWS (`exists`, `unsupported`), not
-#     diagnostics.
+#   * THE NAMESPACE REGISTRY IS NOT THE DOCUMENT LIST, and Appendix D
+#     is corrected for the difference. `[conf.anchor.ns]` at this tag
+#     registers ELEVEN namespaces owned by TEN documents: #239 admitted
+#     `diag`, `ct`, `type` and `os`, and 01-grammar.md owns two of them
+#     (`gram` and `diag` §9). So the appendix's table gains `diag.*`
+#     beside `gram.*` on document 01 — a tag a tool can print at a
+#     reader with no row on the one page that routes them to the
+#     normative text. The eleventh document, 07-schedule-points.md, is
+#     the other correction: it declares `[sched.*]` anchors and stands
+#     in NEITHER the clause's list nor the extractor's table at this
+#     tag, so `anchors.json` publishes zero of them and `[conf.tag.valid]`
+#     would reject a citation of one. The book cites none (grepped:
+#     zero outside the table itself). The row now says so rather than
+#     implying a prefix a reader can look up.
+#   * The catalog does NOT move: 169 codes, identical line for line
+#     against v0.2.6's own `docs/diagnostics.md`, so
+#     `vendor/spec/diagnostic-codes.txt` is unchanged and Appendix C's
+#     count stands. #242 minted no code — the fair accept changes when
+#     an existing row is answered, not which rows exist.
 #   * The grammar does NOT move either: `grammar.ebnf` is byte-identical
-#     to v0.2.4's, so Appendix A regenerates to itself.
+#     to v0.2.5's, so Appendix A regenerates to itself.
 #   * `wolf interface` embeds the toolchain version by design, so
-#     ch22's interface transcript re-records (toolchain 0.2.4 -> 0.2.5,
-#     both hashes with it), 22-9's solution with it, and ch25's publish
-#     record carries the moved interface hash.
-#   * THE FOUR FIXES touch nothing the book prints, and each was
-#     checked rather than assumed. #238 (a diagnostic on a long line
-#     aborting the compiler) needs a source line wider than the
-#     renderer's 100-column window AND a diagnostic drawn on it: this
-#     book's corpus is NOT held canonical under `wolf fmt`, so unlike
-#     wolf-lang's it does carry such lines — 34 of them across 12
-#     files, the widest 307 columns in `ex18-15` — and every sample
-#     holding one is a green run at this pin, so no diagnostic is
-#     drawn on any of them.
-#     `channel[bool]` appears nowhere in the book (grepped: zero).
-#     Nothing on any page spawns a child or hands over a descriptor.
-#     The tier-2 build fix is a host the book does not run on.
+#     ch22's interface transcript re-records (toolchain 0.2.5 -> 0.2.6,
+#     both hashes with it), 22-13's PAIR of runs with it — re-measured
+#     on the exercise's own module, appended helper and all, and still
+#     byte-identical between the two runs, which is the exercise's
+#     whole point — and ch25's publish record carries the moved
+#     interface hash.
 #   * 4 runner movers at this bump, all classified, residue named and
 #     healed by hand: the 2 version transcripts (ch01 §1.2, the
 #     colophon), ch22's interface stamp, and ch25's publish record.
-#     The residue is three sites the runner cannot see — 22-9's
-#     solution transcript (the same embedded toolchain version,
-#     re-measured rather than reasoned about), §1.2's two Windows
-#     archive names, and §1.2's `wolf 0.2.4`/`0.2.4+dev.unknown`
-#     sentence about the stamp. ZERO diagnostic snapshots re-record.
+#     The residue is three sites the runner cannot see — 22-13's
+#     solution transcript, §1.2's two Windows archive names, and
+#     §1.2's `wolf 0.2.6`/`0.2.6+dev.unknown` sentence about the stamp.
+#     ZERO diagnostic snapshots re-record.
+#   * VENDORING NOTE. `vendor/spec/` is re-vendored FROM THE TAG, not
+#     from the sibling working tree: at the time of this bump the
+#     sibling checkout carried uncommitted s139 work (#246, which
+#     registers `sched` and publishes its seven anchors). Those anchors
+#     are not in this pin and are not vendored here. `cargo xtask
+#     backmatter --check` compares against the sibling, so it disagrees
+#     locally against a dirty checkout and agrees in CI, which clones
+#     the pin.
 #
 # This rev IS the tag, so the transcripts stay clean (D57).
 repo = "wolffe-lang/wolf-lang"
-rev = "6ade878c1f5f48bcb5c9ee804c749fbbc8634a02"
-impl_version = "0.2.5"
+rev = "398e5f547a65308c6a3e88fee632563e87afd217"
+impl_version = "0.2.6"
 
 [lupin]
-# wolf-interp at the v0.1.26 release tag (is37): the stamped line names
-# lupin 0.1.26 at pin 982f857. A lupin release's pin is the wolf-lang
-# revision it was built and differentially tested against, and is37
-# released against the v0.2.4 TAG — the revision this file pinned for
+# wolf-interp at the v0.1.27 release tag (is38): the stamped line names
+# lupin 0.1.27 at pin 6ade878. A lupin release's pin is the wolf-lang
+# revision it was built and differentially tested against, and is38
+# released against the v0.2.5 TAG — the revision this file pinned for
 # wolf one sprint ago, not the one it pins now.
 #
-# THE TWO STAMPED LINES AGREE AGAIN, and the lag has changed ends.
-# bs28's printing had them naming different interpreter releases: wolfc
-# said `paired with lupin 0.1.24` while the interpreter beside it was
-# 0.1.25. At this bump wolfc says
+# THE LAG IS ONE AND IT SHOWS ON BOTH LINES. bs29's printing had the
+# two stamps naming one interpreter with the lag hidden on the sha.
+# At this bump both halves disagree, and both disagreements are the
+# same disagreement:
 #
+#   wolf  0.2.6 (wolfgang, pin 398e5f5)
 #   paired with lupin 0.1.26 (reference interpreter), pin 982f857
+#   lupin 0.1.27 (wolf-interp, reference interpreter at pin 6ade878)
 #
-# which is exactly the interpreter this file pins, down to the pin
-# clause, because v0.2.5 was cut AFTER 0.1.26 existed. What lags now is
-# the other direction and it is quieter: 0.1.26 names 982f857, which is
-# v0.2.4, so the interpreter was tested against the compiler BEFORE
-# this one. The pair is one release apart either way; bs28's printing
-# wore it on the release name, this one wears it on the sha. The
-# colophon's paragraph and §1.2's are rewritten to say the thing that
-# is true here rather than the thing that was true there, and the
-# colophon keeps the sentence it has carried since the first edition,
-# because a printing whose halves are cut on their own schedules is
-# still the ordinary case.
+# The compiler names 0.1.26 where the interpreter beside it is 0.1.27;
+# the interpreter names 6ade878, which is v0.2.5, where the compiler
+# above it is 398e5f5. NEITHER HAD SEEN THE OTHER'S LATEST WHEN IT WAS
+# TESTED, because the two releases were cut within a day of each other.
+# One release apart, both directions. The colophon's paragraph and
+# §1.2's are rewritten to say exactly that; nothing here claims the two
+# are the same revision, and nothing here calls the lag two.
 #
-# wolf-interp#62 CLOSES, and bs28's prediction is re-run rather than
-# recalled. The gap was that `byte` resolved but `0..=255` was not
-# enforced: at 0.1.25 `(mut bs).push(256)` into a `List[byte]` stored
-# 256 and exited 0 where wolfc refused it by name. Measured here at
-# this pin on that same three-line program:
+# WHAT IS38 GIVES THE BOOK, AND IT IS THE SPRINT'S WHOLE POINT: the
+# s137 cores land in the mirror, so the calls chapter 33 teaches are
+# executable ON BOTH MACHINES and the chapter's blocks are ordinary
+# two-machine samples rather than compiler-only ones. Measured here at
+# these pins on this host (macOS aarch64), each of the chapter's four
+# runnable programs under `lupin` and under `wolf run`, stdout compared
+# byte for byte:
 #
-#   lupin 0.1.25  ->  prints `1`, exit 0
-#   lupin 0.1.26  ->  E0401 at 3:19, the D72 teach-note, exit 2
-#   wolf  0.2.5   ->  E0401 at 3:19, exit 1
+#   §33.1  the door and one caller            AGREE
+#   §33.2  net_wait over a set (four lines)   AGREE
+#   §33.3  the loop, two callers, one process AGREE
+#   §33.4  os_cpus and a budgeted accept      AGREE
 #
-# Same rule, same span, each in its own words — is37 put it at two
-# rungs, `sema::byte_check` at resolve and an `ElemTy` on the list at
-# run. bs28 PREDICTED that zero of this book's samples could reach the
-# gap and measured zero; the same prediction is re-run at its closing
-# and is zero again, which is the reading that matters, because a gap
-# closing can move a page as easily as a gap opening. The corpus reason
-# is unchanged and was re-checked: the book pushes into no `List[byte]`
-# anywhere (the one construction, §8.9's `let e = List[byte]()`, is
-# measured empty and never appended to), writes no `let b: byte = <int>`
-# annotation, and hands a `List[byte]` only to a parameter declared over
-# one (13-11's substring search). The only int-to-byte flows on any page
-# are the seven explicit `as byte` casts of §2.3's own program — four of
-# them the narrowing ones that print 255/0/44/255 — and the rule
-# excludes an explicit cast by clause: `[type.byte.cast]` keeps the low
-# eight bits and never traps. At the raw bump, before a line was healed, `cargo xtask
-# samples` on this host reported 462 passed / 5 pending / 4 failed / 0
-# flips, and all four failures are the version and hash stamps of the
-# COMPILER's move. Nothing in this file's interpreter half moved a page.
+# WHAT THE INTERPRETER DECLINES, and why §33.4's prefork program is a
+# `wolf-run(…)` block rather than an ordinary one: `net_adopt_listener`
+# and a non-empty `os_spawn_with` inherit set are declined by the
+# checked machine BY NAME, with the construct named rather than the
+# host blamed — `unsupported: listener adoption in checked execution`,
+# measured on a three-line program at this pin. The reason is is38's
+# and it is not a gap: lupin is a binary interpreting a program, so a
+# descriptor handed to "the program's child" would be handed to the
+# interpreter's child. `net_listen_with`'s `reuse_port` option, by
+# contrast, IS served here — two hands on one loopback address answer
+# the same port on both machines, measured — but it is not printed as a
+# run-block either, for the windows reason recorded in chapter 33's
+# ledger.
 #
-# THE §8.9 UNITS DO NOT MOVE, re-measured rather than carried forward.
-# The section's own program with the numbers printed instead of the
-# relations, both machines, this host (macOS aarch64):
+# THE FAIR ACCEPT IS THE COMPILER'S ALONE AT THIS PAIR, and the book
+# says nothing that needs it. lupin 0.1.27 deliberately does not take
+# wolf-lang v0.2.6 (its own changelog says so: r09's delta is one
+# corpus file, spec/05's amendment, and `[os.net.accept]`, which is an
+# implementation surface and not a mirror of anything is38 shipped), so
+# the interpreter's accept is v0.2.5's. This costs the book nothing,
+# and the reason is the shape of #242 itself: the fix changed what a
+# LOST RACE costs, and a lost race needs two hands on one listener,
+# which the interpreter refuses to arrange in the first place. The
+# guarantee a single hand CAN observe — with a budget armed,
+# `net_accept` returns within it — was already the contract at v0.2.5
+# and is what §33.4's runnable block tests. Measured: both machines
+# answer `timeout` on a 50 ms budget against a door nobody dials.
 #
-#           header   65,536 octets   the same as List[int]
-#   wolf        48          65,584               1,048,560
-#   lupin       32          65,568               2,097,120
+# TWO INTERPRETER POSTURES THE CHAPTER IS WRITTEN AROUND, neither of
+# them a defect: the v0 net surface is LOOPBACK ONLY and a non-loopback
+# bind is refused by name, and an unbounded `net_wait` is railed at ten
+# seconds rather than allowed to hang a verdict. Every program in
+# chapter 33 binds `127.0.0.1:0` and waits on a bounded deadline, which
+# is the discipline the corpus already keeps and the one a reader
+# should keep in a test anyway.
 #
-# Byte for byte bs28's table. So the multiple the page names is still
-# sixteen compiled and thirty-two interpreted, and the sentence that
-# says so needs no edit at this bump.
-#
-# WHAT IS37 CHANGED FOR OTHER REPOSITORIES AND NOT FOR THIS ONE: the
-# eight wolf-std rows that carried `divergent(…)` and the two corpus
-# twins beside them all flip to agreement, and E0301's note now renders
-# the closed set of built-in type names from the check's own table. The
-# book meets neither — it holds no wolf-std row and prints no E0301 —
-# and wolf-interp#59's layout verification confirms by test what bs28
-# already measured on §2.2's own program, so §2.2's E0104 is unchanged
-# and Appendix C's `Shown by` column still says `wolf`.
+# THE §8.9 UNITS DO NOT MOVE and were not re-measured at this bump: the
+# interpreter's object layout is untouched by is38 (the release's work
+# is the s137 mirror and the differ's locus gate), and bs29 re-measured
+# the table one sprint ago against a release that did move layout.
 #
 # D57 discipline: this rev IS the tag, so the transcript stays clean.
 repo = "wolffe-lang/wolf-interp"
-rev = "5e774a2764dd37137b1af41cc4c4e1e1ca0afb8e"
-version = "lupin 0.1.26 (wolf-interp, reference interpreter at pin 982f857)"
+rev = "4d64d9010f71cb6cb21885a73bb5452ae1849607"
+version = "lupin 0.1.27 (wolf-interp, reference interpreter at pin 6ade878)"
 
 [wolf-lsp]
 # Source of the vendored tmLanguage grammars under highlight/.

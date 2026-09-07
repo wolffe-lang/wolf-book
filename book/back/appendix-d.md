@@ -6,37 +6,49 @@ is how you find the normative text behind it. Clause anchors are stable, so
 a tag printed by a tool in your terminal is findable in the spec even when
 the tool's wording changes.
 
-The specification is eleven documents. The table below this one cites
-four of them; all eleven are listed, because a tag can reach you from a
+The specification is eleven documents, and they publish eleven anchor
+namespaces between them, because one of the eleven owns two namespaces
+and one publishes none. The table below this one cites five of the
+documents; all eleven are listed, because a tag can reach you from a
 tool's own output rather than from a page here, and it has to be
 findable either way.
 
 | Document | Anchors |
 |----------|---------|
-| 01. Surface Grammar | `gram.*` |
+| 01. Surface Grammar | `gram.*`, `diag.*` |
 | 02. Memory Model | `mem.*` |
 | 03. Concurrency | `conc.*` |
 | 04. ABI | `abi.*` |
 | 05. Conformance | `conf.*` |
 | 06. Differential Protocol | `proto.*` |
-| 07. Schedule Points | `sched.*` |
+| 07. Schedule Points | `sched.*` (declared; unpublished) |
 | 08. Packages | `pkg.*` |
 | 09. Constant-Time | `ct.*` |
 | 10. Types | `type.*` |
 | 11. OS Surface | `os.*` |
 
-The last of those is where to go for something this edition does not
-teach. Files, processes, sockets, and the core count a program asks the
-machine for are one document, and the book reaches three of its calls:
-`fs_read_text` and `fs_write_text`, which the projects of Part 5 read
-their inputs with, and a `net_fetch` that is on the page only to be
-refused — §18.4's block and exercises 18-7c and 24-4, E0701 every time.
-Three more are named in an answer and never run, in 26-6's. There is no
-builtin reference in this book and no appendix that lists the surface,
-so a program that wants to listen on an address, share that listener
-across processes, wait on a set of sockets, or ask how many cores it
-may be scheduled on is reading `os.net.listen.opts`, `os.proc.inherit`,
-`os.net.wait` and `os.cpus`, and it is reading them in document 11.
+Two rows in that table need a sentence. Document 01 owns two
+namespaces: the grammar's own `gram.*`, and the `diag.*` anchors of its
+diagnostics section, which is where a tag like `[diag.sev.teach]` comes
+from when a tool prints one at you. Document 07 is the other way around
+— it declares `sched.*` anchors that the specification's own registry
+does not carry, so a search for one of them finds the document and not
+the anchor. Neither row is a page in this book: no section here cites a
+`sched.*` clause.
+
+Document 11 is the one to know. Files, processes, sockets, and the core
+count a program asks the machine for are all one document, and this
+edition reaches into it in three places. Chapter 33 teaches the serving
+surface and cites four of its clauses by name — `[os.net.wait]`,
+`[os.net.accept]`, `[os.net.listen.opts]` and `[os.proc.inherit]` — plus
+`[os.cpus]` for the machine's size. Part 5's projects read their inputs
+with `fs_read_text` and `fs_write_text`. And chapter 18 uses a
+`net_fetch` that is on the page only to be refused, because comptime
+touches nothing ambient — §18.4's block and exercises 18-7c and 24-4,
+E0701 every time. Three more calls are named in an answer and never
+run, in 26-6's. There is still no builtin reference in this book and no
+appendix that lists the surface, so a call chapter 33 does not teach is
+a call you look up in document 11.
 
 ## Book section to clause
 
@@ -70,6 +82,8 @@ may be scheduled on is reading `os.net.listen.opts`, `os.proc.inherit`,
 | 16.1 `ch.send(move r)` | `[mem.tier0.move.2]` | 02 |
 | 22.1 Directory = module | `[mod.dup]`, `[mod.vis.private]`, `[mod.use.unused]` | see below |
 | 22.2 No cycles | `[mod.cycle]` | see below |
+| 33.2 Waiting on the whole set | `[os.net.wait]` | 11 |
+| 33.4 Many hands on one door | `[os.cpus]`, `[os.net.accept]`, `[os.net.listen.opts]`, `[os.proc.inherit]` | 11 |
 | Appendix B | `[conf.trap.set]`, `[conf.trap.map]`, `[conf.trap.assert]`, `[conf.trap.exit]`, `[conf.trap.report]`, `[conc.mm.race.3]` | 05, 03 |
 
 ## Six tags with no clause
