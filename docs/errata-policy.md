@@ -13,10 +13,11 @@ Three kinds, matching the three issue templates.
 re-capture any transcript the fix touches. A technical report that turns
 out to be a toolchain defect is filed upstream in wolf-lang or
 wolf-interp and linked from the book issue, and the book waits for the
-fix rather than teaching around it.
+fix.
 
 **editorial** — typos, wording, a cross-reference pointing at the wrong
-section, a term used two ways. Fast path. No pin, no re-run, one commit.
+section, a term used two ways. These take one commit, with no pin bump
+and no re-run.
 
 **drift** — a sample that no longer holds on a newer toolchain than the
 pin. The nightly lane finds most of these first. Drift is fixed at the
@@ -28,16 +29,16 @@ pin note. A drift report is never fixed by loosening a check.
 - editorial: next commit that touches the book.
 - technical: triaged within a week; a wrong sample is either fixed or the
   page carries the correction under "Known corrections" until it is.
-- drift: at the next pin bump. A red nightly is information and not an
-  emergency, because the pin is what the book claims.
+- drift: at the next pin bump. A red nightly is information, because the
+  pin is what the book claims.
 
 ## Ownership
 
-The repository maintainer triages. There is one, and the honest form of
-that sentence is on the errata page: reports go to the issue tracker and
-are read there. The book re-verifies itself on every commit and on every
-toolchain release, so the failure mode this policy guards against is not
-an unread report; it is a report nobody wrote down.
+The repository maintainer triages. There is one, and the errata page
+says as much: reports go to the issue tracker and are read there. The
+book re-verifies itself on every commit and on every toolchain release,
+so the failure mode this policy guards against is a report nobody wrote
+down.
 
 ## Release rebuild
 
@@ -54,4 +55,4 @@ makes it urgent. A dry run of the release path is a
 A missing chapter is not an erratum. Five chapters and three sections in
 this edition are reserved, each saying on its own page what it covers and
 why it is not written. A report that one of them is missing gets closed
-with a pointer to the page, which already says so.
+with a pointer to that page.
