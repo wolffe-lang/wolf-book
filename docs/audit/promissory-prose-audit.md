@@ -18,11 +18,11 @@ Severity key:
   M1 (or at s37–s38 for std surface); the section is rewritten, not
   patched.
 
-**Status (updated 2026-08-12, bs11).** **21 of 28 findings closed** (F1,
-F2, F3, 1–13, 15, 16, 21, 23, 26). Seven remain — 14, 17, 18, 19, 22, 24
-and 25 — and every one of them is the same shape: a section whose
-*structure* exists because a std surface does not, measured again at the
-bs11 pin rather than inherited.
+**Status (updated 2026-08-12, bs11).** 21 of 28 findings closed (F1,
+F2, F3, 1–13, 15, 16, 21, 23, 26). Seven remain (14, 17, 18, 19, 22, 24
+and 25), and every one of them is the same shape: a section whose
+*structure* exists because a std surface does not. Each was measured
+again at the bs11 pin.
 
 - **Closed at bs11 by rewording, with the gap left standing:** 15 and 16
   (ch04's capture limits and the file-less `defer`, both restated as
@@ -49,19 +49,17 @@ bs11 pin rather than inherited.
   this document was written to run are now `cargo xtask verify-docs`
   checks. Deferral vocabulary, `blocker:`/`owner:`, the ledger's own name,
   and sprint identifiers fail the build if they reach reader-facing prose
-  (fences excluded — the tools keep their voice). The audit no longer
-  depends on someone remembering to grep.
+  (fences excluded; the tools keep their voice).
 
-**Status (updated 2026-08-11, rp01).** **rp-M1 is done** (see §6) and
-**rp01 has closed chapter 2's three rows**, which the string surface now
-serves. **16 of 28 findings closed** (F1, F2, F3, 1–13) — the whole
-front matter, all of chapter 1, all of chapter 2. **12 remain: 11 are
-rp-std's** (14–25 less the three closed — ch03's one, ch04's two,
-ch05's five, ch06's three), still gated on the collection and
-diagnostics surface, **and one is `par`'s** (26, ch06 §6.5's box, which
-rp01 deliberately did not touch: its pointer at §13.1 is correct and
-the section is held). Closed rows carry a RESOLVED note naming what
-replaced them and the pass that verified it.
+**Status (updated 2026-08-11, rp01).** rp-M1 is done (see §6) and rp01
+has closed chapter 2's three rows, which the string surface now serves.
+16 of 28 findings closed (F1, F2, F3, 1–13): the whole front matter, all
+of chapter 1, all of chapter 2. 12 remain. 11 are rp-std's (14–25 less
+the three closed: ch03's one, ch04's two, ch05's five, ch06's three),
+still gated on the collection and diagnostics surface, and one is
+`par`'s (26, ch06 §6.5's box, which rp01 left alone: its pointer at
+§13.1 is correct and the section is held). Closed rows carry a RESOLVED
+note naming what replaced them and the pass that verified it.
 
 ---
 
@@ -95,11 +93,10 @@ all rp-std.
 | 10 | `book/ch01.md:373–378` | "What is missing from this section is `wolf build`. There is no compiled artifact today, no `--release`, no binary to hand somebody. When the compiler's driver lands … this section gains the artifact it is named for." | FOUNDATIONAL — half of §1.5 is a deferral paragraph. | **RESOLVED rp-M1** — paragraph replaced by the artifact itself: `wolf build hello.lu`, `./hello`, `echo $?`, and one sentence on debug information. `--release` is not mentioned, because a tier that does not exist is not a thing the book withholds. |
 
 **Rows 14–25 below are rp-std's** (rows 11–13 were too, and closed at
-rp01 when the string surface arrived). rp-M1 deliberately left
-every one of them: they are std-surface findings, and a pass that
-rewrote them at the M1 pin would be reshaping prose around gaps that
-are still there. They were re-verified as still-accurate at the M1
-bump, not edited. The one ch02 change rp-M1 did make is outside the
+rp01 when the string surface arrived). rp-M1 left every one of them:
+they are std-surface findings, and a pass that rewrote them at the M1
+pin would be reshaping prose around gaps that are still there. They
+were re-verified as still accurate at the M1 bump. The one ch02 change rp-M1 did make is outside the
 catalog and recorded in ch02's ledger: §2.3's `s[i]` refusal block was
 deleted, because a permanent design decision (D25) was being taught
 through the same `unsupported` channel a temporary absence uses.
@@ -153,20 +150,20 @@ One reverse finding, recorded because it matters to the recommendation:
 apply to the row," while the chapter's own ledger records that nothing
 about rows is statically checked at this pin ("enforced by neither tool
 at this pin"). This is the one place Part 1 already writes in
-ultimate-product tense — and it reads exactly the way the ordered
-standard wants the whole book to read. It also violates the book's
+ultimate-product tense, and it reads the way the ordered standard
+wants the whole book to read. It also violates the book's
 executed-truth doctrine, which is the tension §3 below resolves.
 
 ---
 
 ## 2. The guidance that caused it
 
-The first fact the audit turned up: **the contracts did not intend
-pre-M1 chapters.** bs01 and bs02 both gate "after **M1** (s31) +
-s37–s38." The chapters shipped anyway, roughly 2–3 sprints early,
-through a loophole — and once drafting was underway pre-M1, a cluster
-of "honesty" clauses did exactly what they say, and produced the
-catalog above. Clauses to amend, by file:
+The audit's first fact is that the contracts did not intend pre-M1
+chapters. bs01 and bs02 both gate "after **M1** (s31) + s37–s38." The
+chapters shipped anyway, roughly 2–3 sprints early, through a loophole.
+Once drafting was underway pre-M1, a cluster of "honesty" clauses did
+what they say and produced the catalog above. Clauses to amend, by
+file:
 
 ### `principles/TONE.md`
 
@@ -174,21 +171,21 @@ catalog above. Clauses to amend, by file:
    Deferrals are stated plainly ('v1 does not do this')."**
    (TONE.md:50–51.) The second sentence is the deferral license. It
    conflates two different deferrals: *language-scope* deferrals ("v1
-   has no macros" — permanent, belongs in the book) and *toolchain-
-   completeness* deferrals ("split does not exist yet" — transient,
+   has no macros", permanent, belongs in the book) and *toolchain-
+   completeness* deferrals ("split does not exist yet", transient,
    does not). Every "not yet / when it lands / at this pin" sentence in
    the catalog is this clause doing what it was told.
 2. **§1, "Honest failure output is part of the product."**
    (TONE.md:31–32.) Written for traps and diagnostics; read in
    practice to cover `unsupported` scaffold refusals and the
-   `pre-alpha scaffold` banner, which are *absence* of product, not
-   product. Needs a carve-out.
+   `pre-alpha scaffold` banner, which are the *absence* of product.
+   Needs a carve-out.
 
 ### `wolf/sprints/book/00-scaffolding/bs00-toolchain-and-voice.md`
 
 3. **Target 2, the pin doctrine** ("no code appears in the book that CI
    did not execute," samples run "against the **pinned** wolf
-   toolchain"). The invariant is right and stays — but it has no floor
+   toolchain"). The invariant is right and stays, but it has no floor
    on what the pin must *contain*. Pre-M1 it inverts: since only what
    runs may be printed, every gap becomes a printed refusal or a
    taught workaround. The missing clause is a surface floor per
@@ -201,14 +198,14 @@ catalog above. Clauses to amend, by file:
 
 5. **Gate clause: "Draft may begin early against nightlies; *green CI*
    is what gates merge."** (bs01:6–7; bs02 inherits it.) This is the
-   loophole. CI was green — against a pin where the chapter's surface
-   does not exist — so the merge gate passed while the M1+s37 gate was
+   loophole. CI was green against a pin where the chapter's surface
+   does not exist, so the merge gate passed while the M1+s37 gate was
    still 2–3 sprints out. "Green CI" must mean green *at a pin that
    implements the chapter's declared surface*.
 6. **Target 1: "the book never asks the reader to install a second
    tool, and says so as a promise."** (bs01:32–34.) The contract
-   explicitly mandates promissory prose; ch01:119–124 is its direct
-   output ("the promise stands as a promise").
+   mandates promissory prose; ch01:119–124 is its direct output ("the
+   promise stands as a promise").
 7. **Target 3: "`ba:papercut` — teachable with an apology in the
    prose."** (bs01:70.) The apology license. Under the ordered
    standard, a surface that cannot be taught without the prose
@@ -230,16 +227,16 @@ catalog above. Clauses to amend, by file:
 
 Count: **9 clauses (7 distinct doctrines)** across TONE.md, bs00, bs01,
 bs02. Not implicated: STYLE.md (verbatim-output and ≤25-line rules are
-fine as-is), the template's unpublished audit-ledger block (correct and
-load-bearing — it is where deferrals *should* live), and the pending
+fine as-is), the template's unpublished audit-ledger block (correct:
+it is where deferrals *should* live), and the pending
 manifest / FLIP machinery (correct: it notices landings without
 printing promises).
 
-Root cause in one sentence: the index doctrine "chapters trail feature
-campaigns; writing the chapter is the ergonomics audit" was run in
-reverse — the chapters *led* the campaigns — and the honesty clauses,
-designed to keep a post-M1 book truthful, dutifully documented the gap
-between today's pin and the product instead.
+Root cause: the index doctrine "chapters trail feature campaigns;
+writing the chapter is the ergonomics audit" was run in reverse. The
+chapters *led* the campaigns, and the honesty clauses, designed to keep
+a post-M1 book truthful, documented the gap between today's pin and the
+product.
 
 ---
 
@@ -250,7 +247,7 @@ in flight, s30 DWARF next). The **std surface** (split/find, format
 precision, combinators, `Set`, `Map` absent-key, `main` args, fs) is
 **s37–s38**, *after* M1. Error traces, trait bounds, row checking have
 their own owners (debug profile, trait sprint, s15). So "revision at
-M1" is really **two named passes**:
+M1" is really two named passes:
 
 - **Pass A (at M1/s31):** tool-tour and run-workflow material — the
   install, `wolf build|run`, the artifact, the exit-code table, and
@@ -273,10 +270,10 @@ M1" is really **two named passes**:
 | ch06 | The row, `?`/`else`/`else \|err\|`, errdefer, **§6.4 hardening narrative (untouched)** | Trace promise → real trace run (23), capstone tally + args (24, 25), exit-1 verdict documented | ~85% | B | MEDIUM — capstone simplifies (deletions, not rewrites); one page gains a run |
 
 **Aggregate: ch03–ch06 cores are ~82% stable** (ch03 95, ch04 90, ch05
-60, ch06 85); the instability is concentrated in exactly two places —
-ch01's tool tour (Pass A) and ch05's std-surface sections (Pass B).
-The receipt→hardening→wordcount narrative spine of Part 1 survives M1
-and s37 completely intact; what changes is plumbing around it.
+60, ch06 85); the instability is concentrated in two places, ch01's tool
+tour (Pass A) and ch05's std-surface sections (Pass B). The
+receipt→hardening→wordcount narrative spine of Part 1 survives M1 and
+s37 intact; what changes is the plumbing around it.
 
 ---
 
@@ -397,10 +394,10 @@ Part 1; schedule rp-M1 and rp-std instead.**
 
 Reasoning, from the counts:
 
-1. **The damage is concentrated, not diffuse.** 4 foundational units
-   in 28 findings, all in two places: ch01's tool tour and ch05's
+1. **The damage is concentrated.** 4 foundational units in 28
+   findings, all in two places: ch01's tool tour and ch05's
    std-surface sections. ch03–ch06's cores are ~82% stable (ch03 at
-   95%, ch06's hardening narrative — the best thing in Part 1 —
+   95%, and ch06's hardening narrative, the best thing in Part 1, is
    untouched by either pass). If the number were 50%, pausing would be
    right; at 82% concentrated in known sections, pausing burns the
    stable majority to protect the unstable tenth.
@@ -409,28 +406,28 @@ Reasoning, from the counts:
    findings including two genuine language-level blockers (bare-variant
    patterns bind instead of match; closure capture semantics
    unspecified). Pausing until M1 forfeits 2–3 sprints of that signal
-   during exactly the window (s29–s31) when it is cheapest to act on.
-3. **The fix that actually meets the ordered standard is the gate, not
-   the pause.** bs01/bs02 already gated on M1+s37; the failure was the
+   during the window (s29–s31) when it is cheapest to act on.
+3. **The fix that meets the ordered standard is the gate.**
+   bs01/bs02 already gated on M1+s37; the failure was the
    "green CI merges" loophole plus the apology/reshape licenses. Close
    those (amendments §4.2) and bs03+ *cannot* reproduce the problem:
    a chapter whose surface exists needs no deferral prose, and a
-   chapter whose surface doesn't stays an unpublished draft with a
-   loud ledger.
+   chapter whose surface doesn't stays an unpublished draft with its
+   findings filed.
 4. **Part 2's surface is mostly compiler-core, not std** — moves,
-   `mut`, `take`, regions are exactly what wolf-lang has been building
+   `mut`, `take`, regions are what wolf-lang has been building
    (mem/wir phases, E1001 already teaching-grade in ch03). bs03 likely
    gates open earlier than a std-heavy chapter would; each sprint
    verifies its own surface floor at pin before prose lands in
    `book/`. Where a Part-2 section's surface is missing (e.g.
-   ch07/ex7-5's pending row), that *section* waits — gating is
+   ch07/ex7-5's pending row), that *section* waits; gating is
    per-surface, not per-era.
 5. Practical order: adopt the TONE amendment and bs03+ boilerplate
    now; run rp-M1 as a small named sprint immediately after s31
    (ch01 is one chapter; HIGH cost locally but ~a week's work);
    fold rp-std into the first post-s38 book sprint. Part 1's
    already-shipped deferral prose is quarantined by being enumerated
-   here — every finding has a file:line and a pass that deletes it.
+   here: every finding has a file:line and a pass that deletes it.
 
 ---
 
@@ -446,8 +443,8 @@ wolf-lsp unchanged.
 0.1.4's literal-typing change (#14: literals stay unconstrained through
 literal-only arithmetic): `ch03/ex3-6`, which asked for the smallest
 `i32` overflow "using only integer literals and one `*`", stopped
-trapping — `46341 * 46341` is now computed wide. Reshaped rather than
-re-blessed: the stem asks for one `i32` binding, the solution is `let
+trapping: `46341 * 46341` is now computed wide. It was reshaped instead
+of re-blessed: the stem asks for one `i32` binding, the solution is `let
 n: i32 = 46341` / `print("{n * n}")`, and the trap is back with a new
 span. Nothing else moved: no snapshot drift, no flips, all eight REPL
 transcripts replay byte-identically, and every ch02 console block was
@@ -457,12 +454,11 @@ passing, 11 pending unchanged, 1 → 0 failures, 0 flips throughout.
 **What the pass added to the rig.** `console` blocks are now executed.
 The runner replays any block whose commands are all pinned tools
 (`lupin`, `wolf`, `./binary`, `echo $?`, `&&` between them), writing
-the program printed above the block — or the one named by
-`console,from(id)` — and byte-comparing the output. 92 of 94 blocks
+the program printed above the block (or the one named by
+`console,from(id)`) and byte-comparing the output. 92 of 94 blocks
 replay; the two that do not (a `cd`-and-cargo line, a `grep`) are named
 in the log on every run. This closes the ch01 ledger's standing ask and
-is what makes "re-captured against the M1 binaries" a checkable claim
-rather than a report.
+makes "re-captured against the M1 binaries" a checkable claim.
 
 **Tense self-audit.** The grep set over `book/front/*.md` and
 `book/ch01.md`–`book/ch02.md` returns zero reader-facing hits for
@@ -473,7 +469,7 @@ scaffold output. The remaining hits in those files are inside the
 unpublished `AUDIT LEDGER` comments, which is where the standard puts
 them.
 
-**Left deliberately.** Rows 11–25 (rp-std, s37–s38) and the
+**Left standing.** Rows 11–25 (rp-std, s37–s38) and the
 `ba:papercut` half of row 4 (no release channel exists to print). Two
 new findings were opened by the pass and live in ch01's ledger: the
 implementations disagree on process exit codes for static rejections
@@ -489,9 +485,9 @@ the capability and prints no transcript.
 **Pins.** wolf-lang `8321aba4e77d16f598a77e7934c146700cbcfa46` (latest
 trunk with green CI; the two shas below it are red) and wolf-interp
 `v0.1.6` (tag object `35cd4ec`, commit `3a10f40`). wolf-lsp unchanged.
-The tag's own CI run is red for a reason outside the interpreter — the
+The tag's own CI run is red for a reason outside the interpreter (the
 release rung's greps asserted diagnostic/verdict adjacency and 0.1.6's
-record grew an additive `warnings` array between them — and the three
+record grew an additive `warnings` array between them), and the three
 commits above the tag are that harness catching up, green at the last.
 The book pins the tag; the whole book suite is green on it.
 
@@ -500,7 +496,7 @@ the `lupin --version` transcripts in `book/ch01.md` §1.2 and the
 colophon, re-captured from `lupin 0.1.5 (wolf-interp, pin f0da6e6)` to
 `lupin 0.1.6 (wolf-interp, pin 13b811f)`. Zero diagnostic-snapshot
 drift across all 75 reviewed snapshots, zero flips, zero pending-row
-changes (chapter 13 adds three more snapshots, for 78). The banked E0201 `when`-arity flip did **not** fire: lupin
+changes (chapter 13 adds three more snapshots, for 78). The banked E0201 `when`-arity flip did not fire: lupin
 0.1.6's wording realignment left that diagnostic byte-identical in both
 tools, so §12.4's paired blocks replay unchanged and the half-open row
 stays open on its own terms. Counts before → after, at the same book
@@ -510,27 +506,27 @@ failed, 0 flips, 158 of 160 console blocks replayed.
 
 **What the pin served.** Rows 11, 12 and 13 close: precision specs,
 `split` and `find` are all real, verified by run at this pin, and
-chapter 2's prose was already rewritten around them at the bs10 bump —
+chapter 2's prose was already rewritten around them at the bs10 bump;
 this pass verified and closed the paperwork. The deferral grep over
 `book/ch02.md` returns zero reader-facing hits.
 
-**What the pin did not serve, re-verified rather than assumed.** `Set`
+**What the pin did not serve, re-verified by run.** `Set`
 is still not constructible (`Set[int]()` is `unsupported: \`int\` does
 not resolve`, exit 4); no combinator exists (`sorted_by` is
 `unsupported`); `m["a"] += 1` is still `does not denote a place at run
 time`. Rows 18, 19, 20, 22 and 24 therefore stand as written. One
 correction to row 25's wording for whoever takes it: `fn main(args:
-List[str])` is no longer rejected — lupin accepts the signature and
+List[str])` is no longer rejected (lupin accepts the signature and
 hands it an empty list, and wolf reaches `wir` before answering
-`unsupported` — but there is still no argv, because the CLI itself
+`unsupported`), but there is still no argv, because the CLI itself
 refuses trailing arguments (`lupin args.lu foo` is `error: unexpected
 argument 'foo' found`). An always-empty list is not an argument list;
 the row stays, with a sharper blocker.
 
-**Row 26 left deliberately.** ch06 §6.5's boxed `par` promise is
+**Row 26 left standing.** ch06 §6.5's boxed `par` promise is
 untouched. rp01's gate did not open on `par`, the box's pointer at
-§13.1 is *correct* — that is the slot chapter 13 reserves for the
-section — and editing a shipped falsifiable promise whose claim has not
+§13.1 is *correct* (that is the slot chapter 13 reserves for the
+section), and editing a shipped falsifiable promise whose claim has not
 been tested either way is not a pin-bump decision. The box's two
 apparatus words ("the sprint that writes chapter 13") remain a live
 tense-discipline finding for whoever cashes it.
@@ -541,17 +537,17 @@ reader-facing hits for deferral language ("not yet", "when it lands",
 "at this pin", "for now", "a feature away", "does not exist yet",
 "will land"), zero sprint or milestone identifiers, and zero scaffold
 output taught. Chapter 13 names no schedule and does not mention `par`
-in reader-facing text at all — the one forward reference it would
-naturally make is exactly the one the discipline forbids, so the
-section that would receive it is absent from the page rather than
-promised on it. The remaining hits in those files are inside the
+in reader-facing text at all. The one forward reference it would
+naturally make is the one the discipline forbids, so the section that
+would receive it is absent from the page. The remaining hits in those
+files are inside the
 unpublished HOLD and AUDIT LEDGER comments, which is where the standard
 puts them.
 
-**Opened by this pass.** One blocker, in `book/ch13.md`'s ledger and
-loud: lupin's `--explore` path does not run the E11xx static checks, so
-all three programs chapter 13 rejects are explored by the same binary
-that refuses to run them — and the racy one is certified `observably
+**Opened by this pass.** One blocker, in `book/ch13.md`'s ledger:
+lupin's `--explore` path does not run the E11xx static checks, so all
+three programs chapter 13 rejects are explored by the same binary that
+refuses to run them. The racy one is certified `observably
 deterministic` on the lost-update run. `--seed` is unaffected.
 
 ---
@@ -565,13 +561,13 @@ deferral language ("not yet", "when it lands", "at this pin", "for now",
 campaign or milestone identifiers, and zero scaffold output taught. Every
 remaining hit is inside an unpublished HOLD or AUDIT LEDGER comment.
 
-Three findings were *created by* that grep set rather than merely
-recorded by it, and all three are one-string fixes in wolf-lang:
+That grep set created three findings as well as recording them, and
+all three are one-string fixes in wolf-lang:
 
 1. **E1503's note** ends "Declare C-library needs in the declarative
    `c: { }` recipe (c10)". The covenant chapter's single most persuasive
-   transcript — a dependency whose manifest asks for a shell command
-   being refused at parse time — is therefore unprintable, and §24.2
+   transcript (a dependency whose manifest asks for a shell command
+   being refused at parse time) is therefore unprintable, and §24.2
    prints `wolf --explain E1503` instead. The catalog entry for the same
    code already says the same sentence without the campaign id.
 2. **E0701's note** ends "file contents will arrive later as declared
@@ -581,9 +577,8 @@ recorded by it, and all three are one-string fixes in wolf-lang:
    ch24's exercises 24-4 and 24-5 dropped their pasted stanzas for it.
 3. **`wolf.sum`'s header** — written by the tool into every wolf
    project's version control — reads "# wolf.sum — integrity ledger
-   (s51). …". This is the worst of the three in kind: not a diagnostic
-   the book quotes, but a sprint identifier the toolchain commits to
-   users' repositories. §23.3 prints the ledger's data line and describes
+   (s51). …". This is the worst of the three in kind. The toolchain
+   commits this sprint identifier to every user's repository. §23.3 prints the ledger's data line and describes
    the header in prose, which costs that block its byte-for-byte
    `file(…)` check.
 
@@ -599,8 +594,8 @@ measurement in `book/ch22.md`'s ledger.
 `book/ch01–ch06.md`, `principles/TONE.md`, `STYLE.md`,
 `samples-pending.toml`, and the bs00/bs01/bs02 contracts in
 `wolf/sprints/book/`. The chapters' unpublished audit ledgers were used
-as corroborating evidence (they are not reader-facing and are not
-findings themselves — they are the mechanism working as designed).*
+as corroborating evidence (they are not reader-facing; they are the
+mechanism working as designed).*
 
 ---
 
@@ -618,8 +613,8 @@ prose from the exercise corpus: six solution blocks named a sprint, an
 owner, or the ledger, and one pasted a stale `conform-run` record whose
 verdict was a refusal. All seven were fixed at the source.
 
-**Two findings this pass created rather than recorded.** Both are
-upstream, both filed at full volume in the chapter ledgers:
+**Two findings this pass opened.** Both are upstream, both filed in
+the chapter ledgers:
 
 1. A failed build now closes with "(`wolf --explain E0201` explains any
    code by name)" — with `E0201` hard-coded as the example, whatever the
@@ -634,8 +629,8 @@ upstream, both filed at full volume in the chapter ledgers:
 **Closed by the pin.** All three defects the ecosystem chapters filed
 against the compiler's text are fixed upstream: `E0701`'s note no longer
 promises declared build inputs "later (s51)", `E1503`'s note dropped its
-campaign id, and `wolf.sum`'s header — the one the tool writes into every
-user's version control — dropped its sprint id. Two chapter transcripts
+campaign id, and `wolf.sum`'s header (the one the tool writes into every
+user's version control) dropped its sprint id. Two chapter transcripts
 can now be upgraded to rendered refusals (§24.2's `E1503`, §23.3's
 byte-checked ledger quote) and are named in those chapters' ledgers as
 the next pass's cheapest win.
