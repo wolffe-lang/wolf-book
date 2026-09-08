@@ -11,7 +11,7 @@ own page; chapters 13, 21, 23 and 25 each reserve sections for the same
 kind of reason. Chapter 33 is the book's newest and sits at the end of
 part 4 with a number out of order, because section numbers are
 permanent anchors and a late chapter takes the next free number instead
-of moving thirty others (`principles/TOC.md` §Deltas, bs30).
+of moving thirty others (`principles/TOC.md` §Deltas).
 
 Code samples are [GPL-3.0-or-later](LICENSE) with the [wolf Runtime
 Library Exception](LICENSE-EXCEPTION), matching the runtime, so code you
