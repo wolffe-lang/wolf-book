@@ -8,55 +8,54 @@ This edition has a chapter about writing a server. Chapter 33, The
 serving loop, is the book's first transport and its first executed
 socket call: bind a loopback listener and take one connection, ask
 `net_wait` which of a whole set of sockets can be read, serve several
-callers from one process with no task and no channel anywhere in it,
-and then hand that listener to a child process and read what a lost
-accept race costs. Seven exercises, five of them with programs, all
-solved and all replayed by CI in the same commit as the prose. The
-suite goes from 462 samples passing to 473.
+callers from one process with no task and no channel anywhere in it, and
+then hand that listener to a child process and read what a lost accept
+race costs. Seven exercises, five of them with programs, all solved and
+all replayed by CI in the same commit as the prose. The suite goes from
+462 samples passing to 473.
 
 The paragraph the last printing measured and could not place is now a
 section. Last time this book recorded, in its own notes, that a loop
 which waits costs about what a program that only sleeps costs, while a
 loop that takes turns (a short deadline on the door, another on every
-open connection, around and around) is descheduled about fifteen
-hundred times in five idle seconds to learn that nothing happened. No
-chapter held that argument. §33.3 holds it now, and it cites §12.2's
-costing of an idle connection, because the two are the same
-argument about two different machines: one about the concurrency
-runtime, where an arm in a wait set is a registration and not a task,
-and one about the kernel, where the program spawns nothing at all.
+open connection, around and around) is descheduled about fifteen hundred
+times in five idle seconds to learn that nothing happened. No chapter
+held that argument. §33.3 holds it now, and it cites §12.2's costing of
+an idle connection, because the two are the same argument about two
+different machines: one about the concurrency runtime, where an arm in a
+wait set is a registration and not a task, and one about the kernel,
+where the program spawns nothing at all.
 
-Where the chapter sits, and the number that will look wrong. Chapter
-33 is at the end of part 4, between chapters 25 and 26. Section numbers
-in this book are permanent links (`#8.4` is section 8.4 for good), so a
-chapter that arrives after the other thirty-two were
-numbered takes the next free number rather than moving everyone else's.
-The alternative was renumbering fourteen chapters, every section anchor
-under them, and every exercise number in part 5, which is the trade the
-language specification makes the same way and for the same reason.
-"How to read this book" says so in one sentence, and nothing else in
-the book was renumbered.
+Where the chapter sits, and the number that will look wrong. Chapter 33
+is at the end of part 4, between chapters 25 and 26. Section numbers in
+this book are permanent links (`#8.4` is section 8.4 for good), so a
+chapter that arrives after the other thirty-two were numbered takes the
+next free number rather than moving everyone else's. The alternative was
+renumbering fourteen chapters, every section anchor under them, and
+every exercise number in part 5, which is the trade the language
+specification makes the same way and for the same reason. "How to read
+this book" says so in one sentence, and nothing else in the book was
+renumbered.
 
-The accept is fair, and the chapter says when that became true.
-Several processes can hold one listening socket; one connection wakes
-more than one of them and exactly one takes it. Until the compiler
-release this printing is true for, the hands that lost went back into a
-blocking accept with their budget already spent and stayed there until
-the next connection arrived: microseconds on a busy server, and on a
-quiet one, never, alive, using no cpu, answering nothing. The advice
-for that arrangement was to not build it. Now a hand that loses comes
-back inside the budget it already armed, so §33.4 teaches the mechanism
-instead of the warning, and says in past tense that it could not
-have.
+The accept is fair, and the chapter says when that became true. Several
+processes can hold one listening socket; one connection wakes more than
+one of them and exactly one takes it. Until the compiler release this
+printing is true for, the hands that lost went back into a blocking
+accept with their budget already spent and stayed there until the next
+connection arrived: microseconds on a busy server, and on a quiet one,
+never, alive, using no cpu, answering nothing. The advice for that
+arrangement was to not build it. Now a hand that loses comes back inside
+the budget it already armed, so §33.4 teaches the mechanism instead of
+the warning, and says in past tense that it could not have.
 
-What serves everywhere, and what two hosts decline. Two of the
-chapter's calls are the host's to decline: sharing one address across
-processes with `reuse_port`, and passing a descriptor to a child, are
-refused on Windows for reasons the section states. The rest of the
-chapter is portable (listen, connect, accept, read, write, close, arm a
-deadline, ask how many cores you may be scheduled on, and wait on a
-set), and `net_wait` in particular names no refusal on any host at all,
-which is why the chapter is built on it.
+What serves everywhere, and what two hosts decline. Two of the chapter's
+calls are the host's to decline: sharing one address across processes
+with `reuse_port`, and passing a descriptor to a child, are refused on
+Windows for reasons the section states. The rest of the chapter is
+portable (listen, connect, accept, read, write, close, arm a deadline,
+ask how many cores you may be scheduled on, and wait on a set), and
+`net_wait` in particular names no refusal on any host at all, which is
+why the chapter is built on it.
 
 Appendix D counts the specification correctly again. The eleven
 documents publish eleven namespaces between them, and one document owns
@@ -74,10 +73,10 @@ The toolchain moves to wolf 0.2.6 and lupin 0.1.27. The two version
 lines disagree twice this printing, and both disagreements say the same
 thing: the compiler names the interpreter release before the one beside
 it, and the interpreter names the compiler release before the one above
-it. The two were cut within a day of each other and neither had seen
-the other's latest when it was tested. That is a pair one release
-apart, wearing the lag on the name in one direction and on the sha in
-the other, and §1.2 and the colophon both say which is which. Four
+it. The two were cut within a day of each other and neither had seen the
+other's latest when it was tested. That is a pair one release apart,
+wearing the lag on the name in one direction and on the sha in the
+other, and §1.2 and the colophon both say which is which. Four
 transcripts re-record and no diagnostic snapshot does; the diagnostic
 catalog holds at 169 codes and the grammar is byte-identical, so
 Appendix A regenerates to itself.
@@ -90,36 +89,34 @@ gap the previous printing recorded and open a surface no page in this
 edition can reach. The suite does not move at all: 462 passed, 5
 pending, 0 failed, 0 flips, the same reading as at the pins before it.
 
-The byte's domain is a rule on both machines now. Last printing
-recorded a hole with no page in it: lupin had the `byte` type and not
-its range, so `push(256)` into a `List[byte]` stored 256 and printed it
-where the compiler refused the same line. lupin 0.1.26 refuses it
-(`E0401`, at the `256` and not at the list it was going into, the same
-column the compiler underlines), and the prediction that went with the
-hole was re-run at its closing, because a gap closing can move a page
-as easily as a gap opening. The corpus reason
-is unchanged: this book pushes into no `List[byte]` anywhere, writes no
-`byte` annotation over an integer, and hands a `List[byte]` only to a
-parameter declared over one, so the only int-to-byte flows on any page
-are §2.3's explicit casts, which the rule excludes by clause. Predicted
-zero at the opening, measured zero. Predicted zero at the closing,
-measured zero.
+The byte's domain is a rule on both machines now. Last printing recorded
+a hole with no page in it: lupin had the `byte` type and not its range,
+so `push(256)` into a `List[byte]` stored 256 and printed it where the
+compiler refused the same line. lupin 0.1.26 refuses it (`E0401`, at the
+`256` and not at the list it was going into, the same column the
+compiler underlines), and the prediction that went with the hole was
+re-run at its closing, because a gap closing can move a page as easily
+as a gap opening. The corpus reason is unchanged: this book pushes into
+no `List[byte]` anywhere, writes no `byte` annotation over an integer,
+and hands a `List[byte]` only to a parameter declared over one, so the
+only int-to-byte flows on any page are §2.3's explicit casts, which the
+rule excludes by clause. Predicted zero at the opening, measured zero.
+Predicted zero at the closing, measured zero.
 
 The release's headline lands entirely outside this book. v0.2.5 is the
-release where a server becomes a
-program you can write in wolf: `net_wait` waits on a whole set of
-sockets at once, `net_listen_with` lets several processes hold one
-address, `os_spawn_with` and `net_adopt_listener` hand a listener down
-to a child, and `os_cpus` says how many hands the machine will actually
-schedule. Five clauses, and not one of them reaches a printed page.
-This edition makes no socket call and no process call anywhere: three
-operating-system builtins are executed on any page (`fs_read_text` and
-`fs_write_text` in Part 5's projects, and a `net_fetch` that appears
-three times and is refused all three), and three more are named in an
-answer and never run. So the surface is recorded where this book records
-a toolchain
-fact it does not teach, in the pin file, and Appendix D is corrected so
-that a reader has somewhere to go for it.
+release where a server becomes a program you can write in wolf:
+`net_wait` waits on a whole set of sockets at once, `net_listen_with`
+lets several processes hold one address, `os_spawn_with` and
+`net_adopt_listener` hand a listener down to a child, and `os_cpus` says
+how many hands the machine will actually schedule. Five clauses, and not
+one of them reaches a printed page. This edition makes no socket call
+and no process call anywhere: three operating-system builtins are
+executed on any page (`fs_read_text` and `fs_write_text` in Part 5's
+projects, and a `net_fetch` that appears three times and is refused all
+three), and three more are named in an answer and never run. So the
+surface is recorded where this book records a toolchain fact it does not
+teach, in the pin file, and Appendix D is corrected so that a reader has
+somewhere to go for it.
 
 A loop that waits against a loop that looks, measured here and printed
 nowhere. The argument behind `net_wait` is the one a serving loop is
@@ -131,36 +128,35 @@ is descheduled about 1,560 times to learn that nothing happened, where
 one `net_wait` over the same two handles makes one pass and is
 descheduled about ten times, which is what a program that only sleeps
 for those five seconds costs. No chapter in this edition holds that
-paragraph. The nearest is §12.2's "The million idle connections",
-which asks this question and answers it about the concurrency
-runtime, over channels and timers, and hands throughput to Part 4;
-`net_wait` is the same argument about a different machine, the
-one a program that spawns nothing uses instead of a scheduler, and
-writing it there would put this book's first socket call three sections
-after `select` in a chapter that teaches no transport. The paragraph is
-routed instead of written: it goes to whatever chapter this book
-eventually gives the network, which is the editorial call chapter 11's
-ledger has carried since bs27 and which this sprint does not make.
+paragraph. The nearest is §12.2's "The million idle connections", which
+asks this question and answers it about the concurrency runtime, over
+channels and timers, and hands throughput to Part 4; `net_wait` is the
+same argument about a different machine, the one a program that spawns
+nothing uses instead of a scheduler, and writing it there would put this
+book's first socket call three sections after `select` in a chapter that
+teaches no transport. The paragraph is routed instead of written: it
+goes to whatever chapter this book eventually gives the network, which
+is the editorial call chapter 11's ledger has carried since bs27 and
+which this sprint does not make.
 
-Appendix D said the specification is seven documents. It has been
-eleven for the whole of the 0.2 line. The four that were missing are
-Packages, Constant-Time, Types and the OS surface, and the last of
-those is where every call named above is ruled, so the one route this
-book gives a reader out of its own pages and into the normative text
-did not reach the release's whole subject. The table names all eleven
-now, and says that there is no builtin reference in this book and no
-appendix that lists the surface.
+Appendix D said the specification is seven documents. It has been eleven
+for the whole of the 0.2 line. The four that were missing are Packages,
+Constant-Time, Types and the OS surface, and the last of those is where
+every call named above is ruled, so the one route this book gives a
+reader out of its own pages and into the normative text did not reach
+the release's whole subject. The table names all eleven now, and says
+that there is no builtin reference in this book and no appendix that
+lists the surface.
 
-The two version lines name one interpreter again, and the lag has
-moved onto the sha. Last printing they disagreed by name: the
-compiler said `paired with lupin 0.1.24` while the interpreter beside
-it was 0.1.25. This compiler was tagged after this interpreter existed,
-so it names it, pin clause and all. The interpreter, cut first, was
-tested against the compiler before this one, so the sha it carries is
-the previous tag rather than the line above it. A pair one
-release apart is the ordinary case and it can lag on either side. Both
-transcripts re-record, and the colophon and §1.2 say which side it is
-on this time.
+The two version lines name one interpreter again, and the lag has moved
+onto the sha. Last printing they disagreed by name: the compiler said
+`paired with lupin 0.1.24` while the interpreter beside it was 0.1.25.
+This compiler was tagged after this interpreter existed, so it names it,
+pin clause and all. The interpreter, cut first, was tested against the
+compiler before this one, so the sha it carries is the previous tag
+rather than the line above it. A pair one release apart is the ordinary
+case and it can lag on either side. Both transcripts re-record, and the
+colophon and §1.2 say which side it is on this time.
 
 Those two version blocks are two of the four the pin move touched. The
 other two are stamps that carry the toolchain version by construction:
@@ -180,84 +176,81 @@ The compiler does not move this sprint. The interpreter does, from lupin
 0.1.24 to 0.1.25, and what it brings is the half of last sprint's
 release that had not reached it yet: `byte`. One release ago this book
 taught a scalar that only one of its two machines could read, and it
-wrote that down where it records what it measured. Both machines read
-it now, and the two blocks
-that were waiting are executed on both.
+wrote that down where it records what it measured. Both machines read it
+now, and the two blocks that were waiting are executed on both.
 
-§2.3's byte transcript is byte-identical across the pair. `65 65
-200`, `255 0 44 255`, `400 66 66`, exit 0, under `wolf run byte.lu` and
-under `lupin byte.lu` alike, measured at the bump, before the fence
-was touched. So the page shows one transcript and not two, which is the
+§2.3's byte transcript is byte-identical across the pair. `65 65 200`,
+`255 0 44 255`, `400 66 66`, exit 0, under `wolf run byte.lu` and under
+`lupin byte.lu` alike, measured at the bump, before the fence was
+touched. So the page shows one transcript and not two, which is the
 book's rule for a program whose machines agree, and the fence moves out
 of the compiler-only lane into the shape §2.4 has used for `char` since
 bs17: the interpreter runs the program, the compiler runs the console
 block beside it, and both readings have to match the same three printed
-lines. The same graduation happens two hundred pages later, where
-§8.9's byte-ledger reading answers `true` to all three of its relations
-on the interpreter too.
+lines. The same graduation happens two hundred pages later, where §8.9's
+byte-ledger reading answers `true` to all three of its relations on the
+interpreter too.
 
-A third fence went with them, and it is older than the byte. Chapter
-4's trap-abandons-your-defers program has been the compiler's block,
-and its paragraph has said "both machines do this now" since the
-interpreter's divergence was fixed, but nothing was checking the
-second machine. It is checked now: lupin names the same `assert` and
-exits `3` where the compiler exits `134`, which is the per-machine
-status D60 rules and the same kind either way. Three fences into the
-two-machine form, and one printed block is left that the compiler runs
-alone: chapter 30's parallel grep, which writes files. The exercise
-corpus keeps eight more, five of them comptime folds the interpreter
-declines by design and three of them chapter 30's.
+A third fence went with them, and it is older than the byte. Chapter 4's
+trap-abandons-your-defers program has been the compiler's block, and its
+paragraph has said "both machines do this now" since the interpreter's
+divergence was fixed, but nothing was checking the second machine. It is
+checked now: lupin names the same `assert` and exits `3` where the
+compiler exits `134`, which is the per-machine status D60 rules and the
+same kind either way. Three fences into the two-machine form, and one
+printed block is left that the compiler runs alone: chapter 30's
+parallel grep, which writes files. The exercise corpus keeps eight more,
+five of them comptime folds the interpreter declines by design and three
+of them chapter 30's.
 
 §8.9's byte ledger exists to prove that holding octets as `int`s costs
 real memory, and it prints relations because the units belong to
 whichever arena you ran in. Running it on a second arena demonstrates
-the argument: the same 65,536 octets that charge
-65,584 ledger bytes compiled charge 65,568 interpreted, and the same
-values pushed into a `List[int]` charge sixteen times the octets on one
-machine and thirty-two on the other. All three printed relations hold
-on both. The section names both multiples now, and §2.3's one-sentence
-version of the argument stops quoting a single machine's sixteen.
+the argument: the same 65,536 octets that charge 65,584 ledger bytes
+compiled charge 65,568 interpreted, and the same values pushed into a
+`List[int]` charge sixteen times the octets on one machine and
+thirty-two on the other. All three printed relations hold on both. The
+section names both multiples now, and §2.3's one-sentence version of the
+argument stops quoting a single machine's sixteen.
 
 The two version lines no longer name the same interpreter. The compiler
 was tagged before this interpreter release existed, so `wolf --version`
 still reports being paired with lupin 0.1.24 while `lupin --version`
-reports 0.1.25, pinned, in its own stamp, to the exact compiler
-revision this book pins. The colophon has
-carried a sentence since the first edition saying a printing whose two
-lines differ by a release is ordinary; this is that printing, so the
-sentence states a fact instead of anticipating one, and §1.2 gains a
-paragraph telling the reader how to read a pair that disagrees. Those
-two transcripts are the whole of the bump's blast radius: at the raw
-new pin, before a line was healed, the suite reported 462 passed, 5
-pending, 2 failed and 0 flips, and the two failures were those two
-blocks. Nothing else in the book moved.
+reports 0.1.25, pinned, in its own stamp, to the exact compiler revision
+this book pins. The colophon has carried a sentence since the first
+edition saying a printing whose two lines differ by a release is
+ordinary; this is that printing, so the sentence states a fact instead
+of anticipating one, and §1.2 gains a paragraph telling the reader how
+to read a pair that disagrees. Those two transcripts are the whole of
+the bump's blast radius: at the raw new pin, before a line was healed,
+the suite reported 462 passed, 5 pending, 2 failed and 0 flips, and the
+two failures were those two blocks. Nothing else in the book moved.
 
-A gap in the interpreter that no page can reach. lupin 0.1.25 has
-the byte type but not its domain: `push(256)` into a `List[byte]`
-stores 256 and prints it, where the compiler refuses the same line.
-That is filed as wolf-interp#62 and it was predicted to touch nothing
-here before the suite was run: this book pushes into no
-`List[byte]` anywhere, annotates no `byte` from an integer, and hands a
-`List[byte]` only to a parameter declared over one, so the only
-integer-to-byte flows on any page are §2.3's four explicit casts, which
-truncate by clause and agree on both machines. Measured after: nothing.
-A program the compiler refuses is not one this book can print, so the
-gap is recorded in the pin file and on no page.
+A gap in the interpreter that no page can reach. lupin 0.1.25 has the
+byte type but not its domain: `push(256)` into a `List[byte]` stores 256
+and prints it, where the compiler refuses the same line. That is filed
+as wolf-interp#62 and it was predicted to touch nothing here before the
+suite was run: this book pushes into no `List[byte]` anywhere, annotates
+no `byte` from an integer, and hands a `List[byte]` only to a parameter
+declared over one, so the only integer-to-byte flows on any page are
+§2.3's four explicit casts, which truncate by clause and agree on both
+machines. Measured after: nothing. A program the compiler refuses is not
+one this book can print, so the gap is recorded in the pin file and on
+no page.
 
 Two more claims narrow because a second machine can finally be asked.
 D74's string-layout codes reached the interpreter with this release, so
 lupin answers `E0104` on §2.2's own program where it answered an
-invented `E0109` one release ago: the same line, the same code the
-page prints, in its own words. Appendix C still says the block was
-shown by the compiler, because it was; the reason last sprint gave for
-that has retired. And chapter 11's connection-pool row, which lost its
-premise last sprint when the toolchain grew a network surface, loses
-its replacement clause here: the interpreter serves the unix-domain
-family too, measured on this host, over listen, connect, accept, the
-byte read and write pair, and a listener close that unlinks its own
-path.
-The row stays open on the editorial call it has always rested on: this
-edition has no network chapter, and no page makes a socket call.
+invented `E0109` one release ago: the same line, the same code the page
+prints, in its own words. Appendix C still says the block was shown by
+the compiler, because it was; the reason last sprint gave for that has
+retired. And chapter 11's connection-pool row, which lost its premise
+last sprint when the toolchain grew a network surface, loses its
+replacement clause here: the interpreter serves the unix-domain family
+too, measured on this host, over listen, connect, accept, the byte read
+and write pair, and a listener close that unlinks its own path. The row
+stays open on the editorial call it has always rested on: this edition
+has no network chapter, and no page makes a socket call.
 
 The print edition holds at 513 pages.
 
@@ -289,15 +282,14 @@ chapter 20 all say `as int` where they meet a number, and read the same
 as they did.
 
 Every octet fits an integer with seven bytes to spare, and those seven
-bytes are not the whole price. §8.9 now measures the whole of it
-instead of asserting it. A region holding 65,536 octets charges 65,536
-octets and one list header (the runtime knows the length before it
-allocates, so there is no growth history to pay for), and the same
-65,536 values pushed into a
-list of integers charge at least seven times that, and on the machine
-this printing was built on, sixteen. The section prints those as
-relations rather than as numbers, the way it prints every other ledger
-reading, and the sentence in its budget half that warned "a
+bytes are not the whole price. §8.9 now measures the whole of it instead
+of asserting it. A region holding 65,536 octets charges 65,536 octets
+and one list header (the runtime knows the length before it allocates,
+so there is no growth history to pay for), and the same 65,536 values
+pushed into a list of integers charge at least seven times that, and on
+the machine this printing was built on, sixteen. The section prints
+those as relations rather than as numbers, the way it prints every other
+ledger reading, and the sentence in its budget half that warned "a
 sixty-four-kilobyte buffer's worth of elements can charge a megabyte of
 ledger" now points at the measurement two paragraphs above it, which is
 that megabyte.
@@ -305,10 +297,10 @@ that megabyte.
 Chapter 2's multiline strings gained their refusals. §2.2 has stated
 three layout rules since the first edition and enforced none of them on
 the page; each has a code now, one rule per code, and the margin rule is
-printed in full because its rendering shows both ends of the
-comparison: the line that sits too far left, and the closing delimiter
-whose column decided how far that was. A `"""` that shares its line with text
-is one refusal whether it is the opening one or the closing one. And a
+printed in full because its rendering shows both ends of the comparison:
+the line that sits too far left, and the closing delimiter whose column
+decided how far that was. A `"""` that shares its line with text is one
+refusal whether it is the opening one or the closing one. And a
 tolerance worth knowing sits at the end of §2.3: a byte order mark at
 the very start of a source file is stripped and is never a diagnostic,
 so an editor that insists on writing one cannot break your build.
@@ -316,44 +308,44 @@ Appendix C gains all five codes, and its count was re-measured rather
 than incremented: it claimed 48 while the table held 49, and it says 54
 over 54 now.
 
-`samples-os.toml` holds no rows. The file of per-host differences
-opened last sprint with six, four of which retired at the previous pin
-when Windows grew a task layer. The last two were never about a version:
-one compiler spelled the same project's paths two ways, `wolf add` and
-`wolf publish` printing the host's separator where every diagnostic in
-the same binary prints a slash. That is fixed at this release, and the
+`samples-os.toml` holds no rows. The file of per-host differences opened
+last sprint with six, four of which retired at the previous pin when
+Windows grew a task layer. The last two were never about a version: one
+compiler spelled the same project's paths two ways, `wolf add` and `wolf
+publish` printing the host's separator where every diagnostic in the
+same binary prints a slash. That is fixed at this release, and the
 Windows lane said so before anything was deleted: it failed both rows,
-as stale, and named the issue that had landed. The machinery
-stays and both directions stay enforced. An empty file is a measurement:
-every declared per-host difference this book has found has been answered
-by the toolchain.
+as stale, and named the issue that had landed. The machinery stays and
+both directions stay enforced. An empty file is a measurement: every
+declared per-host difference this book has found has been answered by
+the toolchain.
 
 Two of this sprint's blocks run on the compiler alone and say so; the
 book has had that lane since bs09, for the programs one implementation
 runs, and this time they are the new byte-cast transcript and the new
-ledger reading. The reference
-interpreter's release predates the type, so it answers `65 as byte` with
-"nothing with this name is in scope", which was probed at the bump in
-both directions, recorded in the pin file, and retires at that project's
-next release. Neither block is skipped; both are executed
-and byte-compared on every lane that has a compiler.
+ledger reading. The reference interpreter's release predates the type,
+so it answers `65 as byte` with "nothing with this name is in scope",
+which was probed at the bump in both directions, recorded in the pin
+file, and retires at that project's next release. Neither block is
+skipped; both are executed and byte-compared on every lane that has a
+compiler.
 
 wolf also learned unix-domain sockets this release, and no page prints
-one, which is worth saying: this edition has no network chapter
-and makes no socket call anywhere, so there is no list of transports for
-the family to join. It was measured on this host at the pin and recorded
+one, which is worth saying: this edition has no network chapter and
+makes no socket call anywhere, so there is no list of transports for the
+family to join. It was measured on this host at the pin and recorded
 where the book keeps toolchain facts it does not teach. What it did
 retire is a stale sentence in chapter 11's own ledger, which had been
 explaining a design choice with "there is no network surface at this
 toolchain" long after there was one.
 
-The clause anchors grow 411 to 417 (four for the new scalar, two for
-the socket clause), with none dropped and none retargeted. The
-diagnostic catalogue does not move at all: this release re-ruled four
-codes and minted none. The grammar appendix regenerates to itself, since
-`byte` is a type name and not a keyword. Two version transcripts,
-chapter 22's interface stamp and chapter 25's publish record re-record
-as they do at every bump, and no printed diagnostic moved.
+The clause anchors grow 411 to 417 (four for the new scalar, two for the
+socket clause), with none dropped and none retargeted. The diagnostic
+catalogue does not move at all: this release re-ruled four codes and
+minted none. The grammar appendix regenerates to itself, since `byte` is
+a type name and not a keyword. Two version transcripts, chapter 22's
+interface stamp and chapter 25's publish record re-record as they do at
+every bump, and no printed diagnostic moved.
 
 The print edition sets to 513 pages, three more than the previous one.
 
@@ -656,12 +648,12 @@ refusal fences retired with a re-teach.
 
 ## bs17 — 2026-08-29 — the pin catches the site
 
-Pins advance to wolf addcd7f and lupin 0.1.16, and every trap transcript
-now names its site the way the tools do: 79 line:col sites byte-exact,
-one transcript and eleven claims updated for the compiled tier's `at
-file:line:col` second line. Appendix B gains the D60 exit-status table.
-The char-era fences graduate: 398 samples, 0 failures, with the
-environmental class empty.
+Pins advance to wolf addcd7f and lupin 0.1.16, and every trap
+transcript now names its site the way the tools do: 79 line:col sites
+byte-exact, one transcript and eleven claims updated for the compiled
+tier's `at file:line:col` second line. Appendix B gains the D60
+exit-status table. The char-era fences graduate: 398 samples, 0
+failures, with the environmental class empty.
 
 ## bs16 — 2026-08-29 — the register rewrite
 
