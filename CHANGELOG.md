@@ -4,7 +4,7 @@ What changed for the reader, entry per merged sprint (D65).
 
 ## bs30 — 2026-09-07 — the book serves
 
-**This edition has a chapter about writing a server.** Chapter 33, The
+This edition has a chapter about writing a server. Chapter 33, The
 serving loop, is the book's first transport and its first executed
 socket call: bind a loopback listener and take one connection, ask
 `net_wait` which of a whole set of sockets can be read, serve several
@@ -14,22 +14,22 @@ accept race costs. Seven exercises, five of them with programs, all
 solved and all replayed by CI in the same commit as the prose. The
 suite goes from 462 samples passing to 473.
 
-**The paragraph the last printing measured and could not place is now a
-section.** Last time this book recorded, in its own notes, that a loop
+The paragraph the last printing measured and could not place is now a
+section. Last time this book recorded, in its own notes, that a loop
 which waits costs about what a program that only sleeps costs, while a
-loop that takes turns — a short deadline on the door, another on every
-open connection, around and around — is descheduled about fifteen
+loop that takes turns (a short deadline on the door, another on every
+open connection, around and around) is descheduled about fifteen
 hundred times in five idle seconds to learn that nothing happened. No
 chapter held that argument. §33.3 holds it now, and it cites §12.2's
-costing of an idle connection by name, because the two are the same
+costing of an idle connection, because the two are the same
 argument about two different machines: one about the concurrency
 runtime, where an arm in a wait set is a registration and not a task,
 and one about the kernel, where the program spawns nothing at all.
 
-**Where the chapter sits, and the number that will look wrong.**
-Chapter 33 is at the end of part 4, between chapters 25 and 26. Section
-numbers in this book are permanent links — `#8.4` is section 8.4 for
-good — so a chapter that arrives after the other thirty-two were
+Where the chapter sits, and the number that will look wrong. Chapter
+33 is at the end of part 4, between chapters 25 and 26. Section numbers
+in this book are permanent links (`#8.4` is section 8.4 for good), so a
+chapter that arrives after the other thirty-two were
 numbered takes the next free number rather than moving everyone else's.
 The alternative was renumbering fourteen chapters, every section anchor
 under them, and every exercise number in part 5, which is the trade the
@@ -37,40 +37,40 @@ language specification makes the same way and for the same reason.
 "How to read this book" says so in one sentence, and nothing else in
 the book was renumbered.
 
-**The accept is fair, and the chapter says when that became true.**
+The accept is fair, and the chapter says when that became true.
 Several processes can hold one listening socket; one connection wakes
 more than one of them and exactly one takes it. Until the compiler
 release this printing is true for, the hands that lost went back into a
 blocking accept with their budget already spent and stayed there until
-the next connection arrived — microseconds on a busy server, and on a
-quiet one, never: alive, using no cpu, answering nothing. The honest
-advice for that arrangement was to not build it. Now a hand that loses
-comes back inside the budget it already armed, so §33.4 teaches the
-mechanism instead of the warning, and says in plain past tense that it
-could not have.
+the next connection arrived: microseconds on a busy server, and on a
+quiet one, never, alive, using no cpu, answering nothing. The advice
+for that arrangement was to not build it. Now a hand that loses comes
+back inside the budget it already armed, so §33.4 teaches the mechanism
+instead of the warning, and says in past tense that it could not
+have.
 
-**What serves everywhere, said in the same breath as what does not.**
-Two of the chapter's calls are the host's to decline, and both decline
-by name: sharing one address across processes with `reuse_port`, and
-passing a descriptor to a child, are refused on Windows for reasons the
-section states. The rest of the chapter is portable — listen, connect,
-accept, read, write, close, arm a deadline, ask how many cores you may
-be scheduled on, and wait on a set — and `net_wait` in particular names
-no refusal on any host at all, which is why the chapter is built on it.
+What serves everywhere, and what two hosts decline. Two of the
+chapter's calls are the host's to decline: sharing one address across
+processes with `reuse_port`, and passing a descriptor to a child, are
+refused on Windows for reasons the section states. The rest of the
+chapter is portable (listen, connect, accept, read, write, close, arm a
+deadline, ask how many cores you may be scheduled on, and wait on a
+set), and `net_wait` in particular names no refusal on any host at all,
+which is why the chapter is built on it.
 
-**Appendix D counts the specification correctly again.** The eleven
+Appendix D counts the specification correctly again. The eleven
 documents publish eleven namespaces between them, and one document owns
 two: the grammar owns both its own anchors and the diagnostics
 namespace a tool prints at you, which had no row on the one page that
 routes a reader to the normative text. The schedule-points document is
 the other correction — it declares anchors the specification's registry
 does not carry, so a search for one finds the document and not the
-anchor, and the table says so rather than implying a prefix that can be
+anchor, and the table says so instead of implying a prefix that can be
 looked up. Chapter 33's five clause citations are in the section table
 now, so the operating-system document is reachable from a page and not
 only from a tool's output.
 
-**The toolchain moves to wolf 0.2.6 and lupin 0.1.27.** The two version
+The toolchain moves to wolf 0.2.6 and lupin 0.1.27. The two version
 lines disagree twice this printing, and both disagreements say the same
 thing: the compiler names the interpreter release before the one beside
 it, and the interpreter names the compiler release before the one above
@@ -90,14 +90,14 @@ gap the previous printing recorded and open a surface no page in this
 edition can reach. The suite does not move at all: 462 passed, 5
 pending, 0 failed, 0 flips, the same reading as at the pins before it.
 
-**The byte's domain is a rule on both machines now.** Last printing
+The byte's domain is a rule on both machines now. Last printing
 recorded a hole with no page in it: lupin had the `byte` type and not
 its range, so `push(256)` into a `List[byte]` stored 256 and printed it
-where the compiler refused the same line by name. lupin 0.1.26 refuses
-it — `E0401`, at the `256` and not at the list it was going into, the
-same column the compiler underlines — and the prediction that went with
-the hole is re-run at its closing rather than recalled, because a gap
-closing can move a page as easily as a gap opening. The corpus reason
+where the compiler refused the same line. lupin 0.1.26 refuses it
+(`E0401`, at the `256` and not at the list it was going into, the same
+column the compiler underlines), and the prediction that went with the
+hole was re-run at its closing, because a gap closing can move a page
+as easily as a gap opening. The corpus reason
 is unchanged: this book pushes into no `List[byte]` anywhere, writes no
 `byte` annotation over an integer, and hands a `List[byte]` only to a
 parameter declared over one, so the only int-to-byte flows on any page
@@ -105,58 +105,59 @@ are §2.3's explicit casts, which the rule excludes by clause. Predicted
 zero at the opening, measured zero. Predicted zero at the closing,
 measured zero.
 
-**The release's headline lands entirely outside this book, and that is
-the sprint's finding.** v0.2.5 is the release where a server becomes a
+The release's headline lands entirely outside this book. v0.2.5 is the
+release where a server becomes a
 program you can write in wolf: `net_wait` waits on a whole set of
 sockets at once, `net_listen_with` lets several processes hold one
 address, `os_spawn_with` and `net_adopt_listener` hand a listener down
 to a child, and `os_cpus` says how many hands the machine will actually
-schedule. Five clauses, and not one printed page. This edition makes no
-socket call and no process call anywhere: three operating-system
-builtins are executed on any page — `fs_read_text` and `fs_write_text`
-in Part 5's projects, and a `net_fetch` that appears three times and is
-refused all three — and three more are named in an answer and never
-run. So the surface is recorded where this book records a toolchain
+schedule. Five clauses, and not one of them reaches a printed page.
+This edition makes no socket call and no process call anywhere: three
+operating-system builtins are executed on any page (`fs_read_text` and
+`fs_write_text` in Part 5's projects, and a `net_fetch` that appears
+three times and is refused all three), and three more are named in an
+answer and never run. So the surface is recorded where this book records
+a toolchain
 fact it does not teach, in the pin file, and Appendix D is corrected so
 that a reader has somewhere to go for it.
 
-**A loop that waits against a loop that looks, measured here and
-printed nowhere.** The argument behind `net_wait` is the one a serving
-loop is written from, and it was measured on this repository's own
-programs rather than quoted from the release: hold one connection open
+A loop that waits against a loop that looks, measured here and printed
+nowhere. The argument behind `net_wait` is the one a serving loop is
+written from, and the measurement was taken on this repository's own
+programs instead of quoted from the release: hold one connection open
 and idle for five seconds, and a loop that time-slices a 25 ms deadline
 on the listener and a 12 ms one on the connection makes 130 passes and
 is descheduled about 1,560 times to learn that nothing happened, where
 one `net_wait` over the same two handles makes one pass and is
-descheduled about ten times — which is what a program that only sleeps
-for those five seconds costs. **No chapter in this edition holds that
-paragraph.** The nearest is §12.2's "The million idle connections",
-which asks exactly this question and answers it about the concurrency
-runtime, over channels and timers, and hands throughput to Part 4 by
-name; `net_wait` is the same argument about a different machine, the
+descheduled about ten times, which is what a program that only sleeps
+for those five seconds costs. No chapter in this edition holds that
+paragraph. The nearest is §12.2's "The million idle connections",
+which asks this question and answers it about the concurrency
+runtime, over channels and timers, and hands throughput to Part 4;
+`net_wait` is the same argument about a different machine, the
 one a program that spawns nothing uses instead of a scheduler, and
 writing it there would put this book's first socket call three sections
 after `select` in a chapter that teaches no transport. The paragraph is
-routed rather than written — to whatever chapter this book eventually
-gives the network, which is the editorial call chapter 11's ledger has
-carried since bs27 and which this sprint does not make.
+routed instead of written: it goes to whatever chapter this book
+eventually gives the network, which is the editorial call chapter 11's
+ledger has carried since bs27 and which this sprint does not make.
 
-**Appendix D said the specification is seven documents.** It has been
+Appendix D said the specification is seven documents. It has been
 eleven for the whole of the 0.2 line. The four that were missing are
 Packages, Constant-Time, Types and the OS surface, and the last of
 those is where every call named above is ruled, so the one route this
 book gives a reader out of its own pages and into the normative text
 did not reach the release's whole subject. The table names all eleven
-now, and says plainly that there is no builtin reference in this book
-and no appendix that lists the surface.
+now, and says that there is no builtin reference in this book and no
+appendix that lists the surface.
 
-**The two version lines name one interpreter again, and the lag has
-moved onto the sha.** Last printing they disagreed by name: the
+The two version lines name one interpreter again, and the lag has
+moved onto the sha. Last printing they disagreed by name: the
 compiler said `paired with lupin 0.1.24` while the interpreter beside
 it was 0.1.25. This compiler was tagged after this interpreter existed,
-so it names it exactly, pin clause and all — and the interpreter, cut
-first, was tested against the compiler before this one, so the sha it
-carries is the previous tag rather than the line above it. A pair one
+so it names it, pin clause and all. The interpreter, cut first, was
+tested against the compiler before this one, so the sha it carries is
+the previous tag rather than the line above it. A pair one
 release apart is the ordinary case and it can lag on either side. Both
 transcripts re-record, and the colophon and §1.2 say which side it is
 on this time.
@@ -168,7 +169,7 @@ with 22-13's pair of runs re-measured beside them. Nothing else in the
 book moved, no diagnostic snapshot re-records, the diagnostic catalog
 holds at 169 codes identical line for line, and the grammar is
 byte-identical, so Appendix A regenerates to itself. The clause anchors
-grow 417 to 422 — the five the new calls are ruled by — with nothing
+grow 417 to 422 (the five the new calls are ruled by), with nothing
 dropped and nothing retargeted.
 
 The print edition holds at 513 pages.
