@@ -60,15 +60,15 @@ which is why the chapter is built on it.
 
 Appendix D counts the specification correctly again. The eleven
 documents publish eleven namespaces between them, and one document owns
-two: the grammar owns both its own anchors and the diagnostics
-namespace a tool prints at you, which had no row on the one page that
-routes a reader to the normative text. The schedule-points document is
-the other correction — it declares anchors the specification's registry
-does not carry, so a search for one finds the document and not the
-anchor, and the table says so instead of implying a prefix that can be
-looked up. Chapter 33's five clause citations are in the section table
-now, so the operating-system document is reachable from a page and not
-only from a tool's output.
+two: the grammar owns both its own anchors and the diagnostics namespace
+a tool prints at you, which had no row on the one page that routes a
+reader to the normative text. The schedule-points document is the other
+correction: it declares anchors the specification's registry does not
+carry, so a search for one finds the document and not the anchor, and
+the table says so instead of implying a prefix that can be looked up.
+Chapter 33's five clause citations are in the section table now, so the
+operating-system document is reachable from a page and not only from a
+tool's output.
 
 The toolchain moves to wolf 0.2.6 and lupin 0.1.27. The two version
 lines disagree twice this printing, and both disagreements say the same
@@ -362,8 +362,8 @@ The print edition sets to 513 pages, three more than the previous one.
 The pins move to wolf v0.2.3 and lupin 0.1.23, and the headline is a
 table that no longer exists. One release ago Windows compiled and ran
 your program for the first time, and refused twenty-one programs of the
-compiler's own corpus by name — everything built on the task layer,
-which that host had none of. It has one now. `spawn` and scopes, `proc`,
+compiler's own corpus by name, everything built on the task layer, which
+that host had none of. It has one now. `spawn` and scopes, `proc`,
 channels and `select`, `sync`/`when`, region transfer, signals and
 network deadlines all compile and run there, measured at the same corpus
 parity as macOS. Chapter 1 said Windows readers should expect to meet
@@ -373,7 +373,7 @@ The book found out the way it was built to. Four programs of chapter 30
 were written down last sprint in `samples-os.toml` as refused on
 Windows, in the refusal's exact words, with the release that would end
 them named in the row. At the new pin the Windows lane ran them, they
-passed, and the run went red — four FLIPs, each naming the row to delete
+passed, and the run went red: four FLIPs, each naming the row to delete
 and the release it was dated to. Then the rows came out, in the commit
 that moved the pin, which is the rule they were written under. 455
 passed and 4 flipped on that lane; 455 + 4 is the 459 the other two
@@ -386,7 +386,7 @@ prints a slash, and that is still filed.
 The Solutions page has its links back. Every one of the 280 collapsed
 solutions is headed by the exercise number and the section that set it,
 and on the web that section reference had been rendering as its own
-markdown punctuation — `[§3.4](../ch03.md#3.4)`, on all 280 of them,
+markdown punctuation: `[§3.4](../ch03.md#3.4)`, on all 280 of them,
 because the line sits inside a raw-HTML block and a markdown parser does
 not look inside those. It is a real link now, on the web and in the PDF
 both. The print half is why the fix waited: a printed page has no
@@ -399,8 +399,8 @@ because a reference to a section that moved fails the build.
 
 Chapter 1's install section was re-measured against the project's own
 install page for this release. Four archives at the tag now, one per
-tier-1 host — the ARM one came back after a release that built it and
-threw it away — so the section says four instead of hedging, and says
+tier-1 host (the ARM one came back after a release that built it and
+threw it away), so the section says four instead of hedging, and says
 what the ARM archive serves, which is less than the other three. Two
 limits are left on Windows, and the section quotes both: the optimizing
 release tier still refuses that host, and a `reload` or `upgrade` signal
@@ -433,15 +433,15 @@ The print edition sets to 510 pages, the same as the previous one.
 ## bs25 — 2026-09-02 — the samples lane is real
 
 CI ran the samples on three machines for the first time. It had been
-able to for months; the credential that lets it read the pinned
-compiler was set today, and the lane that had been loudly skipping went
-and did the work. macOS agreed with the machine the book is written on,
-459 samples to nothing. The other two hosts had never been asked, and
-they had 25 things to say.
+able to for months; the credential that lets it read the pinned compiler
+was set today, and the lane that had been reporting a skip went and did
+the work. macOS agreed with the machine the book is written on, 459
+samples to nothing. The other two hosts had never been asked, and they
+had 25 things to say.
 
 Nineteen of them were one sentence. On Linux, `wolf build` looks for the
 LLVM linker and says so when it does not find it, and the runner did not
-have it — so nineteen transcripts across nine chapters gained a line the
+have it, so nineteen transcripts across nine chapters gained a line the
 book does not print. The rig was right to fail: the line is real output.
 The question was what to do about it, and there were two answers. The
 book could teach the replay to drop `note:` lines, or the lane could
@@ -453,7 +453,7 @@ the build still succeeds. Every console block in this book is still
 compared byte for byte with nothing subtracted.
 
 Six were true statements about a host. Four programs in chapter 30
-cannot be built on Windows at this pin — the parallel capstone and three
+cannot be built on Windows at this pin: the parallel capstone and three
 of its exercises, all of them the task layer, which wolf refuses there
 by name and by symbol until the runtime lands on IOCP. Two console
 blocks in chapters 23 and 25 differ by one character each, where `wolf
@@ -600,7 +600,7 @@ classified, zero failures and zero flips.
 
 The K&R ladder: 45 new program-shaped exercises (43 printed, two held to
 the masters as drills), each a self-contained tool the reader leaves
-owning — temperature tables and a longest-line finder in chapter 1;
+owning: temperature tables and a longest-line finder in chapter 1;
 reverse, squeeze, centering, visible escapes and detab/entab in chapter
 2; the pack drill, a binary table, one-pass statistics and arithmetic
 palindromes in chapter 3; Collatz, a closure factory, `rtrim` and
@@ -721,11 +721,11 @@ says what each dialect is and what CI holds it to.
 
 ## rp02 — 2026-08-24 — the pin catches the declaration
 
-M2 declared upstream, and the book catches up: chapter 21 opens three
-of its five sections — aliasing, arenas, and the bill — with the
-declared benchmark number printed as a CI artifact rather than
-typed into prose. The C contrast twins (saxpy with and without
-`restrict`, ten thousand nodes under malloc) compile and run in CI.
+M2 declared upstream, and the book catches up: chapter 21 opens three of
+its five sections (aliasing, arenas, and the bill) with the declared
+benchmark number printed as a CI artifact rather than typed into prose.
+The C contrast twins (saxpy with and without `restrict`, ten thousand
+nodes under malloc) compile and run in CI.
 
 ## traits-era — 2026-08-22 — the book learns the trait system
 
