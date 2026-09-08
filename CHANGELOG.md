@@ -180,13 +180,13 @@ The compiler does not move this sprint. The interpreter does, from lupin
 0.1.24 to 0.1.25, and what it brings is the half of last sprint's
 release that had not reached it yet: `byte`. One release ago this book
 taught a scalar that only one of its two machines could read, and it
-wrote that down where it records what it measured rather than quietly
-running the blocks once. Both machines read it now, and the two blocks
+wrote that down where it records what it measured. Both machines read
+it now, and the two blocks
 that were waiting are executed on both.
 
-**§2.3's byte transcript is byte-identical across the pair.** `65 65
+§2.3's byte transcript is byte-identical across the pair. `65 65
 200`, `255 0 44 255`, `400 66 66`, exit 0, under `wolf run byte.lu` and
-under `lupin byte.lu` alike — measured at the bump, before the fence
+under `lupin byte.lu` alike, measured at the bump, before the fence
 was touched. So the page shows one transcript and not two, which is the
 book's rule for a program whose machines agree, and the fence moves out
 of the compiler-only lane into the shape §2.4 has used for `char` since
@@ -199,7 +199,7 @@ on the interpreter too.
 A third fence went with them, and it is older than the byte. Chapter
 4's trap-abandons-your-defers program has been the compiler's block,
 and its paragraph has said "both machines do this now" since the
-interpreter's divergence was fixed — but nothing was checking the
+interpreter's divergence was fixed, but nothing was checking the
 second machine. It is checked now: lupin names the same `assert` and
 exits `3` where the compiler exits `134`, which is the per-machine
 status D60 rules and the same kind either way. Three fences into the
@@ -208,54 +208,54 @@ alone: chapter 30's parallel grep, which writes files. The exercise
 corpus keeps eight more, five of them comptime folds the interpreter
 declines by design and three of them chapter 30's.
 
-**A price with two numbers is a relation, not a number.** §8.9's byte
-ledger exists to prove that holding octets as `int`s costs real memory,
-and it prints relations because the units belong to whichever arena you
-ran in. Running it on a second arena is what makes that argument
-visible instead of merely stated: the same 65,536 octets that charge
+§8.9's byte ledger exists to prove that holding octets as `int`s costs
+real memory, and it prints relations because the units belong to
+whichever arena you ran in. Running it on a second arena demonstrates
+the argument: the same 65,536 octets that charge
 65,584 ledger bytes compiled charge 65,568 interpreted, and the same
 values pushed into a `List[int]` charge sixteen times the octets on one
 machine and thirty-two on the other. All three printed relations hold
 on both. The section names both multiples now, and §2.3's one-sentence
 version of the argument stops quoting a single machine's sixteen.
 
-**The two version lines no longer name the same interpreter, and that
-is fine.** The compiler was tagged before this interpreter release
-existed, so `wolf --version` still reports being paired with lupin
-0.1.24 while `lupin --version` reports 0.1.25 — pinned, in its own
-stamp, to the exact compiler revision this book pins. The colophon has
+The two version lines no longer name the same interpreter. The compiler
+was tagged before this interpreter release existed, so `wolf --version`
+still reports being paired with lupin 0.1.24 while `lupin --version`
+reports 0.1.25, pinned, in its own stamp, to the exact compiler
+revision this book pins. The colophon has
 carried a sentence since the first edition saying a printing whose two
 lines differ by a release is ordinary; this is that printing, so the
-sentence states the fact rather than anticipating it, and §1.2 gains a
+sentence states a fact instead of anticipating one, and §1.2 gains a
 paragraph telling the reader how to read a pair that disagrees. Those
 two transcripts are the whole of the bump's blast radius: at the raw
 new pin, before a line was healed, the suite reported 462 passed, 5
-pending, 2 failed and 0 flips — and the two failures were those two
+pending, 2 failed and 0 flips, and the two failures were those two
 blocks. Nothing else in the book moved.
 
-**A gap in the interpreter that no page can reach.** lupin 0.1.25 has
+A gap in the interpreter that no page can reach. lupin 0.1.25 has
 the byte type but not its domain: `push(256)` into a `List[byte]`
-stores 256 and prints it, where the compiler refuses the same line by
-name. That is filed as wolf-interp#62 and it was predicted to touch
-nothing here before the suite was run — this book pushes into no
+stores 256 and prints it, where the compiler refuses the same line.
+That is filed as wolf-interp#62 and it was predicted to touch nothing
+here before the suite was run: this book pushes into no
 `List[byte]` anywhere, annotates no `byte` from an integer, and hands a
 `List[byte]` only to a parameter declared over one, so the only
 integer-to-byte flows on any page are §2.3's four explicit casts, which
 truncate by clause and agree on both machines. Measured after: nothing.
-A program the compiler refuses is not one this book can print, which is
-why the gap is recorded in the pin file and on no page.
+A program the compiler refuses is not one this book can print, so the
+gap is recorded in the pin file and on no page.
 
 Two more claims narrow because a second machine can finally be asked.
 D74's string-layout codes reached the interpreter with this release, so
 lupin answers `E0104` on §2.2's own program where it answered an
-invented `E0109` one release ago — the same line, the same code the
+invented `E0109` one release ago: the same line, the same code the
 page prints, in its own words. Appendix C still says the block was
 shown by the compiler, because it was; the reason last sprint gave for
 that has retired. And chapter 11's connection-pool row, which lost its
 premise last sprint when the toolchain grew a network surface, loses
 its replacement clause here: the interpreter serves the unix-domain
-family too, measured on this host — listen, connect, accept, the byte
-read and write pair, and a listener close that unlinks its own path.
+family too, measured on this host, over listen, connect, accept, the
+byte read and write pair, and a listener close that unlinks its own
+path.
 The row stays open on the editorial call it has always rested on: this
 edition has no network chapter, and no page makes a socket call.
 
@@ -264,8 +264,8 @@ The print edition holds at 513 pages.
 ## bs27 — 2026-09-03 — the scalar table grows
 
 The pins move to wolf v0.2.4 and lupin 0.1.24, and the language has a
-new scalar in it. A *byte* is one octet — eight bits, unsigned, `0`
-through `255`, one byte of storage — and every builtin that hands you
+new scalar in it. A *byte* is one octet (eight bits, unsigned, `0`
+through `255`, one byte of storage), and every builtin that hands you
 raw bytes now speaks it: `bytes()`, the file readers, the socket pair.
 Chapter 2 has had a section called "Bytes, honestly" since the first
 edition, and no byte in it. It has one now, taught where the reader is
@@ -288,58 +288,58 @@ release-tier scanner of chapter 19 and the `wrapping[i32]` hash of
 chapter 20 all say `as int` where they meet a number, and read the same
 as they did.
 
-**Why bother, when every octet fits an integer with seven bytes to
-spare?** Because those seven bytes are the price and they are not the
-whole of it, and §8.9 now measures the whole of it instead of asserting
-it. A region holding 65,536 octets charges 65,536 octets and one list
-header — the runtime knows the length before it allocates, so there is
-no growth history to pay for — and the same 65,536 values pushed into a
+Every octet fits an integer with seven bytes to spare, and those seven
+bytes are not the whole price. §8.9 now measures the whole of it
+instead of asserting it. A region holding 65,536 octets charges 65,536
+octets and one list header (the runtime knows the length before it
+allocates, so there is no growth history to pay for), and the same
+65,536 values pushed into a
 list of integers charge at least seven times that, and on the machine
 this printing was built on, sixteen. The section prints those as
 relations rather than as numbers, the way it prints every other ledger
 reading, and the sentence in its budget half that warned "a
 sixty-four-kilobyte buffer's worth of elements can charge a megabyte of
 ledger" now points at the measurement two paragraphs above it, which is
-exactly that megabyte.
+that megabyte.
 
 Chapter 2's multiline strings gained their refusals. §2.2 has stated
 three layout rules since the first edition and enforced none of them on
 the page; each has a code now, one rule per code, and the margin rule is
-printed in full because its rendering shows both ends of the comparison
-— the line that sits too far left, and the closing delimiter whose
-column decided how far that was. A `"""` that shares its line with text
+printed in full because its rendering shows both ends of the
+comparison: the line that sits too far left, and the closing delimiter
+whose column decided how far that was. A `"""` that shares its line with text
 is one refusal whether it is the opening one or the closing one. And a
 tolerance worth knowing sits at the end of §2.3: a byte order mark at
 the very start of a source file is stripped and is never a diagnostic,
 so an editor that insists on writing one cannot break your build.
 Appendix C gains all five codes, and its count was re-measured rather
-than incremented — it claimed 48 while the table held 49, and it says 54
+than incremented: it claimed 48 while the table held 49, and it says 54
 over 54 now.
 
-**`samples-os.toml` holds no rows.** The file of per-host differences
+`samples-os.toml` holds no rows. The file of per-host differences
 opened last sprint with six, four of which retired at the previous pin
 when Windows grew a task layer. The last two were never about a version:
 one compiler spelled the same project's paths two ways, `wolf add` and
 `wolf publish` printing the host's separator where every diagnostic in
 the same binary prints a slash. That is fixed at this release, and the
-Windows lane said so before anything was deleted — it failed both rows
-by name, as stale, and named the issue that had landed. The machinery
+Windows lane said so before anything was deleted: it failed both rows,
+as stale, and named the issue that had landed. The machinery
 stays and both directions stay enforced. An empty file is a measurement:
 every declared per-host difference this book has found has been answered
 by the toolchain.
 
-Two of this sprint's blocks run on the compiler alone and say so — the
-book has had that lane since bs09, for exactly the programs one
-implementation runs: the new byte-cast transcript and the new ledger
-reading. The reference
+Two of this sprint's blocks run on the compiler alone and say so; the
+book has had that lane since bs09, for the programs one implementation
+runs, and this time they are the new byte-cast transcript and the new
+ledger reading. The reference
 interpreter's release predates the type, so it answers `65 as byte` with
-"nothing with this name is in scope" — probed at the bump in both
-directions rather than assumed, recorded in the pin file, and retiring at
-that project's next release. Neither block is skipped; both are executed
+"nothing with this name is in scope", which was probed at the bump in
+both directions, recorded in the pin file, and retires at that project's
+next release. Neither block is skipped; both are executed
 and byte-compared on every lane that has a compiler.
 
 wolf also learned unix-domain sockets this release, and no page prints
-one, which is worth saying plainly: this edition has no network chapter
+one, which is worth saying: this edition has no network chapter
 and makes no socket call anywhere, so there is no list of transports for
 the family to join. It was measured on this host at the pin and recorded
 where the book keeps toolchain facts it does not teach. What it did
@@ -347,8 +347,8 @@ retire is a stale sentence in chapter 11's own ledger, which had been
 explaining a design choice with "there is no network surface at this
 toolchain" long after there was one.
 
-The clause anchors grow 411 to 417 — four for the new scalar, two for
-the socket clause — with none dropped and none retargeted. The
+The clause anchors grow 411 to 417 (four for the new scalar, two for
+the socket clause), with none dropped and none retargeted. The
 diagnostic catalogue does not move at all: this release re-ruled four
 codes and minted none. The grammar appendix regenerates to itself, since
 `byte` is a type name and not a keyword. Two version transcripts,
