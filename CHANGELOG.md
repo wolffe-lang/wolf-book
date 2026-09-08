@@ -373,25 +373,25 @@ The book found out the way it was built to. Four programs of chapter 30
 were written down last sprint in `samples-os.toml` as refused on
 Windows, in the refusal's exact words, with the release that would end
 them named in the row. At the new pin the Windows lane ran them, they
-passed, and the run went red — four FLIPs, each naming the row to
-delete and the release it was dated to. Then the rows came out, in the
-commit that moved the pin, which is the rule they were written under.
-455 passed and 4 flipped on that lane; 455 + 4 is the 459 the other two
+passed, and the run went red — four FLIPs, each naming the row to delete
+and the release it was dated to. Then the rows came out, in the commit
+that moved the pin, which is the rule they were written under. 455
+passed and 4 flipped on that lane; 455 + 4 is the 459 the other two
 hosts report. A skip would have gone on passing quietly through the
 release that made the claim false. Two rows are left, the ones that were
 never about a version: `wolf add` and `wolf publish` still print
 Windows' own path separator where every diagnostic in the same compiler
-prints a slash, and that is still filed rather than papered over.
+prints a slash, and that is still filed.
 
-**The Solutions page has its links back.** Every one of the 280 collapsed
+The Solutions page has its links back. Every one of the 280 collapsed
 solutions is headed by the exercise number and the section that set it,
 and on the web that section reference had been rendering as its own
 markdown punctuation — `[§3.4](../ch03.md#3.4)`, on all 280 of them,
-because the line sits inside a raw-HTML block and a markdown parser
-does not look inside those. It is a real link now, on the web and in the
-PDF both. The print half is why the fix waited: a printed page has no
+because the line sits inside a raw-HTML block and a markdown parser does
+not look inside those. It is a real link now, on the web and in the PDF
+both. The print half is why the fix waited: a printed page has no
 hyperlinks to give and no `.html` to point at, so the same source line
-becomes an internal cross-reference to the section's own label — which
+becomes an internal cross-reference to the section's own label. That
 meant the print edition had to start labelling its headings at all, with
 the very same rule the web edition has always anchored them by. One
 rule, two renders, 280 references that cannot drift from their targets
@@ -402,32 +402,31 @@ install page for this release. Four archives at the tag now, one per
 tier-1 host — the ARM one came back after a release that built it and
 threw it away — so the section says four instead of hedging, and says
 what the ARM archive serves, which is less than the other three. Two
-limits are left on Windows and both are quoted rather than reasoned
-about: the optimizing release tier still refuses that host, and a
-`reload` or `upgrade` signal sent from *another process* has nothing on
-Windows to arrive through. And a sentence this book got wrong about
-itself is fixed: chapter 1 and the Notation page both explained the four
-quoted Windows transcripts by saying the book's runner has no Windows
-lane. It has had one since the previous edition. The real reason is
-narrower — the runner replays programs, and an installation is not one —
-and that is what both pages now say.
+limits are left on Windows, and the section quotes both: the optimizing
+release tier still refuses that host, and a `reload` or `upgrade` signal
+sent from *another process* has nothing on Windows to arrive through.
+And a sentence this book got wrong about itself is fixed: chapter 1 and
+the Notation page both explained the four quoted Windows transcripts by
+saying the book's runner has no Windows lane. It has had one since the
+previous edition. The real reason is narrower (the runner replays
+programs, and an installation is not one), and that is what both pages
+now say.
 
 The rest of the bump was quiet, which is worth reporting. The compiler
 changed the width of a parse error's underline this release, and its own
 measurement predicted seven of this book's printed diagnostics would
 widen. None did: every E0201 in the book points at a single-character
 token, where the old shape and the new shape draw the same one caret.
-That was probed both ways rather than assumed. The clause anchors hold
-at 411 and the diagnostic catalogue at 169, neither moving by one. The
-grammar appendix grew twelve productions the specification had been
-citing without defining, so three of the six ways to write a string in
-wolf can now be derived from the appendix instead of inferred from
-prose. Two version transcripts, chapter 22's interface stamp and chapter
-25's publish record re-record as they do at every bump. And chapter 4
-§4.3 loses a caveat: the one place in that chapter where the two
-implementations disagreed — whether a trap runs the outermost pending
-`defer` — is a place where they agree now, and the section says which
-one moved.
+That was probed both ways. The clause anchors hold at 411 and the
+diagnostic catalogue at 169, neither moving by one. The grammar appendix
+grew twelve productions the specification had been citing without
+defining, so three of the six ways to write a string in wolf can now be
+derived from the appendix instead of inferred from prose. Two version
+transcripts, chapter 22's interface stamp and chapter 25's publish
+record re-record as they do at every bump. And chapter 4 §4.3 loses a
+caveat: the one place in that chapter where the two implementations
+disagreed (whether a trap runs the outermost pending `defer`) is a place
+where they agree now, and the section says which one moved.
 
 The print edition sets to 510 pages, the same as the previous one.
 
@@ -446,13 +445,12 @@ have it — so nineteen transcripts across nine chapters gained a line the
 book does not print. The rig was right to fail: the line is real output.
 The question was what to do about it, and there were two answers. The
 book could teach the replay to drop `note:` lines, or the lane could
-have the linker. Dropping them is the answer that makes CI quieter and
-the reader's terminal no different — a book that hides a line its reader
-will see is a book that lied about the byte it saved. So the lane
-installs `lld`, and chapter 1 §1.2 now tells you to install it too,
-prints the note you get if you do not, and says the build still
-succeeds. Every console block in this book is still compared byte for
-byte with nothing subtracted.
+have the linker. Dropping them would make CI quieter and leave the
+reader's terminal unchanged, and it would hide a line the reader is
+going to see. So the lane installs `lld`, and chapter 1 §1.2 now tells
+you to install it too, prints the note you get if you do not, and says
+the build still succeeds. Every console block in this book is still
+compared byte for byte with nothing subtracted.
 
 Six were true statements about a host. Four programs in chapter 30
 cannot be built on Windows at this pin — the parallel capstone and three
@@ -468,7 +466,7 @@ turned sideways: where that file says "not yet, anywhere", this one says
 "not here — and here is exactly what here says instead". Each row
 carries the outcome verbatim, and the rig holds the row to it in both
 directions. A refusal that changes its wording fails. A program that
-starts working flips, hard, naming the row to delete — the same
+starts working flips, hard, naming the row to delete: the same
 discipline that has caught every feature landing since bs09. The four
 chapter 30 rows carry v0.2.2's refusal sentence whole, down to the
 runtime symbol that would not link, and the date they were declared;
@@ -480,7 +478,7 @@ the compiler's business and not the book's.
 Chapter 1 gained one correction it owed the reader independently. It
 said chapters 10 through 17 were the ones needing a host with the task
 layer and the rest of the book runs anywhere. Chapter 30's parallel
-capstone needs it too — measured, on the Windows lane, the day the lane
+capstone needs it too, measured on the Windows lane the day the lane
 first ran. The sentence now says so, and names the sequential twin that
 does run anywhere. The print edition sets to 510 pages, one more than
 bs24, all of it §1.2's.
@@ -491,37 +489,36 @@ The syntax highlighting is re-pinned. Every code block in the book is
 painted at build time by a grammar vendored from wolf-lsp, and that
 grammar had been sitting at a revision older than the `char` type: a
 char literal was body ink, and so was the word `char` itself. Both now
-paint — `char` in the type blue, `'a'` in the same green as `"a"`,
-because a char literal is quoted text and the palette sorts by kind.
-The escape inside a string keeps its own bronze, which is the one
-ordering that had to be got right.
+paint: `char` in the type blue, `'a'` in the same green as `"a"`,
+because a char literal is quoted text and the palette sorts by kind. The
+escape inside a string keeps its own bronze, which is the one ordering
+that had to be got right.
 
-Six blocks change colour and no page moves: 991 rendered blocks
-compared before and after, six differ, and the print edition sets to
-509 pages either way — colour is ink, not metrics. The six are the
-`n as char` cast in chapter 2 and five solutions in the back matter,
-where the brace-balancer and the Caesar shift are made of char
-literals. The print edition takes the same six changes from the same
-grammar and the same palette, which is the single-source rule working
-rather than being asserted.
+Six blocks change colour and no page moves: 991 rendered blocks compared
+before and after, six differ, and the print edition sets to 509 pages
+either way. The six are the `n as char` cast in chapter 2 and five
+solutions in the back matter, where the brace-balancer and the Caesar
+shift are made of char literals. The print edition takes the same six
+changes from the same grammar and the same palette, which is the
+single-source rule working.
 
-Ten blocks were then read by eye against what they mean, and two of
-them are painted wrongly by the pinned grammar. In a raw literal the
-braces are two more characters — chapter 2 says so in a sentence, and
-the sample's own output proves it — but the grammar paints them as an
+Ten blocks were then read by eye against what they mean, and two of them
+are painted wrongly by the pinned grammar. In a raw literal the braces
+are two more characters (chapter 2 says so in a sentence, and the
+sample's own output proves it), but the grammar paints them as an
 interpolation, and it does the same to the raw strings the brace
 balancer is scanning. And inside an interpolation a char literal goes
 unpainted while the `as char` beside it paints. Neither is patched
-around in the book: both are filed upstream (wolf-lsp#4, wolf-lsp#5)
-and recorded in the pin, where the last rendering gap was recorded and
-from where this one was closed.
+around in the book: both are filed upstream (wolf-lsp#4, wolf-lsp#5) and
+recorded in the pin, where the last rendering gap was recorded and from
+where this one was closed.
 
 Nothing else was needed. The grammar's new error node has nothing to
-mark — no rendered block in the book carries an invalid escape — and
-the region keywords `cap`, `rc` and `pool` are contextual by the
+mark (no rendered block in the book carries an invalid escape), and the
+region keywords `cap`, `rc` and `pool` are contextual by the
 specification, which a grammar made of regular expressions cannot tell
 from a name, so `region r(cap: n)` paints the word `region` and stops.
-Measured, both of them, rather than assumed.
+Both were measured.
 
 ## bs23 — 2026-09-02 — the book holds a budget
 
@@ -529,33 +526,33 @@ The pins move to wolf v0.2.2 and lupin 0.1.22, the learners' release,
 and three things arrive with them. Chapter 8 gains §8.9: a region will
 now tell you what it holds, and you can tell it what it may hold.
 `region_bytes` and `live_region_bytes` are taught as the four relations
-the specification guarantees on every implementation — zero at the
-open, charged after a build, unchanged between two adjacent reads, and
-gone wholesale at the brace — and deliberately not as a byte count,
-because the unit is the machine's and the section says so. `region
-r(cap: n)` puts a ceiling on the ledger, a charge past it traps at the
-allocation that asked for it, and the budget in every sample is
-*measured* rather than estimated, which is the section's other lesson.
-The last part is the one a server wants: a request that breaches its
-budget inside a proc dies alone. The reason reaches the join as a value
-(`is_fault()`, `is_alloc_contract()`), the memory is back before the
-reason is delivered, and the `defer` below the proc boundary never
-runs, which the transcript proves by the line that is missing. Chapter
-14's per-proc accounting aside and §8.1's per-request arena both point
-at it, and two exercises land beside it: 8-18 reads the ledger four
-times, 8-19 is the cap kata.
+the specification guarantees on every implementation (zero at the open,
+charged after a build, unchanged between two adjacent reads, and gone
+wholesale at the brace), and not as a byte count, because the unit is
+the machine's and the section says so. `region r(cap: n)` puts a ceiling
+on the ledger, a charge past it traps at the allocation that asked for
+it, and the budget in every sample is *measured* rather than estimated,
+which is the section's other lesson. The last part is the one a server
+wants: a request that breaches its budget inside a proc dies alone. The
+reason reaches the join as a value (`is_fault()`,
+`is_alloc_contract()`), the memory is back before the reason is
+delivered, and the `defer` below the proc boundary never runs, which the
+transcript proves by the line that is missing. Chapter 14's per-proc
+accounting aside and §8.1's per-request arena both point at it, and two
+exercises land beside it: 8-18 reads the ledger four times, 8-19 is the
+cap kata.
 
 Chapter 1 gains an install path. Both projects now publish a per-host
 archive at every tag, so §1.2 leads with "unpack it and put it on your
-PATH" instead of two cargo builds, and Windows — where the compiler
-produces and runs a native `hello.exe` for the first time — is spelled
-out exactly as the project's own measured page states it: the Visual
-Studio Build Tools requirement, the refusal quoted whole for a machine
-without them, `lupin.exe` as one file with no installer, and the two
-things that still refuse there. Those four blocks are labelled for what
-they are — transcripts measured elsewhere, not replays — because this
-book's sample runner has no Windows lane, and the Notation chapter now
-says how to spot one.
+PATH" instead of two cargo builds, and Windows, where the compiler
+produces and runs a native `hello.exe` for the first time, is spelled
+out as the project's own measured page states it: the Visual Studio
+Build Tools requirement, the refusal quoted whole for a machine without
+them, `lupin.exe` as one file with no installer, and the two things that
+still refuse there. Those four blocks are labelled for what they are
+(transcripts measured elsewhere, not replays) because this book's sample
+runner has no Windows lane, and the Notation chapter now says how to
+spot one.
 
 §4.3 answers a question its own sentence raised: `defer` runs when the
 scope exits "whichever way it exits", and a trap is the way out that
