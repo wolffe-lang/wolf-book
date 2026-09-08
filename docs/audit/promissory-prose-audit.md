@@ -454,8 +454,8 @@ passing, 11 pending unchanged, 1 → 0 failures, 0 flips throughout.
 **What the pass added to the rig.** `console` blocks are now executed.
 The runner replays any block whose commands are all pinned tools
 (`lupin`, `wolf`, `./binary`, `echo $?`, `&&` between them), writing
-the program printed above the block — or the one named by
-`console,from(id)` — and byte-comparing the output. 92 of 94 blocks
+the program printed above the block (or the one named by
+`console,from(id)`) and byte-comparing the output. 92 of 94 blocks
 replay; the two that do not (a `cd`-and-cargo line, a `grep`) are named
 in the log on every run. This closes the ch01 ledger's standing ask and
 makes "re-captured against the M1 binaries" a checkable claim.
