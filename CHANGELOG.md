@@ -2,6 +2,74 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs33 — 2026-09-09 — the mark is `parse`
+
+An error in this book changed its name, and the page that prints it says
+which tool printed it. Converting text that is not a number has always
+produced an error rather than a crash, and the compiler used to call
+that error `NotAnInt`. The language has a rule about how such names are
+written — a name in capitals promises there is data inside it, and this
+one carries nothing — and the compiler's own advice had been flagging
+the name for as long as it had been spelling it. The specification
+settled it: the error is `parse` now, after the family of conversions it
+belongs to. Chapter 1 prints it, so chapter 1 moved.
+
+The interpreter has not made the same change, so for the moment the two
+tools print different words for the same error, and the book does the
+thing it built the machinery for rather than the thing that would have
+been easier. The block in §1.5 says it was run by the compiler, the
+transcript beside it is the compiler's, and the sentence that reads the
+result names the error. The day the interpreter agrees, the build fails
+until somebody removes that label — the rig treats a program that starts
+working on both tools as an error, on purpose, so nobody has to remember.
+
+This printing is true for a compiler that is not a release. Both version
+lines say so themselves: a build made exactly at a release prints a plain
+version number, and every other build prints the commit it came from and
+claims nothing. §1.2 and the colophon read the stamp that way round now,
+and §1.2 says the rest of it beside the download links — a compiler
+unpacked from the last release answers with the old name and the plain
+version. That is the cost of printing a rule the day it was made, and it
+is stated where a reader will hit it rather than in a note at the back.
+
+Thirteen programs went back to running on both tools, and the build
+found every one of them. Nine were predicted before anything ran, from
+the toolchain's own account of what it had changed: displaying a value
+inside a string now works for values that are not numbers, and walking a
+channel a function was handed now works at all. The other four were not
+predicted, and they are the useful part — a third family of programs had
+quietly started working too, eight down to one.
+
+A fourteenth was found by hand, and the reason it had to be is now
+written down. The check that notices a program has started working asks
+the compiler for a verdict without running anything, which is enough to
+see a program stop being refused and not enough to see it stop faulting.
+Chapter 5's program that pops from an empty list is the second kind: the
+compiler now runs it and answers with an ordinary "nothing there" where
+the interpreter stops the program. Nothing in the specification says
+which is right, so the chapter keeps the fence it had and the notes say
+why. Found by re-measuring all one hundred and seven one-tool programs
+against both compilers and comparing them one at a time, which is the
+only way this class of change can be seen.
+
+Exercise 6-9 declares an error of its own, and it is spelled in
+lowercase now for the same reason the compiler's is. The exercise gained
+two sentences: what the compiler expects of a name that carries nothing,
+and that it says the same thing about names earlier in the chapter and
+says it as advice rather than a refusal. The larger question — chapter 6
+teaches a whole vocabulary of these names, and §27.5 already prints the
+warning and tells the reader to read it and decide — is written down as
+a question rather than answered by a lane.
+
+Chapter 12's closed-channel error is spelled two ways by the two tools
+and by no clause at all. The section now says which tool printed the
+word on the page and what the other one writes, and stops short of
+choosing, because that is the specification's to choose. Measuring it
+turned up something bigger underneath: the rule says a send on a closed
+channel hands back an error, and on the compiler a send cannot hand back
+anything. The book teaches the rule from the tool that implements it and
+says which tool that is.
+
 ## bs32 — 2026-09-09 — the two tools name one revision
 
 The interpreter has caught up. Last printing the two version lines
