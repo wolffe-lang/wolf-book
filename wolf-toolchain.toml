@@ -4,122 +4,111 @@
 # doc-truth CI job compares them.
 
 [wolf]
-# wolf-lang at the v0.2.6 release tag. D57 (r03): a build made exactly
+# wolf-lang at the v0.2.7 release tag. D57 (r03): a build made exactly
 # at its own release tag prints the bare version with a pin clause —
-# `wolf 0.2.6 (wolfgang, pin 398e5f5)` — and every other build prints
+# `wolf 0.2.7 (wolfgang, pin b482c52)` — and every other build prints
 # `+dev.<commit>` and claims nothing; unverifiable is dev. The stamp is
 # the dist builder's, never a build script's (D33): `cargo xtask dist`
 # probes git and sets WOLF_COMMIT/WOLF_RELEASE at compile time, so a
-# plain `cargo build` at this same rev answers `0.2.6+dev.unknown` —
-# re-measured here rather than carried forward, in a separate target
-# directory so the stamped binary was not clobbered to learn it.
+# plain `cargo build` at this same rev answers `0.2.7+dev.unknown`.
 # The book's version transcripts print the bare release string, so the
 # pinned wolf must be built with the dist builder or with its stamp
-# reproduced (release profile, WOLF_COMMIT=398e5f5 WOLF_RELEASE=v0.2.6
+# reproduced (release profile, WOLF_COMMIT=b482c52 WOLF_RELEASE=v0.2.7
 # — what book.yml's samples lane does; a debug build produces an
 # unstamped binary and fails the two version transcripts).
 #
-# This bump (bs30) crosses s138/s139 and the r09 release wave. It is
-# the first bump in five whose headline surface lands ON A PRINTED
-# PAGE: chapter 33 ships in the same sprint, so the paragraph bs29
-# measured and routed is written, and the calls s137 gave the
-# toolchain are executed by CI for the first time in this book's life.
-# What this tag changes for the book, measured here:
-#   * THE ACCEPT IS FAIR (#242, `[os.net.accept]`, new clause). A
-#     listener now lives non-blocking under the runtime, `net_accept`
-#     takes without blocking, and a hand that finds nothing there waits
-#     again AGAINST THE SAME BUDGET — the one computed when the call
-#     began — instead of re-entering a blocking `accept(2)` with its
-#     deadline already spent. Before this release N hands on one shared
-#     listener meant N-1 of them parked in the kernel until the NEXT
-#     connection: microseconds on a busy server and never on a quiet
-#     one. Nothing in `net_accept`'s signature or its rows moved, so
-#     the guarantee a single hand can observe — with a budget armed the
-#     call returns within it — is the same on both machines and at both
-#     releases. THAT IS WHY chapter 33 can print the fix's history in
-#     the past tense and its behaviour in the present: §33.4's runnable
-#     block tests the shared guarantee, and the lost race itself is
-#     stated from the release's own measurement (macOS arm64, three
-#     hands free-for-all on one inherited listener, `ab -n 6000 -c 32`:
-#     about 30,000 req/s before and after, the difference being what
-#     happens when traffic stops) rather than re-measured here, because
-#     this repository has no two-process sample rig.
-#   * THE ANCHORS grow 422 -> 424: `conf.anchor.ns.admit` (#239) and
-#     `os.net.accept` (#242). Nothing dropped, nothing retargeted —
-#     BOTH key sets diffed in both directions, per the is30 lesson —
-#     and all six of Appendix D's unanchored tags are still unanchored.
-#   * THE NAMESPACE REGISTRY IS NOT THE DOCUMENT LIST, and Appendix D
-#     is corrected for the difference. `[conf.anchor.ns]` at this tag
-#     registers ELEVEN namespaces owned by TEN documents: #239 admitted
-#     `diag`, `ct`, `type` and `os`, and 01-grammar.md owns two of them
-#     (`gram` and `diag` §9). So the appendix's table gains `diag.*`
-#     beside `gram.*` on document 01 — a tag a tool can print at a
-#     reader with no row on the one page that routes them to the
-#     normative text. The eleventh document, 07-schedule-points.md, is
-#     the other correction: it declares `[sched.*]` anchors and stands
-#     in NEITHER the clause's list nor the extractor's table at this
-#     tag, so `anchors.json` publishes zero of them and `[conf.tag.valid]`
-#     would reject a citation of one. The book cites none (grepped:
-#     zero outside the table itself). The row now says so rather than
-#     implying a prefix a reader can look up.
-#   * The catalog does NOT move: 169 codes, identical line for line
-#     against v0.2.6's own `docs/diagnostics.md`, so
-#     `vendor/spec/diagnostic-codes.txt` is unchanged and Appendix C's
-#     count stands. #242 minted no code — the fair accept changes when
-#     an existing row is answered, not which rows exist.
-#   * The grammar does NOT move either: `grammar.ebnf` is byte-identical
-#     to v0.2.5's, so Appendix A regenerates to itself.
-#   * `wolf interface` embeds the toolchain version by design, so
-#     ch22's interface transcript re-records (toolchain 0.2.5 -> 0.2.6,
-#     both hashes with it), 22-13's PAIR of runs with it — re-measured
-#     on the exercise's own module, appended helper and all, and still
-#     byte-identical between the two runs, which is the exercise's
-#     whole point — and ch25's publish record carries the moved
-#     interface hash.
-#   * 4 runner movers at this bump, all classified, residue named and
-#     healed by hand: the 2 version transcripts (ch01 §1.2, the
-#     colophon), ch22's interface stamp, and ch25's publish record.
-#     The residue is three sites the runner cannot see — 22-13's
-#     solution transcript, §1.2's two Windows archive names, and
-#     §1.2's `wolf 0.2.6`/`0.2.6+dev.unknown` sentence about the stamp.
-#     ZERO diagnostic snapshots re-record.
-#   * VENDORING NOTE. `vendor/spec/` is re-vendored FROM THE TAG, not
-#     from the sibling working tree: at the time of this bump the
-#     sibling checkout carried uncommitted s139 work (#246, which
-#     registers `sched` and publishes its seven anchors). Those anchors
-#     are not in this pin and are not vendored here. `cargo xtask
-#     backmatter --check` compares against the sibling, so it disagrees
-#     locally against a dirty checkout and agrees in CI, which clones
-#     the pin.
+# This bump (bs31) is r10, and r10's own summary of itself is "nothing
+# about building or using wolf changes": the release re-stamps the
+# pairing against the interpreter as published (#253) and gives the
+# linux CI job a lupin binary so the one gate that compares the two
+# implementations finally runs on a runner. The sprint PREDICTED zero
+# source motion from that. Measured, the prediction was right about the
+# language and wrong about the book: five runner movers and a spec
+# re-vendor, none of them a language-surface change.
+#
+#   * THE PAIRING LINE MOVES, which is the release. `wolf --version`
+#     now prints `paired with lupin 0.1.27 (reference interpreter), pin
+#     6ade878` where v0.2.6 printed `0.1.26 / 982f857`. Both version
+#     transcripts re-record (ch01 §1.2, the colophon), and both
+#     paragraphs beside them are rewritten, because what they say about
+#     the pair is no longer what the pair says. See THE LAG, below.
+#   * THE COMPILE-FAILURE FOOTER NAMES THE CODE IT REPORTED (#249). At
+#     v0.2.6 every failed build closed with `wolf --explain E0201
+#     explains any code by name`, a hardcoded example; at v0.2.7 it
+#     closes with the code actually reported — for ch01 §1.5's
+#     unclosed brace, `(`wolf --explain E0202` explains this code, or
+#     any other, by name)`. One console block re-records. It is a
+#     better sentence and the book had no way to know it changed until
+#     the block was replayed, which is the argument for replaying them.
+#   * THE ANCHORS GROW 424 -> 431 and the NAMESPACES 11 -> 12: s139's
+#     #246 registers `sched` and publishes 07-schedule-points.md's seven
+#     anchors, which had been declared for a year and published by
+#     nothing. BOTH key sets diffed in both directions (the is30
+#     lesson): seven added, none dropped, none retargeted. This retires
+#     the correction bs30 wrote into Appendix D one sprint ago — the
+#     eleventh document is no longer the one that publishes none — and
+#     the appendix's table row loses its parenthetical. `vendor/spec/
+#     anchors.json` is re-vendored FROM THE TAG for it.
+#   * `wolf interface` embeds the toolchain version by design, so ch22's
+#     interface transcript re-records (toolchain 0.2.6 -> 0.2.7, both
+#     hashes with it) and ch25's publish record carries the moved
+#     interface hash. 22-13's solution transcript is the same fact in
+#     the corpus and is re-measured by hand, as at every bump.
+#   * The catalog does NOT move: `docs/diagnostics.md` gains prose (a
+#     `use std.…` that misses now says the standard library is a
+#     separate release) and two fixture names, and mints no code. 169
+#     codes stand and Appendix C's count with them.
+#   * The grammar does NOT move: `spec/grammar.ebnf` is byte-identical
+#     to v0.2.6's, so Appendix A regenerates to itself.
+#   * ZERO diagnostic snapshots re-record.
+#
+# THE LAG IS TWO AT THIS PIN, and it is stated as two. ww14/ww15's rule
+# is 0-or-1 and it is COMPUTED, never hand-written: lupin 0.1.27
+# declares pin `6ade878`, which is wolf-lang's v0.2.5 tag, while this
+# file now pins v0.2.7. v0.2.5 -> v0.2.6 -> v0.2.7 is two releases, so
+# the printing's halves are two apart and both §1.2 and the colophon
+# say so in those words. The other direction closed: the compiler names
+# `lupin 0.1.27`, which is exactly the interpreter beside it, where at
+# bs30 it named the release before. So the pair went from one-and-one
+# to zero-and-two.
+#
+# THE 0-OR-1 RULE IS BREACHED BY THIS BUMP and no work in this
+# repository can close it. The remedy is an interpreter release that
+# reads v0.2.6 or v0.2.7; wolf-interp's newest tag is v0.1.27, is39 is
+# unreleased on its trunk, and the book pins what exists. Recorded here
+# at full volume rather than smoothed in the prose: the two pages that
+# print the pair now teach a two-release gap as an ordinary
+# consequence of two projects on two schedules, which is true, and the
+# rule that wants it back under one is the toolchain's to satisfy.
 #
 # This rev IS the tag, so the transcripts stay clean (D57).
 repo = "wolffe-lang/wolf-lang"
-rev = "398e5f547a65308c6a3e88fee632563e87afd217"
-impl_version = "0.2.6"
+rev = "b482c52af63213377b9e9aa20da34812de3c93f6"
+impl_version = "0.2.7"
 
 [lupin]
 # wolf-interp at the v0.1.27 release tag (is38): the stamped line names
 # lupin 0.1.27 at pin 6ade878. A lupin release's pin is the wolf-lang
 # revision it was built and differentially tested against, and is38
-# released against the v0.2.5 TAG — the revision this file pinned for
-# wolf one sprint ago, not the one it pins now.
+# released against the v0.2.5 TAG — two revisions behind the one this
+# file now pins for wolf.
 #
-# THE LAG IS ONE AND IT SHOWS ON BOTH LINES. bs29's printing had the
-# two stamps naming one interpreter with the lag hidden on the sha.
-# At this bump both halves disagree, and both disagreements are the
-# same disagreement:
+# THE LAG IS TWO AT THIS PIN, ON THE SHA ALONE. It is computed from the
+# two stamps, never carried forward from the last sprint's sentence
+# (ww16: do not hand-write the lag):
 #
-#   wolf  0.2.6 (wolfgang, pin 398e5f5)
-#   paired with lupin 0.1.26 (reference interpreter), pin 982f857
+#   wolf  0.2.7 (wolfgang, pin b482c52)
+#   paired with lupin 0.1.27 (reference interpreter), pin 6ade878
 #   lupin 0.1.27 (wolf-interp, reference interpreter at pin 6ade878)
 #
-# The compiler names 0.1.26 where the interpreter beside it is 0.1.27;
-# the interpreter names 6ade878, which is v0.2.5, where the compiler
-# above it is 398e5f5. NEITHER HAD SEEN THE OTHER'S LATEST WHEN IT WAS
-# TESTED, because the two releases were cut within a day of each other.
-# One release apart, both directions. The colophon's paragraph and
-# §1.2's are rewritten to say exactly that; nothing here claims the two
-# are the same revision, and nothing here calls the lag two.
+# The compiler names 0.1.27, which IS the interpreter beside it: that
+# half went from one to zero when r10 re-stamped the pairing (#253).
+# The interpreter names 6ade878, which is v0.2.5, where the compiler
+# above it is v0.2.7 — v0.2.5 -> v0.2.6 -> v0.2.7, two releases, and
+# nothing here calls that one. The [wolf] block above records the
+# breach of the 0-or-1 rule and why this repository cannot close it.
+# The colophon's paragraph and §1.2's are rewritten to say exactly what
+# the stamps say; neither claims the two are the same revision.
 #
 # WHAT IS38 GIVES THE BOOK, AND IT IS THE SPRINT'S WHOLE POINT: the
 # s137 cores land in the mirror, so the calls chapter 33 teaches are

@@ -6,12 +6,11 @@ is how you find the normative text behind it. Clause anchors are stable, so
 a tag printed by a tool in your terminal is findable in the spec even when
 the tool's wording changes.
 
-The specification is eleven documents, and they publish eleven anchor
-namespaces between them, because one of the eleven owns two namespaces
-and one publishes none. The table below this one cites five of the
-documents; all eleven are listed, because a tag can reach you from a
-tool's own output rather than from a page here, and it has to be
-findable either way.
+The specification is eleven documents, and they publish twelve anchor
+namespaces between them, because one of the eleven owns two. The table
+below this one cites five of the documents; all eleven are listed,
+because a tag can reach you from a tool's own output rather than from a
+page here, and it has to be findable either way.
 
 | Document | Anchors |
 |----------|---------|
@@ -21,20 +20,19 @@ findable either way.
 | 04. ABI | `abi.*` |
 | 05. Conformance | `conf.*` |
 | 06. Differential Protocol | `proto.*` |
-| 07. Schedule Points | `sched.*` (declared; unpublished) |
+| 07. Schedule Points | `sched.*` |
 | 08. Packages | `pkg.*` |
 | 09. Constant-Time | `ct.*` |
 | 10. Types | `type.*` |
 | 11. OS Surface | `os.*` |
 
-Two rows in that table need a sentence. Document 01 owns two
+One row in that table needs a sentence. Document 01 owns two
 namespaces: the grammar's own `gram.*`, and the `diag.*` anchors of its
 diagnostics section, which is where a tag like `[diag.sev.teach]` comes
-from when a tool prints one at you. Document 07 is the other way around
-— it declares `sched.*` anchors that the specification's own registry
-does not carry, so a search for one of them finds the document and not
-the anchor. Neither row is a page in this book: no section here cites a
-`sched.*` clause.
+from when a tool prints one at you. No section in this book cites a
+`sched.*` clause; document 07 earns its row from the scheduler's own
+output, which prints those tags at you when a deterministic run
+disagrees with itself.
 
 Document 11 is the one to know. Files, processes, sockets, and the core
 count a program asks the machine for are all one document, and this

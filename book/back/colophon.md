@@ -6,22 +6,21 @@ against:
 
 ```console
 $ wolf --version
-wolf 0.2.6 (wolfgang, pin 398e5f5)
-paired with lupin 0.1.26 (reference interpreter), pin 982f857
+wolf 0.2.7 (wolfgang, pin b482c52)
+paired with lupin 0.1.27 (reference interpreter), pin 6ade878
 $ lupin --version
 lupin 0.1.27 (wolf-interp, reference interpreter at pin 6ade878)
 ```
 
-The two lines name different releases of each other, and that is worth
-a sentence rather than a correction. Each tool reports the revision of
-the other it was differentially tested against, the two releases are cut
-on their own schedules, and a printing whose halves are one release
-apart is ordinary. This is one, and this time it shows on both lines:
-the compiler names `lupin 0.1.26` where the interpreter beside it is
-`0.1.27`, and the interpreter names `6ade878`, which is the compiler
-release before the one above it. Neither had seen the other's latest
-when it was tested. §1.2 teaches the reader to read the pair either
-way. This page prints them as they are. The compiler's
+The two lines name each other, and only one of the two names is
+current. Each tool reports the revision of the other it was
+differentially tested against, and the two releases are cut on their own
+schedules. The compiler above names `lupin 0.1.27`, which is exactly the
+interpreter beside it; the interpreter names `6ade878`, which is the
+compiler two releases back. Neither had seen the other's latest when it
+was tested, and the compiler published twice in the interval. §1.2
+teaches the reader to read the pair either way. This page prints them as
+they are. The compiler's
 first line is also this page's proof: a build made exactly at its
 release tag prints the bare version and the commit it was built from,
 and any other build names itself `+dev.<commit>` instead, so the line
