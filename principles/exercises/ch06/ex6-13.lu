@@ -11,22 +11,22 @@ fn days_in(month: int, leap: bool) -> int {
         _ => 31,
     }
 }
-fn parse_date(s: str) -> (int, int, int) ! {BadShape, BadMonth, BadDay} {
+fn parse_date(s: str) -> (int, int, int) ! {bad_shape, bad_month, bad_day} {
     var y = 0
     var m = 0
     var d = 0
     var i = 0
     for field in s.split("-") {
-        let n = field.to_int() else { return BadShape }
+        let n = field.to_int() else { return bad_shape }
         if i == 0 { y = n }
         if i == 1 { m = n }
         if i == 2 { d = n }
         i += 1
     }
-    if i != 3 { return BadShape }
-    if m < 1 || m > 12 { return BadMonth }
+    if i != 3 { return bad_shape }
+    if m < 1 || m > 12 { return bad_month }
     let leap = if y % 400 == 0 { true } else if y % 100 == 0 { false } else { y % 4 == 0 }
-    if d < 1 || d > days_in(m, leap) { return BadDay }
+    if d < 1 || d > days_in(m, leap) { return bad_day }
     (y, m, d)
 }
 fn main() -> !int {
@@ -39,9 +39,9 @@ fn main() -> !int {
     for s in cases {
         let (y, m, d) = parse_date(s) else |err| {
             let why = match err {
-                BadShape => "not a date shape",
-                BadMonth => "no such month",
-                BadDay => "no such day",
+                bad_shape => "not a date shape",
+                bad_month => "no such month",
+                bad_day => "no such day",
             }
             print("{s:<12} refused: {why}")
             continue

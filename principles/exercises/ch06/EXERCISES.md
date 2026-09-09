@@ -111,11 +111,10 @@ fn parse(s: str) -> int ! {not_a_number} {
 }
 ```
 
-The mark the third posture hands up is a lowercase bare word, which is
-what the compiler expects of a mark that keeps nothing: CapCase in a
-row reads as a promise that a payload waits inside. It has the same
-opinion about some of the marks earlier in this chapter, and delivers
-it as a warning rather than a refusal.
+The mark the third posture hands up keeps nothing, so it is a lowercase
+bare word, by §6.1's pact: the compiler reads a CapCase mark as a
+promise that a payload waits inside, and W0603 is what it says when the
+case and the payload disagree.
 
 Predict all three printed lines of the solution's `main`, which calls
 `parse_or_zero("7x")` and then `parse("7x")` with a handler. Then the
@@ -178,7 +177,7 @@ same loop parallelizes by changing one call; the boxed promise stands.
 ## Chapter batch
 
 **Exercise 6-8** *(design)*. Chapter 6's `parse` exposes the row
-`{Empty, NotDigit(Bad), TooLong}`. Suppose `parse` moves into a
+`{empty, NotDigit(Bad), too_long}`. Suppose `parse` moves into a
 library, behind a public API used by fifty programs. Argue both sides:
 should the public signature keep the three-tag row, or coarsen to a
 single `Invalid` tag with the detail inside? Name one concrete caller
@@ -259,7 +258,7 @@ parse failure fails the run instead of passing by coincidence.
 
 **Exercise 6-12** *(extension · lupin)*. Exercise 5-11's decoder
 answers garbage with garbage: `"4w"` decodes to nothing, silently.
-Harden it by refactor: `decode(s) -> str ! {Empty, BadRun}`, where
+Harden it by refactor: `decode(s) -> str ! {empty, bad_run}`, where
 empty input, a count with no letter before it, and a zero-length run
 are refusals with names. Table four malformed inputs through
 `else |err|` and a `match`. Which refusal required *adding* a check,
@@ -268,19 +267,19 @@ and which two fell out of checks the loop already had?
 Solution. `ch06/ex6-12.lu`:
 
 ```wolf
-fn decode(s: str) -> str ! {Empty, BadRun} {
-    if s.is_empty() { return Empty }
+fn decode(s: str) -> str ! {empty, bad_run} {
+    if s.is_empty() { return empty }
     var out = ""
     var cur = ' '
     var seen = false
     var n = 0
     for c in s.chars() {
         if c >= '0' && c <= '9' {
-            if seen == false { return BadRun }
+            if seen == false { return bad_run }
             n = n * 10 + (c as int) - ('0' as int)
         } else {
             if seen {
-                if n == 0 { return BadRun }
+                if n == 0 { return bad_run }
                 for _ in 0..n { out += "{cur}" }
             }
             cur = c
@@ -288,7 +287,7 @@ fn decode(s: str) -> str ! {Empty, BadRun} {
             n = 0
         }
     }
-    if n == 0 { return BadRun }
+    if n == 0 { return bad_run }
     for _ in 0..n { out += "{cur}" }
     out
 }
@@ -302,8 +301,8 @@ fn main() -> !int {
     for coded in cases {
         let plain = decode(coded) else |err| {
             let why = match err {
-                Empty => "empty",
-                BadRun => "bad run",
+                empty => "empty",
+                bad_run => "bad run",
             }
             print("[{coded}] refused: {why}")
             continue
@@ -334,8 +333,8 @@ the loop was implicitly making become answers the caller can hold.
 **Exercise 6-13** *(extension · lupin)*. A date validator:
 `parse_date("2026-02-29")` should refuse, and say *why*. Split on
 `-`, parse the three fields, and return
-`(int, int, int) ! {BadShape, BadMonth, BadDay}` — reusing 4-7's
-`days_in` for the day ceiling, leap rule included. Why is `BadShape`
+`(int, int, int) ! {bad_shape, bad_month, bad_day}` — reusing 4-7's
+`days_in` for the day ceiling, leap rule included. Why is `bad_shape`
 checked first, and what happens to your month test if it is not?
 
 Solution. `ch06/ex6-13.lu`:
@@ -351,22 +350,22 @@ fn days_in(month: int, leap: bool) -> int {
         _ => 31,
     }
 }
-fn parse_date(s: str) -> (int, int, int) ! {BadShape, BadMonth, BadDay} {
+fn parse_date(s: str) -> (int, int, int) ! {bad_shape, bad_month, bad_day} {
     var y = 0
     var m = 0
     var d = 0
     var i = 0
     for field in s.split("-") {
-        let n = field.to_int() else { return BadShape }
+        let n = field.to_int() else { return bad_shape }
         if i == 0 { y = n }
         if i == 1 { m = n }
         if i == 2 { d = n }
         i += 1
     }
-    if i != 3 { return BadShape }
-    if m < 1 || m > 12 { return BadMonth }
+    if i != 3 { return bad_shape }
+    if m < 1 || m > 12 { return bad_month }
     let leap = if y % 400 == 0 { true } else if y % 100 == 0 { false } else { y % 4 == 0 }
-    if d < 1 || d > days_in(m, leap) { return BadDay }
+    if d < 1 || d > days_in(m, leap) { return bad_day }
     (y, m, d)
 }
 fn main() -> !int {
@@ -379,9 +378,9 @@ fn main() -> !int {
     for s in cases {
         let (y, m, d) = parse_date(s) else |err| {
             let why = match err {
-                BadShape => "not a date shape",
-                BadMonth => "no such month",
-                BadDay => "no such day",
+                bad_shape => "not a date shape",
+                bad_month => "no such month",
+                bad_day => "no such day",
             }
             print("{s:<12} refused: {why}")
             continue
@@ -404,7 +403,7 @@ soon         refused: not a date shape
 Shape first because the later tests read `m` and `d`, and those
 variables only mean anything once three numeric fields actually
 arrived. Skip the shape check and `"soon"` reaches the month test
-with `m` still 0 — refused as `BadMonth`, which is a *lie about the
+with `m` still 0 — refused as `bad_month`, which is a *lie about the
 input*: the caller fixing "no such month" would stare at a string
 with no month in it. Refusal order is part of a validator's honesty,
 not a style choice. (2024-02-29 passing while 2026-02-29 refuses is

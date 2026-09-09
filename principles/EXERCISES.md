@@ -625,8 +625,8 @@ error, and give two call sites: one defaulting with `else 0`, one with
 Solution. `ch06/ex6-1.lu`:
 
 ```wolf
-fn parse(s: str) -> int ! {Empty} {
-    if s.is_empty() { return Empty }
+fn parse(s: str) -> int ! {empty} {
+    if s.is_empty() { return empty }
     s.to_int() else 0
 }
 fn main() -> !int {
@@ -647,7 +647,7 @@ through `?`. Predict `a` and `b`, and name which row variant `b`'s
 handler sees:
 
 ```wolf
-fn chain(s: str) -> int ! {Empty, NotDigit(Bad)} {
+fn chain(s: str) -> int ! {empty, NotDigit(Bad)} {
     let v = parse(s)?
     v + 1
 }
@@ -655,7 +655,7 @@ fn main() -> !int {
     let a = chain("42") else |_| -1
     let b = chain("") else |err| {
         match err {
-            Empty => -2,
+            empty => -2,
             NotDigit(e) => -3,
         }
     }
@@ -665,7 +665,7 @@ fn main() -> !int {
 ```
 
 Solution: `a=43` (parse succeeds, `?` unwraps, one is added); `b=-2`:
-`parse("")` returns `Empty`, `?` hands it up unchanged, and the handler
+`parse("")` returns `empty`, `?` hands it up unchanged, and the handler
 matches it. The variant crossed one call boundary without wrapping;
 that is the row composing by union.
 
@@ -674,23 +674,23 @@ $ lupin ex6-2.lu
 a=43 b=-2
 ```
 
-**Exercise 6-3** *(extension · lupin)*. Grow the row: add a `TooLong`
+**Exercise 6-3** *(extension · lupin)*. Grow the row: add a `too_long`
 variant for inputs over four bytes and handle it. What else did you have
 to change, and what told you?
 
 Solution. `ch06/ex6-3.lu` (excerpt):
 
 ```wolf
-fn parse(s: str) -> int ! {Empty, NotDigit(Bad), TooLong} {
-    if s.is_empty() { return Empty }
-    if s.len > 4 { return TooLong }
+fn parse(s: str) -> int ! {empty, NotDigit(Bad), too_long} {
+    if s.is_empty() { return empty }
+    if s.len > 4 { return too_long }
     ...
 }
     let v = parse("40000") else |err| {
         match err {
-            TooLong => -4,
+            too_long => -4,
             NotDigit(e) => 0 - e.at - 3,
-            Empty => -2,
+            empty => -2,
         }
     }
 ```
@@ -742,7 +742,7 @@ the error path. `work(true)` succeeds; `work(false)` fails after the
 `errdefer` is registered. Predict all four output lines:
 
 ```wolf
-fn work(ok: bool) -> int ! {Fail} {
+fn work(ok: bool) -> int ! {fail} {
     var r = get(true)?
     errdefer print("cleanup ran")
     let v = get(ok)?

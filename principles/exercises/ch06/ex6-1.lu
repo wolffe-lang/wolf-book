@@ -1,8 +1,8 @@
 //! check: run(exit=0)
 //! phase: run
 // Exercise 6-1 solution: an error is a value; `else` gives it a default.
-fn parse(s: str) -> int ! {Empty} {
-    if s.is_empty() { return Empty }
+fn parse(s: str) -> int ! {empty} {
+    if s.is_empty() { return empty }
     s.to_int() else 0
 }
 fn main() -> !int {
