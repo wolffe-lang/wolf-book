@@ -2,6 +2,45 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs34 — 2026-09-09 — the vocabulary goes lowercase
+
+Chapter 6 teaches that a failure is a value with a name, and the names
+it taught were spelled the way the language says not to spell them. A
+name in capitals promises there is data inside it; every name in this
+chapter carried nothing. The compiler had been saying so, as advice
+rather than a refusal, on nine of the chapter's printed programs and on
+six of its solutions, so a reader who followed §1.2 and built with the
+compiler met warnings the chapter never mentioned. The names are
+lowercase now: `no_comma`, `empty`, `bad_shape` and the rest. The
+paragraph that introduces the first one says why in a sentence, and the
+exercise that declares a name of its own no longer has to explain the
+ones above it.
+
+Chapter 10 has one such name and it moved with them. Chapter 27 keeps
+its capitals on purpose: that program prints the warning in its own
+build and tells the reader to read it and decide, which is a teaching
+point rather than an oversight. A book that never shows the warning
+cannot ask the question.
+
+One name did not move, and the rule that stopped it was not written
+down on this page before. A row that ends in `..` may hand back names
+its signature never lists, and out there the capitals are load-bearing:
+with no signature to name it, a name's case is the only thing that says
+it is a failure and not a variable. Write it in lowercase and the
+compiler looks for a variable, finds none, and says so. The open row
+keeps its capitalized name, the compiler has no complaint about it, and
+the paragraph that opens the row says which of the two rules applies
+where.
+
+Counted the same way before and after: every program in the book and
+every published solution run through the compiler, and the warnings it
+printed added up. Fifteen stood on eleven printed programs last
+printing. The chapter's share is zero now, and the only printed program
+left that draws one is chapter 27's, twice, on purpose. Twelve
+solutions in six other chapters still carry capitalized names that keep
+nothing; they are those chapters' vocabularies and not this printing's
+to rename.
+
 ## bs33 — 2026-09-09 — the mark is `parse`
 
 An error in this book changed its name, and the page that prints it says
