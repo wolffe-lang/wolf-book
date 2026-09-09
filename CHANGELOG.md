@@ -2,6 +2,62 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs31 — 2026-09-08 — the first chapter is true
+
+A reader copied chapter 1's tenth exercise, ran it with the compiler,
+and got a refusal. The program was correct and the book was wrong about
+it: converting a string to a number is one of the things the reference
+interpreter does and the compiler does not, and the chapter had taught
+it three times without saying so. It says so now, in three places, and
+the machinery that let the book print a claim like that has been rebuilt
+underneath.
+
+The runner asks both machines. Every runnable program in this book
+carries a directive saying what it should do, and until this printing
+the runner tested that against the interpreter alone. The compiler was
+never asked, so a program only one of the two implementations serves
+could sit on a page, green, for as long as nobody typed it. The
+directive now means what it always said: both machines run the program,
+both must reach the same exit, and both must print the same bytes.
+
+Asking the second machine for the first time cost the book its
+comfortable number. Of 478 samples, 133 run on the interpreter and not
+on the compiler — 28 percent, across nineteen chapters. None of them is
+new; they have been true for as long as the pages have existed. Each one
+now carries a directive naming the machine that runs it, each renders on
+the page as an interpreted run rather than a plain one, and each chapter
+records what it owes and why in its own notes. They turn back into
+ordinary two-machine programs on their own, and loudly, the day the
+compiler grows the construct: the runner treats a sample that starts
+agreeing as an error until somebody updates the page.
+
+Two of the 133 were not gaps but mistakes, and both are fixed. Chapter
+30 printed a `select` between two ready channels and claimed which one
+wins; the language makes that choice the scheduler's, seeded, and the
+chapter's own prose said so two paragraphs below the block that
+contradicted it. And chapter 5's `best` helper is a program the compiler
+holds illegal and the interpreter runs — one word fixes it, and which
+word belongs in a Part 1 chapter is a question the chapter gets to
+answer rather than the build system.
+
+Chapter 1 says which machine. The receipt in §1.1, the error verdict in
+§1.5, and exercise 1-10 all run under `lupin`, and each of them now says
+so in the prose where you meet it, with a sentence in §1.1 introducing
+the convention the rest of the book follows. Nothing about the programs
+changed. What changed is that the page no longer implies a second tool
+will do the same thing.
+
+The toolchain moves to wolf 0.2.7 and stays at lupin 0.1.27. The release
+re-stamps which interpreter the compiler was tested against and adds a
+gate that compares the two on a build machine rather than only on a
+desk. Nothing about the language moved with it. Two things on the page
+did: a failed build now names the code it reported rather than an
+example code, and the specification publishes seven scheduler clause
+anchors it had declared and never registered, which Appendix D records.
+The colophon's two version lines are worth reading together this
+printing: the compiler names exactly the interpreter beside it, and the
+interpreter names the compiler from two releases back.
+
 ## bs30 — 2026-09-07 — the book serves
 
 This edition has a chapter about writing a server. Chapter 33, The

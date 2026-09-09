@@ -1275,3 +1275,50 @@ sprint files remain the implementation contracts for everything else.
     chapter that teaches prefork without ever running one would have
     been the alternative, and it was refused: the shape is executed on
     the two lanes that serve it and asserted on the one that does not.
+- **bs31: a `run(…)` fence is a claim about both machines, and it took a
+  reader to find out it was not.** wolf-book#9 arrived as a copy
+  question — chapter 1's exercise 1-10 calls `row.to_int()`, and `wolf
+  run` refuses it — and the interesting half was underneath: the samples
+  runner had scored `run(…)` fences on `lupin` alone since bs00. The
+  compiler was never asked. Everything the book had written about its
+  own rig said otherwise (the delta above says "ordinary two-machine
+  samples" in as many words), and nothing enforced it, so a chapter
+  could teach a call one of the two implementations does not carry and
+  stay green for the book's whole life. `principles/TWO-MACHINES.md` is
+  the rule that came out of it, and three things a future author should
+  not have to re-derive:
+  - **The failure was not a wrong verdict, it was a missing one.** The
+    compiler's refusal was never scored as a pass; it was never scored.
+    That distinction is the reason the fix is in the runner and not in
+    the manifests: no `samples-pending.toml` row and no
+    `samples-os.toml` row could have caught this, because both answer
+    questions about a sample somebody had already thought to run.
+  - **`lupin-run(…)` is `wolf-run(…)` pointed the other way, and both
+    are three-part promises.** The fence names the machine, the prose
+    carries TONE's per-machine note, and the chapter's ledger carries a
+    row with an owner. A one-machine block that has only the fence is
+    quieter than the bug it replaced, which is the failure mode to
+    watch for.
+  - **Retirement is machinery, not memory.** A one-machine fence whose
+    other machine starts serving the program is a FLIP — a hard error —
+    so the pin bump that grows the feature is the commit that graduates
+    the fence and retires the note. It is `samples-pending.toml`'s
+    trick, applied to the axis nobody had spelled.
+  - **The number was 133 of 478, and it is the reason to do this once
+    rather than per chapter.** 28% of the book's runnable samples were
+    interpreter-only across nineteen chapters, and every one of them had
+    been green since the page shipped. The inventory, by construct and in
+    the compiler's own words, is wolf-lang#268; each chapter's ledger
+    carries its own share. A future author reading a `lupin-run(…)` fence
+    should read it as ordinary bookkeeping, not as a chapter's failure —
+    what is still owed, chapter by chapter, is the reader-facing
+    per-machine note, and chapter 1 is the worked example of the finished
+    form.
+  - **Two of the 133 were mistakes rather than gaps, and both were
+    invisible for the same reason.** Chapter 30's `select` block claimed
+    an outcome `[conc.select.fair]` makes seed-dependent (the chapter's
+    own prose said so, two paragraphs below the fence that contradicted
+    it), and chapter 5's `best[T]` is a printed program the compiler
+    holds illegal under E1001 and the interpreter runs to completion. One
+    machine is a proofreader for the other, and the book had been
+    publishing with one eye shut.
