@@ -827,7 +827,7 @@ fn walk(dir: &Path, f: &mut impl FnMut(&Path)) -> Result<()> {
 #[cfg(unix)]
 fn kill_group(child: &mut std::process::Child) {
     let pid = child.id();
-    let _ = Command::new("/bin/kill")
+    let _ = Command::new("kill")
         .arg("-9")
         .arg(format!("-{pid}"))
         .stdout(std::process::Stdio::null())
@@ -839,8 +839,9 @@ fn kill_group(child: &mut std::process::Child) {
 #[cfg(not(unix))]
 fn kill_group(child: &mut std::process::Child) {
     // No process groups here; the job-object equivalent is a bigger
-    // change than this rig needs. A windows sample that hangs still
-    // leaves its grandchild, and the runner's timeout still fires.
+    // change than this rig needs. A surviving grandchild on windows is
+    // handled by not depending on the pipes closing — see the collector
+    // below, which is what actually makes the timeout survivable.
     let _ = child.kill();
 }
 
@@ -861,15 +862,24 @@ fn run_within(mut cmd: Command, budget: Duration) -> Result<(Option<i32>, String
     let mut child = cmd.spawn().with_context(|| format!("spawning {cmd:?}"))?;
     let mut stdout_pipe = child.stdout.take().unwrap();
     let mut stderr_pipe = child.stderr.take().unwrap();
-    let out_thread = std::thread::spawn(move || {
+    // The readers hand their buffers back over a channel and are never
+    // joined. `read_to_end` returns when the WRITE END closes, and a
+    // killed child's grandchild still holds it — so joining these
+    // threads makes a hung program hang the runner instead of timing
+    // out. That is what cancelled the ubuntu and windows samples lanes
+    // at their 60-minute ceiling while macOS passed: five deadlock
+    // exercises whose compiled binaries never return.
+    let (tx_out, rx_out) = std::sync::mpsc::channel();
+    std::thread::spawn(move || {
         let mut buf = Vec::new();
         let _ = stdout_pipe.read_to_end(&mut buf);
-        buf
+        let _ = tx_out.send(buf);
     });
-    let err_thread = std::thread::spawn(move || {
+    let (tx_err, rx_err) = std::sync::mpsc::channel();
+    std::thread::spawn(move || {
         let mut buf = Vec::new();
         let _ = stderr_pipe.read_to_end(&mut buf);
-        buf
+        let _ = tx_err.send(buf);
     });
     let deadline = Instant::now() + budget;
     let status = loop {
@@ -883,8 +893,15 @@ fn run_within(mut cmd: Command, budget: Duration) -> Result<(Option<i32>, String
         }
         std::thread::sleep(Duration::from_millis(10));
     };
-    let stdout = String::from_utf8_lossy(&out_thread.join().unwrap()).into_owned();
-    let stderr = String::from_utf8_lossy(&err_thread.join().unwrap()).into_owned();
+    // Whatever arrived before the pipes went quiet. A process that left
+    // a grandchild behind contributes what it had written; it does not
+    // contribute a hang.
+    const DRAIN: Duration = Duration::from_secs(2);
+    let drain = |rx: std::sync::mpsc::Receiver<Vec<u8>>| {
+        String::from_utf8_lossy(&rx.recv_timeout(DRAIN).unwrap_or_default()).into_owned()
+    };
+    let stdout = drain(rx_out);
+    let stderr = drain(rx_err);
     match status {
         Some(s) => Ok((s.code(), stdout, stderr)),
         None => bail!("timed out after {budget:?}"),
@@ -962,6 +979,35 @@ fn machine_gate(m: Machine, tools: &Tools, s: &Sample) -> MachineRun {
 /// only thing the caller wants to know.
 fn machine_probe(m: Machine, tools: &Tools, s: &Sample) -> Option<MachineRun> {
     machine_run_within(m, tools, s, GRADUATION_TIMEOUT).ok()
+}
+
+/// Has the COMPILER started serving a program declared interpreter-only?
+///
+/// This asks `wolf conform-run`, which reaches a verdict without code
+/// generation and without ever executing the program. Two reasons, and
+/// both were learned from CI rather than guessed. It is ~3ms against a
+/// compile and a link, and a one-machine sample must not cost a native
+/// build on every run of every lane forever. And it cannot hang: some of
+/// these programs are deadlock exercises whose compiled binaries never
+/// return by design, so a probe that RUNS them is a probe that parks.
+///
+/// The signal is deliberately weaker than the gate's. A refusal by name
+/// or a static rejection means nothing has changed; anything else means
+/// the compiler now accepts the program and a human should look at
+/// graduating the fence. Reporting that as a FLIP is the point — the
+/// runner remembers so nobody has to.
+fn compiler_still_declines(tools: &Tools, s: &Sample) -> bool {
+    match conform_run_with(tools, s, false) {
+        // No verdict at all is not evidence that anything changed.
+        Err(_) => true,
+        // Two ways to decline and they are not interchangeable: a
+        // static rejection says the program is illegal, and an
+        // `x-unsupported-construct` says the compiler will not lower it.
+        // The bare verdict is useless here — `unsupported` is also what
+        // a perfectly good program reports, because `conform-run` stops
+        // before it would run one.
+        Ok(r) => r.verdict.starts_with("fail(") || r.unsupported_construct.is_some(),
+    }
 }
 
 fn machine_run_within(
@@ -1104,9 +1150,8 @@ fn execute(tools: &Tools, s: &Sample) -> Result<Outcome> {
         Check::LupinRun { exit, stdout } => {
             let lupin = machine_gate(Machine::Lupin, tools, s);
             let passed = meets(&lupin, *exit, stdout.as_deref());
-            let graduates = machine_probe(Machine::Wolf, tools, s)
-                .filter(|w| refusal(w).is_none() && meets(w, *exit, stdout.as_deref()).is_ok())
-                .map(|_| format!("`wolf run` now meets `run(exit={exit}…)` too"));
+            let graduates = (!compiler_still_declines(tools, s))
+                .then(|| "the compiler no longer declines this program".to_string());
             Ok(Outcome {
                 passed: passed.is_ok(),
                 detail: match passed {
@@ -1154,12 +1199,20 @@ fn execute(tools: &Tools, s: &Sample) -> Result<Outcome> {
                 graduates: None,
             })
         }
+        // NO GRADUATION PROBE, deliberately. A trap claim retires on a
+        // RUNTIME fact — the compiled binary faulting the same way — and
+        // the cheap probe cannot see that: it never executes anything,
+        // and the compiler accepts every one of these programs happily.
+        // (Measured: `appx/exB-4` compiles and exits 0 without trapping;
+        // the two deadlock exercises compile and then park forever, which
+        // is what a probe that ran them would do too.) Guessing from a
+        // compile-time verdict would report a graduation that has not
+        // happened, so these rows retire by hand, against the ledger row
+        // and the spec clause that put them here.
         Check::LupinTrap { kind } => {
             let lupin = machine_gate(Machine::Lupin, tools, s);
             let passed = traps(Machine::Lupin, &lupin, kind);
-            let graduates = machine_probe(Machine::Wolf, tools, s)
-                .filter(|w| refusal(w).is_none() && traps(Machine::Wolf, w, kind).is_ok())
-                .map(|_| format!("`wolf run` now traps `{kind}` too"));
+            let graduates: Option<String> = None;
             Ok(Outcome {
                 passed: passed.is_ok(),
                 detail: match passed {
@@ -1300,6 +1353,12 @@ struct ConformRun {
     phase: Option<String>,
     /// `x-ub-row` — present only on a `ub(…)` verdict from `--checked`.
     ub_row: Option<String>,
+    /// `x-unsupported-construct` — the construct the compiler declines,
+    /// in its own words. Present exactly when the conservatism ledger
+    /// answered, which makes it the signal a graduation probe wants:
+    /// the refusal itself goes to stderr, and the verdict is a bare
+    /// `unsupported` that a clean program also reports.
+    unsupported_construct: Option<String>,
 }
 
 /// Run `wolf conform-run ./file` and split its output into the verdict
@@ -1344,6 +1403,10 @@ fn conform_run_with(tools: &Tools, s: &Sample, checked: bool) -> Result<ConformR
         .get("x-ub-row")
         .and_then(|v| v.as_str())
         .map(str::to_string);
+    let unsupported_construct = parsed
+        .get("x-unsupported-construct")
+        .and_then(|v| v.as_str())
+        .map(str::to_string);
     // The human-rendered diagnostic: everything before the JSON line,
     // wherever the driver put it.
     let mut diag = String::new();
@@ -1362,6 +1425,7 @@ fn conform_run_with(tools: &Tools, s: &Sample, checked: bool) -> Result<ConformR
         diagnostic: normalize(&diag),
         phase,
         ub_row,
+        unsupported_construct,
     })
 }
 
@@ -1566,6 +1630,27 @@ fn selftest(root: &Path, tools: &Tools) -> Result<()> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// The bug that cancelled two CI lanes at their 60-minute ceiling.
+    /// A child that leaves a grandchild holding the pipes must still
+    /// TIME OUT: `read_to_end` returns when the write end closes, and a
+    /// killed child's grandchild has not closed it. Before the fix the
+    /// runner joined those readers and hung forever.
+    #[cfg(unix)]
+    #[test]
+    fn a_surviving_grandchild_does_not_hang_the_runner() {
+        let mut cmd = Command::new("sh");
+        // The backgrounded `sleep` inherits stdout and outlives `sh`.
+        cmd.arg("-c").arg("sleep 45 & echo started; wait");
+        let started = Instant::now();
+        let r = run_within(cmd, Duration::from_secs(2));
+        assert!(r.is_err(), "expected a timeout, got {r:?}");
+        assert!(
+            started.elapsed() < Duration::from_secs(30),
+            "timed out but only after {:?} — the readers are blocking again",
+            started.elapsed()
+        );
+    }
 
     #[test]
     fn ownership_lint_catches_each_annotation() {

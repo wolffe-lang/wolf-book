@@ -119,6 +119,21 @@ remembers.
 This is the same machinery `samples-pending.toml` has always used, for
 the same reason: a feature landing is noticed, never silently absorbed.
 
+One limit, stated rather than papered over. The probe that watches for
+graduation asks `wolf conform-run`, which reaches a verdict without
+generating code and without executing anything — it has to, because some
+of these programs are deadlock exercises whose compiled binaries never
+return, and because a one-machine sample must not cost a native build on
+every run of every lane forever. That probe can see a `lupin-run(…)`
+retire, since a run claim retires exactly when the compiler stops
+declining the program. It cannot see a `lupin-run(exit=trap(k))` retire,
+because a trap claim retires on a runtime fact: the compiler accepts all
+of these programs today and simply does not fault the way the
+interpreter does. So trap rows carry no automatic flip and retire by
+hand, against the ledger row and the clause that put them there.
+Reporting a graduation the runner cannot actually observe would be the
+same species of mistake as scoring a machine that was never asked.
+
 ## 7. What this is not
 
 Three manifests answer three different questions and none of them

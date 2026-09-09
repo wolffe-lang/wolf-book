@@ -56,7 +56,12 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 60
+    # 90 rather than 60 since bs31: a `run(...)` fence is a claim about
+    # both machines, so this lane now builds and runs ~345 samples under
+    # the compiler as well as the interpreter. The ceiling is headroom
+    # for real work, not for a hang -- a sample that parks is caught by
+    # the runner's own per-sample budget (see run_within).
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
         with:
