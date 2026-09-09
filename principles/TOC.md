@@ -1314,6 +1314,14 @@ sprint files remain the implementation contracts for everything else.
     what is still owed, chapter by chapter, is the reader-facing
     per-machine note, and chapter 1 is the worked example of the finished
     form.
+  - **The payoff arrived inside the same sprint, which is the argument
+    for building it this way.** wolf 0.2.8 landed `str.to_int` mid-sprint
+    and 27 samples across five chapters graduated back to `run(…)` — every
+    one of them reported by the runner as a FLIP, none found by a person
+    re-reading a chapter. That is the whole case for spending a commit on
+    retirement machinery instead of a note in a sprint file: the tally
+    goes down on its own, loudly, in the commit that moves the pin.
+    133 -> 106 in one bump.
   - **Two of the 133 were mistakes rather than gaps, and both were
     invisible for the same reason.** Chapter 30's `select` block claimed
     an outcome `[conc.select.fair]` makes seed-dependent (the chapter's
