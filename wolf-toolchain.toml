@@ -4,13 +4,13 @@
 # doc-truth CI job compares them.
 
 [wolf]
-# wolf-lang at trunk `3103577`, which is NOT a release tag. D57 (r03):
+# wolf-lang at trunk `e9a17cb`, which is NOT a release tag. D57 (r03):
 # a build made exactly at its own release tag prints the bare version
 # with a pin clause, and every other build prints `+dev.<commit>` and
 # claims nothing; unverifiable is dev. This one is the second kind, and
 # says so on both pages that print it:
 #
-#   wolf 0.2.8+dev.3103577 (wolfgang, pin 3103577)
+#   wolf 0.2.8+dev.e9a17cb (wolfgang, pin e9a17cb)
 #
 # The stamp is still the dist builder's, never a build script's (D33):
 # `cargo xtask dist` probes git and sets WOLF_COMMIT at compile time
@@ -104,9 +104,18 @@
 #     suffix is the driver's stamp, not the interface's — so ch22's
 #     interface transcript and ch25's publish record do NOT move.
 #     Predicted, then measured by running the samples lane.
+#   * THE PIN IS TRUNK'S TIP, NOT THE MERGE COMMIT, and the difference
+#     is one commit that carries no code: `e9a17cb` folds five bench
+#     witnesses into the per-file IR-volume record and drops a renamed
+#     path. `git diff 3103577 e9a17cb -- spec/ docs/ grammar.ebnf
+#     crates/` is EMPTY, checked rather than assumed, so every number
+#     above was measured at `3103577` and holds at this rev unchanged:
+#     the anchors, the catalog, the grammar, the by-construct table
+#     and the 13 flips. What moved is the stamp the two version
+#     transcripts print, and they were re-recorded by the runner.
 repo = "wolffe-lang/wolf-lang"
-rev = "3103577c36fabf90f34e7d63d89a5299d8e06ee6"
-impl_version = "0.2.8+dev.3103577"
+rev = "e9a17cb3c80896c725c6fbdcbe032e7de0c5c548"
+impl_version = "0.2.8+dev.e9a17cb"
 
 [lupin]
 # wolf-interp at the v0.1.28 release tag (is39 and is40): the stamped
@@ -115,12 +124,12 @@ impl_version = "0.2.8+dev.3103577"
 # is40 released against the v0.2.8 TAG — THE SAME REVISION this file
 # pins for wolf.
 #
-# THE PAIR READS 0 AND 27 COMMITS, AND THE SECOND NUMBER IS NOT A
+# THE PAIR READS 0 AND 28 COMMITS, AND THE SECOND NUMBER IS NOT A
 # RELEASE COUNT. Both numbers computed from the two stamps, never
 # hand-written (ww16), and re-computed at this bump because [wolf]
 # moved off a tag:
 #
-#   wolf 0.2.8+dev.3103577 (wolfgang, pin 3103577)
+#   wolf 0.2.8+dev.e9a17cb (wolfgang, pin e9a17cb)
 #   paired with lupin 0.1.28 (reference interpreter), pin 5c729e8
 #   lupin 0.1.28 (wolf-interp, reference interpreter at pin 5c729e8)
 #
@@ -130,8 +139,8 @@ impl_version = "0.2.8+dev.3103577"
 #     was built after that interpreter published.
 #   THE INTERPRETER'S HALF IS NOT A RELEASE NUMBER ANY MORE. It names
 #     `5c729e8`, which is v0.2.8 — the last release the compiler above
-#     it carries, and 27 commits behind the revision this file pins.
-#     `git rev-list --count 5c729e8..3103577` is where that 27 comes
+#     it carries, and 28 commits behind the revision this file pins.
+#     `git rev-list --count 5c729e8..e9a17cb` is where that 28 comes
 #     from. There is no release to count to, because the compiler
 #     pinned here has not been released; the honest reading is a
 #     commit distance and it is written as one.
