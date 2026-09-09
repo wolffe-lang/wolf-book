@@ -1,4 +1,4 @@
-//! check: lupin-run(exit=0)
+//! check: run(exit=0)
 //! phase: run
 // Exercise 17-6: chaos at the effect point — the recv that sometimes
 // fails. PENDING: --chaos fault injection is not in the interpreter

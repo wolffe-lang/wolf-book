@@ -1,4 +1,4 @@
-//! check: lupin-run(exit=0)
+//! check: run(exit=0)
 //! phase: run
 // Exercise 5-1 solution: a List is also a stack.
 fn main() -> !int {

@@ -1,4 +1,4 @@
-//! check: lupin-run(exit=0)
+//! check: run(exit=0)
 //! phase: run
 // Exercise 14-6 solution: a counter as a mailbox-driven proc.
 // Command 0 asks for the total; anything else adds.
