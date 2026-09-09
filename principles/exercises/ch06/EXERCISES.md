@@ -106,10 +106,16 @@ The script hardens one construct at a time:
 fn parse_or_zero(s: str) -> int {
     s.to_int() else 0
 }
-fn parse(s: str) -> int ! {NotAnInt} {
-    s.to_int() else { return NotAnInt }
+fn parse(s: str) -> int ! {not_a_number} {
+    s.to_int() else { return not_a_number }
 }
 ```
+
+The mark the third posture hands up is a lowercase bare word, which is
+what the compiler expects of a mark that keeps nothing: CapCase in a
+row reads as a promise that a payload waits inside. It has the same
+opinion about some of the marks earlier in this chapter, and delivers
+it as a warning rather than a refusal.
 
 Predict all three printed lines of the solution's `main`, which calls
 `parse_or_zero("7x")` and then `parse("7x")` with a handler. Then the
