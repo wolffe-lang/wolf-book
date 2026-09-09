@@ -1330,3 +1330,15 @@ sprint files remain the implementation contracts for everything else.
     holds illegal under E1001 and the interpreter runs to completion. One
     machine is a proofreader for the other, and the book had been
     publishing with one eye shut.
+  - **The machinery has one blind spot and it is written down where it
+    can be acted on.** The graduation probe asks `wolf conform-run`,
+    which reaches a verdict without executing, so it can see a run claim
+    retire and cannot see a TRAP claim retire. At the bump that took the
+    interpolation and iteration families, 14 samples started running on
+    the compiler and the runner reported 13; the fourteenth was chapter
+    5's empty-`pop` block, a `lupin-run(exit=trap(bounds))` whose new
+    answer is a `none` row and exit 0. It was found by probing all 107
+    one-machine fences at both pins and diffing the tables by sample,
+    which is the check that has to be run by hand at every bump until
+    trap claims have machinery of their own. Re-measure the inventory;
+    do not subtract from the last one.
