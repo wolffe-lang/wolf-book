@@ -2,6 +2,57 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs34, the pin bump — 2026-09-09 — a line may start with `else`
+
+The compiler stopped rejecting a layout people kept writing. An `if`
+with its branches lined up under each other, the `else` beginning its
+own line, was a syntax error until this printing; the rule came from Go
+and the reasoning was that a newline ends a statement, so an `else`
+below the closing brace belonged to nothing. A reader who came from C or
+Python or Rust met that rule as an error message on their first branchy
+program. It is gone. A line whose first token is `else` continues the
+statement above it, and chapter 3 shows the aligned form and says the
+one thing a reader needs alongside it: both layouts parse, and the
+formatter writes them the same way. The error code for the old rule has
+been retired, which is the first time a code has left the catalog in
+this edition's life, and the diagnostics appendix counts one fewer.
+
+The interpreter has not made that change yet, so the aligned program in
+chapter 3 says it was run by the compiler, the way chapter 1's error
+program said so last printing. That label is what the build removes on
+its own the day the two tools agree.
+
+Chapter 1's error program is that day arriving. Last printing the two
+tools spelled the same failure differently and the page carried the
+compiler's transcript with a note; the interpreter spells it `parse`
+now, both tools print the same line, and the note is gone. The build
+found it rather than a person: a program running on one tool that starts
+running on both is an error until somebody removes the label. It was the
+only such graduation this printing, and it was named in advance — eleven
+programs in this book run on one tool by declaration, and the ten others
+are waiting on things this release does not touch.
+
+Two arguments the book had been reporting without taking a side were
+settled, and both were settled the way the compiler already behaved. The
+error a closed channel hands back has a name in the specification now,
+lowercase like every name that carries nothing, and chapter 12 says the
+rule names it instead of saying the rule declines to. What a list hands
+back when you pop from an empty one is ruled too: an ordinary "nothing
+there", never a fault. Chapter 5 still shows the fault, because the tool
+that runs that program still produces one, and its notes now say which
+printing removes it and that the build will fail rather than quietly
+adjust when that happens. Predicted in writing before it can occur.
+
+One thing on this page is worth saying plainly because the build cannot
+say it. The count of diagnostic codes in the appendix is checked by
+nobody: the tooling verifies that every code the book shows is real and
+that every code the book mentions is listed, and never that the number
+in the sentence matches the catalog it describes. The vendored copy of
+that catalog is not compared against the compiler either. Both were
+moved by hand here and both are filed, because a green build is not the
+same thing as a checked claim, and this book's whole argument is the
+difference between them.
+
 ## bs34 — 2026-09-09 — the vocabulary goes lowercase
 
 Chapter 6 teaches that a failure is a value with a name, and the names
