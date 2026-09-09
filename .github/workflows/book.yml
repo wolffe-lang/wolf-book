@@ -56,12 +56,15 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
-    # 90 rather than 60 since bs31: a `run(...)` fence is a claim about
-    # both machines, so this lane now builds and runs ~345 samples under
-    # the compiler as well as the interpreter. The ceiling is headroom
-    # for real work, not for a hang -- a sample that parks is caught by
-    # the runner's own per-sample budget (see run_within).
-    timeout-minutes: 90
+    # Stays 60. bs31 raised this to 90 on the theory that running every
+    # `run(...)` sample under the compiler as well as the interpreter had
+    # made the lane expensive. Measured on run 34319651351, it had not:
+    # sample execution is 27s on ubuntu, 45s on windows, 75s on macOS,
+    # and the whole job is 2-5 minutes against a 3-6 minute baseline.
+    # The hour that got eaten was a hang, not work (a killed child's
+    # grandchild held the pipes; see run_within), and a ceiling inflated
+    # against a hang only makes the next one take longer to surface.
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
         with:
