@@ -2,6 +2,61 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs32 — 2026-09-09 — the two tools name one revision
+
+The interpreter has caught up. Last printing the two version lines
+disagreed about which revision the pair was tested against, and the
+disagreement was the interpreter's: it named a compiler three releases
+behind the one printed above it. lupin 0.1.28 names `5c729e8`, which is
+the compiler on the line above, character for character. The compiler's
+line now runs one release behind the interpreter beside it, for the
+ordinary reason a pair cut on two schedules disagrees at all: the
+interpreter published after the compiler was cut. §1.2 and the colophon
+say that and nothing more. The pair has worn this exact shape before, at
+wolf 0.2.4 and lupin 0.1.25, which is recorded in the pin file so that
+nobody prints it as a first.
+
+Nothing else moved with it, and that was predicted before it was
+measured. The pin file carries the prediction and the reading together:
+zero programs changed which machines serve them, in either direction and
+in the pending list, because only the interpreter moved and nothing this
+release adds is on a page. Four hundred and seventy-eight samples, four
+hundred and seventy-three passing, five pending, none failing. The two
+version transcripts are the whole diff a reader can see.
+
+One divergence closes without the book noticing, which is the point of
+having recorded it. Last printing's pin notes wrote down that converting
+a number too large for the compiler's integer type produced different
+answers from the two tools, and that no page in this book asked for one.
+The interpreter has fixed it. Re-checked here rather than taken on faith
+from the sentence that recorded it, and still no page asks for one.
+
+Chapter 5's generic `best` is legal wolf now, and the word that fixes it
+is one the reader already met. Indexing a list hands the element over,
+so a helper that reads a list twice has emptied it by the second read;
+the compiler says so and suggests `copy`. That is the same suggestion
+chapter 3 prints in full three chapters earlier, in the same diagnostic,
+from the same tool, with only its cost held over for chapter 7. So
+`copy` does not arrive in Part 1 here. It arrived in chapter 3, and
+chapter 5 is the reader using it. Both spellings that fix the program
+were run on both machines before the choice was made, including the one
+that avoids the word; the one that avoids it teaches worse.
+
+Exercise 5-7's answer was describing a program it did not have. The
+published solution pops two values off a stack and adds them, and
+popping a stack that might be empty produces a value that carries the
+possibility of failure. The compiler refuses to add two of those; the
+interpreter allowed it. The answer paragraph beside the code had already
+claimed the program returned an error rather than trapping, which is
+what it does now: each pop handles its own failure, and the answer says
+why the guard above it does not excuse that. Found by re-measuring the
+chapter rather than by subtracting from last printing's count, and it
+had been hidden under the refusal the last toolchain bump removed.
+
+Two of the hundred and six programs that run on one machine are back to
+running on both, and neither came from a toolchain move: the book was
+wrong about them and is not any more.
+
 ## bs31 — 2026-09-08 — the first chapter is true
 
 A reader copied chapter 1's tenth exercise, ran it with the compiler,
