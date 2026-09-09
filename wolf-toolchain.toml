@@ -72,14 +72,23 @@
 # bs30 it named the release before. So the pair went from one-and-one
 # to zero-and-two.
 #
-# THE 0-OR-1 RULE IS BREACHED BY THIS BUMP and no work in this
-# repository can close it. The remedy is an interpreter release that
-# reads v0.2.6 or v0.2.7; wolf-interp's newest tag is v0.1.27, is39 is
-# unreleased on its trunk, and the book pins what exists. Recorded here
-# at full volume rather than smoothed in the prose: the two pages that
-# print the pair now teach a two-release gap as an ordinary
-# consequence of two projects on two schedules, which is true, and the
-# rule that wants it back under one is the toolchain's to satisfy.
+# THE 0-OR-1 CEILING DOES NOT APPLY TO THIS BUMP, and the reason is
+# what r10 is. That rule exists to catch a SKIPPED INTERPRETER RELEASE:
+# a lag above one normally means the book took a compiler the
+# interpreter has not been tested against, and the fix is to wait for
+# the interpreter. Here there is nothing to wait for. v0.2.7 is a
+# pairing re-stamp and a CI job; it changed no language surface, so it
+# gave the interpreter nothing to catch up to, and lupin 0.1.27 reads
+# v0.2.5 for the same reason it read v0.2.5 at bs30 — is38 released
+# against that tag. The gap widened because the compiler published a
+# release with no surface in it, not because a release was skipped.
+# Counted, stated, and not smoothed: that is the discipline, and the
+# ceiling was diagnosing a condition that is not present.
+#
+# (Ruled 2026-09-09 with ww17, which reached the same conclusion on the
+# website in the same wave and retired the ceiling there. The book's
+# form is the same: compute the lag, never hand-write it, and say the
+# number plainly on the two pages that print the pair.)
 #
 # This rev IS the tag, so the transcripts stay clean (D57).
 repo = "wolffe-lang/wolf-lang"
@@ -105,8 +114,8 @@ impl_version = "0.2.7"
 # half went from one to zero when r10 re-stamped the pairing (#253).
 # The interpreter names 6ade878, which is v0.2.5, where the compiler
 # above it is v0.2.7 — v0.2.5 -> v0.2.6 -> v0.2.7, two releases, and
-# nothing here calls that one. The [wolf] block above records the
-# breach of the 0-or-1 rule and why this repository cannot close it.
+# nothing here calls that one. The [wolf] block above records why the
+# 0-or-1 ceiling does not apply to a pairing re-stamp.
 # The colophon's paragraph and §1.2's are rewritten to say exactly what
 # the stamps say; neither claims the two are the same revision.
 #
