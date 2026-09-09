@@ -57,6 +57,17 @@ Two of the hundred and six programs that run on one machine are back to
 running on both, and neither came from a toolchain move: the book was
 wrong about them and is not any more.
 
+The spec cross-reference checks itself now. Appendix D routes a reader
+from a clause tag in a tool's output to the normative text behind it,
+and it does that by counting the specification's shape: how many
+documents there are, how many anchor namespaces they publish, and which
+belong to which. Two printings ago that page said seven documents when
+there were eleven, and one printing ago it left out a namespace whose
+tags a tool prints at readers. Both were caught by somebody reading the
+page. The build derives all of it from the specification's own registry
+now, in both directions, and a page that has drifted fails the build and
+names the sentence.
+
 ## bs31 — 2026-09-08 — the first chapter is true
 
 A reader copied chapter 1's tenth exercise, ran it with the compiler,
