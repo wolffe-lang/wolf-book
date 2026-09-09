@@ -4,6 +4,7 @@
 //! failure, not a footnote.
 
 use anyhow::{bail, Context, Result};
+use std::collections::{BTreeMap, BTreeSet};
 use std::path::Path;
 
 pub fn run(root: &Path) -> Result<()> {
@@ -78,6 +79,7 @@ pub fn run(root: &Path) -> Result<()> {
     // 9. Clause tags, diagnostic codes, trap kinds: the back matter and
     //    the chapters against the vendored spec artifacts.
     verify_clause_tags(root, &mut failures)?;
+    verify_spec_shape(root, &mut failures)?;
     verify_diagnostic_codes(root, &mut failures)?;
     verify_traps(root, &mut failures)?;
 
@@ -618,4 +620,397 @@ fn verify_toc(root: &Path, failures: &mut Vec<String>) -> Result<()> {
         }
     }
     Ok(())
+}
+
+/// Appendix D's shape claims, derived from `vendor/spec/anchors.json`
+/// rather than remembered (wolf-book#7).
+///
+/// The page states three counted facts about the specification — how
+/// many documents it is, how many anchor namespaces they publish, and
+/// which namespaces belong to which document — and until this check
+/// none of them was held to anything. "The specification is seven
+/// documents" survived the whole 0.2 line, and the table's Anchors
+/// column showed one namespace for document 01 while `[conf.anchor.ns]`
+/// gives it two. Both were found by reading, one sprint apart, and a
+/// third instance was a matter of time: `anchors.json` already carries
+/// the owning file of every anchor, so the table is derivable and the
+/// prose counts are arithmetic on it.
+///
+/// Every comparison here runs BOTH WAYS. A namespace the page lists and
+/// the spec does not publish is as wrong as one the spec publishes and
+/// the page omits, and the second is the one that leaves a reader with a
+/// tag and nowhere to take it.
+fn verify_spec_shape(root: &Path, failures: &mut Vec<String>) -> Result<()> {
+    let raw = std::fs::read_to_string(root.join("vendor/spec/anchors.json"))
+        .context("reading vendor/spec/anchors.json")?;
+    let parsed: serde_json::Value =
+        serde_json::from_str(&raw).context("parsing vendor/spec/anchors.json")?;
+    let anchors = parsed
+        .get("anchors")
+        .and_then(|a| a.as_object())
+        .context("vendor/spec/anchors.json has no `anchors` object")?;
+
+    // document number -> the namespaces owning anchors in that document.
+    let mut spec: BTreeMap<String, BTreeSet<String>> = BTreeMap::new();
+    for (tag, file) in anchors {
+        let file = file
+            .as_str()
+            .with_context(|| format!("anchors.json: `{tag}` does not name a file"))?;
+        let (number, _) = file
+            .split_once('-')
+            .with_context(|| format!("anchors.json: `{file}` is not `NN-name.md`"))?;
+        let namespace = tag.split('.').next().unwrap_or_default();
+        if namespace.is_empty() {
+            failures.push(format!(
+                "vendor/spec/anchors.json: `{tag}` has no namespace"
+            ));
+            continue;
+        }
+        spec.entry(number.to_string())
+            .or_default()
+            .insert(namespace.to_string());
+    }
+
+    let page = std::fs::read_to_string(root.join("book/back/appendix-d.md"))?;
+    failures.extend(spec_shape_failures(&spec, &page));
+    Ok(())
+}
+
+/// The comparison itself, with no filesystem in it, so the two defects
+/// that motivated this check can be planted in a test rather than
+/// described in a comment.
+fn spec_shape_failures(spec: &BTreeMap<String, BTreeSet<String>>, page: &str) -> Vec<String> {
+    let mut failures = Vec::new();
+    let table = appendix_d_namespace_table(page);
+
+    for (number, namespaces) in spec {
+        match table.get(number) {
+            None => failures.push(format!(
+                "book/back/appendix-d.md: the spec publishes anchors in document {number} \
+                 and the table has no row for it"
+            )),
+            Some(listed) if listed != namespaces => failures.push(format!(
+                "book/back/appendix-d.md: document {number} owns {} in the spec and the \
+                 table lists {}",
+                joined(namespaces),
+                joined(listed)
+            )),
+            Some(_) => {}
+        }
+    }
+    for number in table.keys() {
+        if !spec.contains_key(number) {
+            failures.push(format!(
+                "book/back/appendix-d.md: the table lists document {number}, which owns no \
+                 anchor in vendor/spec/anchors.json"
+            ));
+        }
+    }
+
+    // The prose counts. Both are arithmetic on the map above, and both
+    // are written as words on the page, which is why they rotted
+    // silently: no digit for a grep to catch.
+    let documents = spec.len();
+    let namespaces: BTreeSet<&String> = spec.values().flatten().collect();
+    // The page wraps at 72 columns, so a claim like "twelve anchor
+    // namespaces" reaches this check with a newline inside it. Collapse
+    // whitespace before looking for a sentence, or the check finds
+    // nothing and passes a page that says the wrong number.
+    let prose = reader_prose(page)
+        .split_whitespace()
+        .collect::<Vec<_>>()
+        .join(" ");
+    for (count, phrase) in [
+        (documents, "documents"),
+        (namespaces.len(), "anchor namespaces"),
+    ] {
+        let Some(word) = number_word(count) else {
+            failures.push(format!(
+                "book/back/appendix-d.md: {count} {phrase} is outside the range this check \
+                 spells; extend `number_word`"
+            ));
+            continue;
+        };
+        let claim = format!("{word} {phrase}");
+        if !prose.contains(&claim) {
+            failures.push(format!(
+                "book/back/appendix-d.md: the spec has {count} {phrase} and the page does \
+                 not say `{claim}`"
+            ));
+        }
+    }
+
+    // How many of those documents the section table actually cites.
+    let cited = appendix_d_cited_documents(page);
+    if let Some(word) = number_word(cited.len()) {
+        let claim = format!("cites {word} of the documents");
+        if !prose.contains(&claim) {
+            failures.push(format!(
+                "book/back/appendix-d.md: the section table cites {} document(s) and the \
+                 page does not say `{claim}`",
+                cited.len()
+            ));
+        }
+    }
+    failures
+}
+
+/// `| 01. Surface Grammar | `gram.*`, `diag.*` |` → `01` → {gram, diag}.
+fn appendix_d_namespace_table(page: &str) -> BTreeMap<String, BTreeSet<String>> {
+    let mut out: BTreeMap<String, BTreeSet<String>> = BTreeMap::new();
+    for line in page.lines() {
+        let line = line.trim();
+        if !line.starts_with('|') {
+            continue;
+        }
+        let cells: Vec<&str> = line.trim_matches('|').split('|').map(str::trim).collect();
+        if cells.len() != 2 {
+            continue;
+        }
+        let Some((number, _)) = cells[0].split_once(". ") else {
+            continue;
+        };
+        if number.len() != 2 || !number.chars().all(|c| c.is_ascii_digit()) {
+            continue;
+        }
+        let mut namespaces = BTreeSet::new();
+        for item in cells[1].split(',') {
+            let item = item.trim().trim_matches('`');
+            if let Some(ns) = item.strip_suffix(".*") {
+                namespaces.insert(ns.to_string());
+            }
+        }
+        if !namespaces.is_empty() {
+            out.insert(number.to_string(), namespaces);
+        }
+    }
+    out
+}
+
+/// The document numbers the "Book section to clause" table cites.
+fn appendix_d_cited_documents(page: &str) -> BTreeSet<String> {
+    let mut out = BTreeSet::new();
+    for line in page.lines() {
+        let line = line.trim();
+        if !line.starts_with('|') {
+            continue;
+        }
+        let cells: Vec<&str> = line.trim_matches('|').split('|').map(str::trim).collect();
+        if cells.len() != 3 {
+            continue;
+        }
+        for item in cells[2].split(',') {
+            let item = item.trim();
+            if item.len() == 2 && item.chars().all(|c| c.is_ascii_digit()) {
+                out.insert(item.to_string());
+            }
+        }
+    }
+    out
+}
+
+fn joined(set: &BTreeSet<String>) -> String {
+    set.iter()
+        .map(|n| format!("`{n}.*`"))
+        .collect::<Vec<_>>()
+        .join(", ")
+}
+
+/// The page writes its counts as words, so the check has to as well.
+fn number_word(n: usize) -> Option<&'static str> {
+    const WORDS: &[&str] = &[
+        "zero",
+        "one",
+        "two",
+        "three",
+        "four",
+        "five",
+        "six",
+        "seven",
+        "eight",
+        "nine",
+        "ten",
+        "eleven",
+        "twelve",
+        "thirteen",
+        "fourteen",
+        "fifteen",
+        "sixteen",
+        "seventeen",
+        "eighteen",
+        "nineteen",
+        "twenty",
+    ];
+    WORDS.get(n).copied()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    const TABLE: &str = "\
+| Document | Anchors |
+|----------|---------|
+| 01. Surface Grammar | `gram.*`, `diag.*` |
+| 02. Memory Model | `mem.*` |
+";
+
+    #[test]
+    fn namespace_table_reads_two_namespaces_in_one_row() {
+        let t = appendix_d_namespace_table(TABLE);
+        assert_eq!(t.len(), 2);
+        assert_eq!(
+            t["01"],
+            ["diag".to_string(), "gram".to_string()]
+                .into_iter()
+                .collect::<BTreeSet<_>>()
+        );
+        assert_eq!(
+            t["02"],
+            ["mem".to_string()].into_iter().collect::<BTreeSet<_>>()
+        );
+    }
+
+    #[test]
+    fn namespace_table_ignores_the_other_tables_on_the_page() {
+        // Three-column section rows and the unanchored-tag table must
+        // not be read as document rows.
+        let page = format!(
+            "{TABLE}\n| 1.4 The REPL | `[mem.ub.defined]` | 02 |\n\
+             | `arith.checked` | the `trap(overflow)` line |\n"
+        );
+        let t = appendix_d_namespace_table(&page);
+        assert_eq!(t.keys().collect::<Vec<_>>(), vec!["01", "02"]);
+    }
+
+    #[test]
+    fn cited_documents_come_from_the_section_table_only() {
+        let page = format!(
+            "{TABLE}\n| 1.4 The REPL | `[mem.ub.defined]` | 02 |\n\
+             | 1.5 What `run` did | `[gram.expr.block]` | 01, 02 |\n"
+        );
+        let cited = appendix_d_cited_documents(&page);
+        assert_eq!(cited.len(), 2);
+        assert!(cited.contains("01") && cited.contains("02"));
+    }
+
+    #[test]
+    fn the_real_page_agrees_with_the_vendored_anchors() {
+        // The check as CI runs it, against the repository's own files:
+        // this is the assertion that would have failed on "seven
+        // documents" and on document 01's missing `diag.*`.
+        let root = crate::repo_root().expect("repo root");
+        let mut failures = Vec::new();
+        verify_spec_shape(&root, &mut failures).expect("check runs");
+        assert!(failures.is_empty(), "{failures:#?}");
+    }
+
+    /// Two documents, three namespaces, and a page that gets all of it
+    /// right — the control every negative test below deviates from.
+    fn good_page() -> String {
+        format!(
+            "The specification is two documents, and they publish three \
+             anchor namespaces between them. The table below this one \
+             cites two of the documents.\n\n{TABLE}\n\
+             | 1.4 The REPL | `[mem.ub.defined]` | 02 |\n\
+             | 1.5 What `run` did | `[gram.expr.block]` | 01 |\n"
+        )
+    }
+
+    fn good_spec() -> BTreeMap<String, BTreeSet<String>> {
+        [
+            (
+                "01".to_string(),
+                ["gram".to_string(), "diag".to_string()]
+                    .into_iter()
+                    .collect(),
+            ),
+            (
+                "02".to_string(),
+                ["mem".to_string()].into_iter().collect::<BTreeSet<_>>(),
+            ),
+        ]
+        .into_iter()
+        .collect()
+    }
+
+    #[test]
+    fn the_control_passes() {
+        assert!(spec_shape_failures(&good_spec(), &good_page()).is_empty());
+    }
+
+    #[test]
+    fn the_missing_diag_row_is_caught() {
+        // bs30's defect: document 01 owns `gram.*` AND `diag.*`, and the
+        // table showed only `gram.*`, so a reader who met `[diag.sev.teach]`
+        // in a tool's output had no row to follow.
+        let page = good_page().replace("`gram.*`, `diag.*`", "`gram.*`");
+        let f = spec_shape_failures(&good_spec(), &page);
+        assert_eq!(f.len(), 1, "{f:#?}");
+        assert!(f[0].contains("document 01 owns"), "{f:#?}");
+    }
+
+    #[test]
+    fn a_wrong_document_count_in_prose_is_caught() {
+        // bs29's defect: "The specification is seven documents", true
+        // once and wrong for the whole 0.2 line after it.
+        let page = good_page().replace("is two documents", "is seven documents");
+        let f = spec_shape_failures(&good_spec(), &page);
+        assert_eq!(f.len(), 1, "{f:#?}");
+        assert!(f[0].contains("`two documents`"), "{f:#?}");
+    }
+
+    #[test]
+    fn a_wrong_namespace_count_in_prose_is_caught() {
+        let page = good_page().replace("three anchor namespaces", "four anchor namespaces");
+        let f = spec_shape_failures(&good_spec(), &page);
+        assert_eq!(f.len(), 1, "{f:#?}");
+        assert!(f[0].contains("`three anchor namespaces`"), "{f:#?}");
+    }
+
+    #[test]
+    fn a_row_for_a_document_the_spec_does_not_publish_is_caught() {
+        // The #246 shape from the book's side: a table row implying a
+        // prefix that cannot be looked up.
+        let page = good_page().replace(
+            "| 02. Memory Model | `mem.*` |",
+            "| 02. Memory Model | `mem.*` |\n| 07. Schedule Points | `sched.*` |",
+        );
+        let f = spec_shape_failures(&good_spec(), &page);
+        assert_eq!(f.len(), 1, "{f:#?}");
+        assert!(f[0].contains("lists document 07"), "{f:#?}");
+    }
+
+    #[test]
+    fn a_document_the_page_forgot_is_caught() {
+        let page = good_page().replace("| 02. Memory Model | `mem.*` |\n", "");
+        let f = spec_shape_failures(&good_spec(), &page);
+        assert!(f.iter().any(|m| m.contains("no row for it")), "{f:#?}");
+    }
+
+    #[test]
+    fn a_stale_cited_count_is_caught() {
+        let page = good_page().replace("cites two of the documents", "cites five of the documents");
+        let f = spec_shape_failures(&good_spec(), &page);
+        assert_eq!(f.len(), 1, "{f:#?}");
+        assert!(f[0].contains("cites two of the documents"), "{f:#?}");
+    }
+
+    #[test]
+    fn a_wrapped_prose_claim_is_still_found() {
+        // The defect this test pins: the page wraps at 72 columns, so
+        // the first version of the check missed `twelve anchor\nnamespaces`
+        // and reported a correct page as wrong.
+        let wrapped = "they publish twelve anchor\nnamespaces between them";
+        let flat = wrapped.split_whitespace().collect::<Vec<_>>().join(" ");
+        assert!(flat.contains("twelve anchor namespaces"));
+        assert!(!wrapped.contains("twelve anchor namespaces"));
+    }
+
+    #[test]
+    fn number_words_cover_the_counts_the_page_uses() {
+        assert_eq!(number_word(11), Some("eleven"));
+        assert_eq!(number_word(12), Some("twelve"));
+        assert_eq!(number_word(21), None);
+    }
 }

@@ -26,6 +26,14 @@ page here, and it has to be findable either way.
 | 10. Types | `type.*` |
 | 11. OS Surface | `os.*` |
 
+Both counts and every row of that table are derived from the
+specification's own anchor registry on each build rather than
+maintained by hand: the documents, the namespaces each one owns, and
+how many of them the section table below cites. A row the specification
+does not publish, a namespace it publishes and this page omits, or a
+count that has drifted fails the book's build and names the sentence to
+re-read.
+
 One row in that table needs a sentence. Document 01 owns two
 namespaces: the grammar's own `gram.*`, and the `diag.*` anchors of its
 diagnostics section, which is where a tag like `[diag.sev.teach]` comes
