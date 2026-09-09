@@ -170,8 +170,8 @@ fn eval_rpn(tokens: List[str]) -> int ! {Underflow, BadToken} {
     for t in tokens {
         if t == "+" || t == "-" || t == "*" || t == "/" {
             if stack.len < 2 { return Underflow }
-            let b = (mut stack).pop()
-            let a = (mut stack).pop()
+            let b = (mut stack).pop() else { return Underflow }
+            let a = (mut stack).pop() else { return Underflow }
             if t == "+" { (mut stack).push(a + b) } else if t == "-" { (mut stack).push(a - b) } else if t == "*" { (mut stack).push(a * b) } else { (mut stack).push(a / b) }
         } else {
             let n = t.to_int() else { return BadToken }
@@ -179,7 +179,7 @@ fn eval_rpn(tokens: List[str]) -> int ! {Underflow, BadToken} {
         }
     }
     if stack.len != 1 { return Underflow }
-    (mut stack).pop()
+    (mut stack).pop() else { return Underflow }
 }
 fn main() -> !int {
     var tokens = List[str]()
@@ -204,7 +204,9 @@ The trace: `[3]`, `[3 4]`, `[7]`, `[7 2]`, `[14]`. An input like
 evaluator returns `Underflow` instead of trapping on `pop`: the error
 row is doing bounds-checking's job one level up, where the caller can
 do something about it. (The row previews chapter 6; reading it is
-enough here.)
+enough here.) `pop` carries a row of its own, which is why each call
+takes an `else` even under the guard: the compiler checks the call, not
+the reasoning around it.
 
 **Exercise 5-11** *(extension · lupin)*. Exercise 2-7 encoded runs
 with byte slices; a coder without a decoder is half a tool. Respell
