@@ -1,4 +1,4 @@
-//! check: run(exit=trap(ub))
+//! check: lupin-run(exit=trap(ub))
 //! phase: run
 // Appendix B, exercise B-11: ub — the oracle's finding, pinned as a trap
 // expectation. The read is through a dangling pointer laundered as int.

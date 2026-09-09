@@ -67,7 +67,8 @@ Every code block in the book is executed by CI.
 only upstream) · `vendor/spec/` (the pinned spec's grammar, clause
 anchors and diagnostic-code list) · `print/` (PDF fonts) · `xtask/` (the
 pipeline) · `principles/` (TONE.md, TOC.md, EXERCISES.md and the
-exercise corpus, DESIGN.md, INTERACTIVITY.md) · `docs/` (the reviewer
+exercise corpus, DESIGN.md, INTERACTIVITY.md, TWO-MACHINES.md) ·
+`docs/` (the reviewer
 checklist, the errata policy, the standing prose audit) · `STYLE.md`
 (mechanics) · `PRINT.md` (the typst decision) · `PERMISSIONS.md` (the
 lyric-quotation ledger).

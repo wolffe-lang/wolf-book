@@ -1,4 +1,4 @@
-//! check: run(exit=0, stdout="seat 4 survives")
+//! check: lupin-run(exit=0, stdout="seat 4 survives")
 //! phase: run
 // Exercise 16-10 solution: the survivor ring, moved whole to its reader.
 fn eliminate(mut alive: List[int], every: int, seats: int) {

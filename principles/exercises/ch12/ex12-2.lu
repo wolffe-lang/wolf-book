@@ -1,5 +1,12 @@
-//! check: run(exit=trap(deadlock))
+//! check: lupin-run(exit=trap(deadlock))
 //! phase: run
+// lupin lane, and by the specification rather than by a gap:
+// `[conc.deadlock.trap]` REQUIRES deadlock detection in deterministic
+// test modes and PERMITS it elsewhere, so the interpreter traps this
+// program and a compiled binary is entitled to park on it forever.
+// Measured at wolf 0.2.7 / lupin 0.1.27: `lupin` traps `deadlock`
+// (exit 3); `wolf run` never returns. Not a debt, and nothing is
+// owed — see principles/TWO-MACHINES.md §5.
 // Exercise 12-2: one task, one channel, capacity one — the second send
 // has no future.
 fn main() -> !int {

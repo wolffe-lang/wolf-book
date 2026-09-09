@@ -16,6 +16,15 @@ the overlap here is a pointer, not a second rule.
   we extract from prose). Directives on the fence say how:
   `wolf,run(exit=0, stdout="…")`, `wolf,fail(E1001)`,
   `wolf,part(name)` / `part(name, cont)`, `wolf-repl`.
+- **A `run(…)` fence is a claim about both machines.** `lupin` and
+  `wolf run` both execute the program and both must meet the declared
+  exit and stdout; a machine that refuses has not met it. A program only
+  one machine serves is spelled for that machine — `lupin-run(…)` or
+  `wolf-run(…)` — and then owes the reader a per-machine note in the
+  prose and the chapter's ledger a row with an owner.
+  `principles/TWO-MACHINES.md` owns the rule, including the trap half
+  (both machines name the kind; D60 rules the exit status per-machine)
+  and the FLIP that retires a one-machine fence.
 - **Undefined behavior needs both machines.** `wolf,ub(P1)` runs the
   sample under the interpreter's oracle *and* the compiler's checked
   build, and passes only if lupin faults and the checked build names

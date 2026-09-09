@@ -1,4 +1,4 @@
-//! check: run(exit=trap(ub))
+//! check: lupin-run(exit=trap(ub))
 //! phase: run
 // Exercise 9-5: the injected use-after-free the oracle catches, every run.
 import c "stdlib.h"

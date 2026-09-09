@@ -1,4 +1,4 @@
-//! check: run(exit=trap(use-after-move))
+//! check: lupin-run(exit=trap(use-after-move))
 //! phase: run
 // Exercise 7-4: structs move on assignment, whatever their fields hold.
 struct P { x: int, y: int }

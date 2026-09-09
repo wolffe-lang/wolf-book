@@ -1,4 +1,4 @@
-//! check: run(exit=0)
+//! check: lupin-run(exit=0)
 //! phase: run
 // Exercise 14-9 solution: the mailbox serializes — every schedule
 // delivers all four increments before the report is answered? No:

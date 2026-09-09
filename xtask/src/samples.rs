@@ -22,6 +22,14 @@ use std::time::{Duration, Instant};
 
 const SAMPLE_TIMEOUT: Duration = Duration::from_secs(20);
 
+/// The budget for a GRADUATION probe — asking the other machine whether
+/// it has started serving a program declared one-machine. That answer is
+/// a watch, not a gate: the sample's verdict is already settled by the
+/// machine that owns it. A program the other machine parks on (a
+/// deadlock exercise under the native runtime, which has no detector)
+/// must not cost the full sample budget on every run, forever.
+const GRADUATION_TIMEOUT: Duration = Duration::from_secs(5);
+
 #[derive(Debug, Clone, PartialEq)]
 enum Origin {
     Corpus,
@@ -62,6 +70,12 @@ struct Outcome {
     diagnostic: Option<String>,
     /// phase_reached reported by wolf, for corpus-export headers.
     phase_reached: Option<String>,
+    /// Set when a one-machine fence's *other* machine now serves the
+    /// program: the sample passes, and the fence has outlived its
+    /// spelling. The runner reports it as a FLIP, which is how a
+    /// per-machine note gets retired in the pin-bump commit instead of
+    /// remembered (`principles/TWO-MACHINES.md`).
+    graduates: Option<String>,
 }
 
 pub struct Tools {
@@ -248,6 +262,18 @@ pub fn run(root: &Path, args: &[String]) -> Result<()> {
                 ));
             }
             continue;
+        }
+        // A one-machine fence whose other machine now serves the
+        // program: the sample passes and the SPELLING is stale. Same
+        // handling as a pending row that starts passing, and for the
+        // same reason — a feature landing is noticed, never absorbed.
+        if let (Some(g), false) = (&outcome.graduates, is_pending) {
+            flips.push(format!(
+                "{}: directive `{}` holds, but {g} — both machines serve this program \
+                 now; graduate the fence to `run(…)`, retire the page's per-machine \
+                 note, and close the ledger row in the pin-bump commit",
+                s.id, s.check
+            ));
         }
         match (outcome.passed, is_pending) {
             (true, false) => {
@@ -788,11 +814,50 @@ fn walk(dir: &Path, f: &mut impl FnMut(&Path)) -> Result<()> {
 
 // ------------------------------------------------------------- execution
 
-fn run_with_timeout(mut cmd: Command) -> Result<(Option<i32>, String, String)> {
+/// Kill a timed-out sample and everything it started.
+///
+/// `wolf run` compiles the program and then EXECUTES it, so the process
+/// this function spawns has a grandchild: the sample's own binary. Killing
+/// the child alone leaves that binary running and holding the write end of
+/// the pipes, and the reader threads below then block on `read_to_end`
+/// forever — a hang, not a timeout, and the one this rig hit on the very
+/// first two-machine run (`appx/exB-9`, a deadlock exercise: lupin traps
+/// it, the native binary parks). So the child gets its own process group
+/// and the whole group is signalled.
+#[cfg(unix)]
+fn kill_group(child: &mut std::process::Child) {
+    let pid = child.id();
+    let _ = Command::new("/bin/kill")
+        .arg("-9")
+        .arg(format!("-{pid}"))
+        .stdout(std::process::Stdio::null())
+        .stderr(std::process::Stdio::null())
+        .status();
+    let _ = child.kill();
+}
+
+#[cfg(not(unix))]
+fn kill_group(child: &mut std::process::Child) {
+    // No process groups here; the job-object equivalent is a bigger
+    // change than this rig needs. A windows sample that hangs still
+    // leaves its grandchild, and the runner's timeout still fires.
+    let _ = child.kill();
+}
+
+fn run_with_timeout(cmd: Command) -> Result<(Option<i32>, String, String)> {
+    run_within(cmd, SAMPLE_TIMEOUT)
+}
+
+fn run_within(mut cmd: Command, budget: Duration) -> Result<(Option<i32>, String, String)> {
     use std::io::Read;
     cmd.stdout(std::process::Stdio::piped());
     cmd.stderr(std::process::Stdio::piped());
     cmd.stdin(std::process::Stdio::null());
+    #[cfg(unix)]
+    {
+        use std::os::unix::process::CommandExt as _;
+        cmd.process_group(0);
+    }
     let mut child = cmd.spawn().with_context(|| format!("spawning {cmd:?}"))?;
     let mut stdout_pipe = child.stdout.take().unwrap();
     let mut stderr_pipe = child.stderr.take().unwrap();
@@ -806,13 +871,13 @@ fn run_with_timeout(mut cmd: Command) -> Result<(Option<i32>, String, String)> {
         let _ = stderr_pipe.read_to_end(&mut buf);
         buf
     });
-    let deadline = Instant::now() + SAMPLE_TIMEOUT;
+    let deadline = Instant::now() + budget;
     let status = loop {
         if let Some(status) = child.try_wait()? {
             break Some(status);
         }
         if Instant::now() > deadline {
-            let _ = child.kill();
+            kill_group(&mut child);
             let _ = child.wait();
             break None;
         }
@@ -822,67 +887,291 @@ fn run_with_timeout(mut cmd: Command) -> Result<(Option<i32>, String, String)> {
     let stderr = String::from_utf8_lossy(&err_thread.join().unwrap()).into_owned();
     match status {
         Some(s) => Ok((s.code(), stdout, stderr)),
-        None => bail!("timed out after {SAMPLE_TIMEOUT:?}"),
+        None => bail!("timed out after {budget:?}"),
     }
+}
+
+/// The two machines the book is true for. Every executable claim in
+/// this repository names one of them or both; nothing runs unattributed.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum Machine {
+    Lupin,
+    Wolf,
+}
+
+impl Machine {
+    fn label(self) -> &'static str {
+        match self {
+            Machine::Lupin => "lupin",
+            Machine::Wolf => "wolf run",
+        }
+    }
+
+    /// The status a trapping program carries out of this machine. D60
+    /// rules the exit half of a trap per-machine and documents both:
+    /// lupin exits 3, a compiled binary dies at 134. Appendix B prints
+    /// the table. The trap KIND is the contract; this number is not.
+    fn trap_exit(self) -> i32 {
+        match self {
+            Machine::Lupin => 3,
+            Machine::Wolf => 134,
+        }
+    }
+}
+
+/// What one machine did with one program.
+struct MachineRun {
+    code: Option<i32>,
+    stdout: String,
+    stderr: String,
+}
+
+impl MachineRun {
+    /// Refusals and traps reach different streams on the two machines,
+    /// and a refusal that arrives as a D30 row reaches stdout. Both are
+    /// searched, always, so a moved stream cannot pass for silence.
+    fn says(&self, needle: &str) -> bool {
+        self.stderr.contains(needle) || self.stdout.contains(needle)
+    }
+}
+
+/// The sentence appended to every refusal the runner reports, because
+/// the fix is never "wait" and a lane that reads only the first clause
+/// will otherwise reach for `samples-pending.toml`.
+const RUN_IS_BOTH: &str = " — a `run(…)` fence is a claim about both machines, and a machine that refuses has not met it. If one machine alone serves this program, spell the fence for that machine (`lupin-run(…)`, `wolf-run(…)`), give the prose the per-machine note, and file the chapter ledger row with an owner (principles/TWO-MACHINES.md)";
+
+fn machine_run(m: Machine, tools: &Tools, s: &Sample) -> Result<MachineRun> {
+    machine_run_within(m, tools, s, SAMPLE_TIMEOUT)
+}
+
+/// A machine the sample's verdict depends on. A program that never
+/// returns has not met its claim, so the timeout is reported as the
+/// failure it is rather than aborting the run: before bs31 only a
+/// declared `wolf-run(…)` sample could hang the compiler lane, and now
+/// every `run(…)` sample reaches it.
+fn machine_gate(m: Machine, tools: &Tools, s: &Sample) -> MachineRun {
+    machine_run(m, tools, s).unwrap_or_else(|e| MachineRun {
+        code: None,
+        stdout: String::new(),
+        stderr: format!("<{m:?} never returned: {e}>"),
+    })
+}
+
+/// The other machine, asked on a short budget and allowed to say
+/// nothing. A probe that times out has not met the claim, which is the
+/// only thing the caller wants to know.
+fn machine_probe(m: Machine, tools: &Tools, s: &Sample) -> Option<MachineRun> {
+    machine_run_within(m, tools, s, GRADUATION_TIMEOUT).ok()
+}
+
+fn machine_run_within(
+    m: Machine,
+    tools: &Tools,
+    s: &Sample,
+    budget: Duration,
+) -> Result<MachineRun> {
+    let mut cmd = match m {
+        Machine::Lupin => {
+            let mut c = Command::new(&tools.lupin);
+            c.arg(&s.file_name);
+            c
+        }
+        Machine::Wolf => {
+            let mut c = Command::new(&tools.wolf);
+            c.arg("run").arg(&s.file_name);
+            c
+        }
+    };
+    cmd.current_dir(&s.dir);
+    let (code, stdout, stderr) = run_within(cmd, budget)?;
+    Ok(MachineRun {
+        code,
+        stdout,
+        stderr,
+    })
+}
+
+/// A machine's refusal to serve the program AT ALL, in its own words.
+/// This is the absence of product, not a diagnostic about the reader's
+/// program (TONE's tense discipline draws that line), and it is the
+/// thing this rig used never to look at on the compiler's side.
+fn refusal(r: &MachineRun) -> Option<String> {
+    let line = |needle: &str| {
+        r.stderr
+            .lines()
+            .chain(r.stdout.lines())
+            .find(|l| l.contains(needle))
+            .map(|l| l.trim().to_string())
+    };
+    // The refusal is quoted in the machine's own words, because WHICH
+    // construct was refused is the whole content of the finding: it is
+    // what routes a ledger row to the campaign that owns it. Reporting
+    // only "the compiler refused" would repeat, in the rig, the mistake
+    // this rule exists to fix.
+    line("cannot compile this yet").or_else(|| line("unsupported:"))
+}
+
+/// Did this machine meet the fence's exit-and-stdout claim?
+fn meets(r: &MachineRun, exit: i32, stdout: Option<&str>) -> std::result::Result<(), String> {
+    if r.code != Some(exit) {
+        let mut why = format!("exited {:?}, expected {exit}", r.code);
+        if !r.stderr.trim().is_empty() {
+            why.push_str(&format!(" (stderr: {})", r.stderr.trim()));
+        }
+        return Err(why);
+    }
+    if let Some(want) = stdout {
+        let got = r.stdout.trim_end_matches('\n');
+        if got != want {
+            return Err(format!("stdout mismatch: expected {want:?}, got {got:?}"));
+        }
+    }
+    Ok(())
+}
+
+/// Did this machine fault, naming that kind? lupin spells a defined
+/// fault `trap(kind)` and the UB checker's faults `file: ub(clause)`;
+/// the compiled binary spells it `wolf-trap: kind`.
+fn traps(m: Machine, r: &MachineRun, kind: &str) -> std::result::Result<(), String> {
+    let named = match m {
+        Machine::Lupin => r.says(&format!("trap({kind})")) || r.says(&format!(": {kind}(")),
+        Machine::Wolf => r.says(&format!("wolf-trap: {kind}")) || r.says(&format!("trap({kind})")),
+    };
+    if !named {
+        return Err(format!(
+            "expected the {kind} trap named; exit {:?}, stderr: {}",
+            r.code,
+            r.stderr.trim()
+        ));
+    }
+    let want = m.trap_exit();
+    if r.code != Some(want) {
+        return Err(format!(
+            "trap named but exit {:?}, expected {want} ({} traps at {want}; D60 rules the \
+             status per-machine)",
+            r.code,
+            m.label()
+        ));
+    }
+    Ok(())
 }
 
 fn execute(tools: &Tools, s: &Sample) -> Result<Outcome> {
     match &s.check {
+        // A `run(…)` fence is a claim about BOTH machines, and a
+        // machine that refuses has not met it (TWO-MACHINES.md). Before
+        // bs31 this arm asked lupin alone, so a program the compiler
+        // declined by conservatism was scored green and printed at a
+        // reader as if `wolf run` served it.
         Check::Run { exit, stdout } => {
-            let mut cmd = Command::new(&tools.lupin);
-            cmd.arg(&s.file_name).current_dir(&s.dir);
-            let (code, out, err) = run_with_timeout(cmd)?;
-            let mut passed = code == Some(*exit);
-            let mut detail = format!("lupin exited {code:?}, expected {exit}");
-            if passed {
-                if let Some(want) = stdout {
-                    let got = out.trim_end_matches('\n');
-                    if got != want.as_str() {
-                        passed = false;
-                        detail = format!("stdout mismatch: expected {want:?}, got {got:?}");
+            let lupin = machine_gate(Machine::Lupin, tools, s);
+            let wolf = machine_gate(Machine::Wolf, tools, s);
+            let mut why: Vec<String> = Vec::new();
+            if let Err(e) = meets(&lupin, *exit, stdout.as_deref()) {
+                why.push(format!("lupin: {e}"));
+            }
+            match refusal(&wolf) {
+                Some(word) => why.push(format!("wolf run: {word}{}", RUN_IS_BOTH)),
+                None => {
+                    if let Err(e) = meets(&wolf, *exit, stdout.as_deref()) {
+                        why.push(format!("wolf run: {e}"));
                     }
                 }
-            } else if !err.trim().is_empty() {
-                detail.push_str(&format!(" (stderr: {})", err.trim()));
             }
-            Ok(Outcome {
-                passed,
-                detail,
-                exit: code,
-                stderr: err,
-                stdout: out,
-                diagnostic: None,
-                phase_reached: None,
-            })
-        }
-        Check::Trap { kind } => {
-            let mut cmd = Command::new(&tools.lupin);
-            cmd.arg(&s.file_name).current_dir(&s.dir);
-            let (code, out, err) = run_with_timeout(cmd)?;
-            // lupin spells defined faults `trap(kind)`; the UB checker's
-            // faults come out as `file: ub(clause)` — the corpus directive
-            // for those is `run(exit=trap(ub))`.
-            let needle = format!("trap({kind})");
-            let alt = format!(": {kind}(");
-            let trapped = err.contains(&needle) || err.contains(&alt);
-            // lupin's trap exit is 3 (EXERCISES.md §5 runs).
-            let passed = trapped && code == Some(3);
-            let detail = if !trapped {
-                format!(
-                    "expected {needle} on stderr; exit {code:?}, stderr: {}",
-                    err.trim()
-                )
+            let blamed = if meets(&lupin, *exit, stdout.as_deref()).is_err() {
+                &lupin
             } else {
-                format!("trap ok but exit {code:?}, expected 3")
+                &wolf
             };
             Ok(Outcome {
-                passed,
-                detail,
-                exit: code,
-                stderr: err.clone(),
-                stdout: out,
-                diagnostic: Some(err.trim_end().to_string()),
+                passed: why.is_empty(),
+                detail: why.join("\n     "),
+                // Two processes ran; the fields a `samples-os.toml`
+                // refusal row compares are the failing machine's, and
+                // lupin's when both agree.
+                exit: blamed.code,
+                stderr: blamed.stderr.clone(),
+                stdout: blamed.stdout.clone(),
+                diagnostic: None,
                 phase_reached: None,
+                graduates: None,
+            })
+        }
+        // The interpreter alone, by declaration. The compiler is still
+        // asked — not to score the sample, but to notice the day it
+        // starts serving the program, so the fence and the page's
+        // per-machine note retire in the pin-bump commit.
+        Check::LupinRun { exit, stdout } => {
+            let lupin = machine_gate(Machine::Lupin, tools, s);
+            let passed = meets(&lupin, *exit, stdout.as_deref());
+            let graduates = machine_probe(Machine::Wolf, tools, s)
+                .filter(|w| refusal(w).is_none() && meets(w, *exit, stdout.as_deref()).is_ok())
+                .map(|_| format!("`wolf run` now meets `run(exit={exit}…)` too"));
+            Ok(Outcome {
+                passed: passed.is_ok(),
+                detail: match passed {
+                    Ok(()) => String::new(),
+                    Err(e) => format!("lupin: {e}"),
+                },
+                exit: lupin.code,
+                stderr: lupin.stderr.clone(),
+                stdout: lupin.stdout.clone(),
+                diagnostic: None,
+                phase_reached: None,
+                graduates,
+            })
+        }
+        // `run(exit=trap(k))` is a `run(…)` fence and carries the same
+        // claim: both machines fault, and both name the kind. The exit
+        // status is the one half that is per-machine — D60 rules it so,
+        // and Appendix B prints the table — hence `trap_exit()` rather
+        // than one number.
+        Check::Trap { kind } => {
+            let lupin = machine_gate(Machine::Lupin, tools, s);
+            let wolf = machine_gate(Machine::Wolf, tools, s);
+            let mut why: Vec<String> = Vec::new();
+            if let Err(e) = traps(Machine::Lupin, &lupin, kind) {
+                why.push(format!("lupin: {e}"));
+            }
+            match refusal(&wolf) {
+                Some(word) => why.push(format!("wolf run: {word}{}", RUN_IS_BOTH)),
+                None => {
+                    if let Err(e) = traps(Machine::Wolf, &wolf, kind) {
+                        why.push(format!("wolf run: {e}"));
+                    }
+                }
+            }
+            Ok(Outcome {
+                passed: why.is_empty(),
+                detail: why.join("\n     "),
+                exit: lupin.code,
+                stderr: lupin.stderr.clone(),
+                stdout: lupin.stdout.clone(),
+                // The snapshotted trap text is the interpreter's: it is
+                // the one the chapters print.
+                diagnostic: Some(lupin.stderr.trim_end().to_string()),
+                phase_reached: None,
+                graduates: None,
+            })
+        }
+        Check::LupinTrap { kind } => {
+            let lupin = machine_gate(Machine::Lupin, tools, s);
+            let passed = traps(Machine::Lupin, &lupin, kind);
+            let graduates = machine_probe(Machine::Wolf, tools, s)
+                .filter(|w| refusal(w).is_none() && traps(Machine::Wolf, w, kind).is_ok())
+                .map(|_| format!("`wolf run` now traps `{kind}` too"));
+            Ok(Outcome {
+                passed: passed.is_ok(),
+                detail: match passed {
+                    Ok(()) => String::new(),
+                    Err(e) => format!("lupin: {e}"),
+                },
+                exit: lupin.code,
+                stderr: lupin.stderr.clone(),
+                stdout: lupin.stdout.clone(),
+                diagnostic: Some(lupin.stderr.trim_end().to_string()),
+                phase_reached: None,
+                graduates,
             })
         }
         Check::Fail { code } => {
@@ -897,6 +1186,7 @@ fn execute(tools: &Tools, s: &Sample) -> Result<Outcome> {
                 stdout: String::new(),
                 diagnostic: Some(diag),
                 phase_reached: phase,
+                graduates: None,
             })
         }
         Check::Ub { row } => {
@@ -928,6 +1218,7 @@ fn execute(tools: &Tools, s: &Sample) -> Result<Outcome> {
                 stdout: String::new(),
                 diagnostic: Some(checked.diagnostic),
                 phase_reached: checked.phase,
+                graduates: None,
             })
         }
         Check::Audit { code } => {
@@ -955,36 +1246,34 @@ fn execute(tools: &Tools, s: &Sample) -> Result<Outcome> {
                 stdout: String::new(),
                 diagnostic: Some(normalize(&diag)),
                 phase_reached: None,
+                graduates: None,
             })
         }
         // The compiler builds and runs it: `wolf run` compiles the
         // module and executes the binary in one step, which is the
         // reader-facing spelling and the honest one.
         Check::WolfRun { exit, stdout } => {
-            let mut cmd = Command::new(&tools.wolf);
-            cmd.arg("run").arg(&s.file_name).current_dir(&s.dir);
-            let (code, out, err) = run_with_timeout(cmd)?;
-            let mut passed = code == Some(*exit);
-            let mut detail = format!("wolf run exited {code:?}, expected {exit}");
-            if passed {
-                if let Some(want) = stdout {
-                    let got = out.trim_end_matches('\n');
-                    if got != want.as_str() {
-                        passed = false;
-                        detail = format!("stdout mismatch: expected {want:?}, got {got:?}");
-                    }
-                }
-            } else if !err.is_empty() {
-                detail = format!("{detail}\n     stderr: {}", err.trim_end());
-            }
+            let wolf = machine_gate(Machine::Wolf, tools, s);
+            let passed = meets(&wolf, *exit, stdout.as_deref());
+            // The other half of the one-machine rule, read the other
+            // way: the interpreter is asked too, so the day it serves a
+            // program declared compiler-only is the day the runner says
+            // so rather than the day someone re-probes by hand.
+            let graduates = machine_probe(Machine::Lupin, tools, s)
+                .filter(|l| refusal(l).is_none() && meets(l, *exit, stdout.as_deref()).is_ok())
+                .map(|_| format!("`lupin` now meets `run(exit={exit}…)` too"));
             Ok(Outcome {
-                passed,
-                detail,
-                exit: code,
-                stderr: err,
-                stdout: out,
+                passed: passed.is_ok(),
+                detail: match passed {
+                    Ok(()) => String::new(),
+                    Err(e) => format!("wolf run: {e}"),
+                },
+                exit: wolf.code,
+                stderr: wolf.stderr.clone(),
+                stdout: wolf.stdout.clone(),
                 diagnostic: None,
                 phase_reached: None,
+                graduates,
             })
         }
         Check::Compile => {
@@ -998,6 +1287,7 @@ fn execute(tools: &Tools, s: &Sample) -> Result<Outcome> {
                 stdout: String::new(),
                 diagnostic: Some(diag),
                 phase_reached: phase,
+                graduates: None,
             })
         }
     }
@@ -1137,12 +1427,40 @@ fn export_corpus(
             lu_files.push(p.to_path_buf());
         }
     })?;
+    // The one-machine corpus files stay home. wolf-lang's runner is the
+    // compiler's, and these are the programs the compiler declines;
+    // shipping them over as `run(…)` would hand that corpus a claim its
+    // own machine cannot meet, which is the defect
+    // `principles/TWO-MACHINES.md` exists to stop making. A package's
+    // members go with its root, so the unit skipped is the directory.
+    let mut home: std::collections::BTreeSet<PathBuf> = Default::default();
     for f in &lu_files {
+        let source = std::fs::read_to_string(f)?;
+        let stays = parse_lu_header(&source)
+            .ok()
+            .and_then(|h| h.check)
+            .is_some_and(|c| c.corpus_directive().is_none());
+        if stays {
+            home.insert(f.parent().unwrap().to_path_buf());
+        }
+    }
+    let mut kept_home = 0usize;
+    for f in &lu_files {
+        if home.contains(f.parent().unwrap()) {
+            kept_home += 1;
+            continue;
+        }
         let rel = f.strip_prefix(&base).unwrap();
         let dst = export.join("exercises").join(rel);
         std::fs::create_dir_all(dst.parent().unwrap())?;
         std::fs::copy(f, &dst)?;
         count += 1;
+    }
+    if kept_home > 0 {
+        println!(
+            "samples: {kept_home} corpus file(s) held back from the export — one-machine \
+             directives the other runner cannot spell (principles/TWO-MACHINES.md)"
+        );
     }
 
     // Book-extracted samples, phase header refined by measurement.
@@ -1171,7 +1489,9 @@ fn export_corpus(
 // -------------------------------------------------------------- selftest
 
 /// The acceptance demonstration: a deliberately-broken sample must
-/// fail. Three breakages, one per checker lane.
+/// fail. Four breakages, one per checker lane, and the fourth is the
+/// bs31 rule — a `run(…)` fence on a program only one machine serves
+/// is a broken sample, not a green one.
 fn selftest(root: &Path, tools: &Tools) -> Result<()> {
     let dir = root.join("samples/selftest");
     let _ = std::fs::remove_dir_all(&dir);
@@ -1201,6 +1521,21 @@ fn selftest(root: &Path, tools: &Tools) -> Result<()> {
                 code: "E9999".into(),
             },
         ),
+        (
+            // A comptime fold: the compiler evaluates it and prints
+            // 285; lupin declines `comptime fn` by design, and has
+            // since the namespace was reserved. Declared `run(…)` — a
+            // claim about both machines — it must fail, because one of
+            // them did not meet it. This is the wolf-book#9 shape with
+            // the machines swapped, and it is the case the rig had no
+            // way to catch before principles/TWO-MACHINES.md.
+            "one-machine.lu",
+            "comptime fn sum_squares(n: int) -> int {\n    var acc = 0\n    var i = 1\n    while i <= n {\n        acc += i * i\n        i += 1\n    }\n    acc\n}\nfn main() -> !int {\n    const T = sum_squares(9)\n    print(\"{T}\")\n    0\n}\n",
+            Check::Run {
+                exit: 0,
+                stdout: Some("285".into()),
+            },
+        ),
     ];
 
     let mut broken_caught = 0;
@@ -1224,7 +1559,7 @@ fn selftest(root: &Path, tools: &Tools) -> Result<()> {
         println!("samples: self-test caught {name}: {}", outcome.detail);
         broken_caught += 1;
     }
-    println!("samples: self-test ok — {broken_caught}/3 deliberate breakages caught");
+    println!("samples: self-test ok — {broken_caught}/4 deliberate breakages caught");
     Ok(())
 }
 

@@ -1,4 +1,4 @@
-//! check: run(exit=0)
+//! check: lupin-run(exit=0)
 //! phase: run
 // Exercise 5-2 solution: index writes, index reads, pairs to walk.
 fn main() -> !int {

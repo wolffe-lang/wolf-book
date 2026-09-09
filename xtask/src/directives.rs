@@ -15,8 +15,23 @@ pub enum Check {
     /// a `comptime fn` is the compiler's to evaluate, and the reference
     /// interpreter declines it by design.
     WolfRun { exit: i32, stdout: Option<String> },
-    /// `run(exit=trap(kind))` — lupin runs it; a defined fault, named.
+    /// `lupin-run(exit=N[, stdout="…"])` — the *interpreter* alone runs
+    /// it. The mirror of `wolf-run(…)`, and the spelling a block takes
+    /// when the compiler declines the program: the fence names the
+    /// machine that served it, the prose beside it carries the
+    /// per-machine note, and the chapter's ledger carries the row with
+    /// an owner (`principles/TWO-MACHINES.md`). A `lupin-run(…)` sample
+    /// the compiler also serves is a FLIP, which is how the note gets
+    /// retired in the pin-bump commit rather than remembered.
+    LupinRun { exit: i32, stdout: Option<String> },
+    /// `run(exit=trap(kind))` — a defined fault, named, on both
+    /// machines. The kind is the contract; the exit status is not,
+    /// because D60 rules it per-machine: lupin exits 3, the compiler's
+    /// binary 134.
     Trap { kind: String },
+    /// `lupin-run(exit=trap(kind))` — the trap on the interpreter
+    /// alone, under the `lupin-run(…)` rule above.
+    LupinTrap { kind: String },
     /// `fail(E1234)` — wolf rejects it statically with that code.
     Fail { code: String },
     /// `ub(P1)` — the program reaches undefined behavior, and both
@@ -41,6 +56,12 @@ impl Check {
         match self {
             Check::Ub { .. } => Some("run(exit=trap(ub))".to_string()),
             Check::Audit { .. } => None,
+            // The other runner is the compiler's, and these are the
+            // programs the compiler declines. Exporting them as `run(…)`
+            // would hand wolf-lang's corpus a claim its own machine
+            // cannot meet, which is the defect this directive exists to
+            // stop making. They stay home until the fence graduates.
+            Check::LupinRun { .. } | Check::LupinTrap { .. } => None,
             // The other runner has one `run`, and it is the same claim
             // about the same program — which lane executed it is this
             // repository's bookkeeping.
@@ -69,7 +90,13 @@ impl std::fmt::Display for Check {
                 exit,
                 stdout: Some(s),
             } => write!(f, "wolf-run(exit={exit}, stdout=\"{s}\")"),
+            Check::LupinRun { exit, stdout: None } => write!(f, "lupin-run(exit={exit})"),
+            Check::LupinRun {
+                exit,
+                stdout: Some(s),
+            } => write!(f, "lupin-run(exit={exit}, stdout=\"{s}\")"),
             Check::Trap { kind } => write!(f, "run(exit=trap({kind}))"),
+            Check::LupinTrap { kind } => write!(f, "lupin-run(exit=trap({kind}))"),
             Check::Fail { code } => write!(f, "fail({code})"),
             Check::Ub { row } => write!(f, "ub({row})"),
             Check::Audit { code } => write!(f, "audit({code})"),
@@ -107,6 +134,18 @@ pub fn parse_check(s: &str) -> Result<Check> {
         return match parse_run_args(inner)? {
             Check::Run { exit, stdout } => Ok(Check::WolfRun { exit, stdout }),
             other => bail!("wolf-run() takes exit=N[, stdout=\"…\"], not `{other}`"),
+        };
+    }
+    if let Some(inner) = s
+        .strip_prefix("lupin-run(")
+        .and_then(|r| r.strip_suffix(')'))
+    {
+        return match parse_run_args(inner)? {
+            Check::Run { exit, stdout } => Ok(Check::LupinRun { exit, stdout }),
+            Check::Trap { kind } => Ok(Check::LupinTrap { kind }),
+            other => {
+                bail!("lupin-run() takes exit=N[, stdout=\"…\"] or exit=trap(k), not `{other}`")
+            }
         };
     }
     if let Some(inner) = s.strip_prefix("audit(").and_then(|r| r.strip_suffix(')')) {
@@ -276,6 +315,7 @@ pub fn parse_fence_info(info: &str) -> Result<FenceInfo> {
             let cont = matches!(args.next(), Some("cont"));
             fi.part = Some((name, cont));
         } else if item.starts_with("wolf-run(")
+            || item.starts_with("lupin-run(")
             || item.starts_with("run(")
             || item.starts_with("fail(")
             || item.starts_with("ub(")
@@ -415,6 +455,68 @@ mod tests {
             parse_fence_info("wolf,audit(E1303)").unwrap().check,
             Some(Check::Audit {
                 code: "E1303".into()
+            })
+        );
+    }
+
+    #[test]
+    fn check_lupin_run_roundtrips() {
+        assert_eq!(
+            parse_check(r#"lupin-run(exit=8, stdout="counted")"#).unwrap(),
+            Check::LupinRun {
+                exit: 8,
+                stdout: Some("counted".into())
+            }
+        );
+        assert_eq!(
+            Check::LupinRun {
+                exit: 8,
+                stdout: Some("counted".into())
+            }
+            .to_string(),
+            r#"lupin-run(exit=8, stdout="counted")"#
+        );
+        assert_eq!(
+            parse_check("lupin-run(exit=trap(bounds))").unwrap(),
+            Check::LupinTrap {
+                kind: "bounds".into()
+            }
+        );
+        assert_eq!(
+            Check::LupinTrap {
+                kind: "bounds".into()
+            }
+            .to_string(),
+            "lupin-run(exit=trap(bounds))"
+        );
+    }
+
+    #[test]
+    fn lupin_only_samples_stay_home() {
+        // The other runner is the compiler's; a program the compiler
+        // declines is not exported to it as an ordinary `run(…)`.
+        assert!(Check::LupinRun {
+            exit: 0,
+            stdout: None
+        }
+        .corpus_directive()
+        .is_none());
+        assert!(Check::LupinTrap {
+            kind: "bounds".into()
+        }
+        .corpus_directive()
+        .is_none());
+    }
+
+    #[test]
+    fn fence_carries_lupin_run() {
+        let fi = parse_fence_info(r#"wolf,lupin-run(exit=8, stdout="counted")"#).unwrap();
+        assert_eq!(fi.lang, "wolf");
+        assert_eq!(
+            fi.check,
+            Some(Check::LupinRun {
+                exit: 8,
+                stdout: Some("counted".into())
             })
         );
     }

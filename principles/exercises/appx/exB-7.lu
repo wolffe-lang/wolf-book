@@ -1,4 +1,4 @@
-//! check: run(exit=trap(stale-handle))
+//! check: lupin-run(exit=trap(stale-handle))
 //! phase: run
 // Appendix B, exercise B-7: stale-handle — the slot moved on.
 struct Node { value: int }

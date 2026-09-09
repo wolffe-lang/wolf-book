@@ -1,4 +1,4 @@
-//! check: run(exit=trap(region-fault))
+//! check: lupin-run(exit=trap(region-fault))
 //! phase: run
 // Appendix B, exercise B-6: region-fault — allocation into frozen data.
 struct Node { value: int }

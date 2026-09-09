@@ -1,4 +1,4 @@
-//! check: run(exit=trap(bounds))
+//! check: lupin-run(exit=trap(bounds))
 //! phase: run
 // Exercise 28-4: the guard deleted, and the trap that replaces it.
 struct Node { word: str, count: int, left: List[Node], right: List[Node] }

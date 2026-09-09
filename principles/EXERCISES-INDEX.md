@@ -68,7 +68,10 @@ added — 18-3, 18-5, 18-11, 18-15 and 22-7, each holding a `comptime fn` that t
 reference interpreter declines by design. 24-6 is the sixth addition and
 is a package walkthrough rather than a file, so it has no `.lu`: its
 transcript is the verbs' own output, replayed against a fixture. Which
-lane executed a sample is bookkeeping; the claim is about the program.
+lane executed a sample is not bookkeeping, and calling it that is what
+let chapter 1 teach a call the compiler does not carry: a `run(…)`
+directive is a claim about both machines, and a sample only one machine
+serves says which one (`principles/TWO-MACHINES.md`).
 Taxonomy spread (tags, hybrids counted once per kind): fingers 55 ·
 comprehension 151 · extension 69 · spelunking 26 · design 35.
 

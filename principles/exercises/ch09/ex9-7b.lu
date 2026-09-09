@@ -1,4 +1,4 @@
-//! check: run(exit=trap(ub))
+//! check: lupin-run(exit=trap(ub))
 //! phase: run
 // Exercise 9-7, illegal half: the door names a region the bytes are not in.
 import c "stdlib.h"

@@ -1,4 +1,4 @@
-//! check: run(exit=0, stdout="5")
+//! check: lupin-run(exit=0, stdout="5")
 //! phase: run
 // Exercise 9-2 solution: a legal unsafe block — C's rules, kept.
 import c "stdlib.h"

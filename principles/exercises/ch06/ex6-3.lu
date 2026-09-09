@@ -1,4 +1,4 @@
-//! check: run(exit=0)
+//! check: lupin-run(exit=0)
 //! phase: run
 // Exercise 6-3 solution: the row grew a variant; the match grew an arm.
 // (Arm order note: see the audit ledger in EXERCISES.md — lupin currently

@@ -1,4 +1,4 @@
-//! check: run(exit=trap(exclusivity))
+//! check: lupin-run(exit=trap(exclusivity))
 //! phase: run
 // Appendix B, exercise B-5: exclusivity — a path and its prefix.
 struct Inner { n: int }

@@ -1,4 +1,4 @@
-//! check: run(exit=0, stdout="1024")
+//! check: lupin-run(exit=0, stdout="1024")
 //! phase: run
 // Exercise 3-13 solution: `break` carries the answer out.
 fn main() -> !int {

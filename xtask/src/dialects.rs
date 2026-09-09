@@ -132,6 +132,12 @@ fn check_suffix(check: &Check) -> Option<String> {
     match check {
         Check::Run { exit, .. } => Some(format!("runs, exit {exit}")),
         Check::WolfRun { exit, .. } => Some(format!("compiled run, exit {exit}")),
+        // The one-machine spellings say which machine on the page
+        // itself, which is the per-machine note in its rendered form:
+        // a reader who copies the block knows before running it which
+        // tool answers.
+        Check::LupinRun { exit, .. } => Some(format!("interpreted run, exit {exit}")),
+        Check::LupinTrap { kind } => Some(format!("interpreted run, trap({kind})")),
         Check::Trap { kind } => Some(format!("runs, trap({kind})")),
         Check::Fail { code } => Some(format!("rejected, {code}")),
         Check::Ub { row } => Some(format!("ub, {row}")),

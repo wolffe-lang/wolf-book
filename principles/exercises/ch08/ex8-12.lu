@@ -1,4 +1,4 @@
-//! check: run(exit=trap(stale-handle))
+//! check: lupin-run(exit=trap(stale-handle))
 //! phase: run
 // Exercise 8-12: a handle outlives its slot, and says so.
 struct Node { value: int }

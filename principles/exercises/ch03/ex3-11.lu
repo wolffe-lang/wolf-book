@@ -1,4 +1,4 @@
-//! check: run(exit=0, stdout="low 4 high 31 mean 16")
+//! check: lupin-run(exit=0, stdout="low 4 high 31 mean 16")
 //! phase: run
 // Exercise 3-11 solution: min, max, and mean in one pass.
 fn main() -> !int {

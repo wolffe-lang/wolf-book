@@ -1,4 +1,4 @@
-//! check: run(exit=0)
+//! check: lupin-run(exit=0)
 //! phase: run
 // Exercise 28-1: a word before `moon` and a word after `wolf`.
 struct Node { word: str, count: int, left: List[Node], right: List[Node] }

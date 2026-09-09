@@ -1,4 +1,4 @@
-//! check: run(exit=trap(ub))
+//! check: lupin-run(exit=trap(ub))
 //! phase: run
 // Exercise 9-3: one byte past the end.
 import c "stdlib.h"

@@ -1,4 +1,4 @@
-//! check: run(exit=0)
+//! check: lupin-run(exit=0)
 //! phase: run
 // Exercise 9-15 solution: an int through raw bytes and back.
 import c "stdlib.h"

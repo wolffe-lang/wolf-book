@@ -1,4 +1,4 @@
-//! check: run(exit=0)
+//! check: lupin-run(exit=0)
 //! phase: run
 // Exercise 27-3: `Empty` grows a payload.
 struct Bad { token: str }

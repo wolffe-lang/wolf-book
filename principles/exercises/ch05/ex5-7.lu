@@ -1,4 +1,4 @@
-//! check: run(exit=0)
+//! check: lupin-run(exit=0)
 //! phase: run
 // Exercise 5-7 solution: an RPN evaluator — the stack is a List.
 fn eval_rpn(tokens: List[str]) -> int ! {Underflow, BadToken} {

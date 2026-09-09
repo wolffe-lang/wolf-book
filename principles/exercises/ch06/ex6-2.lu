@@ -1,4 +1,4 @@
-//! check: run(exit=0)
+//! check: lupin-run(exit=0)
 //! phase: run
 // Exercise 6-2: predict a and b. Which error row does chain() surface?
 struct Bad { at: int }

@@ -16,6 +16,15 @@ Two tools check exercises today:
   with the shipping diagnostics. Anything whose answer is an error code
   is wolf's.
 
+The label names the tool the reader reaches for; what CI does is
+stricter. A `run(…)` directive is a claim about both implementations, so
+`cargo xtask samples` executes the program under `lupin` and under `wolf
+run` and holds both to the same exit and the same bytes. An exercise
+labelled *lupin* whose program the compiler also serves is checked on the
+compiler too, and an exercise only one machine serves carries that
+machine's directive and says so where the reader meets it
+(`principles/TWO-MACHINES.md`).
+
 Every exercise names its checker, and four more names are in use because
 four kinds of exercise have no single tool behind them:
 

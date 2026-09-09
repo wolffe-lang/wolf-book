@@ -1,4 +1,4 @@
-//! check: run(exit=trap(region-fault))
+//! check: lupin-run(exit=trap(region-fault))
 //! phase: run
 // Exercise 8-5: a region moves as a closed subtree, or not at all.
 fn main() -> !int {

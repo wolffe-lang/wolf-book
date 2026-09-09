@@ -1,4 +1,4 @@
-//! check: run(exit=trap(ub))
+//! check: lupin-run(exit=trap(ub))
 //! phase: run
 // Exercise 9-14: the door's child tag, invalidated behind its back.
 import c "stdlib.h"

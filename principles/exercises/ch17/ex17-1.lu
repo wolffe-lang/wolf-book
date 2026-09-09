@@ -1,4 +1,4 @@
-//! check: run(exit=0)
+//! check: lupin-run(exit=0)
 //! phase: run
 // Exercise 17-1: the lost update — an ordering bug that typechecks.
 // Two deposits of 50 into balance 0; the composite get-then-set is not atomic.

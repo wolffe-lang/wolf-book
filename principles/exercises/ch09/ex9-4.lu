@@ -1,4 +1,4 @@
-//! check: run(exit=trap(ub))
+//! check: lupin-run(exit=trap(ub))
 //! phase: run
 // Exercise 9-4: the pointer laundered through an int, and why it changes nothing.
 import c "stdlib.h"

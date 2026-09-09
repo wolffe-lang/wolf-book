@@ -1,4 +1,4 @@
-//! check: run(exit=0)
+//! check: lupin-run(exit=0)
 //! phase: run
 // Exercise 4-1 solution: functions are values; composition is a one-liner.
 fn main() -> !int {

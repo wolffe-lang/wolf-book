@@ -1,4 +1,4 @@
-//! check: run(exit=0, stdout="10 40")
+//! check: lupin-run(exit=0, stdout="10 40")
 //! phase: run
 // Exercise 8-6 solution: the doubly-linked ring — cycles are fine here.
 struct Node { value: int, next: handle Node, prev: handle Node }

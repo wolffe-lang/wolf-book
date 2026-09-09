@@ -39,6 +39,13 @@ are absent from reader-facing text; `principles/TONE.md` §Tense
 discipline is the rule and `docs/audit/promissory-prose-audit.md` is the
 standing ledger.
 
+Which machine ran it is part of the same honesty. A `run(…)` fence
+claims both, and `cargo xtask samples` executes both; a program only one
+machine serves carries that machine's directive, a per-machine note in
+the prose, and a ledger row with an owner.
+`principles/TWO-MACHINES.md` is the rule, and a block that skips any of
+the three is not finished.
+
 ## 5. Determinism vocabulary (person)
 
 The flags the book prints are the flags the tools accept: `--seed`,

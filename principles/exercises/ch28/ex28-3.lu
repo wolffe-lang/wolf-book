@@ -1,4 +1,4 @@
-//! check: run(exit=0)
+//! check: lupin-run(exit=0)
 //! phase: run
 // Exercise 28-3: the frequency-sorted mode, as a second pass.
 struct Node { word: str, count: int, left: List[Node], right: List[Node] }
