@@ -1,5 +1,5 @@
 //! member: false
-//! check: lupin-run(exit=0, stdout="sum 15")
+//! check: run(exit=0, stdout="sum 15")
 //! phase: run
 // Exercise 22-11: a standalone scratch program that shares a directory
 // with another, on purpose — the marker is the whole mechanism.

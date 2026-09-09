@@ -9034,9 +9034,9 @@ Solution. Both runs, one item and one number between them:
 ```console
 $ wolf interface ./tokens/tokens.lu
 module pkg :: (root)
-  wolfi v0 · toolchain 0.2.6 · edition v1
-  export_hash 3ae8c9bcf16f7ad90727601e1bc39bd2dc7c5bf779bbe72477d850cce941f059
-  pkg_hash    3ae8c9bcf16f7ad90727601e1bc39bd2dc7c5bf779bbe72477d850cce941f059
+  wolfi v0 · toolchain 0.2.8 · edition v1
+  export_hash 2599ca17200404e2af7374de3b4ae837db84b6f21117f4656f8cc7767e5015cb
+  pkg_hash    2599ca17200404e2af7374de3b4ae837db84b6f21117f4656f8cc7767e5015cb
   deps: (none)
   items:
     [0] pub split_words — fn split_words(text: str) -> prelude.List[str] · regions (-) -> ρ_caller

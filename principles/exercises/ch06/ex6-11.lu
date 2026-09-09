@@ -1,4 +1,4 @@
-//! check: lupin-run(exit=0)
+//! check: run(exit=0)
 //! phase: run
 // Exercise 6-11 solution: itoa by hand, round-tripped.
 fn itoa(n: int) -> str {

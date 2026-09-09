@@ -1,4 +1,4 @@
-//! check: lupin-run(exit=0)
+//! check: run(exit=0)
 //! phase: run
 // Exercise 6-13 solution: a date validator with three refusals.
 fn days_in(month: int, leap: bool) -> int {

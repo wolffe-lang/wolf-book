@@ -47,7 +47,29 @@ the convention the rest of the book follows. Nothing about the programs
 changed. What changed is that the page no longer implies a second tool
 will do the same thing.
 
-The toolchain moves to wolf 0.2.7 and stays at lupin 0.1.27. The release
+The chapter that started this compiles. The toolchain moved twice in
+this sprint, and the second move closes the report it opened with: wolf
+0.2.8 puts string-to-number conversion in the compiler, spelled the way
+the interpreter has always spelled it, so chapter 1's receipt, its error
+verdict, and exercise 1-10 all run under either tool and the sentences
+saying which machine to use are gone. Twenty-seven programs across five
+chapters went back to being ordinary two-machine programs, and the build
+system is what noticed: each one was reported as an error saying the
+directive was now understating what the program does. Nobody re-read the
+chapters looking for them.
+
+A hundred and six samples still run on one machine. That number will
+come down the same way.
+
+The serving chapter can now say what a request costs. A program that
+reads a socket the operating system has already reported ready used to
+hand the work to a background thread and wait to be woken, on a socket
+it had just been told was ready; it now makes the call and waits for
+nothing. Section 33.3 gives the measurement, taken on one machine in one
+session against the two compilers: 53.3 microseconds per request before,
+21.2 after.
+
+The earlier move, to wolf 0.2.7. The release
 re-stamps which interpreter the compiler was tested against and adds a
 gate that compares the two on a build machine rather than only on a
 desk. Nothing about the language moved with it. Two things on the page
@@ -56,7 +78,7 @@ example code, and the specification publishes seven scheduler clause
 anchors it had declared and never registered, which Appendix D records.
 The colophon's two version lines are worth reading together this
 printing: the compiler names exactly the interpreter beside it, and the
-interpreter names the compiler from two releases back.
+interpreter names the compiler from three releases back.
 
 ## bs30 — 2026-09-07 — the book serves
 
