@@ -1,4 +1,4 @@
-//! check: lupin-run(exit=0)
+//! check: run(exit=0)
 //! phase: run
 // Exercise 16-2 solution: the receiver reads what the sender built —
 // both pushes, no copies, one owner at a time.
