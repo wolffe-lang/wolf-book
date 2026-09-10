@@ -6,24 +6,24 @@ against:
 
 ```console
 $ wolf --version
-wolf 0.2.8+dev.2c03ed9 (wolfgang, pin 2c03ed9)
-paired with lupin 0.1.28 (reference interpreter), pin 5c729e8
+wolf 0.2.9 (wolfgang, pin 4c60946)
+paired with lupin 0.1.29 (reference interpreter), pin e9a17cb
 $ lupin --version
 lupin 0.1.30 (wolf-interp, reference interpreter at pin 2c03ed9)
 ```
 
-The two lines name each other, and this printing one of the two names
-is exact. Each tool reports the revision of the other it was
+The two lines name each other, and this printing neither name is
+exact. Each tool reports the revision of the other it was
 differentially tested against, and the two projects are cut on their
-own schedules. The interpreter below names `2c03ed9`, which is the
-compiler printed above it, character for character. The compiler names
-`lupin 0.1.28`, two releases behind the interpreter under it. §1.2
+own schedules. The compiler names `lupin 0.1.29`, one release behind
+the interpreter under it. The interpreter names `2c03ed9`, fourteen
+commits before the revision the compiler above it was built at. §1.2
 teaches the reader to read the pair either way. This page prints them
 as they are. The compiler's first line is also this page's
 proof, read the other way round: a build made exactly at a release tag
 prints the bare version, and every other build names itself
 `+dev.<commit>` and claims nothing. This printing's compiler is the
-second kind, built from trunk at the revision it prints.
+first kind, built at the tag whose revision it prints.
 
 The exact revisions (the compiler, the interpreter, and the wolf
 grammar vendored from wolf-lsp) are recorded in `wolf-toolchain.toml`
