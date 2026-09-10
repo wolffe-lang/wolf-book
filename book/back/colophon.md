@@ -9,18 +9,17 @@ $ wolf --version
 wolf 0.2.8+dev.2c03ed9 (wolfgang, pin 2c03ed9)
 paired with lupin 0.1.28 (reference interpreter), pin 5c729e8
 $ lupin --version
-lupin 0.1.29 (wolf-interp, reference interpreter at pin e9a17cb)
+lupin 0.1.30 (wolf-interp, reference interpreter at pin 2c03ed9)
 ```
 
-The two lines name each other, and this printing neither name is the
-one beside it. Each tool reports the revision of the other it was
+The two lines name each other, and this printing one of the two names
+is exact. Each tool reports the revision of the other it was
 differentially tested against, and the two projects are cut on their
-own schedules. The compiler above names `lupin 0.1.28`, one release
-behind the interpreter printed under it. The interpreter names
-`e9a17cb`, ten commits behind the compiler printed over it, stated as a
-commit distance because the revision above has no release to count to.
-§1.2 teaches the reader to read the pair either way. This page prints
-them as they are. The compiler's first line is also this page's
+own schedules. The interpreter below names `2c03ed9`, which is the
+compiler printed above it, character for character. The compiler names
+`lupin 0.1.28`, two releases behind the interpreter under it. §1.2
+teaches the reader to read the pair either way. This page prints them
+as they are. The compiler's first line is also this page's
 proof, read the other way round: a build made exactly at a release tag
 prints the bare version, and every other build names itself
 `+dev.<commit>` and claims nothing. This printing's compiler is the

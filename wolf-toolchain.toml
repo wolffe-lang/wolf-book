@@ -99,91 +99,103 @@ rev = "2c03ed9360e90e260528411075daded674ceab18"
 impl_version = "0.2.8+dev.2c03ed9"
 
 [lupin]
-# wolf-interp at the v0.1.29 release tag (is41): the stamped line names
-# lupin 0.1.29 at pin e9a17cb. A lupin release's pin is the wolf-lang
-# revision it was built and differentially tested against, and is41
-# released against `e9a17cb` — which is the revision THIS FILE PINNED
-# LAST PRINTING, and is ten commits behind the one it pins now.
+# wolf-interp at the v0.1.30 release tag (is42): the stamped line names
+# lupin 0.1.30 at pin 2c03ed9. A lupin release's pin is the wolf-lang
+# revision it was built and differentially tested against, and is42
+# released against `2c03ed9` — THE EXACT REVISION [wolf] PINS ABOVE.
 #
 #   wolf 0.2.8+dev.2c03ed9 (wolfgang, pin 2c03ed9)
 #   paired with lupin 0.1.28 (reference interpreter), pin 5c729e8
-#   lupin 0.1.29 (wolf-interp, reference interpreter at pin e9a17cb)
+#   lupin 0.1.30 (wolf-interp, reference interpreter at pin 2c03ed9)
 #
-# THE PAIR DISAGREES IN BOTH DIRECTIONS THIS PRINTING, and the two
-# halves are in different units. Both computed from the two stamps,
-# never hand-written (ww16):
+# THE PAIR AGREES IN ONE DIRECTION AND THE HALVES SWAPPED AGAIN. Both
+# computed from the two stamps, never hand-written (ww16):
 #
-#   THE COMPILER'S HALF IS ONE RELEASE. It names lupin 0.1.28; 0.1.29
-#     is the interpreter beside it. Ordinary: the interpreter published
-#     after this compiler was built. This half read ZERO at bs33 and
-#     opens again here.
-#   THE INTERPRETER'S HALF IS TEN COMMITS, and is not a release count.
-#     It names `e9a17cb`; `git rev-list --count e9a17cb..2c03ed9` is 10.
-#     There is no release to count to, because the compiler pinned here
-#     has not been released, so the honest reading is a commit distance
-#     and it is written as one — the same shape bs33 recorded at 28.
+#   THE INTERPRETER'S HALF IS ZERO, and exactly zero: it names the
+#     revision this file pins, character for character. It read TEN
+#     COMMITS at the last bump and closes here.
+#   THE COMPILER'S HALF IS TWO RELEASES. It names lupin 0.1.28 and the
+#     interpreter beside it is 0.1.30, because the interpreter has
+#     published twice since this compiler was built. This half read ONE
+#     at the last bump and opens further.
 #
-# THE SENTENCE THAT IS NOT WRITTEN, and why. Taking 0.1.29 while leaving
-# [wolf] at e9a17cb would have put BOTH stamps on one revision, and §1.2
-# and the colophon could have said the pair sits at a single commit.
-# That was measured and declined: it would have been true for about an
-# hour, it costs a second bump's worth of replays and ledger churn, and
-# this file's own history is where a claimed first was caught before
-# (the bs32 contract's "a gap of zero for the first time", which the log
-# disproved). r13 re-stamps PAIRING at v0.2.9 against 0.1.29; the
-# sentence gets its turn there if it is still true then. §1.2 and the
-# colophon print one release and ten commits, and claim no firsts.
+# STILL NO SUPERLATIVE. The halves have now swapped direction on three
+# consecutive bumps, and §1.2 and the colophon say which half is exact
+# and by how much the other is off. They do NOT say this is a first:
+# the pair has worn the exact-interpreter shape before, and this file's
+# own history is where a claimed first was caught (the bs32 contract's
+# "a gap of zero for the first time", which the log disproved).
 #
-# WHAT THE BOOK MEASURED AT THIS PIN, prediction first (bs34):
-#   * PREDICTED EXACTLY 1 FLIP, named before the runner ran, and the
-#     reasoning written down: the live direction at a lupin bump is the
-#     `wolf-run(…)` directives, which retire when the INTERPRETER starts
-#     serving them. There were 11 in the tree at 401f4db — 3 book fences
-#     and 8 corpus files — and only ch01 §1.5's waits on anything is41
-#     ships. The other ten want `comptime fn` (ch18's four), the env/fs
-#     surface (ch22's one, ch30's four) and the descriptor crossing
-#     (ch33's one), none of which is41 touches. The 94 `lupin-run(…)`
-#     directives retire on COMPILER motion, so they were live this bump
-#     for the first time in a while — see the wolf half above.
-#   * THE FLIP WAS CONFIRMED BEFORE THE BUMP, on §1.5's own five-line
-#     program, extracted from the page and run under both interpreters:
-#     0.1.28 prints `error: NotAnInt` and 0.1.29 prints `error: parse`,
-#     both exit 1, and the compiler has printed `parse` since bs33. So
-#     the two machines agree, the fence graduates to `run(…)`, §1.5's
-#     per-machine note retires and its console transcript is `lupin`'s
-#     again like the section's other three verdicts.
-#   * 0 PENDING MOVEMENT, predicted and measured. is41 mirrors a mark
-#     spelling and grows no std subset, so `sorted_by`/`take` (ch05
-#     ex5-8) and `par` (ch13 ex13-1, ex13-6) stay pending, as do ch07
-#     ex7-5 and ch08 ex8-7.
-#   * TWO SPELLINGS THIS RELEASE DOES NOT MIRROR, and its own changelog
-#     says so: the closed-channel row "is `Closed` here ... and `closed`
-#     on the compiler", and "`List.pop()` on an empty list traps
-#     `bounds` here where the compiler answers the `none` row". s144
-#     RULED both against this machine (`[conc.chan.close]` names
-#     `closed`; `[mem.list.pop]` says the recoverable reads never
-#     fault), so ch12 §12.1 and ch05 §5.4 keep their fences, their
-#     transcripts and their per-machine notes, and both ledger rows now
-#     cite a clause instead of an open question. Owner: is42.
-#   * ONE OF THOSE IS A FAILURE WAITING, NOT A FLIP, and it is predicted
-#     here so nobody is surprised by it. §5.4's empty-`pop` is a TRAP
-#     claim, and TWO-MACHINES.md §6 says the graduation probe cannot see
-#     a trap claim retire. When is42 mirrors `[mem.list.pop]`, that
-#     sample goes RED rather than flipping; the fence becomes
-#     `run(exit=0, …)` by hand and the "`pop` is bounds-checked"
-#     sentence goes with it.
-#   * `wolf interface` embeds the toolchain version and that version is
-#     `0.2.8` on both sides of this bump, so ch22's interface transcript
-#     and ch25's publish record do NOT move.
-#   * 2 RUNNER MOVERS, both stamps: ch01 §1.2 and the colophon. Both
-#     halves of the pair move this time, so both paragraphs are
-#     rewritten rather than re-recorded.
+# WHAT THE BOOK MEASURED AT THIS PIN, prediction first (bs34). All of
+# it was written down BEFORE the binary was installed, in
+# /private/tmp/bs34-predictions-0130.md, and every line held:
+#   * PREDICTED 1 FLIP AND 1 FAILURE, and the difference between them
+#     is the whole point. MEASURED exactly that.
+#   * THE FLIP: ch03 §3.2's aligned `if` / `else if` / `else` block.
+#     0.1.30 mirrors #276, so the interpreter starts serving a
+#     `wolf-run(…)` and the runner reported it in its own words —
+#     `FLIP book/ch03/s7: directive `wolf-run(exit=0,
+#     stdout="a<tab>b<nl>c")` holds, but `lupin` now meets
+#     `run(exit=0…)` too`. Fence graduated, the per-machine note
+#     retired, ch03's ledger row closed. The `wolf fmt` clause STAYS:
+#     it is about the formatter, not about which machine runs the code.
+#   * THE FAILURE, PREDICTED AS A FAILURE AT THE LAST BUMP AND FILED
+#     THERE: ch05 §5.4's empty `pop`. It was
+#     `lupin-run(exit=trap(bounds))`, a TRAP claim, and TWO-MACHINES.md
+#     §6 says the graduation probe cannot see a trap claim retire — it
+#     asks `conform-run`, which reaches a verdict without executing. So
+#     when #274's mirror landed the sample went RED rather than
+#     flipping: `FAIL book/ch05/s7: lupin: expected the bounds trap
+#     named; exit Some(0)`. Measured directly on the section's own
+#     program: 0.1.29 traps `bounds` and exits 3; 0.1.30 prints `none`
+#     and exits 0. Fence is `run(exit=0, stdout="none")` by hand, the
+#     transcript re-recorded, and the sentence "`pop` is bounds-checked
+#     for the same reason" is GONE — `[mem.list.pop]` contradicts it.
+#     §5.4 now teaches the pair the clause actually draws: the four
+#     recoverable reads answer `none` and never fault, and the
+#     subscript is the faulting twin.
+#   * ch12 §12.1 DOES NOT FLIP, predicted and measured, and this is
+#     where a plausible reading of the release notes goes wrong. The
+#     block is `lupin-run(…)`, which retires when the COMPILER starts
+#     serving it, and the compiler still refuses: `wolf conform-run`
+#     answers `fail(E1102)` on the `channel[Doc]`, with E0608 underneath
+#     it because `chan.send` is typed `()` where the clause says a send
+#     after close returns an error value. That second one is
+#     wolf-lang#275, still OPEN. What DID move is the printed tag:
+#     0.1.30 mirrors #273, so the transcript's `Closed` is `closed` on
+#     both lines and was re-recorded. Fence and per-machine note stand.
+#   * THE BLAST RADIUS WAS FOUR READS, NOT ONE, and it was checked
+#     before it was run. #274 changes `pop`, `get`, `first` AND `last`.
+#     Every site was grepped first: ch05 §5.1's TWO-MACHINE
+#     `run(exit=0)` block was the risky one — it prints `popped 100`
+#     and is served by both machines — and it was PREDICTED unchanged
+#     on the reasoning that the compiler has typed `pop` as `T ! {none}`
+#     since s37 and renders `{last}` as `100`. MEASURED unchanged on
+#     both binaries. ch12's §12.4 pop, ch27 §27.5's four (all already
+#     `… else { return … }`) and the corpus files in ch04, ch05, ch12,
+#     ch16, ch18 and ch27 were all predicted unchanged and all measured
+#     unchanged. Zero other sample motion.
+#   * 4 CONSOLE BLOCKS RE-RECORDED, all predicted: §5.4's transcript,
+#     §12.1's two tag lines, and the two version transcripts (ch01 §1.2
+#     and the colophon), which move because the interpreter's stamp
+#     moves.
+#   * 0 PENDING MOVEMENT. is42 mirrors three rulings and grows no std
+#     subset, so `sorted_by`/`take` (ch05 ex5-8) and `par` (ch13 ex13-1,
+#     ex13-6) stay pending, as do ch07 ex7-5 and ch08 ex8-7.
+#   * WHAT DID NOT LAND: wolf-interp#73. Nothing in the book is written
+#     as if it had.
+#   * NOTHING OF wolf-lang's MOVES: the catalog stays 168, the anchors
+#     stay 446, `grammar.ebnf` is untouched and zero diagnostic
+#     snapshots re-record, because [wolf] did not move at this bump.
 #
-# D57 discipline: this rev IS the tag, so the interpreter's transcript
-# stays clean; the compiler's does not, and [wolf] above owns why.
+# A NEWER COMPILER EXISTS AND IS NOT PINNED HERE. `wolf 0.2.9
+# (wolfgang, pin 4c60946)` is installed on the build box and names
+# lupin 0.1.29. The book is graded at ITS pin, so every number above
+# was measured with a `cargo xtask dist` build at `2c03ed9` and never
+# with the box's driver. Taking 0.2.9 is a deliberate bump of its own.
 repo = "wolffe-lang/wolf-interp"
-rev = "99feca39336b0d625541368e1ca98c3b4cd60a40"
-version = "lupin 0.1.29 (wolf-interp, reference interpreter at pin e9a17cb)"
+rev = "08d787a11f3dc12d4c74154a2d980a64ca09a494"
+version = "lupin 0.1.30 (wolf-interp, reference interpreter at pin 2c03ed9)"
 
 [wolf-lsp]
 # Source of the vendored tmLanguage grammars under highlight/.
