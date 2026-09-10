@@ -2,7 +2,7 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
-## bs35, the release — 2026-09-10 — the book is true for a published compiler
+## bs35, the pin bump — 2026-09-10 — the book is true for a release
 
 Until this printing the compiler this book was graded against was a
 build off the project's trunk, and it said so: a version number with a
