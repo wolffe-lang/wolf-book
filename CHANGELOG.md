@@ -2,6 +2,79 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs35, the release — 2026-09-10 — the book is true for a published compiler
+
+Until this printing the compiler this book was graded against was a
+build off the project's trunk, and it said so: a version number with a
+commit stuck to the front of it and no claim to being a release. This
+printing is graded on a release. The number is plain, and a compiler
+unpacked from its download answers the two lines chapter 1 prints,
+character for character. The paragraph that used to warn a reader that
+the tool they downloaded would answer something older is gone, because
+it would now be false.
+
+Two exercises in the chapter on moving work between tasks run on both
+tools. A `return` written inside a small anonymous function returns
+from that function rather than from the one around it, which is how
+both tools have always run it and what only one of them refused to
+accept. The build found both, in the same run, and said so in its own
+words: a program declared as running on one tool that starts running on
+both is an error until somebody removes the declaration.
+
+Five other programs in that family did not move, and the reason each
+one did not is worth more than the two that did. Two of them turn out
+to take a value out of a list and then use the list, which the book
+already teaches under a different name three chapters earlier. Two
+more write a bare `return` where the surrounding code produces nothing,
+which is a different complaint with a different answer. The last one
+compiles clean and then parks: it is a deadlock exercise, one tool
+stops it and the other is entitled to wait forever, and the
+specification says so. The number the book publishes for programs that
+run on one tool is ninety-one, and it was arrived at by measuring every
+one of them again rather than by subtracting two from the last count.
+Counting again is the only way any of the above is visible.
+
+Neither of the two version lines is exact this printing. The compiler
+names an interpreter one release behind the one beside it; the
+interpreter names a compiler fourteen commits before the release above
+it. Both numbers are read off the tools rather than typed, chapter 1
+and the colophon say which is which, and neither page calls the shape a
+first, because this book has been wrong about a first before.
+
+A string can take a single character on the end of it now, with the
+plus sign, the way it always could take another string. The book does
+not use it. Four solutions build a string one character at a time
+through the older spelling, all four run on both tools today, and
+writing them the new way would make all four run on one — the other
+tool has not made the change. The older spelling is not a workaround
+being taught as the way; it is the spelling that is true on both
+machines, and the day that stops being so is the day these four
+paragraphs get shorter.
+
+Something moved that nothing in this release touched, and the build
+caught it. Chapter 22 teaches a number the compiler prints for a
+module's public surface — the honest answer to whether a change is
+visible to the people who depend on you — and chapter 25 spends that
+fact on version numbers. The number moved at this printing on a program
+nobody edited, because the compiler's own version is part of what it
+digests. Chapter 25's transcript shows it cleanly: two of its three
+numbers hold and the third does not. Both transcripts on these pages
+are the real runs, the finding is written down at full volume where
+findings go, and it is filed with the compiler rather than papered over
+here.
+
+Two claims this book makes about itself now check themselves. The
+count of diagnostic codes in the appendix, and the copy of the
+compiler's catalog the appendix is checked against, were both moved by
+hand at every printing that touched them, and the last two printings
+said in as many words that a green build is not a checked claim. It is
+one now. The count is arithmetic on the catalog, the catalog is derived
+from the compiler's own document the same way a refresh derives it, and
+each check has a test that plants the exact defect that went unnoticed
+for the life of this edition. The catalog did not move at this
+printing, which is the least convenient moment to build a gate and the
+most honest one.
+
 ## bs34, the second pin bump — 2026-09-09 — an empty list answers
 
 Taking something out of an empty list used to stop the program. It

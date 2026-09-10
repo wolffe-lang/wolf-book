@@ -32,7 +32,8 @@ diagnostic on these pages was executed against them by CI; the samples
 runner's report is the guarantee, not this sentence. The surface grammar
 in Appendix A is copied from the specification at the same revision, and
 the diagnostic codes in Appendix C are checked against the compiler's own
-catalog in the same run.
+catalog in the same run, along with the count that opens that appendix
+and the copy of the catalog it is counted from.
 
 Two chapters and five sections in this edition are reserved rather than
 written, each one saying on its own page what it covers and why it is not
