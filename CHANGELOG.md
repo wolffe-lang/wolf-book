@@ -2,6 +2,49 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs37 — 2026-09-10 — the book names the tool
+
+The book has told you since chapter 2 that a formatter exists and leaves
+the odd invisible byte at the top of your file alone, and it named that
+formatter for the first time in chapter 3, in a clause, on its way to
+somewhere else. There is a page for it now. The new appendix opens with
+the whole of what the toolchain says about itself when you ask it — all
+twenty-two of its subcommands, printed as a run rather than typed out,
+so the list cannot fall behind the program — and then gives a section
+each to the three you would otherwise never meet in these pages.
+
+The formatter's section runs the tool. One file goes in with its `else`
+keywords starting their lines and its braces in a column; the same file
+comes back with the layout the specification fixes, and both texts are
+on the page, so what "canonical" means is something you read rather than
+something you take on trust. There are no options to compare, which the
+command's own help says out loud, and the section says what the three
+rules are that decided the shape — including why one of the two
+functions in the example collapsed onto a single line and the other did
+not.
+
+The second section is the step between running a file and having a
+project: one command turns a script into a package, and the transcript
+shows the capability the script declared arriving in the manifest the
+package now has, which is the part worth checking rather than assuming.
+The third is the answer to a question chapters 23 and 24 raise and leave
+open — what you build against when the place your dependencies came from
+is not there. On a project whose dependencies are already beside it the
+command says so and does nothing, which is the honest answer and the one
+the page prints.
+
+Two old defects closed with it. The syntax colors in the web edition
+were painting the inside of a raw string as if the braces in it meant
+something, three lines above a sentence saying they do not, and were
+leaving a character literal inside an interpolated string as plain ink.
+Both were reported when they were found rather than papered over in the
+prose, both are fixed upstream, and this printing takes the fix. And
+every page of the web edition had been asking for a print stylesheet the
+renderer never wrote, so printing a chapter from a browser got the
+screen's styling; the stylesheet ships now, one page's links stopped
+pointing out of the book's own tree, and every internal link in the
+render is checked on every build, which is what nothing had been doing.
+
 ## bs36, the pin bump — 2026-09-10 — the switch a reader expects
 
 Chapter 3's first `match` now takes a range of numbers in one arm. A
