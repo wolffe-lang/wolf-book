@@ -66,6 +66,17 @@ the other one is exact — the same release that sits beside it — while
 the other one names a compiler forty-three commits back. Both numbers
 are read off the tools rather than typed.
 
+One character in the compiler's own version line is not a fact about
+the compiler at all. It is the short form of the commit the build came
+from, and how short git makes it depends on how many objects the copy
+of the project you cloned happens to hold. Two copies of the same
+project, at the same commit, print two different lines. Every check on
+this machine passed and the build machine — which clones fresh, the
+way a reader does — disagreed by one character. The page prints what
+the fresh copy prints, the transcripts were re-recorded rather than
+retyped, and the compiler has been asked to choose a length on purpose
+instead of inheriting one.
+
 The last thing about this book that was kept by hand now checks
 itself. A version number written into a sentence — the name of a
 download, or the line about what a build says when nobody stamped it —
