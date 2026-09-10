@@ -2,6 +2,81 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs36, the pin bump — 2026-09-10 — the switch a reader expects
+
+Chapter 3's first `match` now takes a range of numbers in one arm. A
+reader who has written a switch in any other language reaches for that
+on the first page they meet the construct, and this book's answer has
+been a parse error whose message did not contain the word "range" —
+recorded unchanged at every pin since chapter 3 was drafted. The language has ranges in an arm now — from a number up to
+another, or up to and including it, with a plain number at each end,
+and letters ordered the way the alphabet is — and the message for the
+open forms says which spellings are patterns and which are not. Both
+halves of what the ledger asked for landed, which is not how these
+usually go: either the grammar grows the thing or the message explains
+why it has not, and this time it was both.
+
+The section's example carries three shapes of arm beside the catch-all
+now: a plain value, a range, and a test on the value it just named.
+That last one is the arm every switch-shaped program in the world ends
+with, and until this printing it compiled everywhere except the
+machine that turns programs into binaries.
+
+One tool serves that page and the other does not, so the page says so:
+the block is labelled a compiled run, the transcript beside it is the
+compiler's, and one sentence names the machine. The other tool is
+working on it, the build fails the day it catches up until somebody
+removes the label, and the ledger carries the debt with an owner in the
+meantime. This is the second time chapter 3 has been in this position
+and the first one closed one printing later.
+
+Two programs were predicted to start working on both tools at this
+printing and neither did, and the reason is the useful part. A rule
+landed that turns one kind of dropped value from an error into a
+warning — the kind where nothing was produced at all. Both programs
+throw away a value that IS produced: something was taken out of a list
+and nobody caught it. The prediction read the rule one word wider than
+it was written. Every program in the book that runs on one tool and not
+the other — a hundred and one of them — was measured against the
+compiler before the guess was made and again after, which is the only
+way a wrong guess becomes a fact instead of a shrug.
+
+A send on a channel can fail, and until this printing the compiler
+would not admit it. It does now, and the consequence reaches every
+line in chapter 12 that sends without looking at the answer: each one
+was throwing away a failure, and the compiler says so. All twenty of
+them ask for the answer to be handed up instead, which is the honest
+spelling and the one the chapter already taught six chapters earlier.
+The warning is explained once, beside the first of them, rather than
+at each.
+
+Chapter 30 was not on this printing's list and got the same edit
+anyway, because the build refused to pass without it. The pages that
+show a program being compiled compare every byte the tool prints, so
+four new warnings in a transcript are four failures — which makes that
+comparison the only thing in this repository that can see a warning at
+all. Ten chapters still have that sentence somewhere and nothing
+will catch them; that is written down as an issue rather than swept.
+
+The compiler this printing is graded on is not a release. Its version
+says so itself, with the commit it was built from stuck to the front,
+and chapter 1 and the colophon read it that way round again. The two
+tools name each other as always, and this time the compiler's name for
+the other one is exact — the same release that sits beside it — while
+the other one names a compiler forty-three commits back. Both numbers
+are read off the tools rather than typed.
+
+The interpreter did not move, and that was decided rather than
+defaulted. A newer one is published, and running the whole book
+against it turned up twelve failures, ten of them one thing: two type
+names this book prints in chapters 11 and 14 name nothing in either
+tool, and the older interpreter accepted them only because it never
+looked. The compiler has been refusing them all along, which is why
+those pages already said they run on one tool. Taking that interpreter
+is six programs to rewrite and a question to answer about what those
+two names are supposed to mean, so it is a printing of its own and it
+is written down as one.
+
 ## bs35, the pin bump — 2026-09-10 — the book is true for a release
 
 Until this printing the compiler this book was graded against was a
