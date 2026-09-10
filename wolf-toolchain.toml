@@ -4,99 +4,130 @@
 # doc-truth CI job compares them.
 
 [wolf]
-# wolf-lang at trunk `2c03ed9`, which is NOT a release tag. D57 (r03):
-# a build made exactly at its own release tag prints the bare version
-# with a pin clause, and every other build prints `+dev.<commit>` and
-# claims nothing. This one is the second kind:
+# wolf-lang at the v0.2.9 release tag (`4c60946`). D57 (r03): a build
+# made exactly at its own release tag prints the bare version with a pin
+# clause, and every other build prints `+dev.<commit>` and claims
+# nothing. This one is the FIRST kind, which the pin file last carried
+# at bs31's second bump:
 #
-#   wolf 0.2.8+dev.2c03ed9 (wolfgang, pin 2c03ed9)
+#   wolf 0.2.9 (wolfgang, pin 4c60946)
 #
-# PREDICTED FROM SOURCE BEFORE THE BUILD RAN, and measured
-# byte-identical afterwards: `Cargo.toml`'s `[workspace.package]
-# version` is still `0.2.8` at this rev and
-# `crates/wolf_driver/PAIRING` reads `lupin-version = 0.1.28` /
-# `lupin-pin = 5c729e8`, which is the whole of both lines. The stamp is
-# the dist builder's, never a build script's (D33): `cargo xtask dist`
-# probes git and sets WOLF_COMMIT at compile time, so a plain
-# `cargo build` at this rev answers `0.2.8+dev.unknown`.
+# PREDICTED FROM SOURCE BEFORE ANY MEASUREMENT RAN, and measured
+# byte-identical: `Cargo.toml`'s `[workspace.package] version` is
+# `0.2.9` at the tag and `crates/wolf_driver/PAIRING` reads
+# `lupin-version = 0.1.29` / `lupin-pin = e9a17cb`. No dist build was
+# needed at this bump: the box carries the release archive's own binary.
 #
-# WHAT THIS REVISION IS. s144 (PR #277), which lands three rulings:
-#   * #276 — a line may start with `else`. `[gram.lex.newline]`
-#     withholds the terminator on one token of lookahead, beside the
-#     attribute exception; `[gram.amb.else]` is reworded to binding-not-
-#     line; E0005 RETIRES from the registry and its fixture is deleted.
-#     `[gram.fmt.canon]` gains its one declared exception: the
-#     leading-`else` witnesses are where `wolf fmt` is not the identity.
-#   * #273 — `[conc.chan.close]` names its tags. `closed` and
-#     `cancelled`, lowercase, the `[mem.str.parse]` pact restated;
-#     `recv`'s row is written out as `T ! {closed, cancelled}`.
-#   * #274 — `[mem.list.pop]`. The recoverable `List` reads (`pop`,
-#     `get`, `first`, `last`) answer `T ! {none}` and none of them
-#     faults; `xs[i]` stays the faulting twin.
-#   * #275 is NOT ruled and stays open (`chan.send` is typed `()` on the
-#     compiler while the clause says a send after close returns an error
-#     value). It is what holds ch12 §12.1 on one machine, so nothing
-#     about that block moves here.
+# WHAT THIS REVISION IS. Fourteen commits past the last pin, and
+# 2c03ed9 is an ancestor of the tag (checked, not assumed). Reading them
+# one at a time: two rulings, one pairing re-stamp, two CHANGELOG
+# commits, one catalog regeneration and the release commit. The two
+# rulings are s145 (PR #279):
+#   * #278 — `[type.str.concat]` admits a `char` on either side of `+`
+#     and as the value of `+=`. `s + c` is `"{s}{c}"`, `c + s` is
+#     `"{c}{s}"`, `s += c` follows. `str + int` still refuses, and
+#     `[type.str.concat.mix]` now says why: `+` is not a formatter and
+#     an `int` has more than one rendering.
+#   * #268 — `[type.closure.return]` opens §6 of spec/10: a `return`
+#     inside a closure returns from the closure and types against the
+#     closure's own result. Both lowering tiers and lupin had always run
+#     it that way; only the compiler's typing withheld it.
+# Nothing else in the fourteen is a language move, which is what bounds
+# every prediction below.
 #
-# WHAT THE BOOK MEASURED, PREDICTION FIRST. Every number below was
-# written into this file before `cargo xtask samples` was run.
-#   * THE CATALOG MOVES FOR THE FIRST TIME IN THE 0.2 LINE: 169 -> 168.
-#     PREDICTED by deriving the codes from `docs/diagnostics.md`
-#     (`^## E|W####`) at both revisions and diffing: exactly one line
-#     leaves, `E0005`, and nothing is added. MEASURED identical.
-#     `vendor/spec/diagnostic-codes.txt` was byte-identical to the
-#     e9a17cb derivation beforehand, which is what made the prediction
-#     safe. bs33's note in this file said "the catalog does NOT move:
-#     169 codes"; that was TRUE when bs33 measured it at e9a17cb and is
-#     superseded here as a dated fact, not corrected as an error.
-#   * AND NOTHING GATES THAT MOVE — BOTH ENDS ARE SILENT, which is why
-#     it is written here at length rather than trusted to CI.
-#     `verify::verify_diagnostic_codes` checks MEMBERSHIP only, both
-#     directions, and never compares Appendix C's prose sentence to the
-#     catalog's length; `backmatter::spec_vendor_check` iterates
-#     `["grammar.ebnf", "anchors.json"]` and never looks at
-#     `diagnostic-codes.txt` at all. So a stale file and a stale
-#     sentence each pass green. `book/back/appendix-c.md`'s "The catalog
-#     holds N codes" was moved BY HAND. Filed on wolf-book#7 with both
-#     mechanisms named.
-#   * E0005 COSTS THE BOOK NOTHING ELSE: `grep -rn E0005 book/
-#     principles/` is empty, so no page shows it and Appendix C does not
-#     detail it among its 54. No `fail(E0005)` block was ever written,
-#     and wolf-book#15 gets a `wolf-run(…)` fence instead of the
-#     `fail(E0005)` it asked for, because there is nothing left to fail.
-#   * THE ANCHORS GROW 445 -> 446, exactly one: `mem.list.pop` ->
-#     `02-memory-model.md`. BOTH key sets diffed in BOTH directions per
-#     the is30 lesson — nothing dropped, nothing retargeted — and
-#     namespaces hold at 12, documents at 11, so Appendix D's shape is
-#     unchanged and its derived table regenerates to itself.
+# WHAT THE BOOK MEASURED, PREDICTION FIRST. Every number here was
+# written into /private/tmp/bs35-predictions-029.md before `cargo xtask
+# samples` was run at this pin and before any file in this repository
+# was edited.
+#   * 2 FLIPS PREDICTED, BY NAME, AND EXACTLY 2 MEASURED. `ch16/ex16-2`
+#     (`lupin-run(exit=0)`) and `ch16/ex16-10` (`lupin-run(exit=0,
+#     stdout="seat 4 survives")`), both from `[type.closure.return]`,
+#     both reported by the runner in its own words: `FLIP ch16/ex16-2:
+#     directive `lupin-run(exit=0)` holds, but the compiler no longer
+#     declines this program`. Fences graduated, ch16's ledger row
+#     re-measured.
+#   * THE OTHER FIVE OF #268's SEVEN WERE PREDICTED NOT TO FLIP, each
+#     for a stated reason, and none did. ex16-7 and ex16-8 land on the
+#     E1001 underneath (`visited[c - w]` moves out of the list — the
+#     `best[T]` reading §5.3 already carries). The chapter-10 reader
+#     block and ex10-4 land on E0401 (`return 0` in a unit closure).
+#     ex17-9 types and compiles — and its fence is
+#     `lupin-run(exit=trap(deadlock))`, which is `Check::LupinTrap`,
+#     which carries NO graduation probe by design (TWO-MACHINES §6), so
+#     the runner is right to stay quiet: the native binary parks at its
+#     two-rendezvous deadlock where lupin traps, and
+#     `[conc.deadlock.trap]` PERMITS that difference.
+#   * ZERO FLIPS FROM #278, predicted from the pair rather than from the
+#     release note, and measured. `str + char` is served by the compiler
+#     at this tag and REFUSED by lupin 0.1.30: measured on a three-line
+#     program before the prediction was finished — `lupin` answers
+#     `unsupported: `+` is not defined on str and char`, exit 4; `wolf
+#     run` prints `abc`, exit 0. The mirror is wolf-interp#78 and is not
+#     in 0.1.30. No book sample could have carried `s + c` at the old
+#     pin, because both machines refused it there.
+#   * CHAPTER 2 KEEPS THE `{c}` HOLE, and the reason is that
+#     measurement rather than a preference. Four solutions build a
+#     string through a hole — ex2-10 (`r = "{c}" + r`), ex2-11, ex2-14
+#     and ex2-15 (`t += "{c}"`) — and all four are `run(…)` fences that
+#     pass on BOTH machines today. Writing `t += c` would make each of
+#     them compiler-only: four two-machine blocks traded for four
+#     `wolf-run(…)` blocks, four per-machine notes and four ledger rows,
+#     at a pin where the interpreter cannot follow. TWO-MACHINES §1
+#     settles it. Revisit at the bump that carries wolf-interp#78.
+#     §2.4's own `chars()` block never concatenates — it prints `{c}`
+#     and `{c as int}` — so #278 does not reach it at all.
+#   * THE CATALOG DOES NOT MOVE: 168 codes. PREDICTED by deriving the
+#     codes from `docs/diagnostics.md` (`^## E|W####`) at both
+#     revisions and diffing BOTH DIRECTIONS: empty both ways, nothing
+#     enters and nothing leaves. `vendor/spec/diagnostic-codes.txt` was
+#     already byte-identical to the 4c60946 derivation, so the
+#     re-vendor is a no-op and Appendix C's sentence stands untouched.
+#     bs34's note in this file said both ends of that sentence are
+#     ungated; THIS PIN DOES NOT EXERCISE THE HOLE, which is the reason
+#     to gate it now rather than the next time it bites. bs35 does:
+#     `spec_vendor_check` derives and compares the catalog, and
+#     Appendix C's count sentence is derived from it, each with a
+#     planted-defect test (wolf-book#7).
+#   * `docs/diagnostics.md` MOVES IN EXACTLY TWO HUNKS between the
+#     revisions and both were read: E0401's `Fixtures:` line gains
+#     `e0401_closure_return_vs_tail`, and E0409's body is reworded with
+#     two fixtures dropped. Neither touches a `## ` heading, so no
+#     Appendix C summary moves and no book snapshot re-records —
+#     PREDICTED 0, measured 0. `grep -rln E0409 snapshots/` is empty.
+#   * THE ANCHORS GROW 446 -> 448, exactly two: `type.closure` and
+#     `type.closure.return`, both into `10-types.md`. BOTH key sets
+#     diffed in BOTH directions per the is30 lesson — nothing dropped,
+#     nothing retargeted — and namespaces hold at 12, documents at 11,
+#     so Appendix D's shape is unchanged and its derived table
+#     regenerates to itself.
 #   * `grammar.ebnf` IS BYTE-IDENTICAL across the two revisions, checked
 #     rather than assumed, so Appendix A regenerates to itself and the
 #     vendored copy was NOT touched.
-#   * §3.2 GAINS THE BOOK'S FIRST `wolf-run(…)` IN CHAPTER 3, and it is
-#     a divergence with a dated end rather than a refusal. Measured on
-#     the section's own program before it was written: the compiler at
-#     this rev runs the aligned `if` / `else if` / `else` layout and
-#     prints `a<tab>b<nl>c`, exit 0; lupin 0.1.29 answers `E0005:
-#     `else` must be on the same line as the preceding `}`` at 7:9,
-#     exit 2. Graduates as a FLIP when is42 mirrors.
-#   * THE CLAUSE §3.2 WRITES WAS RUN BEFORE IT WAS WRITTEN. "both
-#     layouts parse; `wolf fmt` writes them as `} else`" — `wolf fmt`
-#     was pointed at the section's own block and returned the canonical
-#     `} else` chain ([gram.fmt.brace]). It is also the first time the
-#     book names the formatter, which is wolf-book#17.
-#   * INSERTING THAT BLOCK COST FOUR SAMPLES, exactly as ch04's ledger
-#     said it would. Sample ids are POSITIONAL, so a new block in §3.2
-#     renamed every later sample in the chapter: `book/ch03/s7` -> `s8`
-#     and `s14` -> `s15`. That invalidated two `diagnostic,from(…)`
-#     references, two reviewed snapshots, AND the diagnostic text
-#     itself, because the compiler prints the sample's file name and
-#     the file name IS the id (`--> ./s7.lu:8:14` had to become
-#     `./s8.lu:8:14` on the page and in the snapshot). The runner
-#     failed all four loudly and named each. Recorded because the cost
-#     is the argument for the named id ch04 has been asking for.
+#   * 4 CONSOLE BLOCKS RE-RECORDED, AND ONLY 2 WERE PREDICTED. The miss
+#     is worth more than the hit. Predicted: ch01 §1.2's and the
+#     colophon's `--version` transcripts, which move because the
+#     compiler's two stamped lines move (the interpreter's third line is
+#     unchanged, character for character). NOT predicted: ch22 §22.2's
+#     `wolf interface` block and ch25 §25.2's `wolf publish` line. THE
+#     COMPILER'S VERSION IS AN INPUT TO A CONTENT HASH — `wolfi v0 ·
+#     toolchain 0.2.8 · edition v1` becomes `0.2.9`, and the
+#     `export_hash`/`pkg_hash` over that stamp move with it. ch25's line
+#     is the clean measurement: `tree=` and `manifest=` do not move and
+#     `interface=` does, on a package whose source did not change. The
+#     three earlier bumps hid this because the release-line number
+#     (0.2.8) was the same on both sides of them; this is the first bump
+#     in the 0.2 line that changes it. Filed, because §22.2 teaches that
+#     hash as the answer to "is this change visible to my importers".
+#   * 0 PENDING MOVEMENT, predicted and measured. Five rows on
+#     `samples-pending.toml`; four blockers are the interpreter's std
+#     subset and one is borrow-escape reaching no static verdict, and
+#     the interpreter does not move at this bump.
+#   * THE RUNNER AT THIS PIN: 479 samples, 474 passed, 5 pending
+#     (report-only), 0 failed, 0 flips; 203 of 205 console blocks
+#     replayed.
 repo = "wolffe-lang/wolf-lang"
-rev = "2c03ed9360e90e260528411075daded674ceab18"
-impl_version = "0.2.8+dev.2c03ed9"
+rev = "4c60946081e1d1e65dd4b3d98cd69ac86bdf1d38"
+impl_version = "0.2.9"
 
 [lupin]
 # wolf-interp at the v0.1.30 release tag (is42): the stamped line names
@@ -108,23 +139,36 @@ impl_version = "0.2.8+dev.2c03ed9"
 #   paired with lupin 0.1.28 (reference interpreter), pin 5c729e8
 #   lupin 0.1.30 (wolf-interp, reference interpreter at pin 2c03ed9)
 #
-# THE PAIR AGREES IN ONE DIRECTION AND THE HALVES SWAPPED AGAIN. Both
-# computed from the two stamps, never hand-written (ww16):
+# AT bs35 THE LUPIN PIN DOES NOT MOVE, and the pairing paragraph below
+# is rewritten because the OTHER half did. The stamped lines this
+# printing is graded on are:
 #
-#   THE INTERPRETER'S HALF IS ZERO, and exactly zero: it names the
-#     revision this file pins, character for character. It read TEN
-#     COMMITS at the last bump and closes here.
-#   THE COMPILER'S HALF IS TWO RELEASES. It names lupin 0.1.28 and the
-#     interpreter beside it is 0.1.30, because the interpreter has
-#     published twice since this compiler was built. This half read ONE
-#     at the last bump and opens further.
+#   wolf 0.2.9 (wolfgang, pin 4c60946)
+#   paired with lupin 0.1.29 (reference interpreter), pin e9a17cb
+#   lupin 0.1.30 (wolf-interp, reference interpreter at pin 2c03ed9)
 #
-# STILL NO SUPERLATIVE. The halves have now swapped direction on three
-# consecutive bumps, and §1.2 and the colophon say which half is exact
-# and by how much the other is off. They do NOT say this is a first:
-# the pair has worn the exact-interpreter shape before, and this file's
-# own history is where a claimed first was caught (the bs32 contract's
-# "a gap of zero for the first time", which the log disproved).
+# NEITHER HALF IS EXACT. Both computed from the two stamps, never
+# hand-written (ww16):
+#
+#   THE COMPILER'S HALF IS ONE RELEASE. It names lupin 0.1.29 and the
+#     interpreter beside it is 0.1.30, because the interpreter
+#     published once after this compiler was cut. This half read TWO at
+#     the last bump and closes by one.
+#   THE INTERPRETER'S HALF IS FOURTEEN COMMITS. It names 2c03ed9, which
+#     is not the revision this file now pins: `git rev-list --count
+#     2c03ed9..4c60946` is 14 on the same line of history, ancestry
+#     checked rather than assumed. This half read ZERO at the last bump
+#     and opens.
+#
+# STILL NO SUPERLATIVE, and the temptation here is a real one: it is
+# easy to write that this is the first printing where neither name is
+# exact. Nothing in this file's history supports that and nothing was
+# measured to support it, so §1.2 and the colophon say what each half
+# reads and stop. This file's own history is where a claimed first was
+# caught (the bs32 contract's "a gap of zero for the first time", which
+# the log disproved), and the halves have swapped direction on three
+# consecutive bumps before this one — this bump does not swap them, it
+# moves both.
 #
 # WHAT THE BOOK MEASURED AT THIS PIN, prediction first (bs34). All of
 # it was written down BEFORE the binary was installed, in
@@ -188,11 +232,13 @@ impl_version = "0.2.8+dev.2c03ed9"
 #     stay 446, `grammar.ebnf` is untouched and zero diagnostic
 #     snapshots re-record, because [wolf] did not move at this bump.
 #
-# A NEWER COMPILER EXISTS AND IS NOT PINNED HERE. `wolf 0.2.9
-# (wolfgang, pin 4c60946)` is installed on the build box and names
-# lupin 0.1.29. The book is graded at ITS pin, so every number above
-# was measured with a `cargo xtask dist` build at `2c03ed9` and never
-# with the box's driver. Taking 0.2.9 is a deliberate bump of its own.
+# THAT NEWER COMPILER IS PINNED NOW. The paragraph that stood here said
+# `wolf 0.2.9 (wolfgang, pin 4c60946)` was installed on the box and not
+# pinned, and that taking it would be a deliberate bump of its own. It
+# is, and bs35 is it: [wolf] above names the tag, and the numbers in
+# the [wolf] note were measured with the release archive's own binary
+# rather than a dist build, because at a release tag those are the same
+# build.
 repo = "wolffe-lang/wolf-interp"
 rev = "08d787a11f3dc12d4c74154a2d980a64ca09a494"
 version = "lupin 0.1.30 (wolf-interp, reference interpreter at pin 2c03ed9)"
