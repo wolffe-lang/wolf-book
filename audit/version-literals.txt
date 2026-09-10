@@ -1,0 +1,60 @@
+# Version literals in reader-facing text, one line each (wolf-book#7,
+# part 2):
+#
+#   <path> <literal> <count> audited-at-wolf=<version>
+#   <path> <literal> <count> audited-at-lupin=<version>
+#   <path> <literal> <count> not-a-toolchain-version
+#
+# WHY THIS FILE EXISTS. Five pin bumps running healed the same three
+# sites by hand and called them, in the pin notes, "residue the runner
+# cannot see": §1.2's two Windows archive names, §1.2's
+# `+dev.unknown` sentence, and the stamp paragraphs that reverse
+# whenever the pinned compiler changes kind. Every other claim this
+# book makes is executed — a program by the samples runner, a
+# transcript by the console replay, a count by arithmetic on the file
+# it counts. These are literals in prose with no run behind them, so
+# there is nothing to compare them against and nothing did.
+#
+# `cargo xtask verify-docs` fails when a literal is missing from this
+# list, when its count drifts, when this list names one a page no
+# longer carries, or when the named pin has moved past an entry's
+# audited-at. So a pin bump forces these sentences to be re-read, entry
+# by entry, instead of remembered.
+#
+# TWO CLOCKS, because two projects release on their own schedules and
+# the book pins both. `audited-at-wolf=` is re-read when
+# `[wolf].impl_version` moves; `audited-at-lupin=` when the version
+# inside `[lupin].version` does. Keying everything to one clock would
+# mean an interpreter-only bump re-read nothing, which is the defect
+# wolf-web#8 fixed on the site's own version of this check.
+#
+# THE THIRD SPELLING is for the version-shaped literals that are not
+# claims about wolf or lupin at all: a dependency's version in chapter
+# 23, a published record's key in chapter 25. They still get an entry,
+# so a NEW literal anywhere fails until somebody classifies it — they
+# just do not ride a toolchain clock, because re-reading `rows 1.4.0`
+# at every bump is the noise that gets a gate rubber-stamped.
+#
+# What the check reads: reader-facing text with the ledger comments
+# stripped, `console` / `diagnostic` / program fences dropped (the
+# replay and the samples runner own those byte for byte), and `text`
+# fences KEPT — which is the point, because the two Windows archive
+# names live in one and nothing executes them.
+
+# --- the compiler's clock ---
+book/ch01.md 0.2.9+dev.e0ce018 1 audited-at-wolf=0.2.9+dev.e0ce018
+book/ch01.md 0.2.9+dev.unknown 1 audited-at-wolf=0.2.9+dev.e0ce018
+book/ch01.md 0.2.9 3 audited-at-wolf=0.2.9+dev.e0ce018
+book/ch33.md 0.2.6 1 audited-at-wolf=0.2.9+dev.e0ce018
+book/ch33.md 0.2.8 1 audited-at-wolf=0.2.9+dev.e0ce018
+
+# --- the interpreter's clock ---
+book/ch01.md 0.1.30 1 audited-at-lupin=0.1.30
+book/back/colophon.md 0.1.30 1 audited-at-lupin=0.1.30
+
+# --- version-shaped, and about neither tool ---
+book/ch23.md 1.4.0 1 not-a-toolchain-version
+book/ch23.md v1.4.0 2 not-a-toolchain-version
+book/ch23.md v2.1.0 1 not-a-toolchain-version
+book/ch25.md 0.1.0 3 not-a-toolchain-version
+book/back/solutions.md v1.4.0 1 not-a-toolchain-version

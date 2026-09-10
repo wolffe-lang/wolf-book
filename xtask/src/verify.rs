@@ -91,6 +91,12 @@ pub fn run(root: &Path) -> Result<()> {
     //     fence directives are build metadata.
     verify_tense(root, &mut failures)?;
 
+    // 12. Version literals the console replay cannot see (wolf-book#7,
+    //     part 2). Every version-shaped literal in reader-facing text is
+    //     enumerated with the pin that audited it, and a pin that has
+    //     moved past an audit fails the build with the sentence named.
+    verify_version_literals(root, &mut failures)?;
+
     if failures.is_empty() {
         println!(
             "verify-docs: ok (corpus count {actual}, pins well-formed, TOC/stub numbering agrees)"
@@ -910,6 +916,257 @@ fn number_word(n: usize) -> Option<&'static str> {
     WORDS.get(n).copied()
 }
 
+/// wolf-book#7, part 2. Five pin bumps running healed the same version
+/// literals by hand and called them "residue the runner cannot see":
+/// §1.2's two Windows archive names, §1.2's `+dev.unknown` sentence,
+/// and the stamp paragraphs that reverse at every change of build kind.
+/// They are literals in prose with no run behind them, so the console
+/// replay — which is a byte compare against what the tools print — has
+/// nothing to compare. This is wolf-web's `check-version-prose.py` for
+/// the book: every version-shaped literal in reader-facing text is
+/// enumerated in `audit/version-literals.txt` with a count and the pin
+/// that audited it, and a pin that has moved past an audit fails and
+/// names the sentence to re-read.
+///
+/// Two clocks, because two projects release on their own: an entry says
+/// `audited-at-wolf=` (re-read when the compiler pin moves) or
+/// `audited-at-lupin=` (when the interpreter pin does). The third
+/// spelling, `not-a-toolchain-version`, is for the version-shaped
+/// literals that are not claims about wolf or lupin at all — a package
+/// version in chapter 23, a published record's key in chapter 25. Those
+/// still need an entry, so a NEW literal anywhere fails until somebody
+/// classifies it; they just do not ride a toolchain clock, because
+/// re-reading `rows 1.4.0` at every bump is the noise that gets a gate
+/// rubber-stamped.
+fn verify_version_literals(root: &Path, failures: &mut Vec<String>) -> Result<()> {
+    let pins = toolchain_versions(root)?;
+    let mut found: BTreeMap<(String, String), usize> = BTreeMap::new();
+    for (rel, text) in book_pages(root)? {
+        for literal in version_literals(&auditable_text(&text)) {
+            *found.entry((rel.clone(), literal)).or_default() += 1;
+        }
+    }
+    let allow_path = root.join("audit/version-literals.txt");
+    let allow = std::fs::read_to_string(&allow_path)
+        .with_context(|| format!("reading {}", allow_path.display()))?;
+    let before = failures.len();
+    failures.extend(version_literal_failures(&found, &allow, &pins));
+    if failures.len() == before {
+        println!(
+            "verify-docs: {} version literal(s) in reader-facing text, each audited against \
+             wolf {} / lupin {}",
+            found.values().sum::<usize>(),
+            pins.0,
+            pins.1
+        );
+    }
+    Ok(())
+}
+
+/// `[wolf].impl_version` and the version number inside `[lupin].version`
+/// (`lupin 0.1.30 (wolf-interp, …)` is the whole stamped line; the audit
+/// clock is the `0.1.30` in it).
+fn toolchain_versions(root: &Path) -> Result<(String, String)> {
+    let text = std::fs::read_to_string(root.join("wolf-toolchain.toml"))
+        .context("reading wolf-toolchain.toml")?;
+    let value: toml::Value = text.parse().context("parsing wolf-toolchain.toml")?;
+    let wolf = value
+        .get("wolf")
+        .and_then(|t| t.get("impl_version"))
+        .and_then(|v| v.as_str())
+        .context("wolf-toolchain.toml: [wolf].impl_version missing")?
+        .to_string();
+    let stamped = value
+        .get("lupin")
+        .and_then(|t| t.get("version"))
+        .and_then(|v| v.as_str())
+        .context("wolf-toolchain.toml: [lupin].version missing")?;
+    let lupin = stamped
+        .split_whitespace()
+        .find(|w| w.starts_with(|c: char| c.is_ascii_digit()) && w.contains('.'))
+        .context("wolf-toolchain.toml: [lupin].version carries no version number")?
+        .to_string();
+    Ok((wolf, lupin))
+}
+
+/// The text this check reads: HTML comments dropped (the ledgers are not
+/// reader-facing), `console`, `diagnostic` and program fences dropped
+/// (those the replay and the samples runner own, byte for byte), and
+/// `text` fences KEPT — which is the point, because §1.2's two Windows
+/// archive names live in one and nothing executes them.
+fn auditable_text(text: &str) -> String {
+    let stripped = crate::render::strip_html_comments(text);
+    let mut out = String::new();
+    let mut fence: Option<String> = None;
+    for line in stripped.lines() {
+        let trimmed = line.trim_start();
+        if trimmed.starts_with("```") {
+            fence = match fence {
+                None => Some(trimmed.trim_start_matches('`').to_string()),
+                Some(_) => None,
+            };
+            continue;
+        }
+        if fence
+            .as_deref()
+            .map(|f| f.starts_with("text"))
+            .unwrap_or(true)
+        {
+            out.push_str(line);
+            out.push('\n');
+        }
+    }
+    out
+}
+
+/// Version-shaped literals: `0.2.9`, `v1.4.0`, `0.2.9+dev.e0ce018`.
+/// Three components, because two would make every `0.5 seconds` a
+/// version claim; and neither end may touch another digit or dot, which
+/// is what keeps `127.0.0.1` from reading as one.
+fn version_literals(text: &str) -> Vec<String> {
+    let chars: Vec<char> = text.chars().collect();
+    let mut out = Vec::new();
+    let mut i = 0usize;
+    while i < chars.len() {
+        // A literal starts at a digit, optionally behind one `v`, and
+        // nothing wordish may sit to the left of either.
+        let start = i;
+        let mut j = i;
+        if chars[j] == 'v' {
+            j += 1;
+        }
+        let left_ok = start == 0
+            || !(chars[start - 1].is_ascii_digit()
+                || chars[start - 1] == '.'
+                || chars[start - 1].is_alphanumeric()
+                || chars[start - 1] == '_');
+        // Exactly three dot-separated runs of digits. `..` ends a run
+        // with no digits after the dot, which is what keeps a slice
+        // range (`318..322`) from reading as a version; a fourth run
+        // is what keeps `127.0.0.1` out.
+        let mut runs = 0usize;
+        let mut k = j;
+        loop {
+            let digits = chars[k..].iter().take_while(|c| c.is_ascii_digit()).count();
+            if digits == 0 {
+                break;
+            }
+            k += digits;
+            runs += 1;
+            if k < chars.len() && chars[k] == '.' {
+                k += 1;
+            } else {
+                break;
+            }
+        }
+        let mut end = k;
+        let shaped = runs == 3 && left_ok;
+        if shaped {
+            // `+dev.<sha>` rides along: `0.2.9+dev.e0ce018` is one
+            // claim, and allowlisting half a stamp is not a check.
+            let tail: String = chars[end..].iter().collect();
+            if let Some(rest) = tail.strip_prefix("+dev.") {
+                let n = rest
+                    .chars()
+                    .take_while(|c| c.is_ascii_alphanumeric())
+                    .count();
+                if n > 0 {
+                    end += 5 + n;
+                }
+            }
+        }
+        let right_ok = end >= chars.len()
+            || !(chars[end].is_ascii_digit() || chars[end] == '.' || chars[end].is_alphanumeric());
+        if shaped && right_ok {
+            out.push(chars[start..end].iter().collect::<String>());
+            i = end;
+            continue;
+        }
+        i = if k > start { k } else { start + 1 };
+    }
+    out
+}
+
+/// Pure, so the defect can be planted in a test rather than in the book.
+fn version_literal_failures(
+    found: &BTreeMap<(String, String), usize>,
+    allow: &str,
+    pins: &(String, String),
+) -> Vec<String> {
+    let mut failures = Vec::new();
+    let mut allowed: BTreeMap<(String, String), (usize, String, String)> = BTreeMap::new();
+    for (n, line) in allow.lines().enumerate() {
+        let line = line.trim();
+        if line.is_empty() || line.starts_with('#') {
+            continue;
+        }
+        let parts: Vec<&str> = line.split_whitespace().collect();
+        let bad = |why: &str| {
+            format!(
+                "audit/version-literals.txt:{}: {why} — an entry is \
+                 `<path> <literal> <count> audited-at-wolf=<v>` (or audited-at-lupin=, or \
+                 not-a-toolchain-version)",
+                n + 1
+            )
+        };
+        if parts.len() != 4 {
+            failures.push(bad("cannot parse"));
+            continue;
+        }
+        let Ok(count) = parts[2].parse::<usize>() else {
+            failures.push(bad("the third field is not a count"));
+            continue;
+        };
+        let (clock, audited) = if parts[3] == "not-a-toolchain-version" {
+            (String::new(), String::new())
+        } else if let Some(v) = parts[3].strip_prefix("audited-at-wolf=") {
+            ("wolf".to_string(), v.to_string())
+        } else if let Some(v) = parts[3].strip_prefix("audited-at-lupin=") {
+            ("lupin".to_string(), v.to_string())
+        } else {
+            failures.push(bad("the fourth field names no clock"));
+            continue;
+        };
+        allowed.insert(
+            (parts[0].to_string(), parts[1].to_string()),
+            (count, clock, audited),
+        );
+    }
+    for ((path, literal), count) in found {
+        let Some((want, clock, audited)) = allowed.get(&(path.clone(), literal.clone())) else {
+            failures.push(format!(
+                "{path}: `{literal}` x{count} is not in audit/version-literals.txt — a version \
+                 literal in reader-facing text gets an entry and the pin that audited it"
+            ));
+            continue;
+        };
+        if count != want {
+            failures.push(format!(
+                "{path}: `{literal}` appears x{count}, audit/version-literals.txt says x{want}"
+            ));
+        }
+        let pin = match clock.as_str() {
+            "wolf" => &pins.0,
+            "lupin" => &pins.1,
+            _ => continue,
+        };
+        if audited != pin {
+            failures.push(format!(
+                "{path}: `{literal}` was audited at {clock} {audited}, the {clock} pin is now \
+                 {pin} — re-read the sentence, then re-stamp its audited-at-{clock}"
+            ));
+        }
+    }
+    for (path, literal) in allowed.keys() {
+        if !found.contains_key(&(path.clone(), literal.clone())) {
+            failures.push(format!(
+                "audit/version-literals.txt lists `{literal}` in {path}, which no longer carries it"
+            ));
+        }
+    }
+    failures
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1157,6 +1414,168 @@ ones",
         let flat = wrapped.split_whitespace().collect::<Vec<_>>().join(" ");
         assert!(flat.contains("twelve anchor namespaces"));
         assert!(!wrapped.contains("twelve anchor namespaces"));
+    }
+
+    // --- wolf-book#7 part 2: the version-literal audit ---
+
+    fn pins() -> (String, String) {
+        ("0.2.9+dev.e0ce018".to_string(), "0.1.30".to_string())
+    }
+
+    fn seen(pairs: &[(&str, &str, usize)]) -> BTreeMap<(String, String), usize> {
+        pairs
+            .iter()
+            .map(|(p, l, n)| ((p.to_string(), l.to_string()), *n))
+            .collect()
+    }
+
+    const ALLOW: &str = "\
+# a comment and a blank line are skipped
+
+book/ch01.md 0.2.9 3 audited-at-wolf=0.2.9+dev.e0ce018
+book/ch01.md 0.1.30 1 audited-at-lupin=0.1.30
+book/ch23.md v1.4.0 2 not-a-toolchain-version
+";
+
+    #[test]
+    fn the_version_literal_control_passes() {
+        let f = version_literal_failures(
+            &seen(&[
+                ("book/ch01.md", "0.2.9", 3),
+                ("book/ch01.md", "0.1.30", 1),
+                ("book/ch23.md", "v1.4.0", 2),
+            ]),
+            ALLOW,
+            &pins(),
+        );
+        assert!(f.is_empty(), "{f:#?}");
+    }
+
+    #[test]
+    fn a_pin_that_moved_past_an_audit_is_caught() {
+        // THE DEFECT THIS GATE EXISTS FOR, planted: the compiler pin
+        // bumps and §1.2's archive names are not re-read. Five bumps
+        // running healed these by hand.
+        let moved = ("0.2.10".to_string(), "0.1.30".to_string());
+        let f = version_literal_failures(
+            &seen(&[
+                ("book/ch01.md", "0.2.9", 3),
+                ("book/ch01.md", "0.1.30", 1),
+                ("book/ch23.md", "v1.4.0", 2),
+            ]),
+            ALLOW,
+            &moved,
+        );
+        assert_eq!(f.len(), 1, "{f:#?}");
+        assert!(f[0].contains("the wolf pin is now 0.2.10"), "{f:#?}");
+        assert!(f[0].contains("re-stamp its audited-at-wolf"), "{f:#?}");
+    }
+
+    #[test]
+    fn an_interpreter_only_bump_re_reads_the_interpreter_sentences() {
+        // The one clock wolf-web#8 found missing: keying everything to
+        // the compiler means a lupin bump re-reads nothing.
+        let moved = ("0.2.9+dev.e0ce018".to_string(), "0.1.31".to_string());
+        let f = version_literal_failures(
+            &seen(&[
+                ("book/ch01.md", "0.2.9", 3),
+                ("book/ch01.md", "0.1.30", 1),
+                ("book/ch23.md", "v1.4.0", 2),
+            ]),
+            ALLOW,
+            &moved,
+        );
+        assert_eq!(f.len(), 1, "{f:#?}");
+        assert!(f[0].contains("audited at lupin 0.1.30"), "{f:#?}");
+    }
+
+    #[test]
+    fn a_new_literal_no_one_classified_is_caught() {
+        let f = version_literal_failures(
+            &seen(&[
+                ("book/ch01.md", "0.2.9", 3),
+                ("book/ch01.md", "0.1.30", 1),
+                ("book/ch23.md", "v1.4.0", 2),
+                ("book/ch07.md", "0.3.0", 1),
+            ]),
+            ALLOW,
+            &pins(),
+        );
+        assert_eq!(f.len(), 1, "{f:#?}");
+        assert!(f[0].contains("`0.3.0` x1 is not in"), "{f:#?}");
+    }
+
+    #[test]
+    fn a_count_that_drifted_and_a_literal_that_left_are_both_caught() {
+        let f = version_literal_failures(
+            &seen(&[("book/ch01.md", "0.2.9", 2), ("book/ch01.md", "0.1.30", 1)]),
+            ALLOW,
+            &pins(),
+        );
+        assert_eq!(f.len(), 2, "{f:#?}");
+        assert!(f
+            .iter()
+            .any(|m| m.contains("appears x2, audit/version-literals.txt says x3")));
+        assert!(f.iter().any(|m| m.contains("which no longer carries it")));
+    }
+
+    #[test]
+    fn a_not_a_toolchain_entry_rides_no_clock() {
+        let moved = ("9.9.9".to_string(), "9.9.9".to_string());
+        let f = version_literal_failures(
+            &seen(&[("book/ch23.md", "v1.4.0", 2)]),
+            "book/ch23.md v1.4.0 2 not-a-toolchain-version\n",
+            &moved,
+        );
+        assert!(f.is_empty(), "{f:#?}");
+    }
+
+    #[test]
+    fn an_unparsable_entry_says_the_shape() {
+        let f = version_literal_failures(
+            &seen(&[]),
+            "book/ch01.md 0.2.9 3 audited-at-rust=1.0\n",
+            &pins(),
+        );
+        assert_eq!(f.len(), 1, "{f:#?}");
+        assert!(f[0].contains("names no clock"), "{f:#?}");
+    }
+
+    #[test]
+    fn the_scanner_reads_the_shapes_the_book_carries_and_not_the_ones_it_does_not() {
+        let text = "\
+`0.2.9+dev.e0ce018` is a build made after the 0.2.9 release, and lupin 0.1.30 sits beside it.
+tar -xzf wolf-0.2.9-x86_64-pc-windows-msvc.tar.gz
+a tag `v1.4.0`, a slice `318..322`, a range `0..100`, an address 127.0.0.1:0, and 0.5 seconds
+";
+        let mut got = version_literals(text);
+        got.sort();
+        assert_eq!(
+            got,
+            vec!["0.1.30", "0.2.9", "0.2.9", "0.2.9+dev.e0ce018", "v1.4.0"],
+            "a slice range, an IPv4 address and a two-part number are not version claims"
+        );
+    }
+
+    #[test]
+    fn the_audited_text_keeps_a_text_fence_and_drops_the_replayed_ones() {
+        let page = "\
+prose 1.2.3
+<!-- ledger 4.5.6 -->
+```console
+$ wolf --version
+wolf 7.8.9
+```
+```text
+tar -xzf wolf-1.2.3-x86_64-pc-windows-msvc.tar.gz
+```
+```wolf,run(exit=0)
+// 9.9.9
+```
+";
+        let mut got = version_literals(&auditable_text(page));
+        got.sort();
+        assert_eq!(got, vec!["1.2.3", "1.2.3"]);
     }
 
     #[test]
