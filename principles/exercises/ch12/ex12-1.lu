@@ -7,7 +7,7 @@ fn main() -> !int {
     var total = 0
     scope s {
         s.spawn(fn() {
-            for i in 1..=4 { ch.send(i * i) }
+            for i in 1..=4 { ch.send(i * i)? }
             ch.close()
         })
         for v in ch { total += v }

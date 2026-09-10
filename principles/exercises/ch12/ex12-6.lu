@@ -9,12 +9,12 @@ fn main() -> !int {
     scope s {
         s.spawn(fn() {
             for v in src {
-                if v % 2 == 0 { evens.send(v) } else { odds.send(v) }
+                if v % 2 == 0 { evens.send(v)? } else { odds.send(v)? }
             }
             evens.close()
             odds.close()
         })
-        for i in 1..=8 { src.send(i) }
+        for i in 1..=8 { src.send(i)? }
         src.close()
     }
     var esum = 0

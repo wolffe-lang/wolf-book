@@ -5595,7 +5595,7 @@ fn main() -> !int {
     var total = 0
     scope s {
         s.spawn(fn() {
-            for i in 1..=4 { ch.send(i * i) }
+            for i in 1..=4 { ch.send(i * i)? }
             ch.close()
         })
         for v in ch { total += v }
@@ -5629,8 +5629,8 @@ Solution. `ch12/ex12-2.lu`:
 ```wolf
 fn main() -> !int {
     let ch = channel[int](1)
-    ch.send(1)
-    ch.send(2)
+    ch.send(1)?
+    ch.send(2)?
     print("never printed")
     0
 }
@@ -5662,7 +5662,7 @@ fn main() -> !int {
         v from a => { print("got {v}") },
         timeout(5.ms) => { print("timed out") },
     }
-    a.send(9)
+    a.send(9)?
     select {
         v from a => { print("got {v}") },
         timeout(5.ms) => { print("timed out") },
@@ -5694,8 +5694,8 @@ program is *allowed* to print, then run it under seed 1 and seed 2024:
 fn main() -> !int {
     let a = channel[int](1)
     let b = channel[int](1)
-    a.send(1)
-    b.send(2)
+    a.send(1)?
+    b.send(2)?
     var got = 0
     select {
         v from a => { got = v },
@@ -5774,12 +5774,12 @@ fn main() -> !int {
     scope s {
         s.spawn(fn() {
             for v in src {
-                if v % 2 == 0 { evens.send(v) } else { odds.send(v) }
+                if v % 2 == 0 { evens.send(v)? } else { odds.send(v)? }
             }
             evens.close()
             odds.close()
         })
-        for i in 1..=8 { src.send(i) }
+        for i in 1..=8 { src.send(i)? }
         src.close()
     }
     var esum = 0

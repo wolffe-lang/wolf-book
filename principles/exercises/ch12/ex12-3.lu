@@ -9,7 +9,7 @@ fn main() -> !int {
         v from a => { print("got {v}") },
         timeout(5.ms) => { print("timed out") },
     }
-    a.send(9)
+    a.send(9)?
     select {
         v from a => { print("got {v}") },
         timeout(5.ms) => { print("timed out") },
