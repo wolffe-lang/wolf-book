@@ -353,24 +353,52 @@ version = "lupin 0.1.30 (wolf-interp, reference interpreter at pin 2c03ed9)"
 # identifier, so `region r(cap: n)` paints `region` and nothing else.
 # That is correct, not a gap.
 #
-# TWO WRONG PAINTS carried at this pin, filed rather than worked around
-# (the bs13 precedent: a rendering gap is recorded here, in the pin, not
-# patched in the prose):
-#   * wolf-lsp#4 — `raw-string` and `generalized-string` include
+# THE TWO WRONG PAINTS THAT BLOCK ABOVE RECORDED ARE FIXED, AND THIS
+# BUMP IS THE RE-PIN THAT TAKES THE FIX. They were filed rather than
+# worked around (the bs13 precedent: a rendering gap is recorded here,
+# in the pin, not patched in the prose), and the prose they distorted
+# never moved, so nothing has to be un-patched now.
+#   * wolf-lsp#4 — `raw-string` and `generalized-string` included
 #     `#interpolation`, and the spec says both are raw-mode ([gram.lex.
-#     str.raw], [gram.lex.str.gen]); tree-sitter agrees. So ch02 §2.2's
-#     `r"C:\logs\{today}\wolf.log"` paints `{today}` as an interpolation
-#     hole three lines above the sentence "the braces are two more
-#     characters, not an interpolation", and the brace-balancer solution
-#     paints its raw `r"([{}])"` data as syntax.
-#   * wolf-lsp#5 — the interpolation hole's pattern list carries no
-#     `#chars` and no `#strings`, so `"{(m + ('a' as int)) as char}"`
-#     paints `as` and `char` but leaves `'a'` as ink, and `"{"total"}"`
-#     leaves the nested literal as ink.
-# Both are pre-existing at bs13's pin too; bs24 is the sprint that
-# looked. Neither is worked around in the book.
+#     str.raw], [gram.lex.str.gen]); tree-sitter agreed. So ch02 §2.2's
+#     `r"C:\logs\{today}\wolf.log"` painted `{today}` as an
+#     interpolation hole three lines above the sentence "the braces are
+#     two more characters, not an interpolation", and the brace-balancer
+#     solution painted its raw `r"([{}])"` data as syntax. Both rules
+#     now carry `"patterns": []`, so a raw literal is one green run.
+#   * wolf-lsp#5 — the interpolation hole's pattern list carried no
+#     `#chars` and no nested string rule, so `"{(m + ('a' as int)) as
+#     char}"` painted `as` and `char` but left `'a'` as ink, and
+#     `"{"total"}"` left the nested literal as ink. The hole's list
+#     gains `#chars` and a new `interpolated-string` rule after
+#     `#format-spec`.
+#
+# THE MOVE IS c97b81c -> d194486 (wolf-lsp trunk, ANCESTOR of the old
+# pin checked rather than assumed, 86 commits). Eighty-six commits and
+# the vendored bytes move in ONE FILE and THREE PLACES, which is the
+# whole reason this is a re-pin and not a rendering sprint:
+# `wolf.tmLanguage.json` gains `interpolated-string`, empties the two
+# raw patterns, and extends the hole's list; `wolfi.tmLanguage.json` and
+# `wolf-pkg.tmLanguage.json` are byte-identical, as at every bump. The
+# operator alternation is unchanged, so no literal-form fragment starts
+# painting as a keyword.
+#
+# `theme/highlight.css` DOES NOT MOVE, predicted from the scope map
+# before `grammar-sync` ran and measured after. Neither changed rule
+# introduces a scope the book has no entry for: the new
+# `interpolated-string` is `string.quoted.double.wolf`, which the
+# `string.` prefix already claims for hl-string, and `#chars` is
+# `constant.character.wolf`, which bs24's `constant.character` entry
+# already claims — and that entry must stay BELOW
+# `constant.character.escape`, which is the ordering note above and is
+# now load-bearing for a second reason.
+#
+# NO SAMPLE AND NO CONSOLE BLOCK MOVES AT THIS BUMP. A grammar re-pin
+# changes what the rendered page looks like and nothing about what the
+# tools do, so the samples runner cannot see it; the render lane is the
+# lane that grades it.
 repo = "wolffe-lang/wolf-lsp"
-rev = "c97b81c36e23f53f539dad6de5e9e2a12c63c6e8"
+rev = "d194486e78478b6a744402e541ba2d112a0dac05"
 
 [wolf-repl]
 # REPL transcript replay is pending(is08): wolf-repl blocks are counted
