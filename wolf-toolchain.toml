@@ -4,21 +4,39 @@
 # doc-truth CI job compares them.
 
 [wolf]
-# wolf-lang at trunk `e0ce018`, DEV-STAMPED. D57 (r03): a build made
+# wolf-lang at trunk `e0ce0189`, DEV-STAMPED. D57 (r03): a build made
 # exactly at its own release tag prints the bare version with a pin
 # clause, and every other build prints `+dev.<commit>` and claims
 # nothing. This one is the SECOND kind, which the pin file last carried
 # at bs33's bump:
 #
-#   wolf 0.2.9+dev.e0ce018 (wolfgang, pin e0ce018)
+#   wolf 0.2.9+dev.e0ce0189 (wolfgang, pin e0ce0189)
 #
 # PREDICTED FROM SOURCE BEFORE ANY MEASUREMENT RAN, and measured
-# byte-identical: `Cargo.toml`'s `[workspace.package] version` is
-# `0.2.9` at this revision, no tag points at it, and
-# `crates/wolf_driver/PAIRING` reads `lupin-version = 0.1.30` /
-# `lupin-pin = 2c03ed9`. Built with `cargo xtask dist` in a clean
-# worktree at the sha, which is what carries the stamp — a plain
+# byte-identical in every part but one: `Cargo.toml`'s
+# `[workspace.package] version` is `0.2.9` at this revision, no tag
+# points at it, and `crates/wolf_driver/PAIRING` reads
+# `lupin-version = 0.1.30` / `lupin-pin = 2c03ed9`. Built with
+# `cargo xtask dist`, which is what carries the stamp — a plain
 # `cargo build` says `+dev.unknown` and grades nothing.
+#
+# THE ONE PART: THE ABBREVIATED SHA IS A PROPERTY OF THE CLONE, NOT OF
+# THE REVISION, and the book found that out by being failed by CI on a
+# green local run. The stamp is `git rev-parse --short HEAD`, whose
+# length git picks from the object count, and the two clones disagree:
+#
+#   this box's wolf-lang checkout (12,257 packed)  -> e0ce018
+#   a fresh `git clone` (16,566 packed)            -> e0ce0189
+#
+# Measured both ways rather than argued, with the fresh clone made for
+# the purpose. CI clones fresh, so CI's build stamps eight characters,
+# and a reader who clones the project gets the same eight. So the book
+# prints EIGHT and this box's older checkout is the outlier — the
+# grader and the reader agree with each other and not with the
+# convenient answer. The re-measurement was done on a dist build from
+# the fresh clone, so the two transcripts on these pages are still a
+# run rather than a transcription. Filed upstream: a "pin" clause whose
+# text depends on who cloned is not a pin.
 #
 # WHAT THIS REVISION IS, AND IT IS NOT ONE SPRINT. Twenty-nine commits
 # past the last pin, and `4c60946` is an ancestor of it (checked, not
@@ -122,7 +140,7 @@
 #     through the stamp `wolfi v0 · toolchain 0.2.8 · edition v1`. That
 #     stamp reads the RELEASE-LINE number and not the full `--version`
 #     string: `CARGO_PKG_VERSION` is `0.2.9` at both revisions and the
-#     interface snapshot at `e0ce018` still reads `toolchain 0.2.9`. So
+#     interface snapshot at `e0ce0189` still reads `toolchain 0.2.9`. So
 #     a `+dev` bump inside a release line moves neither hash, and
 #     bs35's note is exact rather than approximate.
 #   * 0 PENDING MOVEMENT, predicted and measured. Five rows on
@@ -146,7 +164,7 @@
 # the word "range".
 repo = "wolffe-lang/wolf-lang"
 rev = "e0ce01891577d64d6b9a3497f752a32acac3fefc"
-impl_version = "0.2.9+dev.e0ce018"
+impl_version = "0.2.9+dev.e0ce0189"
 
 [lupin]
 # wolf-interp at the v0.1.30 release tag (is42): the stamped line names

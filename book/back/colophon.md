@@ -6,7 +6,7 @@ against:
 
 ```console
 $ wolf --version
-wolf 0.2.9+dev.e0ce018 (wolfgang, pin e0ce018)
+wolf 0.2.9+dev.e0ce0189 (wolfgang, pin e0ce0189)
 paired with lupin 0.1.30 (reference interpreter), pin 2c03ed9
 $ lupin --version
 lupin 0.1.30 (wolf-interp, reference interpreter at pin 2c03ed9)

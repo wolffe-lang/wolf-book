@@ -42,11 +42,11 @@
 # names live in one and nothing executes them.
 
 # --- the compiler's clock ---
-book/ch01.md 0.2.9+dev.e0ce018 1 audited-at-wolf=0.2.9+dev.e0ce018
-book/ch01.md 0.2.9+dev.unknown 1 audited-at-wolf=0.2.9+dev.e0ce018
-book/ch01.md 0.2.9 3 audited-at-wolf=0.2.9+dev.e0ce018
-book/ch33.md 0.2.6 1 audited-at-wolf=0.2.9+dev.e0ce018
-book/ch33.md 0.2.8 1 audited-at-wolf=0.2.9+dev.e0ce018
+book/ch01.md 0.2.9+dev.e0ce0189 1 audited-at-wolf=0.2.9+dev.e0ce0189
+book/ch01.md 0.2.9+dev.unknown 1 audited-at-wolf=0.2.9+dev.e0ce0189
+book/ch01.md 0.2.9 3 audited-at-wolf=0.2.9+dev.e0ce0189
+book/ch33.md 0.2.6 1 audited-at-wolf=0.2.9+dev.e0ce0189
+book/ch33.md 0.2.8 1 audited-at-wolf=0.2.9+dev.e0ce0189
 
 # --- the interpreter's clock ---
 book/ch01.md 0.1.30 1 audited-at-lupin=0.1.30
