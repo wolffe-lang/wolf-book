@@ -285,6 +285,37 @@ fn spec_vendor_check(root: &Path) -> Result<()> {
             drift.push(name);
         }
     }
+    // The third vendored artifact, and the one this check did not look
+    // at for the whole 0.2 line (wolf-book#7). It is not copied from
+    // `spec/`: upstream has no `diagnostic-codes.txt` at all. It is
+    // DERIVED from `docs/diagnostics.md`, so the drift check derives it
+    // the same way rather than diffing a file that does not exist
+    // there. A stale catalog used to pass green in both directions,
+    // because `verify_diagnostic_codes` only ever asked whether the
+    // codes the book SHOWS are members of it.
+    let upstream_docs = sibling
+        .parent()
+        .map(|p| p.join("docs/diagnostics.md"))
+        .filter(|p| p.is_file());
+    match upstream_docs {
+        None => println!(
+            "backmatter: SKIP diagnostic catalog drift check — the sibling wolf-lang \
+             checkout has no docs/diagnostics.md; vendor/spec/diagnostic-codes.txt is \
+             what Appendix C is checked against"
+        ),
+        Some(path) => {
+            let doc = std::fs::read_to_string(&path)
+                .with_context(|| format!("reading {}", path.display()))?;
+            if let Some(detail) = catalog_drift(&read_vendored(root, "diagnostic-codes.txt")?, &doc)
+            {
+                // Named before the bail: WHICH code moved is the whole
+                // content of the finding, and the summary line below
+                // has room only for the file.
+                eprintln!("backmatter: vendor/spec/diagnostic-codes.txt — {detail}");
+                drift.push("diagnostic-codes.txt");
+            }
+        }
+    }
     if drift.is_empty() {
         println!("backmatter: vendored spec artifacts match the sibling wolf-lang checkout");
         Ok(())
@@ -297,6 +328,78 @@ fn spec_vendor_check(root: &Path) -> Result<()> {
     }
 }
 
+/// The catalog as `docs/diagnostics.md` publishes it: the code of every
+/// `## E####` / `## W####` heading, in the order the document carries
+/// them. This is the derivation `vendor/spec/diagnostic-codes.txt` IS,
+/// written down once so the gate and a re-vendor cannot disagree.
+pub fn derive_diagnostic_codes(diagnostics_md: &str) -> Vec<String> {
+    let mut out = Vec::new();
+    for line in diagnostics_md.lines() {
+        let Some(rest) = line.strip_prefix("## ") else {
+            continue;
+        };
+        let code: String = rest
+            .chars()
+            .take_while(|c| c.is_ascii_alphanumeric())
+            .collect();
+        let mut chars = code.chars();
+        let is_code = matches!(chars.next(), Some('E') | Some('W'))
+            && code.len() == 5
+            && chars.all(|c| c.is_ascii_digit());
+        if is_code {
+            out.push(code);
+        }
+    }
+    out
+}
+
+/// The comparison itself, with no filesystem in it, so the defect this
+/// gate exists for can be planted in a test rather than described in a
+/// comment. Both directions, and the message names the codes: WHICH
+/// code moved is the whole content of the finding.
+fn catalog_drift(vendored: &str, diagnostics_md: &str) -> Option<String> {
+    let theirs = derive_diagnostic_codes(diagnostics_md);
+    let ours: Vec<String> = vendored
+        .lines()
+        .map(str::trim)
+        .filter(|l| !l.is_empty())
+        .map(str::to_string)
+        .collect();
+    if ours == theirs {
+        return None;
+    }
+    let missing: Vec<&String> = theirs.iter().filter(|c| !ours.contains(c)).collect();
+    let extra: Vec<&String> = ours.iter().filter(|c| !theirs.contains(c)).collect();
+    let mut parts = Vec::new();
+    if !missing.is_empty() {
+        parts.push(format!(
+            "the compiler has {} the vendored copy does not list",
+            joined_codes(&missing)
+        ));
+    }
+    if !extra.is_empty() {
+        parts.push(format!(
+            "the vendored copy lists {} the compiler no longer has",
+            joined_codes(&extra)
+        ));
+    }
+    if parts.is_empty() {
+        parts.push(format!(
+            "the same {} codes in a different order",
+            theirs.len()
+        ));
+    }
+    Some(parts.join("; "))
+}
+
+fn joined_codes(codes: &[&String]) -> String {
+    codes
+        .iter()
+        .map(|c| format!("`{c}`"))
+        .collect::<Vec<_>>()
+        .join(", ")
+}
+
 fn sibling_spec(root: &Path) -> Option<PathBuf> {
     let candidates = [
         std::env::var_os("WOLF_LANG_PATH").map(PathBuf::from),
@@ -307,4 +410,66 @@ fn sibling_spec(root: &Path) -> Option<PathBuf> {
         .flatten()
         .map(|p| p.join("spec"))
         .find(|p| p.join("grammar.ebnf").is_file())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    const DOC: &str = "# Diagnostics
+
+## E0001 — a thing
+
+Prose.
+
+## E0005 — a retired thing
+
+Prose, and a `## ` that is not a heading in a fence would live here.
+
+## W0603 — a lint
+
+Prose.
+";
+
+    #[test]
+    fn derives_the_codes_in_document_order() {
+        assert_eq!(derive_diagnostic_codes(DOC), ["E0001", "E0005", "W0603"]);
+    }
+
+    #[test]
+    fn a_heading_that_is_not_a_code_is_not_a_code() {
+        let doc = "## Diagnostics\n## E12 — too short\n## EXXXX — not digits\n";
+        assert!(derive_diagnostic_codes(doc).is_empty());
+    }
+
+    #[test]
+    fn an_unmoved_catalog_does_not_drift() {
+        assert_eq!(catalog_drift("E0001\nE0005\nW0603\n", DOC), None);
+    }
+
+    // The planted defect this gate exists for, in the direction that
+    // actually happened: a code RETIRES upstream and the vendored copy
+    // still lists it. Green for the whole 0.2 line before wolf-book#7.
+    #[test]
+    fn a_stale_catalog_naming_a_retired_code_drifts() {
+        let doc = DOC.replace("## E0005 — a retired thing\n\nProse, and a `## ` that is not a heading in a fence would live here.\n\n", "");
+        let msg = catalog_drift("E0001\nE0005\nW0603\n", &doc).expect("stale catalog must drift");
+        assert!(msg.contains("`E0005`"), "{msg}");
+        assert!(msg.contains("no longer has"), "{msg}");
+    }
+
+    // And the other direction: the compiler grows a code and the
+    // vendored copy has not been re-derived.
+    #[test]
+    fn a_catalog_missing_a_new_code_drifts() {
+        let msg = catalog_drift("E0001\nW0603\n", DOC).expect("missing code must drift");
+        assert!(msg.contains("`E0005`"), "{msg}");
+        assert!(msg.contains("does not list"), "{msg}");
+    }
+
+    #[test]
+    fn a_reordered_catalog_drifts_too() {
+        let msg = catalog_drift("E0005\nE0001\nW0603\n", DOC).expect("reorder must drift");
+        assert!(msg.contains("different order"), "{msg}");
+    }
 }
