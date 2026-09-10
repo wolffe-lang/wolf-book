@@ -1103,8 +1103,10 @@ every arm is still type-correct. Order is logic here, not style.
 number's binary spelling right-aligned beside it. No format spec you
 have met writes base 2, so build the bits yourself: `% 2` peels the
 low bit, `/ 2` shifts, and prepending assembles them in the right
-order. What does your loop produce for zero, and is that a spelling
-or an absence?
+order. Do not reach for a fixed-width buffer to poke bits into: a `str`
+cannot be written in place — `s[a..b]` reads a view of one, not a place
+— so every step makes a new string. What does your loop produce for
+zero, and is that a spelling or an absence?
 
 Solution. `ch03/ex3-10.lu`:
 
