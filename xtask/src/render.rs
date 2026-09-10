@@ -42,11 +42,150 @@ fn render_web(root: &Path) -> Result<()> {
         mdbook::MDBook::load(root).map_err(|e| anyhow::anyhow!("loading mdBook config: {e}"))?;
     md.build()
         .map_err(|e| anyhow::anyhow!("mdbook build failed: {e}"))?;
+    let out = root.join("target/render/web");
+    supply_print_css(root, &out)?;
+    reroot_index_links(&out)?;
+    println!("render: web edition at {}", out.display());
+    check_links(&out)
+}
+
+/// mdBook emits `css/print.css` only when `[output.html.print] enable`
+/// is true, and this book sets it false on purpose: the print artifact
+/// is the typst-set PDF, not the browser's. The theme still asks for
+/// the stylesheet unconditionally — `theme/index.hbs` is a fork of the
+/// stock template that dropped its `{{#if print_enable}}` guard — so
+/// every page of the render linked a file nothing wrote, and the
+/// website's link checker found 45 of them (wolf-book#1).
+///
+/// The link stays and the file arrives, which is the half of the fix a
+/// reader can feel: the book keeps a print stylesheet, written for it,
+/// and a chapter printed from the browser now uses it. The site's own
+/// build had been supplying this from the theme; it belongs here.
+fn supply_print_css(root: &Path, out: &Path) -> Result<()> {
+    let src = root.join("theme/css/print.css");
+    if !src.is_file() {
+        bail!("render: theme/css/print.css is missing — index.hbs links it (wolf-book#1)");
+    }
+    let dst_dir = out.join("css");
+    std::fs::create_dir_all(&dst_dir).with_context(|| format!("creating {}", dst_dir.display()))?;
+    std::fs::copy(&src, dst_dir.join("print.css")).with_context(|| {
+        format!(
+            "copying {} to {}",
+            src.display(),
+            dst_dir.join("print.css").display()
+        )
+    })?;
+    Ok(())
+}
+
+/// mdBook writes the first chapter twice — at its own path and again as
+/// the render root's `index.html` — and re-roots only the chrome, not
+/// the body. So a `../` in the first chapter's prose is correct where
+/// the chapter lives and points out of the render at the root, which is
+/// how `book/index.html` came to link `../back/colophon.html`
+/// (wolf-book#1, the forty-sixth dead link). Every body link on that one
+/// page is one level too deep by construction, so dropping one `../`
+/// from each is the whole correction — and `check_links` below is what
+/// keeps it honest.
+fn reroot_index_links(out: &Path) -> Result<()> {
+    let at = out.join("index.html");
+    if !at.is_file() {
+        return Ok(());
+    }
+    let html = std::fs::read_to_string(&at)?;
+    let fixed = html
+        .replace("href=\"../", "href=\"")
+        .replace("src=\"../", "src=\"");
+    if fixed != html {
+        std::fs::write(&at, fixed)?;
+    }
+    Ok(())
+}
+
+/// Every internal link in the render resolves to a file that exists.
+/// Nothing checked this until the website's link checker did, from
+/// outside, after publication (wolf-book#1) — and it found both of the
+/// defects the two functions above fix. A gate here is the reason
+/// neither can come back.
+fn check_links(out: &Path) -> Result<()> {
+    let mut pages = Vec::new();
+    collect_html(out, &mut pages)?;
+    pages.sort();
+    let mut dead: Vec<String> = Vec::new();
+    let mut checked = 0usize;
+    for page in &pages {
+        let html = std::fs::read_to_string(page)?;
+        let dir = page.parent().unwrap_or(out);
+        for href in hrefs(&html) {
+            let target = href
+                .split('#')
+                .next()
+                .unwrap_or_default()
+                .split('?')
+                .next()
+                .unwrap_or_default();
+            if target.is_empty() || target.contains("://") || target.starts_with("mailto:") {
+                continue;
+            }
+            checked += 1;
+            let at = if let Some(rest) = target.strip_prefix('/') {
+                out.join(rest)
+            } else {
+                dir.join(target)
+            };
+            if !at.exists() {
+                dead.push(format!(
+                    "{} -> {href}",
+                    page.strip_prefix(out).unwrap_or(page).display()
+                ));
+            }
+        }
+    }
+    if !dead.is_empty() {
+        for d in &dead {
+            eprintln!("render: DEAD LINK: {d}");
+        }
+        bail!("link check failed ({} dead link(s))", dead.len());
+    }
     println!(
-        "render: web edition at {}",
-        root.join("target/render/web").display()
+        "render: link check — {checked} internal links across {} pages, none dead",
+        pages.len()
     );
     Ok(())
+}
+
+fn collect_html(dir: &Path, out: &mut Vec<PathBuf>) -> Result<()> {
+    for entry in std::fs::read_dir(dir)? {
+        let path = entry?.path();
+        if path.is_dir() {
+            collect_html(&path, out)?;
+        } else if path.extension().is_some_and(|e| e == "html") {
+            out.push(path);
+        }
+    }
+    Ok(())
+}
+
+/// The `href="…"` and `src="…"` values of one page, in source order.
+/// A regex would be shorter and a parser would be heavier; the render
+/// is our own handlebars output, so a scan for the two attributes is
+/// exactly as much HTML as this needs to understand.
+fn hrefs(html: &str) -> Vec<String> {
+    let mut out = Vec::new();
+    for attr in ["href=\"", "src=\""] {
+        let mut rest = html;
+        while let Some(at) = rest.find(attr) {
+            rest = &rest[at + attr.len()..];
+            match rest.find('"') {
+                Some(end) => {
+                    out.push(rest[..end].to_string());
+                    rest = &rest[end + 1..];
+                }
+                None => break,
+            }
+        }
+    }
+    out
 }
 
 // -------------------------------------------------------------- summary
