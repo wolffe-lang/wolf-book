@@ -2,6 +2,51 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs34, the second pin bump — 2026-09-09 — an empty list answers
+
+Taking something out of an empty list used to stop the program. It
+hands back "nothing there" now, and the difference is the one this book
+has been making since chapter 1: a fault is the program being wrong, and
+an error is an answer the program should have an opinion about. An empty
+list is the second kind. Chapter 5 said the opposite for eight
+printings, and the sentence that said it is gone.
+
+The four reads that can come up empty behave the same way now — take the
+last one, ask for the one at an index, ask for the first, ask for the
+last — and none of them stops the program. Reaching in by subscript
+still does, and the chapter says why the two are different: an index the
+program computed and got wrong is not the same event as a lookup that
+found nothing.
+
+The build did not discover that one, and could not have. The check that
+notices a program has started working asks the compiler for a verdict
+without running anything, which is enough to see a program stop being
+refused and not enough to see it stop stopping. So this change arrived
+as a broken test rather than as a graduation, which is what last
+printing's notes said would happen, in writing, before it could. The
+page was fixed by hand and the note that predicted it is now the note
+that records it.
+
+The aligned branch layout from last printing runs on both tools now, so
+the label saying which tool ran it is gone — and that one the build did
+find, in the same run, and said so in its own words. Two changes, one
+release, and the machinery told the difference between them without
+being asked.
+
+Chapter 12's closed-channel error prints in lowercase on both tools at
+last. The program around it still runs on one, and the reason has not
+moved: the rule says a send on a closed channel hands back an error, and
+on the compiler a send cannot hand back anything. That is one open
+question, named on the page, and it is not this printing's to close.
+
+The two version lines have swapped which one is exact. The interpreter
+now names the compiler above it character for character, which is as
+close as a pair cut on two schedules gets; the compiler runs two
+releases behind the interpreter beside it, for the ordinary reason that
+the interpreter published twice since. Both numbers are read off the
+tools rather than typed, and neither is called a first, because this
+book has been wrong about a first before and wrote that down too.
+
 ## bs34, the pin bump — 2026-09-09 — a line may start with `else`
 
 The compiler stopped rejecting a layout people kept writing. An `if`
