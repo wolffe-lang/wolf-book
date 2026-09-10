@@ -246,6 +246,7 @@ fn verify_diagnostic_codes(root: &Path, failures: &mut Vec<String>) -> Result<()
         .filter(|l| !l.is_empty())
         .collect();
     let appendix = std::fs::read_to_string(root.join("book/back/appendix-c.md"))?;
+    failures.extend(appendix_c_count_failures(&known, &appendix));
     for code in codes_in(&appendix) {
         if !known.contains(&code.as_str()) {
             failures.push(format!(
@@ -266,6 +267,71 @@ fn verify_diagnostic_codes(root: &Path, failures: &mut Vec<String>) -> Result<()
         }
     }
     Ok(())
+}
+
+/// Appendix C's opening sentence counts two things and until bs35 no
+/// gate read either: how many codes the compiler's catalog holds, and
+/// how many of them this edition names. Both are arithmetic on files
+/// that are already in the tree, and both were moved by hand at every
+/// pin bump that touched them (wolf-book#7). This is Appendix D's
+/// pattern — the comparison is pure so the defect can be planted in a
+/// test — with one difference: Appendix C writes its counts as DIGITS,
+/// so there is no `number_word` in it.
+fn appendix_c_count_failures(known: &[&str], page: &str) -> Vec<String> {
+    let mut failures = Vec::new();
+    // The page wraps at 72 columns, so the sentence reaches this check
+    // with a newline inside it. Collapse whitespace first or the check
+    // finds nothing and passes a page that says the wrong number.
+    let prose = reader_prose(page)
+        .split_whitespace()
+        .collect::<Vec<_>>()
+        .join(" ");
+    let shown = appendix_c_table_codes(page);
+    for (count, claim) in [
+        (
+            known.len(),
+            format!("The catalog holds {} codes", known.len()),
+        ),
+        (
+            shown.len(),
+            format!(
+                "these {} are the ones a page in this edition names",
+                shown.len()
+            ),
+        ),
+    ] {
+        if !prose.contains(&claim) {
+            failures.push(format!(
+                "book/back/appendix-c.md: the count is {count} and the page does not say \
+                 `{claim}`"
+            ));
+        }
+    }
+    failures
+}
+
+/// The codes Appendix C's own table lists, one row each. The table is
+/// the page's answer to "which codes does this edition name", so the
+/// second half of the count sentence is arithmetic on it rather than a
+/// number somebody kept in their head.
+fn appendix_c_table_codes(page: &str) -> BTreeSet<String> {
+    let mut out = BTreeSet::new();
+    for line in page.lines() {
+        let line = line.trim();
+        if !line.starts_with('|') {
+            continue;
+        }
+        let first = line.trim_matches('|').split('|').next().unwrap_or_default();
+        let cell = first.trim().trim_matches('`');
+        let mut chars = cell.chars();
+        if matches!(chars.next(), Some('E') | Some('W'))
+            && cell.len() == 5
+            && chars.all(|c| c.is_ascii_digit())
+        {
+            out.insert(cell.to_string());
+        }
+    }
+    out
 }
 
 fn codes_in(text: &str) -> Vec<String> {
@@ -937,6 +1003,92 @@ mod tests {
     #[test]
     fn the_control_passes() {
         assert!(spec_shape_failures(&good_spec(), &good_page()).is_empty());
+    }
+
+    // ------------------------------------------------ Appendix C's counts
+
+    /// A miniature Appendix C: a two-sentence opening and a three-row
+    /// table, shaped exactly like the real page.
+    const APPENDIX_C: &str = "# Appendix C — Diagnostics
+
+Every diagnostic the book shows. The catalog holds 4 codes; these 3 are
+the ones a page in this edition names.
+
+| Code | What it says | Shown by | Sections |
+|------|--------------|----------|----------|
+| `E0001` | a thing | wolf | 1.1 |
+| `E0005` | another thing | lupin | 2.2 |
+| `W0603` | a lint | wolf | 6.1 |
+";
+
+    fn catalog4() -> Vec<&'static str> {
+        vec!["E0001", "E0005", "E0409", "W0603"]
+    }
+
+    #[test]
+    fn appendix_c_control_passes() {
+        assert!(appendix_c_count_failures(&catalog4(), APPENDIX_C).is_empty());
+    }
+
+    /// The planted defect this gate exists for, in the direction that
+    /// actually happened: a code retires upstream, the catalog is one
+    /// shorter, and the sentence still says the old number. Green for
+    /// the whole 0.2 line before wolf-book#7.
+    #[test]
+    fn a_catalog_that_shrank_under_the_sentence_is_caught() {
+        let catalog = vec!["E0001", "E0005", "W0603"];
+        let failures = appendix_c_count_failures(&catalog, APPENDIX_C);
+        assert_eq!(failures.len(), 1, "{failures:#?}");
+        assert!(
+            failures[0].contains("The catalog holds 3 codes"),
+            "{failures:#?}"
+        );
+    }
+
+    /// The other half of the same sentence: a row joins the table and
+    /// nobody re-counts it.
+    #[test]
+    fn a_table_row_added_without_recounting_is_caught() {
+        let page = APPENDIX_C.replace(
+            "| `E0001` | a thing | wolf | 1.1 |",
+            "| `E0001` | a thing | wolf | 1.1 |\n| `E0409` | a fourth | wolf | 5.1 |",
+        );
+        let failures = appendix_c_count_failures(&catalog4(), &page);
+        assert_eq!(failures.len(), 1, "{failures:#?}");
+        assert!(failures[0].contains("these 4 are"), "{failures:#?}");
+    }
+
+    #[test]
+    fn the_count_sentence_survives_the_page_wrap() {
+        // The real page wraps the sentence across two lines; the check
+        // has to collapse whitespace or it passes a wrong number.
+        let page = APPENDIX_C.replace(
+            "The catalog holds 4 codes; these 3 are
+the ones",
+            "The catalog
+holds 4 codes; these 3 are the
+ones",
+        );
+        assert!(appendix_c_count_failures(&catalog4(), &page).is_empty());
+    }
+
+    #[test]
+    fn the_table_reader_takes_the_first_cell_only() {
+        // A section cell naming a code must not be counted as a row.
+        let page = APPENDIX_C.replace(
+            "| `W0603` | a lint | wolf | 6.1 |",
+            "| `W0603` | a lint, see `E0409` | wolf | 6.1 |",
+        );
+        assert_eq!(appendix_c_table_codes(&page).len(), 3);
+    }
+
+    #[test]
+    fn the_real_appendix_c_agrees_with_the_vendored_catalog() {
+        // The check as CI runs it, against the repository's own files.
+        let root = crate::repo_root().expect("repo root");
+        let mut failures = Vec::new();
+        verify_diagnostic_codes(&root, &mut failures).expect("check runs");
+        assert!(failures.is_empty(), "{failures:#?}");
     }
 
     #[test]
