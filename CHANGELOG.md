@@ -17,7 +17,7 @@ usually go: either the grammar grows the thing or the message explains
 why it has not, and this time it was both.
 
 The section's example carries three shapes of arm beside the catch-all
-now: a plain value, a range, and a test on the value it just named.
+now: a plain value, a range, and a test on the value it has named.
 That last one is the arm every switch-shaped program in the world ends
 with, and until this printing it compiled everywhere except the
 machine that turns programs into binaries.
