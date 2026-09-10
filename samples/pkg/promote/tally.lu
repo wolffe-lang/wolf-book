@@ -1,0 +1,11 @@
+//! Count the lines in a file, the smallest thing worth a package.
+//! pkg {
+//!     edition: "1",
+//!     capabilities: [fs],
+//! }
+
+fn main() -> !int {
+    fs_write_text("notes.txt", "one\ntwo\nthree\n")?
+    print("{fs_read_text("notes.txt")?.lines().count()} lines")
+    0
+}

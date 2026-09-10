@@ -57,6 +57,7 @@
 [Appendix B — Traps](back/appendix-b.md)
 [Appendix C — Diagnostics](back/appendix-c.md)
 [Appendix D — Spec cross-reference](back/appendix-d.md)
+[Appendix E — The driver's surface](back/appendix-e.md)
 [Solutions](back/solutions.md)
 [Glossary](back/glossary.md)
 [Index](back/book-index.md)

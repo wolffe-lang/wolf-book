@@ -477,6 +477,9 @@ part's fourth project and its only concurrent one*
   cross-checked against the compiler's catalog in CI.
 - **Appendix D — Spec cross-reference** — book section → spec clause,
   for readers who want the normative text.
+- **Appendix E — The driver's surface** — the whole of `wolf --help`,
+  replayed rather than transcribed, and a page each for the three
+  subcommands no chapter teaches: `fmt`, `init`, `vendor`.
 - **Solutions** — every exercise in chapters 1–30 and 33, collapsed by default
   in the web edition, extracted and CI-run like all samples. The solo
   (chapter 31) publishes milestone checkpoints instead — the one
