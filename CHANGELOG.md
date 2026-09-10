@@ -66,6 +66,17 @@ the other one is exact — the same release that sits beside it — while
 the other one names a compiler forty-three commits back. Both numbers
 are read off the tools rather than typed.
 
+The last thing about this book that was kept by hand now checks
+itself. A version number written into a sentence — the name of a
+download, or the line about what a build says when nobody stamped it —
+has no program behind it, so nothing in the build could tell whether it
+was still true, and five printings running somebody remembered to
+change it. Every one of them is written down now with the version it
+was last read against, on the two clocks the two tools release on, and
+a printing that moves past one of those readings fails the build and
+names the sentence. Nine tests plant the mistakes it is meant to catch,
+including the one that actually happened.
+
 The interpreter did not move, and that was decided rather than
 defaulted. A newer one is published, and running the whole book
 against it turned up twelve failures, ten of them one thing: two type
