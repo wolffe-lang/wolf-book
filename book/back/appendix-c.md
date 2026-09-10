@@ -1,7 +1,7 @@
 # Appendix C — Diagnostics
 
 Every diagnostic the book shows, with the one-line summary the compiler's
-own catalog carries for it. The catalog holds 168 codes; these 54 are the
+own catalog carries for it. The catalog holds 169 codes; these 55 are the
 ones a page in this edition names. A code is stable: it identifies a
 rule, not a message, and `wolf --explain E1001` prints the whole entry
 for any of them (the summary, the reasoning, and the fix) whether or
@@ -66,6 +66,7 @@ shows both readings of it side by side.
 | `E1504` | this package uses a capability its manifest does not declare | wolf | 24.3 |
 | `E1506` | a dependency's content hash does not match wolf.sum | wolf | 23.3 |
 | `W0313` | this `pub` item has no doc comment | wolf | 22.2 |
+| `W0601` | this fallible result is silently discarded | wolf | 12.1 |
 | `W0603` | this row tag's case contradicts its payload | wolf | 27.5 |
 | `W1003` | this `take` parameter is returned unchanged | wolf | 7.2, Notation |
 | `W1101` | this write stays inside the task | wolf | 13.2 |
