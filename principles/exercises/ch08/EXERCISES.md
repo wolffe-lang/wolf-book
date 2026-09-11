@@ -166,7 +166,7 @@ fn main() -> !int {
     in r {
         var xs = List[int]()
         (mut xs).push(1)
-        ch.send(move r)
+        ch.send(move r)?
         0
     }
 }
