@@ -2,6 +2,61 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs43, the book takes the eleventh — 2026-09-11 — the whole of generics on one page, the bare `if`, and every send that could fail says so
+
+The pin moves to two release tags at once: wolf 0.2.11 and lupin
+0.1.33. §1.2 and the colophon print the bare stamp again, and the pair
+reads one release and ninety-one commits, both computed from the
+stamps. Nothing in the language moved between the dev sha this book
+last pinned and the tag, so no transcript on these pages changed for
+the compiler's sake; the nine papercuts that landed on the compiler's
+trunk the same day are past the tag, and a reader who sees their new
+wording in a fresh build is reading a compiler this printing does not
+pin. §22.2's interface listing names `toolchain 0.2.11` and its hashes
+did not move, which is what that page says a toolchain bump should
+look like.
+
+Chapter 5's trait section now covers generics whole, on the
+maintainer's rule that a subject introduced once is covered once.
+§5.3's `best` took a comparison function because nothing was known
+about its `T`; §5.6 writes it again with the function gone, `best[T:
+Ord]`, and reads `<` through `>=` and `<=>` off one `cmp`. Prefix `-`
+dispatches through `Neg`, on the receipt's own refund. A bound is a
+list, and `capped[T: Add + Ord]` uses both names in one body. One
+paragraph says what no bound grants, in the compiler's own words:
+`copy` needs none, and `!`, `&&` and `||` have no trait. Chapter 11's
+bare `[S]` now cites that rule instead of teaching it. Every new block
+runs on both machines.
+
+Chapter 3 teaches the second spelling of `if`: `if leap then 29 else
+28`, one expression a branch, closed by `then` and by the arm's comma
+when it sits in a `match`. The page states the three rules and what
+the formatter does, which is nothing, except break a bare `if` to
+braces when its line outgrows the width, one way only. Exercise 5-7,
+the RPN evaluator, is chapter 6's exercise 6-14 now, the first under
+§6.2, because `?` on `pop()` is its point and chapter 5 had not taught
+it; `words()` is named as the tokenizer.
+
+Every bare statement `send` outside chapter 12 that the compiler names
+as a dropped failure is spelled `?` now, or `else { … }` where the
+function has no row to hand it to: twenty-five sites on pages across
+seven chapters, forty-six in the exercise corpus. The task tails the
+compiler does not name stay bare, and §10.1 says why beside the first
+one a reader meets. The transcripts did not move, because every one of
+them is the interpreter's, and the interpreter does not warn. One
+finding is filed rather than absorbed: a bare integer literal handed
+to a bounded generic is `i32` on the compiler, never `int`, so §5.6
+calls its `refund` on a field and a binding and says nothing about
+literals.
+
+Measured at the pin, prediction first: 494 samples (251 book blocks,
+243 corpus roots, 16 members), 489 passed, 5 pending, 0 flips; 439 of
+462 console blocks replayed; 29 samples warn with no directive, down
+from 59, and none of the 29 is a dropped send. One console re-record
+was not predicted: a deadlock trap line that names its tasks by source
+offset moved when a line above it grew, and the page reads the new
+offset.
+
 ## bs42, the struct before the trait — 2026-09-11 — a name for the row, and the bound that grants `+`
 
 A reader who reached chapter 5's trait section found it a leap, and

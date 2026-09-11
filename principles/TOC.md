@@ -1375,3 +1375,16 @@ sprint files remain the implementation contracts for everything else.
   were, because "a temporary has no home" is an ownership sentence.
   Exercises 5-9 and 5-10 go with them as 7-17 and 7-18; their old
   numbers are not reused (EXERCISES.md §1).
+- **bs43 (the eleventh; generics whole in §5.6; the bare `if`; 5-7 -> 6-14;
+  the sends):** the pin moves to the two release tags, wolf 0.2.11 and
+  lupin 0.1.33. §5.6 takes the rest of generics on the maintainer's rule
+  ("if we introduce generics we should cover the entirety in the whole
+  section, not split it up across many chapters"): `best[T: Ord]`, `Neg`,
+  a two-trait bound used in one body, and what no bound grants; chapter
+  11's `[S]` paragraph cites the rule instead of teaching it. §3.2 gains
+  the bare `if c then a else b` (wolf-book#30) and exercise 3-15; the
+  insert renumbers `book/ch03/s7..s15`. Exercise 5-7 is 6-14 (wolf-
+  book#35), the first under §6.2; its old number is not reused. Every
+  bare statement send the compiler names is `?` or `else { … }`
+  (wolf-book#21), and §10.1 says why a task's tail needs neither. No
+  section number moves and no shipped anchor changes meaning.
