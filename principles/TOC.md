@@ -84,6 +84,12 @@ wolf, without hearing the word "lifetime."*
 - 5.3 Generics in square brackets — write `fn top[T](…)`, get errors at
   the definition site, and never type a turbofish.
 - 5.4 Indexing that traps — predict `xs[10]` on a one-element list.
+- 5.5 Structs — give the receipt's row names: the declaration, the
+  literal, a field read, a field write through `var`, and when a tuple
+  is the better shape.
+- 5.6 Traits — fix §5.3's refused `total[T]` with a bound, put a `Line`
+  on a `Row` and a `Header` with one default body, and read `==` on a
+  struct as the `Eq` impl it dispatches to.
 - Exercises 5-1 … 5-5.
 
 ### Chapter 6 — Errors are values
@@ -121,6 +127,8 @@ this, and how big is the granule?" — asked at four sizes.*
   instead.
 - 7.7 What the machine does — connect `mut`/`read`/moves to `noalias`,
   freezing, and memcpy-and-forget.
+- 7.8 Deciding at run time — cast a binding to `dyn Draw`, count the
+  two loads, and read why a temporary has no home.
 - Exercises 7-1 ….
 
 ### Chapter 8 — Regions: memory in the shape you meant
@@ -1345,3 +1353,21 @@ sprint files remain the implementation contracts for everything else.
     which is the check that has to be run by hand at every bump until
     trap claims have machinery of their own. Re-measure the inventory;
     do not subtract from the last one.
+- **bs42 (§5.5 split; §7.8 grown; one shipped anchor moved):** on the
+  maintainer's reading ("Section 5.5 feels like a leap in difficulty,
+  not only because of the struct showcase without ever having
+  introduced wolf structs, but the prose feels light in addition"),
+  chapter 5's trait section is split in two: a new §5.5 "Structs" on
+  the receipt's `Row`, and §5.6 "Traits", which opens on §5.3's refused
+  `total[T]` and the bound that repairs it (`[type.trait.op]`, s155).
+  The anchor `ch05.md#5.5` therefore changes meaning — it was the trait
+  section and is the struct section now — which is the one exception
+  this document has made to "section numbers are permanent anchors",
+  taken because the material at the old number was the defect and a
+  §5.5 that is not about structs would leave the leap in place. `dyn`,
+  the vtable, the cast-a-binding rule (E0810) and the impl on a
+  primitive with the qualified call move to a new §7.8 "Deciding at run
+  time", grown at the end of chapter 7 the way §17.4 and chapter 33
+  were, because "a temporary has no home" is an ownership sentence.
+  Exercises 5-9 and 5-10 go with them as 7-17 and 7-18; their old
+  numbers are not reused (EXERCISES.md §1).
