@@ -151,59 +151,6 @@ the row instead", that policy has a chapter of its own next.
 
 ## Chapter batch
 
-**Exercise 5-7** *(comprehension + extension · lupin)*. An RPN
-evaluator is a loop and a stack, and the stack is a `List`. Given the
-tokens `3 4 + 2 *`, trace the stack contents after each token on paper,
-then run. Then answer from your trace, not from the code: which input
-would make `stack.len < 2` true at an operator, and what does your
-evaluator do about it?
-
-Solution. `ch05/ex5-7.lu`:
-
-```wolf
-fn eval_rpn(tokens: List[str]) -> int ! {Underflow, BadToken} {
-    var stack = List[int]()
-    for t in tokens {
-        if t == "+" || t == "-" || t == "*" || t == "/" {
-            if stack.len < 2 { return Underflow }
-            let b = (mut stack).pop() else { return Underflow }
-            let a = (mut stack).pop() else { return Underflow }
-            if t == "+" { (mut stack).push(a + b) } else if t == "-" { (mut stack).push(a - b) } else if t == "*" { (mut stack).push(a * b) } else { (mut stack).push(a / b) }
-        } else {
-            let n = t.to_int() else { return BadToken }
-            (mut stack).push(n)
-        }
-    }
-    if stack.len != 1 { return Underflow }
-    (mut stack).pop() else { return Underflow }
-}
-fn main() -> !int {
-    var tokens = List[str]()
-    (mut tokens).push("3")
-    (mut tokens).push("4")
-    (mut tokens).push("+")
-    (mut tokens).push("2")
-    (mut tokens).push("*")
-    let v = eval_rpn(tokens) else |_| { return 1 }
-    print("{v}")
-    0
-}
-```
-
-```console
-$ lupin ex5-7.lu
-14
-```
-
-The trace: `[3]`, `[3 4]`, `[7]`, `[7 2]`, `[14]`. An input like
-`3 +` reaches the operator with one element on the stack, and the
-evaluator returns `Underflow` instead of trapping on `pop`: the error
-row is doing bounds-checking's job one level up, where the caller can
-do something about it. (The row previews chapter 6; reading it is
-enough here.) `pop` carries a row of its own, which is why each call
-takes an `else` even under the guard: the compiler checks the call, not
-the reasoning around it.
-
 **Exercise 5-11** *(extension · lupin)*. Exercise 2-7 encoded runs
 with byte slices; a coder without a decoder is half a tool. Respell
 `encode` over `chars()`, growing the output with `"{prev}{run_len}"`,
@@ -515,3 +462,6 @@ make them read it back out of an error message.
 Exercises 5-9 and 5-10 (the third `Draw` shape; the cast-a-binding
 rule) moved to chapter 7 with the material they belong to, as 7-17 and
 7-18. The numbers are not reused.
+
+Exercise 5-7 (the RPN evaluator) moved to chapter 6 as 6-14, where `?`
+on `pop()` is the point. The number is not reused.

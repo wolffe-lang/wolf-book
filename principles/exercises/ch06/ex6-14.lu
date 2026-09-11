@@ -1,0 +1,25 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 6-14 solution: an RPN evaluator — `?` on pop() and on
+// to_int(), the row in the signature, words() as the tokenizer.
+fn evaluate(line: str) -> int ! {none, parse} {
+    var stack = List[int]()
+    for t in line.words() {
+        match t {
+            "+" => { let b = (mut stack).pop()?; let a = (mut stack).pop()?; (mut stack).push(a + b) }
+            "-" => { let b = (mut stack).pop()?; let a = (mut stack).pop()?; (mut stack).push(a - b) }
+            "*" => { let b = (mut stack).pop()?; let a = (mut stack).pop()?; (mut stack).push(a * b) }
+            "/" => { let b = (mut stack).pop()?; let a = (mut stack).pop()?; (mut stack).push(a / b) }
+            _ => (mut stack).push(t.to_int()?),
+        }
+    }
+    (mut stack).pop()
+}
+fn main() -> !int {
+    print("{evaluate("3 4 + 2 *")}")
+    let short = evaluate("3 +") else |err| { print("short stack: {err}"); -1 }
+    print("{short}")
+    let bad = evaluate("3 x +") else |err| { print("not a number: {err}"); -1 }
+    print("{bad}")
+    0
+}

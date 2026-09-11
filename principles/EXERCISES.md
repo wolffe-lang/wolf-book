@@ -992,7 +992,7 @@ chapters is a defect.
 - **Build-a-thing minis** — small programs spread deliberately across
   domains, at most one domain per chapter: temperature table (ch1),
   run-length coder (ch2), calendar arithmetic (ch4), RPN calculator
-  (ch5), head-style row handling (ch6), LCS diff (ch7), LRU cache and
+  (ch6, with head-style row handling), LCS diff (ch7), LRU cache and
   room graph (ch8), pipeline (ch10), worker pool (ch11), message
   router (ch12), grep-lite and n-body step (ch13), mailbox service
   (ch14), supervisor-in-miniature (ch15), maze in a region (ch16),

@@ -41,6 +41,62 @@ $ lupin ex6-6.lu
 
 ## §6.2 — `?`, `else`, `else |err|`
 
+**Exercise 6-14** *(comprehension + extension · lupin)*. An RPN
+evaluator is a loop and a stack, and the stack is a `List[int]`;
+`words()` (§2.5) is the tokenizer, so `"3 4 + 2 *".words()` is the
+input. Each operator pops twice, and `pop` answers `int ! {none}`, so
+spell it `(mut stack).pop()?` and give `evaluate` the row `! {none,
+parse}`, because `to_int` fails on a token that is not a number. Trace
+the stack after each token on paper, then run. Then feed it `3 +` and
+`3 x +` and say, from the row and not from the code, which call
+answers each one and where your `else |err|` prints.
+
+Solution. `ch06/ex6-14.lu`:
+
+```wolf
+fn evaluate(line: str) -> int ! {none, parse} {
+    var stack = List[int]()
+    for t in line.words() {
+        match t {
+            "+" => { let b = (mut stack).pop()?; let a = (mut stack).pop()?; (mut stack).push(a + b) }
+            "-" => { let b = (mut stack).pop()?; let a = (mut stack).pop()?; (mut stack).push(a - b) }
+            "*" => { let b = (mut stack).pop()?; let a = (mut stack).pop()?; (mut stack).push(a * b) }
+            "/" => { let b = (mut stack).pop()?; let a = (mut stack).pop()?; (mut stack).push(a / b) }
+            _ => (mut stack).push(t.to_int()?),
+        }
+    }
+    (mut stack).pop()
+}
+fn main() -> !int {
+    print("{evaluate("3 4 + 2 *")}")
+    let short = evaluate("3 +") else |err| { print("short stack: {err}"); -1 }
+    print("{short}")
+    let bad = evaluate("3 x +") else |err| { print("not a number: {err}"); -1 }
+    print("{bad}")
+    0
+}
+```
+
+```console
+$ lupin ex6-14.lu
+14
+short stack: none
+-1
+not a number: parse
+-1
+```
+
+The trace: `[3]`, `[3 4]`, `[7]`, `[7 2]`, `[14]`. `3 +` reaches the
+operator with one element on the stack, so the second `pop()?` answers
+`none` and hands it up: `evaluate` ends there, and `main`'s `else
+|err|` prints the tag. `3 x +` never reaches the operator: `"x"` goes
+to the `_` arm, `to_int()?` answers `parse`, and the same `else` prints
+that. Nothing in `evaluate` tests `stack.len`, because the row is
+doing that check one level up, at the call that can fail, which is
+where chapter 6 puts it. The tail `(mut stack).pop()` is the answer
+and its own row at once: an empty input is `none` too, from the last
+line, with no special case.
+
 **Exercise 6-7** *(extension · lupin)*. `head` prints a file's first
 `n` lines, and a file with fewer than `n` lines is not a crash, it is an
 answer. Write `head(text, n)` whose error carries how many lines actually

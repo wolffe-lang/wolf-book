@@ -1,6 +1,6 @@
 # EXERCISES-INDEX.md — the corpus ledger
 
-Generated view of every exercise in the corpus: 329 total. Sources:
+Generated view of every exercise in the corpus: 330 total. Sources:
 the exemplar batch in `principles/EXERCISES.md` §5 (26 exercises,
 folded in unchanged) and the per-chapter files
 `principles/exercises/chNN/EXERCISES.md` (+ `appx/` for the
@@ -120,7 +120,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §2.4 — Iterating meaning | 2-14 | fingers · lupin | run (lupin) |
 | §2.4 — Iterating meaning (master only, not printed) | 2-15 | extension · lupin | run (lupin) |
 
-## ch03 — 14 exercises
+## ch03 — 15 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
@@ -138,6 +138,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | Chapter batch | 3-12 | fingers · lupin | run (lupin) |
 | Chapter batch (master only, not printed) | 3-13 | comprehension · lupin | run (lupin) |
 | Chapter batch | 3-14 | fingers · lupin | run (lupin) |
+| §3.2 — Everything is an expression | 3-15 | fingers · lupin | run (lupin) |
 
 ## ch04 — 11 exercises
 
@@ -155,7 +156,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | Chapter batch | 4-8 | fingers · lupin | run (lupin) |
 | Chapter batch | 4-11 | extension · lupin | run (lupin) |
 
-## ch05 — 16 exercises
+## ch05 — 15 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
@@ -165,7 +166,6 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §5.4 — exemplar batch (EXERCISES.md §5) | 5-4 | comprehension · lupin | run (lupin) |
 | §5.3 — exemplar batch (EXERCISES.md §5) | 5-5 | design | prose |
 | §5.1 — `List`, `Map`, `Set`, tuples | 5-6 | extension · lupin | run (lupin) |
-| Chapter batch | 5-7 | comprehension + extension · lupin | run (lupin) |
 | §5.2 — The combinator style | 5-8 | comprehension · pending | pending |
 | §5.5 — Structs | 5-16 | fingers · lupin | run (lupin) |
 | §5.5 — Structs | 5-17 | extension · lupin | run (lupin) |
@@ -176,7 +176,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | Chapter batch | 5-13 | extension · lupin | run (lupin) |
 | Chapter batch | 5-15 | extension · lupin | run (lupin) |
 
-## ch06 — 13 exercises
+## ch06 — 14 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
@@ -186,6 +186,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §6.2 — exemplar batch (EXERCISES.md §5) | 6-4 | comprehension · lupin | run (lupin) |
 | §6.3 — exemplar batch (EXERCISES.md §5) | 6-5 | comprehension · lupin | run (lupin) |
 | §6.1 — `!T` and the row | 6-6 | comprehension · lupin | run (lupin) |
+| §6.2 — `?`, `else`, `else |err|` | 6-14 | comprehension + extension · lupin | run (lupin) |
 | §6.2 — `?`, `else`, `else |err|` | 6-7 | extension · lupin | run (lupin) |
 | §6.4 — Hardening by refactor | 6-9 | extension · lupin | run (lupin) |
 | §6.5 — Capstone: wordcount | 6-10 | extension · lupin | run (lupin) |
