@@ -2,6 +2,68 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs36, the second pin bump — 2026-09-11 — the number that means something
+
+This printing is true for a release again. The compiler's version is a
+plain number with nothing stuck to the front of it, which is what a
+build made at a release says and what no other build is allowed to say,
+and chapter 1 and the colophon read it that way round. The commit
+printed beside it is seven characters long because the toolchain now
+picks that length on purpose. Last printing it picked the length from
+how many objects your copy of the project happened to hold, so two
+people at the same commit read two different lines; the book found that
+by being wrong in public and the toolchain fixed it.
+
+The two tools name each other as always, and this time the compiler
+names an interpreter *newer* than the one beside it — the interpreter
+published again between the compiler being tested and this printing
+being pinned. That is a third arrangement in three printings: one
+behind, then exact, now one ahead. The book keeps printing both numbers
+as they are and keeps refusing to call any of it a first.
+
+A number chapter 22 teaches has stopped lying. It is the digest of a
+module's public face, and the honest answer to "can the people who
+depend on me tell that I changed something". For as long as this book
+has printed it, the compiler's own version went into it, so upgrading
+your toolchain moved the number on a package nobody had touched — a
+change-detector that fires when nothing changed. The book found that
+two printings ago and wrote it down; it is ruled now, the version is
+printed beside the digest instead of inside it, and both numbers move
+once here for the last time. Chapter 25's line is the proof, as it has
+been each time: of its three numbers, two hold to the byte and the
+third does not.
+
+Three programs' worth of paperwork closed with it. Writing into the
+middle of a piece of text used to be met with "the compiler cannot do
+this yet", which told a reader to wait for something that is never
+coming; text does not change after it is built, and the refusal says
+so now, in a sentence that also shows how to build the new text
+instead. Chapter 3's exercise had already been given that rule in one
+sentence last printing, on the strength of an argument rather than a
+message. The message agrees with it now.
+
+Something was wrong on a page and the build was green. An exercise in
+chapter 22 shows the compiler printing a digest, and all three of its
+moving lines had gone stale — the version by a release, both numbers by
+the change above. Nothing caught it: the build replays every transcript
+in the chapters and none of the two hundred and thirty-seven in the
+exercise collection, on the reasoning that the programs there are run
+directly, which is true of the programs and not of what the tools print
+around them. It was found by searching for the old version number by
+hand, after two other pages failed. That is written down as an issue,
+because the next one will not be found by luck.
+
+The check built last printing paid for itself twice in this one, and
+neither time on the sites it was built for. Every version number
+written into a sentence is now recorded with the version it was last
+read against, and moving the pin fails the build until somebody
+re-reads each one. It did that. It also caught two sentences this
+printing changed by hand — a paragraph that swapped one interpreter
+number for another and left the record stale in both directions, and a
+new sentence that introduced a version number nobody had classified.
+Neither was a pin moving. Both were edits, and a person would have
+missed them.
+
 ## bs37 — 2026-09-10 — the book names the tool
 
 The book has told you since chapter 2 that a formatter exists and leaves
