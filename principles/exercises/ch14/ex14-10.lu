@@ -1,4 +1,4 @@
-//! check: lupin-run(exit=0, stdout="stockroom closed: normal(12)")
+//! check: run(exit=0, stdout="stockroom closed: normal(12)")
 //! phase: run
 // Exercise 14-10 solution: a stockroom proc; the answer rides the exit.
 fn stockroom(cmds: channel[str]) -> int {
