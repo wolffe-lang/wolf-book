@@ -54,12 +54,11 @@
 # names live in one and nothing executes them.
 
 # --- the compiler's clock ---
-book/ch01.md 0.2.10+dev.unknown 1 audited-at-wolf=0.2.10+dev.5289501
-book/ch01.md 0.2.10+dev.5289501 1 audited-at-wolf=0.2.10+dev.5289501
-book/ch01.md 0.2.10 3 audited-at-wolf=0.2.10+dev.5289501
-book/ch22.md 0.2.10 1 audited-at-wolf=0.2.10+dev.5289501
-book/ch33.md 0.2.6 1 audited-at-wolf=0.2.10+dev.5289501
-book/ch33.md 0.2.8 1 audited-at-wolf=0.2.10+dev.5289501
+book/ch01.md 0.2.11+dev.unknown 1 audited-at-wolf=0.2.11
+book/ch01.md 0.2.11 3 audited-at-wolf=0.2.11
+book/ch22.md 0.2.11 1 audited-at-wolf=0.2.11
+book/ch33.md 0.2.6 1 audited-at-wolf=0.2.11
+book/ch33.md 0.2.8 1 audited-at-wolf=0.2.11
 
 # --- both clocks ---
 # `0.1.31` is ONE literal on each of these two pages at bs40 (it was two
@@ -75,8 +74,8 @@ book/ch33.md 0.2.8 1 audited-at-wolf=0.2.10+dev.5289501
 # sentences said so; now they differ by one and both sentences say
 # that. Either pin moving can falsify the sentence, so either pin
 # moving has to re-read it.
-book/ch01.md 0.1.31 1 audited-at-wolf=0.2.10+dev.5289501 audited-at-lupin=0.1.32
-book/back/colophon.md 0.1.31 1 audited-at-wolf=0.2.10+dev.5289501 audited-at-lupin=0.1.32
+book/ch01.md 0.1.32 1 audited-at-wolf=0.2.11 audited-at-lupin=0.1.33
+book/back/colophon.md 0.1.32 1 audited-at-wolf=0.2.11 audited-at-lupin=0.1.33
 
 # --- version-shaped, and about neither tool ---
 book/ch23.md 1.4.0 1 not-a-toolchain-version
