@@ -2,6 +2,59 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs38, the interpreter is taken — 2026-09-10 — two names that were never there
+
+For four printings the book pinned an interpreter one release behind
+the one it could have had, and the reason was two words. Chapters 11
+and 14 printed `Scope` and `Proc` as the types of a scope handle and a
+proc handle, and neither name has ever existed in either
+implementation. The compiler said so from the beginning and was not
+listened to; the interpreter used to accept the line without asking
+what the name meant, and when it started asking, six of the book's
+programs stopped running. Those two words were invented by this book.
+They are gone.
+
+What the specification actually promises is smaller and truer, and it
+is what the two chapters now teach: a scope is an ordinary value, and
+handing it to a function is visible at the call — which is where a
+reader has to look anyway to find the brace the work dies at. The
+signature does not announce it, because nothing in the language can
+spell the type yet. Chapter 11 used to tell you that one search for a
+type name would find every function in a codebase that can start a
+task; it tells you to search the call instead, and says why in a
+clause. That is a worse audit than the one chapter 7 offers for
+mutation, and the book now says which of the two it is rather than
+claiming they are the same.
+
+Three notes the book keeps for itself said the opposite of all of this,
+one of them for eight months and through three re-checks. Each re-check
+measured the near-miss — the lowercase keyword — and never measured the
+word the chapter actually printed. All three are rewritten with what
+the tools answer, and the gap is filed against the language rather than
+papered over.
+
+With the two names re-homed the newer interpreter goes in, and the pair
+of versions on the first page reads a fourth way: this time the
+compiler names exactly the interpreter beside it, and the interpreter
+names a compiler fifty-one commits behind the one above it — the first
+printing where that second number has narrowed rather than grown. The
+revision recorded for the interpreter is also, for the first time,
+checked to be a commit rather than the label wrapped around one.
+
+And 237 transcripts in the exercise collection are checked now. The
+programs in that collection have been run on every commit for months;
+the *output printed under them* was compared against nothing at all, so
+a wrong answer could sit on a page indefinitely. One did, and was found
+last printing by luck. Replaying them found seven more, none of them
+anybody's fault and all of them wrong since the day they were written:
+deadlock reports naming positions that shifted when a comment was added
+above them, a number printed with a decimal point it never had, an
+error message quoted down to its first line, a file path recorded from
+the wrong folder. The rest of the collection's transcripts — the ones
+that need a project on disk, an expression typed at a prompt, or a
+compiled binary — are counted and listed by name every build, with what
+each would need, so what is not checked is at least known.
+
 ## bs39 — 2026-09-10 — the query and the loop
 
 Section 5.2 is rewritten, on a reader's report that the old one lost
