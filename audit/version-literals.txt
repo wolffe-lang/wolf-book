@@ -28,6 +28,18 @@
 # mean an interpreter-only bump re-read nothing, which is the defect
 # wolf-web#8 fixed on the site's own version of this check.
 #
+# ONE ENTRY MAY NAME BOTH CLOCKS, and bs38 is where that was bought.
+# The check keys on (page, literal), so two sentences on one page that
+# say the same number are ONE entry — and §1.2 has exactly that pair:
+# `0.1.31` is the interpreter the COMPILER names (a wolf-side fact, out
+# of `crates/wolf_driver/PAIRING`) and, since this bump, also the
+# interpreter THIS BOOK PINS (a lupin-side fact). With one clock per
+# entry the pair could only ride one of them, and whichever was chosen,
+# the other project's bump would leave both sentences unread — which is
+# the defect this file exists to stop, reintroduced one level down. So
+# a fourth and fifth field are allowed, one per clock, and a pin that
+# moves past EITHER fails. `not-a-toolchain-version` still stands alone.
+#
 # THE THIRD SPELLING is for the version-shaped literals that are not
 # claims about wolf or lupin at all: a dependency's version in chapter
 # 23, a published record's key in chapter 25. They still get an entry,
@@ -48,13 +60,22 @@ book/ch22.md 0.2.10 1 audited-at-wolf=0.2.10
 book/ch33.md 0.2.6 1 audited-at-wolf=0.2.10
 book/ch33.md 0.2.8 1 audited-at-wolf=0.2.10
 
-# --- the interpreter's clock ---
-# The interpreter the COMPILER names. It is a lupin version number and
-# it rides the WOLF clock, because what the compiler names comes from
-# `crates/wolf_driver/PAIRING` — a wolf-side file that moves when the
-# compiler pin moves, not when the interpreter releases.
-book/ch01.md 0.1.31 1 audited-at-wolf=0.2.10
-book/back/colophon.md 0.1.31 1 audited-at-wolf=0.2.10
+# --- both clocks ---
+# `0.1.31` is two claims on each of these two pages and the number is
+# the same, which is why the entry names both clocks. Claim one: the
+# interpreter the COMPILER names, out of `crates/wolf_driver/PAIRING` —
+# a wolf-side file that moves when the compiler pin moves, not when the
+# interpreter releases. Claim two, new at bs38: the interpreter THIS
+# BOOK IS PINNED TO, which moves when `[lupin]` does. The two numbers
+# are equal at this printing and the sentences say so; when either pin
+# moves they may stop being equal, and both sentences have to be
+# re-read to find out. That is the whole reason for the second field.
+# The counts differ because the pages do: §1.2 spends two sentences on
+# the pair and the colophon spends one, which makes both claims at once
+# ("the compiler names `lupin 0.1.31`, which is the interpreter under
+# it"). One literal, two clocks.
+book/ch01.md 0.1.31 2 audited-at-wolf=0.2.10 audited-at-lupin=0.1.31
+book/back/colophon.md 0.1.31 1 audited-at-wolf=0.2.10 audited-at-lupin=0.1.31
 
 # --- version-shaped, and about neither tool ---
 book/ch23.md 1.4.0 1 not-a-toolchain-version
