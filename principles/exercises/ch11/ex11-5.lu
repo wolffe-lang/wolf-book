@@ -1,4 +1,4 @@
-//! check: lupin-run(exit=0)
+//! check: run(exit=0)
 //! phase: run
 // Exercise 11-5 solution: which worker takes which job is the seed's
 // business; what the pool computes is not.
