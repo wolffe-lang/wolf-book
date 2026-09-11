@@ -1897,20 +1897,20 @@ holds the compiler to it.
 <details>
 <summary>Exercise 5-6. <a href="../ch05.md#5.2">§5.2</a></summary>
 
-**Exercise 5-6** *(extension · lupin)*. `uniq` counts adjacent
-duplicates; yours will count all of them and keep first-seen order.
-Read a multiline block line by line and print each distinct line once,
-with its count, in the order lines first appeared. Two parallel lists
-(one of lines seen, one of counts) are enough. Why does a `Map` alone
-not solve this?
+**Exercise 5-6** *(extension · lupin)*. Count lines the way the head
+of the chapter counted categories. Read a multiline block line by line
+and print each distinct line once, with its count, in the order the
+lines first appeared: an `order` list and a `Map` of counts, with
+`seen_at` deciding insert versus update. Why does the `Map` alone lose
+the order?
 
 Solution. `ch05/ex5-6.lu`:
 
 ```wolf
-fn index_of(xs: List[str], s: str) -> int {
+fn seen_at(xs: List[str], s: str) -> int {
     var i = 0
-    for x in xs {
-        if x == s { return i }
+    while i < xs.len {
+        if xs[i] == s { return i }
         i += 1
     }
     0 - 1
@@ -1923,21 +1923,18 @@ fn main() -> !int {
         howl
         scratch
         """
-    var seen = List[str]()
-    var counts = List[int]()
+    var order = List[str]()
+    var counts = Map[str, int]()
     for line in log.lines() {
-        let at = index_of(seen, line)
-        if at < 0 {
-            (mut seen).push(line)
-            (mut counts).push(1)
+        if seen_at(order, line) < 0 {
+            (mut order).push(line)
+            counts[line] = 1
         } else {
-            counts[at] = counts[at] + 1
+            counts[line] += 1
         }
     }
-    var i = 0
-    for s in seen {
-        print("{counts[i]:>4} {s}")
-        i += 1
+    for s in order {
+        print("{counts[s]:>4} {s}")
     }
     0
 }
@@ -1949,10 +1946,13 @@ $ lupin ex5-6.lu
    2 scratch
 ```
 
-A `Map` alone loses the arrival order: its pairs come back in the map's
-order, not the input's. The list carries the order and the parallel
-list carries the tally: two simple structures that compose beat one
-structure that almost fits.
+A `Map` alone loses the order of arrival: `pairs()` walks the map in the
+map's own order, which is not the order the lines came in, and nothing
+in the map remembers which key was first. The `order` list remembers
+exactly that and nothing else, and `seen_at` on it is what decides
+between the insert (`counts[line] = 1`) and the update
+(`counts[line] += 1`), the way the head of the chapter decided between a
+new category and a running total.
 </details>
 
 <details>
