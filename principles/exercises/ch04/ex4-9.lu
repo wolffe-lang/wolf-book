@@ -1,4 +1,4 @@
-//! check: lupin-run(exit=0)
+//! check: run(exit=0)
 //! phase: run
 // Exercise 4-9 solution: a function that makes clamps.
 fn clamp_to(lo: int, hi: int) -> fn(int) -> int {
