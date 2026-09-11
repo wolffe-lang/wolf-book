@@ -250,20 +250,65 @@ for one reason; each refusal names its own:
 ```console
 $ wolf conform-run ./ex18-7a.lu
 error[E0701]: `read_text` reaches the filesystem, which comptime code can never touch
+ --> ./ex18-7a.lu:5:5
+  |
+5 |     read_text(path)
+  |     ^^^^^^^^^^^^^^^ ambient IO at compile time
+...
+8 |     const BANNER = embed("banner.txt")
+  |                    ------------------- while evaluating `embed`, entered here
+  |                    ------------------- while evaluating `main`, entered here
+  |
   = note: why it is refused — confinement: a build must not read the machine it runs on — and the
     same source would compile differently on different machines.
+  = note: the comptime sandbox is hermetic (D33): the intrinsics available at compile time are an
+    explicit allowlist, and nothing ambient is on it. Compute this value at runtime instead;
+    file contents belong in declared build inputs through the package manifest, never in an
+    evaluator capability.
+
 $ wolf conform-run ./ex18-7b.lu
 error[E0701]: `clock_ms` reaches the clock, which comptime code can never touch
+ --> ./ex18-7b.lu:5:5
+  |
+5 |     clock_ms()
+  |     ^^^^^^^^^^ ambient IO at compile time
+...
+8 |     const STAMP = build_stamp()
+  |                   ------------- while evaluating `build_stamp`, entered here
+  |                   ------------- while evaluating `main`, entered here
+  |
   = note: why it is refused — determinism: two identical builds must not observe different times.
+  = note: the comptime sandbox is hermetic (D33): the intrinsics available at compile time are an
+    explicit allowlist, and nothing ambient is on it. Compute this value at runtime instead;
+    file contents belong in declared build inputs through the package manifest, never in an
+    evaluator capability.
+
 $ wolf conform-run ./ex18-7c.lu
 error[E0701]: `net_fetch` reaches the network, which comptime code can never touch
+ --> ./ex18-7c.lu:5:5
+  |
+5 |     net_fetch(url)
+  |     ^^^^^^^^^^^^^^ ambient IO at compile time
+...
+8 |     const SCHEMA = fetch_schema("https://example.test/schema.json")
+  |                    ------------------------------------------------ while evaluating `fetch_schema`, entered here
+  |                    ------------------------------------------------ while evaluating `main`, entered here
+  |
   = note: why it is refused — confinement: `wolf add` must never mean arbitrary code talks to the
     network with your credentials.
+  = note: the comptime sandbox is hermetic (D33): the intrinsics available at compile time are an
+    explicit allowlist, and nothing ambient is on it. Compute this value at runtime instead;
+    file contents belong in declared build inputs through the package manifest, never in an
+    evaluator capability.
 ```
 
-(Each run also prints the span rendering and the shared hermetic-
-sandbox note; the lines above are the ones that differ. The full
-outputs are in `ex18-7a.lu` through `ex18-7c.lu`'s runs.)
+Three runs, and almost all of it is the same three times: the same
+`ambient IO at compile time` label, the same two-frame evaluation
+trace back to the `const`, and the same hermetic-sandbox note (D33)
+closing each report. The one line that differs is the one the question
+asks about — `= note: why it is refused` — and it gives a different
+reason each time: confinement, determinism, confinement again but of
+a second kind.
 
 **Exercise 18-8** *(comprehension · wolf)*. A reader decides budgets
 are noise and writes `#[budget(fuel = 0)]` to turn the meter off.
@@ -312,10 +357,38 @@ from a computation that is merely large; only you can:
 ```console
 $ wolf conform-run ./ex18-9a.lu
 error[E0704]: comptime evaluation recursed past 256 call frames
+ --> ./ex18-9a.lu:5:5
+  |
+5 |     dive(n + 1)
+  |     ^^^^^^^^^^^ the call that went over the limit
+  |     ----------- while evaluating `dive` — 254 recursive frames
+...
+8 |     const D = dive(0)
+  |               ------- while evaluating `dive`, entered here
+  |               ------- while evaluating `main`, entered here
+  |
+  = note: call depth is a resource limit, not a host stack: deep recursion is refused with this
+    report instead of crashing the compiler (D33).
 help: raise the budget here: `#[budget(depth = 512)]`
+  |
+8 |     #[budget(depth = 512)]
+  |
+
 $ wolf conform-run ./ex18-9b.lu
 error[E0702]: comptime evaluation ran out of fuel after 1000000 steps
+ --> ./ex18-9b.lu:9:15
+  |
+9 |     const N = spin()
+  |               ^^^^^^ evaluation stopped here
+  |               ------ while evaluating `spin`, entered here
+  |               ------ while evaluating `main`, entered here
+  |
+  = note: fuel bounds how long the compiler will evaluate before concluding the computation is
+    runaway — a build can be slow, never hung (D33).
 help: raise the budget here: `#[budget(fuel = 2000000)]`
+  |
+9 |     #[budget(fuel = 2000000)]
+  |
 ```
 
 **Exercise 18-10** *(extension (break-it-on-purpose) · wolf)*. Earn
@@ -354,6 +427,9 @@ error[E0703]: comptime evaluation exceeded its heap budget of 65536 cells
    = note: the comptime heap is capped so evaluation cannot exhaust the machine compiling the
      program (D33); most overruns are unbounded value growth in a loop.
 help: raise the budget here: `#[budget(heap = 131072)]`
+   |
+12 |     #[budget(heap = 131072)]
+   |
 ```
 
 The order of the two limits is the lesson: budgets are independent
