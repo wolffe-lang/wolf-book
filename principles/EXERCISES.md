@@ -181,6 +181,18 @@ each one wants:
   the `Verb::Local` case the book lane already runs on unix; the other
   two are what `words()` declines by design.
 
+One hazard is worth naming because it cost a CI round. A transcript that
+quotes a command-line parser's usage line is bound to the **binary's own
+filename**, because the parser echoes `argv[0]`: ch17's `--chaos` block
+printed `Usage: lupin run <FILE>`, which is what unix says and not what
+windows says (`lupin.exe`). A block like that can be byte-compared on
+two of the three CI hosts and not on the third. The same hazard bites a
+local reproduction: a pinned interpreter staged as `lupin-0.1.31` makes
+the line read `Usage: lupin-0.1.31 …`, so a staged control binary has to
+be named `lupin` and put in a directory of its own. The book's answer is
+to quote such a refusal in prose and keep the transcript to what the
+tools say about the *program*.
+
 The demonstration that this lane can fail is planted rather than waited
 for, as wolf-book#7's is: `cargo xtask samples --self-test` writes a
 solution, replays a TRUE transcript of it and requires a clean pass,

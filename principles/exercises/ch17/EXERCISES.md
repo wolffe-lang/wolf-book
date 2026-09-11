@@ -231,23 +231,24 @@ path is code like any other code; untested, it is where the bugs
 retire to. Chaos runs it deterministically, on a seed, before an
 outage runs it in production without one.
 
-Today, honestly:
+Today, honestly: there is no `--chaos`. `lupin run ex17-6.lu --chaos`
+answers `error: unexpected argument '--chaos' found` and stops at
+argument parsing, without reaching the program. What runs is the
+baseline:
 
 ```console
-$ lupin run ex17-6.lu --chaos
-error: unexpected argument '--chaos' found
-
-  tip: to pass '--chaos' as a value, use '-- --chaos'
-
-Usage: lupin run <FILE>
-
-For more information, try '--help'.
 $ lupin ex17-6.lu
 v=41
 ```
 
 The baseline runs and is pinned by the directive header; the
 injection half waits on s36.
+
+(The refusal is quoted in prose rather than pasted as a transcript
+because the rest of what the argument parser prints is a usage line
+naming the binary by its own filename — `lupin` here, `lupin.exe` on
+windows — so the block could be byte-compared on two of the three CI
+hosts and not on the third. `principles/EXERCISES.md` §4a.)
 
 ## §17.3 — Scope honesty (what exploration cannot see)
 
