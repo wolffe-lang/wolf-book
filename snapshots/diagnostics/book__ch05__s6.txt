@@ -1,8 +1,14 @@
 error[E0501]: the bounds on `T` say nothing about `+`
  --> ./s6.lu:5:5
   |
+4 | fn total[T](xs: List[T]) -> int {
+  |          - `T` is declared here
 5 |     xs[0] + 1
   |     ^^^^^ `T` could be any type here
   |
-  = note: bounds grant trait members only, and no trait covers this operator yet (operator traits
-    are a later sprint); take a concrete type here, or dispatch through a trait method.
+  = note: add `T: Add` to the bound — `+` on a type parameter dispatches through `Add.add`
+    ([type.trait.op]), and a generic body may use only what its bounds provide.
+help: add the bound: `T: Add`
+  |
+4 | fn total[T: Add](xs: List[T]) -> int {
+  |
