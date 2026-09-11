@@ -626,7 +626,7 @@ fn main() -> !int {
     var scores = Map[str, int]()
     scores["wolf"] = 3
     scores["marmot"] = 5
-    scores["wolf"] = scores["wolf"] + 1
+    scores["wolf"] = (scores["wolf"] else 0) + 1
     for (name, n) in scores.pairs() {
         print("{name:<8}{n:>3}")
     }
@@ -642,7 +642,10 @@ marmot    5
 
 **Exercise 5-3** *(extension · lupin)*. Write `first[T]` with a
 fallback for the empty case, and call it twice: once with the type named,
-once letting inference name it.
+once letting inference name it. Read the element rather than removing
+it: `pop` answers `T ! {none}` and changes the list it is called on,
+and a function that changes its argument is chapter 7's `mut`, at both
+ends of the call.
 
 Solution. `ch05/ex5-3.lu`:
 
