@@ -61,7 +61,8 @@ wolf, without hearing the word "lifetime."*
   "assignment hands the value over" without the deep story (deferred,
   explicitly, to chapter 7).
 - 3.2 Everything is an expression — get values out of `if`, `match`, and
-  blocks; live without a ternary.
+  blocks; live without a ternary; write a one-expression `if` bare, `if
+  c then a else b`.
 - 3.3 Arithmetic that traps — predict overflow and division by zero in
   every build profile, and spell intentional wrapping.
 - 3.4 `match`, exhaustively — write a match the compiler proves total.

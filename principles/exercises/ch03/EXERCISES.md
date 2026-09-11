@@ -412,3 +412,50 @@ property the checker already computes, so the same mistake arrives
 named, located, and with the repair in the note. The order of arms is
 still logic rather than style, but it is logic the compiler reads
 too.
+
+**Exercise 3-15** *(fingers · lupin)*. Days in a month, decided by a
+`match` on the month number with a bare `if` in the February arm, `2
+=> if leap then 29 else 28`, printed for January, both Februaries and
+April. Then make one branch outgrow the line, a sentence in place of
+the number, and run `wolf fmt` on the file: which of your two `if`s
+does the formatter leave as written, what does it do to the other, and
+would it ever go the other way?
+
+Solution. `ch03/ex3-15.lu`:
+
+```wolf
+fn days(month: int, leap: bool) -> int {
+    match month {
+        2 => if leap then 29 else 28,
+        4 => 30,
+        6 => 30,
+        9 => 30,
+        11 => 30,
+        _ => 31,
+    }
+}
+
+fn main() -> !int {
+    print("{days(1, false)} {days(2, true)} {days(2, false)} {days(4, false)}")
+    0
+}
+```
+
+```console
+$ lupin ex3-15.lu
+31 29 28 30
+$ wolf fmt --check ./ex3-15.lu
+$ echo $?
+0
+```
+
+The February arm is the ruling's own line: `then` closes the
+condition, the arm's comma closes the bare `else` branch, and the
+formatter's `--check` exits 0 on it, because a bare `if` that fits its
+line is a fixed point. Give the leap branch a sentence instead of `29`
+and the line no longer fits, so `wolf fmt` rewrites that one `if` into
+the braced form, each branch on its own line, and leaves every other
+arm as written. It never goes the other way: a braced `if` stays
+braced on every pass, however short its branches, because the rule is
+that no program which parses changes shape under the formatter, and
+the width break is the one exception, one direction only.

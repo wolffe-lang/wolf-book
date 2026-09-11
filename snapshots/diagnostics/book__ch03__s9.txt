@@ -1,5 +1,5 @@
 error[E0401]: the arms of this `match` disagree about its type
- --> ./s8.lu:8:14
+ --> ./s9.lu:8:14
   |
 7 |         0 => "none",
   |              ------ but this one is `str`

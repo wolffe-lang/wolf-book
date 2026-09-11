@@ -1,0 +1,21 @@
+//! check: run(exit=0)
+//! phase: run
+
+// Exercise 3-15 solution: the bare `if` in a match arm; the formatter
+// leaves the bare form alone and breaks only what outgrows the line.
+
+fn days(month: int, leap: bool) -> int {
+    match month {
+        2 => if leap then 29 else 28,
+        4 => 30,
+        6 => 30,
+        9 => 30,
+        11 => 30,
+        _ => 31,
+    }
+}
+
+fn main() -> !int {
+    print("{days(1, false)} {days(2, true)} {days(2, false)} {days(4, false)}")
+    0
+}
