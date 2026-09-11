@@ -552,7 +552,7 @@ arithmetic, not by an `if` bolted on the front.
 Predict all four values, then say what slicing `s` cost: did any of
 these lines copy eight bytes?
 
-```console
+```wolf-repl
 wolf> let s = "wolfpack"
 wolf> let t = s[..4]
 wolf> t
@@ -5088,7 +5088,7 @@ fn main() -> !int {
 
 ```console
 $ lupin ex10-4.lu
-ex10-4.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0), `task@196` (task 1) [conc.deadlock.trap] at 6:5
+ex10-4.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0), `task@654` (task 1) [conc.deadlock.trap] at 13:5
 $ echo $?
 3
 ```
@@ -5320,13 +5320,13 @@ and wolf asks it at the point where you still can.
 **Exercise 11-1** *(fingers · lupin)*. A function cannot spawn unless
 somebody hands it a scope. Write `launch(s, ch, n)` that spawns into a
 caller's scope, and a `main` that calls it three times inside one `scope`
-block. The `Scope` parameter is the entire mechanism: nothing else in
-the signature says "concurrent."
+block. The handed-over scope is the entire mechanism: nothing else in
+the call says "concurrent."
 
 Solution. `ch11/ex11-1.lu`:
 
 ```wolf
-fn launch(s: Scope, ch: channel[int], n: int) {
+fn launch[S](s: S, ch: channel[int], n: int) {
     s.spawn(fn() { ch.send(n * 10) })
 }
 fn main() -> !int {
@@ -5364,7 +5364,7 @@ waits for children, and the trap names all four:
 
 ```console
 $ lupin ex11-2.lu
-ex11-2.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0), `task@219` (task 1), `task@219` (task 2), `task@219` (task 3) [conc.deadlock.trap] at 11:5
+ex11-2.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0), `task@676` (task 1), `task@676` (task 2), `task@676` (task 3) [conc.deadlock.trap] at 18:5
 $ echo $?
 3
 ```
@@ -5383,12 +5383,15 @@ and what single search over a large codebase would find every function
 with that ability? (Chapter 7 asked the same question about mutation.)
 
 Solution (prose): `main` can spawn (it owns a `scope` block) and
-`launch` can spawn (it receives a `Scope`). Nothing else can. The
-search is for `Scope` in parameter lists plus `scope` blocks: the
-spawn surface is exactly the set of functions the type system shows
-holding the capability, the same audit `grep '(mut '` performs for
-mutation. A capability you can grep for is a capability you can
-review.
+`launch` can spawn (it is handed the scope). Nothing else can. The
+search is for `.spawn(` plus `scope` blocks: the spawn surface is
+exactly the set of call sites that start a task and the set of braces
+they die at, which is the same audit `grep '(mut '` performs for
+mutation — with one difference this chapter's ledger records. A scope
+handle has no type name (wolf-lang#316), so `launch`'s parameter is a
+bare generic and the *signature* does not announce the capability; the
+call does. A capability you can grep for is a capability you can
+review, and here what you grep is the call, not the declaration.
 </details>
 
 <details>
@@ -5554,7 +5557,7 @@ concurrently. Two candidate signatures:
 
 ```wolf
 fn fetch_all(urls: List[str]) -> List[Response]
-fn fetch_all(s: Scope, urls: List[str]) -> List[Response]
+fn fetch_all[S](s: S, urls: List[str]) -> List[Response]
 ```
 
 The first hides an internal scope; the second borrows the caller's.
@@ -5565,13 +5568,13 @@ Solution (discussion): the internal-scope version is honest to the
 caller who wants a blocking call: when it returns, no task it started
 survives. The function is externally sequential, concurrency as an
 implementation detail, nothing to cancel from outside because nothing
-outlives the call. The `Scope` parameter is honest to the caller who
+outlives the call. The handed-over scope is honest to the caller who
 wants to *compose* lifetimes: the fetches join when the caller's scope
 closes, so the caller can hang ten calls on one scope and cancel the
 lot by leaving it. But the signature now admits that tasks may
 outlive the call itself, and every reader of the call site must look
 up to find the brace those tasks die at. The library rule of thumb
-wolf's std follows: take a `Scope` when the work's lifetime is
+wolf's std follows: take the caller's scope when the work's lifetime is
 legitimately the caller's decision; keep the scope internal when the
 function's contract is "done means done." The wrong design is the
 secret third one: an internal scope that detaches work past its own
@@ -5638,7 +5641,7 @@ fn main() -> !int {
 
 ```console
 $ lupin ex12-2.lu
-ex12-2.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0) [conc.deadlock.trap] at 8:5
+ex12-2.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0) [conc.deadlock.trap] at 15:5
 $ echo $?
 3
 ```
@@ -6257,9 +6260,9 @@ x2 += v2 * dt
 
 ```console
 $ lupin ex13-7.lu
-x1=1.0 v1=1.0
-x2=9.0 v2=-1.0
-momentum 0.0
+x1=1 v1=1
+x2=9 v2=-1
+momentum 0
 ```
 
 Exactly zero, and not by luck: both velocity updates add and subtract
@@ -7785,7 +7788,7 @@ fn main() -> !int {
 
 ```console
 $ lupin ex17-9.lu
-ex17-9.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0), `task@231` (task 1), `task@336` (task 2) [conc.deadlock.trap] at 7:5
+ex17-9.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0), `task@689` (task 1), `task@794` (task 2) [conc.deadlock.trap] at 14:5
 $ echo $?
 3
 ```
@@ -9003,7 +9006,7 @@ Solution. Before:
 
 ```console
 $ lupin clash/main.lu
-clash/main.lu: E0302: the name `title` is defined twice in this module (defined again in `./labels/upper.lu`); file boundaries create no scopes (D32) — two separate programs sharing a directory each mark themselves `//! member: false` (D59) [mod.dup] at 3:14
+clash/main.lu: E0302: the name `title` is defined twice in this module (defined again in `clash/labels/upper.lu`); file boundaries create no scopes (D32) — two separate programs sharing a directory each mark themselves `//! member: false` (D59) [mod.dup] at 3:14
 ```
 
 What differs from 22-3 is only where the union happens: these two
