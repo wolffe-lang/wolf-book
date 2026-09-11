@@ -145,9 +145,117 @@
 #   * THE RUNNER AT THIS PIN: 479 samples, 474 passed, 5 pending
 #     (report-only), 0 failed, 0 flips; 207 of 209 console blocks
 #     replayed.
+#
+# ===================================================================
+# bs40 TAKES s152's DEV SHA, `3d0a6e1`, AND THE STAMP READS `+dev` AGAIN.
+# PACING rule 5: a consumption lane launches on a dev sha when the
+# release is not cut, the way bs33 did. Sixty-two commits past the tag
+# (`git rev-list --count 662b14c..3d0a6e1`, ancestry checked), five
+# sprints: s148's tail, s149 (`[os.fs.open]`), s150 (`[type.fn.value]`,
+# `[conc.chan.payload]` — a struct, enum or tuple of payloads is
+# sendable), s151 (`[gram.expr.if]`, the bare `if … then …`), s152
+# (`[type.map]`, `[type.map.key]`, `[mem.map.absent]` — the key
+# protocol this lane's chapter 5 is about). Built from a FRESH CLONE at
+# the sha with `cargo xtask dist` (the archive pair staged whole; the
+# stamp is seven characters by #301) and the whole gauntlet ran against
+# THAT binary and lupin 0.1.32 from the release archive, never
+# ~/.local/bin (bs38's rule).
+#
+#   wolf 0.2.10+dev.3d0a6e1 (wolfgang, pin 3d0a6e1)
+#   paired with lupin 0.1.31 (reference interpreter), pin 4c60946
+#   lupin 0.1.32 (wolf-interp, reference interpreter at pin e0ce018)
+#
+# THE PAIR POINTS A FIFTH WAY, both halves computed from the stamps:
+#   THE COMPILER'S HALF IS ONE RELEASE BEHIND. `crates/wolf_driver/
+#     PAIRING` at 3d0a6e1 still reads `lupin-version = 0.1.31`, and
+#     this file now pins 0.1.32. That half read one BEHIND at bs35,
+#     EXACT at bs36 and bs38, one AHEAD at bs36's second bump; behind
+#     again here, and for the same reason as bs35 — the interpreter
+#     published between this compiler being tested and this printing.
+#   THE INTERPRETER'S HALF IS EIGHTY-FOUR COMMITS, and it OPENS. 0.1.32
+#     declares pin `e0ce018` (s147's dev sha); `git rev-list --count
+#     e0ce018..3d0a6e1` is 84 on one line of history, `merge-base
+#     --is-ancestor` checked. That half read 14, 43, 65, 51; 84 is the
+#     widest yet and it is stated as the fifth data point, no more.
+#
+# WHAT THE BOOK MEASURED, PREDICTION FIRST. Every number was written
+# into the lane's scratchpad (bs40-predictions.md) before `cargo xtask
+# samples` ran at the new pins and before any file here was edited; the
+# control ran on the UNEDITED tree (trunk d001309) with the new pair:
+#
+#   479 samples, 471 passed, 5 pending, 6 failed, 16 flips
+#
+#   * 8 FLIPS PREDICTED BY NAME AND ALL 8 MEASURED; 8 MORE MEASURED
+#     THAT WERE NOT PREDICTED. Predicted: `book/ch03/s6` (lupin 0.1.32
+#     takes the range arm — the one lupin-side flip, bs38 saw it by
+#     accident), `book/ch05/s8` (the absent-key read, s152),
+#     `book/ch12/s1`, `s2`, `s5`, `s6`, `book/ch14/s8`, `ch14/ex14-10`
+#     (a struct of payloads is sendable, s150 — the ledgers named these
+#     as `fail(E1102)` and «channel payloads beyond one word»). Not
+#     predicted, same two sprints, chapters whose ledgers this lane had
+#     not read: `book/ch04/s6`, `s7`, `ch04/ex4-9` (closures returned
+#     and passed as values — s150's `[type.fn.value]`), `ch11/ex11-5`,
+#     `book/ch10/part-served`, `book/ch10/s7`, `book/ch15/part-sup`,
+#     `part-roster` (channel payloads: `Doc`, `str`). The prediction
+#     read the ledgers of the chapters the contract named and stopped;
+#     the runner read all of them. Recorded as the miss it is.
+#   * 13 OF THE 16 GRADUATE TO `run(…)`, measured byte-identical on
+#     both machines (stdout and exit) on this host before any fence
+#     moved. THREE DO NOT, each for a reason on the page:
+#       `book/ch05/s8` prints `[none]` on the compiler and `[()]` on
+#         lupin 0.1.32 — `[mem.map.absent]` versus the interpreter's
+#         old read. The fence is `wolf-run(exit=0, stdout="[none]")`,
+#         the transcript is the compiler's, and the row names
+#         wolf-interp#91.
+#       `book/ch12/s6` (two ready `select` arms) prints `served moves`
+#         on the compiler and `served regions` on lupin, and the page
+#         already says both are conforming outcomes. `run(exit=0)`, no
+#         stdout claim — the claim the section makes is the exit.
+#       `ch11/ex11-5` assigns jobs to workers in schedule order, which
+#         the exercise says is the seed's business. `run(exit=0)`.
+#   * 6 FAILURES, 5 PREDICTED BY NAME: §1.2's and the colophon's
+#     `--version` transcripts (both stamps move), and the THREE E1102
+#     snapshots whose note s150 rewrote (`book__ch13__s4`,
+#     `book__ch16__s3`, `ch16__ex16-9` — the payload note now names
+#     `[conc.chan.payload]` and the struct-of-payloads shape). The
+#     sixth was the consequence of the third: §13.2 prints that
+#     diagnostic as a `diagnostic,from(book/ch13/s4)` block, and a
+#     snapshot that moves moves the page under it. Predicted the
+#     snapshot, missed the block.
+#   * 0 PENDING MOVEMENT, predicted and measured: `sorted_by` is still
+#     outside lupin 0.1.32's std subset (bs39 measured it on this
+#     binary), `par` and the two borrow rows stand.
+#   * §22.2's `wolf interface` DOES NOT RE-RECORD, predicted from
+#     source and measured: `build_interfaces` stamps
+#     `env!("CARGO_PKG_VERSION")`, bare `0.2.10`, and #292 hashes the
+#     interface rather than the stamp. §25.2's `wolf publish` has no
+#     toolchain line. Appendix E's `wolf --help` is byte-identical
+#     (diffed against the new binary before the run).
+#   * E0201's renderings do not move: s151's catalog diff touched the
+#     fixture lists only. Zero E0201 snapshots re-record.
+#   * THE CATALOG MOVES 170 -> 172, `{E0417, E0418}` added, `{}`
+#     removed, derived from `docs/diagnostics.md` at both revisions and
+#     diffed both ways. Appendix C's first count moved with it; its
+#     second count moves 56 -> 57 because §5.4 now prints E0417.
+#   * THE ANCHORS GROW 458 -> 466, exactly eight, both key sets diffed
+#     both ways: `conc.chan.payload`, `gram.expr.if`, `gram.fmt.if`,
+#     `mem.map.absent`, `os.fs.open`, `type.fn.value`, `type.map`,
+#     `type.map.key`. Namespaces hold at 12 and documents at 11, so
+#     Appendix D regenerates to itself.
+#   * `grammar.ebnf` MOVES for the first time in three bumps: `if_expr`
+#     gains its second alternative (the bare branch closed by `then`).
+#     Appendix A regenerates with that one hunk.
+#   * THE CHAPTER THIS LANE IS FOR. s152 types `Map[str, int]` and the
+#     native tier serves every admitted key, so the count exercise runs
+#     on a map alone — but `m[k] += v` is E0417 now and every tally the
+#     book printed spelled it, and lupin 0.1.32 still reads an absent
+#     key as `()` and refuses `+` on it. So the respelled tallies are
+#     `wolf-run(…)` with their transcripts under `$ wolf run`, each row
+#     naming wolf-interp#91, and they graduate as FLIPs when the mirror
+#     lands. Chapter 5's own record is in its ledger.
 repo = "wolffe-lang/wolf-lang"
-rev = "662b14c6e10e4ee4628d788eb166f3f66b3e63f3"
-impl_version = "0.2.10"
+rev = "3d0a6e1b84ab7c5168747d83570ebd533a88cbfe"
+impl_version = "0.2.10+dev.3d0a6e1"
 
 [lupin]
 # wolf-interp at the v0.1.30 release tag (is42): the stamped line names
@@ -478,9 +586,43 @@ impl_version = "0.2.10"
 #     `LUPIN=/private/tmp/bs38-bin/lupin-0.1.31`, built at `e9c55b4`,
 #     and the binary is kept beside bs36's 0.1.30 control for the next
 #     lane that needs to reproduce this printing.
+#
+# ===================================================================
+# bs40 TAKES 0.1.32, THE BUMP THE PARAGRAPH ABOVE PREDICTED. is44's
+# release, wolf-interp `c3dd607` — the COMMIT the annotated tag
+# `v0.1.32` points at (`gh api …/git/ref/tags/v0.1.32` answers the tag
+# object `19687ef`, whose target is `c3dd6077…`; checked, not copied).
+# It declares pin `e0ce018`, s147's dev sha. Taken from the release
+# archive (`lupin-0.1.32-aarch64-apple-darwin.tar.gz`, sha256
+# `9ca0f9f3…1097`, matched against the release's own digest before
+# unpacking) and staged under the FILENAME `lupin`, because a transcript
+# that quotes a tool's usage line is bound to argv[0] (bs38-bin/README).
+#
+#   lupin 0.1.32 (wolf-interp, reference interpreter at pin e0ce018)
+#
+# WHAT MOVED, PREDICTED AND MEASURED ON THE UNEDITED TREE (the numbers
+# are the [wolf] note's; this is the interpreter's share of them):
+#   * ONE FLIP, `book/ch03/s6`, predicted by name: 0.1.32 mirrors
+#     `[gram.pat.range]` (wolf-interp#83), so §3.2's switch-shaped
+#     `match` with its `1..=2` arm runs on both machines — measured
+#     byte-identical (`   275 a dollar or two`, exit 0) before the
+#     fence moved. `wolf-run(exit=0)` -> `run(exit=0)`, the per-machine
+#     sentence retired, ch03's row closed.
+#   * TWO CONSOLE RE-RECORDS, the pin's own: §1.2's and the colophon's
+#     `lupin --version` line, `0.1.31 … 4c60946` -> `0.1.32 … e0ce018`.
+#     The compiler's two lines on the same pages move for the [wolf]
+#     bump, not this one.
+#   * WHAT 0.1.32 DOES NOT MIRROR, and chapter 5 is written around it:
+#     `[mem.map.absent]`. An absent-key read still answers `()` (probed:
+#     `[()]` where the compiler prints `[none]`), `m[k] += v` still
+#     executes, and `(m[k] else 0) + v` refuses at run time (`+` is not
+#     defined on () and i32`, exit 4). That is wolf-interp#91, filed
+#     with the clause by s152; every tally block this bump respells is
+#     `wolf-run(…)` until it lands, and each ledger row says so.
+#   * 0 PENDING MOVEMENT: no std subset grew.
 repo = "wolffe-lang/wolf-interp"
-rev = "e9c55b4a388f5ace9a3cc0a4f412ce7d0e474290"
-version = "lupin 0.1.31 (wolf-interp, reference interpreter at pin 4c60946)"
+rev = "c3dd6077c9a9a41b72497c195a291605a3ec8d86"
+version = "lupin 0.1.32 (wolf-interp, reference interpreter at pin e0ce018)"
 
 [wolf-lsp]
 # Source of the vendored tmLanguage grammars under highlight/.
