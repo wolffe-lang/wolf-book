@@ -1,5 +1,5 @@
 error[E0417]: cannot update `totals["drink"]` in place: the key may be absent
- --> ./s9.lu:6:5
+ --> ./s10.lu:6:5
   |
 6 |     totals["drink"] += 340
   |     ------ `totals` is a `Map`
