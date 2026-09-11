@@ -253,9 +253,92 @@
 #     `wolf-run(…)` with their transcripts under `$ wolf run`, each row
 #     naming wolf-interp#91, and they graduate as FLIPs when the mirror
 #     lands. Chapter 5's own record is in its ledger.
+#
+# ===================================================================
+# bs42 TAKES s155's DEV SHA, `5289501`, AND THE STAMP STAYS `+dev`.
+# Twenty-six commits past 3d0a6e1 (`git rev-list --count 3d0a6e1..
+# 5289501`, ancestry checked), two sprints: s153 (`[exec.checked.budget]`
+# — steps AND bytes on the checked machine; `[mem.region.escape]` — a
+# `str` built by `+`, `+=` or a holed interpolation is an allocation in
+# the ambient region, E1010 when it leaves its frame) and s155
+# (`[type.trait.op]` — `+ - * / %`, prefix `-`, `== !=`, the ordering
+# family and `<=>` dispatch through `Add`…`Ord` when the left operand
+# is a type parameter or a user type, never two primitives; E0514 for a
+# trait of the table's name with another shape; E0501's note under a
+# bare `T` now says "add `T: Add` to the bound" with a machine edit;
+# `[type.trait.op.alias]` — `trait Num = Add + Sub + Mul + Div + Rem +
+# Eq + Ord`, the `=` form of `trait_item`, which is why `grammar.ebnf`
+# moves). r16 was cutting v0.2.11 on this same revision while this lane
+# held the book; the tag had not landed at the pin commit, so this is a
+# dev sha by PACING rule 5 and the archive is a FRESH CLONE's `cargo
+# xtask dist` at the sha, staged whole beside bs40's control pair.
+#
+#   wolf 0.2.10+dev.5289501 (wolfgang, pin 5289501)
+#   paired with lupin 0.1.31 (reference interpreter), pin 4c60946
+#   lupin 0.1.32 (wolf-interp, reference interpreter at pin e0ce018)
+#
+# THE PAIR POINTS THE SAME WAY AS bs40, both halves computed from the
+# stamps: `crates/wolf_driver/PAIRING` at 5289501 still reads
+# `lupin-version = 0.1.31` / `lupin-pin = 4c60946`, so the compiler's
+# half stays ONE RELEASE BEHIND and the pair line is byte-identical;
+# the interpreter's half OPENS from eighty-four to ONE HUNDRED AND TEN
+# commits (`git rev-list --count e0ce018..5289501`, ancestor checked).
+# Six data points now: 14, 43, 65, 51, 84, 110.
+#
+# WHAT THE BOOK MEASURED, PREDICTION FIRST. Every number below was
+# written into the lane's scratchpad (bs42-predictions.md) before the
+# archive was unpacked and before any file here was edited; the CONTROL
+# ran on the UNEDITED tree (trunk f1cacec) with the new pair:
+#
+#   482 samples, 476 passed, 5 pending, 4 failed, 0 flips
+#
+#   * 4 FAILURES PREDICTED BY NAME AND EXACTLY THOSE 4 MEASURED. The
+#     `book/ch05/s6` E0501 snapshot (the note s155 reworded: "add `T:
+#     Add` to the bound", a `T` is declared here label, and a `help:`
+#     with the machine edit — the rendering was predicted byte for byte
+#     from `trait_diagnostics__e0501_operator.snap` and matched), the
+#     §5.3 `diagnostic,from(book/ch05/s6)` block under it, and §1.2's
+#     and the colophon's `wolf --version` (the compiler's first line
+#     alone; the pair line does not move).
+#   * 0 FLIPS PREDICTED AND 0 MEASURED, with the reason checked: every
+#     block the compiler refused for "operator traits" it refuses still
+#     (E0301 naming `Eq` now, or E0501 naming the trait), and a `fail`
+#     verdict is declining. s153 moves NOTHING in the book: no sample
+#     builds a `str` inside a `region` and returns it.
+#   * 0 PENDING MOVEMENT, predicted and measured (five rows; the
+#     interpreter did not move).
+#   * THE CATALOG MOVES 172 -> 173, `{E0514}` added, `{}` removed,
+#     derived from `docs/diagnostics.md` at both revisions and diffed
+#     both ways. Appendix C's first count moves with it; the second
+#     moves 57 -> 58 because §5.6 names E0502.
+#   * THE ANCHORS GROW 466 -> 471, exactly five, both key sets diffed
+#     both ways: `exec.checked`, `exec.checked.budget` (05-conformance),
+#     `mem.region.escape` (02), `type.trait.op`, `type.trait.op.alias`
+#     (10). Documents hold at 11; NAMESPACES MOVE 12 -> 13 — `exec` is
+#     new and document 05 owns two now, so Appendix D's sentence and
+#     its table row move, and the doc-truth gate said so first.
+#   * `grammar.ebnf` MOVES in one line: `trait_item` gains the `=`
+#     alternative. Appendix A regenerates with that hunk.
+#   * §22.2's `wolf interface` and Appendix E's `wolf --help` DO NOT
+#     RE-RECORD, predicted from source (bare CARGO_PKG_VERSION under
+#     #292; no driver help text in the 26 commits) and measured.
+#   * THE CHAPTER THIS LANE IS FOR. §5.5 is split into §5.5 "Structs"
+#     and §5.6 "Traits" on the maintainer's reading, and `dyn`, E0810
+#     and the primitive impl move to a new §7.8. Under lupin 0.1.32 the
+#     alias form is `E0201: expected `{`, found `=`` (exit 2) and a
+#     struct `==` is structural (the `impl Eq for Row` that compares
+#     kinds prints `false false true` where the compiler prints `true
+#     false true`), so those two blocks are `wolf-run(…)` with their
+#     transcripts under `$ wolf run`, the stdout claim load-bearing on
+#     the second, and the rows name wolf-interp#92 (is46). `total[T:
+#     Add]` at `int` and `f64` runs on BOTH machines (lupin needs no
+#     dispatch to add two ints), so the section's first block is an
+#     ordinary two-machine sample. Chapter 5's own record is in its
+#     ledger; three findings filed the same day (wolf-lang#331, #332,
+#     wolf-interp#94).
 repo = "wolffe-lang/wolf-lang"
-rev = "3d0a6e1b84ab7c5168747d83570ebd533a88cbfe"
-impl_version = "0.2.10+dev.3d0a6e1"
+rev = "5289501f62415a20f6e135e7d764491dad50b8bb"
+impl_version = "0.2.10+dev.5289501"
 
 [lupin]
 # wolf-interp at the v0.1.30 release tag (is42): the stamped line names
