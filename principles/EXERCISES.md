@@ -122,6 +122,72 @@ Solution register per TONE.md: deadpan for fingers and comprehension,
 discursive for design. A solution may say "we chose the boring way" and
 show it; it may not say "obviously."
 
+### 4a. The transcripts are replayed too (wolf-book#24)
+
+A solution's *program* has been executed since the corpus existed. The
+*output these pages paste* was compared against nothing, and that is a
+different guarantee with a different failure. Exercise 22-13 carried a
+stale toolchain stamp and two wrong interface hashes through a green
+build at the v0.2.10 pin bump, found by a grep. bs38 then replayed the
+corpus for the first time and found seven more, none of which a pin had
+touched: four deadlock rosters naming byte offsets and line numbers that
+moved when their files grew a header comment, a float that never
+printed with a `.0`, a truncated clap error, and a module path recorded
+from the wrong working directory. All of them had been wrong for as long
+as they had existed.
+
+`cargo xtask samples` now replays a console block on these pages the way
+it replays one under `book/`: the exercise directory is staged into a
+private copy, the commands run in it, and the block's remaining lines
+are byte-compared against what the tools said. The blocks admitted are
+**a plain run of a solution** — a `lupin` or `wolf` command naming a
+`.lu` that exists in the exercise directory, and the `echo $?` that
+reads the exit it produced. Measured at bs38: **236 console blocks
+across 31 pages, 188 replayed, 48 declined and named in the CI log.**
+
+A declined block is reported by name with what a replay of it would
+need, because a number in a log is not a check but it is the difference
+between a known hole and an invisible one. The four classes, with what
+each one wants:
+
+- **`conform-run`, 24 blocks.** Not a run — `principles/TWO-MACHINES.md`
+  §6 says so in its own words — and it prints its protocol verdict on
+  stdout while the page pastes the human diagnostic from stderr. What
+  these want is the book's `diagnostic,from(id)` lane, which compares a
+  rendered diagnostic against a named sample and never sees the protocol
+  line. The corpus has no sample ids to point one at yet.
+- **A file or a project the corpus does not hold, 8 blocks.** Three are
+  the tool verbs: `wolf interface ./tokens/tokens.lu` (22-13's own, the
+  block wolf-book#24 was filed over), `wolf tree` with two `wolf why`
+  arms `--dir app`, and `wolf update` with `wolf audit --ci --dir app`.
+  Five more name a `.lu` that was never checked in: ch01's `hello.lu`,
+  ch22's `sum.lu` and two `main.lu`, ch26's `count.lu`.
+  `console,in(pkg/name)` already solves exactly this under `book/`, by
+  staging a checked-in fixture; what is missing is the fixtures —
+  `principles/exercises/ch22/tokens/`, an `app/` for chapters 23 and
+  24, and the five loose files — not the machinery.
+- **Something to type, 6 blocks.** Two `lupin eval '…'` and four REPL
+  sessions that open with a bare `$ lupin`. The REPL half is
+  `pending(is08)` and already counted there; the `eval` half would
+  replay today if the rule admitted a command with no file behind it,
+  and so would the four `wolf --explain E…` blocks below.
+- **A code, not a program, 4 blocks.** `wolf --explain E1001` (twice),
+  `E1012`, `E0701`. These need nothing on disk at all — they are the
+  cheapest thing here to admit, and they are declined only because the
+  rule is drawn at the file. The catalog they print from is already
+  checked in both directions by `cargo xtask verify-docs`.
+- **A built binary or a shell, 6 blocks.** Four `wolf build x.lu && ./x`
+  pairs, one `diff <(…) <(…)`, one `grep … | wc -l`. The first class is
+  the `Verb::Local` case the book lane already runs on unix; the other
+  two are what `words()` declines by design.
+
+The demonstration that this lane can fail is planted rather than waited
+for, as wolf-book#7's is: `cargo xtask samples --self-test` writes a
+solution, replays a TRUE transcript of it and requires a clean pass,
+then changes one letter of that transcript and requires a report. A lane
+that reported everything would be as useless as one that reported
+nothing, so both directions are asserted.
+
 ---
 
 ## 5. The exemplar batch — chapters 1–6
