@@ -36,7 +36,7 @@ fn main() -> !int {
             let seat = in r2 { last_seat(alive, 7) }
             print("seat {seat} survives")
         })
-        ch.send(move r)
+        ch.send(move r)?
     }
     0
 }

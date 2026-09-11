@@ -14,7 +14,7 @@ fn main() -> !int {
                 (mut v).push(1)
                 v
             }
-            ch.send(move r)
+            ch.send(move r)?
         })
         let r2 = ch.recv() else |_| { return 1 }
         got = in r2 { 42 }

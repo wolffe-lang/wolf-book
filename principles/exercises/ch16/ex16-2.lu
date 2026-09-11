@@ -21,7 +21,7 @@ fn main() -> !int {
             }
             print("sum={total}")
         })
-        ch.send(move r)
+        ch.send(move r)?
     }
     0
 }

@@ -21,7 +21,7 @@ visible, and what synchronization made that true?
             (mut v).push(1)
             v
         }
-        ch.send(move r)
+        ch.send(move r)?
     })
     let r2 = ch.recv() else |_| { return 1 }
     got = in r2 { 42 }
@@ -56,7 +56,7 @@ Solution. `ch16/ex16-2.lu` (receiver):
         }
         print("sum={total}")
     })
-    ch.send(move r)
+    ch.send(move r)?
 ```
 
 ```console
@@ -82,7 +82,7 @@ fn main() -> !int {
     let ch = channel[region](1)
     let r = region()
     let n = in r { 41 }
-    ch.send(move r)
+    ch.send(move r)?
     let m = in r { 1 }
     m
 }
@@ -203,7 +203,7 @@ fn main() -> !int {
             let d = in r2 { solve(walls, 5, 5) }
             print("distance={d}")
         })
-        ch.send(move r)
+        ch.send(move r)?
     }
     0
 }
@@ -361,7 +361,7 @@ fn main() -> !int {
             let seat = in r2 { last_seat(alive, 7) }
             print("seat {seat} survives")
         })
-        ch.send(move r)
+        ch.send(move r)?
     }
     0
 }

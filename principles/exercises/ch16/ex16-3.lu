@@ -5,7 +5,7 @@ fn main() -> !int {
     let ch = channel[region](1)
     let r = region()
     let n = in r { 41 }
-    ch.send(move r)
+    ch.send(move r)?
     let m = in r { 1 }
     m
 }
