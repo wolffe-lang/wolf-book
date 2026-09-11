@@ -1813,7 +1813,7 @@ fn main() -> !int {
     var scores = Map[str, int]()
     scores["wolf"] = 3
     scores["marmot"] = 5
-    scores["wolf"] = scores["wolf"] + 1
+    scores["wolf"] = (scores["wolf"] else 0) + 1
     for (name, n) in scores.pairs() {
         print("{name:<8}{n:>3}")
     }
@@ -1833,7 +1833,10 @@ marmot    5
 
 **Exercise 5-3** *(extension · lupin)*. Write `first[T]` with a
 fallback for the empty case, and call it twice: once with the type named,
-once letting inference name it.
+once letting inference name it. Read the element rather than removing
+it: `pop` answers `T ! {none}` and changes the list it is called on,
+and a function that changes its argument is chapter 7's `mut`, at both
+ends of the call.
 
 Solution. `ch05/ex5-3.lu`:
 
@@ -1897,14 +1900,13 @@ holds the compiler to it.
 <details>
 <summary>Exercise 5-6. <a href="../ch05.md#5.2">§5.2</a></summary>
 
-**Exercise 5-6** *(extension · lupin)*. Count lines the way the head
-of the chapter counted categories. Read a multiline block line by line
-and print each distinct line once, with its count, in the order the
-lines first appeared: an `order` list and a `Map` of counts, with
-`seen_at` deciding insert versus update. Why does the `Map` alone lose
-the order?
+**Exercise 5-6** *(extension · wolf)*. Count lines the way the head
+of the chapter counted categories: a `Map[str, int]` and one line of
+counting per row. Then print each distinct line once, with its count,
+in the order the lines first appeared. The `Map` alone does not give
+you that order. Which container does, and why is it not the `Map`?
 
-Solution. `ch05/ex5-6.lu`:
+Solution. `ch05/ex5-6.lu`, which runs under `wolf`:
 
 ```wolf
 fn seen_at(xs: List[str], s: str) -> int {
@@ -1913,7 +1915,7 @@ fn seen_at(xs: List[str], s: str) -> int {
         if xs[i] == s { return i }
         i += 1
     }
-    0 - 1
+    -1
 }
 fn main() -> !int {
     let log = """
@@ -1926,33 +1928,30 @@ fn main() -> !int {
     var order = List[str]()
     var counts = Map[str, int]()
     for line in log.lines() {
-        if seen_at(order, line) < 0 {
-            (mut order).push(line)
-            counts[line] = 1
-        } else {
-            counts[line] += 1
-        }
+        if seen_at(order, line) < 0 { (mut order).push(line) }
+        counts[line] = (counts[line] else 0) + 1
     }
     for s in order {
-        print("{counts[s]:>4} {s}")
+        print("{counts[s] else 0:>4} {s}")
     }
     0
 }
 ```
 
 ```console
-$ lupin ex5-6.lu
+$ wolf run ex5-6.lu
    3 howl
    2 scratch
 ```
 
-A `Map` alone loses the order of arrival: `pairs()` walks the map in the
-map's own order, which is not the order the lines came in, and nothing
-in the map remembers which key was first. The `order` list remembers
-exactly that and nothing else, and `seen_at` on it is what decides
-between the insert (`counts[line] = 1`) and the update
-(`counts[line] += 1`), the way the head of the chapter decided between a
-new category and a running total.
+The count is the map alone: `counts[line] = (counts[line] else 0) + 1`
+is the whole tally, one line per row, and nothing decides insert versus
+update, because `else 0` reads a missing entry as zero and the
+assignment inserts it. What the map does not give is the order. `pairs()`
+walks the entries in an order the language leaves unspecified, and
+nothing in a map remembers which key came first; the `order` list
+remembers exactly that and nothing else, at the cost of one `seen_at`
+scan per line, and the printing loop walks the list and asks the map.
 </details>
 
 <details>
@@ -2221,7 +2220,7 @@ fn any_index(s: str, set: str) -> int {
         if set.contains("{c}") { return i }
         i += 1
     }
-    0 - 1
+    -1
 }
 fn main() -> !int {
     print("{any_index("the wolf runs", "aeiou")}")
