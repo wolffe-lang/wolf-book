@@ -2399,7 +2399,7 @@ make them read it back out of an error message.
 
 Exercises 5-9 and 5-10 (the third `Draw` shape; the cast-a-binding
 rule) moved to chapter 7 with the material they belong to, as 7-17 and
-7-18 (bs42). The numbers are not reused.
+7-18. The numbers are not reused.
 </details>
 
 ## Chapter 6
@@ -3765,8 +3765,8 @@ the pair points at your value, in your frame or your region, and the
 allocate behind your back. The reader pays one visible line; the
 alternative is every reader paying an invisible allocation.
 
-Exercises 7-17 and 7-18 were chapter 5's 5-9 and 5-10 until bs42 moved
-`dyn` and the cast-a-binding rule into this chapter.
+Exercises 7-17 and 7-18 were chapter 5's 5-9 and 5-10 before `dyn` and
+the cast-a-binding rule moved into this chapter.
 </details>
 
 ## Chapter 8

@@ -514,4 +514,4 @@ make them read it back out of an error message.
 
 Exercises 5-9 and 5-10 (the third `Draw` shape; the cast-a-binding
 rule) moved to chapter 7 with the material they belong to, as 7-17 and
-7-18 (bs42). The numbers are not reused.
+7-18. The numbers are not reused.

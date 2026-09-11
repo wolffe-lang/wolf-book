@@ -495,8 +495,8 @@ the pair points at your value, in your frame or your region, and the
 allocate behind your back. The reader pays one visible line; the
 alternative is every reader paying an invisible allocation.
 
-Exercises 7-17 and 7-18 were chapter 5's 5-9 and 5-10 until bs42 moved
-`dyn` and the cast-a-binding rule into this chapter.
+Exercises 7-17 and 7-18 were chapter 5's 5-9 and 5-10 before `dyn` and
+the cast-a-binding rule moved into this chapter.
 
 ## Chapter batch
 
