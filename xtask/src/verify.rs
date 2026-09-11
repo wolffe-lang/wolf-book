@@ -1093,8 +1093,12 @@ fn version_literal_failures(
     allow: &str,
     pins: &(String, String),
 ) -> Vec<String> {
+    /// One entry: the count the page must carry, and the clocks it
+    /// rides (`("wolf", "0.2.10")`), at most one per project.
+    type Entry = (usize, Vec<(String, String)>);
+
     let mut failures = Vec::new();
-    let mut allowed: BTreeMap<(String, String), (usize, String, String)> = BTreeMap::new();
+    let mut allowed: BTreeMap<(String, String), Entry> = BTreeMap::new();
     for (n, line) in allow.lines().enumerate() {
         let line = line.trim();
         if line.is_empty() || line.starts_with('#') {
@@ -1105,11 +1109,11 @@ fn version_literal_failures(
             format!(
                 "audit/version-literals.txt:{}: {why} — an entry is \
                  `<path> <literal> <count> audited-at-wolf=<v>` (or audited-at-lupin=, or \
-                 not-a-toolchain-version)",
+                 BOTH clocks on one entry, or not-a-toolchain-version)",
                 n + 1
             )
         };
-        if parts.len() != 4 {
+        if parts.len() < 4 {
             failures.push(bad("cannot parse"));
             continue;
         }
@@ -1117,23 +1121,48 @@ fn version_literal_failures(
             failures.push(bad("the third field is not a count"));
             continue;
         };
-        let (clock, audited) = if parts[3] == "not-a-toolchain-version" {
-            (String::new(), String::new())
-        } else if let Some(v) = parts[3].strip_prefix("audited-at-wolf=") {
-            ("wolf".to_string(), v.to_string())
-        } else if let Some(v) = parts[3].strip_prefix("audited-at-lupin=") {
-            ("lupin".to_string(), v.to_string())
-        } else {
-            failures.push(bad("the fourth field names no clock"));
+        // One (page, literal) pair may be a claim about BOTH projects —
+        // §1.2 says `0.1.31` once for the interpreter the COMPILER
+        // names and once for the interpreter this book PINS — so the
+        // clock fields are a list, not a field. bs38: with one clock
+        // per entry, the pair could only ride one of them, and whichever
+        // was chosen the other project's bump would leave the sentence
+        // unread, which is the exact defect this file exists to stop.
+        let mut clocks: Vec<(String, String)> = Vec::new();
+        let mut bogus = false;
+        for field in &parts[3..] {
+            if *field == "not-a-toolchain-version" {
+                if parts.len() != 4 {
+                    failures.push(bad("`not-a-toolchain-version` stands alone"));
+                    bogus = true;
+                }
+            } else if let Some(v) = field.strip_prefix("audited-at-wolf=") {
+                clocks.push(("wolf".to_string(), v.to_string()));
+            } else if let Some(v) = field.strip_prefix("audited-at-lupin=") {
+                clocks.push(("lupin".to_string(), v.to_string()));
+            } else {
+                failures.push(bad("a field after the count names no clock"));
+                bogus = true;
+            }
+        }
+        if bogus {
             continue;
-        };
+        }
+        if clocks.len() == 2 && clocks[0].0 == clocks[1].0 {
+            failures.push(bad("the same clock is named twice"));
+            continue;
+        }
+        if clocks.len() > 2 {
+            failures.push(bad("there are only two clocks"));
+            continue;
+        }
         allowed.insert(
             (parts[0].to_string(), parts[1].to_string()),
-            (count, clock, audited),
+            (count, clocks),
         );
     }
     for ((path, literal), count) in found {
-        let Some((want, clock, audited)) = allowed.get(&(path.clone(), literal.clone())) else {
+        let Some((want, clocks)) = allowed.get(&(path.clone(), literal.clone())) else {
             failures.push(format!(
                 "{path}: `{literal}` x{count} is not in audit/version-literals.txt — a version \
                  literal in reader-facing text gets an entry and the pin that audited it"
@@ -1145,16 +1174,18 @@ fn version_literal_failures(
                 "{path}: `{literal}` appears x{count}, audit/version-literals.txt says x{want}"
             ));
         }
-        let pin = match clock.as_str() {
-            "wolf" => &pins.0,
-            "lupin" => &pins.1,
-            _ => continue,
-        };
-        if audited != pin {
-            failures.push(format!(
-                "{path}: `{literal}` was audited at {clock} {audited}, the {clock} pin is now \
-                 {pin} — re-read the sentence, then re-stamp its audited-at-{clock}"
-            ));
+        for (clock, audited) in clocks {
+            let pin = match clock.as_str() {
+                "wolf" => &pins.0,
+                "lupin" => &pins.1,
+                _ => continue,
+            };
+            if audited != pin {
+                failures.push(format!(
+                    "{path}: `{literal}` was audited at {clock} {audited}, the {clock} pin is \
+                     now {pin} — re-read the sentence, then re-stamp its audited-at-{clock}"
+                ));
+            }
         }
     }
     for (path, literal) in allowed.keys() {
@@ -1487,6 +1518,84 @@ book/ch23.md v1.4.0 2 not-a-toolchain-version
         );
         assert_eq!(f.len(), 1, "{f:#?}");
         assert!(f[0].contains("audited at lupin 0.1.30"), "{f:#?}");
+    }
+
+    /// bs38: one (page, literal) pair can be a claim about BOTH
+    /// projects. §1.2 says `0.1.31` once about the interpreter the
+    /// COMPILER names and once about the interpreter this book PINS.
+    /// With one clock per entry the pair rides one of them and the
+    /// other project's bump leaves the sentence unread.
+    const ALLOW_TWO_CLOCKS: &str = "\
+book/ch01.md 0.1.31 2 audited-at-wolf=0.2.10 audited-at-lupin=0.1.31
+";
+
+    #[test]
+    fn a_two_clock_entry_holds_when_neither_pin_moved() {
+        let f = version_literal_failures(
+            &seen(&[("book/ch01.md", "0.1.31", 2)]),
+            ALLOW_TWO_CLOCKS,
+            &("0.2.10".to_string(), "0.1.31".to_string()),
+        );
+        assert!(f.is_empty(), "{f:#?}");
+    }
+
+    #[test]
+    fn a_two_clock_entry_is_re_read_when_either_pin_moves() {
+        let found = seen(&[("book/ch01.md", "0.1.31", 2)]);
+        let compiler_moved = version_literal_failures(
+            &found,
+            ALLOW_TWO_CLOCKS,
+            &("0.2.11".to_string(), "0.1.31".to_string()),
+        );
+        assert_eq!(compiler_moved.len(), 1, "{compiler_moved:#?}");
+        assert!(
+            compiler_moved[0].contains("re-stamp its audited-at-wolf"),
+            "{compiler_moved:#?}"
+        );
+        let interpreter_moved = version_literal_failures(
+            &found,
+            ALLOW_TWO_CLOCKS,
+            &("0.2.10".to_string(), "0.1.32".to_string()),
+        );
+        assert_eq!(interpreter_moved.len(), 1, "{interpreter_moved:#?}");
+        assert!(
+            interpreter_moved[0].contains("re-stamp its audited-at-lupin"),
+            "{interpreter_moved:#?}"
+        );
+        let both_moved = version_literal_failures(
+            &found,
+            ALLOW_TWO_CLOCKS,
+            &("0.2.11".to_string(), "0.1.32".to_string()),
+        );
+        assert_eq!(both_moved.len(), 2, "{both_moved:#?}");
+    }
+
+    #[test]
+    fn one_clock_named_twice_is_a_parse_failure() {
+        let f = version_literal_failures(
+            &seen(&[("book/ch01.md", "0.1.31", 2)]),
+            "book/ch01.md 0.1.31 2 audited-at-wolf=0.2.10 audited-at-wolf=0.2.10\n",
+            &("0.2.10".to_string(), "0.1.31".to_string()),
+        );
+        assert!(
+            f.iter()
+                .any(|m| m.contains("the same clock is named twice")),
+            "{f:#?}"
+        );
+    }
+
+    #[test]
+    fn not_a_toolchain_version_stands_alone() {
+        let f = version_literal_failures(
+            &seen(&[("book/ch23.md", "v1.4.0", 2)]),
+            "book/ch23.md v1.4.0 2 not-a-toolchain-version audited-at-wolf=0.2.10\n",
+            &pins(),
+        );
+        assert!(
+            f.iter()
+                .any(|m| m.contains("`not-a-toolchain-version` stands alone")),
+            "{f:#?}"
+        );
     }
 
     #[test]
