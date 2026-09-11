@@ -2,6 +2,56 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs41, the forty-eight — 2026-09-11 — a list you can slice, and a hole with a shape
+
+Chapter 5 sliced strings three times and never once sliced a list, so
+a reader who met slices in chapter 3 as a string thing had no reason to
+try them on a list, and asked whether that was a rule. It is not.
+§5.1 now slices a `List` beside the element it indexes — `xs[1..]`,
+`xs[..^1]`, `xs[a..=b]`, the same three spellings, on a list of any
+`T` — and says the one thing that is genuinely different: a `str`
+slice looks at bytes it does not own, and a `List` slice is a fresh
+copy. The block proves it rather than asserting it, by shortening the
+original on the next line and printing three lengths. That next line
+is also the chapter's one look at throwing away a fallible value on
+purpose: `let _ = (mut names).pop()`, when the removal is the point
+and the element is not. Exercise 5-3 grew a partner, `rest[T]`, which
+is one slice and not a loop, and asks which of the two has the harder
+empty case.
+
+The rest of this entry is about the solutions manual rather than the
+book, and it is one number: the exercise transcripts that nothing
+replayed went from forty-eight to twenty. Twenty-four of them ran the
+conformance probe, which the last sprint read as needing a lane the
+book did not have. It needed one line removed instead. The probe
+answers two audiences on two streams — a line of machine-readable
+verdict, and the diagnostic a reader sees — and a page prints the
+second. Drop the first and the rest of what the tool said is exactly
+what the page claims it said. Four more printed an error code's
+explanation, which reads nothing and touches nothing, and were
+declined only because the rule had been drawn at "names a file".
+
+Replaying those twenty-eight for the first time found eight pages
+that did not say what the tools say. Two dropped a warning the
+compiler prints above the error the exercise is about. Three were
+abridged, and their own prose gave them away — one paragraph
+describes five diagnostics over a block that printed one. Three were
+text that had moved underneath the page: an explanation's closing
+sentence, a rule that grew a fifth case (which made the surrounding
+paragraph wrong as well as the block), and a suggestion that grew a
+body. All eight are re-recorded from the real runs, and the two
+paragraphs that had gone wrong with them are rewritten.
+
+The twenty that remain each say why, in a sentence somebody wrote,
+in a new ledger beside the two the book already keeps — one says "not
+yet, anywhere", one says "not here, and here is what here says", and
+this one says "not replayed at all, and here is what it would take".
+The build fails if a transcript joins that set without a row, and it
+fails if a row outlives the hole it explains. Eight want a file or a
+package that was never checked in, six want something a person types,
+six want a linked binary or a shell. That is the whole of it, and
+none of it is invisible any more.
+
 ## bs40, the map alone — 2026-09-11 — a missing key is an answer
 
 Chapter 5 has counted with two containers since it was written, and
