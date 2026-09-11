@@ -2,7 +2,7 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
-## bs36, the second pin bump — 2026-09-11 — the number that means something
+## bs36, the second pin bump — 2026-09-10 — the number that means something
 
 This printing is true for a release again. The compiler's version is a
 plain number with nothing stuck to the front of it, which is what a
