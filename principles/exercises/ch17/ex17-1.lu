@@ -3,9 +3,9 @@
 // Exercise 17-1: the lost update — an ordering bug that typechecks.
 // Two deposits of 50 into balance 0; the composite get-then-set is not atomic.
 fn deposit(getreq: channel[int], getrep: channel[int], setch: channel[int]) {
-    getreq.send(1)
+    getreq.send(1) else { return }
     let v = getrep.recv() else |_| { return }
-    setch.send(v + 50)
+    setch.send(v + 50) else { return }
 }
 fn main() -> !int {
     let getreq = channel[int](0)

@@ -18,9 +18,9 @@ be if deposits never interfered:
 
 ```wolf
 fn deposit(getreq: channel[int], getrep: channel[int], setch: channel[int]) {
-    getreq.send(1)
+    getreq.send(1) else { return }
     let v = getrep.recv() else |_| { return }
-    setch.send(v + 50)
+    setch.send(v + 50) else { return }
 }
 fn main() -> !int {
     let getreq = channel[int](0)
@@ -216,7 +216,7 @@ fn fetch(ch: channel[int]) -> int ! {Lost} {
 }
 fn main() -> !int {
     let ch = channel[int](1)
-    ch.send(41)
+    ch.send(41)?
     let v = fetch(ch) else |_| { 0 - 1 }
     print("v={v}")
     if v == 41 || v == 0 - 1 { 0 } else { 1 }
@@ -316,11 +316,11 @@ fn main() -> !int {
     scope s {
         s.spawn(fn() {
             let x = a.recv() else |_| { return }
-            b.send(x)
+            b.send(x) else { return }
         })
         s.spawn(fn() {
             let y = b.recv() else |_| { return }
-            a.send(y)
+            a.send(y) else { return }
         })
     }
     0

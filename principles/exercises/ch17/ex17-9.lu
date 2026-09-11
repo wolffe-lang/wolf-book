@@ -14,11 +14,11 @@ fn main() -> !int {
     scope s {
         s.spawn(fn() {
             let x = a.recv() else |_| { return }
-            b.send(x)
+            b.send(x) else { return }
         })
         s.spawn(fn() {
             let y = b.recv() else |_| { return }
-            a.send(y)
+            a.send(y) else { return }
         })
     }
     0

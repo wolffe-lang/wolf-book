@@ -10,7 +10,7 @@ fn fetch(ch: channel[int]) -> int ! {Lost} {
 }
 fn main() -> !int {
     let ch = channel[int](1)
-    ch.send(41)
+    ch.send(41)?
     let v = fetch(ch) else |_| { 0 - 1 }
     print("v={v}")
     if v == 41 || v == 0 - 1 { 0 } else { 1 }
