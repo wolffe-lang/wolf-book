@@ -116,12 +116,24 @@ jobs:
       # exactly when one points at the pin — reproduced here because
       # dist's archive staging is not needed (and its windows staging
       # step fails at the v0.2.0 tag; fixed upstream at s60).
+      #
+      # `--short=7`, and the `=7` is load-bearing. A bare `--short` lets
+      # git pick the width from the clone's object count, so the same
+      # revision stamps `e0ce018` in a checkout that has sat on a box
+      # for weeks and `e0ce0189` in a fresh clone — which is what this
+      # runner makes. bs36 measured both, went green locally and red
+      # here by one character in the `pin` clause, on two hosts. That is
+      # wolf-lang#301, and `cargo xtask dist` now pins the width by
+      # decision (`STAMP_SHA_WIDTH`). This step does not run `dist`, so
+      # the decision does not reach it on its own: the two have to say
+      # the same number, here, or the stamp is a coin flip on how many
+      # objects the runner happened to fetch.
       - name: build pinned wolf (release, D57-stamped) + the runtime staticlib
         if: steps.acquire.outputs.toolchain == 'full'
         shell: bash
         working-directory: wolf-lang
         run: |
-          WOLF_COMMIT="$(git rev-parse --short HEAD)"
+          WOLF_COMMIT="$(git rev-parse --short=7 HEAD)"
           export WOLF_COMMIT
           WOLF_RELEASE="$(git tag --points-at HEAD | grep -E '^v[0-9]' | head -1 || true)"
           if [ -n "$WOLF_RELEASE" ]; then export WOLF_RELEASE; fi
