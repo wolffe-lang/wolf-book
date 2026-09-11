@@ -2006,6 +2006,133 @@ scan per line, and the printing loop walks the list and asks the map.
 </details>
 
 <details>
+<summary>Exercise 5-7. <a href="../ch05.md#5.6">§5.6</a></summary>
+
+**Exercise 5-7** *(fingers + extension · lupin)*. A grade book. The
+block below has one `name,score` line per student. Parse it into a
+`List[Student]` (a struct from §5.5), then print the top scorer's name
+and score, the class average to the nearest whole point, and each
+student on their own line with `above` or `below` beside the average.
+Then make the top-scorer search generic: `best[T: Ord](xs: List[T]) ->
+T` from §5.6, with `impl Ord for Student` comparing scores. What does
+`best` need to know about `Student`, and what does it never need to
+know?
+
+```text
+ada,91
+grace,78
+linus,84
+mira,69
+```
+
+Solution, first half. `ch05/ex5-7.lu`:
+
+```wolf
+struct Student { name: str, score: int }
+fn parse(text: str) -> List[Student] {
+    var out = List[Student]()
+    for line in text.lines() {
+        var i = 0
+        while i < line.len && line[i..i + 1] != "," { i += 1 }
+        if i == line.len { continue }
+        (mut out).push(Student { name: line[..i], score: line[i + 1..].to_int() else 0 })
+    }
+    out
+}
+fn main() -> !int {
+    let text = """
+        ada,91
+        grace,78
+        linus,84
+        mira,69
+        """
+    let students = parse(text)
+    var top = 0
+    var sum = 0
+    for i in 0..students.len {
+        sum += students[i].score
+        if students[i].score > students[top].score { top = i }
+    }
+    let avg = (sum + students.len / 2) / students.len
+    print("top: {students[top].name} {students[top].score}")
+    print("average: {avg}")
+    for s in students {
+        let mark = if s.score > avg { "above" } else { "below" }
+        print("{s.name:<8}{s.score:>4}  {mark}")
+    }
+    0
+}
+```
+
+```console
+$ lupin ex5-7.lu
+top: ada 91
+average: 81
+ada       91  above
+grace     78  below
+linus     84  above
+mira      69  below
+```
+
+`parse` is §5.1's comma scan with §5.5's struct at the end of it: a
+line with no comma is skipped, and a score that is not a number reads
+as 0 through `else`. The top scorer is an index, not a copy, so the
+loop compares fields through `students[i].score` and never moves a
+`Student` out of the list. `(sum + n / 2) / n` is integer rounding to
+the nearest point: 322 over 4 is 80.5, and the half added before the
+division carries it to 81.
+
+Solution, second half. `ch05/ex5-7b.lu`, which runs under `wolf`:
+
+```wolf
+enum Ordering { Less, Equal, Greater }
+trait Ord {
+    fn cmp(self, other: Self) -> Ordering
+}
+struct Student { name: str, score: int }
+impl Ord for Student {
+    fn cmp(self, other: Self) -> Ordering {
+        if self.score < other.score { Ordering.Less } else if self.score == other.score { Ordering.Equal } else { Ordering.Greater }
+    }
+}
+fn best[T: Ord](xs: List[T]) -> T {
+    var b = copy xs[0]
+    var i = 1
+    while i < xs.len {
+        if xs[i] > b { b = copy xs[i] }
+        i += 1
+    }
+    b
+}
+fn main() -> !int {
+    var students = List[Student]()
+    (mut students).push(Student { name: "ada", score: 91 })
+    (mut students).push(Student { name: "grace", score: 78 })
+    (mut students).push(Student { name: "linus", score: 84 })
+    (mut students).push(Student { name: "mira", score: 69 })
+    let top = best(students)
+    print("{top.name} {top.score}")
+    0
+}
+```
+
+```console
+$ wolf run ex5-7b.lu
+ada 91
+```
+
+`best` needs to know one thing about `Student`: that `xs[i] > b` has
+an answer, which is what `[T: Ord]` says and `impl Ord for Student`
+supplies, by comparing scores and nothing else. It never needs to know
+that a `Student` has a name, a score, or any field at all; `best` is
+§5.6's function unchanged, and `Student` is the third type it has been
+instantiated at. Under `lupin` the `>` on two `Student`s is refused,
+because the interpreter does not dispatch a struct's operator through
+its `Ord` (wolf-interp#92); this half's transcript is the compiler's,
+and the first half runs on both.
+</details>
+
+<details>
 <summary>Exercise 5-11. <a href="../ch05.md#5.6">§5.6</a></summary>
 
 **Exercise 5-11** *(extension · lupin)*. Exercise 2-7 encoded runs
@@ -2395,8 +2522,10 @@ Exercises 5-9 and 5-10 (the third `Draw` shape; the cast-a-binding
 rule) moved to chapter 7 with the material they belong to, as 7-17 and
 7-18. The numbers are not reused.
 
-Exercise 5-7 (the RPN evaluator) moved to chapter 6 as 6-14, where `?`
-on `pop()` is the point. The number is not reused.
+The RPN evaluator that was exercise 5-7 moved to chapter 6 as 6-14,
+where `?` on `pop()` is the point. Its number is reused below for the
+grade book, on the maintainer's call, so that the renumbering stays
+local.
 </details>
 
 ## Chapter 6

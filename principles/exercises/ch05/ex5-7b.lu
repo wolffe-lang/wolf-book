@@ -1,0 +1,32 @@
+//! check: wolf-run(exit=0, stdout="ada 91")
+//! phase: run
+// Exercise 5-7 solution, second half: the top scorer through best[T: Ord].
+enum Ordering { Less, Equal, Greater }
+trait Ord {
+    fn cmp(self, other: Self) -> Ordering
+}
+struct Student { name: str, score: int }
+impl Ord for Student {
+    fn cmp(self, other: Self) -> Ordering {
+        if self.score < other.score { Ordering.Less } else if self.score == other.score { Ordering.Equal } else { Ordering.Greater }
+    }
+}
+fn best[T: Ord](xs: List[T]) -> T {
+    var b = copy xs[0]
+    var i = 1
+    while i < xs.len {
+        if xs[i] > b { b = copy xs[i] }
+        i += 1
+    }
+    b
+}
+fn main() -> !int {
+    var students = List[Student]()
+    (mut students).push(Student { name: "ada", score: 91 })
+    (mut students).push(Student { name: "grace", score: 78 })
+    (mut students).push(Student { name: "linus", score: 84 })
+    (mut students).push(Student { name: "mira", score: 69 })
+    let top = best(students)
+    print("{top.name} {top.score}")
+    0
+}

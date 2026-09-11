@@ -1,0 +1,37 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 5-7 solution, first half: the grade book on chapter 5's tools.
+struct Student { name: str, score: int }
+fn parse(text: str) -> List[Student] {
+    var out = List[Student]()
+    for line in text.lines() {
+        var i = 0
+        while i < line.len && line[i..i + 1] != "," { i += 1 }
+        if i == line.len { continue }
+        (mut out).push(Student { name: line[..i], score: line[i + 1..].to_int() else 0 })
+    }
+    out
+}
+fn main() -> !int {
+    let text = """
+        ada,91
+        grace,78
+        linus,84
+        mira,69
+        """
+    let students = parse(text)
+    var top = 0
+    var sum = 0
+    for i in 0..students.len {
+        sum += students[i].score
+        if students[i].score > students[top].score { top = i }
+    }
+    let avg = (sum + students.len / 2) / students.len
+    print("top: {students[top].name} {students[top].score}")
+    print("average: {avg}")
+    for s in students {
+        let mark = if s.score > avg { "above" } else { "below" }
+        print("{s.name:<8}{s.score:>4}  {mark}")
+    }
+    0
+}

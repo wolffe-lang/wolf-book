@@ -1383,8 +1383,11 @@ sprint files remain the implementation contracts for everything else.
   a two-trait bound used in one body, and what no bound grants; chapter
   11's `[S]` paragraph cites the rule instead of teaching it. §3.2 gains
   the bare `if c then a else b` (wolf-book#30) and exercise 3-15; the
-  insert renumbers `book/ch03/s7..s15`. Exercise 5-7 is 6-14 (wolf-
-  book#35), the first under §6.2; its old number is not reused. Every
+  insert renumbers `book/ch03/s7..s15`. Exercise 5-7's RPN evaluator is 6-14
+  (wolf-book#35), the first under §6.2; the number 5-7 is reused the
+  same day, on the maintainer's call, for a self-contained grade-book
+  exercise on chapter 5's own tools (the one exception to EXERCISES.md
+  §1, taken so the renumbering stays local). Every
   bare statement send the compiler names is `?` or `else { … }`
   (wolf-book#21), and §10.1 says why a task's tail needs neither. No
   section number moves and no shipped anchor changes meaning.

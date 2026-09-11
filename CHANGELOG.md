@@ -35,7 +35,12 @@ the formatter does, which is nothing, except break a bare `if` to
 braces when its line outgrows the width, one way only. Exercise 5-7,
 the RPN evaluator, is chapter 6's exercise 6-14 now, the first under
 §6.2, because `?` on `pop()` is its point and chapter 5 had not taught
-it; `words()` is named as the tokenizer.
+it; `words()` is named as the tokenizer. Chapter 5 keeps a
+write-a-program exercise at that number: a grade book parsed into a
+`List[Student]`, the top scorer, the rounded average, and every
+student marked against it, on the chapter's own tools; its second
+half finds the top scorer through `best[T: Ord]` and runs under the
+compiler until the interpreter dispatches `>` on a struct.
 
 Every bare statement `send` outside chapter 12 that the compiler names
 as a dropped failure is spelled `?` now, or `else { … }` where the
