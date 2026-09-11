@@ -2,6 +2,36 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs39 — 2026-09-10 — the query and the loop
+
+Section 5.2 is rewritten, on a reader's report that the old one lost
+them. It had a function that ignored its parameter and typed three
+totals in by hand, on the page that teaches "a chain says what the
+result is, a loop says how to make it", and it made the reader wait
+fifteen lines and a paragraph to learn what the loop was for. The new
+section asks one question of the table the chapter opened with (the two
+categories that cost the most) and shows the two spellings of the
+answer in order: first the chain, as the line it would be, then the one
+sentence that names the trade (two selections against one sort), then
+the loop that makes the selections, in a function that reads every
+parameter it declares. The totals come from the receipt rows the head of
+the chapter parsed, so the numbers on the page are the same numbers, and
+the program is that program with one function added and one loop
+changed.
+
+Exercise 5-6 is one task now. It asked for `uniq`, adjacent duplicates,
+two parallel lists and a question about `Map` in five lines; it asks
+for the count-in-first-seen-order the chapter just did, with the same
+two containers, and one question: why the `Map` alone loses the order.
+The solution moved onto those containers and its output did not move.
+
+The chain the section prints does not run on this toolchain, and the
+page says so in the present tense: the std ships one combinator and a
+sort is not among them. That is filed on the library this time, with
+the chain as the witness, because what the library does ship is a sort
+that works in place and returns nothing, and a chain needs a sort that
+returns.
+
 ## bs36, the second pin bump — 2026-09-10 — the number that means something
 
 This printing is true for a release again. The compiler's version is a
