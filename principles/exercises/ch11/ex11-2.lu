@@ -9,7 +9,7 @@
 // owed — see principles/TWO-MACHINES.md §5.
 // Exercise 11-2: the same program with a rendezvous channel — the
 // receives sit on the wrong side of the join.
-fn launch(s: Scope, ch: channel[int], n: int) {
+fn launch[S](s: S, ch: channel[int], n: int) {
     s.spawn(fn() { ch.send(n * 10) })
 }
 fn main() -> !int {
