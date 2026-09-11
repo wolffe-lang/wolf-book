@@ -3049,6 +3049,19 @@ fn main() -> !int {
 
 ```console
 $ wolf conform-run ./ex7-3.lu
+warning[W1003]: `w` is taken, never touched, and returned
+ --> ./ex7-3.lu:5:8
+  |
+5 | fn eat(take w: str) -> str { w }
+  |        ^^^^ consumption that consumes nothing
+  |
+  = note: the caller gives the value up only to receive it back; if callers could reasonably keep
+    it, the signature is wrong.
+help: drop the `take` (call sites drop theirs and keep their binding; owned payloads may then need a real transform)
+  |
+5 | fn eat(w: str) -> str { w }
+  |
+
 error[E1001]: `s.a` is used here after its value moved away
  --> ./ex7-3.lu:9:13
   |
@@ -3063,6 +3076,14 @@ help: to keep the original, copy it at the move
 8 |     let t = eat(take copy s.a)
   |
 ```
+
+Two diagnostics, and the order is the compiler's rather than the
+exercise's. `eat` takes a value and hands it straight back, which is
+§7.2's W1003 in its own right — a consumption that consumes nothing —
+and it is reported first because it is found first. The E1001 the
+exercise is about is the second. Leaving the warning off this page
+would make the page shorter and the transcript false; a console block
+here is replayed against the pinned tools byte for byte.
 
 ```console
 $ lupin ex7-3.lu
@@ -4134,7 +4155,8 @@ it is why frozen data needs no locks and no lifetimes; a single write
 anywhere would break every reader everywhere. This write reaches data
 that a `freeze` already promoted (the freeze site is marked). Do the
 mutation before freezing — build the value completely, freeze last —
-or keep a mutable `copy` alongside the frozen one.
+or keep a mutable `copy` alongside the frozen original for the part
+that must keep changing.
 ```
 
 No-locks: "a single write anywhere would break every reader
@@ -6116,6 +6138,43 @@ error[E1101]: this task writes to `hits`, which it captures from the enclosing f
     model forbids. Three ways out: send results over a `channel` and let one owner mutate;
     guard truly shared state with a `Mutex` acquired in a `when` block; or, for loop-shaped
     work, use `par` with a reduction.
+
+warning[W1101]: this write to `hits` stays inside the task
+ --> ./ex13-3.lu:9:24
+  |
+9 |         s.spawn(fn() { hits += 1 })
+  |                 ------------------ the closure captured it at spawn
+  |                        ^^^^ lands on the task's own copy
+  |
+  = note: task captures copy (or move); the enclosing binding never sees this assignment. Send the
+    result over a channel, or return it through the scope's join.
+
+error[E1101]: this task writes to `hits`, which it captures from the enclosing function
+  --> ./ex13-3.lu:10:24
+   |
+10 |         s.spawn(fn() { hits += 1 })
+   |         --------------------------- the task's closure captures it at this spawn
+   |                        ^^^^ tasks cannot mutate captured state
+   |
+
+warning[W1101]: this write to `hits` stays inside the task
+  --> ./ex13-3.lu:10:24
+   |
+10 |         s.spawn(fn() { hits += 1 })
+   |                 ------------------ the closure captured it at spawn
+   |                        ^^^^ lands on the task's own copy
+   |
+
+warning[W1102]: the closure above captured `hits` by value, so it will not see this assignment
+  --> ./ex13-3.lu:10:24
+   |
+ 9 |         s.spawn(fn() { hits += 1 })
+   |                 ------------------ captured by value when this was created
+10 |         s.spawn(fn() { hits += 1 })
+   |                        ^^^^^^^^^ invisible to the closure
+   |
+   = note: closures copy their captures at creation; create the closure after the last assignment,
+     or pass the value as a call argument instead.
 ```
 
 The second `s.spawn` earns the same error at line 10, and two warnings
@@ -7379,10 +7438,12 @@ fn main() -> !int {
 
 Predict the verdict this program earns and the rule behind it, and
 explain why each of the four admitted payload classes is safe where a
-bare `List` is not.
+bare `List` is not. Then say what the note's fifth entry — a struct,
+enum or tuple whose every field is one of the four — adds that the
+four alone do not.
 
-Solution: the verdict is `fail(E1102)`, and the note names all four
-classes:
+Solution: the verdict is `fail(E1102)`, and the note names the four
+base classes and the composite rule that closes over them:
 
 ```console
 $ wolf conform-run ./ex16-9.lu
@@ -7393,9 +7454,10 @@ error[E1102]: `List[int]` cannot be sent through a channel
   |                      ^^^^^^^^^ not a sendable payload type
   |
   = note: channel payloads must be `Copy` data, `imm` data, a region value (the send is its affine
-    move), or a `sync` type ([conc.chan.type]) — sending anything else would give two tasks
-    one mutable value. D14's verbs are the ways out: `move` the data into a region and send
-    the region, `freeze` it into shareable `imm` data, or guard it with a `Mutex`.
+    move), a `sync` type, or a struct, enum or tuple whose every field is one of those
+    ([conc.chan.type], [conc.chan.payload]) — sending anything else would give two tasks one
+    mutable value. D14's verbs are the ways out: `move` the data into a region and send the
+    region, `freeze` it into shareable `imm` data, or guard it with a `Mutex`.
 ```
 
 Each admitted class removes one half of the race. `Copy` data: the
@@ -7406,6 +7468,15 @@ type: the sharing is real and the coordination is the type's own job. A
 bare `List` is none of these: sending it would give two tasks live
 access to one mutable buffer with no coordination, which is chapter 13's
 store-buffer program wearing a channel as a disguise.
+
+The fifth entry adds no fifth *reason*, and that is its point. A
+struct, enum or tuple is sendable exactly when every field is —
+`[conc.chan.payload]`, beside `[conc.chan.type]` in the note — so the
+rule is closed under composition rather than restated for each shape,
+and a record of two `int`s needs no ceremony to cross a channel. It is
+also the entry that makes the other four load-bearing: one
+non-sendable field anywhere in the tree refuses the whole value, which
+is why the four classes above are worth being able to name.
 
 Note that the rejection is a property of the *declaration*: no `send`
 appears in the program, and none is needed. The type of the channel is
@@ -7962,20 +8033,65 @@ for one reason; each refusal names its own:
 ```console
 $ wolf conform-run ./ex18-7a.lu
 error[E0701]: `read_text` reaches the filesystem, which comptime code can never touch
+ --> ./ex18-7a.lu:5:5
+  |
+5 |     read_text(path)
+  |     ^^^^^^^^^^^^^^^ ambient IO at compile time
+...
+8 |     const BANNER = embed("banner.txt")
+  |                    ------------------- while evaluating `embed`, entered here
+  |                    ------------------- while evaluating `main`, entered here
+  |
   = note: why it is refused — confinement: a build must not read the machine it runs on — and the
     same source would compile differently on different machines.
+  = note: the comptime sandbox is hermetic (D33): the intrinsics available at compile time are an
+    explicit allowlist, and nothing ambient is on it. Compute this value at runtime instead;
+    file contents belong in declared build inputs through the package manifest, never in an
+    evaluator capability.
+
 $ wolf conform-run ./ex18-7b.lu
 error[E0701]: `clock_ms` reaches the clock, which comptime code can never touch
+ --> ./ex18-7b.lu:5:5
+  |
+5 |     clock_ms()
+  |     ^^^^^^^^^^ ambient IO at compile time
+...
+8 |     const STAMP = build_stamp()
+  |                   ------------- while evaluating `build_stamp`, entered here
+  |                   ------------- while evaluating `main`, entered here
+  |
   = note: why it is refused — determinism: two identical builds must not observe different times.
+  = note: the comptime sandbox is hermetic (D33): the intrinsics available at compile time are an
+    explicit allowlist, and nothing ambient is on it. Compute this value at runtime instead;
+    file contents belong in declared build inputs through the package manifest, never in an
+    evaluator capability.
+
 $ wolf conform-run ./ex18-7c.lu
 error[E0701]: `net_fetch` reaches the network, which comptime code can never touch
+ --> ./ex18-7c.lu:5:5
+  |
+5 |     net_fetch(url)
+  |     ^^^^^^^^^^^^^^ ambient IO at compile time
+...
+8 |     const SCHEMA = fetch_schema("https://example.test/schema.json")
+  |                    ------------------------------------------------ while evaluating `fetch_schema`, entered here
+  |                    ------------------------------------------------ while evaluating `main`, entered here
+  |
   = note: why it is refused — confinement: `wolf add` must never mean arbitrary code talks to the
     network with your credentials.
+  = note: the comptime sandbox is hermetic (D33): the intrinsics available at compile time are an
+    explicit allowlist, and nothing ambient is on it. Compute this value at runtime instead;
+    file contents belong in declared build inputs through the package manifest, never in an
+    evaluator capability.
 ```
 
-(Each run also prints the span rendering and the shared hermetic-
-sandbox note; the lines above are the ones that differ. The full
-outputs are in `ex18-7a.lu` through `ex18-7c.lu`'s runs.)
+Three runs, and almost all of it is the same three times: the same
+`ambient IO at compile time` label, the same two-frame evaluation
+trace back to the `const`, and the same hermetic-sandbox note (D33)
+closing each report. The one line that differs is the one the question
+asks about — `= note: why it is refused` — and it gives a different
+reason each time: confinement, determinism, confinement again but of
+a second kind.
 </details>
 
 <details>
@@ -8032,10 +8148,38 @@ from a computation that is merely large; only you can:
 ```console
 $ wolf conform-run ./ex18-9a.lu
 error[E0704]: comptime evaluation recursed past 256 call frames
+ --> ./ex18-9a.lu:5:5
+  |
+5 |     dive(n + 1)
+  |     ^^^^^^^^^^^ the call that went over the limit
+  |     ----------- while evaluating `dive` — 254 recursive frames
+...
+8 |     const D = dive(0)
+  |               ------- while evaluating `dive`, entered here
+  |               ------- while evaluating `main`, entered here
+  |
+  = note: call depth is a resource limit, not a host stack: deep recursion is refused with this
+    report instead of crashing the compiler (D33).
 help: raise the budget here: `#[budget(depth = 512)]`
+  |
+8 |     #[budget(depth = 512)]
+  |
+
 $ wolf conform-run ./ex18-9b.lu
 error[E0702]: comptime evaluation ran out of fuel after 1000000 steps
+ --> ./ex18-9b.lu:9:15
+  |
+9 |     const N = spin()
+  |               ^^^^^^ evaluation stopped here
+  |               ------ while evaluating `spin`, entered here
+  |               ------ while evaluating `main`, entered here
+  |
+  = note: fuel bounds how long the compiler will evaluate before concluding the computation is
+    runaway — a build can be slow, never hung (D33).
 help: raise the budget here: `#[budget(fuel = 2000000)]`
+  |
+9 |     #[budget(fuel = 2000000)]
+  |
 ```
 </details>
 
@@ -8078,6 +8222,9 @@ error[E0703]: comptime evaluation exceeded its heap budget of 65536 cells
    = note: the comptime heap is capped so evaluation cannot exhaust the machine compiling the
      program (D33); most overruns are unbounded value growth in a loop.
 help: raise the budget here: `#[budget(heap = 131072)]`
+   |
+12 |     #[budget(heap = 131072)]
+   |
 ```
 
 The order of the two limits is the lesson: budgets are independent
