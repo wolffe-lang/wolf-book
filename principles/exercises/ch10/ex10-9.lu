@@ -8,11 +8,11 @@ fn main() -> !int {
     var produced = 0
     scope s {
         s.spawn(fn() {
-            for i in 1..=5 { raw.send(i) }
+            for i in 1..=5 { raw.send(i)? }
             raw.close()
         })
         s.spawn(fn() {
-            for v in raw { squared.send(v * v) }
+            for v in raw { squared.send(v * v)? }
             squared.close()
         })
         for v in squared { produced += 1 }
