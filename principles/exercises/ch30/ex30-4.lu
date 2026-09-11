@@ -51,19 +51,19 @@ fn main() -> !int {
     var found = List[int]()
     scope s {
         s.spawn(fn() {
-            for i in 0..b1 { if matches(t.lines[i], needles) { hits.send(i) } }
+            for i in 0..b1 { if matches(t.lines[i], needles) { hits.send(i)? } }
             done.send(1)
         })
         s.spawn(fn() {
-            for i in b1..b2 { if matches(t.lines[i], needles) { hits.send(i) } }
+            for i in b1..b2 { if matches(t.lines[i], needles) { hits.send(i)? } }
             done.send(1)
         })
         s.spawn(fn() {
-            for i in b2..b3 { if matches(t.lines[i], needles) { hits.send(i) } }
+            for i in b2..b3 { if matches(t.lines[i], needles) { hits.send(i)? } }
             done.send(1)
         })
         s.spawn(fn() {
-            for i in b3..n { if matches(t.lines[i], needles) { hits.send(i) } }
+            for i in b3..n { if matches(t.lines[i], needles) { hits.send(i)? } }
             done.send(1)
         })
         var live = 4
