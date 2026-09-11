@@ -2,6 +2,55 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs40, the map alone — 2026-09-11 — a missing key is an answer
+
+Chapter 5 has counted with two containers since it was written, and
+the reason was never the receipt: no program could ask a `Map` whether
+a key was bound, and a key that was not bound answered a value that
+was not a value. So every tally carried a list beside the map, and the
+list existed to say "have I seen this one" so the program could choose
+between inserting and adding. A reader asked whether that was the
+list's whole job, and guessed the count could be done with the map
+alone. It can. The compiler this printing pins types the map, and a
+lookup answers what `pop` on an empty list answers: the value when the
+key is there, the mark `none` when it is not. The head of the chapter
+is one container and one line of counting; the list returns in §5.2
+for the one thing a map does not promise, which is the order the keys
+arrived in, and the exercise that used to ask for both asks for the
+count on the map and then asks which container gives you the order.
+The old idiom, `m[k] += v`, is refused where it is written, and the
+chapter prints the refusal: the compiler's note names the spelling
+the chapter has used since its first program.
+
+Three smaller things the same reader found are fixed with it. §5.3
+said that indexing a list empties it; that is true of a list of an
+unknown `T`, and the consequence is a refusal at compile time, so the
+paragraph now says whose list, what happens, and that `let c =
+cents[1]` on a `List[int]` copies the word and leaves the list whole.
+Seven `0 - 1`s that meant `-1` read `-1`. And the `first` exercise
+says in one sentence why it asks for a read: `pop` changes the list it
+is called on, and a function that changes its argument is chapter 7's.
+
+Which machine runs which page is spelled on the page, as always, and
+this printing it points the other way for chapter 5: the interpreter
+still reads a missing key as the old non-value and refuses to add to
+it, so the tallies over new keys run under the compiler until the
+mirror lands, and the two blocks whose keys are already bound run on
+both. Elsewhere the interpreter caught up and the compiler caught up,
+sixteen samples in seven chapters graduated to both machines, and the
+runner is what said so, by name, before any fence moved. Two of them
+could not graduate all the way and the pages say why: one prints
+different bytes on the two machines because one of them has not taken
+the ruling, and one has two conforming outcomes and had said so.
+
+A warning the book teaches is a gate now. Chapter 12 prints one send
+written bare, with the compiler's warning under it, replayed, and the
+block declares the warning it expects; the build fails if the compiler
+stops printing it or prints another. Every other sample that warns
+without declaring it is counted and named in the log on each run,
+so the inventory of dropped-failure sends the last printing filed is
+read rather than remembered.
+
 ## bs38, the interpreter is taken — 2026-09-10 — two names that were never there
 
 For four printings the book pinned an interpreter one release behind
