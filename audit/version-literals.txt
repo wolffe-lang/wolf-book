@@ -54,28 +54,29 @@
 # names live in one and nothing executes them.
 
 # --- the compiler's clock ---
-book/ch01.md 0.2.10+dev.unknown 1 audited-at-wolf=0.2.10
-book/ch01.md 0.2.10 3 audited-at-wolf=0.2.10
-book/ch22.md 0.2.10 1 audited-at-wolf=0.2.10
-book/ch33.md 0.2.6 1 audited-at-wolf=0.2.10
-book/ch33.md 0.2.8 1 audited-at-wolf=0.2.10
+book/ch01.md 0.2.10+dev.unknown 1 audited-at-wolf=0.2.10+dev.3d0a6e1
+book/ch01.md 0.2.10+dev.3d0a6e1 1 audited-at-wolf=0.2.10+dev.3d0a6e1
+book/ch01.md 0.2.10 3 audited-at-wolf=0.2.10+dev.3d0a6e1
+book/ch22.md 0.2.10 1 audited-at-wolf=0.2.10+dev.3d0a6e1
+book/ch33.md 0.2.6 1 audited-at-wolf=0.2.10+dev.3d0a6e1
+book/ch33.md 0.2.8 1 audited-at-wolf=0.2.10+dev.3d0a6e1
 
 # --- both clocks ---
-# `0.1.31` is two claims on each of these two pages and the number is
-# the same, which is why the entry names both clocks. Claim one: the
+# `0.1.31` is ONE literal on each of these two pages at bs40 (it was two
+# on §1.2 at bs38, when the compiler's interpreter and the book's were
+# the same number) and it is still two claims. Claim one: the
 # interpreter the COMPILER names, out of `crates/wolf_driver/PAIRING` —
-# a wolf-side file that moves when the compiler pin moves, not when the
-# interpreter releases. Claim two, new at bs38: the interpreter THIS
-# BOOK IS PINNED TO, which moves when `[lupin]` does. The two numbers
-# are equal at this printing and the sentences say so; when either pin
-# moves they may stop being equal, and both sentences have to be
-# re-read to find out. That is the whole reason for the second field.
-# The counts differ because the pages do: §1.2 spends two sentences on
-# the pair and the colophon spends one, which makes both claims at once
-# ("the compiler names `lupin 0.1.31`, which is the interpreter under
-# it"). One literal, two clocks.
-book/ch01.md 0.1.31 2 audited-at-wolf=0.2.10 audited-at-lupin=0.1.31
-book/back/colophon.md 0.1.31 1 audited-at-wolf=0.2.10 audited-at-lupin=0.1.31
+# a wolf-side file that moves when the compiler pin moves. Claim two:
+# the sentence around it says that number is "one release before the
+# interpreter beside it", and THAT is a lupin-side fact — it stops being
+# true the day `[lupin]` moves to 0.1.33 while the compiler still names
+# 0.1.31. So the entry rides both clocks, as it did at bs38, for the
+# mirror-image reason: then the two numbers were equal and both
+# sentences said so; now they differ by one and both sentences say
+# that. Either pin moving can falsify the sentence, so either pin
+# moving has to re-read it.
+book/ch01.md 0.1.31 1 audited-at-wolf=0.2.10+dev.3d0a6e1 audited-at-lupin=0.1.32
+book/back/colophon.md 0.1.31 1 audited-at-wolf=0.2.10+dev.3d0a6e1 audited-at-lupin=0.1.32
 
 # --- version-shaped, and about neither tool ---
 book/ch23.md 1.4.0 1 not-a-toolchain-version
