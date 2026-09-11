@@ -336,9 +336,95 @@
 #     ordinary two-machine sample. Chapter 5's own record is in its
 #     ledger; three findings filed the same day (wolf-lang#331, #332,
 #     wolf-interp#94).
+#
+# ===================================================================
+# bs43 TAKES THE v0.2.11 TAG, `c9237c1`, AND THE STAMP GOES BARE AGAIN.
+# Three commits past 5289501 (`git rev-list --count 5289501..c9237c1`,
+# ancestry checked), all r16's: the pairing re-stamp (PAIRING ->
+# `lupin-version = 0.1.32` / `lupin-pin = e0ce018`), the CHANGELOG cut,
+# and the release commit (workspace version, both lockfiles, README, one
+# wolfi toolchain-stamp snapshot). NO LANGUAGE MOVE in the three, which
+# is what bounds every prediction below. Taken from the release archive
+# (`wolf-0.2.11-aarch64-apple-darwin.tar.gz`, sha256 `a91b77c0…848e`,
+# matched against the release's own digest before unpacking), staged
+# whole at /private/tmp/bs43-bin beside bs42's dev-sha control, never
+# `~/.local/bin`.
+#
+#   wolf 0.2.11 (wolfgang, pin c9237c1)
+#   paired with lupin 0.1.32 (reference interpreter), pin e0ce018
+#   lupin 0.1.33 (wolf-interp, reference interpreter at pin 662b14c)
+#
+# THE PAIR, both halves computed from the stamps: the compiler names
+# lupin 0.1.32 and this file pins 0.1.33, so the compiler's half stays
+# ONE RELEASE BEHIND for the third bump running; the interpreter names
+# 662b14c, the v0.2.10 tag, and `git rev-list --count 662b14c..c9237c1`
+# is NINETY-ONE (ancestor checked), so that half CLOSES from one hundred
+# and ten. Seven data points: 14, 43, 65, 51, 84, 110, 91.
+#
+# WHAT s154 MEANS FOR THIS PIN, stated because a reader of wolf-lang's
+# trunk would expect more: the nine papercuts (W1002 retired beside a
+# mode error, W0601 for a `!T` tail with the widened sentence, W0318,
+# E0410 on a `let` binding's field, the one-line body-less trait member)
+# landed on trunk AFTER the tag — `git log c9237c1..origin/trunk` is
+# be348b9 and its thirteen — so no transcript on these pages that quotes
+# any of those messages moves at v0.2.11, and `docs/diagnostics.md`,
+# `spec/anchors.json` and `spec/grammar.ebnf` are BYTE-IDENTICAL between
+# 5289501 and the tag (diffed, not assumed). They move at the next pin.
+#
+# WHAT THE BOOK MEASURED, PREDICTION FIRST. Every number below was
+# written into the lane's scratchpad (bs43-predictions.md, 20:56Z)
+# before the archives were unpacked into the stage and before any file
+# here was edited; the CONTROL ran on the UNEDITED tree (trunk a27b684)
+# with the new pair:
+#
+#   489 samples, 484 passed, 5 pending, 3 failed, 0 flips (112.5 s)
+#
+#   * 0 FLIPS PREDICTED AND 0 MEASURED, with the reason checked on both
+#     halves: the compiler carries no language change past 5289501, and
+#     0.1.33 mirrors none of the seven `wolf-run` fences' subjects (the
+#     three `[mem.map.absent]` blocks in ch05, wolf-interp#91; the two
+#     `[type.trait.op]` blocks in §5.6, wolf-interp#92 / is46 — in CI
+#     as this lane ran, not waited for; ch30's and ch33's process-and-
+#     files blocks). Those seven stay `wolf-run` until 0.1.34.
+#   * 3 CONSOLE RE-RECORDS MEASURED, 4 PREDICTED, and the miss is the
+#     record. Predicted: §1.2's and the colophon's `--version` pairs
+#     (both compiler lines move — the bare stamp and the pair line —
+#     and the interpreter's line), §22.2's `wolf interface` (toolchain
+#     0.2.11) and §25.2's `wolf publish` line, the last two on bs35's
+#     finding that the release number is an input to the interface
+#     hash. Measured: the first three, and in §22.2 ONLY THE TOOLCHAIN
+#     LINE MOVED — `export_hash` and `pkg_hash` are byte-identical
+#     across 0.2.10 -> 0.2.11 — and §25.2 did not move at all. The
+#     compiler's version is no longer hashed (the ch22 prose already
+#     says so: "the alternative was tried"); bs35's finding is closed
+#     by wolf-lang#292 and this is the first bump across a release
+#     number since, so this pin is the measurement that retires it.
+#   * 0 SAMPLE FAILURES, predicted and measured: 0.1.33's new refusals
+#     (E0409 on either operand side, E0416 at a `str` slice write,
+#     E0301 for `List[Nonesuch]()`, E0206 for a keyword in type
+#     position, one `T` bound once per call) name programs the book
+#     prints only under `fail(…)` or not at all.
+#   * 0 PENDING MOVEMENT (five rows; 0.1.33 grows no std subset) and
+#     0 DECLINED MOVEMENT (twenty rows), predicted and measured.
+#   * 59 SAMPLES WARN UNDECLARED at the control, predicted from bs40's
+#     count and measured; W0601 at 30 of them (19 corpus, 11 book),
+#     every site then pinned by line with `wolf conform-run` before
+#     wolf-book#21's respelling touched a page. Appendix E's help does
+#     not re-record (predicted from r16's three commits; measured).
+#   * THE CATALOG HOLDS AT 173, THE ANCHORS AT 471, THE GRAMMAR BYTE-
+#     IDENTICAL: the vendor re-derivation is a no-op and Appendices A,
+#     C and D regenerate to themselves (verify-docs green at the bump
+#     once the two audited-at clocks were re-stamped).
+#   * WHAT THIS LANE IS FOR beyond the bump — the whole of generics in
+#     §5.6 (`best[T: Ord]` with the comparison function gone, `Neg`, a
+#     two-trait bound used in one body, what no bound grants), the bare
+#     `if … then … else …` in §3.2 (wolf-book#30), exercise 5-7 moved
+#     to chapter 6 as 6-14 (wolf-book#35), and the bare statement sends
+#     respelled `?` or `else` (wolf-book#21) — is recorded chapter by
+#     chapter in the ledgers, and the counts are in the CHANGELOG.
 repo = "wolffe-lang/wolf-lang"
-rev = "5289501f62415a20f6e135e7d764491dad50b8bb"
-impl_version = "0.2.10+dev.5289501"
+rev = "c9237c11d081d5649825b5293bcff6d2814a5ad2"
+impl_version = "0.2.11"
 
 [lupin]
 # wolf-interp at the v0.1.30 release tag (is42): the stamped line names
@@ -703,9 +789,36 @@ impl_version = "0.2.10+dev.5289501"
 #     with the clause by s152; every tally block this bump respells is
 #     `wolf-run(…)` until it lands, and each ledger row says so.
 #   * 0 PENDING MOVEMENT: no std subset grew.
+#
+# ===================================================================
+# bs43 TAKES 0.1.33. is45's release, wolf-interp `18de030` — the COMMIT
+# the annotated tag `v0.1.33` points at (`gh api …/git/ref/tags/v0.1.33`
+# answers the tag object `8f573c3`, whose target is `18de0308…`; checked,
+# not copied). It declares pin `662b14c`, the v0.2.10 TAG, closing the
+# gap 0.1.32 left at a dev sha 22 commits short of it. Taken from the
+# release archive (`lupin-0.1.33-aarch64-apple-darwin.tar.gz`, sha256
+# `685fa60f…db3b`, matched against the release's own digest) and staged
+# under the FILENAME `lupin` (argv[0] is quoted by usage lines).
+#
+#   lupin 0.1.33 (wolf-interp, reference interpreter at pin 662b14c)
+#
+# WHAT 0.1.33 CARRIES, read from its CHANGELOG and probed on the box
+# before the pin moved: the one-line `if … then … else …` (wolf-interp
+# #90, s151) — §3.2's new block runs on both machines, measured before
+# the fence was written; E0409 on either operand side and E0416 at a
+# `str` slice write (#85); `List[Nonesuch]()` E0301 and E0206 for a
+# keyword in type position (#89); one `T` bound once per call (#84).
+# WHAT IT DOES NOT MIRROR: `[type.trait.op]` and the alias form
+# (wolf-interp#92, is46 — in CI as this lane ran) and `[mem.map.absent]`
+# (wolf-interp#91), so the five ch05 `wolf-run` fences hold; and an
+# unresolved bound name is still accepted silently (wolf-interp#95),
+# which the book never leans on — every bound it writes is declared on
+# the page. The interpreter's share of the control: ONE console
+# re-record (the `lupin --version` line on §1.2 and the colophon), 0
+# flips, 0 failures, 0 pending movement.
 repo = "wolffe-lang/wolf-interp"
-rev = "c3dd6077c9a9a41b72497c195a291605a3ec8d86"
-version = "lupin 0.1.32 (wolf-interp, reference interpreter at pin e0ce018)"
+rev = "18de0308e5b43c8aa1e63e9b433a879cf56a998f"
+version = "lupin 0.1.33 (wolf-interp, reference interpreter at pin 662b14c)"
 
 [wolf-lsp]
 # Source of the vendored tmLanguage grammars under highlight/.
