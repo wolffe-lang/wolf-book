@@ -213,10 +213,25 @@ fn main() -> !int {
 }
 ```
 
-Solution. The compiler, before anything runs:
+Solution. The compiler, before anything runs — two diagnostics, the
+W1003 first because `claim` takes a value and returns it unchanged
+(§7.2), the E1001 the exercise asks about second:
 
 ```console
 $ wolf conform-run ./exC-2.lu
+warning[W1003]: `s` is taken, never touched, and returned
+ --> ./exC-2.lu:5:10
+  |
+5 | fn claim(take s: str) -> str { s }
+  |          ^^^^ consumption that consumes nothing
+  |
+  = note: the caller gives the value up only to receive it back; if callers could reasonably keep
+    it, the signature is wrong.
+help: drop the `take` (call sites drop theirs and keep their binding; owned payloads may then need a real transform)
+  |
+5 | fn claim(s: str) -> str { s }
+  |
+
 error[E1001]: `d.name` is used here after its value moved away
  --> ./exC-2.lu:9:11
   |

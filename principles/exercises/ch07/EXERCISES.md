@@ -103,6 +103,19 @@ fn main() -> !int {
 
 ```console
 $ wolf conform-run ./ex7-3.lu
+warning[W1003]: `w` is taken, never touched, and returned
+ --> ./ex7-3.lu:5:8
+  |
+5 | fn eat(take w: str) -> str { w }
+  |        ^^^^ consumption that consumes nothing
+  |
+  = note: the caller gives the value up only to receive it back; if callers could reasonably keep
+    it, the signature is wrong.
+help: drop the `take` (call sites drop theirs and keep their binding; owned payloads may then need a real transform)
+  |
+5 | fn eat(w: str) -> str { w }
+  |
+
 error[E1001]: `s.a` is used here after its value moved away
  --> ./ex7-3.lu:9:13
   |
@@ -117,6 +130,14 @@ help: to keep the original, copy it at the move
 8 |     let t = eat(take copy s.a)
   |
 ```
+
+Two diagnostics, and the order is the compiler's rather than the
+exercise's. `eat` takes a value and hands it straight back, which is
+§7.2's W1003 in its own right — a consumption that consumes nothing —
+and it is reported first because it is found first. The E1001 the
+exercise is about is the second. Leaving the warning off this page
+would make the page shorter and the transcript false; a console block
+here is replayed against the pinned tools byte for byte.
 
 ```console
 $ lupin ex7-3.lu
