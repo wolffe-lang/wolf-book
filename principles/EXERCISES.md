@@ -141,21 +141,91 @@ it replays one under `book/`: the exercise directory is staged into a
 private copy, the commands run in it, and the block's remaining lines
 are byte-compared against what the tools said. The blocks admitted are
 **a plain run of a solution** — a `lupin` or `wolf` command naming a
-`.lu` that exists in the exercise directory, and the `echo $?` that
-reads the exit it produced. Measured at bs38: **236 console blocks
-across 31 pages, 188 replayed, 48 declined and named in the CI log.**
+`.lu` that exists in the exercise directory, the `wolf --explain E…`
+that reads the catalog, and the `echo $?` that reads the exit the
+previous command produced. Measured at bs38: **236 console blocks across
+31 pages, 188 replayed, 48 declined and named in the CI log.** Measured
+at bs41, after the two classes below came in: **216 replayed, 20
+declined, and each of the twenty declares itself** in
+`samples-declined.toml`.
+
+#### What bs41 took, and what the corpus's `conform-run` really was
+
+wolf-book#29 read the 24 `conform-run` blocks as wanting the book's
+`diagnostic,from(id)` lane, on the grounds that `conform-run` is not a
+run (`principles/TWO-MACHINES.md` §6 — "it never executes anything")
+and prints its protocol verdict on stdout while the pages paste the
+human diagnostic from stderr. Both halves of that are true. The
+conclusion was not, and the reason is worth writing down because it is
+the same mistake in a smaller form: **it is a fact about a stream, not
+about a verb.** `wolf conform-run` answers two audiences at once, one
+line of JSON on stdout for a machine and a rendered diagnostic on stderr
+for a reader. Drop the one line addressed to the machine and the rest of
+what the tool said is exactly what the page prints. That is what the
+console lane does now, and it is the same split `conform_run_with`
+already made for the `fail(…)` lane and for `diagnostic,from(id)` — the
+corpus did not need a new lane, it needed the existing one's first line.
+
+Six of the twenty-four were not the compiler's at all. `lupin
+conform-run FILE --explore=N` prints its explorer report on stdout and
+has no protocol half to drop, which is why book blocks in chapters 13
+and 17 have replayed it byte-for-byte since the console lane existed.
+Those six were caught by a guard written for the compiler's shape.
+
+**So the difference between a corpus `conform-run` block and a book one
+is not the corpus.** It is which tool is on the prompt line, and the
+corpus rule's only real job was still the one it was written for: a
+corpus block is bound to FILES rather than to a program printed above
+it, so every command in it must name a solution that exists in the
+exercise directory.
+
+The 4 `wolf --explain E…` blocks came in beside them, as the one command
+with no file behind it that the rule admits. It takes no input, touches
+no disk and reaches no phase, so there is nothing for it to be about
+except the catalog; and the catalog is already compared in both
+directions by `cargo xtask verify-docs`, so admitting it costs nothing
+and closes the one surface of that catalog nothing compared — the
+explain text itself. It closed on the first replay: `--explain E1012`'s
+last sentence had moved and chapter 8's page still had the old one.
+
+**The first replay of the 28 found 8 drifted**, on a corpus whose plain
+runs had already been swept at bs38. Seven were `wolf conform-run`
+pages and one was an `--explain` page, and they sort into two kinds. Two
+(appendix C-2, exercise 7-3) dropped a `warning[W1003]` the compiler
+prints above the error the exercise is about. Three (exercise 13-3's
+five diagnostics shown as one, and exercises 18-7 and 18-9) were
+abridged transcripts whose own prose already described what the page did
+not show — 13-3's paragraph says "five diagnostics for one mistake" over
+a block that printed one. Three more were tool text that had simply
+moved: E1012's closing sentence, E1102's note growing a fifth admitted
+payload class (`[conc.chan.payload]`, which made the *prose* wrong as
+well as the block), and E0703's `help:` growing a suggestion body. A
+transcript a page abridges on purpose is not a smaller truth; it is a
+claim about what a tool says, and the whole of it is the claim.
+
+#### The twenty that are left, and how they declare themselves
 
 A declined block is reported by name with what a replay of it would
 need, because a number in a log is not a check but it is the difference
-between a known hole and an invisible one. The four classes, with what
-each one wants:
+between a known hole and an invisible one. Since bs41 each also carries
+a row in **`samples-declined.toml`**, the third member of the ledger
+family — `samples-pending.toml` says "not yet, anywhere",
+`samples-os.toml` says "not here, and here is exactly what here says",
+and this one says "not replayed at all, and here is what a replay of it
+would need". The gate runs both ways, like its two siblings: a declined
+block with no row FAILS, and a row whose block replays now is stale and
+FAILS too. A reason the runner computes describes the rule; a row is
+somebody's sentence.
 
-- **`conform-run`, 24 blocks.** Not a run — `principles/TWO-MACHINES.md`
-  §6 says so in its own words — and it prints its protocol verdict on
-  stdout while the page pastes the human diagnostic from stderr. What
-  these want is the book's `diagnostic,from(id)` lane, which compares a
-  rendered diagnostic against a named sample and never sees the protocol
-  line. The corpus has no sample ids to point one at yet.
+One decline is exempt from both directions and has to be, or the ledger
+could not balance on three hosts: a block the unix lane replays and
+windows declines — a built binary, a linked `wolf build` — is a third of
+the matrix standing down, not a hole in the book. Those print as
+OFF-LANE. The twenty rows hold everywhere; the raw decline count is 20
+on macOS and linux and 28 on windows.
+
+The three classes that remain, with what each one wants:
+
 - **A file or a project the corpus does not hold, 8 blocks.** Three are
   the tool verbs: `wolf interface ./tokens/tokens.lu` (22-13's own, the
   block wolf-book#24 was filed over), `wolf tree` with two `wolf why`
@@ -168,18 +238,18 @@ each one wants:
   24, and the five loose files — not the machinery.
 - **Something to type, 6 blocks.** Two `lupin eval '…'` and four REPL
   sessions that open with a bare `$ lupin`. The REPL half is
-  `pending(is08)` and already counted there; the `eval` half would
-  replay today if the rule admitted a command with no file behind it,
-  and so would the four `wolf --explain E…` blocks below.
-- **A code, not a program, 4 blocks.** `wolf --explain E1001` (twice),
-  `E1012`, `E0701`. These need nothing on disk at all — they are the
-  cheapest thing here to admit, and they are declined only because the
-  rule is drawn at the file. The catalog they print from is already
-  checked in both directions by `cargo xtask verify-docs`.
+  `pending(is08)` and already counted there. The `eval` half would
+  replay today under a rule that admitted any command with no file
+  behind it; bs41 drew that rule at `wolf --explain` alone and left
+  these two, because an expression typed at a tool is the REPL lane's
+  shape and belongs with the four it is spelled like, not with a
+  catalog read. They are the cheapest two blocks left in the corpus.
 - **A built binary or a shell, 6 blocks.** Four `wolf build x.lu && ./x`
   pairs, one `diff <(…) <(…)`, one `grep … | wc -l`. The first class is
-  the `Verb::Local` case the book lane already runs on unix; the other
-  two are what `words()` declines by design.
+  the `Verb::Local` case the book lane already runs on unix, and
+  admitting it in the corpus means changing what a corpus block is bound
+  to; the other two are what `words()` declines by design and probably
+  always should.
 
 One hazard is worth naming because it cost a CI round. A transcript that
 quotes a command-line parser's usage line is bound to the **binary's own
@@ -198,7 +268,12 @@ for, as wolf-book#7's is: `cargo xtask samples --self-test` writes a
 solution, replays a TRUE transcript of it and requires a clean pass,
 then changes one letter of that transcript and requires a report. A lane
 that reported everything would be as useless as one that reported
-nothing, so both directions are asserted.
+nothing, so both directions are asserted. The declined ledger is planted
+the same way, and against the file the book actually ships: a block with
+no row must be reported, and a row whose block replays must be reported
+as stale. The second is the likelier rot, because closing a hole is
+somebody's good news and deleting the row that explained it is nobody's
+job.
 
 ---
 
