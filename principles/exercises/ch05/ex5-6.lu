@@ -1,13 +1,14 @@
-//! check: lupin-run(exit=0)
+//! check: wolf-run(exit=0)
 //! phase: run
-// Exercise 5-6 solution: distinct lines with counts, first-seen order.
+// Exercise 5-6 solution: the count is the map alone; the list keeps
+// first-seen order, which the map does not promise.
 fn seen_at(xs: List[str], s: str) -> int {
     var i = 0
     while i < xs.len {
         if xs[i] == s { return i }
         i += 1
     }
-    0 - 1
+    -1
 }
 fn main() -> !int {
     let log = """
@@ -20,15 +21,11 @@ fn main() -> !int {
     var order = List[str]()
     var counts = Map[str, int]()
     for line in log.lines() {
-        if seen_at(order, line) < 0 {
-            (mut order).push(line)
-            counts[line] = 1
-        } else {
-            counts[line] += 1
-        }
+        if seen_at(order, line) < 0 { (mut order).push(line) }
+        counts[line] = (counts[line] else 0) + 1
     }
     for s in order {
-        print("{counts[s]:>4} {s}")
+        print("{counts[s] else 0:>4} {s}")
     }
     0
 }

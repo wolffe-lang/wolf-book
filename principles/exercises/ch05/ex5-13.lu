@@ -7,7 +7,7 @@ fn any_index(s: str, set: str) -> int {
         if set.contains("{c}") { return i }
         i += 1
     }
-    0 - 1
+    -1
 }
 fn main() -> !int {
     print("{any_index("the wolf runs", "aeiou")}")
