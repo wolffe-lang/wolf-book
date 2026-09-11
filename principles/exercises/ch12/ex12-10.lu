@@ -9,7 +9,7 @@ fn balanced(line: str) -> bool {
         } else if c == ')' || c == ']' || c == '}' {
             if stack.len == 0 { return false }
             let open = stack[stack.len - 1]
-            (mut stack).pop()
+            let _ = (mut stack).pop()
             if c == ')' && open != '(' { return false }
             if c == ']' && open != '[' { return false }
             if c == '}' && open != '{' { return false }
