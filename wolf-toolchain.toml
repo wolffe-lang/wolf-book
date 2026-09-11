@@ -320,9 +320,167 @@ impl_version = "0.2.10"
 # a lane of its own. is44's 0.1.32, which mirrors the range arms and
 # would flip §3.2's fence, is a second reason to take the interpreter
 # soon and not a reason to take it here.
+#
+# ===================================================================
+# bs38 TAKES 0.1.31, AND THE LANE THE PARAGRAPH ABOVE ASKED FOR IS
+# THIS ONE. Four printings sat at 0.1.30 for one reason and the reason
+# is now closed: `Scope` and `Proc` are re-homed, and the six samples
+# that refused pass.
+#
+# THE REV IS A COMMIT, AND THE PARAGRAPH ABOVE NAMED A TAG OBJECT. The
+# note above calls 0.1.31 "is43, `772099c`". `git cat-file -t
+# 772099cf661e0d04b1997a013d5b2ee48f69d100` answers **tag** — it is the
+# annotated tag object for `v0.1.31`, and the commit it points at is
+# `e9c55b4a388f5ace9a3cc0a4f412ce7d0e474290`. The 0.1.30 rev this file
+# carried (`08d787a`) is a commit, as is every other rev here, so the
+# two would not have been the same kind of object. `rev` below is the
+# COMMIT, checked with `cat-file` rather than copied out of prose. The
+# stamped line names `e9c55b4` too: `lupin conform-run --json` reports
+# `"commit":"e9c55b4"`, which is how this was caught.
+#
+#   wolf 0.2.10 (wolfgang, pin 662b14c)
+#   paired with lupin 0.1.31 (reference interpreter), pin 4c60946
+#   lupin 0.1.31 (wolf-interp, reference interpreter at pin 4c60946)
+#
+# THE PAIR POINTS A FOURTH WAY, both halves computed from the two
+# stamps rather than typed (ww16):
+#   THE COMPILER'S HALF IS EXACT. It names `lupin 0.1.31` and this file
+#     now pins 0.1.31. That half read one BEHIND at bs35, EXACT at
+#     bs36, one AHEAD at bs36's second bump, and closes back to exact
+#     here. No superlative and none was measured: exact has happened
+#     before and the line above this one says so.
+#   THE INTERPRETER'S HALF IS FIFTY-ONE COMMITS, and it CLOSES. It
+#     names `4c60946`; `git rev-list --count 4c60946..662b14c` is 51 on
+#     one line of history, `git merge-base --is-ancestor 4c60946
+#     662b14c` checked rather than assumed. That half read 14, then 43,
+#     then 65, and 51 is the first time it has narrowed. Four data
+#     points, stated as four data points.
+#
+# WHAT THE BOOK MEASURED, PREDICTION FIRST. Every number below was
+# written into /private/tmp/bs38-predictions-0131.md before a single
+# file in this repository was edited, and the CONTROL was re-run at the
+# unchanged pin first: 479 samples, 468 passed, 5 pending, 12 failed,
+# 0 flips — bs36's control reproduced to the number, with the twelve
+# named.
+#   * SIX SAMPLES GO RED -> GREEN, by name, and no others move:
+#     `ch11/ex11-1`, `ch11/ex11-2`, `book/ch11/part-capability`,
+#     `book/ch11/part-refresher`, `book/ch14/s2`, `book/ch14/s5`.
+#   * THE OTHER TWO OF THE TWELVE, NAMED: §1.2's and the colophon's
+#     `--version` transcripts. NOT the same defect — those ten are
+#     `Scope`/`Proc`, these two are the interpreter's own stamp moving
+#     when the binary does. They re-record here because that is what a
+#     pin bump is.
+#   * 0 FLIPS PREDICTED AND 0 MEASURED, with the reason checked rather
+#     than assumed. All six stay `lupin-run(…)`: the compiler declined
+#     them BEFORE at `fail(E0301)` and declines them AFTER at
+#     `fail(E0501)`, and a `fail(…)` verdict is declining. The
+#     tempting reading is that re-homing might let the compiler in, so
+#     it was probed directly: an INLINED §11.1 with no helper and no
+#     handle crossing any signature still answers `unsupported` at
+#     `wir`. Nothing in these two chapters is one name away from a
+#     flip.
+#   * WHAT `Scope` AND `Proc` WERE. Nothing. Not a regression and not
+#     a rename: `crates/wolf_sema/src/prelude.rs`'s `BUILTIN_TYPES` is
+#     sixteen scalars plus `wrapping`, `PRELUDE` carries `List`,
+#     `Pool`, `channel` and `Mutex`, and there is no entry for a scope
+#     handle or a proc handle anywhere. The compiler's display names
+#     for the two `TyKind`s are the lowercase KEYWORDS `scope` and
+#     `proc`, which `[gram.type]` does not admit in type position the
+#     way it admits `region`. Measured one probe per spelling, each in
+#     its own directory, on BOTH machines: `Scope`/`Proc` are E0301;
+#     `scope`/`proc` are E0206 on the compiler and E0201 on the
+#     interpreter; `TaskScope`, `Nursery`, `ScopeHandle`, `Task` are
+#     E0301. Filed as wolf-lang#316.
+#   * THE RE-HOMING IS A GENERIC PARAMETER, and lupin's own diagnostic
+#     is what names it: "neither a built-in scalar, an item this module
+#     declares, nor a generic parameter of `launch`". `fn
+#     tally_into[S](s: S, …)` and `fn reason_of[P](p: P, …)` run under
+#     the interpreter and are `E0501` on the compiler ("the bounds on
+#     `S` do not provide a method `spawn`"), correct by D28. The prose
+#     is re-homed on spec/03's own words rather than on the old
+#     invention: `[conc.task.scope]` says a scope handle is an ordinary
+#     value and that "lifetime extension is visible at every call
+#     site" — the CALL site, which is what the chapter can still point
+#     at. §11.1's audit paragraph changes with it: the search is
+#     `.spawn(` plus `scope` blocks, not a type name in a parameter
+#     list, and the chapter says why in one clause.
+#   * THREE LEDGER ROWS WERE WRONG AND THEY WERE THE BOOK'S. ch11's
+#     Mutex row claimed "`Scope` and `channel[T]` both cross a
+#     signature cleanly"; ch14's papercut claimed "`proc` is not a type
+#     name; `Proc` is … and it does, cleanly"; ch15's roster row
+#     claimed "`Proc` crosses a signature … `List[Proc]()` is
+#     accepted". All three rewritten with the measurement rather than
+#     struck. ch14's survived three re-verifies because each one
+#     re-measured the KEYWORD and never measured `Proc` itself.
+#   * A SECOND FINDING, FILED: `List[Proc]()` is "accepted" by lupin
+#     because lupin never resolves a type ARGUMENT in expression
+#     position. `List[Nonesuch]()` constructs and prints `0`; `fn
+#     f(xs: List[Nonesuch])` one line away is E0301. wolf-interp#89,
+#     which also carries the E0201/E0206 divergence above.
+#   * 4 CONSOLE BLOCKS GO GREEN WITH THEIR BYTES UNCHANGED, predicted
+#     by name: §11.1's `$ lupin serve.lu`, §11.2's `$ lupin
+#     refresher.lu`, §14.1's `$ lupin reasons.lu`, §14.2's `$ lupin
+#     verbs.lu`. The re-homing changes how a parameter is spelled and
+#     nothing any of those four programs prints.
+#   * 2 CONSOLE BLOCKS RE-RECORD AND BOTH ARE THE PIN'S: §1.2's and
+#     the colophon's. The interpreter's line alone moves; the
+#     compiler's two do not, because `[wolf]` does not move here.
+#   * A FIFTH TRANSCRIPT WAS WRONG AND NOTHING HAD EVER LOOKED AT IT.
+#     Exercise 11-2's deadlock roster in the corpus prints `task@219`
+#     — a BYTE OFFSET into the program — and `at 11:5`. At lupin
+#     0.1.30 on the UNEDITED corpus file the interpreter answers
+#     `task@677` and `at 18:5`: the page has been wrong since bs31
+#     added the file's per-machine header comment, which moved every
+#     offset in it. Predicted before it was run, from the shape of the
+#     string. This is wolf-book#24's argument with a second witness,
+#     and item 2 of this lane is what makes it impossible to have
+#     again.
+#   * NOTHING OF wolf-lang's MOVES: `[wolf]` is unchanged, so the
+#     catalog stays 170, the anchors stay 458, `grammar.ebnf` is
+#     untouched, Appendices A/C/D regenerate to themselves, and zero
+#     diagnostic snapshots re-record.
+#   * 0 PENDING MOVEMENT, predicted and measured. Five rows; is43 grows
+#     no std subset, so `sorted_by`/`take` (ch05 ex5-8), `par` (ch13
+#     ex13-1, ex13-6), ch07 ex7-5's borrow-escape and ch08 ex8-7's pool
+#     place all stand.
+#   * `str + char` STILL DOES NOT SHORTEN chapter 2's four `"{c}"`
+#     solutions, and now for a different reason than bs36's. 0.1.31
+#     mirrors wolf-interp#78 and this file pins 0.1.31, so the
+#     interpreter serves it — and the fences there are `run(…)`, a
+#     claim about BOTH machines, so they move when the COMPILER does.
+#     Not this bump's business and not deferred prose: nothing on the
+#     page says otherwise.
+#   * is44's 0.1.32 IS NOT THIS PIN, AND IT TAGGED WHILE THIS LANE HELD
+#     THE BOOK. Recorded here so the next bump does not rediscover it:
+#     lupin 0.1.32 is wolf-interp `c3dd607` and declares the wolf pin
+#     `e0ce018` — s147's DEV sha, one revision shy of the v0.2.10 tag
+#     this file pins, which is a thing to read before taking it. Range
+#     arms run under the interpreter there, so ch03 §3.2's
+#     `wolf-run(…)` fence FLIPS at that bump and the six-pin papercut
+#     row bs36 opened closes with it. That is the next book lane's
+#     prediction, not this one's: this contract's pin is 0.1.31, and a
+#     bump that flips a fence is a bump that has to predict the flip.
+#     THE FLIP IS MEASURED ALREADY, by accident, and the next lane
+#     inherits the measurement: `~/.local/bin/lupin` was replaced with
+#     0.1.32 while this lane held the book, and the run that caught it
+#     named the fence — `FLIP book/ch03/s6: directive `wolf-run(exit=0)`
+#     holds, but `lupin` now meets `run(exit=0…)` too`. ONE flip, that
+#     one, and nothing else moved: the only other failures in that run
+#     were §1.2's and the colophon's stamp lines reading `0.1.32`.
+#   * THE GAUNTLET RAN AGAINST A BINARY BUILT FROM THE REV BELOW, not
+#     against whatever `~/.local/bin` held, and that is not pedantry.
+#     Mid-lane the installed interpreter became 0.1.32 and three gates
+#     silently started grading this printing against an interpreter it
+#     does not pin. CI has never had the problem — the samples lane
+#     clones wolf-interp at `[lupin].rev` and builds it — so a local run
+#     that borrows `~/.local/bin` is measuring a different book from the
+#     one CI measures. The final numbers here come from
+#     `LUPIN=/private/tmp/bs38-bin/lupin-0.1.31`, built at `e9c55b4`,
+#     and the binary is kept beside bs36's 0.1.30 control for the next
+#     lane that needs to reproduce this printing.
 repo = "wolffe-lang/wolf-interp"
-rev = "08d787a11f3dc12d4c74154a2d980a64ca09a494"
-version = "lupin 0.1.30 (wolf-interp, reference interpreter at pin 2c03ed9)"
+rev = "e9c55b4a388f5ace9a3cc0a4f412ce7d0e474290"
+version = "lupin 0.1.31 (wolf-interp, reference interpreter at pin 4c60946)"
 
 [wolf-lsp]
 # Source of the vendored tmLanguage grammars under highlight/.
