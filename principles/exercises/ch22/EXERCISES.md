@@ -136,7 +136,7 @@ Solution. Before:
 
 ```console
 $ lupin clash/main.lu
-clash/main.lu: E0302: the name `title` is defined twice in this module (defined again in `./labels/upper.lu`); file boundaries create no scopes (D32) — two separate programs sharing a directory each mark themselves `//! member: false` (D59) [mod.dup] at 3:14
+clash/main.lu: E0302: the name `title` is defined twice in this module (defined again in `clash/labels/upper.lu`); file boundaries create no scopes (D32) — two separate programs sharing a directory each mark themselves `//! member: false` (D59) [mod.dup] at 3:14
 ```
 
 What differs from 22-3 is only where the union happens: these two

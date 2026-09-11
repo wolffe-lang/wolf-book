@@ -114,7 +114,7 @@ channel in a one-task program.
 
 ```console
 $ lupin exB-9.lu
-exB-9.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0) [conc.deadlock.trap] at 7:13
+exB-9.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0) [conc.deadlock.trap] at 14:13
 ```
 
 `deadlock`, `[conc.deadlock.trap]`, with the blocked-task roster —

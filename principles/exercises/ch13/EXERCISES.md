@@ -280,9 +280,9 @@ x2 += v2 * dt
 
 ```console
 $ lupin ex13-7.lu
-x1=1.0 v1=1.0
-x2=9.0 v2=-1.0
-momentum 0.0
+x1=1 v1=1
+x2=9 v2=-1
+momentum 0
 ```
 
 Exactly zero, and not by luck: both velocity updates add and subtract

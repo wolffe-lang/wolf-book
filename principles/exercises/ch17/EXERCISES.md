@@ -236,6 +236,12 @@ Today, honestly:
 ```console
 $ lupin run ex17-6.lu --chaos
 error: unexpected argument '--chaos' found
+
+  tip: to pass '--chaos' as a value, use '-- --chaos'
+
+Usage: lupin run <FILE>
+
+For more information, try '--help'.
 $ lupin ex17-6.lu
 v=41
 ```
@@ -322,7 +328,7 @@ fn main() -> !int {
 
 ```console
 $ lupin ex17-9.lu
-ex17-9.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0), `task@231` (task 1), `task@336` (task 2) [conc.deadlock.trap] at 7:5
+ex17-9.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0), `task@689` (task 1), `task@794` (task 2) [conc.deadlock.trap] at 14:5
 $ echo $?
 3
 ```

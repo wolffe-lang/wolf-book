@@ -341,7 +341,7 @@ its input is the check that both programs mean the same columns.
 Predict all four values, then say what slicing `s` cost: did any of
 these lines copy eight bytes?
 
-```console
+```wolf-repl
 wolf> let s = "wolfpack"
 wolf> let t = s[..4]
 wolf> t
