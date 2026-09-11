@@ -152,14 +152,15 @@ the row instead", that policy has a chapter of its own next.
 ## Chapter batch
 
 **Exercise 5-7** *(fingers + extension · lupin)*. A grade book. The
-block below has one `name,score` line per student. Parse it into a
-`List[Student]` (a struct from §5.5), then print the top scorer's name
-and score, the class average to the nearest whole point, and each
-student on their own line with `above` or `below` beside the average.
-Then make the top-scorer search generic: `best[T: Ord](xs: List[T]) ->
-T` from §5.6, with `impl Ord for Student` comparing scores. What does
-`best` need to know about `Student`, and what does it never need to
-know?
+block below has one `name,score` line per student. Parse it into two
+lists side by side, a `List[str]` of names and a `List[int]` of scores,
+with `to_int() else 0` reading each score, then print the top scorer's
+name and score using §5.3's `best` with a comparison function
+(`best(scores, fn(a, b) a > b)`), the class average to the nearest
+whole point, and each student on their own line with `above` or `below`
+beside the average. Then §5.4's question: what does your program do on
+an empty block, and which line traps first? Guard it so an empty block
+prints one sentence and exits 0.
 
 ```text
 ada,91
@@ -168,19 +169,50 @@ linus,84
 mira,69
 ```
 
-Solution, first half. `ch05/ex5-7.lu`:
+Solution. `ch05/ex5-7.lu`:
 
 ```wolf
-struct Student { name: str, score: int }
-fn parse(text: str) -> List[Student] {
-    var out = List[Student]()
+fn best[T](xs: List[T], better: fn(T, T) -> bool) -> T {
+    var b = copy xs[0]
+    var i = 1
+    while i < xs.len {
+        if better(xs[i], b) { b = copy xs[i] }
+        i += 1
+    }
+    b
+}
+fn parse(text: str) -> (List[str], List[int]) {
+    var names = List[str]()
+    var scores = List[int]()
     for line in text.lines() {
         var i = 0
         while i < line.len && line[i..i + 1] != "," { i += 1 }
         if i == line.len { continue }
-        (mut out).push(Student { name: line[..i], score: line[i + 1..].to_int() else 0 })
+        (mut names).push(line[..i])
+        (mut scores).push(line[i + 1..].to_int() else 0)
     }
-    out
+    (names, scores)
+}
+fn report(text: str) {
+    let (names, scores) = parse(text)
+    if scores.is_empty() {
+        print("no students in the block")
+        return
+    }
+    let top = best(scores, fn(a, b) a > b)
+    var who = ""
+    var sum = 0
+    for i in 0..scores.len {
+        sum += scores[i]
+        if scores[i] == top { who = names[i] }
+    }
+    let avg = (sum + scores.len / 2) / scores.len
+    print("top: {who} {top}")
+    print("average: {avg}")
+    for i in 0..scores.len {
+        let mark = if scores[i] > avg { "above" } else { "below" }
+        print("{names[i]:<8}{scores[i]:>4}  {mark}")
+    }
 }
 fn main() -> !int {
     let text = """
@@ -189,20 +221,8 @@ fn main() -> !int {
         linus,84
         mira,69
         """
-    let students = parse(text)
-    var top = 0
-    var sum = 0
-    for i in 0..students.len {
-        sum += students[i].score
-        if students[i].score > students[top].score { top = i }
-    }
-    let avg = (sum + students.len / 2) / students.len
-    print("top: {students[top].name} {students[top].score}")
-    print("average: {avg}")
-    for s in students {
-        let mark = if s.score > avg { "above" } else { "below" }
-        print("{s.name:<8}{s.score:>4}  {mark}")
-    }
+    report(text)
+    report("")
     0
 }
 ```
@@ -215,64 +235,28 @@ ada       91  above
 grace     78  below
 linus     84  above
 mira      69  below
+no students in the block
 ```
 
-`parse` is §5.1's comma scan with §5.5's struct at the end of it: a
-line with no comma is skipped, and a score that is not a number reads
-as 0 through `else`. The top scorer is an index, not a copy, so the
-loop compares fields through `students[i].score` and never moves a
-`Student` out of the list. `(sum + n / 2) / n` is integer rounding to
-the nearest point: 322 over 4 is 80.5, and the half added before the
-division carries it to 81.
+`parse` is §5.1's comma scan run once per line, pushing the name on
+one list and the score on the other, so the two lists line up by
+index: a line with no comma is skipped, and a score that is not a
+number reads as 0 through `else`. `best(scores, fn(a, b) a > b)` is
+§5.3's function with the comparison handed in, and the name is found
+by walking back to the index the top score sits at. `(sum + n / 2) /
+n` is integer rounding to the nearest point: 322 over 4 is 80.5, and
+the half added before the division carries it to 81.
 
-Solution, second half. `ch05/ex5-7b.lu`, which runs under `wolf`:
-
-```wolf
-enum Ordering { Less, Equal, Greater }
-trait Ord {
-    fn cmp(self, other: Self) -> Ordering
-}
-struct Student { name: str, score: int }
-impl Ord for Student {
-    fn cmp(self, other: Self) -> Ordering {
-        if self.score < other.score { Ordering.Less } else if self.score == other.score { Ordering.Equal } else { Ordering.Greater }
-    }
-}
-fn best[T: Ord](xs: List[T]) -> T {
-    var b = copy xs[0]
-    var i = 1
-    while i < xs.len {
-        if xs[i] > b { b = copy xs[i] }
-        i += 1
-    }
-    b
-}
-fn main() -> !int {
-    var students = List[Student]()
-    (mut students).push(Student { name: "ada", score: 91 })
-    (mut students).push(Student { name: "grace", score: 78 })
-    (mut students).push(Student { name: "linus", score: 84 })
-    (mut students).push(Student { name: "mira", score: 69 })
-    let top = best(students)
-    print("{top.name} {top.score}")
-    0
-}
-```
-
-```console
-$ wolf run ex5-7b.lu
-ada 91
-```
-
-`best` needs to know one thing about `Student`: that `xs[i] > b` has
-an answer, which is what `[T: Ord]` says and `impl Ord for Student`
-supplies, by comparing scores and nothing else. It never needs to know
-that a `Student` has a name, a score, or any field at all; `best` is
-§5.6's function unchanged, and `Student` is the third type it has been
-instantiated at. Under `lupin` the `>` on two `Student`s is refused,
-because the interpreter does not dispatch a struct's operator through
-its `Ord` (wolf-interp#92); this half's transcript is the compiler's,
-and the first half runs on both.
+The empty block is §5.4's question with one answer on both machines.
+Remove the guard and the first line that runs against the empty lists
+is `best`'s `var b = copy xs[0]`, which is `xs[0]` on a list of no
+elements: `wolf-trap: bounds` from the compiled program, `trap(bounds):
+index 0 is outside a collection of 0 element(s)` from the interpreter,
+both pointing at that line, exit 3. The average's division by
+`scores.len` would have trapped one line later, and never gets the
+chance. `scores.is_empty()` is the guard, one sentence and a `return`,
+and the exit code stays 0 because a block with no students is an
+answer, not a fault.
 
 **Exercise 5-11** *(extension · lupin)*. Exercise 2-7 encoded runs
 with byte slices; a coder without a decoder is half a tool. Respell

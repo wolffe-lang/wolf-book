@@ -1,16 +1,49 @@
 //! check: run(exit=0)
 //! phase: run
-// Exercise 5-7 solution, first half: the grade book on chapter 5's tools.
-struct Student { name: str, score: int }
-fn parse(text: str) -> List[Student] {
-    var out = List[Student]()
+// Exercise 5-7 solution: the grade book on §5.1–§5.4's tools alone —
+// two lists side by side, §5.3's best with a comparison function, and
+// a guard for the empty block before §5.4's trap can fire.
+fn best[T](xs: List[T], better: fn(T, T) -> bool) -> T {
+    var b = copy xs[0]
+    var i = 1
+    while i < xs.len {
+        if better(xs[i], b) { b = copy xs[i] }
+        i += 1
+    }
+    b
+}
+fn parse(text: str) -> (List[str], List[int]) {
+    var names = List[str]()
+    var scores = List[int]()
     for line in text.lines() {
         var i = 0
         while i < line.len && line[i..i + 1] != "," { i += 1 }
         if i == line.len { continue }
-        (mut out).push(Student { name: line[..i], score: line[i + 1..].to_int() else 0 })
+        (mut names).push(line[..i])
+        (mut scores).push(line[i + 1..].to_int() else 0)
     }
-    out
+    (names, scores)
+}
+fn report(text: str) {
+    let (names, scores) = parse(text)
+    if scores.is_empty() {
+        print("no students in the block")
+        return
+    }
+    let top = best(scores, fn(a, b) a > b)
+    var who = ""
+    var sum = 0
+    for i in 0..scores.len {
+        sum += scores[i]
+        if scores[i] == top { who = names[i] }
+    }
+    let avg = (sum + scores.len / 2) / scores.len
+    print("top: {who} {top}")
+    print("average: {avg}")
+    for i in 0..scores.len {
+        let mark = if scores[i] > avg { "above" } else { "below" }
+        print("{names[i]:<8}{scores[i]:>4}  {mark}")
+    }
 }
 fn main() -> !int {
     let text = """
@@ -19,19 +52,7 @@ fn main() -> !int {
         linus,84
         mira,69
         """
-    let students = parse(text)
-    var top = 0
-    var sum = 0
-    for i in 0..students.len {
-        sum += students[i].score
-        if students[i].score > students[top].score { top = i }
-    }
-    let avg = (sum + students.len / 2) / students.len
-    print("top: {students[top].name} {students[top].score}")
-    print("average: {avg}")
-    for s in students {
-        let mark = if s.score > avg { "above" } else { "below" }
-        print("{s.name:<8}{s.score:>4}  {mark}")
-    }
+    report(text)
+    report("")
     0
 }

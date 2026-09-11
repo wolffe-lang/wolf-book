@@ -1386,8 +1386,8 @@ sprint files remain the implementation contracts for everything else.
   insert renumbers `book/ch03/s7..s15`. Exercise 5-7's RPN evaluator is 6-14
   (wolf-book#35), the first under §6.2; the number 5-7 is reused the
   same day, on the maintainer's call, for a self-contained grade-book
-  exercise on chapter 5's own tools (the one exception to EXERCISES.md
-  §1, taken so the renumbering stays local). Every
+  exercise in the same slot on §5.1–§5.4's tools alone (the one
+  exception to EXERCISES.md §1, taken so the renumbering stays local). Every
   bare statement send the compiler names is `?` or `else { … }`
   (wolf-book#21), and §10.1 says why a task's tail needs neither. No
   section number moves and no shipped anchor changes meaning.

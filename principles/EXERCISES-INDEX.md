@@ -170,7 +170,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §5.5 — Structs | 5-16 | fingers · lupin | run (lupin) |
 | §5.5 — Structs | 5-17 | extension · lupin | run (lupin) |
 | §5.6 — Traits | 5-18 | design | prose |
-| Chapter batch | 5-7 | fingers + extension · lupin | run (lupin; the generic half wolf) |
+| Chapter batch | 5-7 | fingers + extension · lupin | run (lupin) |
 | §5.1 — `List`, `Map`, `Set`, tuples | 5-12 | fingers · lupin | run (lupin) |
 | §5.1 — `List`, `Map`, `Set`, tuples | 5-14 | fingers · lupin | run (lupin) |
 | Chapter batch | 5-11 | extension · lupin | run (lupin) |
