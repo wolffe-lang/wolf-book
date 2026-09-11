@@ -53,8 +53,8 @@ earned; chapters end with a batch that mixes the chapter's sections.
 Every section that teaches something ends with at least one exercise. A
 chapter ends with three to six more. The book-wide target was
 order-of-150+ as a floor; the corpus filled it at full scale and then
-grew a second ladder of self-contained programs (the K&R rung): **324
-exercises** — 78 in part 1, 47 in part 2, 77 in part 3, 80 in part 4, 28
+grew a second ladder of self-contained programs (the K&R rung): **327
+exercises** — 79 in part 1, 49 in part 2, 77 in part 3, 80 in part 4, 28
 in part 5, and 14 on the appendices. Chapter 31 brings none by design
 (§4) and chapter 32 none at all; chapter 29's batch lands with its
 chapter. The per-chapter sets live in
@@ -63,8 +63,8 @@ chapters 1–6 exemplar batch, folded in unchanged; the chapter files
 continue its numbering); `EXERCISES-INDEX.md` maps section → exercise →
 tier, and `EXERCISES-PENDING.md` is the honest list of the ones whose
 blocking features have not landed, each named with its blocker and
-owner. 230 exercises have a solution program that CI executes (the run
-tiers); 75 are discussion solutions or read a tool's output, 9 live in
+owner. 232 exercises have a solution program that CI executes (the run
+tiers); 76 are discussion solutions or read a tool's output, 9 live in
 a REPL transcript, and 10 are pending their feature.
 
 ## 3. Taxonomy

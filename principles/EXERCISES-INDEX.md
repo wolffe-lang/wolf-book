@@ -58,7 +58,7 @@ several of its stems are tagged `· wolf` while the distilled solution
 program on disk runs under lupin — the tier column says what CI
 executed, and the exercise file says which is which and why.
 
-Tier totals: 186 run (lupin) · 9 run (lupin REPL) · 32 run (wolf) · 12 run (wolf + lupin) · 75 prose · 10 pending. That is 324.
+Tier totals: 188 run (lupin) · 9 run (lupin REPL) · 32 run (wolf) · 12 run (wolf + lupin) · 76 prose · 10 pending. That is 327.
 (The totals and the tables were recounted mechanically against the
 masters at bs21 — the previous header said 276/231 while the tables
 had drifted from the marker count, ch05's 5-9 and 5-10 among the
@@ -155,7 +155,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | Chapter batch | 4-8 | fingers · lupin | run (lupin) |
 | Chapter batch | 4-11 | extension · lupin | run (lupin) |
 
-## ch05 — 15 exercises
+## ch05 — 16 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
@@ -167,8 +167,9 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §5.1 — `List`, `Map`, `Set`, tuples | 5-6 | extension · lupin | run (lupin) |
 | Chapter batch | 5-7 | comprehension + extension · lupin | run (lupin) |
 | §5.2 — The combinator style | 5-8 | comprehension · pending | pending |
-| §5.5 — Traits | 5-9 | extension | run (lupin) |
-| §5.5 — Traits | 5-10 | design | prose |
+| §5.5 — Structs | 5-16 | fingers · lupin | run (lupin) |
+| §5.5 — Structs | 5-17 | extension · lupin | run (lupin) |
+| §5.6 — Traits | 5-18 | design | prose |
 | §5.1 — `List`, `Map`, `Set`, tuples | 5-12 | fingers · lupin | run (lupin) |
 | §5.1 — `List`, `Map`, `Set`, tuples | 5-14 | fingers · lupin | run (lupin) |
 | Chapter batch | 5-11 | extension · lupin | run (lupin) |
@@ -193,7 +194,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | Chapter batch | 6-12 | extension · lupin | run (lupin) |
 | Chapter batch | 6-13 | extension · lupin | run (lupin) |
 
-## ch07 — 16 exercises
+## ch07 — 18 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
@@ -208,6 +209,8 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §7.6 — Why there are no lifetimes | 7-9 | spelunking · wolf | run (wolf) |
 | §7.6 — Why there are no lifetimes | 7-10 | design | prose |
 | §7.7 — What the machine does | 7-11 | fingers · lupin REPL | run (lupin REPL) |
+| §7.8 — Deciding at run time | 7-17 | extension · lupin | run (lupin) |
+| §7.8 — Deciding at run time | 7-18 | design | prose |
 | Chapter batch | 7-12 | extension · lupin | run (lupin) |
 | Chapter batch | 7-13 | comprehension + extension · lupin | run (lupin) |
 | Chapter batch | 7-14 | fingers · lupin | run (lupin) |
