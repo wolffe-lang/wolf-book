@@ -89,8 +89,11 @@ wolf, without hearing the word "lifetime."*
   literal, a field read, a field write through `var`, and when a tuple
   is the better shape.
 - 5.6 Traits — fix §5.3's refused `total[T]` with a bound, put a `Line`
-  on a `Row` and a `Header` with one default body, and read `==` on a
-  struct as the `Eq` impl it dispatches to.
+  on a `Row` and a `Header` with one default body, read `==` on a
+  struct as the `Eq` impl it dispatches to, write `best[T: Ord]` with
+  no comparison function, `-` through `Neg`, a two-trait bound in one
+  body, and leave knowing every operator a bound grants and the three
+  it cannot.
 - Exercises 5-1 … 5-5.
 
 ### Chapter 6 — Errors are values

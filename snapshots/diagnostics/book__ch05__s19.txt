@@ -1,5 +1,5 @@
 error[E0502]: `f64` does not implement `Eq`, which `total` requires of `T`
-  --> ./s16.lu:20:28
+  --> ./s19.lu:20:28
    |
 12 | fn total[T: Num](xs: List[T], zero: T) -> T {
    |             --- the bound is declared here
