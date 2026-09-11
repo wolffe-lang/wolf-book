@@ -6,8 +6,8 @@ is how you find the normative text behind it. Clause anchors are stable, so
 a tag printed by a tool in your terminal is findable in the spec even when
 the tool's wording changes.
 
-The specification is eleven documents, and they publish twelve anchor
-namespaces between them, because one of the eleven owns two. The table
+The specification is eleven documents, and they publish thirteen anchor
+namespaces between them, because two of the eleven own two. The table
 below this one cites five of the documents; all eleven are listed,
 because a tag can reach you from a tool's own output rather than from a
 page here, and it has to be findable either way.
@@ -18,7 +18,7 @@ page here, and it has to be findable either way.
 | 02. Memory Model | `mem.*` |
 | 03. Concurrency | `conc.*` |
 | 04. ABI | `abi.*` |
-| 05. Conformance | `conf.*` |
+| 05. Conformance | `conf.*`, `exec.*` |
 | 06. Differential Protocol | `proto.*` |
 | 07. Schedule Points | `sched.*` |
 | 08. Packages | `pkg.*` |
@@ -34,10 +34,13 @@ does not publish, a namespace it publishes and this page omits, or a
 count that has drifted fails the book's build and names the sentence to
 re-read.
 
-One row in that table needs a sentence. Document 01 owns two
+Two rows in that table need a sentence. Document 01 owns two
 namespaces: the grammar's own `gram.*`, and the `diag.*` anchors of its
 diagnostics section, which is where a tag like `[diag.sev.teach]` comes
-from when a tool prints one at you. No section in this book cites a
+from when a tool prints one at you. Document 05 owns two as well: the
+conformance rules under `conf.*`, and `exec.*`, the checked machine's
+own budget, which is where `[exec.checked.budget]` comes from when a
+checked run stops at its step or byte limit. No section in this book cites a
 `sched.*` clause; document 07 earns its row from the scheduler's own
 output, which prints those tags at you when a deterministic run
 disagrees with itself.
