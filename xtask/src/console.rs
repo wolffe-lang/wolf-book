@@ -39,6 +39,14 @@ pub struct ConsoleBlock {
     /// directory first. A multi-package walkthrough needs a project on
     /// disk, and the project is a fixture in this repository.
     pub fixture: Option<String>,
+    /// Set for a block in the EXERCISE CORPUS (wolf-book#24): the
+    /// exercise directory this page lives in, staged into the replay
+    /// directory so the solutions the prompts name are on disk. A
+    /// corpus block is bound to FILES rather than to the program
+    /// printed above it — `$ lupin ex11-1.lu` means the checked-in
+    /// `ch11/ex11-1.lu`, which the samples runner already executes —
+    /// so the two lanes grade the same bytes from opposite ends.
+    pub corpus_dir: Option<PathBuf>,
 }
 
 /// One `$ …` command and the output the book says it produces.
@@ -151,6 +159,68 @@ fn replayable(steps: &[Step]) -> std::result::Result<(), String> {
     Ok(())
 }
 
+/// A CORPUS block is replayed only when every command in it is a plain
+/// run of a solution: a `lupin` or `wolf` invocation naming a `.lu`
+/// that exists in the exercise directory, or the `echo $?` that reads
+/// the exit it produced. Everything else is reported by name.
+///
+/// The line is drawn at the FILE rather than at the verb, and that is
+/// the whole design. A prompt that names a checked-in solution has
+/// something on disk to replay against; a prompt that does not —
+/// `lupin eval '…'`, `wolf --explain E0401`, `wolf interface`, the REPL
+/// sessions that open with a bare `$ lupin` — needs something this
+/// module cannot conjure: an expression to type, a package on disk, or
+/// an interactive session. Those are counted and named, never silently
+/// unchecked, which is wolf-book#24's second ask standing in for its
+/// first until the fixtures exist.
+fn plain_run_of_a_solution(dir: &Path, steps: &[Step]) -> std::result::Result<(), String> {
+    for step in steps {
+        for piece in step.command.split(" && ") {
+            let Some(argv) = words(piece) else {
+                return Err(format!("`{piece}` needs a shell"));
+            };
+            match classify(&argv) {
+                Some(Verb::LastExit) => {}
+                Some(Verb::Lupin(args)) | Some(Verb::Wolf(args)) => {
+                    // `conform-run` is not a run — TWO-MACHINES.md §6
+                    // says so in its own words ("it never executes
+                    // anything"). It prints its PROTOCOL verdict on
+                    // stdout and the human diagnostic on stderr, and
+                    // these pages paste the second half alone, which is
+                    // the right thing for a reader and not a transcript
+                    // of what the tool said. What replaying those wants
+                    // is the book's `diagnostic,from(id)` lane, which
+                    // compares a rendered diagnostic against a named
+                    // sample and never sees the protocol line; the
+                    // corpus has no sample ids to point one at yet.
+                    if args.first().is_some_and(|a| a == "conform-run") {
+                        return Err(format!(
+                            "`{piece}` is a conformance probe, not a run — its protocol \
+                             verdict is stdout and the page pastes the diagnostic \
+                             (wants the `diagnostic,from(id)` lane)"
+                        ));
+                    }
+                    if !args
+                        .iter()
+                        .any(|a| a.ends_with(".lu") && dir.join(a).exists())
+                    {
+                        return Err(format!(
+                            "`{piece}` names no solution in this exercise directory"
+                        ));
+                    }
+                }
+                Some(Verb::Local(name, _)) => {
+                    return Err(format!(
+                        "`{piece}` runs the binary `{name}`, not a solution"
+                    ))
+                }
+                None => return Err(format!("`{piece}` is not a pinned tool")),
+            }
+        }
+    }
+    Ok(())
+}
+
 fn run_capture(mut cmd: Command) -> Result<(i32, String)> {
     let out = cmd.output().with_context(|| format!("spawning {cmd:?}"))?;
     let mut text = String::from_utf8_lossy(&out.stdout).into_owned();
@@ -250,6 +320,10 @@ pub fn block_key(root: &Path, block: &ConsoleBlock) -> String {
 /// What a console-check pass found.
 pub struct Report {
     pub checked: usize,
+    /// Of `checked`, how many came from the exercise corpus.
+    pub corpus_checked: usize,
+    /// Corpus blocks the plain-run rule declined, reported by name.
+    pub corpus_skipped: Vec<String>,
     pub skipped: Vec<String>,
     /// Blocks that matched a per-host declared transcript rather than
     /// the book's — reported by name, never silent.
@@ -268,6 +342,8 @@ pub fn check(
     let _ = std::fs::remove_dir_all(&base);
     let mut report = Report {
         checked: 0,
+        corpus_checked: 0,
+        corpus_skipped: Vec::new(),
         skipped: Vec::new(),
         declared: Vec::new(),
         failures: Vec::new(),
@@ -282,8 +358,18 @@ pub fn check(
             }
         };
         if let Err(why) = replayable(&steps) {
-            report.skipped.push(format!("{where_}: {why}"));
+            if block.corpus_dir.is_some() {
+                report.corpus_skipped.push(format!("{where_}: {why}"));
+            } else {
+                report.skipped.push(format!("{where_}: {why}"));
+            }
             continue;
+        }
+        if let Some(src) = &block.corpus_dir {
+            if let Err(why) = plain_run_of_a_solution(src, &steps) {
+                report.corpus_skipped.push(format!("{where_}: {why}"));
+                continue;
+            }
         }
         let program = match &block.from {
             Some(id) => match programs.get(id) {
@@ -301,6 +387,17 @@ pub fn check(
         // A fixture block gets the project staged into a private copy —
         // `wolf add`/`update` rewrite manifests and ledgers, and the
         // checked-in fixture stays pristine.
+        // A corpus block's solutions are checked into the exercise
+        // directory. Stage a private copy: `wolf build` drops a binary
+        // beside its source and the checked-in tree stays pristine.
+        if let Some(src) = &block.corpus_dir {
+            if let Err(e) = stage(src, &dir) {
+                report
+                    .failures
+                    .push(format!("{where_}: staging {}: {e:#}", src.display()));
+                continue;
+            }
+        }
         if let Some(name) = &block.fixture {
             let src = root.join("samples").join(name);
             if !src.is_dir() {
@@ -323,11 +420,14 @@ pub fn check(
                 continue;
             }
         };
-        let expected: Vec<String> = block
-            .text
-            .lines()
-            .map(|l| l.trim_end().to_string())
-            .collect();
+        let expected: Vec<String> = trim_trailing_blanks(
+            block
+                .text
+                .lines()
+                .map(|l| l.trim_end().to_string())
+                .collect(),
+        );
+        let actual = trim_trailing_blanks(actual);
         // A host whose tool text differs declares the difference in
         // full (samples-os.toml). The block is still replayed and still
         // byte-compared — against the declaration instead of the page.
@@ -346,6 +446,9 @@ pub fn check(
                 )),
                 Declared::Held => {
                     report.checked += 1;
+                    if block.corpus_dir.is_some() {
+                        report.corpus_checked += 1;
+                    }
                     report.declared.push(format!(
                         "{where_} ({}): {} — {}, retires at {}",
                         row.os, row.note, row.filed, row.retires
@@ -369,6 +472,9 @@ pub fn check(
             continue;
         }
         report.checked += 1;
+        if block.corpus_dir.is_some() {
+            report.corpus_checked += 1;
+        }
     }
     Ok(report)
 }
@@ -400,6 +506,20 @@ fn declared_verdict(actual: &[String], book: &[String], declared: &[String]) -> 
     } else {
         Declared::Drifted
     }
+}
+
+/// Trailing blank lines are not compared, on either side. The
+/// compiler's diagnostic renderer ends with one (`…  |\n\n`) and a
+/// markdown fence cannot carry a trailing blank reliably — editors,
+/// formatters and `git` all eat it, so a byte-compare that insisted on
+/// it would fail for a reason no author could see or fix. Every other
+/// blank line, including one BETWEEN two diagnostics, is compared
+/// exactly as before.
+fn trim_trailing_blanks(mut lines: Vec<String>) -> Vec<String> {
+    while lines.last().is_some_and(|l| l.is_empty()) {
+        lines.pop();
+    }
+    lines
 }
 
 fn indent(lines: &[String]) -> String {
@@ -488,6 +608,36 @@ mod tests {
     }
 
     #[test]
+    fn trailing_blanks_are_not_compared_but_inner_ones_are() {
+        let l = |v: &[&str]| v.iter().map(|s| s.to_string()).collect::<Vec<_>>();
+        assert_eq!(
+            trim_trailing_blanks(l(&["$ wolf build a.lu", "warning[E0802]", "", ""])),
+            l(&["$ wolf build a.lu", "warning[E0802]"])
+        );
+        assert_eq!(
+            trim_trailing_blanks(l(&["one", "", "two"])),
+            l(&["one", "", "two"])
+        );
+    }
+
+    #[test]
+    fn the_corpus_rule_takes_a_run_and_declines_a_probe() {
+        let dir = Path::new("/does/not/exist");
+        let probe = parse_steps("$ wolf conform-run ./ex7-3.lu\nerror[E1001]: …\n").unwrap();
+        let why = plain_run_of_a_solution(dir, &probe).unwrap_err();
+        assert!(why.contains("conformance probe"), "{why}");
+        let evaluated = parse_steps("$ lupin eval '1 + 1'\n2\n").unwrap();
+        let why = plain_run_of_a_solution(dir, &evaluated).unwrap_err();
+        assert!(why.contains("names no solution"), "{why}");
+        let repl = parse_steps("$ lupin\nwolf> 1\n").unwrap();
+        let why = plain_run_of_a_solution(dir, &repl).unwrap_err();
+        assert!(why.contains("names no solution"), "{why}");
+        let binary = parse_steps("$ ./ex19-1\n42\n").unwrap();
+        let why = plain_run_of_a_solution(dir, &binary).unwrap_err();
+        assert!(why.contains("not a solution"), "{why}");
+    }
+
+    #[test]
     fn a_block_key_is_repo_relative_with_forward_slashes() {
         let root = Path::new("/w/wolf-book");
         let block = ConsoleBlock {
@@ -498,6 +648,7 @@ mod tests {
             program: None,
             from: None,
             fixture: None,
+            corpus_dir: None,
         };
         assert_eq!(block_key(root, &block), "book/ch23.md:117");
     }

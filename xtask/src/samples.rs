@@ -173,7 +173,10 @@ pub fn run(root: &Path, args: &[String]) -> Result<()> {
     let book = collect_book(root)?;
     let (repl_blocks, diag_checks) = (book.repl_blocks, book.diag_checks);
     let file_checks = book.file_checks;
-    let console_blocks = book.console_blocks;
+    let mut console_blocks = book.console_blocks;
+    let book_console = console_blocks.len();
+    console_blocks.extend(collect_corpus_console(root)?);
+    let corpus_console = console_blocks.len() - book_console;
     let programs = book.programs;
     let mut samples = corpus;
     samples.extend(book.samples);
@@ -384,6 +387,8 @@ pub fn run(root: &Path, args: &[String]) -> Result<()> {
     } else {
         crate::console::Report {
             checked: 0,
+            corpus_checked: 0,
+            corpus_skipped: Vec::new(),
             skipped: Vec::new(),
             declared: Vec::new(),
             failures: Vec::new(),
@@ -435,6 +440,14 @@ pub fn run(root: &Path, args: &[String]) -> Result<()> {
         console.checked,
         console_blocks.len(),
     );
+    println!(
+        "samples: of those, {} of {} book block(s) and {} of {} exercise-corpus block(s) \
+         (wolf-book#24)",
+        console.checked - console.corpus_checked,
+        book_console,
+        console.corpus_checked,
+        corpus_console,
+    );
     if os_ledger.here() > 0 {
         println!(
             "samples: samples-os.toml: {} row(s) apply to {} — {} declared \
@@ -450,6 +463,15 @@ pub fn run(root: &Path, args: &[String]) -> Result<()> {
     }
     for s in &console.skipped {
         println!("samples: SKIP console {s}");
+    }
+    // wolf-book#24's second ask, standing where its first does not
+    // reach: a corpus transcript this lane declines is named in the log,
+    // never merely absent. Each line says what a replay of it would
+    // need — an expression to type, a package on disk, an interactive
+    // session — so the remainder is a known hole with a shape rather
+    // than an invisible one.
+    for s in &console.corpus_skipped {
+        println!("samples: SKIP corpus console {s}");
     }
     if repl_blocks > 0 {
         println!(
@@ -519,6 +541,65 @@ fn collect_corpus(root: &Path) -> Result<(Vec<Sample>, usize)> {
         });
     }
     Ok((samples, members))
+}
+
+/// The exercise corpus's console blocks (wolf-book#24).
+///
+/// `principles/exercises/*/EXERCISES.md` holds transcripts that nothing
+/// replayed: the `.lu` solutions beside them have been executed since
+/// the corpus existed, and the *output the pages paste* was compared
+/// against nothing. Exercise 22-13 rode a stale toolchain stamp and two
+/// wrong interface hashes through a green build at the v0.2.10 bump,
+/// found by a grep rather than by a gate; bs38 then found exercise
+/// 11-2's deadlock roster naming `task@219` where the interpreter says
+/// `task@677`, wrong since the file grew a header comment at bs31 and
+/// invisible for the same reason.
+///
+/// The block is bound to the exercise DIRECTORY rather than to a
+/// program printed above it, because the corpus prints its solutions
+/// from files: `$ lupin ex11-1.lu` means the checked-in `ch11/ex11-1.lu`.
+/// Only `console` fences are parsed here — the `wolf` fences on these
+/// pages are quotations of those same files, which `cargo xtask
+/// backmatter --check` already holds to them.
+fn collect_corpus_console(root: &Path) -> Result<Vec<ConsoleBlock>> {
+    let base = root.join("principles/exercises");
+    let mut pages = Vec::new();
+    walk(&base, &mut |p| {
+        if p.file_name().and_then(|n| n.to_str()) == Some("EXERCISES.md") {
+            pages.push(p.to_path_buf());
+        }
+    })?;
+    pages.sort();
+    let mut blocks = Vec::new();
+    for md in &pages {
+        let source =
+            std::fs::read_to_string(md).with_context(|| format!("reading {}", md.display()))?;
+        let dir = md.parent().unwrap().to_path_buf();
+        let stem = format!(
+            "exercises-{}",
+            dir.file_name().unwrap_or_default().to_string_lossy()
+        );
+        for seg in segments(&source) {
+            let Segment::Fence(f) = seg else { continue };
+            let info = f.info.trim();
+            if info != "console" && !info.starts_with("console,") {
+                continue;
+            }
+            let fi = parse_fence_info(info)
+                .with_context(|| format!("{}: bad fence info `{info}`", md.display()))?;
+            blocks.push(ConsoleBlock {
+                stem: stem.clone(),
+                md: md.clone(),
+                line: f.open_line + 1,
+                text: f.content.clone(),
+                program: None,
+                from: fi.from.clone(),
+                fixture: fi.in_fixture.clone(),
+                corpus_dir: Some(dir.clone()),
+            });
+        }
+    }
+    Ok(blocks)
 }
 
 // ------------------------------------------------------------------ book
@@ -694,6 +775,7 @@ fn collect_book(root: &Path) -> Result<BookScan> {
                         program: last_program.clone(),
                         from: fi.from.clone(),
                         fixture: fi.in_fixture.clone(),
+                        corpus_dir: None,
                     });
                     continue;
                 }
@@ -1623,7 +1705,75 @@ fn selftest(root: &Path, tools: &Tools) -> Result<()> {
         println!("samples: self-test caught {name}: {}", outcome.detail);
         broken_caught += 1;
     }
-    println!("samples: self-test ok — {broken_caught}/4 deliberate breakages caught");
+    selftest_corpus_console(root, tools, &mut broken_caught)?;
+    println!("samples: self-test ok — {broken_caught}/5 deliberate breakages caught");
+    Ok(())
+}
+
+/// The fifth breakage, and the one wolf-book#24 asks for: a transcript
+/// in the EXERCISE CORPUS that does not say what the tool says.
+///
+/// The hole this lane closes was never "the checker is wrong"; it was
+/// that nothing looked. So the demonstration has to be two-sided — a
+/// lane that reported everything would be as useless as one that
+/// reported nothing — and both sides run here against the pinned
+/// interpreter, on a solution planted for the purpose:
+///
+///   1. the RIGHT transcript replays and is counted;
+///   2. one word changed in it is reported as drift.
+///
+/// wolf-book#7's planted defect is the model: plant it in the rig, in
+/// a test, rather than waiting for the book to rot into one.
+fn selftest_corpus_console(root: &Path, tools: &Tools, caught: &mut usize) -> Result<()> {
+    let dir = root.join("samples/selftest/corpus-console");
+    let _ = std::fs::remove_dir_all(&dir);
+    std::fs::create_dir_all(&dir)?;
+    std::fs::write(
+        dir.join("ex-selftest.lu"),
+        "//! check: run(exit=0, stdout=\"planted\")\nfn main() -> !int {\n    print(\"planted\")\n    0\n}\n",
+    )?;
+    let block = |text: &str| ConsoleBlock {
+        stem: "exercises-selftest".to_string(),
+        md: dir.join("EXERCISES.md"),
+        line: 1,
+        text: text.to_string(),
+        program: None,
+        from: None,
+        fixture: None,
+        corpus_dir: Some(dir.clone()),
+    };
+    let programs = BTreeMap::new();
+    let os = crate::oslane::Ledger::load(root)?;
+
+    let truthful = block("$ lupin ex-selftest.lu\nplanted\n");
+    let report = crate::console::check(root, tools, &[truthful], &programs, &os)?;
+    if report.corpus_checked != 1 || !report.failures.is_empty() {
+        bail!(
+            "self-test FAILED: a TRUE corpus transcript did not replay clean — \
+             {} checked, {} skipped, failures {:?}",
+            report.corpus_checked,
+            report.corpus_skipped.len(),
+            report.failures
+        );
+    }
+    println!("samples: self-test corpus console lane replays a true transcript");
+
+    let planted = block("$ lupin ex-selftest.lu\nplainted\n");
+    let report = crate::console::check(root, tools, &[planted], &programs, &os)?;
+    if report.failures.len() != 1 {
+        bail!(
+            "self-test FAILED: a corpus transcript that misquotes the interpreter by one \
+             letter was not reported — failures {:?}, {} skipped",
+            report.failures,
+            report.corpus_skipped.len()
+        );
+    }
+    println!(
+        "samples: self-test caught corpus-console drift: {}",
+        report.failures[0].lines().next().unwrap_or_default()
+    );
+    *caught += 1;
+    let _ = std::fs::remove_dir_all(&dir);
     Ok(())
 }
 
