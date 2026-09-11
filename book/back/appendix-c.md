@@ -1,7 +1,7 @@
 # Appendix C — Diagnostics
 
 Every diagnostic the book shows, with the one-line summary the compiler's
-own catalog carries for it. The catalog holds 172 codes; these 56 are the
+own catalog carries for it. The catalog holds 172 codes; these 57 are the
 ones a page in this edition names. A code is stable: it identifies a
 rule, not a message, and `wolf --explain E1001` prints the whole entry
 for any of them (the summary, the reasoning, and the fix) whether or
@@ -33,6 +33,7 @@ shows both readings of it side by side.
 | `E0401` | the types do not match | wolf | 3.2, 4.1 |
 | `E0410` | a `let` binding cannot be assigned again | wolf | 3.1 |
 | `E0412` | this format spec is malformed | wolf | 18.3 |
+| `E0417` | a `Map` entry cannot be updated in place through its index | wolf | 5.4 |
 | `E0501` | the generic body uses something its bounds do not provide | wolf | 5.3 |
 | `E0602` | the error row does not include this tag | wolf | 26.4, 26.5 |
 | `E0701` | comptime code reached for ambient IO | wolf | 18.4, 24.2 |

@@ -1,0 +1,12 @@
+error[E0417]: cannot update `totals["drink"]` in place: the key may be absent
+ --> ./s9.lu:6:5
+  |
+6 |     totals["drink"] += 340
+  |     ------ `totals` is a `Map`
+  |     ^^^^^^^^^^^^^^^ a `Map` index is a row, not a place
+  |
+  = note: `m[k]` is `V ! {none}` ([mem.map.absent]): reading it asks whether the key is bound, and
+    an absent key has no value to update. `m[k] = v` alone inserts or replaces.
+  = note: spell the two halves — `totals["drink"] = (totals["drink"] else 0) + …` — or count with
+    std's named operation, `map.tally(mut totals, k)` (`use std.map`), which is that
+    statement for an `int`-valued map.
