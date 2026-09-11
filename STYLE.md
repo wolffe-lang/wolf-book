@@ -16,6 +16,14 @@ the overlap here is a pointer, not a second rule.
   we extract from prose). Directives on the fence say how:
   `wolf,run(exit=0, stdout="…")`, `wolf,fail(E1001)`,
   `wolf,part(name)` / `part(name, cont)`, `wolf-repl`.
+- **A warning the page teaches is asserted, not hoped for.** A fence
+  that adds `warns(W0601)` is held to that exact set of warning codes
+  by `wolf conform-run`'s record, in both directions; the exercise
+  corpus spells the same claim as `//! warns: W0601`, wolf-lang's own
+  header key. A sample that declares nothing and warns anyway is not
+  red — it is counted and named in the runner's log on every run,
+  report-only, which is how wolf-book#21's inventory stays visible
+  while the chapters that carry it are edited one at a time.
 - **A `run(…)` fence is a claim about both machines.** `lupin` and
   `wolf run` both execute the program and both must meet the declared
   exit and stdout; a machine that refuses has not met it. A program only
