@@ -42,15 +42,19 @@
 # names live in one and nothing executes them.
 
 # --- the compiler's clock ---
-book/ch01.md 0.2.9+dev.e0ce0189 1 audited-at-wolf=0.2.9+dev.e0ce0189
-book/ch01.md 0.2.9+dev.unknown 1 audited-at-wolf=0.2.9+dev.e0ce0189
-book/ch01.md 0.2.9 3 audited-at-wolf=0.2.9+dev.e0ce0189
-book/ch33.md 0.2.6 1 audited-at-wolf=0.2.9+dev.e0ce0189
-book/ch33.md 0.2.8 1 audited-at-wolf=0.2.9+dev.e0ce0189
+book/ch01.md 0.2.10+dev.unknown 1 audited-at-wolf=0.2.10
+book/ch01.md 0.2.10 3 audited-at-wolf=0.2.10
+book/ch22.md 0.2.10 1 audited-at-wolf=0.2.10
+book/ch33.md 0.2.6 1 audited-at-wolf=0.2.10
+book/ch33.md 0.2.8 1 audited-at-wolf=0.2.10
 
 # --- the interpreter's clock ---
-book/ch01.md 0.1.30 1 audited-at-lupin=0.1.30
-book/back/colophon.md 0.1.30 1 audited-at-lupin=0.1.30
+# The interpreter the COMPILER names. It is a lupin version number and
+# it rides the WOLF clock, because what the compiler names comes from
+# `crates/wolf_driver/PAIRING` — a wolf-side file that moves when the
+# compiler pin moves, not when the interpreter releases.
+book/ch01.md 0.1.31 1 audited-at-wolf=0.2.10
+book/back/colophon.md 0.1.31 1 audited-at-wolf=0.2.10
 
 # --- version-shaped, and about neither tool ---
 book/ch23.md 1.4.0 1 not-a-toolchain-version
