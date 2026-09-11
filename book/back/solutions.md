@@ -1342,6 +1342,57 @@ still logic rather than style, but it is logic the compiler reads
 too.
 </details>
 
+<details>
+<summary>Exercise 3-15. <a href="../ch03.md#3.2">§3.2</a></summary>
+
+**Exercise 3-15** *(fingers · lupin)*. Days in a month, decided by a
+`match` on the month number with a bare `if` in the February arm, `2
+=> if leap then 29 else 28`, printed for January, both Februaries and
+April. Then make one branch outgrow the line, a sentence in place of
+the number, and run `wolf fmt` on the file: which of your two `if`s
+does the formatter leave as written, what does it do to the other, and
+would it ever go the other way?
+
+Solution. `ch03/ex3-15.lu`:
+
+```wolf
+fn days(month: int, leap: bool) -> int {
+    match month {
+        2 => if leap then 29 else 28,
+        4 => 30,
+        6 => 30,
+        9 => 30,
+        11 => 30,
+        _ => 31,
+    }
+}
+
+fn main() -> !int {
+    print("{days(1, false)} {days(2, true)} {days(2, false)} {days(4, false)}")
+    0
+}
+```
+
+```console
+$ lupin ex3-15.lu
+31 29 28 30
+$ wolf fmt --check ./ex3-15.lu
+$ echo $?
+0
+```
+
+The February arm is the ruling's own line: `then` closes the
+condition, the arm's comma closes the bare `else` branch, and the
+formatter's `--check` exits 0 on it, because a bare `if` that fits its
+line is a fixed point. Give the leap branch a sentence instead of `29`
+and the line no longer fits, so `wolf fmt` rewrites that one `if` into
+the braced form, each branch on its own line, and leaves every other
+arm as written. It never goes the other way: a braced `if` stays
+braced on every pass, however short its branches, because the rule is
+that no program which parses changes shape under the formatter, and
+the width break is the one exception, one direction only.
+</details>
+
 ## Chapter 4
 
 <details>
@@ -1955,63 +2006,6 @@ scan per line, and the printing loop walks the list and asks the map.
 </details>
 
 <details>
-<summary>Exercise 5-7. <a href="../ch05.md#5.4">§5.4</a></summary>
-
-**Exercise 5-7** *(comprehension + extension · lupin)*. An RPN
-evaluator is a loop and a stack, and the stack is a `List`. Given the
-tokens `3 4 + 2 *`, trace the stack contents after each token on paper,
-then run. Then answer from your trace, not from the code: which input
-would make `stack.len < 2` true at an operator, and what does your
-evaluator do about it?
-
-Solution. `ch05/ex5-7.lu`:
-
-```wolf
-fn eval_rpn(tokens: List[str]) -> int ! {Underflow, BadToken} {
-    var stack = List[int]()
-    for t in tokens {
-        if t == "+" || t == "-" || t == "*" || t == "/" {
-            if stack.len < 2 { return Underflow }
-            let b = (mut stack).pop() else { return Underflow }
-            let a = (mut stack).pop() else { return Underflow }
-            if t == "+" { (mut stack).push(a + b) } else if t == "-" { (mut stack).push(a - b) } else if t == "*" { (mut stack).push(a * b) } else { (mut stack).push(a / b) }
-        } else {
-            let n = t.to_int() else { return BadToken }
-            (mut stack).push(n)
-        }
-    }
-    if stack.len != 1 { return Underflow }
-    (mut stack).pop() else { return Underflow }
-}
-fn main() -> !int {
-    var tokens = List[str]()
-    (mut tokens).push("3")
-    (mut tokens).push("4")
-    (mut tokens).push("+")
-    (mut tokens).push("2")
-    (mut tokens).push("*")
-    let v = eval_rpn(tokens) else |_| { return 1 }
-    print("{v}")
-    0
-}
-```
-
-```console
-$ lupin ex5-7.lu
-14
-```
-
-The trace: `[3]`, `[3 4]`, `[7]`, `[7 2]`, `[14]`. An input like
-`3 +` reaches the operator with one element on the stack, and the
-evaluator returns `Underflow` instead of trapping on `pop`: the error
-row is doing bounds-checking's job one level up, where the caller can
-do something about it. (The row previews chapter 6; reading it is
-enough here.) `pop` carries a row of its own, which is why each call
-takes an `else` even under the guard: the compiler checks the call, not
-the reasoning around it.
-</details>
-
-<details>
 <summary>Exercise 5-11. <a href="../ch05.md#5.6">§5.6</a></summary>
 
 **Exercise 5-11** *(extension · lupin)*. Exercise 2-7 encoded runs
@@ -2400,6 +2394,9 @@ make them read it back out of an error message.
 Exercises 5-9 and 5-10 (the third `Draw` shape; the cast-a-binding
 rule) moved to chapter 7 with the material they belong to, as 7-17 and
 7-18. The numbers are not reused.
+
+Exercise 5-7 (the RPN evaluator) moved to chapter 6 as 6-14, where `?`
+on `pop()` is the point. The number is not reused.
 </details>
 
 ## Chapter 6
@@ -2993,6 +2990,66 @@ input*: the caller fixing "no such month" would stare at a string
 with no month in it. Refusal order is part of a validator's honesty,
 not a style choice. (2024-02-29 passing while 2026-02-29 refuses is
 `days_in` earning its `leap` parameter back from 4-7.)
+</details>
+
+<details>
+<summary>Exercise 6-14. <a href="../ch06.md#6.2">§6.2</a></summary>
+
+**Exercise 6-14** *(comprehension + extension · lupin)*. An RPN
+evaluator is a loop and a stack, and the stack is a `List[int]`;
+`words()` (§2.5) is the tokenizer, so `"3 4 + 2 *".words()` is the
+input. Each operator pops twice, and `pop` answers `int ! {none}`, so
+spell it `(mut stack).pop()?` and give `evaluate` the row `! {none,
+parse}`, because `to_int` fails on a token that is not a number. Trace
+the stack after each token on paper, then run. Then feed it `3 +` and
+`3 x +` and say, from the row and not from the code, which call
+answers each one and where your `else |err|` prints.
+
+Solution. `ch06/ex6-14.lu`:
+
+```wolf
+fn evaluate(line: str) -> int ! {none, parse} {
+    var stack = List[int]()
+    for t in line.words() {
+        match t {
+            "+" => { let b = (mut stack).pop()?; let a = (mut stack).pop()?; (mut stack).push(a + b) }
+            "-" => { let b = (mut stack).pop()?; let a = (mut stack).pop()?; (mut stack).push(a - b) }
+            "*" => { let b = (mut stack).pop()?; let a = (mut stack).pop()?; (mut stack).push(a * b) }
+            "/" => { let b = (mut stack).pop()?; let a = (mut stack).pop()?; (mut stack).push(a / b) }
+            _ => (mut stack).push(t.to_int()?),
+        }
+    }
+    (mut stack).pop()
+}
+fn main() -> !int {
+    print("{evaluate("3 4 + 2 *")}")
+    let short = evaluate("3 +") else |err| { print("short stack: {err}"); -1 }
+    print("{short}")
+    let bad = evaluate("3 x +") else |err| { print("not a number: {err}"); -1 }
+    print("{bad}")
+    0
+}
+```
+
+```console
+$ lupin ex6-14.lu
+14
+short stack: none
+-1
+not a number: parse
+-1
+```
+
+The trace: `[3]`, `[3 4]`, `[7]`, `[7 2]`, `[14]`. `3 +` reaches the
+operator with one element on the stack, so the second `pop()?` answers
+`none` and hands it up: `evaluate` ends there, and `main`'s `else
+|err|` prints the tag. `3 x +` never reaches the operator: `"x"` goes
+to the `_` arm, `to_int()?` answers `parse`, and the same `else` prints
+that. Nothing in `evaluate` tests `stack.len`, because the row is
+doing that check one level up, at the call that can fail, which is
+where chapter 6 puts it. The tail `(mut stack).pop()` is the answer
+and its own row at once: an empty input is `none` too, from the last
+line, with no special case.
 </details>
 
 ## Chapter 7
@@ -3946,7 +4003,7 @@ fn main() -> !int {
     in r {
         var xs = List[int]()
         (mut xs).push(1)
-        ch.send(move r)
+        ch.send(move r)?
         0
     }
 }
@@ -5407,11 +5464,11 @@ fn main() -> !int {
     var produced = 0
     scope s {
         s.spawn(fn() {
-            for i in 1..=5 { raw.send(i) }
+            for i in 1..=5 { raw.send(i)? }
             raw.close()
         })
         s.spawn(fn() {
-            for v in raw { squared.send(v * v) }
+            for v in raw { squared.send(v * v)? }
             squared.close()
         })
         for v in squared { produced += 1 }
@@ -5558,10 +5615,10 @@ fn main() -> !int {
     scope s {
         for w in 0..3 {
             s.spawn(fn() {
-                for j in jobs { results.send(j * j) }
+                for j in jobs { results.send(j * j)? }
             })
         }
-        for j in 1..=6 { jobs.send(j) }
+        for j in 1..=6 { jobs.send(j)? }
         jobs.close()
     }
     results.close()
@@ -5599,10 +5656,10 @@ Solution. `ch11/ex11-5.lu` (excerpt):
 scope s {
     for w in 0..2 {
         s.spawn(fn() {
-            for j in jobs { results.send("worker {w} took job {j}") }
+            for j in jobs { results.send("worker {w} took job {j}")? }
         })
     }
-    for j in 1..=4 { jobs.send(j) }
+    for j in 1..=4 { jobs.send(j)? }
     jobs.close()
 }
 ```
@@ -6089,7 +6146,7 @@ fn balanced(line: str) -> bool {
         } else if c == ')' || c == ']' || c == '}' {
             if stack.len == 0 { return false }
             let open = stack[stack.len - 1]
-            (mut stack).pop()
+            let _ = (mut stack).pop()
             if c == ')' && open != '(' { return false }
             if c == ']' && open != '[' { return false }
             if c == '}' && open != '{' { return false }
@@ -6821,7 +6878,7 @@ Solution. `ch14/ex14-6.lu`:
 fn counter(cmds: channel[int], replies: channel[int]) -> int {
     var total = 0
     for c in cmds {
-        if c == 0 { replies.send(total) } else { total += c }
+        if c == 0 { replies.send(total) else { return total } } else { total += c }
     }
     total
 }
@@ -6829,9 +6886,9 @@ fn main() -> !int {
     let cmds = channel[int](8)
     let replies = channel[int](1)
     let w = spawn proc counter(cmds, replies)
-    cmds.send(5)
-    cmds.send(2)
-    cmds.send(0)
+    cmds.send(5)?
+    cmds.send(2)?
+    cmds.send(0)?
     let t = replies.recv() else |_| { return 1 }
     print("total={t}")
     cmds.close()
@@ -6917,7 +6974,7 @@ Solution. `ch14/ex14-9.lu` (main excerpt):
         s.spawn(fn() { client(cmds) })
         s.spawn(fn() { client(cmds) })
     }
-    cmds.send(0)
+    cmds.send(0)?
 ```
 
 ```console
@@ -6977,11 +7034,11 @@ fn main() -> !int {
     let cmds = channel[str](8)
     let keeper = spawn proc stockroom(cmds)
     let m = keeper.monitor()
-    cmds.send("put 40")
-    cmds.send("take 15")
-    cmds.send("put 6")
-    cmds.send("take 90")
-    cmds.send("put 12")
+    cmds.send("put 40")?
+    cmds.send("take 15")?
+    cmds.send("put 6")?
+    cmds.send("take 90")?
+    cmds.send("put 12")?
     cmds.close()
     select {
         exit(reason) from m => { print("stockroom closed: {reason}") },
@@ -7301,7 +7358,7 @@ visible, and what synchronization made that true?
             (mut v).push(1)
             v
         }
-        ch.send(move r)
+        ch.send(move r)?
     })
     let r2 = ch.recv() else |_| { return 1 }
     got = in r2 { 42 }
@@ -7340,7 +7397,7 @@ Solution. `ch16/ex16-2.lu` (receiver):
         }
         print("sum={total}")
     })
-    ch.send(move r)
+    ch.send(move r)?
 ```
 
 ```console
@@ -7370,7 +7427,7 @@ fn main() -> !int {
     let ch = channel[region](1)
     let r = region()
     let n = in r { 41 }
-    ch.send(move r)
+    ch.send(move r)?
     let m = in r { 1 }
     m
 }
@@ -7501,7 +7558,7 @@ fn main() -> !int {
             let d = in r2 { solve(walls, 5, 5) }
             print("distance={d}")
         })
-        ch.send(move r)
+        ch.send(move r)?
     }
     0
 }
@@ -7671,7 +7728,7 @@ fn main() -> !int {
             let seat = in r2 { last_seat(alive, 7) }
             print("seat {seat} survives")
         })
-        ch.send(move r)
+        ch.send(move r)?
     }
     0
 }
@@ -7709,9 +7766,9 @@ be if deposits never interfered:
 
 ```wolf
 fn deposit(getreq: channel[int], getrep: channel[int], setch: channel[int]) {
-    getreq.send(1)
+    getreq.send(1) else { return }
     let v = getrep.recv() else |_| { return }
-    setch.send(v + 50)
+    setch.send(v + 50) else { return }
 }
 fn main() -> !int {
     let getreq = channel[int](0)
@@ -7971,11 +8028,11 @@ fn main() -> !int {
     scope s {
         s.spawn(fn() {
             let x = a.recv() else |_| { return }
-            b.send(x)
+            b.send(x) else { return }
         })
         s.spawn(fn() {
             let y = b.recv() else |_| { return }
-            a.send(y)
+            a.send(y) else { return }
         })
     }
     0
