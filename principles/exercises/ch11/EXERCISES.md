@@ -90,10 +90,10 @@ fn main() -> !int {
     scope s {
         for w in 0..3 {
             s.spawn(fn() {
-                for j in jobs { results.send(j * j) }
+                for j in jobs { results.send(j * j)? }
             })
         }
-        for j in 1..=6 { jobs.send(j) }
+        for j in 1..=6 { jobs.send(j)? }
         jobs.close()
     }
     results.close()
@@ -127,10 +127,10 @@ Solution. `ch11/ex11-5.lu` (excerpt):
 scope s {
     for w in 0..2 {
         s.spawn(fn() {
-            for j in jobs { results.send("worker {w} took job {j}") }
+            for j in jobs { results.send("worker {w} took job {j}")? }
         })
     }
-    for j in 1..=4 { jobs.send(j) }
+    for j in 1..=4 { jobs.send(j)? }
     jobs.close()
 }
 ```

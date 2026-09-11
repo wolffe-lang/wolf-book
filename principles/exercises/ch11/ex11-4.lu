@@ -8,10 +8,10 @@ fn main() -> !int {
     scope s {
         for w in 0..3 {
             s.spawn(fn() {
-                for j in jobs { results.send(j * j) }
+                for j in jobs { results.send(j * j)? }
             })
         }
-        for j in 1..=6 { jobs.send(j) }
+        for j in 1..=6 { jobs.send(j)? }
         jobs.close()
     }
     results.close()
