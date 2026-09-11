@@ -1,0 +1,14 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 5-16 solution: §5.1's split_at answers a Row.
+struct Row { kind: str, cents: int }
+fn split_at(row: str, i: int) -> Row {
+    Row { kind: row[..i], cents: row[i + 1..].to_int() else 0 }
+}
+fn text(r: Row) -> str { "{r.kind:<10}{r.cents:>5}" }
+fn main() -> !int {
+    print(text(split_at("espresso,340", 8)))
+    print(text(split_at("pastry,275", 6)))
+    print(text(split_at("tip,100", 3)))
+    0
+}

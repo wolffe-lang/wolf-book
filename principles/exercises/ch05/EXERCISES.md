@@ -409,59 +409,109 @@ $ echo $?
 4
 ```
 
-## §5.5 — Traits
+## §5.5 — Structs
 
-**Exercise 5-9** *(extension)*. Add a third shape to the `Draw`
-example, and then make `render` count its calls: what has to change,
-and what does not?
+**Exercise 5-16** *(fingers · lupin)*. Respell §5.1's `split_at` to
+answer a `Row` instead of a `(str, int)`, and use it to parse the three
+rows at the head of the chapter and print them through `text`. One line
+of the caller gets shorter and one line of the function gets longer.
+Name both, and say what each reader gained.
 
-Solution. The third impl is three lines:
+Solution. `ch05/ex5-16.lu`:
 
-```wolf,run(exit=0)
-trait Draw {
-    fn draw(self) -> str
+```wolf
+struct Row { kind: str, cents: int }
+fn split_at(row: str, i: int) -> Row {
+    Row { kind: row[..i], cents: row[i + 1..].to_int() else 0 }
 }
-struct Dot { x: int }
-struct Ring { r: int }
-struct Star { points: int }
-impl Draw for Dot { fn draw(self) -> str { "dot at {self.x}" } }
-impl Draw for Ring { fn draw(self) -> str { "ring of {self.r}" } }
-impl Draw for Star { fn draw(self) -> str { "star of {self.points}" } }
-fn render(o: dyn Draw) -> str { o.draw() }
+fn text(r: Row) -> str { "{r.kind:<10}{r.cents:>5}" }
 fn main() -> !int {
-    let d = Dot { x: 3 }
-    let r = Ring { r: 9 }
-    let s = Star { points: 5 }
-    var calls = 0
-    print(render(d as dyn Draw))
-    calls = calls + 1
-    print(render(r as dyn Draw))
-    calls = calls + 1
-    print(render(s as dyn Draw))
-    calls = calls + 1
-    print("{calls} renders")
+    print(text(split_at("espresso,340", 8)))
+    print(text(split_at("pastry,275", 6)))
+    print(text(split_at("tip,100", 3)))
     0
 }
 ```
 
-What changed: one struct, one impl, one binding, one call. What did
-not: `render`. That is erasure earning its keep: the function that
-takes `dyn Draw` never learns how many implementors exist. The counter
-lives at the call sites, because `render` has nowhere to keep state.
-It borrows its argument and owns nothing, the same ownership honesty
-Part 2 makes precise.
+```console
+$ lupin ex5-16.lu
+espresso    340
+pastry      275
+tip         100
+```
 
-**Exercise 5-10** *(design)*. The cast-a-binding rule exists because
-the dyn pair points at its operand rather than owning it. What would
-the language have to invent for `Dot { x: 3 } as dyn Draw` to be legal,
-and who would pay for it?
+The caller's line got shorter: `let (name, cents) = split_at(…)` is
+gone, because nothing has to be taken apart before it is used, and the
+value goes straight into `text`. The function's line got longer: the
+tuple `(row[..i], …)` became `Row { kind: row[..i], cents: … }`, two
+words more. The function's reader gained nothing they did not already
+know, since the tuple's two positions were named by the signature one
+line up; the caller's reader gained the two words, because `r.cents`
+says what `pair.1` made them look up.
 
-Solution. The temporary needs a home that outlives the expression, so
-the language would have to invent one: a hidden allocation (a box the
-reader never wrote), or a compiler-synthesized binding with a lifetime
-the reader never chose. Both are costs paid silently, and wolf's
-temperament is that erasure may change dispatch but never ownership:
-the pair points at your value, in your frame or your region, and the
-`let home = …` the error asks for is the language declining to
-allocate behind your back. The reader pays one visible line; the
-alternative is every reader paying an invisible allocation.
+**Exercise 5-17** *(extension · lupin)*. A struct holds a list as
+easily as an `int`. Declare `Receipt { rows: List[Row] }`, build one
+from the three rows, and write `total(r: Receipt) -> int` as a plain
+function with no `impl`. Print the count of rows and the total. Then
+read `total`'s signature and say what it tells a caller about `r.rows`:
+does the call change the list, and which character on the line says so?
+
+Solution. `ch05/ex5-17.lu`:
+
+```wolf
+struct Row { kind: str, cents: int }
+struct Receipt { rows: List[Row] }
+fn total(r: Receipt) -> int {
+    var sum = 0
+    for row in r.rows { sum += row.cents }
+    sum
+}
+fn main() -> !int {
+    var rows = List[Row]()
+    (mut rows).push(Row { kind: "drink", cents: 340 })
+    (mut rows).push(Row { kind: "food", cents: 275 })
+    (mut rows).push(Row { kind: "gratuity", cents: 100 })
+    let receipt = Receipt { rows: rows }
+    print("{receipt.rows.len} rows, {total(receipt)} cents")
+    0
+}
+```
+
+```console
+$ lupin ex5-17.lu
+3 rows, 715 cents
+```
+
+The call does not change the list, and no character on the line says
+so: `r: Receipt` carries no word in front of it, and that absence is
+the claim. A parameter with nothing written before it is read for the
+call and handed back whole, which is why `main` can print
+`receipt.rows.len` and call `total(receipt)` in one line. A function
+that did change its argument would have to say so at both ends, and
+chapter 7 is where that word is introduced.
+
+## §5.6 — Traits
+
+**Exercise 5-18** *(design)*. The alias `Num` names seven traits, and
+a call under `[T: Num]` is checked against each of them by name. Why
+does the refusal name the missing trait and never the alias? Say what a
+reader would lose if it read "`f64` is not a `Num`", and what the
+author of a seven-trait alias gains from the compiler never mentioning
+it.
+
+Solution. The alias has no members and no impls, so "`f64` is not a
+`Num`" names nothing the reader can write: there is no `impl Num for
+f64` to add, and the sentence sends them to the alias's definition to
+work out which of seven traits is the one they lack. Naming `Eq`
+instead names the impl that fixes it, and the fix is the same whether
+the bound was written `Eq`, `Add + Eq`, or `Num`. What the alias's
+author gains is that the alias stays a spelling: it can grow an eighth
+trait, or be split in two, and every refusal it ever produced was
+already about a trait and not about the name, so nothing a reader
+learned from a diagnostic goes stale. The one thing an alias is for is
+saving the reader from writing the list; it would be a poor trade to
+make them read it back out of an error message.
+
+Exercises 5-9 and 5-10 (the third `Draw` shape; the cast-a-binding
+rule) moved to chapter 7 with the material they belong to, as 7-17 and
+7-18 (bs42). The numbers are not reused.

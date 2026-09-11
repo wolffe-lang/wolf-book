@@ -1,0 +1,19 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 5-17 solution: a Receipt holds a List[Row]; total is a plain function.
+struct Row { kind: str, cents: int }
+struct Receipt { rows: List[Row] }
+fn total(r: Receipt) -> int {
+    var sum = 0
+    for row in r.rows { sum += row.cents }
+    sum
+}
+fn main() -> !int {
+    var rows = List[Row]()
+    (mut rows).push(Row { kind: "drink", cents: 340 })
+    (mut rows).push(Row { kind: "food", cents: 275 })
+    (mut rows).push(Row { kind: "gratuity", cents: 100 })
+    let receipt = Receipt { rows: rows }
+    print("{receipt.rows.len} rows, {total(receipt)} cents")
+    0
+}
