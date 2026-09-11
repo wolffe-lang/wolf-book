@@ -475,7 +475,8 @@ it is why frozen data needs no locks and no lifetimes; a single write
 anywhere would break every reader everywhere. This write reaches data
 that a `freeze` already promoted (the freeze site is marked). Do the
 mutation before freezing — build the value completely, freeze last —
-or keep a mutable `copy` alongside the frozen one.
+or keep a mutable `copy` alongside the frozen original for the part
+that must keep changing.
 ```
 
 No-locks: "a single write anywhere would break every reader
