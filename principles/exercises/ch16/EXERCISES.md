@@ -258,10 +258,12 @@ fn main() -> !int {
 
 Predict the verdict this program earns and the rule behind it, and
 explain why each of the four admitted payload classes is safe where a
-bare `List` is not.
+bare `List` is not. Then say what the note's fifth entry — a struct,
+enum or tuple whose every field is one of the four — adds that the
+four alone do not.
 
-Solution: the verdict is `fail(E1102)`, and the note names all four
-classes:
+Solution: the verdict is `fail(E1102)`, and the note names the four
+base classes and the composite rule that closes over them:
 
 ```console
 $ wolf conform-run ./ex16-9.lu
@@ -272,9 +274,10 @@ error[E1102]: `List[int]` cannot be sent through a channel
   |                      ^^^^^^^^^ not a sendable payload type
   |
   = note: channel payloads must be `Copy` data, `imm` data, a region value (the send is its affine
-    move), or a `sync` type ([conc.chan.type]) — sending anything else would give two tasks
-    one mutable value. D14's verbs are the ways out: `move` the data into a region and send
-    the region, `freeze` it into shareable `imm` data, or guard it with a `Mutex`.
+    move), a `sync` type, or a struct, enum or tuple whose every field is one of those
+    ([conc.chan.type], [conc.chan.payload]) — sending anything else would give two tasks one
+    mutable value. D14's verbs are the ways out: `move` the data into a region and send the
+    region, `freeze` it into shareable `imm` data, or guard it with a `Mutex`.
 ```
 
 Each admitted class removes one half of the race. `Copy` data: the
@@ -285,6 +288,15 @@ type: the sharing is real and the coordination is the type's own job. A
 bare `List` is none of these: sending it would give two tasks live
 access to one mutable buffer with no coordination, which is chapter 13's
 store-buffer program wearing a channel as a disguise.
+
+The fifth entry adds no fifth *reason*, and that is its point. A
+struct, enum or tuple is sendable exactly when every field is —
+`[conc.chan.payload]`, beside `[conc.chan.type]` in the note — so the
+rule is closed under composition rather than restated for each shape,
+and a record of two `int`s needs no ceremony to cross a channel. It is
+also the entry that makes the other four load-bearing: one
+non-sendable field anywhere in the tree refuses the whole value, which
+is why the four classes above are worth being able to name.
 
 Note that the rejection is a property of the *declaration*: no `send`
 appears in the program, and none is needed. The type of the channel is
