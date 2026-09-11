@@ -44,6 +44,10 @@ struct Sample {
     file_name: String,
     check: Check,
     origin: Origin,
+    /// `warns(…)` on the fence or `//! warns:` in the header: the exact
+    /// warning codes the compiler must print (wolf-book#21). Empty
+    /// means "asserts nothing", not "warns nothing".
+    warns: Vec<String>,
 }
 
 #[derive(Debug)]
@@ -190,6 +194,8 @@ pub fn run(root: &Path, args: &[String]) -> Result<()> {
     let mut pass = 0usize;
     let mut pending_seen = 0usize;
     let mut refused_seen = 0usize;
+    let mut warns_asserted = 0usize;
+    let mut warned_undeclared: Vec<String> = Vec::new();
     let mut diagnostics: BTreeMap<String, String> = BTreeMap::new();
     let mut phases: BTreeMap<String, String> = BTreeMap::new();
     let started = Instant::now();
@@ -297,6 +303,22 @@ pub fn run(root: &Path, args: &[String]) -> Result<()> {
                             failures.push(format!("{}: {msg}", s.id));
                             continue;
                         }
+                    }
+                }
+                // The warning ledger (wolf-book#21): a fence that
+                // declares `warns(…)` is held to the exact set; one
+                // that declares nothing and warns is counted and named
+                // below, report-only, so the inventory is visible.
+                if !s.warns.is_empty() {
+                    if let Some(msg) = warning_verdict(&tools, s)? {
+                        failures.push(format!("{}: {msg}", s.id));
+                        continue;
+                    }
+                    warns_asserted += 1;
+                } else {
+                    let codes = undeclared_warnings(&tools, s);
+                    if !codes.is_empty() {
+                        warned_undeclared.push(format!("{} [{}]", s.id, codes.join(", ")));
                     }
                 }
                 pass += 1;
@@ -479,6 +501,17 @@ pub fn run(root: &Path, args: &[String]) -> Result<()> {
              not replayed — the REPL replay lane lands with wolf-interp is08"
         );
     }
+    // wolf-book#21: the warning ledger. Asserted sets are gates; the
+    // rest is the inventory the issue counts, named here on every run
+    // so a dropped-row warning the interpreter cannot see is seen.
+    println!(
+        "samples: {warns_asserted} warning set(s) asserted by warns(…); {} sample(s) warn \
+         with no warns(…) directive (report-only, wolf-book#21)",
+        warned_undeclared.len()
+    );
+    for w in &warned_undeclared {
+        println!("samples: WARNS undeclared {w}");
+    }
     println!("samples: exported {exported} corpus programs to samples/export/corpus/book/");
 
     for f in &failures {
@@ -538,6 +571,7 @@ fn collect_corpus(root: &Path) -> Result<(Vec<Sample>, usize)> {
             file_name: path.file_name().unwrap().to_string_lossy().into_owned(),
             check,
             origin: Origin::Corpus,
+            warns: header.warns,
         });
     }
     Ok((samples, members))
@@ -800,6 +834,7 @@ fn collect_book(root: &Path) -> Result<BookScan> {
                 }
             }
             // wolf block: stitch parts, then decide whether it runs.
+            let warns = fi.warns.clone();
             let (program, name) = match &fi.part {
                 Some((name, cont)) => {
                     let acc = parts.entry(name.clone()).or_default();
@@ -860,6 +895,7 @@ fn collect_book(root: &Path) -> Result<BookScan> {
                 file_name,
                 check,
                 origin: Origin::Book { md: md.clone() },
+                warns,
             });
         }
     }
@@ -1441,6 +1477,10 @@ struct ConformRun {
     /// the refusal itself goes to stderr, and the verdict is a bare
     /// `unsupported` that a clean program also reports.
     unsupported_construct: Option<String>,
+    /// `warnings[].code` — every warning the compiler printed, sorted
+    /// and deduplicated. The protocol record carries them whatever the
+    /// verdict, which is what lets a fence assert them without a build.
+    warnings: Vec<String>,
 }
 
 /// Run `wolf conform-run ./file` and split its output into the verdict
@@ -1489,6 +1529,18 @@ fn conform_run_with(tools: &Tools, s: &Sample, checked: bool) -> Result<ConformR
         .get("x-unsupported-construct")
         .and_then(|v| v.as_str())
         .map(str::to_string);
+    let mut warnings: Vec<String> = parsed
+        .get("warnings")
+        .and_then(|v| v.as_array())
+        .map(|ws| {
+            ws.iter()
+                .filter_map(|w| w.get("code").and_then(|c| c.as_str()))
+                .map(str::to_string)
+                .collect()
+        })
+        .unwrap_or_default();
+    warnings.sort();
+    warnings.dedup();
     // The human-rendered diagnostic: everything before the JSON line,
     // wherever the driver put it.
     let mut diag = String::new();
@@ -1508,7 +1560,51 @@ fn conform_run_with(tools: &Tools, s: &Sample, checked: bool) -> Result<ConformR
         phase,
         ub_row,
         unsupported_construct,
+        warnings,
     })
+}
+
+/// The warning ledger (wolf-book#21). What the compiler prints as
+/// warnings is asked of `wolf conform-run`, which reports them in its
+/// record at every verdict, so no build and no execution is spent on
+/// it. Three answers:
+///
+///   `Ok(None)`      — the sample's warnings are what it declares
+///                     (nothing declared, nothing printed included);
+///   `Ok(Some(msg))` — a difference the sample must answer for, in
+///                     either direction: it declares `warns(…)` and
+///                     the compiler printed another set;
+///   `Err(_)`        — the compiler gave no record at all.
+///
+/// A sample that declares nothing and warns anyway is NOT a failure
+/// here — that is the 87-site inventory wolf-book#21 catalogues, and
+/// converting it to red in one lane would hide the finding behind a
+/// wall. The caller counts those and names them in the log instead.
+fn warning_verdict(tools: &Tools, s: &Sample) -> Result<Option<String>> {
+    let r = conform_run_with(tools, s, false)?;
+    if s.warns.is_empty() {
+        return Ok(None);
+    }
+    if r.warnings == s.warns {
+        return Ok(None);
+    }
+    Ok(Some(format!(
+        "warns({}) declared, but the compiler printed [{}] — the fence asserts the exact \
+         set, in both directions",
+        s.warns.join(", "),
+        r.warnings.join(", "),
+    )))
+}
+
+/// The report-only half of the ledger: the warnings a sample prints
+/// while declaring none. Empty when the sample declares any.
+fn undeclared_warnings(tools: &Tools, s: &Sample) -> Vec<String> {
+    if !s.warns.is_empty() {
+        return Vec::new();
+    }
+    conform_run_with(tools, s, false)
+        .map(|r| r.warnings)
+        .unwrap_or_default()
 }
 
 // ------------------------------------------------------------- snapshots
@@ -1624,6 +1720,20 @@ fn export_corpus(
             Some(phase) => text.replace("//! phase: run\n", &format!("//! phase: {phase}\n")),
             None => text,
         };
+        // The warning ledger travels with the sample: wolf-lang's
+        // runner reads the same key (`//! warns:`, s67) and holds the
+        // file to it, so a book block that asserts a warning is
+        // asserted there too rather than arriving as a file that must
+        // run warning-clean.
+        let text = if s.warns.is_empty() {
+            text
+        } else {
+            text.replacen(
+                "//! phase:",
+                &format!("//! warns: {}\n//! phase:", s.warns.join(", ")),
+                1,
+            )
+        };
         let dst = export.join(&s.id).with_extension("lu");
         std::fs::create_dir_all(dst.parent().unwrap())?;
         std::fs::write(&dst, text)?;
@@ -1697,6 +1807,7 @@ fn selftest(root: &Path, tools: &Tools) -> Result<()> {
             file_name: name.to_string(),
             check,
             origin: Origin::Corpus,
+            warns: Vec::new(),
         };
         let outcome = execute(tools, &sample)?;
         if outcome.passed {
@@ -1706,7 +1817,54 @@ fn selftest(root: &Path, tools: &Tools) -> Result<()> {
         broken_caught += 1;
     }
     selftest_corpus_console(root, tools, &mut broken_caught)?;
-    println!("samples: self-test ok — {broken_caught}/5 deliberate breakages caught");
+    selftest_warns(root, tools, &mut broken_caught)?;
+    println!("samples: self-test ok — {broken_caught}/6 deliberate breakages caught");
+    Ok(())
+}
+
+/// The sixth breakage, wolf-book#21's: a fence that declares a warning
+/// the compiler does not print. Two-sided like the console one — the
+/// TRUE declaration must hold on a program that warns, and the planted
+/// one must be reported — because a ledger that failed everything would
+/// be as useless as one that failed nothing.
+fn selftest_warns(root: &Path, tools: &Tools, caught: &mut usize) -> Result<()> {
+    let dir = root.join("samples/selftest/warns");
+    let _ = std::fs::remove_dir_all(&dir);
+    let warning_program = "fn main() -> !int {\n    let ch = channel[int](1)\n    ch.send(1)\n    let v = ch.recv() else 0\n    print(\"{v}\")\n    0\n}\n";
+    let clean_program = "fn main() -> !int {\n    print(\"quiet\")\n    0\n}\n";
+    let sample = |name: &str, source: &str, warns: &[&str]| -> Result<Sample> {
+        let case_dir = dir.join(name);
+        std::fs::create_dir_all(&case_dir)?;
+        std::fs::write(case_dir.join(format!("{name}.lu")), source)?;
+        Ok(Sample {
+            id: format!("selftest/warns/{name}"),
+            dir: case_dir,
+            file_name: format!("{name}.lu"),
+            check: Check::Run {
+                exit: 0,
+                stdout: None,
+            },
+            origin: Origin::Corpus,
+            warns: warns.iter().map(|w| w.to_string()).collect(),
+        })
+    };
+    let truthful = sample("truthful", warning_program, &["W0601"])?;
+    if let Some(msg) = warning_verdict(tools, &truthful)? {
+        bail!("self-test FAILED: a TRUE warns(W0601) declaration was reported — {msg}");
+    }
+    println!("samples: self-test warning ledger holds a true warns(W0601)");
+    let planted = sample("planted", clean_program, &["W0601"])?;
+    match warning_verdict(tools, &planted)? {
+        Some(msg) => {
+            println!("samples: self-test caught planted warns(W0601): {msg}");
+            *caught += 1;
+        }
+        None => bail!(
+            "self-test FAILED: warns(W0601) on a program that prints no warning was not \
+             reported"
+        ),
+    }
+    let _ = std::fs::remove_dir_all(&dir);
     Ok(())
 }
 

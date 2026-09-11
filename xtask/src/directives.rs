@@ -235,12 +235,38 @@ impl<T> WithContextStr<T> for Option<T> {
     }
 }
 
-/// A corpus `.lu` header: `//! check: …`, `//! phase: …`, `//! member: true`.
+/// A corpus `.lu` header: `//! check: …`, `//! phase: …`, `//! member: true`,
+/// `//! warns: W0601`.
 #[derive(Debug, Clone)]
 pub struct LuHeader {
     pub check: Option<Check>,
     pub phase: Option<String>,
     pub member: bool,
+    /// `warns: W0601, W1002` — the exact warning codes the compiler is
+    /// expected to print for this file, wolf-lang s67's ledger key
+    /// spelled the same way. Sorted and deduplicated.
+    pub warns: Vec<String>,
+}
+
+/// One warning code, shaped like the catalog spells them: `W0601`,
+/// `E0802` (five characters, a severity letter and four digits).
+fn parse_warning_codes(list: &str, where_: &str) -> Result<Vec<String>> {
+    let mut out = Vec::new();
+    for code in list.split(',').map(str::trim).filter(|c| !c.is_empty()) {
+        let b = code.as_bytes();
+        let shaped =
+            b.len() == 5 && matches!(b[0], b'E' | b'W') && b[1..].iter().all(u8::is_ascii_digit);
+        if !shaped {
+            bail!("{where_}: bad warning code `{code}` (codes look like W0601)");
+        }
+        out.push(code.to_string());
+    }
+    if out.is_empty() {
+        bail!("{where_}: needs at least one warning code");
+    }
+    out.sort();
+    out.dedup();
+    Ok(out)
 }
 
 pub fn parse_lu_header(source: &str) -> Result<LuHeader> {
@@ -248,6 +274,7 @@ pub fn parse_lu_header(source: &str) -> Result<LuHeader> {
         check: None,
         phase: None,
         member: false,
+        warns: Vec::new(),
     };
     for line in source.lines() {
         let Some(rest) = line.strip_prefix("//!") else {
@@ -264,6 +291,8 @@ pub fn parse_lu_header(source: &str) -> Result<LuHeader> {
             h.phase = Some(v.trim().to_string());
         } else if let Some(v) = rest.strip_prefix("member:") {
             h.member = v.trim() == "true";
+        } else if let Some(v) = rest.strip_prefix("warns:") {
+            h.warns = parse_warning_codes(v, "`//! warns:`")?;
         }
         // Unknown `//!` keys are tolerated: the corpus directive language
         // may grow in wolf-lang first.
@@ -290,6 +319,13 @@ pub struct FenceInfo {
     /// `text,file(pkg/name/wolf.pkg)` — the block must equal that file
     /// byte for byte. A manifest on the page is a manifest CI resolves.
     pub file: Option<String>,
+    /// `warns(W0601)` — the exact set of warning codes the compiler
+    /// must print for this sample (wolf-book#21). The runner asks
+    /// `wolf conform-run` for the set and fails on any difference in
+    /// either direction; a sample without the directive that warns is
+    /// counted and named in the log, report-only, so a dropped-row
+    /// warning the interpreter cannot see is at least seen by a gate.
+    pub warns: Vec<String>,
 }
 
 pub fn parse_fence_info(info: &str) -> Result<FenceInfo> {
@@ -303,6 +339,7 @@ pub fn parse_fence_info(info: &str) -> Result<FenceInfo> {
         from: None,
         in_fixture: None,
         file: None,
+        warns: Vec::new(),
     };
     for item in items {
         let item = item.trim();
@@ -336,6 +373,11 @@ pub fn parse_fence_info(info: &str) -> Result<FenceInfo> {
                 bail!("file() needs a path");
             }
             fi.file = Some(name.to_string());
+        } else if let Some(inner) = item
+            .strip_prefix("warns(")
+            .and_then(|r| r.strip_suffix(')'))
+        {
+            fi.warns = parse_warning_codes(inner, "warns()")?;
         } else if !item.is_empty() {
             bail!("unrecognized fence directive: `{item}` in `{info}`");
         }
@@ -526,5 +568,47 @@ mod tests {
         let fi = parse_fence_info("diagnostic,from(ch03/ex3-2)").unwrap();
         assert_eq!(fi.lang, "diagnostic");
         assert_eq!(fi.from.as_deref(), Some("ch03/ex3-2"));
+    }
+
+    #[test]
+    fn fence_carries_warns() {
+        let fi = parse_fence_info(r#"wolf,run(exit=0, stdout="regions"),warns(W0601)"#).unwrap();
+        assert_eq!(
+            fi.check,
+            Some(Check::Run {
+                exit: 0,
+                stdout: Some("regions".into())
+            })
+        );
+        assert_eq!(fi.warns, vec!["W0601".to_string()]);
+        // Sorted, deduplicated, and the order on the fence is not a claim.
+        let fi = parse_fence_info("wolf,run(exit=0),warns(W1002, W0601, W0601)").unwrap();
+        assert_eq!(fi.warns, vec!["W0601".to_string(), "W1002".to_string()]);
+        // A fence without the directive asserts nothing about warnings.
+        assert!(parse_fence_info("wolf,run(exit=0)")
+            .unwrap()
+            .warns
+            .is_empty());
+    }
+
+    #[test]
+    fn warns_wants_catalog_shaped_codes() {
+        assert!(parse_fence_info("wolf,run(exit=0),warns(0601)").is_err());
+        assert!(parse_fence_info("wolf,run(exit=0),warns(W601)").is_err());
+        assert!(parse_fence_info("wolf,run(exit=0),warns()").is_err());
+        assert!(
+            parse_lu_header("//! check: run(exit=0)\n//! warns: dropped\nfn main() {}\n").is_err()
+        );
+    }
+
+    #[test]
+    fn lu_header_carries_warns() {
+        let src = "//! check: run(exit=0)\n//! warns: W0601, E0802\nfn main() {}\n";
+        let h = parse_lu_header(src).unwrap();
+        assert_eq!(h.warns, vec!["E0802".to_string(), "W0601".to_string()]);
+        assert!(parse_lu_header("//! check: run(exit=0)\nfn main() {}\n")
+            .unwrap()
+            .warns
+            .is_empty());
     }
 }
