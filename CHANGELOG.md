@@ -2,6 +2,54 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs42, the struct before the trait — 2026-09-11 — a name for the row, and the bound that grants `+`
+
+A reader who reached chapter 5's trait section found it a leap, and
+said why: the book had never introduced a struct, and the first
+`struct` keyword it ever printed was inside a trait sample, beside a
+`dyn`, a vtable, and an ownership rule quoted from the compiler. That
+section is two sections now, and the first of them is short. §5.5
+"Structs" takes the tuple §5.1 split a row into and gives it names:
+`struct Row { kind: str, cents: int }`, the literal, a field read, a
+field write through `var`, and the one judgment the page asks, which is
+when a tuple is the better shape. Both machines run it.
+
+§5.6 "Traits" opens where the need was, two sections up. §5.3 wrote
+`total[T]` and the compiler refused it because nothing granted `+` on a
+`T`; the compiler this printing pins says in its note what to add,
+`T: Add`, and offers the edit. The section makes that repair and runs
+`total` at `int` and `f64`, and the sentence the old section lacked is
+on the page: the bound is what grants the operator, and `acc + x` on a
+`T` is `Add.add(acc, x)` by another spelling. The trait, the impl and
+the default body stay, on the receipt this time: a `Line` for a `Row`
+and a `Header`, with one default that calls the method each type
+supplies. Then the sentence that was false: `==` on a struct dispatches
+through its `Eq`, and the page proves it with an impl that compares
+kinds and ignores cents. The alias `Num` is shown for what it is, a
+name for a list of traits, and the refusal a reader meets when a type
+lacks one of them names the trait and never the alias, which is the
+design question the section's exercise asks.
+
+What did not belong in chapter 5 moved to chapter 7, where its
+vocabulary lives. `dyn`, the two loads, the impl on a primitive with
+the qualified call, and the cast-a-binding rule are a new §7.8,
+"Deciding at run time", beside the section on what the machine does.
+"A temporary has no home" is an ownership sentence, and the page reads
+it in §7.2's and §7.3's words before the compiler says it in its own.
+The two exercises went with the material and kept their questions.
+
+Which machine runs which page is spelled on the page, as always. The
+interpreter does not dispatch a struct's `==` through its impl and does
+not parse the alias form, so those two blocks run under the compiler
+and say so; everything else in the two sections runs on both. Three
+things found on the way are filed rather than absorbed: a field of a
+`let` binding is writable on both machines while the binding is not, a
+one-line trait member is refused with a message that names the wrong
+thing, and the interpreter runs a struct literal that leaves a field
+out. The pin moves to the compiler that carries the operator bridge;
+the catalog gains one code, the grammar one alternative, and the
+appendices follow.
+
 ## bs41, the forty-eight — 2026-09-11 — a list you can slice, and a hole with a shape
 
 Chapter 5 sliced strings three times and never once sliced a list, so
