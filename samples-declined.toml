@@ -1,0 +1,220 @@
+# The declined-transcript ledger (bs41) — the third answer the corpus
+# console lane can give about a block.
+#
+#   samples-pending.toml   "not yet, anywhere"
+#   samples-os.toml        "not here, and here is exactly what here says"
+#   samples-declined.toml  "not replayed at all, and here is what a
+#                           replay of it would need"
+#
+# wolf-book#24 asked for two things and bs38 could only give the first:
+# replay every exercise transcript, and name the ones it cannot. The
+# naming was the runner's own — a sentence the RULE noticed ("`lupin`
+# names no solution in this exercise directory"), which is true and
+# says nothing about whether anyone looked. wolf-book#29 turned the
+# remainder into a list by class; this file turns each entry of that
+# list into a row, and the gate runs both ways:
+#
+#   * a corpus console block nothing replays, with no row here, FAILS
+#     the samples lane. The book does not grow an unexplained hole.
+#   * a row whose block REPLAYS now is stale and FAILS too, naming the
+#     row to delete. A hole that closes is news.
+#
+# ONE DECLINE IS EXEMPT FROM BOTH DIRECTIONS, and the exemption is why
+# `Decline::host_only` exists in xtask/src/console.rs: a block the unix
+# lane replays and windows declines (a built binary, a linked `wolf
+# build`) is a third of the matrix standing down, not a hole in the
+# book. Those print as OFF-LANE and are never balanced against this
+# file, which is what lets these same twenty rows hold on all three
+# hosts while the raw decline COUNT differs (20 on macOS and linux, 28
+# on windows at the bs41 pin).
+#
+# WHAT BS41 TOOK, and why these twenty are what is left. #29 sorted 48
+# declined blocks into five classes. Twenty-eight of them came in:
+#
+#   * the 24 `conform-run` blocks. #29 read them as wanting the
+#     `diagnostic,from(id)` lane, because `wolf conform-run` prints its
+#     protocol verdict on stdout while the pages paste the diagnostic
+#     from stderr. Measured at this pin, that is a fact about a STREAM
+#     and not about a verb: drop the one JSON line addressed to the
+#     machine and the rest of what the tool said is exactly what the
+#     page prints. Six of the twenty-four were the interpreter's
+#     (`lupin conform-run … --explore=N`), which has no protocol half at
+#     all and has replayed in book blocks since the console lane
+#     existed — they were caught by a guard written for the compiler's
+#     shape.
+#   * the 4 `wolf --explain E…` blocks, admitted as the one command
+#     with no file behind it that the corpus rule takes: no input, no
+#     disk, no phase, and a catalog `verify-docs` already compares in
+#     both directions.
+#
+# The twenty below are the rest, and none of them is a rule that could
+# be widened — each wants something that is not in this repository.
+
+# ---------------------------------------------------------------- file
+# #29 §2. Eight blocks whose prompt names a file or a package the corpus
+# does not hold. The machinery for all eight exists: `console,in(pkg/
+# name)` stages a checked-in fixture under `book/` today. The fixtures
+# do not. Three of them are the same `app/` package seen at two
+# chapters, and exercise 22-13 — the block wolf-book#24 was filed over —
+# is in this class.
+
+[[declined]]
+block = "principles/exercises/ch01/EXERCISES.md:145"
+class = "file"
+needs = "`ch01/hello.lu`, the chapter-1 program the prompt builds with `--verbose`; the page prints the build's own lines and there is no source beside it"
+filed = "wolf-book#29 §2"
+retires = "the ch01 fixture (a checked-in `hello.lu` staged the way `console,in(…)` stages a package)"
+
+[[declined]]
+block = "principles/exercises/ch22/EXERCISES.md:114"
+class = "file"
+needs = "`ch22/sum.lu`, named by the prompt and never checked in"
+filed = "wolf-book#29 §2"
+retires = "the ch22 fixtures"
+
+[[declined]]
+block = "principles/exercises/ch22/EXERCISES.md:217"
+class = "file"
+needs = "a `ch22/tokens/` package — `wolf interface ./tokens/tokens.lu` reads a package root, not a file beside the page. This is exercise 22-13, the block wolf-book#24 was filed over: it rode a stale toolchain stamp and two wrong interface hashes through a green build at the v0.2.10 bump"
+filed = "wolf-book#29 §2"
+retires = "the ch22 `tokens/` fixture"
+
+[[declined]]
+block = "principles/exercises/ch22/EXERCISES.md:346"
+class = "file"
+needs = "`ch22/main.lu`, named by the prompt and never checked in"
+filed = "wolf-book#29 §2"
+retires = "the ch22 fixtures"
+
+[[declined]]
+block = "principles/exercises/ch22/EXERCISES.md:390"
+class = "file"
+needs = "`ch22/main.lu`, the second of the pair, named by the prompt and never checked in"
+filed = "wolf-book#29 §2"
+retires = "the ch22 fixtures"
+
+[[declined]]
+block = "principles/exercises/ch23/EXERCISES.md:124"
+class = "file"
+needs = "an `app/` package on disk — `wolf tree --dir app` and the two `wolf why … --dir app` arms all read one"
+filed = "wolf-book#29 §2"
+retires = "the shared ch23/ch24 `app/` fixture"
+
+[[declined]]
+block = "principles/exercises/ch24/EXERCISES.md:136"
+class = "file"
+needs = "the same `app/` package as ch23's, carrying a STALE dependency — `wolf update --dir app` and `wolf audit --ci --dir app` are both about what the update moves"
+filed = "wolf-book#29 §2"
+retires = "the shared ch23/ch24 `app/` fixture"
+
+[[declined]]
+block = "principles/exercises/ch26/EXERCISES.md:121"
+class = "file"
+needs = "`ch26/count.lu`, named by the prompt and never checked in"
+filed = "wolf-book#29 §2"
+retires = "the ch26 fixture"
+
+# --------------------------------------------------------------- typed
+# #29 §4. Six blocks whose prompt is something a reader TYPES rather
+# than a file a runner opens. Four are REPL sessions opening on a bare
+# `$ lupin`, counted by `pending(is08)` as well and replayed the day the
+# interpreter grows a scripted session. Two are `lupin eval '…'`, which
+# would replay today under a rule that admits a command with no file
+# behind it — bs41 drew that rule at `wolf --explain` alone and left
+# these two, because an expression typed at a tool is the REPL lane's
+# shape and belongs with the four it is spelled like, not with a catalog
+# read.
+
+[[declined]]
+block = "principles/exercises/ch01/EXERCISES.md:18"
+class = "typed"
+needs = "an interactive session — the block opens on a bare `$ lupin` and the transcript is what a reader types into the prompt"
+filed = "wolf-book#29 §4"
+retires = "wolf-interp is08 (the REPL replay lane)"
+
+[[declined]]
+block = "principles/exercises/ch02/EXERCISES.md:81"
+class = "typed"
+needs = "an expression to type — `lupin eval '\"\\n\".len'` has no file behind it. Cheapest of the twenty: it needs no fixture and no lane, only a rule that admits an evaluated expression"
+filed = "wolf-book#29 §4"
+retires = "the `eval` widening (with ch02:101), or wolf-interp is08 if the REPL lane takes both"
+
+[[declined]]
+block = "principles/exercises/ch02/EXERCISES.md:101"
+class = "typed"
+needs = "an expression to type — `lupin eval '\"wolf\"[..2]'` has no file behind it"
+filed = "wolf-book#29 §4"
+retires = "the `eval` widening (with ch02:81), or wolf-interp is08 if the REPL lane takes both"
+
+[[declined]]
+block = "principles/exercises/ch07/EXERCISES.md:414"
+class = "typed"
+needs = "an interactive session — the block opens on a bare `$ lupin`"
+filed = "wolf-book#29 §4"
+retires = "wolf-interp is08 (the REPL replay lane)"
+
+[[declined]]
+block = "principles/exercises/ch08/EXERCISES.md:134"
+class = "typed"
+needs = "an interactive session — the block opens on a bare `$ lupin`"
+filed = "wolf-book#29 §4"
+retires = "wolf-interp is08 (the REPL replay lane)"
+
+[[declined]]
+block = "principles/exercises/ch11/EXERCISES.md:163"
+class = "typed"
+needs = "an interactive session — the block opens on a bare `$ lupin`"
+filed = "wolf-book#29 §4"
+retires = "wolf-interp is08 (the REPL replay lane)"
+
+# ----------------------------------------------------- binary-or-shell
+# #29 §5. Six blocks whose prompt is a built binary or a shell. The
+# first four are `wolf build x.lu && ./x` pairs: the `Verb::Local` case
+# the BOOK lane already runs on unix, declined in the corpus only
+# because the corpus rule asks every command to name a solution and a
+# freshly-linked binary names none. Widening that is a real change to
+# what a corpus block means and it is not bs41's. The last two are what
+# `words()` declines by design and probably always should: a process
+# substitution and a pipeline are a shell, and this module is not one.
+
+[[declined]]
+block = "principles/exercises/ch01/EXERCISES.md:198"
+class = "binary-or-shell"
+needs = "a shell — `diff <(./hello) <(lupin hello.lu)` is process substitution, which `words()` declines by design (and the `hello.lu` of ch01:145 besides)"
+filed = "wolf-book#29 §5"
+retires = "nothing planned; the exercise compares the two machines by hand and that is the point of it"
+
+[[declined]]
+block = "principles/exercises/ch09/EXERCISES.md:17"
+class = "binary-or-shell"
+needs = "a shell — `grep -rn 'unsafe {' ch01 … | wc -l` is a pipeline over the corpus tree, which `words()` declines by design"
+filed = "wolf-book#29 §5"
+retires = "nothing planned; the count it prints is a fact about the corpus, not about a tool"
+
+[[declined]]
+block = "principles/exercises/ch09/EXERCISES.md:240"
+class = "binary-or-shell"
+needs = "the corpus rule to admit a binary `wolf build` just produced — `./ex9-8` names no solution, it names a link product"
+filed = "wolf-book#29 §5"
+retires = "the `Verb::Local` widening for corpus blocks (the book lane already runs it on unix)"
+
+[[declined]]
+block = "principles/exercises/ch19/EXERCISES.md:23"
+class = "binary-or-shell"
+needs = "the corpus rule to admit a binary `wolf build` just produced — `./ex19-1` names no solution, it names a link product"
+filed = "wolf-book#29 §5"
+retires = "the `Verb::Local` widening for corpus blocks (the book lane already runs it on unix)"
+
+[[declined]]
+block = "principles/exercises/ch30/EXERCISES.md:80"
+class = "binary-or-shell"
+needs = "the corpus rule to admit a binary `wolf build` just produced — `./ex30-3` names no solution, it names a link product"
+filed = "wolf-book#29 §5"
+retires = "the `Verb::Local` widening for corpus blocks (the book lane already runs it on unix)"
+
+[[declined]]
+block = "principles/exercises/ch30/EXERCISES.md:109"
+class = "binary-or-shell"
+needs = "the corpus rule to admit a binary `wolf build` just produced — `./ex30-4` names no solution, it names a link product"
+filed = "wolf-book#29 §5"
+retires = "the `Verb::Local` widening for corpus blocks (the book lane already runs it on unix)"

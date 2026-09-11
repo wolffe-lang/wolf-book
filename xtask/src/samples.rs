@@ -171,6 +171,7 @@ pub fn run(root: &Path, args: &[String]) -> Result<()> {
     // The per-host ledger. Rows for other hosts are inert here; every
     // row's subject is still checked for existence on every lane.
     let os_ledger = crate::oslane::Ledger::load(root)?;
+    let declined_ledger = crate::declined::Ledger::load(root)?;
 
     // ---- Collect ----
     let (corpus, member_count) = collect_corpus(root)?;
@@ -411,6 +412,8 @@ pub fn run(root: &Path, args: &[String]) -> Result<()> {
             checked: 0,
             corpus_checked: 0,
             corpus_skipped: Vec::new(),
+            corpus_off_lane: Vec::new(),
+            corpus_replayed: Vec::new(),
             skipped: Vec::new(),
             declared: Vec::new(),
             failures: Vec::new(),
@@ -429,6 +432,30 @@ pub fn run(root: &Path, args: &[String]) -> Result<()> {
                 ));
             }
         }
+        // wolf-book#29, bs41: the declined ledger, both ways. A corpus
+        // block nothing replays and no row explains is a hole; a row
+        // whose block replays now is stale. The existence sweep is the
+        // same discipline as the one above, and runs on EVERY lane so a
+        // typo cannot hide on two thirds of the matrix — a row naming a
+        // block that stood down for the host's own reason is silent
+        // here by design, and that is what `corpus_off_lane` buys.
+        for row in declined_ledger.rows() {
+            if !console_blocks
+                .iter()
+                .any(|b| b.corpus_dir.is_some() && crate::console::block_key(root, b) == row.block)
+            {
+                failures.push(format!(
+                    "samples-declined.toml names `{}` but no exercise-corpus console \
+                     block opens there",
+                    row.block
+                ));
+            }
+        }
+        failures.extend(crate::declined::audit(
+            &declined_ledger,
+            &console.corpus_skipped,
+            &console.corpus_replayed,
+        ));
     }
     failures.extend(console.failures.iter().cloned());
 
@@ -492,8 +519,38 @@ pub fn run(root: &Path, args: &[String]) -> Result<()> {
     // need — an expression to type, a package on disk, an interactive
     // session — so the remainder is a known hole with a shape rather
     // than an invisible one.
-    for s in &console.corpus_skipped {
-        println!("samples: SKIP corpus console {s}");
+    // wolf-book#24's second ask, kept, and wolf-book#29's answer to it
+    // laid over the top: the runner still names every declined corpus
+    // transcript on every run, and each line now carries the DECLARED
+    // reason someone wrote beside the one the rule computed. "Not
+    // replayed" is a row in samples-declined.toml, not a silence and
+    // not a shrug.
+    for (block, why) in &console.corpus_skipped {
+        match declined_ledger.row(block) {
+            Some(row) => println!(
+                "samples: DECLINED corpus console {block} [{}]: {} — {}, retires at {}",
+                row.class, row.needs, row.filed, row.retires
+            ),
+            None => println!("samples: SKIP corpus console {block}: {why}"),
+        }
+    }
+    for (block, why) in &console.corpus_off_lane {
+        println!(
+            "samples: OFF-LANE corpus console {block}: {why} — replayed on the unix lane, \
+             no declared row wanted"
+        );
+    }
+    if filter.is_none() {
+        let classes = declined_ledger
+            .by_class()
+            .iter()
+            .map(|(c, n)| format!("{n} {c}"))
+            .collect::<Vec<_>>()
+            .join(", ");
+        println!(
+            "samples: samples-declined.toml: {} declared row(s) — {classes} (wolf-book#29)",
+            declined_ledger.rows().len()
+        );
     }
     if repl_blocks > 0 {
         println!(
@@ -1818,7 +1875,8 @@ fn selftest(root: &Path, tools: &Tools) -> Result<()> {
     }
     selftest_corpus_console(root, tools, &mut broken_caught)?;
     selftest_warns(root, tools, &mut broken_caught)?;
-    println!("samples: self-test ok — {broken_caught}/6 deliberate breakages caught");
+    selftest_declined(root, &mut broken_caught)?;
+    println!("samples: self-test ok — {broken_caught}/7 deliberate breakages caught");
     Ok(())
 }
 
@@ -1865,6 +1923,51 @@ fn selftest_warns(root: &Path, tools: &Tools, caught: &mut usize) -> Result<()> 
         ),
     }
     let _ = std::fs::remove_dir_all(&dir);
+    Ok(())
+}
+
+/// The seventh breakage, wolf-book#29's: the declined ledger, planted
+/// in both directions against the ledger the book actually ships.
+///
+/// A gate that only failed the missing row would let the file rot the
+/// other way — twenty rows explaining twenty holes, one of which closed
+/// three pins ago and nobody deleted. That is the failure mode
+/// `samples-pending.toml` and `samples-os.toml` were both given a FLIP
+/// for, and it is the more likely one here, because closing a hole is
+/// somebody's good news and deleting a row is nobody's job.
+///
+///   1. a declined block with no row is reported;
+///   2. a row whose block REPLAYS is reported as stale.
+///
+/// Both run against the shipped `samples-declined.toml`, so a file that
+/// went empty or unparseable fails here rather than passing quietly.
+fn selftest_declined(root: &Path, caught: &mut usize) -> Result<()> {
+    let ledger = crate::declined::Ledger::load(root)?;
+    let first = ledger
+        .rows()
+        .first()
+        .map(|r| r.block.clone())
+        .context("samples-declined.toml holds no rows — the self-test has nothing to plant against; if the corpus really replays everything now, delete this check in the same commit")?;
+
+    let orphan = "principles/exercises/ch00/EXERCISES.md:1".to_string();
+    let hole = crate::declined::audit(&ledger, &[(orphan.clone(), "planted".into())], &[]);
+    if hole.len() != 1 || !hole[0].contains(&orphan) {
+        bail!(
+            "self-test FAILED: a declined corpus block with no row in \
+             samples-declined.toml was not reported — {hole:?}"
+        );
+    }
+    println!("samples: self-test caught an undeclared corpus decline: {orphan}");
+    *caught += 1;
+
+    let stale = crate::declined::audit(&ledger, &[], std::slice::from_ref(&first));
+    if stale.len() != 1 || !stale[0].contains("stale") {
+        bail!(
+            "self-test FAILED: samples-declined.toml declares {first} unreplayable and a \
+             run that REPLAYED it was not reported as stale — {stale:?}"
+        );
+    }
+    println!("samples: self-test holds the declined ledger the other way too: a row whose block replays is stale");
     Ok(())
 }
 

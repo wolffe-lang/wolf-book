@@ -13,6 +13,7 @@
 mod backmatter;
 mod console;
 mod contrast;
+mod declined;
 mod dialects;
 mod directives;
 mod fence;
