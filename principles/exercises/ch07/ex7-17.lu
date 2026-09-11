@@ -1,0 +1,27 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 7-17 solution: a third shape, and the call sites count.
+trait Draw {
+    fn draw(self) -> str
+}
+struct Dot { x: int }
+struct Ring { r: int }
+struct Star { points: int }
+impl Draw for Dot { fn draw(self) -> str { "dot at {self.x}" } }
+impl Draw for Ring { fn draw(self) -> str { "ring of {self.r}" } }
+impl Draw for Star { fn draw(self) -> str { "star of {self.points}" } }
+fn render(o: dyn Draw) -> str { o.draw() }
+fn main() -> !int {
+    let d = Dot { x: 3 }
+    let r = Ring { r: 9 }
+    let s = Star { points: 5 }
+    var calls = 0
+    print(render(d as dyn Draw))
+    calls = calls + 1
+    print(render(r as dyn Draw))
+    calls = calls + 1
+    print(render(s as dyn Draw))
+    calls = calls + 1
+    print("{calls} renders")
+    0
+}

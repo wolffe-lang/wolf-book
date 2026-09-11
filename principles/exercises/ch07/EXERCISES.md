@@ -430,6 +430,74 @@ whole advantage over a crashed process. The value is intact in `t`:
 a move is a transfer, never a destruction, and the machine-level story
 (§7.7) is a memcpy after which the source is *forgotten*, not zeroed.
 
+## §7.8 — Deciding at run time
+
+**Exercise 7-17** *(extension · lupin)*. Add a third shape to the
+`Draw` example, and then make `render` count its calls: what has to
+change, and what does not?
+
+Solution. `ch07/ex7-17.lu`, and the third impl is one line:
+
+```wolf
+trait Draw {
+    fn draw(self) -> str
+}
+struct Dot { x: int }
+struct Ring { r: int }
+struct Star { points: int }
+impl Draw for Dot { fn draw(self) -> str { "dot at {self.x}" } }
+impl Draw for Ring { fn draw(self) -> str { "ring of {self.r}" } }
+impl Draw for Star { fn draw(self) -> str { "star of {self.points}" } }
+fn render(o: dyn Draw) -> str { o.draw() }
+fn main() -> !int {
+    let d = Dot { x: 3 }
+    let r = Ring { r: 9 }
+    let s = Star { points: 5 }
+    var calls = 0
+    print(render(d as dyn Draw))
+    calls = calls + 1
+    print(render(r as dyn Draw))
+    calls = calls + 1
+    print(render(s as dyn Draw))
+    calls = calls + 1
+    print("{calls} renders")
+    0
+}
+```
+
+```console
+$ lupin ex7-17.lu
+dot at 3
+ring of 9
+star of 5
+3 renders
+```
+
+What changed: one struct, one impl, one binding, one call. What did
+not: `render`. That is erasure earning its keep: the function that
+takes `dyn Draw` never learns how many implementors exist. The counter
+lives at the call sites, because `render` has nowhere to keep state.
+It reads its argument through the pair and owns nothing, which is
+§7.8's rule seen from the callee's side.
+
+**Exercise 7-18** *(design)*. The cast-a-binding rule exists because
+the dyn pair points at its operand rather than owning it. What would
+the language have to invent for `Dot { x: 3 } as dyn Draw` to be legal,
+and who would pay for it?
+
+Solution. The temporary needs a home that outlives the expression, so
+the language would have to invent one: a hidden allocation (a box the
+reader never wrote), or a compiler-synthesized binding with a lifetime
+the reader never chose. Both are costs paid silently, and wolf's
+temperament is that erasure may change dispatch but never ownership:
+the pair points at your value, in your frame or your region, and the
+`let home = …` the error asks for is the language declining to
+allocate behind your back. The reader pays one visible line; the
+alternative is every reader paying an invisible allocation.
+
+Exercises 7-17 and 7-18 were chapter 5's 5-9 and 5-10 until bs42 moved
+`dyn` and the cast-a-binding rule into this chapter.
+
 ## Chapter batch
 
 **Exercise 7-12** *(extension · lupin)*. The longest common
