@@ -23,11 +23,11 @@ fn main() -> !int {
     let cmds = channel[str](8)
     let keeper = spawn proc stockroom(cmds)
     let m = keeper.monitor()
-    cmds.send("put 40")
-    cmds.send("take 15")
-    cmds.send("put 6")
-    cmds.send("take 90")
-    cmds.send("put 12")
+    cmds.send("put 40")?
+    cmds.send("take 15")?
+    cmds.send("put 6")?
+    cmds.send("take 90")?
+    cmds.send("put 12")?
     cmds.close()
     select {
         exit(reason) from m => { print("stockroom closed: {reason}") },

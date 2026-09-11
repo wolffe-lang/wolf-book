@@ -174,7 +174,7 @@ Solution. `ch14/ex14-6.lu`:
 fn counter(cmds: channel[int], replies: channel[int]) -> int {
     var total = 0
     for c in cmds {
-        if c == 0 { replies.send(total) } else { total += c }
+        if c == 0 { replies.send(total) else { return total } } else { total += c }
     }
     total
 }
@@ -182,9 +182,9 @@ fn main() -> !int {
     let cmds = channel[int](8)
     let replies = channel[int](1)
     let w = spawn proc counter(cmds, replies)
-    cmds.send(5)
-    cmds.send(2)
-    cmds.send(0)
+    cmds.send(5)?
+    cmds.send(2)?
+    cmds.send(0)?
     let t = replies.recv() else |_| { return 1 }
     print("total={t}")
     cmds.close()
@@ -260,7 +260,7 @@ Solution. `ch14/ex14-9.lu` (main excerpt):
         s.spawn(fn() { client(cmds) })
         s.spawn(fn() { client(cmds) })
     }
-    cmds.send(0)
+    cmds.send(0)?
 ```
 
 ```console
@@ -316,11 +316,11 @@ fn main() -> !int {
     let cmds = channel[str](8)
     let keeper = spawn proc stockroom(cmds)
     let m = keeper.monitor()
-    cmds.send("put 40")
-    cmds.send("take 15")
-    cmds.send("put 6")
-    cmds.send("take 90")
-    cmds.send("put 12")
+    cmds.send("put 40")?
+    cmds.send("take 15")?
+    cmds.send("put 6")?
+    cmds.send("take 90")?
+    cmds.send("put 12")?
     cmds.close()
     select {
         exit(reason) from m => { print("stockroom closed: {reason}") },

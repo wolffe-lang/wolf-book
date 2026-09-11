@@ -5,7 +5,7 @@
 fn counter(cmds: channel[int], replies: channel[int]) -> int {
     var total = 0
     for c in cmds {
-        if c == 0 { replies.send(total) } else { total += c }
+        if c == 0 { replies.send(total) else { return total } } else { total += c }
     }
     total
 }
@@ -13,9 +13,9 @@ fn main() -> !int {
     let cmds = channel[int](8)
     let replies = channel[int](1)
     let w = spawn proc counter(cmds, replies)
-    cmds.send(5)
-    cmds.send(2)
-    cmds.send(0)
+    cmds.send(5)?
+    cmds.send(2)?
+    cmds.send(0)?
     let t = replies.recv() else |_| { return 1 }
     print("total={t}")
     cmds.close()
