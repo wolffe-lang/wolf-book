@@ -2012,70 +2012,7 @@ the reasoning around it.
 </details>
 
 <details>
-<summary>Exercise 5-9. <a href="../ch05.md#5.5">§5.5</a></summary>
-
-**Exercise 5-9** *(extension)*. Add a third shape to the `Draw`
-example, and then make `render` count its calls: what has to change,
-and what does not?
-
-Solution. The third impl is three lines:
-
-```wolf,run(exit=0)
-trait Draw {
-    fn draw(self) -> str
-}
-struct Dot { x: int }
-struct Ring { r: int }
-struct Star { points: int }
-impl Draw for Dot { fn draw(self) -> str { "dot at {self.x}" } }
-impl Draw for Ring { fn draw(self) -> str { "ring of {self.r}" } }
-impl Draw for Star { fn draw(self) -> str { "star of {self.points}" } }
-fn render(o: dyn Draw) -> str { o.draw() }
-fn main() -> !int {
-    let d = Dot { x: 3 }
-    let r = Ring { r: 9 }
-    let s = Star { points: 5 }
-    var calls = 0
-    print(render(d as dyn Draw))
-    calls = calls + 1
-    print(render(r as dyn Draw))
-    calls = calls + 1
-    print(render(s as dyn Draw))
-    calls = calls + 1
-    print("{calls} renders")
-    0
-}
-```
-
-What changed: one struct, one impl, one binding, one call. What did
-not: `render`. That is erasure earning its keep: the function that
-takes `dyn Draw` never learns how many implementors exist. The counter
-lives at the call sites, because `render` has nowhere to keep state.
-It borrows its argument and owns nothing, the same ownership honesty
-Part 2 makes precise.
-</details>
-
-<details>
-<summary>Exercise 5-10. <a href="../ch05.md#5.5">§5.5</a></summary>
-
-**Exercise 5-10** *(design)*. The cast-a-binding rule exists because
-the dyn pair points at its operand rather than owning it. What would
-the language have to invent for `Dot { x: 3 } as dyn Draw` to be legal,
-and who would pay for it?
-
-Solution. The temporary needs a home that outlives the expression, so
-the language would have to invent one: a hidden allocation (a box the
-reader never wrote), or a compiler-synthesized binding with a lifetime
-the reader never chose. Both are costs paid silently, and wolf's
-temperament is that erasure may change dispatch but never ownership:
-the pair points at your value, in your frame or your region, and the
-`let home = …` the error asks for is the language declining to
-allocate behind your back. The reader pays one visible line; the
-alternative is every reader paying an invisible allocation.
-</details>
-
-<details>
-<summary>Exercise 5-11. <a href="../ch05.md#5.5">§5.5</a></summary>
+<summary>Exercise 5-11. <a href="../ch05.md#5.6">§5.6</a></summary>
 
 **Exercise 5-11** *(extension · lupin)*. Exercise 2-7 encoded runs
 with byte slices; a coder without a decoder is half a tool. Respell
@@ -2202,7 +2139,7 @@ show.
 </details>
 
 <details>
-<summary>Exercise 5-13. <a href="../ch05.md#5.5">§5.5</a></summary>
+<summary>Exercise 5-13. <a href="../ch05.md#5.6">§5.6</a></summary>
 
 **Exercise 5-13** *(extension · lupin)*. Write `any_index(s, set)`:
 the byte index in `s` of the first character that appears in `set`,
@@ -2296,7 +2233,7 @@ the row instead", that policy has a chapter of its own next.
 </details>
 
 <details>
-<summary>Exercise 5-15. <a href="../ch05.md#5.5">§5.5</a></summary>
+<summary>Exercise 5-15. <a href="../ch05.md#5.6">§5.6</a></summary>
 
 **Exercise 5-15** *(extension · lupin)*. Fold a long line at twelve
 columns: greedy fill, words never split, each output line as full as
@@ -2348,6 +2285,121 @@ with `false`) and every word overflows immediately: one word per
 line. The greedy fill and the degenerate layout are the same loop
 with one comparison's verdict flipped, which is the honest way to see
 that a formatter is a policy wearing a loop.
+</details>
+
+<details>
+<summary>Exercise 5-16. <a href="../ch05.md#5.5">§5.5</a></summary>
+
+**Exercise 5-16** *(fingers · lupin)*. Respell §5.1's `split_at` to
+answer a `Row` instead of a `(str, int)`, and use it to parse the three
+rows at the head of the chapter and print them through `text`. One line
+of the caller gets shorter and one line of the function gets longer.
+Name both, and say what each reader gained.
+
+Solution. `ch05/ex5-16.lu`:
+
+```wolf
+struct Row { kind: str, cents: int }
+fn split_at(row: str, i: int) -> Row {
+    Row { kind: row[..i], cents: row[i + 1..].to_int() else 0 }
+}
+fn text(r: Row) -> str { "{r.kind:<10}{r.cents:>5}" }
+fn main() -> !int {
+    print(text(split_at("espresso,340", 8)))
+    print(text(split_at("pastry,275", 6)))
+    print(text(split_at("tip,100", 3)))
+    0
+}
+```
+
+```console
+$ lupin ex5-16.lu
+espresso    340
+pastry      275
+tip         100
+```
+
+The caller's line got shorter: `let (name, cents) = split_at(…)` is
+gone, because nothing has to be taken apart before it is used, and the
+value goes straight into `text`. The function's line got longer: the
+tuple `(row[..i], …)` became `Row { kind: row[..i], cents: … }`, two
+words more. The function's reader gained nothing they did not already
+know, since the tuple's two positions were named by the signature one
+line up; the caller's reader gained the two words, because `r.cents`
+says what `pair.1` made them look up.
+</details>
+
+<details>
+<summary>Exercise 5-17. <a href="../ch05.md#5.5">§5.5</a></summary>
+
+**Exercise 5-17** *(extension · lupin)*. A struct holds a list as
+easily as an `int`. Declare `Receipt { rows: List[Row] }`, build one
+from the three rows, and write `total(r: Receipt) -> int` as a plain
+function with no `impl`. Print the count of rows and the total. Then
+read `total`'s signature and say what it tells a caller about `r.rows`:
+does the call change the list, and which character on the line says so?
+
+Solution. `ch05/ex5-17.lu`:
+
+```wolf
+struct Row { kind: str, cents: int }
+struct Receipt { rows: List[Row] }
+fn total(r: Receipt) -> int {
+    var sum = 0
+    for row in r.rows { sum += row.cents }
+    sum
+}
+fn main() -> !int {
+    var rows = List[Row]()
+    (mut rows).push(Row { kind: "drink", cents: 340 })
+    (mut rows).push(Row { kind: "food", cents: 275 })
+    (mut rows).push(Row { kind: "gratuity", cents: 100 })
+    let receipt = Receipt { rows: rows }
+    print("{receipt.rows.len} rows, {total(receipt)} cents")
+    0
+}
+```
+
+```console
+$ lupin ex5-17.lu
+3 rows, 715 cents
+```
+
+The call does not change the list, and no character on the line says
+so: `r: Receipt` carries no word in front of it, and that absence is
+the claim. A parameter with nothing written before it is read for the
+call and handed back whole, which is why `main` can print
+`receipt.rows.len` and call `total(receipt)` in one line. A function
+that did change its argument would have to say so at both ends, and
+chapter 7 is where that word is introduced.
+</details>
+
+<details>
+<summary>Exercise 5-18. <a href="../ch05.md#5.6">§5.6</a></summary>
+
+**Exercise 5-18** *(design)*. The alias `Num` names seven traits, and
+a call under `[T: Num]` is checked against each of them by name. Why
+does the refusal name the missing trait and never the alias? Say what a
+reader would lose if it read "`f64` is not a `Num`", and what the
+author of a seven-trait alias gains from the compiler never mentioning
+it.
+
+Solution. The alias has no members and no impls, so "`f64` is not a
+`Num`" names nothing the reader can write: there is no `impl Num for
+f64` to add, and the sentence sends them to the alias's definition to
+work out which of seven traits is the one they lack. Naming `Eq`
+instead names the impl that fixes it, and the fix is the same whether
+the bound was written `Eq`, `Add + Eq`, or `Num`. What the alias's
+author gains is that the alias stays a spelling: it can grow an eighth
+trait, or be split in two, and every refusal it ever produced was
+already about a trait and not about the name, so nothing a reader
+learned from a diagnostic goes stale. The one thing an alias is for is
+saving the reader from writing the list; it would be a poor trade to
+make them read it back out of an error message.
+
+Exercises 5-9 and 5-10 (the third `Draw` shape; the cast-a-binding
+rule) moved to chapter 7 with the material they belong to, as 7-17 and
+7-18 (bs42). The numbers are not reused.
 </details>
 
 ## Chapter 6
@@ -3355,7 +3407,7 @@ a move is a transfer, never a destruction, and the machine-level story
 </details>
 
 <details>
-<summary>Exercise 7-12. <a href="../ch07.md#7.7">§7.7</a></summary>
+<summary>Exercise 7-12. <a href="../ch07.md#7.8">§7.8</a></summary>
 
 **Exercise 7-12** *(extension · lupin)*. The longest common
 subsequence of two line lists is the skeleton every diff tool hangs
@@ -3410,7 +3462,7 @@ spent saying so.
 </details>
 
 <details>
-<summary>Exercise 7-13. <a href="../ch07.md#7.7">§7.7</a></summary>
+<summary>Exercise 7-13. <a href="../ch07.md#7.8">§7.8</a></summary>
 
 **Exercise 7-13** *(comprehension + extension · lupin)*. Extend 7-12
 into a printing diff: walk the finished table backward from the corner,
@@ -3452,7 +3504,7 @@ back out, so the output comes out forward.
 </details>
 
 <details>
-<summary>Exercise 7-14. <a href="../ch07.md#7.7">§7.7</a></summary>
+<summary>Exercise 7-14. <a href="../ch07.md#7.8">§7.8</a></summary>
 
 **Exercise 7-14** *(fingers · lupin)*. The plane-geometry kata: a
 `Point`, a `Rect` of two points (low corner in, high corner out), and
@@ -3508,7 +3560,7 @@ body and the compiler names the missing `mut` at both ends.
 </details>
 
 <details>
-<summary>Exercise 7-15. <a href="../ch07.md#7.7">§7.7</a></summary>
+<summary>Exercise 7-15. <a href="../ch07.md#7.8">§7.8</a></summary>
 
 **Exercise 7-15** *(extension · lupin)*. One job, two ownership
 stories: uppercase every string in a list. Write it consuming —
@@ -3569,7 +3621,7 @@ appetite stays the caller's decision.
 </details>
 
 <details>
-<summary>Exercise 7-16. <a href="../ch07.md#7.7">§7.7</a></summary>
+<summary>Exercise 7-16. <a href="../ch07.md#7.8">§7.8</a></summary>
 
 **Exercise 7-16** *(fingers · lupin)*. The same plane geometry as
 7-14, asked of the arms instead of the fields. Write `corner(p)`,
@@ -3641,6 +3693,80 @@ survives unchanged: every parameter is the default mode, and testing a
 value is not taking it. An arm that binds a non-`Copy` piece would move
 the whole scrutinee; every field here is an `int`, so nothing moves and
 `den` is still readable on the line after.
+</details>
+
+<details>
+<summary>Exercise 7-17. <a href="../ch07.md#7.8">§7.8</a></summary>
+
+**Exercise 7-17** *(extension · lupin)*. Add a third shape to the
+`Draw` example, and then make `render` count its calls: what has to
+change, and what does not?
+
+Solution. `ch07/ex7-17.lu`, and the third impl is one line:
+
+```wolf
+trait Draw {
+    fn draw(self) -> str
+}
+struct Dot { x: int }
+struct Ring { r: int }
+struct Star { points: int }
+impl Draw for Dot { fn draw(self) -> str { "dot at {self.x}" } }
+impl Draw for Ring { fn draw(self) -> str { "ring of {self.r}" } }
+impl Draw for Star { fn draw(self) -> str { "star of {self.points}" } }
+fn render(o: dyn Draw) -> str { o.draw() }
+fn main() -> !int {
+    let d = Dot { x: 3 }
+    let r = Ring { r: 9 }
+    let s = Star { points: 5 }
+    var calls = 0
+    print(render(d as dyn Draw))
+    calls = calls + 1
+    print(render(r as dyn Draw))
+    calls = calls + 1
+    print(render(s as dyn Draw))
+    calls = calls + 1
+    print("{calls} renders")
+    0
+}
+```
+
+```console
+$ lupin ex7-17.lu
+dot at 3
+ring of 9
+star of 5
+3 renders
+```
+
+What changed: one struct, one impl, one binding, one call. What did
+not: `render`. That is erasure earning its keep: the function that
+takes `dyn Draw` never learns how many implementors exist. The counter
+lives at the call sites, because `render` has nowhere to keep state.
+It reads its argument through the pair and owns nothing, which is
+§7.8's rule seen from the callee's side.
+</details>
+
+<details>
+<summary>Exercise 7-18. <a href="../ch07.md#7.8">§7.8</a></summary>
+
+**Exercise 7-18** *(design)*. The cast-a-binding rule exists because
+the dyn pair points at its operand rather than owning it. What would
+the language have to invent for `Dot { x: 3 } as dyn Draw` to be legal,
+and who would pay for it?
+
+Solution. The temporary needs a home that outlives the expression, so
+the language would have to invent one: a hidden allocation (a box the
+reader never wrote), or a compiler-synthesized binding with a lifetime
+the reader never chose. Both are costs paid silently, and wolf's
+temperament is that erasure may change dispatch but never ownership:
+the pair points at your value, in your frame or your region, and the
+`let home = …` the error asks for is the language declining to
+allocate behind your back. The reader pays one visible line; the
+alternative is every reader paying an invisible allocation.
+
+Exercises 7-17 and 7-18 were chapter 5's 5-9 and 5-10 until bs42 moved
+`dyn` and the cast-a-binding rule into this chapter.
 </details>
 
 ## Chapter 8
