@@ -582,13 +582,17 @@ before running: for each of `"wolf"`, `"é"`, and `"e\u{301}"`, both
 `.len` and `.chars().len`. Then the pointed half: which of the six
 could §2.3 have told you, and which one needed this section?
 
-Solution. `ch02/ex2-9.lu`:
+Solution. `ch02/ex2-9.lu` — the third string is bound before it is
+printed, so that the accent's `\u{301}` is not sitting inside a
+`{…}` hole; the hole's own closing brace and the escape's would be
+the same character to a reader and to a highlighter both:
 
 ```wolf
 fn main() -> !int {
+    let combining = "e\u{301}"
     print("{"wolf".len} {"wolf".chars().len}")
     print("{"é".len} {"é".chars().len}")
-    print("{"e\u{301}".len} {"e\u{301}".chars().len}")
+    print("{combining.len} {combining.chars().len}")
     0
 }
 ```
@@ -603,7 +607,7 @@ $ wolf run ex2-9.lu
 Five of the six are §2.3 material: `.len` counts bytes (4, 2, 3), and
 ASCII is the case where every scalar is one byte, so `"wolf"` counts 4
 either way and `"é"`'s two bytes are one scalar. The number that needed
-this section is the last: `"e\u{301}".chars().len` is 2. A combining
+this section is the last: `combining.chars().len` is 2. A combining
 accent is its own scalar, so the glyph a reader sees as one letter is
 two chars in a three-byte string. Bytes count storage, chars count
 scalars, and neither counts what the reader sees.

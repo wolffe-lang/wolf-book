@@ -5,8 +5,9 @@
 // (is26), so the wolf-run scoping and the wolfrun/ subdirectory that
 // isolated this file from the interpreter's module walk both retire.
 fn main() -> !int {
+    let combining = "e\u{301}"
     print("{"wolf".len} {"wolf".chars().len}")
     print("{"é".len} {"é".chars().len}")
-    print("{"e\u{301}".len} {"e\u{301}".chars().len}")
+    print("{combining.len} {combining.chars().len}")
     0
 }
