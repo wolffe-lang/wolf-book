@@ -6,18 +6,18 @@ against:
 
 ```console
 $ wolf --version
-wolf 0.2.12 (wolfgang, pin a7f517e)
-paired with lupin 0.1.34 (reference interpreter), pin c9237c1
+wolf 0.2.13 (wolfgang, pin 4cc3dcd)
+paired with lupin 0.1.35 (reference interpreter), pin a7f517e
 $ lupin --version
-lupin 0.1.34 (wolf-interp, reference interpreter at pin c9237c1)
+lupin 0.1.36 (wolf-interp, reference interpreter at pin a7f517e)
 ```
 
-The two lines name each other, and this printing one name is exact.
+The two lines name each other, and this printing neither name is exact.
 Each tool reports the revision of the other it was differentially
 tested against, and the two projects are cut on their own schedules.
-The compiler names `lupin 0.1.34`, the interpreter under it and not a
-release older — the first printing where that half closes. The
-interpreter names `c9237c1`, thirty-one commits before the revision
+The compiler names `lupin 0.1.35`, one release older than the `0.1.36`
+under it — the half that closed at the last printing, open again. The
+interpreter names `a7f517e`, forty-three commits before the revision
 the compiler above it was built at. §1.2
 teaches the reader to read the pair either way. This page prints them
 as they are. The compiler's first line is also this page's proof, read

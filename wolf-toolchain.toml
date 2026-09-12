@@ -505,9 +505,116 @@
 #   * THE CATALOG, THE ANCHORS AND THE GRAMMAR: re-derived at the tag
 #     through a temporary wolf-lang worktree, because the org checkout
 #     was behind. See the CHANGELOG for the three numbers.
+# ---------------------------------------------------------------------
+# BUMPED TO v0.2.13 (bs46, 2026-09-12). wolf-lang at the v0.2.13 release
+# tag (`4cc3dcd`), TAKEN FROM THE RELEASE ARCHIVE by digest —
+# `wolf-0.2.13-aarch64-apple-darwin.tar.gz`, sha256
+# 691e05e2abfcfee8c5a67202b6d5c748cca77b8d189d87af49f987065261a203,
+# matched against the release's own digest before unpacking, staged
+# whole at /private/tmp/bs46-stage beside the v0.2.12 archive pair kept
+# as the CONTROL. Never `~/.local/bin`.
+#
+#   wolf 0.2.13 (wolfgang, pin 4cc3dcd)
+#   paired with lupin 0.1.35 (reference interpreter), pin a7f517e
+#   lupin 0.1.36 (wolf-interp, reference interpreter at pin a7f517e)
+#
+# PREDICTED FROM SOURCE BEFORE THE ARCHIVE WAS UNPACKED and measured
+# byte-identical: `Cargo.toml`'s version is `0.2.13`, the tag points at
+# this revision, and `crates/wolf_driver/PAIRING` reads
+# `lupin-version = 0.1.35` / `lupin-pin = a7f517e`.
+#
+# THE PAIR OPENS AGAIN ON BOTH HALVES, both computed from the stamps.
+# The compiler names lupin 0.1.35 and this file pins 0.1.36, so its half
+# is ONE RELEASE BEHIND where bs44 closed it to zero — the interpreter
+# published twice between this compiler being tested and this printing
+# being pinned. The interpreter names `a7f517e`, which is the v0.2.12
+# tag this file pinned last, and `git rev-list --count a7f517e..4cc3dcd`
+# is FORTY-THREE (ancestor checked, not assumed). Nine data points now:
+# 14, 43, 65, 51, 84, 110, 91, 31, 43. Both halves were predicted before
+# the binaries were run and both held.
+#
+# WHAT 0.2.13 CARRIES. Three surface additions and ten papercuts.
+# THE SURFACE ADDITIONS REACH NO PAGE, and that is the finding:
+#   * LIST LITERALS `[1, 2, 3]` are THE COMPILER'S ONLY. wolf 0.2.13
+#     runs `let cents = [340, 275, 100]`; lupin 0.1.36 AND lupin 0.1.35
+#     both answer `E0201: expected an expression, found `[`
+#     [gram.expr.primary]` and exit 2 — measured on three release
+#     binaries. wolf-book#42 asked for the chapters 5-6 `push` census
+#     and the conversion that follows it; the census is delivered in
+#     ch05's ledger and NOTHING converted, because a `run(…)` fence is
+#     a claim about both machines and chapter 5's spine is not worth
+#     turning one-machine for a shorter spelling. The conversion was
+#     written, run, and reverted: twelve ch05 blocks red at once, which
+#     is how this is known rather than assumed. Blocked on
+#     wolf-interp#106.
+#   * `range[int]`/`range[char]` as a nameable type with `start`/`end`:
+#     NOTHING. Measured, not assumed — the book names no `range` type
+#     anywhere, in any chapter, and the re-vendored anchors gained five
+#     `type.range.*` keys the book cites none of.
+#   * TRANSPARENT ERROR-SET ALIASES (`error IoErrors = {none, parse,
+#     io}`): NOTHING FORCED. No page reds and no fence moves; it is an
+#     opportunity for the chapters that print long rows, not a debt.
+#     Appendix A took the grammar (`error_item`, the `type '!' path`
+#     alias form) because the grammar is generated from the pin.
+# THE PAPERCUTS ARE WHERE THE BUMP ACTUALLY LANDS, six of them on
+# these pages:
+#   * A call through an UNANNOTATED CLOSURE PARAMETER records its
+#     surface — exercise 4-1's `compose`, named by number in 0.2.13's
+#     own notes and PREDICTED BY NAME here before the run. It was ch04's
+#     last one-machine file, and because the corpus export is held back
+#     BY DIRECTORY, that one fence carried ELEVEN ch04 files into
+#     wolf-lang's corpus at once.
+#   * `w.link()` COMPILES (s157, `[conc.proc.link.pair]`). This is the
+#     one that mattered: see the [lupin] note and ch15's ledger.
+#   * wolf-lang#313's E1101 false positive is FIXED — ch16's 16-7 and
+#     16-8 graduate UNCHANGED, and the `copy` that ledger refused to
+#     write for three pin bumps was never needed.
+#   * wolf-lang#157 is FIXED: E1101's note stops recommending `par`,
+#     which no implementation has, and recommends a private copy per
+#     task. ch13 has carried that row since bs12 through four
+#     re-verifies.
+#   * E0201 underlines the operand list rather than one caret past it;
+#     E0706's note drops `(X3)`; E0708 says why an aggregate's layout
+#     cannot be answered instead of "not yet"; `wolf add` prints
+#     `capabilities: none`; `wolf publish` names the append-only rule
+#     instead of citing X7.
+#
+# WHAT THE BOOK MEASURED, PREDICTION FIRST. Predictions were written to
+# a file before `cargo xtask samples` ran at this pin and before any
+# file here was edited. The CONTROL ran on the UNEDITED tree (trunk
+# 52feacb) with the OLD pair: 495 samples, 490 passed, 5 pending,
+# 0 failed, 0 flips (188.3 s). The same tree with the NEW pair:
+#
+#   495 samples, 480 passed, 5 pending, 24 failed, 8 flips (116.6 s)
+#
+#   * 8 FLIPS MEASURED, 1 PREDICTED BY NAME (ex4-1, from the release
+#     notes naming it). The seven unpredicted are the filesystem — see
+#     the [lupin] note, which is where this bump's weight sits — plus
+#     ch16's two on the checker fix and `book/ch15/s2` on `link`.
+#   * THE SAMPLE CENSUS MOVED NOT AT ALL ON THE PIN, AND THE `phase:`
+#     HEADERS WERE DIFFED RATHER THAN THE FILE LIST. 355 exported
+#     programs before, 355 after, 0 files added, 0 removed, and 0
+#     existing `phase:` header changed VALUE. All motion came from the
+#     EDITS, and it is additions only.
+#   * 24 FAILURES: 8 diagnostic snapshots re-blessed and reviewed one
+#     at a time, 3 printed diagnostic blocks re-captured, 11 console
+#     blocks re-recorded, and 2 that were not drift at all — see below.
+#   * THE TWO THAT WERE NOT DRIFT. `book/ch15/s5` and `ch15/ex15-2`
+#     carried `run(exit=1)` and HAD NEVER COMPILED ON THE COMPILER:
+#     `wolf run` exits 1 when the package does not compile, and the
+#     runner compared the number alone. Green since bs31. The rig now
+#     refuses to credit an exit code to a program that was not built,
+#     and re-running the WHOLE gate at the OLD pin with that check
+#     turned exactly these two red and nothing else in 495 samples —
+#     488 passed, 2 failed. TWO-MACHINES §5b.
+#   * THE CATALOG, THE ANCHORS AND THE GRAMMAR, re-derived at the tag
+#     through a temporary wolf-lang worktree: catalog 174 -> 176
+#     (E0419, E0610), anchors 475 -> 496 with both key sets diffed both
+#     ways and NONE dropped, grammar.ebnf takes `error_item`, `list_lit`
+#     and the alias form.
 repo = "wolffe-lang/wolf-lang"
-rev = "a7f517e1f667f142ffaf61b57aa2bff06e32b520"
-impl_version = "0.2.12"
+rev = "4cc3dcdf8bb22eaeed2f054dcb6929a47dd626a8"
+impl_version = "0.2.13"
 
 [lupin]
 # wolf-interp at the v0.1.30 release tag (is42): the stamped line names
@@ -933,9 +1040,66 @@ impl_version = "0.2.12"
 # CONTROL: 8 of the 8 flips are its doing on five of them and the
 # compiler's on three; 4 of the 8 failures (ch06 twice, ch15 twice);
 # 1 console re-record (its own `--version` line, twice printed).
+# ---------------------------------------------------------------------
+# BUMPED TO 0.1.36 (bs46, 2026-09-12). wolf-interp at the v0.1.36
+# release tag (`6e94436`), TAKEN FROM THE RELEASE ARCHIVE by digest —
+# `lupin-0.1.36-aarch64-apple-darwin.tar.gz`, sha256
+# 41f21002598dec61cd8600fe3ab28e3a882c41b482a35ca417e2467e20fc8e2a,
+# matched against the release's own digest before unpacking. 0.1.35 was
+# skipped as a pin and kept as a probe: it is the release the compiler's
+# PAIRING names, and both it and 0.1.36 were run against the list-literal
+# witness to establish that the gap is the interpreter's and not a
+# one-release lag.
+#
+# THE INTERPRETER GREW A FILESYSTEM (is48), AND THAT IS THIS BUMP'S
+# LARGEST CONSEQUENCE FOR THIS BOOK — larger than the compiler's three
+# surface additions, none of which reach a page. Measured on both
+# binaries, same program, same directory:
+#   lupin 0.1.34: `unsupported: `fs_write_text` is the s38 io/fs
+#     surface; this machine has no filesystem (or injectable stdin) by
+#     design, so the fs tier is declined rather than mocked` (exit 4)
+#   lupin 0.1.36: writes the file, reads it back, exits 0
+# FOURTEEN READER-FACING CLAIMS WENT FALSE IN ONE RELEASE. "The
+# reference interpreter has no filesystem, by design" is a sentence this
+# book has leaned on since bs10 — it is ch04's reason for printing
+# instead of closing a file, ch06's reason for embedding its text,
+# ch27's reason for chapter 26 being compiled, ch30's reason for being
+# the compiler's column, three TOC ledger rows, the exercise index, two
+# exercise-file headers, an audit doc, a tells file that had explicitly
+# DEFENDED the sentence as sound, and three corpus `.lu` headers. Every
+# one was rewritten here. None of them is a fence, so not one of them
+# would ever have reddened: the four ch30 FLIPs are the only part of
+# this the runner could see, and they are the smallest part.
+#
+# THE HALF THAT DID NOT LAND, and it matters because the old sentence
+# bundled the two: `read_line` still answers `unsupported` — "no pinned
+# clause names an injectable stdin for this machine, so it is declined
+# rather than mocked (the fs tier itself landed at is48)". So the
+# interpreter's decline is now narrower and the book says so in those
+# words rather than repeating the old one.
+#
+# WHAT THIS OPENS AND THIS LANE DID NOT TAKE. Chapter 26's programs were
+# measured running BYTE-IDENTICALLY on the interpreter at this pin, and
+# chapter 30's four fences graduated on their own. Both chapters print
+# `wolf build … && ./…` transcripts and carry `wolf` fences with no
+# `run` directive, which is now a presentation choice rather than a
+# limit. Graduating those two chapters to two-machine is a lane's worth
+# of transcript re-recording and is filed, not smuggled in here.
+#
+# LIST LITERALS ARE NOT IN THIS RELEASE. `[1, 2, 3]` is `E0201:
+# expected an expression, found `[`` on 0.1.36 and on 0.1.35, which is
+# why wolf-book#42's conversion does not land at this pin.
+# wolf-interp#106 is the open mirror (s158's three clauses: list
+# literals, `range[int]`, transparent error-set aliases).
+#
+# THE INTERPRETER'S SHARE OF THE CONTROL: 7 of the 8 flips are its
+# doing (four filesystem, and it serves ch16's two and ch15's s2 the
+# way it always did — those three are the compiler catching up); 0 of
+# the 24 failures are its doing, which is unusual and is the mark of a
+# release that added a tier instead of changing a rendering.
 repo = "wolffe-lang/wolf-interp"
-rev = "b83049a33fe5c44b538ba9ed50de50383ef9b793"
-version = "lupin 0.1.34 (wolf-interp, reference interpreter at pin c9237c1)"
+rev = "6e94436b2cae285bf2ffc19477600535e33ccbbb"
+version = "lupin 0.1.36 (wolf-interp, reference interpreter at pin a7f517e)"
 
 [wolf-lsp]
 # Source of the vendored tmLanguage grammars under highlight/.
