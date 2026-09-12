@@ -2,10 +2,12 @@
 
 Seven exercises. Programs are in this directory; commands are as run from
 here, and every output below is pasted from a real run at the pins in
-`wolf-toolchain.toml`. This chapter's programs are the compiler's — the
-project reads files, and the reference interpreter has no filesystem by
-design — so the solution programs carry `wolf-run(…)` directives and the
-transcripts below are `wolf build` and a binary.
+`wolf-toolchain.toml`. This chapter's programs were the compiler's — the
+project reads files, and the reference interpreter had no filesystem by
+design — and that ended at lupin 0.1.36, whose fs tier (is48) runs
+every one of them. The three solution programs that carried
+`wolf-run(…)` directives graduated to `run(…)` as reported FLIPs at
+bs46; the transcripts below are still `wolf build` and a binary.
 
 Two of the seven carry no program on disk, and both for stated reasons:
 30-2's modified program is *flaky by construction*, which is the whole

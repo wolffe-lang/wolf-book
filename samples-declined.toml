@@ -129,7 +129,7 @@ filed = "wolf-book#29 §2 (premise corrected at bs44)"
 retires = "the `--dir` widening, plus a re-reading of the transcript's own ordering"
 
 [[declined]]
-block = "principles/exercises/ch26/EXERCISES.md:121"
+block = "principles/exercises/ch26/EXERCISES.md:124"
 class = "file"
 needs = "two things, and the file is the second. `wolf build count.lu && ./count` ends in a `Verb::Local`, which the corpus rule refuses outright — the same widening the `binary-or-shell` rows below wait on. After that it needs `count.lu`, `one.txt` and `two.txt` with exactly the byte, word and line counts the transcript prints"
 filed = "wolf-book#29 §2 (premise corrected at bs44)"
@@ -239,14 +239,14 @@ filed = "wolf-book#29 §5"
 retires = "the `Verb::Local` widening for corpus blocks (the book lane already runs it on unix)"
 
 [[declined]]
-block = "principles/exercises/ch30/EXERCISES.md:80"
+block = "principles/exercises/ch30/EXERCISES.md:82"
 class = "binary-or-shell"
 needs = "the corpus rule to admit a binary `wolf build` just produced — `./ex30-3` names no solution, it names a link product"
 filed = "wolf-book#29 §5"
 retires = "the `Verb::Local` widening for corpus blocks (the book lane already runs it on unix)"
 
 [[declined]]
-block = "principles/exercises/ch30/EXERCISES.md:109"
+block = "principles/exercises/ch30/EXERCISES.md:111"
 class = "binary-or-shell"
 needs = "the corpus rule to admit a binary `wolf build` just produced — `./ex30-4` names no solution, it names a link product"
 filed = "wolf-book#29 §5"

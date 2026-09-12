@@ -4,11 +4,14 @@ Six exercises. Programs are in this directory; commands are as run from
 here, and every output below is pasted from a real run at the pins in
 `wolf-toolchain.toml`.
 
-One note on checkers, because this chapter is the book's first that is
-compiled rather than interpreted. `count` reads files, and the reference
-interpreter has no filesystem — it declines the effect rather than
-mocking it — so the transcripts for anything touching `fs_read_text` are
-`wolf build` runs. The solution programs on disk here are the ones the
+One note on checkers, because this chapter is the book's first whose
+transcripts are compiled rather than interpreted. `count` reads files,
+and until lupin 0.1.36 the reference interpreter had no filesystem — it
+declined the effect rather than mocking it — so the transcripts for
+anything touching `fs_read_text` are `wolf build` runs. The fs tier
+landed at is48 and those programs run on the interpreter too now; the
+transcripts stay compiled because nothing has re-recorded them, not
+because the interpreter refuses. The solution programs on disk here are the ones the
 interpreter can run, plus one whose whole answer is a static verdict and
 therefore belongs to `wolf conform-run` either way.
 

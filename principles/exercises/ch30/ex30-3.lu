@@ -1,9 +1,12 @@
-//! check: wolf-run(exit=0)
+//! check: run(exit=0)
 //! phase: run
 // Exercise 30-3: the pattern list without `freeze` — it still compiles, and what the four tasks may do with it is what changed.
-// wolf-run lane, re-verified at the rp02 pin (2026-08-24, lupin 0.1.13):
-// the interpreter has no filesystem by design (`fs_write_text` is declined,
-// exit 4). Holds.
+// wolf-run lane RETIRED at bs46 (wolf 0.2.13 / lupin 0.1.36). From the
+// rp02 pin (2026-08-24, lupin 0.1.13) through lupin 0.1.34 this file was
+// one-machine because the interpreter had no filesystem by design
+// (`fs_write_text` declined, exit 4). is48 implements the fs tier over
+// real files; the runner reported the graduation as a FLIP and the
+// directive above is `run(exit=0)` on both machines now.
 struct Table { lines: List[str], names: List[str], nums: List[int] }
 
 fn main() -> !int {

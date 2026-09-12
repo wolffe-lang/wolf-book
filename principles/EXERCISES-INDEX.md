@@ -59,7 +59,8 @@ design*: it publishes milestone checkpoints, not exercises (EXERCISES.md
 One reading note for chapters 26–28. Elsewhere the checker tag and the
 tier agree; here they can differ, because a project's *chapter* and a
 project's *solution program* are not always run by the same tool.
-Chapter 26's `count` is compiled (the interpreter has no filesystem), so
+Chapter 26's `count` is compiled (it was the interpreter's missing
+filesystem until lupin 0.1.36, and is a presentation choice since), so
 several of its stems are tagged `· wolf` while the distilled solution
 program on disk runs under lupin — the tier column says what CI
 executed, and the exercise file says which is which and why.

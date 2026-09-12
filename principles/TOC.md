@@ -643,12 +643,18 @@ sprint files remain the implementation contracts for everything else.
   where a reader can see it (a console block names its command) without
   ever naming a schedule.
   - **Chapter 26, `count`: compiled.** `wolf build count.lu && ./count`
-    is the chapter's transcript. It has to be: `fs_read_text` and
-    `read_line` are the compiled column's, and the reference interpreter
-    has no filesystem *by design* — it declines the effect rather than
-    mocking one. The chapter's `wolf` fences therefore carry no `run`
-    directive (the runner's `run(…)` lane is lupin's); they are checked
-    by `conform-run`, and the console blocks are what assert the output.
+    is the chapter's transcript. It HAD to be until lupin 0.1.36:
+    `fs_read_text` was the compiled column's and the reference
+    interpreter had no filesystem, declining the effect rather than
+    mocking one. is48 implements the fs tier over real files and that
+    reason is gone — chapter 26's programs were measured running
+    byte-identically on the interpreter at bs46. The chapter's `wolf`
+    fences still carry no `run` directive, which is now a choice
+    nobody has revisited rather than a limit; they are checked by
+    `conform-run`, and the console blocks assert the output. Filed as
+    the graduation this repository has not taken yet. `read_line`
+    remains the interpreter's one decline here, for want of a pinned
+    clause naming an injectable stdin.
   - **Chapter 27, `rpn`: both.** Identical five-line output under
     `lupin rpn.lu` and `wolf build rpn.lu && ./rpn`, both replayed by CI.
     §27.5 is built on that fact, and the reason it is available is that
@@ -905,11 +911,16 @@ sprint files remain the implementation contracts for everything else.
   chapters that were held on the pin rather than on their surface ship.
   What moved, item by item, because a bump is only honest if every flip
   is named:
-  - **Chapter 30, `pargrep`: shipped, compiled.** The whole chapter is
+  - **Chapter 30, `pargrep`: shipped, compiled.** The whole chapter was
     the compiler's column — the project reads files and the reference
-    interpreter has no filesystem by design, so the `wolf` fences carry
+    interpreter had no filesystem by design, so the `wolf` fences carry
     no `run` directive (that lane is lupin's) and the console blocks
-    assert the output, exactly as chapter 26 does. Everything the bs10
+    assert the output, exactly as chapter 26 does. The REASON retired
+    at lupin 0.1.36 (bs46): the fs tier landed at is48, and the
+    chapter's one directive-carrying fence plus its three exercises
+    were reported as FLIPs and graduated to `run(…)` on both machines.
+    The bare `wolf` fences and the `wolf build` transcripts are
+    unchanged and are now a presentation choice. Everything the bs10
     hold note recorded was re-run at the adopted pin and none of it
     moved: the 97-line program, the two transcripts byte-for-byte, two
     hundred consecutive runs at one output hash, one `stdout_sha256`
@@ -1177,6 +1188,10 @@ sprint files remain the implementation contracts for everything else.
     qualified call does not resolve interpreted, comptime is the
     compiler's engine by design (ch18 ×3, ch22), and the interpreter
     has no filesystem by design (ch30 fence and its three exercises).
+    That last clause expired at bs46: lupin 0.1.36 has a filesystem,
+    and the ch30 fence and its three exercises all graduated to
+    `run(…)`. The comptime holds are untouched — D33's sandbox is a
+    different claim and still true.
 - **bs18 (the numbers teach, 2026-08-30):** Part 4's held pair is
   re-drawn and written. Chapter 19 is **Reading the release tier**
   (`--release` in reader terms, the emitted-IR ratio, the

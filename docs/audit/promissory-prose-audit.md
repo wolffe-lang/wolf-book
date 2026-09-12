@@ -27,7 +27,8 @@ again at the bs11 pin.
 - **Closed at bs11 by rewording, with the gap left standing:** 15 and 16
   (ch04's capture limits and the file-less `defer`, both restated as
   facts about the language and about an interpreter with no filesystem by
-  design), 21 (ch05's trait note, no longer endorsed by prose that names
+  design — the second of those facts expired at lupin 0.1.36 and the
+  sentence was rewritten again at bs46), 21 (ch05's trait note, no longer endorsed by prose that names
   a schedule), 23 (ch06's exit-1 verdict, which now describes what the
   reader sees and promises no trace), and 26 (ch06 §6.5's `par` box,
   repointed at chapter 13 with its falsifiable half intact and its sprint
