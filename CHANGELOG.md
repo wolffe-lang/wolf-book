@@ -2,6 +2,64 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs44, the twenty that are left — 2026-09-12 — both machines now run chapter 5, a supervisor stops reading freed memory, and three of the corpus's twenty holes were never holes
+
+The pin moves to wolf 0.2.12 and lupin 0.1.34, both release tags, both
+taken from the release archives by digest. One half of the pair is
+exact this printing and that has not happened before: the compiler
+names `lupin 0.1.34` and this book pins 0.1.34, because for once the
+interpreter published first. The other half reads thirty-one commits,
+down from ninety-one. §1.2 and the colophon both say the new thing
+rather than repeating "neither name is exact", which was true of every
+printing before this one.
+
+**Chapter 5 has no one-machine sample left.** lupin 0.1.34 mirrors the
+two rules the chapter was waiting on — an absent `Map` key reads
+`none`, and an operator on a struct dispatches through the trait of its
+name — so the five blocks and the one exercise that ran under `wolf`
+alone now run under both, and the five sentences that told the reader
+so are off the pages. Chapter 12's work list joins them from the other
+side: the compiler serves it now. Eight fences graduated in all, and
+the runner reported every one of them before a line was edited.
+
+**Two programs in this book were wrong and the interpreter said so.**
+§6.5's word counter tallied with `tally[w] += 1` in an else-branch,
+which both machines refuse for the reason §5.1 already teaches; it
+counts with §5.1's own one-liner now and the histogram is unchanged.
+§15.2's supervisor sent a message the child built in its own region,
+and a proc's region is freed whole when the proc exits — so the
+supervisor was printing from memory that died with the shard it was
+reporting on. The child takes its message as a parameter now, built by
+the supervisor, and the chapter gained the paragraph that rule
+deserves: what a proc sends must outlive the proc. The compiler runs
+the old program and prints from the freed bytes; that is filed as
+wolf-lang#355.
+
+Appendix E's formatter section names two releases now, because the
+formatter changed between them: a braced `if` chain breaks as one from
+0.2.12 on, where 0.2.11 broke only the arm that ran out of room. The
+canonical fixture was re-laid and the page's quotation of it with it.
+
+**wolf-book#29's twenty are seventeen, and the three that left were
+never missing files.** Each of them named a path from the directory a
+reader would be standing in, while the replay runs from the chapter
+root: exercise 22-13's `tokens` module is 22-9's, checked in all along,
+and the two `$ lupin main.lu` prompts are `wordcount/main.lu` and
+`calc/main.lu` — one file could never have served both, which is the
+tell. 22-13 is the block wolf-book#24 was filed over, and the stale
+toolchain stamp it once rode through a green build is compared byte for
+byte every run now. The corpus's console coverage is 224 of 241. The
+five rows left in that class were re-read too, and four of them are
+waiting on a rule and not on a file; one of those cannot be a file at
+all, because the shape it demonstrates is one the corpus's own
+admission rule forbids.
+
+wolf-book#5 closes on a check rather than on a memory: a nested string
+literal inside an interpolation hole that the vendored grammar cannot
+paint now fails the build, with the shape exercise 2-9 carried for six
+pins planted as a test. The exercise binds its combining accent before
+printing it, which is also the clearer program.
+
 ## bs43, the book takes the eleventh — 2026-09-11 — the whole of generics on one page, the bare `if`, and every send that could fail says so
 
 The pin moves to two release tags at once: wolf 0.2.11 and lupin
