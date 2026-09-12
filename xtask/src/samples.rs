@@ -2025,7 +2025,6 @@ fn selftest_nonzero_true(root: &Path, tools: &Tools, caught: &mut usize) -> Resu
     Ok(())
 }
 
-
 /// The acceptance demonstration: a deliberately-broken sample must
 /// fail. Four breakages, one per checker lane, and the fourth is the
 /// bs31 rule — a `run(…)` fence on a program only one machine serves
