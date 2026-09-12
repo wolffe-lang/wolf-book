@@ -5,7 +5,7 @@
 
 use anyhow::{bail, Context, Result};
 use std::collections::{BTreeMap, BTreeSet};
-use std::path::Path;
+use std::path::{Path, PathBuf};
 
 pub fn run(root: &Path) -> Result<()> {
     let mut failures: Vec<String> = Vec::new();
@@ -107,6 +107,12 @@ pub fn run(root: &Path) -> Result<()> {
     //     today, none does — this is the check that keeps that a fact
     //     rather than a memory.
     verify_paintable_interpolation(root, &mut failures)?;
+
+    // 14. EXERCISES-INDEX.md's figures against its own table, and that
+    //     table against the corpus it ledgers (wolf-book#40). The file
+    //     said "generated view" and was typed; it is hand-kept now and
+    //     says so, and every number on it is arithmetic CI owns.
+    verify_exercises_index(root, &mut failures)?;
 
     if failures.is_empty() {
         println!(
@@ -1427,9 +1433,629 @@ fn version_literal_failures(
     failures
 }
 
+// ---------------------------------------------------------------------
+// EXERCISES-INDEX.md (wolf-book#40)
+//
+// The file called itself a "generated view" and nothing generated it.
+// It cannot be generated: its tier column is not a function of anything
+// on disk (a `run(…)` corpus file executes on BOTH machines, and 136
+// rows spelling that directive are tiered `run (lupin)` anyway), and
+// four fifths of the page is editorial prose about which batches are
+// held and why. So it stays hand-kept and says so — and every number on
+// it is arithmetic over its own table, held in both directions here.
+//
+// What that catches, measured at this head: chapter 33 shipped seven
+// exercises in `673183b` and the index never grew a section for them,
+// so the table was seven short of the corpus while the totals line was
+// separately seven short of the table. Two different sevens, which is
+// how the issue read one of them as a single drifted figure.
+// ---------------------------------------------------------------------
+
+/// The five kinds of `principles/EXERCISES.md` §3. A vein (§8) may
+/// qualify a kind — in parentheses, or joined with `+`, which §3 says to
+/// read as the parenthetical form — and is not itself counted.
+const EXERCISE_KINDS: [&str; 5] = [
+    "fingers",
+    "comprehension",
+    "extension",
+    "spelunking",
+    "design",
+];
+
+/// One row of the index table.
+struct IndexRow {
+    id: String,
+    kinds: BTreeSet<String>,
+    tier: String,
+    /// Tokens in the type cell that are neither a kind nor a known vein.
+    unknown: Vec<String>,
+}
+
+/// Split an index table row from the RIGHT. The section cell is the only
+/// one that can carry a `|` of its own — a heading like
+/// ``§6.2 — `?`, `else`, `else |err|` `` does, on two rows — so the three
+/// cells that matter are counted back from the end rather than forward
+/// from the start, which is the bug that made a hand count of this table
+/// come out at 331 instead of 334.
+fn index_row_cells(line: &str) -> Option<(String, String, String)> {
+    let t = line.trim();
+    if !t.starts_with('|') || !t.ends_with('|') {
+        return None;
+    }
+    let cells: Vec<&str> = t.trim_matches('|').split('|').map(str::trim).collect();
+    if cells.len() < 4 {
+        return None;
+    }
+    let n = cells.len();
+    let (id, ty, tier) = (cells[n - 3], cells[n - 2], cells[n - 1]);
+    // `13-2 → printed in §13.2` is an id cell with an annotation.
+    let id = id.split_whitespace().next().unwrap_or("");
+    if id.is_empty() || !id.contains('-') {
+        return None;
+    }
+    let (a, b) = id.split_once('-')?;
+    if a.is_empty() || b.is_empty() || !b.chars().all(|c| c.is_ascii_digit()) {
+        return None;
+    }
+    if !a.chars().all(|c| c.is_ascii_alphanumeric()) {
+        return None;
+    }
+    Some((id.to_string(), ty.to_string(), tier.to_string()))
+}
+
+/// The taxonomy kinds a type cell names, hybrids counted once per kind.
+/// Parenthetical veins are stripped; `+`-joined veins are dropped by the
+/// same rule (§3). Anything left that is neither a kind nor a vein is
+/// reported rather than silently ignored.
+fn row_kinds(ty: &str, veins: &BTreeSet<String>) -> (BTreeSet<String>, Vec<String>) {
+    let mut kinds = BTreeSet::new();
+    let mut unknown = Vec::new();
+    // Drop the checker half (`fingers · lupin`) and any parenthetical.
+    let head = ty.split(" · ").next().unwrap_or("");
+    let mut flat = String::new();
+    let mut depth = 0usize;
+    for c in head.chars() {
+        match c {
+            '(' => depth += 1,
+            ')' => depth = depth.saturating_sub(1),
+            _ if depth == 0 => flat.push(c),
+            _ => {}
+        }
+    }
+    for tok in flat.split('+') {
+        let tok = tok.trim();
+        if tok.is_empty() {
+            continue;
+        }
+        let norm = tok.to_ascii_lowercase();
+        if EXERCISE_KINDS.contains(&norm.as_str()) {
+            kinds.insert(norm);
+        } else if !veins.contains(&norm) {
+            unknown.push(tok.to_string());
+        }
+    }
+    (kinds, unknown)
+}
+
+/// Every row of every `| section | id | type · checker | tier |` table on
+/// the page, in order.
+fn index_rows(page: &str, veins: &BTreeSet<String>) -> Vec<IndexRow> {
+    let mut out = Vec::new();
+    for line in page.lines() {
+        let Some((id, ty, tier)) = index_row_cells(line) else {
+            continue;
+        };
+        let (kinds, unknown) = row_kinds(&ty, veins);
+        out.push(IndexRow {
+            id,
+            kinds,
+            tier,
+            unknown,
+        });
+    }
+    out
+}
+
+/// The bolded vein names of `principles/EXERCISES.md` §8, so a stem may
+/// name a vein this check has never heard of without the build going red
+/// on a word the doctrine does in fact define.
+fn taxonomy_veins(exercises_md: &str) -> BTreeSet<String> {
+    let mut out = BTreeSet::new();
+    for line in exercises_md.lines() {
+        let t = line.trim_start();
+        let Some(rest) = t.strip_prefix("- **") else {
+            continue;
+        };
+        let Some(name) = rest.split("**").next() else {
+            continue;
+        };
+        let name = name.trim().to_ascii_lowercase();
+        if !name.is_empty() {
+            out.insert(name.clone());
+            // §8 writes "The coreutils vein"; a stem would say
+            // "coreutils". Index the bare noun too.
+            if let Some(bare) = name.strip_prefix("the ") {
+                out.insert(bare.trim_end_matches(" vein").to_string());
+            }
+        }
+    }
+    out
+}
+
+/// `## ch05 — 16 exercises` → ("ch05", 16).
+fn index_chapter_heading(line: &str) -> Option<(String, usize)> {
+    let rest = line.strip_prefix("## ")?;
+    let (name, tail) = rest.split_once(" — ")?;
+    let n = tail.strip_suffix(" exercises")?.trim().parse().ok()?;
+    Some((name.trim().to_string(), n))
+}
+
+/// One `a · b · c` tally sentence → the figure each label carries. The
+/// page is flattened first: these sentences wrap to the page width, and
+/// reading one line of a wrapped tally finds only its first figure and
+/// calls every other one missing.
+fn tally_after(page: &str, prefix: &str) -> Option<BTreeMap<String, usize>> {
+    let flat = page.replace('\n', " ");
+    let at = flat.find(prefix)? + prefix.len();
+    let body = &flat[at..];
+    let body = body.split(". ").next().unwrap_or(body);
+    let mut out = BTreeMap::new();
+    for part in body.split(" · ") {
+        let part = part.trim().trim_end_matches('.');
+        // Either "186 run (lupin)" or "fingers 55".
+        if let Some((n, label)) = part.split_once(' ') {
+            if let Ok(v) = n.parse::<usize>() {
+                out.insert(label.trim().to_string(), v);
+                continue;
+            }
+            if let Ok(v) = label.trim().parse::<usize>() {
+                out.insert(n.trim().to_string(), v);
+            }
+        }
+    }
+    Some(out)
+}
+
+/// `**292 of the 341 are printed**` → (292, 341). Markdown emphasis and
+/// newlines are stripped first, because the sentence wraps to the page
+/// width and has carried a `**` mid-phrase before.
+fn printed_claim(page: &str) -> (Option<usize>, Option<usize>) {
+    let flat = page.replace('\n', " ").replace("**", "");
+    let Some(at) = flat.find(" are printed") else {
+        return (None, None);
+    };
+    let words: Vec<&str> = flat[..at].split_whitespace().collect();
+    let n = words.len();
+    // … <a> of the <b> [are printed]
+    if n >= 4 && words[n - 2] == "the" && words[n - 3] == "of" {
+        return (words[n - 4].parse().ok(), words[n - 1].parse().ok());
+    }
+    (None, None)
+}
+
+fn first_number_after(page: &str, needle: &str) -> Option<usize> {
+    let at = page.find(needle)? + needle.len();
+    let rest = &page[at..];
+    let digits: String = rest
+        .chars()
+        .skip_while(|c| !c.is_ascii_digit())
+        .take_while(|c| c.is_ascii_digit())
+        .collect();
+    digits.parse().ok()
+}
+
+/// Every figure on the page against the table under it, and the table
+/// against the corpus it claims to ledger.
+fn exercises_index_failures(
+    page: &str,
+    corpus: &BTreeSet<String>,
+    printed: &BTreeSet<String>,
+    veins: &BTreeSet<String>,
+) -> Vec<String> {
+    let mut f = Vec::new();
+    let rows = index_rows(page, veins);
+    if rows.is_empty() {
+        f.push("EXERCISES-INDEX.md: no table rows parsed — the table shape moved".into());
+        return f;
+    }
+
+    // 1. The table is the corpus, both directions.
+    let ids: BTreeSet<String> = rows.iter().map(|r| r.id.clone()).collect();
+    if ids.len() != rows.len() {
+        let mut seen = BTreeSet::new();
+        for r in &rows {
+            if !seen.insert(r.id.clone()) {
+                f.push(format!("EXERCISES-INDEX.md: `{}` has two rows", r.id));
+            }
+        }
+    }
+    for missing in corpus.difference(&ids) {
+        f.push(format!(
+            "EXERCISES-INDEX.md: the corpus has `{missing}` and the index has no row for it"
+        ));
+    }
+    for extra in ids.difference(corpus) {
+        f.push(format!(
+            "EXERCISES-INDEX.md: a row claims `{extra}`, which no master defines"
+        ));
+    }
+
+    // 2. Unknown taxonomy tokens.
+    for r in &rows {
+        for u in &r.unknown {
+            f.push(format!(
+                "EXERCISES-INDEX.md: `{}` is tagged `{u}`, which is neither a kind \
+                 (EXERCISES.md §3) nor a vein (§8)",
+                r.id
+            ));
+        }
+    }
+
+    // 3. Each `## chNN — N exercises` heading against its own rows.
+    let mut heading: Option<(String, usize)> = None;
+    let mut counted = 0usize;
+    let close = |h: &Option<(String, usize)>, counted: usize, f: &mut Vec<String>| {
+        if let Some((name, claimed)) = h {
+            if *claimed != counted {
+                f.push(format!(
+                    "EXERCISES-INDEX.md: `## {name}` says {claimed} exercises and has \
+                     {counted} rows"
+                ));
+            }
+        }
+    };
+    for line in page.lines() {
+        if let Some(h) = index_chapter_heading(line) {
+            close(&heading, counted, &mut f);
+            heading = Some(h);
+            counted = 0;
+        } else if index_row_cells(line).is_some() {
+            counted += 1;
+        }
+    }
+    close(&heading, counted, &mut f);
+
+    // 4. The header total.
+    match first_number_after(page, "in the corpus:") {
+        Some(n) if n == rows.len() => {}
+        Some(n) => f.push(format!(
+            "EXERCISES-INDEX.md: the header says {n} total and the table has {}",
+            rows.len()
+        )),
+        None => f.push("EXERCISES-INDEX.md: the header no longer states a total".into()),
+    }
+
+    // 5. The tier totals line, figure by figure, and its stated sum.
+    let mut tiers: BTreeMap<String, usize> = BTreeMap::new();
+    for r in &rows {
+        *tiers.entry(r.tier.clone()).or_default() += 1;
+    }
+    match tally_after(page, "Tier totals: ") {
+        None => f.push("EXERCISES-INDEX.md: the tier totals line is gone".into()),
+        Some(claimed) => {
+            for (tier, n) in &tiers {
+                match claimed.get(tier) {
+                    Some(c) if c == n => {}
+                    Some(c) => f.push(format!(
+                        "EXERCISES-INDEX.md: the totals line says {c} `{tier}` and the \
+                         table has {n}"
+                    )),
+                    None => f.push(format!(
+                        "EXERCISES-INDEX.md: the totals line omits `{tier}` ({n} rows)"
+                    )),
+                }
+            }
+            for tier in claimed.keys() {
+                if !tiers.contains_key(tier) {
+                    f.push(format!(
+                        "EXERCISES-INDEX.md: the totals line names `{tier}`, which no row uses"
+                    ));
+                }
+            }
+            match first_number_after(page, "That is ") {
+                Some(n) if n == rows.len() => {}
+                Some(n) => f.push(format!(
+                    "EXERCISES-INDEX.md: the totals line sums to {n} and the table has {}",
+                    rows.len()
+                )),
+                None => f.push("EXERCISES-INDEX.md: the totals line states no sum".into()),
+            }
+        }
+    }
+
+    // 6. The taxonomy spread.
+    let mut spread: BTreeMap<String, usize> = BTreeMap::new();
+    for r in &rows {
+        for k in &r.kinds {
+            *spread.entry(k.clone()).or_default() += 1;
+        }
+    }
+    match tally_after(page, "Taxonomy spread (tags, hybrids counted once per kind): ") {
+        None => f.push("EXERCISES-INDEX.md: the taxonomy spread line is gone".into()),
+        Some(claimed) => {
+            for kind in EXERCISE_KINDS {
+                let have = spread.get(kind).copied().unwrap_or(0);
+                match claimed.get(kind) {
+                    Some(c) if *c == have => {}
+                    Some(c) => f.push(format!(
+                        "EXERCISES-INDEX.md: the taxonomy spread says {c} `{kind}` and the \
+                         table has {have}"
+                    )),
+                    None => f.push(format!(
+                        "EXERCISES-INDEX.md: the taxonomy spread omits `{kind}` ({have} rows)"
+                    )),
+                }
+            }
+        }
+    }
+
+    // 7. The printed claim, against the chapters themselves. The
+    //     sentence is bolded and wraps, so it is read backwards from
+    //     "are printed" rather than forwards from a `**` that belongs to
+    //     a different sentence three paragraphs up.
+    let printed_here = ids.intersection(printed).count();
+    let (claimed_printed, claimed_of) = printed_claim(page);
+    match (claimed_printed, claimed_of) {
+        (Some(p), Some(total)) => {
+            if p != printed_here {
+                f.push(format!(
+                    "EXERCISES-INDEX.md: the page says {p} are printed and the chapters \
+                     print {printed_here} of its rows"
+                ));
+            }
+            if total != rows.len() {
+                f.push(format!(
+                    "EXERCISES-INDEX.md: the printed sentence is out of {total} and the \
+                     table has {}",
+                    rows.len()
+                ));
+            }
+        }
+        _ => f.push("EXERCISES-INDEX.md: the printed-count sentence is gone".into()),
+    }
+
+    f
+}
+
+/// Every `**Exercise N-M**` the masters define, as the id is spelled.
+fn corpus_exercise_ids(root: &Path) -> Result<BTreeSet<String>> {
+    let mut out = BTreeSet::new();
+    let mut files = vec![root.join("principles/EXERCISES.md")];
+    let dir = root.join("principles/exercises");
+    let mut subs: Vec<PathBuf> = std::fs::read_dir(&dir)
+        .with_context(|| format!("reading {}", dir.display()))?
+        .filter_map(|e| e.ok())
+        .map(|e| e.path())
+        .filter(|p| p.is_dir())
+        .collect();
+    subs.sort();
+    files.extend(subs.into_iter().map(|d| d.join("EXERCISES.md")));
+    for path in files {
+        let Ok(text) = std::fs::read_to_string(&path) else {
+            continue;
+        };
+        for line in text.lines() {
+            if let Some(rest) = line.trim_start().strip_prefix("**Exercise ") {
+                if let Some(id) = rest.split("**").next() {
+                    let id = id.trim();
+                    if id.contains('-') {
+                        out.insert(id.to_string());
+                    }
+                }
+            }
+        }
+    }
+    if out.is_empty() {
+        bail!("no exercise markers found under principles/ — the corpus moved");
+    }
+    Ok(out)
+}
+
+fn verify_exercises_index(root: &Path, failures: &mut Vec<String>) -> Result<()> {
+    let page = std::fs::read_to_string(root.join("principles/EXERCISES-INDEX.md"))
+        .context("reading principles/EXERCISES-INDEX.md")?;
+    let corpus = corpus_exercise_ids(root)?;
+    let printed: BTreeSet<String> = crate::backmatter::printed_exercises(root)?
+        .keys()
+        .map(|(ch, n)| format!("{ch}-{n}"))
+        .collect();
+    let exercises_md = std::fs::read_to_string(root.join("principles/EXERCISES.md"))
+        .context("reading principles/EXERCISES.md")?;
+    let veins = taxonomy_veins(&exercises_md);
+    failures.extend(exercises_index_failures(&page, &corpus, &printed, &veins));
+    Ok(())
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    // --- EXERCISES-INDEX.md (wolf-book#40) ------------------------------
+
+    fn veins() -> BTreeSet<String> {
+        taxonomy_veins("- **Schedule play** — seeded interleaving predictions.\n")
+    }
+
+    /// A page with two chapters, every figure correct.
+    fn index_page() -> String {
+        "# EXERCISES-INDEX.md — the corpus ledger\n\
+         \n\
+         Ledger of every exercise in the corpus: 3 total.\n\
+         \n\
+         **2 of the 3 are printed**, and the build fails otherwise.\n\
+         \n\
+         Tier totals: 2 run (lupin) · 1 prose. That is 3.\n\
+         Taxonomy spread (tags, hybrids counted once per kind): fingers 1 ·\n\
+         comprehension 1 · extension 1 · spelunking 0 · design 1.\n\
+         \n\
+         ## ch01 — 2 exercises\n\
+         \n\
+         | section | exercise | type · checker | tier |\n\
+         |---|---|---|---|\n\
+         | §1.1 — One | 1-1 | fingers · lupin | run (lupin) |\n\
+         | §1.2 — Two | 1-2 | comprehension + extension · lupin | run (lupin) |\n\
+         \n\
+         ## ch02 — 1 exercises\n\
+         \n\
+         | section | exercise | type · checker | tier |\n\
+         |---|---|---|---|\n\
+         | Chapter batch | 2-1 | design | prose |\n"
+            .to_string()
+    }
+
+    fn corpus3() -> BTreeSet<String> {
+        ["1-1", "1-2", "2-1"].iter().map(|s| s.to_string()).collect()
+    }
+
+    fn printed2() -> BTreeSet<String> {
+        ["1-1", "1-2"].iter().map(|s| s.to_string()).collect()
+    }
+
+    #[test]
+    fn the_index_control_passes() {
+        let f = exercises_index_failures(&index_page(), &corpus3(), &printed2(), &veins());
+        assert!(f.is_empty(), "{f:#?}");
+    }
+
+    #[test]
+    fn a_corpus_exercise_with_no_row_is_caught() {
+        // Chapter 33's shape: the master defines it, the index never grew
+        // a section for it.
+        let mut corpus = corpus3();
+        corpus.insert("33-1".into());
+        let f = exercises_index_failures(&index_page(), &corpus, &printed2(), &veins());
+        assert!(
+            f.iter().any(|m| m.contains("`33-1`") && m.contains("no row")),
+            "{f:#?}"
+        );
+    }
+
+    #[test]
+    fn a_row_naming_an_exercise_no_master_defines_is_caught() {
+        let mut corpus = corpus3();
+        corpus.remove("2-1");
+        let f = exercises_index_failures(&index_page(), &corpus, &printed2(), &veins());
+        assert!(
+            f.iter().any(|m| m.contains("`2-1`") && m.contains("no master")),
+            "{f:#?}"
+        );
+    }
+
+    #[test]
+    fn a_chapter_heading_that_did_not_move_with_its_rows_is_caught() {
+        let page = index_page().replace("## ch01 — 2 exercises", "## ch01 — 7 exercises");
+        let f = exercises_index_failures(&page, &corpus3(), &printed2(), &veins());
+        assert!(
+            f.iter()
+                .any(|m| m.contains("`## ch01` says 7 exercises and has 2 rows")),
+            "{f:#?}"
+        );
+    }
+
+    #[test]
+    fn a_header_total_that_drifted_from_the_table_is_caught() {
+        let page = index_page().replace("corpus: 3 total", "corpus: 331 total");
+        let f = exercises_index_failures(&page, &corpus3(), &printed2(), &veins());
+        assert!(
+            f.iter()
+                .any(|m| m.contains("header says 331 total and the table has 3")),
+            "{f:#?}"
+        );
+    }
+
+    #[test]
+    fn one_drifted_tier_figure_is_named_and_the_sum_is_caught_separately() {
+        // The wolf-book#40 shape: the totals line stayed internally
+        // consistent while one figure and the sum both went stale.
+        let page = index_page().replace("Tier totals: 2 run (lupin) · 1 prose. That is 3.",
+                                        "Tier totals: 1 run (lupin) · 1 prose. That is 2.");
+        let f = exercises_index_failures(&page, &corpus3(), &printed2(), &veins());
+        assert!(
+            f.iter()
+                .any(|m| m.contains("says 1 `run (lupin)` and the table has 2")),
+            "{f:#?}"
+        );
+        assert!(
+            f.iter().any(|m| m.contains("sums to 2 and the table has 3")),
+            "{f:#?}"
+        );
+    }
+
+    #[test]
+    fn a_wrapped_tally_is_read_past_its_first_figure() {
+        // The taxonomy line wraps to the page width. Reading one line of
+        // it found `fingers` and called the other four missing.
+        let t = tally_after(
+            &index_page(),
+            "Taxonomy spread (tags, hybrids counted once per kind): ",
+        )
+        .expect("the line parses");
+        assert_eq!(t.get("comprehension"), Some(&1));
+        assert_eq!(t.get("design"), Some(&1));
+        assert_eq!(t.len(), 5);
+    }
+
+    #[test]
+    fn a_section_cell_carrying_its_own_pipe_is_still_one_row() {
+        // ``§6.2 — `?`, `else`, `else |err|` `` — read the cells from the
+        // right or this row vanishes from the count.
+        let cells = index_row_cells(
+            "| §6.2 — `?`, `else`, `else |err|` | 6-14 | comprehension · lupin | run (lupin) |",
+        )
+        .expect("row parses");
+        assert_eq!(cells.0, "6-14");
+        assert_eq!(cells.2, "run (lupin)");
+    }
+
+    #[test]
+    fn an_annotated_id_cell_still_names_its_exercise() {
+        let cells =
+            index_row_cells("| §13.1 — `par` (held) | 13-2 → printed in §13.2 | fingers · lupin | run (lupin) |")
+                .expect("row parses");
+        assert_eq!(cells.0, "13-2");
+    }
+
+    #[test]
+    fn a_hybrid_counts_once_per_kind_and_a_vein_is_not_a_kind() {
+        let v = veins();
+        let (kinds, unknown) = row_kinds("comprehension + extension · lupin", &v);
+        assert_eq!(kinds.len(), 2);
+        assert!(unknown.is_empty());
+        // EXERCISES.md §3: a kind joined to a vein with `+` reads as the
+        // parenthetical form, so only the kind counts.
+        let (kinds, unknown) = row_kinds("comprehension + schedule play · lupin", &v);
+        assert_eq!(kinds.into_iter().collect::<Vec<_>>(), vec!["comprehension"]);
+        assert!(unknown.is_empty());
+        let (kinds, unknown) = row_kinds("extension (break-it-on-purpose) · lupin", &v);
+        assert_eq!(kinds.into_iter().collect::<Vec<_>>(), vec!["extension"]);
+        assert!(unknown.is_empty());
+    }
+
+    #[test]
+    fn a_taxonomy_token_that_is_neither_kind_nor_vein_is_caught() {
+        let (_, unknown) = row_kinds("fingerz · lupin", &veins());
+        assert_eq!(unknown, vec!["fingerz".to_string()]);
+    }
+
+    #[test]
+    fn a_stale_printed_count_is_caught() {
+        let page = index_page().replace("**2 of the 3 are printed**", "**1 of the 3 are printed**");
+        let f = exercises_index_failures(&page, &corpus3(), &printed2(), &veins());
+        assert!(
+            f.iter()
+                .any(|m| m.contains("says 1 are printed") && m.contains("print 2")),
+            "{f:#?}"
+        );
+    }
+
+    #[test]
+    fn the_real_index_agrees_with_the_real_corpus() {
+        // The check as CI runs it, against the repository's own files.
+        let root = crate::repo_root().expect("repo root");
+        let mut failures = Vec::new();
+        verify_exercises_index(&root, &mut failures).expect("check runs");
+        assert!(failures.is_empty(), "{failures:#?}");
+    }
 
     const TABLE: &str = "\
 | Document | Anchors |
