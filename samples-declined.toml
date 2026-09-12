@@ -111,7 +111,7 @@ block = "principles/exercises/ch22/EXERCISES.md:114"
 class = "file"
 needs = "NOT a missing file. The block is exercise 22-11's D32 demonstration — an unmarked `widest.lu` joining `sum.lu`'s module, E0302 on `main`. A corpus `.lu` must carry `//! check:` and `//! phase:`, and `[conf.directive.standalone]` (D59) makes a file carrying both a standalone entry that never joins its directory's module, so the collision cannot be staged. Measured on wolf 0.2.12 and lupin 0.1.34: the pair runs clean, exit 0 both"
 filed = "wolf-book#29 §2 (premise corrected at bs44)"
-retires = "a corpus admission rule that can hold a non-standalone member — or the block moving to a `console,in(pkg/…)` fixture under `samples/pkg/`, where no `//! check:` is required"
+retires = "a corpus admission rule that can hold a non-standalone member. The `console,in(pkg/…)` escape hatch is NOT one today, and the reason is an ordering rather than a design: a corpus fence parses `in(…)` (`collect_corpus_console` carries `fi.in_fixture` through), but `console::check` runs the corpus admission gate against the real exercise directory BEFORE any staging, so the block is declined before the fixture is looked at — and if it got that far, `stage()` opens with `remove_dir_all(dir)` and would wipe the staged exercise tree the corpus lane had just put there. Two small fixes, one hole"
 
 [[declined]]
 block = "principles/exercises/ch23/EXERCISES.md:124"
