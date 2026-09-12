@@ -1,6 +1,12 @@
 # EXERCISES-INDEX.md — the corpus ledger
 
-Generated view of every exercise in the corpus: 331 total. Sources:
+Ledger of every exercise in the corpus: 341 total. Hand-kept, and
+every figure on this page is held to the table under it by
+`cargo xtask verify-docs` (wolf-book#40) — the page said "generated"
+for eleven bumps and nothing generated it. It cannot be: the tier
+column is not a function of anything on disk (below), and the notes
+are editorial. So the prose is written and the arithmetic is CI's.
+Sources:
 the exemplar batch in `principles/EXERCISES.md` §5 (26 exercises,
 folded in unchanged) and the per-chapter files
 `principles/exercises/chNN/EXERCISES.md` (+ `appx/` for the
@@ -32,7 +38,7 @@ All of them stay in the corpus so the day their surface lands the stems
 and the sections arrive together. Two more are master-only by curation
 rather than blockage, from the bs21 ladder: 2-15 (entab — the printed
 page carries detab, the master holds the mirror) and 3-13 (a
-`loop`/`break`-value drill beside §3.2's own example). **278 of the 327
+`loop`/`break`-value drill beside §3.2's own example). **292 of the 341
 are printed**, and
 `cargo xtask verify-docs` fails the build if a printed stem has no
 published solution.
@@ -58,11 +64,20 @@ several of its stems are tagged `· wolf` while the distilled solution
 program on disk runs under lupin — the tier column says what CI
 executed, and the exercise file says which is which and why.
 
-Tier totals: 186 run (lupin) · 9 run (lupin REPL) · 32 run (wolf) · 14 run (wolf + lupin) · 76 prose · 10 pending. That is 327.
+Tier totals: 198 run (lupin) · 9 run (lupin REPL) · 32 run (wolf) · 14 run (wolf + lupin) · 78 prose · 10 pending. That is 341.
 (The totals and the tables were recounted mechanically against the
 masters at bs21 — the previous header said 276/231 while the tables
 had drifted from the marker count, ch05's 5-9 and 5-10 among the
-missing rows.)
+missing rows. It happened again, and this time a gate caught it rather
+than a reader: at bs45 the header said 331, the totals line 327 and the
+table held 334 rows, while the masters defined 341. Two different
+sevens had been read as one. Chapter 33 shipped seven exercises in
+`673183b` and no section was ever added here for them, which is the gap
+between 334 and 341; separately the totals line was re-based at
+`510aa70` onto a number already five short and took two more rows
+afterwards, which is the gap between 327 and 334. The header tracked
+the table until `0e17afa` and has been exactly three behind since
+`510aa70` added three rows without moving it.)
 Five of the 32 `run (wolf)` are the `wolf-run(…)` lane the bs09 bump
 added — 18-3, 18-5, 18-11, 18-15 and 22-7, each holding a `comptime fn` that the
 reference interpreter declines by design. 24-6 is the sixth addition and
@@ -72,8 +87,8 @@ lane executed a sample is not bookkeeping, and calling it that is what
 let chapter 1 teach a call the compiler does not carry: a `run(…)`
 directive is a claim about both machines, and a sample only one machine
 serves says which one (`principles/TWO-MACHINES.md`).
-Taxonomy spread (tags, hybrids counted once per kind): fingers 55 ·
-comprehension 151 · extension 69 · spelunking 26 · design 35.
+Taxonomy spread (tags, hybrids counted once per kind): fingers 62 ·
+comprehension 153 · extension 76 · spelunking 27 · design 37.
 
 Four stems are printed under a section other than the one this index
 assigns them, each deliberately: 13-2 (printed in §13.2 while §13.1 is
@@ -573,6 +588,24 @@ loses hits, which is the exercise — and a sample whose output varies
 between runs cannot be a CI sample, so the solution page carries the
 twenty-run measurement instead. Both reasons are stated on the solution
 pages rather than only here.
+
+## ch33 — 7 exercises
+
+| section | exercise | type · checker | tier |
+|---|---|---|---|
+| §33.1 — A door of your own | 33-1 | fingers · lupin | run (lupin) |
+| §33.2 — Waiting on the whole set | 33-2 | comprehension · lupin | run (lupin) |
+| §33.3 — The loop | 33-3 | extension · lupin | run (lupin) |
+| §33.4 — Many hands on one door | 33-4 | comprehension · lupin | run (lupin) |
+| Chapter batch | 33-5 | spelunking · prose | prose |
+| Chapter batch | 33-6 | design | prose |
+| Chapter batch | 33-7 | extension · lupin | run (lupin) |
+
+Chapter 33 took the next free number rather than renumbering thirty
+others (TOC.md §Deltas), and this section is late for the same reason it
+was missed: it sorts after ch30 and before the appendix, where nothing
+walking the chapters in order passes it. All seven stems are printed in
+`book/ch33.md` and five carry programs; 33-5 and 33-6 are prose.
 
 ## appx — 14 exercises
 
