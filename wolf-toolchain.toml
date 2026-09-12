@@ -422,9 +422,92 @@
 #     to chapter 6 as 6-14 (wolf-book#35), and the bare statement sends
 #     respelled `?` or `else` (wolf-book#21) — is recorded chapter by
 #     chapter in the ledgers, and the counts are in the CHANGELOG.
+#
+# ---------------------------------------------------------------------
+# BUMPED TO v0.2.12 (bs44, 2026-09-12). wolf-lang at the v0.2.12 release
+# tag (`a7f517e`), TAKEN FROM THE RELEASE ARCHIVE by digest —
+# `wolf-0.2.12-aarch64-apple-darwin.tar.gz`, sha256
+# 6be493a91347b031b0d920786c43e3d263eadda22049aa46210af9e23e40ecc5,
+# unpacked whole at /private/tmp/bs44-bin beside bs43's v0.2.11 stage as
+# the control, never `~/.local/bin`.
+#
+#   wolf 0.2.12 (wolfgang, pin a7f517e)
+#   paired with lupin 0.1.34 (reference interpreter), pin c9237c1
+#   lupin 0.1.34 (wolf-interp, reference interpreter at pin c9237c1)
+#
+# THE PAIR, both halves computed from the stamps, AND ONE HALF CLOSES TO
+# ZERO FOR THE FIRST TIME: the compiler names lupin 0.1.34 and this file
+# pins 0.1.34 — the same release — where four bumps running the
+# compiler's half was one release behind. The interpreter names
+# `c9237c1`, the v0.2.11 tag, and `git rev-list --count c9237c1..a7f517e`
+# is THIRTY-ONE (ancestor checked), so that half closes from ninety-one.
+# Eight data points now: 14, 43, 65, 51, 84, 110, 91, 31. §1.2 and the
+# colophon both say the new thing in prose, because "neither name is
+# exact" was true of every printing before this one and is not true of
+# this one.
+#
+# WHAT 0.2.12 CARRIES that the book prints: THE PAPERCUTS (its own
+# CHANGELOG's word). Twenty filed defects, nineteen moved. The two that
+# reach these pages are the formatter's break selection — `wolf fmt`
+# measures a break against the tail of the line, breaks outermost first
+# and BREAKS A BRACED `if` CHAIN AS ONE — and the checked tier's casts
+# converting. s154's nine papercuts (W1002 suppressed beside E0804,
+# W0601 for a discarded `!T` tail, W0318, E0410 on a `let` binding's
+# field, the one-line body-less trait member) are IN this tag, where at
+# v0.2.11 they were still on trunk past it: `git log c9237c1..a7f517e`
+# is thirty-one commits and s154 and s156 are both inside them.
+#
+# WHAT THE BOOK MEASURED, PREDICTION FIRST. The contract's item 0 named
+# the five ch05 `wolf-run` fences as the FLIPs. The CONTROL ran on the
+# UNEDITED tree (trunk 27a2379) with the new pair, before any file here
+# was edited:
+#
+#   495 samples, 488 passed, 5 pending, 8 failed, 8 flips (116.7 s)
+#
+#   * 8 FLIPS MEASURED, 5 PREDICTED BY NAME, and all five are in the
+#     eight: `book/ch05/part-bycategory`, `part-top2`, `s9`, `s14`,
+#     `s18` — lupin 0.1.34 mirrors `[mem.map.absent]` (wolf-interp#91)
+#     and dispatches operators through `[type.trait.op]`
+#     (wolf-interp#92), both is46. THE THREE THE CONTRACT DID NOT NAME
+#     are the same two mirrors seen from the other side and one from
+#     the corpus: `ch05/ex5-6` (the third absent-key tally, a corpus
+#     root rather than a printed block, which the contract's list of
+#     "printed fences" skipped), and `ch12/ex12-11` and `book/ch12/s10`,
+#     which flip the OTHER WAY — they were `lupin-run(…)` because the
+#     COMPILER declined them, and 0.2.12 no longer does. A prediction
+#     drawn from the interpreter's changelog alone cannot see a flip the
+#     compiler causes; that is the miss, and it is the lesson.
+#   * 5 CONSOLE RE-RECORDS MEASURED, 4 PREDICTED. Predicted: §1.2's and
+#     the colophon's `--version` pairs, §22.2's `wolf interface`
+#     (toolchain 0.2.11 -> 0.2.12, the two hashes byte-identical again,
+#     wolf-lang#292), and Appendix E's `wolf fmt` transcript. The fifth
+#     is the one the formatter change reached that nothing predicted:
+#     `samples/pkg/fmt/canonical/widths.lu` IS NO LONGER CANONICAL — the
+#     braced `if` chain that used to keep two arms inline and break one
+#     now breaks all three — so `wolf fmt --check canonical/widths.lu`
+#     exited 1 where the page prints 0. The FIXTURE was re-laid and the
+#     page's quotation of it and its three-clause explanation with it.
+#     §25.2's `wolf publish` did not move, as at the last bump.
+#   * 2 PROGRAM DEFECTS THE BUMP EXPOSED, both in printed blocks, both
+#     fixed here rather than fenced around. ch06's wordcount tallied
+#     with `tally[w] += 1`, which lupin 0.1.34 now refuses by the
+#     compiler's own code (E0417, `[mem.map.absent]`) — respelled
+#     `tally[w] = (tally[w] else 0) + 1`, which is what §5.1 already
+#     teaches, and the histogram is byte-identical. ch15's supervisor
+#     sent a HOLED INTERPOLATION out of a spawned proc, and lupin 0.1.34
+#     traps `region-fault` on it: the bytes are built in the proc's own
+#     region and `[conc.chan.payload]` says a `str` payload is its view.
+#     The compiler runs it and prints from the freed region — filed as
+#     wolf-lang#355 with a fifteen-line witness. The BOOK fixed the
+#     program (the child takes its message as a parameter, so the
+#     supervisor's region owns the bytes), so the fence stays `run(…)`
+#     and the chapter gained the sentence the clause deserves.
+#   * THE CATALOG, THE ANCHORS AND THE GRAMMAR: re-derived at the tag
+#     through a temporary wolf-lang worktree, because the org checkout
+#     was behind. See the CHANGELOG for the three numbers.
 repo = "wolffe-lang/wolf-lang"
-rev = "c9237c11d081d5649825b5293bcff6d2814a5ad2"
-impl_version = "0.2.11"
+rev = "a7f517e1f667f142ffaf61b57aa2bff06e32b520"
+impl_version = "0.2.12"
 
 [lupin]
 # wolf-interp at the v0.1.30 release tag (is42): the stamped line names
@@ -816,9 +899,43 @@ impl_version = "0.2.11"
 # the page. The interpreter's share of the control: ONE console
 # re-record (the `lupin --version` line on §1.2 and the colophon), 0
 # flips, 0 failures, 0 pending movement.
+#
+# ---------------------------------------------------------------------
+# BUMPED TO 0.1.34 (bs44, 2026-09-12). wolf-interp at the v0.1.34
+# release tag (`b83049a`), TAKEN FROM THE RELEASE ARCHIVE by digest —
+# `lupin-0.1.34-aarch64-apple-darwin.tar.gz`, sha256
+# 51d05b703fce5e13cbfd10a292b48f0e34208c5712a871c42ca017546eb48e19.
+# NINETEEN commits past 0.1.33, and it declares `c9237c1` — the v0.2.11
+# TAG — where 0.1.33 declared `662b14c`, the v0.2.10 tag. Both halves of
+# the pair are named at tags for the first time.
+#
+# WHAT 0.1.34 CARRIES, read from its CHANGELOG and probed on the box
+# before the pin moved — is46, and it is the mirror release the last
+# three pins were waiting on:
+#   * `[mem.map.absent]` (wolf-interp#91): an absent key reads `none`,
+#     not `()`, and `m[k] += v` is E0417 by the compiler's own code.
+#     This retires the three `wolf-run` tallies in ch05 AND it is why
+#     ch06's wordcount had to be respelled — see the [wolf] block.
+#   * `[type.trait.op]` and the alias form (wolf-interp#92): `==` and
+#     the arithmetic operators dispatch through the operand's own
+#     module, so §5.6's two printed blocks graduate.
+#   * The region `str` (wolf-interp#88): a `str` built in a region and
+#     sent or returned out of it is `trap(region-fault)`, the dynamic
+#     half of the compiler's E1010. This is the one that reddened ch15
+#     — correctly; the book's program was wrong and wolf-lang#355 is
+#     the compiler's missing half of it.
+#   * Four small mirrors besides (E0413 for a spec on a `!T` hole,
+#     E0410 on a `let` field, E0808/E0810, E0418).
+# WHAT IT STILL DOES NOT MIRROR: it emits no warnings at all (the
+# eight-row warning-parity ledger wolf-lang's CHANGELOG keeps), and an
+# unresolved bound name is still accepted silently (wolf-interp#95),
+# which the book never leans on. THE INTERPRETER'S SHARE OF THE
+# CONTROL: 8 of the 8 flips are its doing on five of them and the
+# compiler's on three; 4 of the 8 failures (ch06 twice, ch15 twice);
+# 1 console re-record (its own `--version` line, twice printed).
 repo = "wolffe-lang/wolf-interp"
-rev = "18de0308e5b43c8aa1e63e9b433a879cf56a998f"
-version = "lupin 0.1.33 (wolf-interp, reference interpreter at pin 662b14c)"
+rev = "b83049a33fe5c44b538ba9ed50de50383ef9b793"
+version = "lupin 0.1.34 (wolf-interp, reference interpreter at pin c9237c1)"
 
 [wolf-lsp]
 # Source of the vendored tmLanguage grammars under highlight/.
