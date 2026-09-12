@@ -97,6 +97,17 @@ pub fn run(root: &Path) -> Result<()> {
     //     moved past an audit fails the build with the sentence named.
     verify_version_literals(root, &mut failures)?;
 
+    // 13. The one conditional wolf-book#5 states and nothing checked
+    //     (bs44). The vendored grammar paints a nested string literal
+    //     inside an interpolation hole with a CLOSED match, because
+    //     `tm.rs` expands `#include`s eagerly and a recursive
+    //     `#strings` is a load error rather than a wrong paint. The
+    //     closed form cannot hold a nested literal carrying a brace or
+    //     an escaped quote, and such a block stays body ink. Measured
+    //     today, none does — this is the check that keeps that a fact
+    //     rather than a memory.
+    verify_paintable_interpolation(root, &mut failures)?;
+
     if failures.is_empty() {
         println!(
             "verify-docs: ok (corpus count {actual}, pins well-formed, TOC/stub numbering agrees)"
@@ -150,6 +161,224 @@ fn book_pages(root: &Path) -> Result<Vec<(String, String)>> {
     }
     pages.sort();
     Ok(pages)
+}
+
+/// Nested string literals inside an interpolation hole that the
+/// vendored grammar's CLOSED form cannot paint (wolf-book#5).
+///
+/// wolf-lsp le06 ships the nested literal as
+/// `"interpolated-string": { "match": "\"[^\"{}\\r\\n]*\"" }` rather
+/// than as an include back into `#strings`, because the include is a
+/// cycle and `tm::Grammar::load` refuses cycles by design — a grammar
+/// that outgrows the interpreter fails loudly instead of highlighting
+/// wrong. The closed form is exact for the literals the book prints
+/// today, and it has one edge: a nested literal whose body carries a
+/// `{`, a `}` or an escaped quote does not match it. When that happens
+/// nothing is merely under-painted — the enclosing hole's `end`
+/// pattern fires on the wrong brace and the rest of the line leaves
+/// the string scope entirely.
+///
+/// This function emulates the closed form rather than describing it,
+/// so the check and the grammar cannot drift apart in words: at each
+/// `"` inside a hole it scans the way `[^"{}\r\n]*"` scans, and
+/// reports the site when that scan does not reach a clean close.
+///
+/// A plain escape (`"{audit("340\n275")}"`) is NOT reported: the
+/// character class admits a backslash, the literal matches whole and
+/// paints as a string. Only the escape sequence inside it goes
+/// unpainted, which is a shade, not a scope.
+///
+/// Pure, so the defect can be planted in a test rather than in the book.
+pub fn unpaintable_nested_literals(code: &str) -> Vec<(usize, String)> {
+    let mut out = Vec::new();
+    for (i, line) in code.lines().enumerate() {
+        for why in unpaintable_in_line(line) {
+            out.push((i + 1, why));
+        }
+    }
+    out
+}
+
+/// One line of a wolf listing. Raw strings (`r"…"`, `r#"…"#`) and block
+/// strings (`"""`) are skipped: neither interpolates, and the grammar
+/// paints both with their own rules.
+fn unpaintable_in_line(line: &str) -> Vec<String> {
+    let b: Vec<char> = line.chars().collect();
+    let mut out = Vec::new();
+    let mut i = 0usize;
+    // Depth of `{…}` holes inside the string we are in, 0 = not in a hole.
+    let mut hole = 0usize;
+    let mut in_str = false;
+    while i < b.len() {
+        let c = b[i];
+        if !in_str {
+            // A raw string opener: `r"` or `r#…#"`. Skip to its close.
+            if c == 'r' && i + 1 < b.len() && (b[i + 1] == '"' || b[i + 1] == '#') {
+                let mut j = i + 1;
+                let mut hashes = 0usize;
+                while j < b.len() && b[j] == '#' {
+                    hashes += 1;
+                    j += 1;
+                }
+                if j < b.len() && b[j] == '"' {
+                    i = skip_raw(&b, j + 1, hashes);
+                    continue;
+                }
+            }
+            if c == '"' {
+                // A block string opener swallows the rest of the line.
+                if b.get(i + 1) == Some(&'"') && b.get(i + 2) == Some(&'"') {
+                    break;
+                }
+                in_str = true;
+                i += 1;
+                continue;
+            }
+            if c == '/' && b.get(i + 1) == Some(&'/') {
+                break; // a line comment: nothing after it is code
+            }
+            i += 1;
+            continue;
+        }
+        // Inside a string.
+        if hole == 0 {
+            match c {
+                '\\' => i += 2,
+                '{' => {
+                    hole = 1;
+                    i += 1;
+                }
+                '"' => {
+                    in_str = false;
+                    i += 1;
+                }
+                _ => i += 1,
+            }
+            continue;
+        }
+        // Inside a `{…}` hole.
+        match c {
+            '}' => {
+                hole -= 1;
+                i += 1;
+            }
+            '{' => {
+                hole += 1;
+                i += 1;
+            }
+            '"' => {
+                // The closed form, walked: `"[^"{}\r\n]*"`.
+                let start = i;
+                let mut j = i + 1;
+                let mut blocked: Option<char> = None;
+                while j < b.len() {
+                    let d = b[j];
+                    if d == '"' {
+                        break;
+                    }
+                    if d == '{' || d == '}' {
+                        blocked = Some(d);
+                        break;
+                    }
+                    j += 1;
+                }
+                if let Some(d) = blocked {
+                    out.push(format!(
+                        "a nested string literal in an interpolation hole carries `{d}` \
+                         (`{}`) — the vendored grammar's closed form `\"[^\"{{}}\\r\\n]*\"` \
+                         cannot match it and the hole's own `}}` closes on the wrong brace",
+                        snippet(&b, start)
+                    ));
+                    // Give up on this line: the scope is already wrong.
+                    return out;
+                }
+                if j >= b.len() {
+                    out.push(format!(
+                        "a nested string literal in an interpolation hole never closes on \
+                         this line (`{}`)",
+                        snippet(&b, start)
+                    ));
+                    return out;
+                }
+                if j > start + 1 && b[j - 1] == '\\' {
+                    out.push(format!(
+                        "a nested string literal in an interpolation hole carries an escaped \
+                         quote (`{}`) — the closed form's character class excludes `\"`, so \
+                         it terminates at the escape and the rest of the line leaves the \
+                         string scope",
+                        snippet(&b, start)
+                    ));
+                    return out;
+                }
+                i = j + 1;
+            }
+            _ => i += 1,
+        }
+    }
+    out
+}
+
+/// Past a raw string's closing `"` + `hashes` hashes.
+fn skip_raw(b: &[char], from: usize, hashes: usize) -> usize {
+    let mut i = from;
+    while i < b.len() {
+        if b[i] == '"' {
+            let mut k = 0usize;
+            while k < hashes && b.get(i + 1 + k) == Some(&'#') {
+                k += 1;
+            }
+            if k == hashes {
+                return i + 1 + hashes;
+            }
+        }
+        i += 1;
+    }
+    b.len()
+}
+
+/// Enough of the site to find it by eye, from the offending `"`.
+fn snippet(b: &[char], start: usize) -> String {
+    let end = (start + 24).min(b.len());
+    b[start..end].iter().collect::<String>()
+}
+
+/// Every wolf-family listing in the book and in the exercise corpus.
+/// Both, deliberately: `book/back/solutions.md` is generated from the
+/// corpus pages, so a corpus listing reaches the renderer too, and a
+/// failure that names only the generated copy sends the reader to a
+/// file they must not edit.
+fn verify_paintable_interpolation(root: &Path, failures: &mut Vec<String>) -> Result<()> {
+    let mut mds: Vec<std::path::PathBuf> = Vec::new();
+    collect_md(&root.join("book"), &mut mds)?;
+    collect_md(&root.join("principles"), &mut mds)?;
+    mds.sort();
+    let mut scanned = 0usize;
+    for md in &mds {
+        let text = std::fs::read_to_string(md)?;
+        for seg in crate::fence::segments(&text) {
+            let crate::fence::Segment::Fence(f) = seg else {
+                continue;
+            };
+            let lang = f.info.trim().split(',').next().unwrap_or("").trim();
+            if !matches!(lang, "wolf" | "wolfi" | "wolf-pkg") {
+                continue;
+            }
+            scanned += 1;
+            for (line, why) in unpaintable_nested_literals(&f.content) {
+                failures.push(format!(
+                    "{}:{}: {why} — wolf-book#5. Bind the inner string to a `let` and print \
+                     the binding, the way exercise 2-9 does",
+                    md.strip_prefix(root).unwrap_or(md).display(),
+                    f.open_line + 1 + line,
+                ));
+            }
+        }
+    }
+    println!(
+        "verify-docs: {scanned} wolf listing(s) scanned for interpolation the vendored \
+         grammar cannot paint (wolf-book#5)"
+    );
+    Ok(())
 }
 
 /// Clause tags the tools print that the spec has not registered.
@@ -1692,5 +1921,75 @@ tar -xzf wolf-1.2.3-x86_64-pc-windows-msvc.tar.gz
         assert_eq!(number_word(11), Some("eleven"));
         assert_eq!(number_word(12), Some("twelve"));
         assert_eq!(number_word(21), None);
+    }
+
+    // ---- wolf-book#5: interpolation the vendored grammar can paint ----
+
+    #[test]
+    fn interpolation_control_passes() {
+        // Every shape the book actually prints, in one listing.
+        let code = concat!(
+            "fn main() -> !int {\n",
+            "    print(\"{\"total\":<10}{total:>6}\")\n",
+            "    print(\"{audit(\"340\\n275\")}\")\n",
+            "    print(\"[{out.replace(\"\\t\", \"<tab>\")}]\")\n",
+            "    (mut cases).push(r\"select { (a from q => { ) }\")\n",
+            "    0\n",
+            "}\n",
+        );
+        assert!(
+            unpaintable_nested_literals(code).is_empty(),
+            "{:#?}",
+            unpaintable_nested_literals(code)
+        );
+    }
+
+    /// THE DEFECT THIS GATE EXISTS FOR, planted in the shape it had:
+    /// exercise 2-9 printed `"e\u{301}"` from inside a hole for six
+    /// pins, and the `{` of the escape closed the hole. bs44 bound the
+    /// string to a `let` and added this check in the same commit.
+    #[test]
+    fn a_brace_in_a_nested_literal_is_caught() {
+        let code = "    print(\"{\"e\\u{301}\".len} {\"e\\u{301}\".chars().len}\")\n";
+        let hits = unpaintable_nested_literals(code);
+        assert_eq!(hits.len(), 1, "{hits:#?}");
+        assert_eq!(hits[0].0, 1);
+        assert!(hits[0].1.contains("carries `{`"), "{hits:#?}");
+    }
+
+    /// The other half, and the one wolf-book#5 wrote down: an escaped
+    /// quote. The closed form's class excludes `"`, so the match ends
+    /// at the escape and everything after it leaves the string scope.
+    #[test]
+    fn an_escaped_quote_in_a_nested_literal_is_caught() {
+        let code = "    print(\"{f(\"a\\\"b\")}\")\n";
+        let hits = unpaintable_nested_literals(code);
+        assert_eq!(hits.len(), 1, "{hits:#?}");
+        assert!(hits[0].1.contains("escaped quote"), "{hits:#?}");
+    }
+
+    /// Deliberately NOT a hit: a plain escape is inside the character
+    /// class, the literal matches whole and paints as a string. Only
+    /// the escape sequence goes unpainted, which is a shade and not a
+    /// scope — and ch04 has printed one for a year.
+    #[test]
+    fn a_plain_escape_in_a_nested_literal_is_not_caught() {
+        let code = "    print(\"{audit(\"340\\n275\")}\")\n";
+        assert!(unpaintable_nested_literals(code).is_empty());
+    }
+
+    /// A raw string is not interpolation and its braces are not holes.
+    #[test]
+    fn a_raw_string_is_not_scanned() {
+        let code = "    (mut cases).push(r\"select { (a from q => { ) }\")\n";
+        assert!(unpaintable_nested_literals(code).is_empty());
+    }
+
+    #[test]
+    fn the_real_book_paints_every_nested_literal() {
+        let root = crate::repo_root().unwrap();
+        let mut failures = Vec::new();
+        verify_paintable_interpolation(&root, &mut failures).unwrap();
+        assert!(failures.is_empty(), "{failures:#?}");
     }
 }
