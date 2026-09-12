@@ -54,11 +54,19 @@
 # names live in one and nothing executes them.
 
 # --- the compiler's clock ---
-book/ch01.md 0.2.11+dev.unknown 1 audited-at-wolf=0.2.11
-book/ch01.md 0.2.11 3 audited-at-wolf=0.2.11
-book/ch22.md 0.2.11 1 audited-at-wolf=0.2.11
-book/ch33.md 0.2.6 1 audited-at-wolf=0.2.11
-book/ch33.md 0.2.8 1 audited-at-wolf=0.2.11
+book/ch01.md 0.2.12+dev.unknown 1 audited-at-wolf=0.2.12
+book/ch01.md 0.2.12 3 audited-at-wolf=0.2.12
+book/ch22.md 0.2.12 1 audited-at-wolf=0.2.12
+book/ch33.md 0.2.6 1 audited-at-wolf=0.2.12
+book/ch33.md 0.2.8 1 audited-at-wolf=0.2.12
+# Appendix E's formatter section names TWO releases on purpose from bs44
+# on: the braced-chain rule changed between them, and a page that shows
+# a canonical layout owes the reader the release it is canonical for.
+# `0.2.11` here is a historical claim about a formatter that no longer
+# exists and can never come back true; `0.2.12` is the live one and is
+# the same claim the fixture beside it is checked against every run.
+book/back/appendix-e.md 0.2.11 1 audited-at-wolf=0.2.12
+book/back/appendix-e.md 0.2.12 1 audited-at-wolf=0.2.12
 
 # --- both clocks ---
 # `0.1.31` is ONE literal on each of these two pages at bs40 (it was two
@@ -74,8 +82,16 @@ book/ch33.md 0.2.8 1 audited-at-wolf=0.2.11
 # sentences said so; now they differ by one and both sentences say
 # that. Either pin moving can falsify the sentence, so either pin
 # moving has to re-read it.
-book/ch01.md 0.1.32 1 audited-at-wolf=0.2.11 audited-at-lupin=0.1.33
-book/back/colophon.md 0.1.32 1 audited-at-wolf=0.2.11 audited-at-lupin=0.1.33
+#
+# AT BS44 THE TWO NUMBERS ARE EQUAL AGAIN, by the other route: the
+# compiler names `lupin 0.1.34` and `[lupin]` pins 0.1.34, because this
+# time the interpreter published FIRST. That is the third configuration
+# this entry has held and the sentences on both pages were rewritten to
+# say it — §1.2's "half the pair is exact this printing, and that is
+# new", the colophon's "not a release older". Both are falsified by
+# either pin moving, exactly as before, so the entry keeps both clocks.
+book/ch01.md 0.1.34 1 audited-at-wolf=0.2.12 audited-at-lupin=0.1.34
+book/back/colophon.md 0.1.34 1 audited-at-wolf=0.2.12 audited-at-lupin=0.1.34
 
 # --- version-shaped, and about neither tool ---
 book/ch23.md 1.4.0 1 not-a-toolchain-version
