@@ -1770,7 +1770,10 @@ fn exercises_index_failures(
             *spread.entry(k.clone()).or_default() += 1;
         }
     }
-    match tally_after(page, "Taxonomy spread (tags, hybrids counted once per kind): ") {
+    match tally_after(
+        page,
+        "Taxonomy spread (tags, hybrids counted once per kind): ",
+    ) {
         None => f.push("EXERCISES-INDEX.md: the taxonomy spread line is gone".into()),
         Some(claimed) => {
             for kind in EXERCISE_KINDS {
@@ -1904,7 +1907,10 @@ mod tests {
     }
 
     fn corpus3() -> BTreeSet<String> {
-        ["1-1", "1-2", "2-1"].iter().map(|s| s.to_string()).collect()
+        ["1-1", "1-2", "2-1"]
+            .iter()
+            .map(|s| s.to_string())
+            .collect()
     }
 
     fn printed2() -> BTreeSet<String> {
@@ -1925,7 +1931,8 @@ mod tests {
         corpus.insert("33-1".into());
         let f = exercises_index_failures(&index_page(), &corpus, &printed2(), &veins());
         assert!(
-            f.iter().any(|m| m.contains("`33-1`") && m.contains("no row")),
+            f.iter()
+                .any(|m| m.contains("`33-1`") && m.contains("no row")),
             "{f:#?}"
         );
     }
@@ -1936,7 +1943,8 @@ mod tests {
         corpus.remove("2-1");
         let f = exercises_index_failures(&index_page(), &corpus, &printed2(), &veins());
         assert!(
-            f.iter().any(|m| m.contains("`2-1`") && m.contains("no master")),
+            f.iter()
+                .any(|m| m.contains("`2-1`") && m.contains("no master")),
             "{f:#?}"
         );
     }
@@ -1967,8 +1975,10 @@ mod tests {
     fn one_drifted_tier_figure_is_named_and_the_sum_is_caught_separately() {
         // The wolf-book#40 shape: the totals line stayed internally
         // consistent while one figure and the sum both went stale.
-        let page = index_page().replace("Tier totals: 2 run (lupin) · 1 prose. That is 3.",
-                                        "Tier totals: 1 run (lupin) · 1 prose. That is 2.");
+        let page = index_page().replace(
+            "Tier totals: 2 run (lupin) · 1 prose. That is 3.",
+            "Tier totals: 1 run (lupin) · 1 prose. That is 2.",
+        );
         let f = exercises_index_failures(&page, &corpus3(), &printed2(), &veins());
         assert!(
             f.iter()
@@ -1976,7 +1986,8 @@ mod tests {
             "{f:#?}"
         );
         assert!(
-            f.iter().any(|m| m.contains("sums to 2 and the table has 3")),
+            f.iter()
+                .any(|m| m.contains("sums to 2 and the table has 3")),
             "{f:#?}"
         );
     }
@@ -2009,9 +2020,10 @@ mod tests {
 
     #[test]
     fn an_annotated_id_cell_still_names_its_exercise() {
-        let cells =
-            index_row_cells("| §13.1 — `par` (held) | 13-2 → printed in §13.2 | fingers · lupin | run (lupin) |")
-                .expect("row parses");
+        let cells = index_row_cells(
+            "| §13.1 — `par` (held) | 13-2 → printed in §13.2 | fingers · lupin | run (lupin) |",
+        )
+        .expect("row parses");
         assert_eq!(cells.0, "13-2");
     }
 
