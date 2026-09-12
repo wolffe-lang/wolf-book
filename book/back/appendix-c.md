@@ -1,7 +1,7 @@
 # Appendix C — Diagnostics
 
 Every diagnostic the book shows, with the one-line summary the compiler's
-own catalog carries for it. The catalog holds 174 codes; these 58 are the
+own catalog carries for it. The catalog holds 176 codes; these 58 are the
 ones a page in this edition names. A code is stable: it identifies a
 rule, not a message, and `wolf --explain E1001` prints the whole entry
 for any of them (the summary, the reasoning, and the fix) whether or
