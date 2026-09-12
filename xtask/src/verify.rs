@@ -1865,7 +1865,37 @@ fn verify_exercises_index(root: &Path, failures: &mut Vec<String>) -> Result<()>
     let exercises_md = std::fs::read_to_string(root.join("principles/EXERCISES.md"))
         .context("reading principles/EXERCISES.md")?;
     let veins = taxonomy_veins(&exercises_md);
+    let before = failures.len();
     failures.extend(exercises_index_failures(&page, &corpus, &printed, &veins));
+    if failures.len() == before {
+        // Say the numbers out loud on a green run. Every other check here
+        // reports what it recomputed, and an audit that has to trust a
+        // lane's report for a count the log never printed is not an audit.
+        let rows = index_rows(&page, &veins);
+        let mut tiers: BTreeMap<&str, usize> = BTreeMap::new();
+        for r in &rows {
+            *tiers.entry(r.tier.as_str()).or_default() += 1;
+        }
+        let spread = EXERCISE_KINDS
+            .iter()
+            .map(|k| {
+                let n = rows.iter().filter(|r| r.kinds.contains(*k)).count();
+                format!("{k} {n}")
+            })
+            .collect::<Vec<_>>()
+            .join(" · ");
+        let tiers = tiers
+            .iter()
+            .map(|(t, n)| format!("{n} {t}"))
+            .collect::<Vec<_>>()
+            .join(" · ");
+        let printed_here = rows.iter().filter(|r| printed.contains(&r.id)).count();
+        println!(
+            "verify-docs: EXERCISES-INDEX.md agrees with the corpus — {} exercises \
+             ({printed_here} printed); {tiers}; {spread}",
+            rows.len()
+        );
+    }
     Ok(())
 }
 
