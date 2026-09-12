@@ -861,6 +861,19 @@ disjoint field: moving `p.lead` empties only that path.
 
 ```console
 $ wolf conform-run ./ex3-2.lu
+warning[W1003]: `w` is taken, never touched, and returned
+ --> ./ex3-2.lu:6:10
+  |
+6 | fn adopt(take w: str) -> str { w }
+  |          ^^^^ consumption that consumes nothing
+  |
+  = note: the caller gives the value up only to receive it back; if callers could reasonably keep
+    it, the signature is wrong.
+help: drop the `take` (call sites drop theirs and keep their binding; owned payloads may then need a real transform)
+  |
+6 | fn adopt(w: str) -> str { w }
+  |
+
 error[E1001]: `p.lead` is used here after its value moved away
   --> ./ex3-2.lu:11:13
    |
@@ -876,6 +889,14 @@ help: to keep the original, copy it at the move
  9 |     let a = adopt(take copy p.lead)
    |
 ```
+
+Two diagnostics, and the order is the compiler's rather than the
+exercise's. `adopt` takes a value and hands it straight back, which is
+W1003 in its own right — a consumption that consumes nothing — and it
+is reported first because it is found first. The E1001 the exercise
+is about is the second. The warning is not the lesson here, and it is
+on the page anyway: a console block is replayed against the pinned
+tools byte for byte, so an abridged transcript is a false one.
 
 ```console
 $ lupin ./ex3-2.lu
@@ -1502,6 +1523,20 @@ exclusive claims overlap:
 
 ```console
 $ wolf conform-run ./ex4-4.lu
+warning[W1002]: `i` is `mut`, and the body never writes it
+ --> ./ex4-4.lu:7:9
+  |
+7 | fn wide(mut i: Inner, mut n: int) { n += 1 }
+  |         ^^^ writeback nothing uses
+  |
+  = note: every call site surrenders exclusive access for a write that never happens; the read
+    default is the honest mode.
+help: drop the `mut` here and at every call site — the parameter is never written
+  |
+7 | fn wide(i: Inner, mut n: int) { n += 1 }
+11 |     wide(p.a, mut p.a.n)
+  |
+
 error[E1002]: `p.a.n` cannot go `mut` here: it overlaps `p.a`, already passed `mut` in this call
   --> ./ex4-4.lu:11:23
    |
@@ -1512,6 +1547,13 @@ error[E1002]: `p.a.n` cannot go `mut` here: it overlaps `p.a`, already passed `m
    = note: `p.a.n` is inside `p.a` — a path and its prefix conflict [mem.model.path.disjoint].
      Disjoint fields (`x.a` with `x.b`) are fine together.
 ```
+
+The warning above the error is the compiler's, not the exercise's:
+`wide` asks for `mut i` and never writes through it, which is W1002
+whatever else the program does. Read past it to the E1002 the exercise
+sets — and note that the two are independent, since dropping the `mut`
+on `i` as the help suggests would also dissolve the overlap by
+removing one of the two claims.
 
 The `--explain` entry states the general rule the diagnostic instances:
 "Two paths conflict iff one is a prefix of the other"

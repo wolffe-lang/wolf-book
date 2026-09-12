@@ -24,9 +24,10 @@
 # lane replays and windows declines (a built binary, a linked `wolf
 # build`) is a third of the matrix standing down, not a hole in the
 # book. Those print as OFF-LANE and are never balanced against this
-# file, which is what lets these same twenty rows hold on all three
-# hosts while the raw decline COUNT differs (20 on macOS and linux, 28
-# on windows at the bs41 pin).
+# file, which is what lets the same rows hold on all three hosts while
+# the raw decline COUNT differs (20 on macOS and linux, 28 on windows
+# at the bs41 pin; 18 rows here since bs44 closed three and bs47 added
+# the doctrine page's one).
 #
 # WHAT BS41 TOOK, and why these twenty are what is left. #29 sorted 48
 # declined blocks into five classes. Twenty-eight of them came in:
@@ -135,15 +136,27 @@ filed = "wolf-book#29 §2 (premise corrected at bs44)"
 retires = "the `Verb::Local` widening for corpus blocks, then the ch26 fixture"
 
 # --------------------------------------------------------------- typed
-# #29 §4. Six blocks whose prompt is something a reader TYPES rather
-# than a file a runner opens. Four are REPL sessions opening on a bare
-# `$ lupin`, counted by `pending(is08)` as well and replayed the day the
-# interpreter grows a scripted session. Two are `lupin eval '…'`, which
-# would replay today under a rule that admits a command with no file
-# behind it — bs41 drew that rule at `wolf --explain` alone and left
-# these two, because an expression typed at a tool is the REPL lane's
-# shape and belongs with the four it is spelled like, not with a catalog
-# read.
+# #29 §4, plus one #44 brought in. Seven blocks whose prompt is
+# something a reader TYPES rather than a file a runner opens. Four are
+# REPL sessions opening on a bare `$ lupin`, counted by `pending(is08)`
+# as well and replayed the day the interpreter grows a scripted
+# session. Three are `lupin eval '…'`, which would replay today under a
+# rule that admits a command with no file behind it — bs41 drew that
+# rule at `wolf --explain` alone and left them, because an expression
+# typed at a tool is the REPL lane's shape and belongs with the four it
+# is spelled like, not with a catalog read.
+#
+# The third `eval` block is the one wolf-book#44 uncovered by walking
+# `principles/EXERCISES.md` at all. It is not a new hole; it is the
+# oldest one in the family, and it was invisible rather than declared
+# for as long as the doctrine page sat outside both walks.
+
+[[declined]]
+block = "principles/EXERCISES.md:355"
+class = "typed"
+needs = "an expression to type — exercise 2-1's three `lupin eval '…'` prompts have no file behind them, and the exemplar batch checks in no `ex2-1.lu` for them to name. The exercise declares its own machine as `lupin REPL` in its taxonomy line, so this is a REPL block written in `eval`'s spelling; it wants exactly what ch02:81 and ch02:101 want"
+filed = "wolf-book#44"
+retires = "the `eval` widening (with ch02:81 and ch02:101), or wolf-interp is08 if the REPL lane takes all three"
 
 [[declined]]
 block = "principles/exercises/ch01/EXERCISES.md:18"
