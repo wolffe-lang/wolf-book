@@ -1059,15 +1059,28 @@ impl_version = "0.2.13"
 #     surface; this machine has no filesystem (or injectable stdin) by
 #     design, so the fs tier is declined rather than mocked` (exit 4)
 #   lupin 0.1.36: writes the file, reads it back, exits 0
-# FOURTEEN READER-FACING CLAIMS WENT FALSE IN ONE RELEASE. "The
-# reference interpreter has no filesystem, by design" is a sentence this
-# book has leaned on since bs10 — it is ch04's reason for printing
-# instead of closing a file, ch06's reason for embedding its text,
-# ch27's reason for chapter 26 being compiled, ch30's reason for being
-# the compiler's column, three TOC ledger rows, the exercise index, two
-# exercise-file headers, an audit doc, a tells file that had explicitly
-# DEFENDED the sentence as sound, and three corpus `.lu` headers. Every
-# one was rewritten here. None of them is a fence, so not one of them
+# SIXTEEN SITES WENT FALSE IN ONE RELEASE, FOUR OF THEM ON THE BOOK'S
+# OWN PAGES. "The reference interpreter has no filesystem, by design"
+# is a sentence this book has leaned on since bs10. Counted one by one,
+# because a number in prose is as likely to be stale as a number in a
+# table:
+#     4  book pages — ch04's reason for printing instead of closing a
+#        file, ch06's reason for embedding its text, ch27's reason for
+#        chapter 26 being compiled, ch30 §30.3's reason for being the
+#        compiler's column
+#     1  ch30's HTML ledger comment, the only place quoting the 0.1.34
+#        decline verbatim
+#     3  principles/TOC.md rows (the ch26 row, the ch30 row, and the
+#        bs17 wolf-run sweep's trailing clause)
+#     1  principles/EXERCISES-INDEX.md's ch26 sentence
+#     2  exercise-file headers (ch26, ch30)
+#     3  corpus `.lu` headers (ex30-3, ex30-4, ex30-5)
+#     1  docs/audit/promissory-prose-audit.md
+#     1  audit/tells/ch04.md, which had explicitly DEFENDED the
+#        sentence as sound — the defence was right and the FACT moved
+#        under it, which is the one failure mode a tells file cannot
+#        catch by being re-read
+# Every one rewritten here. NOT ONE OF THEM IS A FENCE, so not one
 # would ever have reddened: the four ch30 FLIPs are the only part of
 # this the runner could see, and they are the smallest part.
 #
