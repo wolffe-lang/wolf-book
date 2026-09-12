@@ -1481,8 +1481,8 @@ you would find every mutation in this program with one search.
 Solution. `ch04/ex4-3.lu`:
 
 ```wolf
-fn grow(mut xs: List[int]) { xs.push(7) }
-fn shrink(mut xs: List[int]) { let _ = xs.pop() }
+fn grow(mut xs: List[int]) { (mut xs).push(7) }
+fn shrink(mut xs: List[int]) { let _ = (mut xs).pop() }
 fn main() -> !int {
     var xs = List[int]()
     grow(mut xs)
@@ -1881,10 +1881,10 @@ Solution. `ch05/ex5-1.lu`:
 ```wolf
 fn main() -> !int {
     var xs = List[int]()
-    xs.push(1)
-    xs.push(2)
-    xs.push(3)
-    let top = xs.pop()
+    (mut xs).push(1)
+    (mut xs).push(2)
+    (mut xs).push(3)
+    let top = (mut xs).pop()
     print("top={top} len={xs.len}")
     0
 }
@@ -1943,7 +1943,7 @@ fn first[T](xs: List[T], fallback: T) -> T {
 }
 fn main() -> !int {
     var howls = List[str]()
-    howls.push("awoo")
+    (mut howls).push("awoo")
     let empty = List[int]()
     print("{first[str](howls, "silence")} {first(empty, -1)}")
     0
@@ -2639,6 +2639,7 @@ fn parse(s: str) -> int ! {empty, NotDigit(Bad), too_long} {
     if s.len > 4 { return too_long }
     ...
 }
+...
     let v = parse("40000") else |err| {
         match err {
             too_long => -4,
