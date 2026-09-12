@@ -1,6 +1,6 @@
 error[E0201]: `when` requires at least two operands — it acquires its whole set at once, so name every sync object the body touches in one `when` list
- --> ./s12.lu:7:19
+ --> ./s12.lu:7:10
   |
 7 |     when (served) {
-  |                   ^
+  |          ^^^^^^^^
   |

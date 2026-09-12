@@ -77,8 +77,8 @@ error[E0706]: this `+` on `i32` faults at compile time: 2147483647 + 1 leaves `i
   |               ------ while evaluating `brim`, entered here
   |               ------ while evaluating `main`, entered here
   |
-  = note: checked arithmetic has one semantics everywhere (X3): what would trap at runtime is an
-    error at comptime — intended wraparound is spelled `wrapping[T]`, never a mode.
+  = note: checked arithmetic has one semantics everywhere: what would trap at runtime is an error
+    at comptime — intended wraparound is spelled `wrapping[T]`, never a mode.
 ```
 
 **Exercise 18-3** *(fingers · wolf)*. Write `sum_squares(n)` as
@@ -118,7 +118,8 @@ error[E0708]: the size of `Vec2` is not resolved until codegen lays it out
   |               ------------- while evaluating `main`, entered here
   |
   = note: layout (sizes, offsets) is decided by the code generator, not the type checker; comptime
-    can answer for fixed-width primitives today, but not yet for aggregates.
+    answers for fixed-width primitives, whose widths the type alone settles, and cannot
+    answer for an aggregate until the layout that decides its offsets exists.
 ```
 
 **Exercise 18-5** *(extension · wolf)*. Write `field_count(T: type)`

@@ -8,5 +8,5 @@ error[E0706]: this `*` on `i32` faults at compile time: 100000 * 30000 leaves `i
   |                   -------------------------- while evaluating `index_bytes`, entered here
   |                   -------------------------- while evaluating `main`, entered here
   |
-  = note: checked arithmetic has one semantics everywhere (X3): what would trap at runtime is an
-    error at comptime — intended wraparound is spelled `wrapping[T]`, never a mode.
+  = note: checked arithmetic has one semantics everywhere: what would trap at runtime is an error
+    at comptime — intended wraparound is spelled `wrapping[T]`, never a mode.

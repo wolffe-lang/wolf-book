@@ -104,10 +104,10 @@ does the extra warning on it say that `W1101` did not?
 
 Solution: the three fixes are a channel (each task sends, one owner
 adds), a `Mutex` acquired in a `when` (for state that is genuinely
-shared), and `par` with a reduction (for the loop-shaped cases). The
-first two apply here; the third wants a loop over a collection, and this
-program has two hand-written tasks. The compiler names all three, once
-per spawn:
+shared), and a private copy per task combined after the scope joins
+(for work that divides cleanly). All three apply here, and the third
+is the shortest: give each task its own total and add the two
+afterwards. The compiler names all three, once per spawn:
 
 ```console
 $ wolf conform-run ./ex13-3.lu
@@ -121,8 +121,8 @@ error[E1101]: this task writes to `hits`, which it captures from the enclosing f
   = note: task captures are copies, `imm` shares, or region moves (D14) — never mutable windows
     onto the parent's locals; two tasks writing one binding is the data race the memory
     model forbids. Three ways out: send results over a `channel` and let one owner mutate;
-    guard truly shared state with a `Mutex` acquired in a `when` block; or, for loop-shaped
-    work, use `par` with a reduction.
+    guard truly shared state with a `Mutex` acquired in a `when` block; or give each task
+    its own copy and combine the results after the scope joins.
 
 warning[W1101]: this write to `hits` stays inside the task
  --> ./ex13-3.lu:9:24

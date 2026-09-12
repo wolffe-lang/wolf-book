@@ -406,7 +406,7 @@ fn main() -> !int {
 
 ```console
 $ lupin ex12-9.lu
-ex12-9.lu: E0201: `when` acquires a set, so it needs at least two operands; for one, call the method on the sync type [gram.expr.conc] at 14:24
+ex12-9.lu: E0201: `when` requires at least two operands — it acquires its whole set at once, so name every sync object the body touches in one `when` list [gram.expr.conc] at 14:24
 $ echo $?
 2
 ```
