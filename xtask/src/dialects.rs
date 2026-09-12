@@ -131,6 +131,11 @@ pub fn classify(fi: &FenceInfo) -> Option<(&'static Dialect, String)> {
 fn check_suffix(check: &Check) -> Option<String> {
     match check {
         Check::Run { exit, .. } => Some(format!("runs, exit {exit}")),
+        // The label says the CLASS, because the class is the claim:
+        // the two machines answer this one with different numbers and
+        // both conform, so printing either number at a reader would be
+        // the page telling them their own tool is wrong.
+        Check::RunNonzero { .. } => Some("runs, exits nonzero".to_string()),
         Check::WolfRun { exit, .. } => Some(format!("compiled run, exit {exit}")),
         // The one-machine spellings say which machine on the page
         // itself, which is the per-machine note in its rendered form:

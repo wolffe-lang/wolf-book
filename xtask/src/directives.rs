@@ -24,6 +24,28 @@ pub enum Check {
     /// the compiler also serves is a FLIP, which is how the note gets
     /// retired in the pin-bump commit rather than remembered.
     LupinRun { exit: i32, stdout: Option<String> },
+    /// `run(exit=nonzero[, stdout="…"])` — both machines run it, both
+    /// die nonzero, and the NUMBER is not the claim. The specification
+    /// asks for exactly this wherever it leaves a status
+    /// implementation-specified: `[conc.proc.root]` terminates the
+    /// process with "a nonzero, implementation-specified status" when
+    /// the root supervisor's domain dies, under the `[conf.trap.exit]`
+    /// discipline — "conforming tools compare the outcome class, never
+    /// the number". `wolf` answers 121 there and `lupin` answers 1, and
+    /// both conform.
+    ///
+    /// This is the shape `Trap` already has (the kind is the contract,
+    /// the status is not) for a claim that is not a trap, and it exists
+    /// because every alternative is worse: `run(exit=N)` is false on one
+    /// machine, and `lupin-run(exit=N)` reports a FLIP on every run
+    /// forever, since the compiler does not decline the program —
+    /// TWO-MACHINES §6's limit exempts trap rows alone.
+    ///
+    /// Nonzero is a weaker claim than a number, so it is held to the
+    /// compile check below: a program that never compiled also "dies
+    /// nonzero", and crediting that would be the whole hole this
+    /// directive must not reopen.
+    RunNonzero { stdout: Option<String> },
     /// `run(exit=trap(kind))` — a defined fault, named, on both
     /// machines. The kind is the contract; the exit status is not,
     /// because D60 rules it per-machine: lupin exits 3, the compiler's
@@ -62,6 +84,16 @@ impl Check {
             // cannot meet, which is the defect this directive exists to
             // stop making. They stay home until the fence graduates.
             Check::LupinRun { .. } | Check::LupinTrap { .. } => None,
+            // Stays home for the OTHER reason: not a claim that runner
+            // cannot meet, but a spelling it cannot read. wolf-lang's
+            // corpus runner parses `exit=` as an i32 or `trap(…)` and
+            // has no `nonzero` (checked at v0.2.13, `xtask/src/corpus.rs`
+            // — "expected pass | fail(CODE) | run(exit=..)"), so an
+            // exported `run(exit=nonzero)` would arrive there as a parse
+            // error rather than a sample. Filed as wolf-book#50's
+            // upstream half; when that runner learns the spelling this
+            // arm becomes `other`.
+            Check::RunNonzero { .. } => None,
             // The other runner has one `run`, and it is the same claim
             // about the same program — which lane executed it is this
             // repository's bookkeeping.
@@ -80,6 +112,10 @@ impl Check {
 impl std::fmt::Display for Check {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
+            Check::RunNonzero { stdout: None } => write!(f, "run(exit=nonzero)"),
+            Check::RunNonzero { stdout: Some(s) } => {
+                write!(f, "run(exit=nonzero, stdout=\"{s}\")")
+            }
             Check::Run { exit, stdout: None } => write!(f, "run(exit={exit})"),
             Check::Run {
                 exit,
@@ -167,11 +203,14 @@ fn parse_run_args(inner: &str) -> Result<Check> {
     let mut exit: Option<i32> = None;
     let mut trap: Option<String> = None;
     let mut stdout: Option<String> = None;
+    let mut nonzero = false;
     for arg in split_args(inner) {
         let arg = arg.trim();
         if let Some(v) = arg.strip_prefix("exit=") {
             if let Some(kind) = v.strip_prefix("trap(").and_then(|r| r.strip_suffix(')')) {
                 trap = Some(kind.trim().to_string());
+            } else if v.trim() == "nonzero" {
+                nonzero = true;
             } else {
                 exit = Some(v.trim().parse()?);
             }
@@ -186,11 +225,17 @@ fn parse_run_args(inner: &str) -> Result<Check> {
             bail!("unrecognized run() argument: `{arg}`");
         }
     }
+    if nonzero && (trap.is_some() || exit.is_some()) {
+        bail!("run() cannot have exit=nonzero beside exit=N or exit=trap(…)");
+    }
+    if nonzero {
+        return Ok(Check::RunNonzero { stdout });
+    }
     match (trap, exit) {
         (Some(kind), None) => Ok(Check::Trap { kind }),
         (None, Some(exit)) => Ok(Check::Run { exit, stdout }),
         (Some(_), Some(_)) => bail!("run() cannot have both exit=N and exit=trap(…)"),
-        (None, None) => bail!("run() needs exit=N or exit=trap(…)"),
+        (None, None) => bail!("run() needs exit=N, exit=nonzero or exit=trap(…)"),
     }
 }
 
@@ -387,6 +432,42 @@ pub fn parse_fence_info(info: &str) -> Result<FenceInfo> {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn nonzero_parses_and_round_trips() {
+        use super::*;
+        assert_eq!(
+            parse_check("run(exit=nonzero)").unwrap(),
+            Check::RunNonzero { stdout: None }
+        );
+        assert_eq!(
+            parse_check("run(exit=nonzero, stdout=\"gone\")").unwrap(),
+            Check::RunNonzero {
+                stdout: Some("gone".into())
+            }
+        );
+        // The fence spelling survives the trip, because the export
+        // writes it back out and wolf-lang's runner reads what we wrote.
+        assert_eq!(
+            Check::RunNonzero { stdout: None }.to_string(),
+            "run(exit=nonzero)"
+        );
+        assert_eq!(
+            Check::RunNonzero {
+                stdout: Some("gone".into())
+            }
+            .to_string(),
+            "run(exit=nonzero, stdout=\"gone\")"
+        );
+    }
+
+    #[test]
+    fn nonzero_refuses_to_share_a_fence_with_a_number() {
+        use super::*;
+        assert!(parse_check("run(exit=nonzero, exit=1)").is_err());
+        assert!(parse_check("run(exit=1, exit=nonzero)").is_err());
+        assert!(parse_check("run(exit=nonzero, exit=trap(bounds))").is_err());
+    }
+
     use super::*;
 
     #[test]

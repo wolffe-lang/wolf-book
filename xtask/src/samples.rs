@@ -1332,8 +1332,38 @@ fn refusal(r: &MachineRun) -> Option<String> {
     line("cannot compile this yet").or_else(|| line("unsupported:"))
 }
 
+/// Did the program fail to COMPILE, as opposed to running and exiting?
+///
+/// `wolf run` compiles and then executes, and it exits **1** when the
+/// package does not compile — the same 1 a program that ran and returned
+/// an error exits with. `meets` compares the number alone, so for four
+/// pin bumps a `run(exit=1)` fence credited a program the compiler never
+/// built. bs46 measured it: `book/ch15/s5` and `ch15/ex15-2` were green
+/// at wolf 0.2.12 while `wolf run` answered `E0402: link takes 1
+/// argument, but this call passes 0`, and they only surfaced when
+/// s157's papercut made `w.link()` compile and the program finally ran.
+///
+/// A refusal (`cannot compile this yet`) was already looked at, because
+/// that is the tool declining a construct. This is the other half: the
+/// tool accepting the job and the reader's program being rejected. The
+/// driver's own closing line is the marker, so the check reads what a
+/// reader reads rather than pattern-matching diagnostic codes.
+fn compile_failed(r: &MachineRun) -> bool {
+    r.stderr
+        .lines()
+        .chain(r.stdout.lines())
+        .any(|l| l.contains("the package does not compile"))
+}
+
 /// Did this machine meet the fence's exit-and-stdout claim?
 fn meets(r: &MachineRun, exit: i32, stdout: Option<&str>) -> std::result::Result<(), String> {
+    if compile_failed(r) {
+        return Err(format!(
+            "the package does not compile, so `exit={exit}` is the COMPILER's exit and not the \
+             program's (stderr: {})",
+            r.stderr.trim()
+        ));
+    }
     if r.code != Some(exit) {
         let mut why = format!("exited {:?}, expected {exit}", r.code);
         if !r.stderr.trim().is_empty() {
@@ -1348,6 +1378,32 @@ fn meets(r: &MachineRun, exit: i32, stdout: Option<&str>) -> std::result::Result
         }
     }
     Ok(())
+}
+
+/// Did this machine die nonzero, having actually built the program?
+/// The compile check is not an extra here, it is the whole guard: a
+/// package that does not compile exits nonzero too, and without this
+/// `run(exit=nonzero)` would be a directive that passes anything.
+fn meets_nonzero(r: &MachineRun, stdout: Option<&str>) -> std::result::Result<(), String> {
+    if compile_failed(r) {
+        return Err(format!(
+            "the package does not compile, so nothing ran (stderr: {})",
+            r.stderr.trim()
+        ));
+    }
+    match r.code {
+        Some(0) => Err("exited 0, expected a nonzero status".to_string()),
+        None => Err("no exit status (killed or timed out), expected a nonzero one".to_string()),
+        Some(_) => {
+            if let Some(want) = stdout {
+                let got = r.stdout.trim_end_matches('\n');
+                if got != want {
+                    return Err(format!("stdout mismatch: expected {want:?}, got {got:?}"));
+                }
+            }
+            Ok(())
+        }
+    }
 }
 
 /// Did this machine fault, naming that kind? lupin spells a defined
@@ -1410,6 +1466,40 @@ fn execute(tools: &Tools, s: &Sample) -> Result<Outcome> {
                 // Two processes ran; the fields a `samples-os.toml`
                 // refusal row compares are the failing machine's, and
                 // lupin's when both agree.
+                exit: blamed.code,
+                stderr: blamed.stderr.clone(),
+                stdout: blamed.stdout.clone(),
+                diagnostic: None,
+                phase_reached: None,
+                graduates: None,
+            })
+        }
+        // Both machines, outcome class only. The number is not the
+        // claim because the specification says it is not: see the
+        // directive's own doc comment and `[conf.trap.exit]`.
+        Check::RunNonzero { stdout } => {
+            let lupin = machine_gate(Machine::Lupin, tools, s);
+            let wolf = machine_gate(Machine::Wolf, tools, s);
+            let mut why: Vec<String> = Vec::new();
+            if let Err(e) = meets_nonzero(&lupin, stdout.as_deref()) {
+                why.push(format!("lupin: {e}"));
+            }
+            match refusal(&wolf) {
+                Some(word) => why.push(format!("wolf run: {word}{}", RUN_IS_BOTH)),
+                None => {
+                    if let Err(e) = meets_nonzero(&wolf, stdout.as_deref()) {
+                        why.push(format!("wolf run: {e}"));
+                    }
+                }
+            }
+            let blamed = if meets_nonzero(&lupin, stdout.as_deref()).is_err() {
+                &lupin
+            } else {
+                &wolf
+            };
+            Ok(Outcome {
+                passed: why.is_empty(),
+                detail: why.join("\n     "),
                 exit: blamed.code,
                 stderr: blamed.stderr.clone(),
                 stdout: blamed.stdout.clone(),
@@ -1901,6 +1991,41 @@ fn export_corpus(
 
 // -------------------------------------------------------------- selftest
 
+/// The other direction, which is the one that matters for a directive
+/// this weak: a program that genuinely COMPILES and genuinely dies
+/// nonzero must be ACCEPTED by `run(exit=nonzero)`. A guard that
+/// rejects everything would pass the two planted cases above and be
+/// worthless, which is the failure mode a planted-defect suite cannot
+/// see on its own. The two machines answer this program with different
+/// numbers on purpose — that is the whole point of the directive — so
+/// the assertion is that both are credited anyway.
+fn selftest_nonzero_true(root: &Path, tools: &Tools, caught: &mut usize) -> Result<()> {
+    let dir = root.join("samples/selftest/nonzero-true");
+    let _ = std::fs::remove_dir_all(&dir);
+    std::fs::create_dir_all(&dir)?;
+    let source = "fn main() -> !int {\n    Bad\n}\n";
+    std::fs::write(dir.join("nonzero-true.lu"), source)?;
+    let sample = Sample {
+        id: "selftest/nonzero-true".to_string(),
+        dir,
+        file_name: "nonzero-true.lu".to_string(),
+        check: Check::RunNonzero { stdout: None },
+        origin: Origin::Corpus,
+        warns: Vec::new(),
+    };
+    let outcome = execute(tools, &sample)?;
+    if !outcome.passed {
+        bail!(
+            "self-test FAILED: a TRUE run(exit=nonzero) program was rejected — {}",
+            outcome.detail
+        );
+    }
+    println!("samples: self-test run(exit=nonzero) credits a program that really dies nonzero");
+    *caught += 1;
+    Ok(())
+}
+
+
 /// The acceptance demonstration: a deliberately-broken sample must
 /// fail. Four breakages, one per checker lane, and the fourth is the
 /// bs31 rule — a `run(…)` fence on a program only one machine serves
@@ -1949,6 +2074,31 @@ fn selftest(root: &Path, tools: &Tools) -> Result<()> {
                 stdout: Some("285".into()),
             },
         ),
+        (
+            // bs46: the hole that ate four pin bumps. `wolf run` exits
+            // 1 when the PACKAGE DOES NOT COMPILE, which is the same 1
+            // a program that ran and returned an error exits with, so a
+            // `run(exit=1)` fence was satisfied by a program the
+            // compiler never built. Two real samples were living on it
+            // (`book/ch15/s5`, `ch15/ex15-2`), green from bs31 to
+            // v0.2.12 while `wolf run` answered E0402 at them.
+            "never-compiled.lu",
+            "fn main() -> !int {\n    let x: int = \"not an int\"\n    Bad\n}\n",
+            Check::Run {
+                exit: 1,
+                stdout: None,
+            },
+        ),
+        (
+            // The same plant against the weaker directive, because
+            // `run(exit=nonzero)` is the one that would be worthless
+            // without the guard: a package that does not compile dies
+            // nonzero too, so this case is the reason the check lives
+            // inside `meets_nonzero` and not beside it.
+            "never-compiled-nonzero.lu",
+            "fn main() -> !int {\n    let x: int = \"not an int\"\n    Bad\n}\n",
+            Check::RunNonzero { stdout: None },
+        ),
     ];
 
     let mut broken_caught = 0;
@@ -1973,10 +2123,11 @@ fn selftest(root: &Path, tools: &Tools) -> Result<()> {
         println!("samples: self-test caught {name}: {}", outcome.detail);
         broken_caught += 1;
     }
+    selftest_nonzero_true(root, tools, &mut broken_caught)?;
     selftest_corpus_console(root, tools, &mut broken_caught)?;
     selftest_warns(root, tools, &mut broken_caught)?;
     selftest_declined(root, &mut broken_caught)?;
-    println!("samples: self-test ok — {broken_caught}/7 deliberate breakages caught");
+    println!("samples: self-test ok — {broken_caught}/10 deliberate breakages caught");
     Ok(())
 }
 
