@@ -3,9 +3,13 @@ fn label(n: int) -> str {
 }
 
 fn describe(n: int) -> str {
-    if n < 10 { "a column narrow enough to read at a glance" } else if n < 80 {
+    if n < 10 {
+        "a column narrow enough to read at a glance"
+    } else if n < 80 {
         "a column the terminal was measured for"
-    } else { "a column that will wrap on somebody" }
+    } else {
+        "a column that will wrap on somebody"
+    }
 }
 
 fn main() -> !int {

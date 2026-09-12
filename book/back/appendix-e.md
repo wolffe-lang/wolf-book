@@ -169,9 +169,13 @@ fn label(n: int) -> str {
 }
 
 fn describe(n: int) -> str {
-    if n < 10 { "a column narrow enough to read at a glance" } else if n < 80 {
+    if n < 10 {
+        "a column narrow enough to read at a glance"
+    } else if n < 80 {
         "a column the terminal was measured for"
-    } else { "a column that will wrap on somebody" }
+    } else {
+        "a column that will wrap on somebody"
+    }
 }
 
 fn main() -> !int {
@@ -188,8 +192,16 @@ opening brace on the construct's line and `} else` on one line, so no
 block stay on one line when its body is guard-clause-shaped — at most
 two statements — and fits the width. `[gram.fmt.indent]` sets that width
 at 100 columns and forbids breaking mid-token. `label` fits, so all three
-of its arms are on one line; `describe` does not, so the arm that ran out
-of room is the one that broke.
+of its arms are on one line; `describe` does not, and **a braced chain
+breaks as one**: the arms that would still have fit break with the arm
+that did not, because a chain laid out half inline and half broken reads
+as two constructs rather than one. (That last rule is the newer half. At
+wolf 0.2.11 the formatter broke only the arm that ran out of room, and
+the file above is what it printed then; 0.2.12 re-lays it, along with
+thirty-three files of wolf-std and twenty-eight of lobo. A formatter that
+is a fixed point is not a formatter that never changes — it is one that
+changes in a release, in public, with the corpus re-laid in the same
+commit.)
 
 The style is *canonical*, which is a stronger claim than fixed:
 `[gram.fmt.canon]` requires the formatter to be a fixed point on every
