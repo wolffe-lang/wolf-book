@@ -147,9 +147,11 @@ pub fn run(root: &Path, args: &[String]) -> Result<()> {
     println!("samples: lupin = {}", tools.lupin.display());
     println!("samples: wolf  = {}", tools.wolf.display());
     println!(
-        "samples: SKIP extraction book/back/solutions.md — generated from the exercise \
-         corpus, which this run executes directly (cargo xtask backmatter --check holds \
-         the page to it)"
+        "samples: SKIP extraction book/back/solutions.md — generated from the two places \
+         solutions live, and this run reaches both directly: the exercise corpus under \
+         principles/exercises/ (chapters 7+) and principles/EXERCISES.md §5, the master \
+         for the chapter 1-6 exemplar batch (wolf-book#44). Every console block on both \
+         is replayed below; cargo xtask backmatter --check holds the page to them"
     );
 
     if self_test {
@@ -634,7 +636,8 @@ fn collect_corpus(root: &Path) -> Result<(Vec<Sample>, usize)> {
     Ok((samples, members))
 }
 
-/// The exercise corpus's console blocks (wolf-book#24).
+/// The exercise corpus's console blocks (wolf-book#24), and the
+/// doctrine page's (wolf-book#44).
 ///
 /// `principles/exercises/*/EXERCISES.md` holds transcripts that nothing
 /// replayed: the `.lu` solutions beside them have been executed since
@@ -652,6 +655,11 @@ fn collect_corpus(root: &Path) -> Result<(Vec<Sample>, usize)> {
 /// Only `console` fences are parsed here — the `wolf` fences on these
 /// pages are quotations of those same files, which `cargo xtask
 /// backmatter --check` already holds to them.
+///
+/// `principles/EXERCISES.md` is collected too, by
+/// `collect_exemplar_console` below: it is a SIBLING of
+/// `principles/exercises/` rather than a child, so this walk alone
+/// missed it for as long as it existed.
 fn collect_corpus_console(root: &Path) -> Result<Vec<ConsoleBlock>> {
     let base = root.join("principles/exercises");
     let mut pages = Vec::new();
@@ -670,27 +678,116 @@ fn collect_corpus_console(root: &Path) -> Result<Vec<ConsoleBlock>> {
             "exercises-{}",
             dir.file_name().unwrap_or_default().to_string_lossy()
         );
-        for seg in segments(&source) {
-            let Segment::Fence(f) = seg else { continue };
-            let info = f.info.trim();
-            if info != "console" && !info.starts_with("console,") {
-                continue;
-            }
-            let fi = parse_fence_info(info)
-                .with_context(|| format!("{}: bad fence info `{info}`", md.display()))?;
-            blocks.push(ConsoleBlock {
-                stem: stem.clone(),
-                md: md.clone(),
-                line: f.open_line + 1,
-                text: f.content.clone(),
-                program: None,
-                from: fi.from.clone(),
-                fixture: fi.in_fixture.clone(),
-                corpus_dir: Some(dir.clone()),
-            });
+        harvest_console(md, &source, &stem, &mut |_| Some(dir.clone()), &mut blocks)?;
+    }
+    blocks.extend(collect_exemplar_console(root)?);
+    Ok(blocks)
+}
+
+/// The doctrine page's own console blocks (wolf-book#44).
+///
+/// `principles/EXERCISES.md` is the MASTER for the exemplar batch —
+/// chapters 1 through 6 — and the six corpus pages beside it say so in
+/// their own first paragraph ("Exercises 3-1 through 3-5 are the
+/// doctrine's exemplar batch and live in `principles/EXERCISES.md`
+/// §5"). It is a sibling of `principles/exercises/`, not a child, so
+/// the corpus walk above never reached it and the book walk never
+/// reached it either: it sat outside both, with 25 console blocks that
+/// nothing had ever replayed.
+///
+/// That it is the master is what made the hole cost something rather
+/// than merely exist. `cargo xtask backmatter` harvests the chapter 1-6
+/// solution bodies from THIS file (`backmatter::solutions` calls
+/// `harvest` on it before it touches a single corpus page), so the
+/// Solutions page the reader opens prints these fences and these
+/// transcripts. The runner's own skip line for `book/back/solutions.md`
+/// said the corpus "already executes it", which was true for chapters 7
+/// and up and false for the first six.
+///
+/// A block here binds to a chapter DIRECTORY the way every other corpus
+/// block does, and the page states the binding itself: "Programs live
+/// in `principles/exercises/chNN/`. Commands are as run from each
+/// chapter's directory." So the directory is read off the nearest
+/// preceding `### Chapter N` heading. A console block that precedes the
+/// first such heading belongs to the doctrine prose rather than to the
+/// batch and is not collected — §4a quotes transcripts to argue about
+/// them, which is a different act from pasting one as a result.
+fn collect_exemplar_console(root: &Path) -> Result<Vec<ConsoleBlock>> {
+    let md = root.join("principles/EXERCISES.md");
+    if !md.is_file() {
+        bail!(
+            "{} is missing — the exemplar batch's master moved and the console \
+             lane would go quiet without saying so",
+            md.display()
+        );
+    }
+    let source =
+        std::fs::read_to_string(&md).with_context(|| format!("reading {}", md.display()))?;
+    let chapters = exemplar_chapter_spans(&source);
+    let mut blocks = Vec::new();
+    let mut resolve = |line: usize| -> Option<PathBuf> {
+        chapters
+            .iter()
+            .rev()
+            .find(|(start, _)| *start < line)
+            .map(|(_, ch)| root.join(format!("principles/exercises/ch{ch:02}")))
+    };
+    harvest_console(&md, &source, "exemplar", &mut resolve, &mut blocks)?;
+    Ok(blocks)
+}
+
+/// `### Chapter N — …` headings, as (one-based line, N). The exemplar
+/// batch's chapter boundaries; nothing else in the file uses `###` with
+/// that shape.
+fn exemplar_chapter_spans(source: &str) -> Vec<(usize, u32)> {
+    let mut out = Vec::new();
+    for (i, line) in source.lines().enumerate() {
+        let Some(rest) = line.strip_prefix("### Chapter ") else {
+            continue;
+        };
+        let num: String = rest.chars().take_while(|c| c.is_ascii_digit()).collect();
+        if let Ok(n) = num.parse::<u32>() {
+            out.push((i + 1, n));
         }
     }
-    Ok(blocks)
+    out
+}
+
+/// Pull the `console` fences out of one markdown page, asking `dir` for
+/// the exercise directory each one binds to. `dir` returning `None`
+/// means "this block is not part of the corpus" and the block is left
+/// alone.
+fn harvest_console(
+    md: &Path,
+    source: &str,
+    stem: &str,
+    dir: &mut impl FnMut(usize) -> Option<PathBuf>,
+    blocks: &mut Vec<ConsoleBlock>,
+) -> Result<()> {
+    for seg in segments(source) {
+        let Segment::Fence(f) = seg else { continue };
+        let info = f.info.trim();
+        if info != "console" && !info.starts_with("console,") {
+            continue;
+        }
+        let line = f.open_line + 1;
+        let Some(corpus_dir) = dir(line) else {
+            continue;
+        };
+        let fi = parse_fence_info(info)
+            .with_context(|| format!("{}: bad fence info `{info}`", md.display()))?;
+        blocks.push(ConsoleBlock {
+            stem: stem.to_string(),
+            md: md.to_path_buf(),
+            line,
+            text: f.content.clone(),
+            program: None,
+            from: fi.from.clone(),
+            fixture: fi.in_fixture.clone(),
+            corpus_dir: Some(corpus_dir),
+        });
+    }
+    Ok(())
 }
 
 // ------------------------------------------------------------------ book
