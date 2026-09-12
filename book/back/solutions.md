@@ -6265,7 +6265,7 @@ fn main() -> !int {
 
 ```console
 $ lupin ex12-9.lu
-ex12-9.lu: E0201: `when` acquires a set, so it needs at least two operands; for one, call the method on the sync type [gram.expr.conc] at 14:24
+ex12-9.lu: E0201: `when` requires at least two operands — it acquires its whole set at once, so name every sync object the body touches in one `when` list [gram.expr.conc] at 14:24
 $ echo $?
 2
 ```
@@ -6462,10 +6462,10 @@ does the extra warning on it say that `W1101` did not?
 
 Solution: the three fixes are a channel (each task sends, one owner
 adds), a `Mutex` acquired in a `when` (for state that is genuinely
-shared), and `par` with a reduction (for the loop-shaped cases). The
-first two apply here; the third wants a loop over a collection, and this
-program has two hand-written tasks. The compiler names all three, once
-per spawn:
+shared), and a private copy per task combined after the scope joins
+(for work that divides cleanly). All three apply here, and the third
+is the shortest: give each task its own total and add the two
+afterwards. The compiler names all three, once per spawn:
 
 ```console
 $ wolf conform-run ./ex13-3.lu
@@ -6479,8 +6479,8 @@ error[E1101]: this task writes to `hits`, which it captures from the enclosing f
   = note: task captures are copies, `imm` shares, or region moves (D14) — never mutable windows
     onto the parent's locals; two tasks writing one binding is the data race the memory
     model forbids. Three ways out: send results over a `channel` and let one owner mutate;
-    guard truly shared state with a `Mutex` acquired in a `when` block; or, for loop-shaped
-    work, use `par` with a reduction.
+    guard truly shared state with a `Mutex` acquired in a `when` block; or give each task
+    its own copy and combine the results after the scope joins.
 
 warning[W1101]: this write to `hits` stays inside the task
  --> ./ex13-3.lu:9:24
@@ -7268,7 +7268,7 @@ normal=false killed=false
 **Exercise 15-2** *(comprehension · lupin)*. `monitor` delivers a
 message; `link` shares fate. This program links to a proc that fails,
 then blocks on an empty channel. Two prints are written. Predict what
-appears on stdout, and what `echo $?` shows:
+appears on stdout, and whether the process ends well or badly:
 
 ```wolf
 fn boom() -> !int { Bad }
@@ -7282,13 +7282,22 @@ fn main() -> !int {
 }
 ```
 
-Solution: nothing appears, and the exit code is 1. The link propagates
-the failure into `main` at its blocking point: no error value arrives
-at the `else` handler, because shared fate is not an error return; it
-is death. The handler that never ran is the lesson: `link` is for
-"if it dies, we die," and code below a link is written in that
-knowledge. Choose `monitor` when failure is information; choose
-`link` when failure is contagion, and mean it.
+Solution: nothing appears, and the process dies nonzero. The link
+propagates the failure into `main` at its blocking point: no error
+value arrives at the `else` handler, because shared fate is
+not an error return; it is death. The handler that never ran is the
+lesson: `link` is for "if it dies, we die," and code below a link is
+written in that knowledge. Choose `monitor` when failure is
+information; choose `link` when failure is contagion, and mean it.
+
+The exit NUMBER is deliberately not part of the answer. `w.link()`
+called from `main` couples `w` to the root supervisor's domain, and
+`[conc.proc.root]` ends the process with "a nonzero,
+implementation-specified status" when that domain dies abnormally;
+`[conf.trap.exit]` tells a conforming tool to compare the outcome
+class and never the number. The transcript below is `lupin`'s and
+says 1; a compiled binary says 121. Both are right, and a reader
+whose tool prints the other number has not found a bug.
 
 ```console
 $ lupin ex15-2.lu
@@ -8288,8 +8297,8 @@ error[E0706]: this `+` on `i32` faults at compile time: 2147483647 + 1 leaves `i
   |               ------ while evaluating `brim`, entered here
   |               ------ while evaluating `main`, entered here
   |
-  = note: checked arithmetic has one semantics everywhere (X3): what would trap at runtime is an
-    error at comptime — intended wraparound is spelled `wrapping[T]`, never a mode.
+  = note: checked arithmetic has one semantics everywhere: what would trap at runtime is an error
+    at comptime — intended wraparound is spelled `wrapping[T]`, never a mode.
 ```
 </details>
 
@@ -8317,7 +8326,8 @@ error[E0708]: the size of `Vec2` is not resolved until codegen lays it out
   |               ------------- while evaluating `main`, entered here
   |
   = note: layout (sizes, offsets) is decided by the code generator, not the type checker; comptime
-    can answer for fixed-width primitives today, but not yet for aggregates.
+    answers for fixed-width primitives, whose widths the type alone settles, and cannot
+    answer for an aggregate until the layout that decides its offsets exists.
 ```
 </details>
 
@@ -9536,7 +9546,7 @@ Solution. Both runs, one item and one number between them:
 ```console
 $ wolf interface ./wordcount/tokens/tokens.lu
 module pkg :: (root)
-  wolfi v0 · toolchain 0.2.12 · edition v1
+  wolfi v0 · toolchain 0.2.13 · edition v1
   export_hash 05a012a2ca47c85fc47f13e7e2c80930951ae8c59a84d1631ca8844e71669f3c
   pkg_hash    05a012a2ca47c85fc47f13e7e2c80930951ae8c59a84d1631ca8844e71669f3c
   deps: (none)
