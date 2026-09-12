@@ -1,4 +1,4 @@
-//! check: lupin-run(exit=0)
+//! check: run(exit=0)
 //! phase: run
 // Exercise 16-7 solution: a maze carved in a region, moved to a solver
 // proc, solved in place. Walls are per-cell bitmasks: 1=N 2=E 4=S 8=W.
