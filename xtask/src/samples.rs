@@ -1,8 +1,11 @@
 //! `cargo xtask samples` — the book cannot rot.
 //!
-//! Walks two sample sources: the exercise corpus (directive-headed
-//! `.lu` files under `principles/exercises/` — 170 files, the first
-//! real cargo) and every fenced wolf block in `book/**/*.md`. Each
+//! Walks three sample sources: the exercise corpus (directive-headed
+//! `.lu` files under `principles/exercises/` — 260 files, the first
+//! real cargo), the console transcripts on the pages beside them and on
+//! `principles/EXERCISES.md`, which is the master for the chapter 1-6
+//! exemplar batch (wolf-book#44), and every fenced wolf block in
+//! `book/**/*.md`. Each
 //! sample is executed against the pinned tools and its directive is
 //! enforced. Diagnostics from `fail(…)` samples are snapshot-checked
 //! under `snapshots/diagnostics/`. Samples named in
