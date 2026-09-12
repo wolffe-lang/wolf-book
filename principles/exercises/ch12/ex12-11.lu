@@ -1,4 +1,4 @@
-//! check: lupin-run(exit=0, stdout="3 4 2 * + 6 3 / -")
+//! check: run(exit=0, stdout="3 4 2 * + 6 3 / -")
 //! phase: run
 // Exercise 12-11 solution: infix to postfix with one operator stack.
 fn prec(op: str) -> int {

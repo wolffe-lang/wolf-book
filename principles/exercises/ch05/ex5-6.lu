@@ -1,4 +1,4 @@
-//! check: wolf-run(exit=0)
+//! check: run(exit=0)
 //! phase: run
 // Exercise 5-6 solution: the count is the map alone; the list keeps
 // first-seen order, which the map does not promise.

@@ -58,7 +58,7 @@ several of its stems are tagged `· wolf` while the distilled solution
 program on disk runs under lupin — the tier column says what CI
 executed, and the exercise file says which is which and why.
 
-Tier totals: 188 run (lupin) · 9 run (lupin REPL) · 32 run (wolf) · 12 run (wolf + lupin) · 76 prose · 10 pending. That is 327.
+Tier totals: 186 run (lupin) · 9 run (lupin REPL) · 32 run (wolf) · 14 run (wolf + lupin) · 76 prose · 10 pending. That is 327.
 (The totals and the tables were recounted mechanically against the
 masters at bs21 — the previous header said 276/231 while the tables
 had drifted from the marker count, ch05's 5-9 and 5-10 among the
@@ -165,7 +165,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §5.3 — exemplar batch (EXERCISES.md §5) | 5-3 | extension · lupin | run (lupin) |
 | §5.4 — exemplar batch (EXERCISES.md §5) | 5-4 | comprehension · lupin | run (lupin) |
 | §5.3 — exemplar batch (EXERCISES.md §5) | 5-5 | design | prose |
-| §5.1 — `List`, `Map`, `Set`, tuples | 5-6 | extension · lupin | run (lupin) |
+| §5.1 — `List`, `Map`, `Set`, tuples | 5-6 | extension · wolf + lupin | run (wolf + lupin) |
 | §5.2 — The combinator style | 5-8 | comprehension · pending | pending |
 | §5.5 — Structs | 5-16 | fingers · lupin | run (lupin) |
 | §5.5 — Structs | 5-17 | extension · lupin | run (lupin) |
@@ -305,7 +305,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §12.4 — `when (a, b)` | 12-8 | comprehension · lupin | run (lupin) |
 | §12.4 — `when (a, b)` | 12-9 | extension (break-it-on-purpose) · wolf + lupin | run (wolf + lupin) |
 | §12.3 — When channels are the wrong queue | 12-10 | extension · lupin | run (lupin) |
-| §12.3 — When channels are the wrong queue | 12-11 | extension · lupin | run (lupin) |
+| §12.3 — When channels are the wrong queue | 12-11 | extension · wolf + lupin | run (wolf + lupin) |
 
 ## ch13 — 11 exercises
 
