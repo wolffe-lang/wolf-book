@@ -1,7 +1,16 @@
-//! check: run(exit=1)
+//! check: run(exit=nonzero)
 //! phase: run
 // Exercise 15-2: link is shared fate. Neither print runs; the linked
-// failure takes main down at its blocking point. Exit 1, silence.
+// failure takes main down at its blocking point. Silence, and a
+// nonzero exit whose NUMBER belongs to the tool: `w.link()` from
+// `main` couples `w` to the root supervisor's domain, and
+// [conc.proc.root] terminates the process with "a nonzero,
+// implementation-specified status" when that domain dies abnormally.
+// lupin says 1, the compiled binary says 121, and [conf.trap.exit]
+// rules that conforming tools compare the outcome class and never the
+// number. This file read `run(exit=1)` until bs46 and was scored green
+// on the compiler without ever compiling there (E0402 on the one-arg
+// `link` until s157), which is how the wrong claim survived.
 fn boom() -> !int { Bad }
 fn main() -> !int {
     let w = spawn proc boom()

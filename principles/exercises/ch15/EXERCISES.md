@@ -41,7 +41,7 @@ normal=false killed=false
 **Exercise 15-2** *(comprehension · lupin)*. `monitor` delivers a
 message; `link` shares fate. This program links to a proc that fails,
 then blocks on an empty channel. Two prints are written. Predict what
-appears on stdout, and what `echo $?` shows:
+appears on stdout, and whether the process ends well or badly:
 
 ```wolf
 fn boom() -> !int { Bad }
@@ -55,13 +55,22 @@ fn main() -> !int {
 }
 ```
 
-Solution: nothing appears, and the exit code is 1. The link propagates
-the failure into `main` at its blocking point: no error value arrives
-at the `else` handler, because shared fate is not an error return; it
-is death. The handler that never ran is the lesson: `link` is for
-"if it dies, we die," and code below a link is written in that
-knowledge. Choose `monitor` when failure is information; choose
-`link` when failure is contagion, and mean it.
+Solution: nothing appears, and the process dies nonzero. The link
+propagates the failure into `main` at its blocking point: no error
+value arrives at the `else` handler, because shared fate is
+not an error return; it is death. The handler that never ran is the
+lesson: `link` is for "if it dies, we die," and code below a link is
+written in that knowledge. Choose `monitor` when failure is
+information; choose `link` when failure is contagion, and mean it.
+
+The exit NUMBER is deliberately not part of the answer. `w.link()`
+called from `main` couples `w` to the root supervisor's domain, and
+`[conc.proc.root]` ends the process with "a nonzero,
+implementation-specified status" when that domain dies abnormally;
+`[conf.trap.exit]` tells a conforming tool to compare the outcome
+class and never the number. The transcript below is `lupin`'s and
+says 1; a compiled binary says 121. Both are right, and a reader
+whose tool prints the other number has not found a bug.
 
 ```console
 $ lupin ex15-2.lu

@@ -33,6 +33,16 @@ the overlap here is a pointer, not a second rule.
   `principles/TWO-MACHINES.md` owns the rule, including the trap half
   (both machines name the kind; D60 rules the exit status per-machine)
   and the FLIP that retires a one-machine fence.
+- **Where the spec leaves the number open, the fence does too.**
+  `wolf,run(exit=nonzero)` claims both machines run the program and
+  both die badly, and claims nothing about which number — the spelling
+  for the places `[conf.trap.exit]` asks a conforming tool to compare
+  the outcome class and never the status, such as the root supervisor
+  domain dying (`[conc.proc.root]`), where `wolf` says 121 and `lupin`
+  says 1. Picking one of those numbers on the fence is the page telling
+  half its readers their tool is broken. An exit code is only credited
+  to a program that was actually built: a package that does not compile
+  exits nonzero too, and the runner reds instead of scoring it.
 - **Undefined behavior needs both machines.** `wolf,ub(P1)` runs the
   sample under the interpreter's oracle *and* the compiler's checked
   build, and passes only if lupin faults and the checked build names

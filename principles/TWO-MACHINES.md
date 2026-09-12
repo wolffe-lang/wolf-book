@@ -46,6 +46,7 @@ the refusal was never scored at all.
 | directive | machines | means |
 | --- | --- | --- |
 | `run(exit=N[, stdout="…"])` | both | both execute it and agree |
+| `run(exit=nonzero…)` | both | both run it, both die nonzero, number unclaimed |
 | `run(exit=trap(k))` | both | both fault, both name kind `k` |
 | `wolf-run(…)` | compiler | the interpreter declines it, by design |
 | `lupin-run(…)` | interpreter | the compiler declines it |
@@ -106,6 +107,59 @@ hangs is a grandchild of the runner rather than its child. Graduation
 probes get a short budget, and a timed-out sample has its whole process
 group signalled.
 
+## 5a. Nonzero: the class is the contract, the number is not
+
+`run(exit=nonzero)` is §5's rule applied to a claim that is not a trap,
+and it was minted at bs46 because the specification asks for it in so
+many words. `[conc.proc.root]` ends the process with "a nonzero,
+**implementation-specified** status" when the root supervisor's domain
+dies, and `[conf.trap.exit]` tells a conforming tool to "compare the
+outcome class, never the number". `wolf` answers 121 there and `lupin`
+answers 1. Both conform, and a fence that picks one of those numbers is
+the book telling half its readers their tool is broken.
+
+The three spellings that already existed are all worse here, and saying
+why is the argument for the fourth:
+
+- `run(exit=1)` is simply false on the compiler.
+- `lupin-run(exit=1)` is false in a subtler way — it says *the compiler
+  declines this program*, and the compiler does not. It also reports a
+  FLIP on every run forever, because §6's graduation probe sees a
+  program the compiler serves. §6's stated limit exempts trap rows
+  alone, and this is not a trap.
+- A bare ` ```wolf ` fence stops asking the runtime question, which is
+  §2's mistake with the machines swapped.
+
+Nonzero is a weaker claim than a number, so it is held to a stricter
+compile check: a package that does not compile also "dies nonzero", and
+the runner refuses to credit that (see §5b). It does not travel to
+wolf-lang's corpus export either — that runner parses `exit=` as an
+integer or a trap and has no `nonzero` — so these samples stay home the
+way one-machine samples do, for a different reason, until it learns the
+word.
+
+## 5b. An exit code belongs to a program that was built
+
+`wolf run` compiles and then executes, and it exits **1** when the
+package does not compile. That is the same 1 a program that ran and
+returned an error exits with, and until bs46 the runner compared the
+number alone — so a `run(exit=1)` fence could be satisfied by a program
+the compiler never built. This is §2's defect in its purest form: not a
+refusal scored as a pass, but an answer to a question nobody asked
+scored as an answer to the question on the page.
+
+Two samples were living on it and only two, measured by adding the
+check and re-running the whole gate at the previous pin: `book/ch15/s5`
+and `ch15/ex15-2`, green since bs31 while `wolf run` answered `E0402:
+link takes 1 argument, but this call passes 0` at both. They surfaced
+only because s157 made the one-arg `link` compile and the programs
+finally ran.
+
+The runner now rejects any run claim whose machine printed *the package
+does not compile*, and three self-tests hold it: two planted defects at
+the guard itself, and one true-direction case asserting that a program
+which really does die nonzero is still credited.
+
 ## 6. Retirement is a FLIP, not a memory
 
 A `lupin-run(…)` sample the compiler starts serving — and a
@@ -133,6 +187,16 @@ interpreter does. So trap rows carry no automatic flip and retire by
 hand, against the ledger row and the clause that put them there.
 Reporting a graduation the runner cannot actually observe would be the
 same species of mistake as scoring a machine that was never asked.
+
+A second face of the same limit, met at bs46: the probe reports "the
+compiler no longer declines this program" and tells the lane to
+graduate the fence to `run(…)`, but it never executed anything, so it
+cannot know which `run(…)` is true. `book/ch15/s2` flipped at v0.2.13
+and taking the advice literally — `run(exit=1)`, the number its
+`lupin-run` fence carried — would have gone straight to red, because
+the program the compiler had been declining exits 121 when it finally
+runs. A flip says the DECLINE is over. What the fence becomes is still
+a measurement, on both machines, before the commit.
 
 ## 7. What this is not
 
