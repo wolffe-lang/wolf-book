@@ -690,8 +690,68 @@ fn verify_solutions(root: &Path, failures: &mut Vec<String>) -> Result<()> {
 fn verify_quoted_solutions(root: &Path, failures: &mut Vec<String>) -> Result<()> {
     let rel = "principles/EXERCISES.md";
     let text = std::fs::read_to_string(root.join(rel))?;
+    let quotes = quoted_bodies(&text);
+    if quotes.is_empty() {
+        failures.push(format!(
+            "{rel}: no `Solution. `chNN/exN-M.lu`:` fence found — the exemplar batch's \
+             quotation form moved and this check went quiet without saying so"
+        ));
+        return Ok(());
+    }
+    for q in &quotes {
+        let path = root.join("principles/exercises").join(&q.named);
+        let Ok(body) = std::fs::read_to_string(&path) else {
+            failures.push(format!(
+                "{rel}:{}: quotes `{}`, which is not in the corpus",
+                q.line, q.named
+            ));
+            continue;
+        };
+        let file = solution_body(&body);
+        let ok = if q.excerpt {
+            excerpt_of(&q.fence, &file)
+        } else {
+            q.fence == file
+        };
+        if !ok {
+            failures.push(format!(
+                "{rel}:{}: the fence quoting `{}` is not what the file says, so the \
+                 Solutions page prints a program CI never ran{}",
+                q.line,
+                q.named,
+                if q.excerpt {
+                    " (the `(excerpt)` label admits a window on the file, not a different program)"
+                } else {
+                    ""
+                }
+            ));
+        }
+    }
+    Ok(())
+}
+
+/// One `Solution. `chNN/exN-M.lu`:` label and the body it quotes.
+#[derive(Debug, PartialEq)]
+struct QuotedBody {
+    /// One-based line of the label.
+    line: usize,
+    named: String,
+    excerpt: bool,
+    fence: Vec<String>,
+}
+
+/// Pair each label with the ```` ```wolf ```` fence that is ITS body.
+///
+/// The pairing stops at the first fence of any kind, which is the part
+/// worth stating: a label followed straight by a ```` ```console ````
+/// block announces a solution whose program the page does not print
+/// (`ch06/ex6-9` on the corpus pages does exactly this, showing only the
+/// output). Searching past that fence for the next ```` ```wolf ````
+/// would reach the NEXT exercise's program and grade it against this
+/// exercise's file — a false failure that looks exactly like a real one.
+fn quoted_bodies(text: &str) -> Vec<QuotedBody> {
     let lines: Vec<&str> = text.lines().collect();
-    let mut checked = 0usize;
+    let mut out = Vec::new();
     let mut i = 0usize;
     while i < lines.len() {
         let Some((named, excerpt)) = quoted_solution_label(lines[i]) else {
@@ -700,63 +760,30 @@ fn verify_quoted_solutions(root: &Path, failures: &mut Vec<String>) -> Result<()
         };
         let label_line = i + 1;
         let mut j = i + 1;
-        while j < lines.len() && !lines[j].starts_with("```wolf") {
-            // A label whose fence never arrives is its own bug, and the
-            // next label is the end of the search.
-            if quoted_solution_label(lines[j]).is_some() {
-                break;
-            }
+        while j < lines.len() && !lines[j].starts_with("```") {
             j += 1;
         }
         if j >= lines.len() || !lines[j].starts_with("```wolf") {
-            failures.push(format!(
-                "{rel}:{label_line}: `{named}` is announced and no ```wolf fence follows it"
-            ));
+            // No program on the page under this label. Nothing to hold
+            // the file to, and nothing wrong with the page either.
             i += 1;
             continue;
         }
         let mut k = j + 1;
-        let mut fence: Vec<&str> = Vec::new();
+        let mut fence: Vec<String> = Vec::new();
         while k < lines.len() && !lines[k].starts_with("```") {
-            fence.push(lines[k]);
+            fence.push(lines[k].to_string());
             k += 1;
         }
-        checked += 1;
-        let path = root.join("principles/exercises").join(&named);
-        match std::fs::read_to_string(&path) {
-            Err(_) => failures.push(format!(
-                "{rel}:{label_line}: quotes `{named}`, which is not in the corpus"
-            )),
-            Ok(body) => {
-                let file = solution_body(&body);
-                let quoted = trimmed(&fence);
-                let ok = if excerpt {
-                    excerpt_of(&quoted, &file)
-                } else {
-                    quoted == file
-                };
-                if !ok {
-                    failures.push(format!(
-                        "{rel}:{label_line}: the fence quoting `{named}` is not what the file \
-                         says, so the Solutions page prints a program CI never ran{}",
-                        if excerpt {
-                            " (the `(excerpt)` label admits a window on the file, not a different program)"
-                        } else {
-                            ""
-                        }
-                    ));
-                }
-            }
-        }
+        out.push(QuotedBody {
+            line: label_line,
+            named,
+            excerpt,
+            fence: trim_blank_tail(fence),
+        });
         i = k;
     }
-    if checked == 0 {
-        failures.push(format!(
-            "{rel}: no `Solution. `chNN/exN-M.lu`:` fence found — the exemplar batch's \
-             quotation form moved and this check went quiet without saying so"
-        ));
-    }
-    Ok(())
+    out
 }
 
 /// ``Solution. `ch04/ex4-3.lu`:`` → `("ch04/ex4-3.lu", false)`; the same
@@ -789,10 +816,6 @@ fn solution_body(text: &str) -> Vec<String> {
         lines.remove(0);
     }
     trim_blank_tail(lines)
-}
-
-fn trimmed(lines: &[&str]) -> Vec<String> {
-    trim_blank_tail(lines.iter().map(|l| l.to_string()).collect())
 }
 
 fn trim_blank_tail(mut lines: Vec<String>) -> Vec<String> {
@@ -2343,6 +2366,39 @@ mod tests {
             .map(|s| s.to_string())
             .collect();
         assert!(!excerpt_of(&invented, &file));
+    }
+
+    #[test]
+    fn a_label_whose_page_prints_only_output_pairs_with_nothing() {
+        // ch06/ex6-9's shape on the corpus pages: the label is followed
+        // straight by a console block, and the next ```wolf fence on the
+        // page belongs to the NEXT exercise. Pairing across it would
+        // grade 6-10's program against 6-9's file.
+        let page = concat!(
+            "Solution. `ch06/ex6-9.lu`:\n\n",
+            "```console\n$ lupin ex6-9.lu\n0\n```\n\n",
+            "**Exercise 6-10**\n\n",
+            "Solution. `ch06/ex6-10.lu`:\n\n",
+            "```wolf\nfn main() -> !int { 0 }\n```\n",
+        );
+        let q = quoted_bodies(page);
+        assert_eq!(q.len(), 1, "{q:#?}");
+        assert_eq!(q[0].named, "ch06/ex6-10.lu");
+        assert_eq!(q[0].fence, vec!["fn main() -> !int { 0 }"]);
+    }
+
+    #[test]
+    fn a_label_pairs_with_the_fence_that_follows_it() {
+        let page = concat!(
+            "Solution. `ch01/ex1-1.lu`:\n\n",
+            "```wolf\nfn main() -> !int {\n    0\n}\n```\n\n",
+            "```console\n$ lupin ex1-1.lu\n```\n",
+        );
+        let q = quoted_bodies(page);
+        assert_eq!(q.len(), 1);
+        assert_eq!(q[0].line, 1);
+        assert!(!q[0].excerpt);
+        assert_eq!(q[0].fence, vec!["fn main() -> !int {", "    0", "}"]);
     }
 
     #[test]
