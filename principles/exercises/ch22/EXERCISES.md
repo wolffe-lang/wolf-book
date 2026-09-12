@@ -210,14 +210,15 @@ you can prove invisible is a refactor you can make on a Friday.
 hash; now hold it in your hands. Run `wolf interface` on 22-9's
 `tokens` module, add a private helper to the file, and run it again.
 Two things to explain from the output: why the hash did not move, and
-what the `W0313` warning beside it is asking for.
+why no `W0313` stands beside it. Then delete the module's `///` lines
+and run it a third time — say what changed and what did not.
 
 Solution. Both runs, one item and one number between them:
 
 ```console
-$ wolf interface ./tokens/tokens.lu
+$ wolf interface ./wordcount/tokens/tokens.lu
 module pkg :: (root)
-  wolfi v0 · toolchain 0.2.10 · edition v1
+  wolfi v0 · toolchain 0.2.12 · edition v1
   export_hash 05a012a2ca47c85fc47f13e7e2c80930951ae8c59a84d1631ca8844e71669f3c
   pkg_hash    05a012a2ca47c85fc47f13e7e2c80930951ae8c59a84d1631ca8844e71669f3c
   deps: (none)
@@ -230,13 +231,17 @@ byte-identical: the hash digests the `pub` surface alone, `spare` is
 private, and a private item is invisible to the number for the same
 reason it is invisible to importers. (The doc comments on the `pub`
 items do not move the hash either — contracts travel with the
-interface, but the digest is over the signatures.) `W0313` fires when
-a `pub` item has no `///` line: "exported, but undocumented", with
-the note that an item not worth documenting is rarely worth
-exporting. The warning and the hash are the same doctrine at two
-strengths — the module's public face is a contract, the hash makes
-its *shape* checkable, and the doc comment is where its *meaning*
-goes.
+interface, but the digest is over the signatures.) Nothing warns,
+because `split_words` carries its `///` contract; delete the `///`
+lines and `W0313` arrives on standard error — "exported, but
+undocumented", with the note that an item not worth documenting is
+rarely worth exporting — while both hashes stay byte for byte what
+they were. That pair is the whole lesson: the warning and the hash
+are the same doctrine at two strengths, and they are checking
+different halves of it. The module's public face is a contract; the
+hash makes its *shape* checkable and moves only when the shape moves;
+the doc comment is where its *meaning* goes, and nothing but a warning
+can ask for that.
 
 ## §22.3 — No life before main
 
@@ -344,7 +349,7 @@ fn main() -> !int {
 ```
 
 ```console
-$ lupin main.lu
+$ lupin wordcount/main.lu
   3 the
   2 wolf
   1 runs
@@ -388,7 +393,7 @@ pub fn apply(op: str, a: int, b: int) -> int ! {BadOp, DivZero} {
 ```
 
 ```console
-$ lupin main.lu
+$ lupin calc/main.lu
 7 3 - = 4
 9 0 /: refused
 6 7 * = 42

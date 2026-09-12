@@ -47,72 +47,92 @@
 #     disk, no phase, and a catalog `verify-docs` already compares in
 #     both directions.
 #
-# The twenty below are the rest, and none of them is a rule that could
-# be widened — each wants something that is not in this repository.
+# The rest were "the twenty", and the sentence that closed #29's last
+# sweep — "none of them is a rule that could be widened; each wants
+# something that is not in this repository" — is the one bs44 took
+# apart. Three of the twenty wanted nothing but a path the rig can
+# reach, and are gone from this file. Of the SEVENTEEN left, most are
+# rules and not things: `--dir`, `Verb::Local`, an evaluated
+# expression, a REPL. Exactly two want a file (ch01's `hello.lu`,
+# ch26's `count.lu`) and both want a rule first.
 
 # ---------------------------------------------------------------- file
-# #29 §2. Eight blocks whose prompt names a file or a package the corpus
-# does not hold. The machinery for all eight exists: `console,in(pkg/
-# name)` stages a checked-in fixture under `book/` today. The fixtures
-# do not. Three of them are the same `app/` package seen at two
-# chapters, and exercise 22-13 — the block wolf-book#24 was filed over —
-# is in this class.
+# #29 §2, RE-READ AT BS44 AND THREE OF THE EIGHT CLOSED. The class was
+# filed as "eight blocks whose prompt names a file or a package the
+# corpus does not hold", with the fix named as fixtures. Measured, that
+# premise did not survive: THREE of the eight named a file the corpus
+# HAS ALREADY, under a path the prompt did not use, because each
+# transcript was written from the directory a reader would be standing
+# in and the rig replays from the chapter root.
+#
+#   * 22-13 — `wolf interface ./tokens/tokens.lu` is 22-9's `tokens`
+#     module, which is `wordcount/tokens/tokens.lu` from the chapter
+#     root. No fixture; a path. THIS IS THE BLOCK wolf-book#24 WAS
+#     FILED OVER, and the stale toolchain stamp it rode through a green
+#     build is now compared byte for byte every run.
+#   * 22-9's and 22-10's `$ lupin main.lu` are `wordcount/main.lu` and
+#     `calc/main.lu`, both checked in and both already executed as
+#     corpus samples. One `main.lu` could never have served both, which
+#     is the tell the fixture reading missed.
+#
+# WHAT IS LEFT IS NOT FIXTURES EITHER, and this is the correction #29
+# most needs. Of the five below, exactly ONE (ch01's `hello.lu`) is a
+# missing file, and even that one wants a warm `.lu-cache/` and prints
+# a key the page itself says will differ. The other four are blocked by
+# the corpus RULE, not by the disk:
+#
+#   * ch23's and ch24's blocks carry no `.lu` argument at all (`wolf
+#     tree --dir app`), and the corpus rule admits a `wolf`/`lupin`
+#     command only when it names a `.lu` that exists. A checked-in
+#     `app/` would change nothing until the rule takes `--dir`.
+#   * ch26's runs `./count`, which is the `Verb::Local` widening the
+#     `binary-or-shell` rows below are waiting on; the missing
+#     `count.lu` is the second blocker, not the first.
+#   * ch22-11's pair CANNOT BE CHECKED IN AT ALL, by specification.
+#     The block demonstrates D32: an unmarked sibling joins the module
+#     and its `main` collides (E0302). Every `.lu` the corpus sweep
+#     admits must carry `//! check:` and `//! phase:` — and
+#     `[conf.directive.standalone]` (D59, s124) says a file whose
+#     leading `//!` block carries BOTH of those is a standalone entry
+#     that never joins its directory's module. Measured on both
+#     machines at this pin: the pair runs clean and E0302 never fires.
+#     The corpus's own admission rule forbids the one shape this
+#     exercise is about.
 
 [[declined]]
 block = "principles/exercises/ch01/EXERCISES.md:145"
 class = "file"
-needs = "`ch01/hello.lu`, the chapter-1 program the prompt builds with `--verbose`; the page prints the build's own lines and there is no source beside it"
-filed = "wolf-book#29 §2"
-retires = "the ch01 fixture (a checked-in `hello.lu` staged the way `console,in(…)` stages a package)"
+needs = "`ch01/hello.lu` — the one genuinely missing file of the eight — AND a warm cache the fixture cannot carry: the transcript is the SECOND build's (`reused object`), while a staged copy starts cold because `.lu-cache/` is gitignored, and the key the line prints is the one the page itself tells the reader will differ"
+filed = "wolf-book#29 §2 (premise sharpened at bs44)"
+retires = "the ch01 fixture, a transcript respelled to do both builds, and a key the comparison can hold (a `samples-os.toml`-style declared line, or a `--verbose` that prints `reused` without the digest)"
 
 [[declined]]
 block = "principles/exercises/ch22/EXERCISES.md:114"
 class = "file"
-needs = "`ch22/sum.lu`, named by the prompt and never checked in"
-filed = "wolf-book#29 §2"
-retires = "the ch22 fixtures"
-
-[[declined]]
-block = "principles/exercises/ch22/EXERCISES.md:217"
-class = "file"
-needs = "a `ch22/tokens/` package — `wolf interface ./tokens/tokens.lu` reads a package root, not a file beside the page. This is exercise 22-13, the block wolf-book#24 was filed over: it rode a stale toolchain stamp and two wrong interface hashes through a green build at the v0.2.10 bump"
-filed = "wolf-book#29 §2"
-retires = "the ch22 `tokens/` fixture"
-
-[[declined]]
-block = "principles/exercises/ch22/EXERCISES.md:346"
-class = "file"
-needs = "`ch22/main.lu`, named by the prompt and never checked in"
-filed = "wolf-book#29 §2"
-retires = "the ch22 fixtures"
-
-[[declined]]
-block = "principles/exercises/ch22/EXERCISES.md:390"
-class = "file"
-needs = "`ch22/main.lu`, the second of the pair, named by the prompt and never checked in"
-filed = "wolf-book#29 §2"
-retires = "the ch22 fixtures"
+needs = "NOT a missing file. The block is exercise 22-11's D32 demonstration — an unmarked `widest.lu` joining `sum.lu`'s module, E0302 on `main`. A corpus `.lu` must carry `//! check:` and `//! phase:`, and `[conf.directive.standalone]` (D59) makes a file carrying both a standalone entry that never joins its directory's module, so the collision cannot be staged. Measured on wolf 0.2.12 and lupin 0.1.34: the pair runs clean, exit 0 both"
+filed = "wolf-book#29 §2 (premise corrected at bs44)"
+retires = "a corpus admission rule that can hold a non-standalone member — or the block moving to a `console,in(pkg/…)` fixture under `samples/pkg/`, where no `//! check:` is required"
 
 [[declined]]
 block = "principles/exercises/ch23/EXERCISES.md:124"
 class = "file"
-needs = "an `app/` package on disk — `wolf tree --dir app` and the two `wolf why … --dir app` arms all read one"
-filed = "wolf-book#29 §2"
-retires = "the shared ch23/ch24 `app/` fixture"
+needs = "the corpus rule to admit a `--dir` package, not a fixture. None of the six commands carries a `.lu` argument, and `plain_run_of_a_solution` declines any `wolf`/`lupin` command that names no `.lu` on disk — so a checked-in `app/` changes nothing until the rule widens. The package itself already exists as `samples/pkg/shelf/`, which prints this block's tree verbatim at book/ch24.md"
+filed = "wolf-book#29 §2 (premise corrected at bs44)"
+retires = "the `--dir` widening for corpus blocks, after which `samples/pkg/shelf` is the fixture"
 
 [[declined]]
 block = "principles/exercises/ch24/EXERCISES.md:136"
 class = "file"
-needs = "the same `app/` package as ch23's, carrying a STALE dependency — `wolf update --dir app` and `wolf audit --ci --dir app` are both about what the update moves"
-filed = "wolf-book#29 §2"
-retires = "the shared ch23/ch24 `app/` fixture"
+needs = "the same `--dir` widening as ch23's, and then one more thing: the transcript runs `wolf update` BEFORE `wolf audit --ci` and still expects the ACQUIRES line, which is the opposite of what the page's own prose says refreshing first does. `samples/pkg/acquired/` is the stale-ledger package already, and book/ch24.md prints its ACQUIRES output with no `update` in front of it"
+filed = "wolf-book#29 §2 (premise corrected at bs44)"
+retires = "the `--dir` widening, plus a re-reading of the transcript's own ordering"
 
 [[declined]]
 block = "principles/exercises/ch26/EXERCISES.md:121"
 class = "file"
-needs = "`ch26/count.lu`, named by the prompt and never checked in"
-filed = "wolf-book#29 §2"
-retires = "the ch26 fixture"
+needs = "two things, and the file is the second. `wolf build count.lu && ./count` ends in a `Verb::Local`, which the corpus rule refuses outright — the same widening the `binary-or-shell` rows below wait on. After that it needs `count.lu`, `one.txt` and `two.txt` with exactly the byte, word and line counts the transcript prints"
+filed = "wolf-book#29 §2 (premise corrected at bs44)"
+retires = "the `Verb::Local` widening for corpus blocks, then the ch26 fixture"
 
 # --------------------------------------------------------------- typed
 # #29 §4. Six blocks whose prompt is something a reader TYPES rather
