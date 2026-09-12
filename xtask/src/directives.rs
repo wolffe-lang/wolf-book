@@ -90,9 +90,11 @@ impl Check {
             // has no `nonzero` (checked at v0.2.13, `xtask/src/corpus.rs`
             // — "expected pass | fail(CODE) | run(exit=..)"), so an
             // exported `run(exit=nonzero)` would arrive there as a parse
-            // error rather than a sample. Filed as wolf-book#50's
-            // upstream half; when that runner learns the spelling this
-            // arm becomes `other`.
+            // error rather than a sample. Filed as wolf-lang#371, which
+            // also carries the cost: the export is held back BY
+            // DIRECTORY, so ex15-2 taking this spelling removed five
+            // ordinary two-machine ch15 files from that corpus with it.
+            // When that runner learns the word this arm becomes `other`.
             Check::RunNonzero { .. } => None,
             // The other runner has one `run`, and it is the same claim
             // about the same program — which lane executed it is this

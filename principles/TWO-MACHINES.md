@@ -136,7 +136,10 @@ the runner refuses to credit that (see §5b). It does not travel to
 wolf-lang's corpus export either — that runner parses `exit=` as an
 integer or a trap and has no `nonzero` — so these samples stay home the
 way one-machine samples do, for a different reason, until it learns the
-word.
+word (wolf-lang#371). That hold-back is by DIRECTORY, and it is not
+free: `ex15-2` taking this spelling removed five ordinary two-machine
+ch15 files from wolf-lang's corpus along with it, which is the whole
+argument for getting the word added rather than living with it.
 
 ## 5b. An exit code belongs to a program that was built
 
