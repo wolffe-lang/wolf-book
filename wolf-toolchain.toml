@@ -612,9 +612,92 @@
 #     (E0419, E0610), anchors 475 -> 496 with both key sets diffed both
 #     ways and NONE dropped, grammar.ebnf takes `error_item`, `list_lit`
 #     and the alias form.
+# ---------------------------------------------------------------------
+# BUMPED TO v0.2.14 (bs49, 2026-09-15). wolf-lang at the v0.2.14 release
+# tag (`30731a6`), TAKEN FROM THE RELEASE ARCHIVE by digest —
+# `wolf-0.2.14-aarch64-apple-darwin.tar.gz`, sha256
+# 80407e31b89cae684163fd9fd79c3935a5fe63873dcb16376c36c8596af61b54,
+# matched against the release's own digest before unpacking, staged
+# whole at /private/tmp/bs49-stage beside the v0.2.13 archive (sha256
+# 691e05e2…, bs46's) kept as the CONTROL. lupin does not move: 0.1.36 is
+# still the interpreter's latest release, re-fetched by the same digest
+# (41f21002…). Never `~/.local/bin`.
+#
+#   wolf 0.2.14 (wolfgang, pin 30731a6)
+#   paired with lupin 0.1.36 (reference interpreter), pin a7f517e
+#   lupin 0.1.36 (wolf-interp, reference interpreter at pin a7f517e)
+#
+# PREDICTED FROM SOURCE BEFORE THE ARCHIVE WAS UNPACKED and measured
+# byte-identical: `Cargo.toml`'s version is `0.2.14`, the tag points at
+# this revision, and `crates/wolf_driver/PAIRING` reads
+# `lupin-version = 0.1.36` / `lupin-pin = a7f517e` (wolf-lang#372, closed
+# by this cut).
+#
+# THE COMPILER'S HALF CLOSES TO ZERO AGAIN; THE INTERPRETER'S WIDENS.
+# The compiler names lupin 0.1.36 and this file pins 0.1.36. The
+# interpreter still names `a7f517e`, the v0.2.12 tag, and
+# `git rev-list --count a7f517e..30731a6` is SEVENTY-TWO (ancestor
+# checked, not assumed): the interpreter has taken no new pin across two
+# compiler releases, because 0.1.36 spent itself on the filesystem.
+# Ten data points now: 14, 43, 65, 51, 84, 110, 91, 31, 43, 72.
+#
+# THE CONTRACT'S PREDICTION WAS WRONG ABOUT WHAT ARRIVES, and the
+# correction is the first finding. bs49's brief listed s158's list
+# literals, `range[int]` and error-set aliases among what this pin
+# brings. They are 0.2.13's, pinned by bs46 above; 0.2.14 carries none of
+# them anew, and lupin 0.1.36 still answers `[` with E0201 (re-measured
+# on this archive pair). What 0.2.14 carries is THE STRING RUNTIME (s160:
+# a built `str` charges its region, a proc owns its ambient region
+# `[mem.region.proc]`, `upper`/`lower`/`repeat`/`replace`/`str_from_utf8`
+# and a `str` read through a projection are escape sites
+# `[mem.region.escape]`, `net_writev_head`) and THE PAPERCUTS IV (s159:
+# `then`/`error` semantic tokens, a type declaration with no `=` reports
+# once, recovery stops at a contextual `error` item, a function value's
+# stray `-> int` states the rule — wolf-lang#157's ch04 row — and #359
+# ruled with #366 filed).
+#
+# WHAT THE BOOK MEASURED, PREDICTION FIRST (scratch
+# bs49-predictions.txt, written before either archive was unpacked). The
+# CONTROL ran on the UNEDITED tree (trunk 119b269) with the OLD pair:
+#
+#   495 samples, 490 passed, 5 pending, 0 failed, 0 flips (119.9 s)
+#
+# The same tree with the NEW pair:
+#
+#   495 samples, 488 passed, 5 pending, 6 failed, 0 flips (114.0 s)
+#
+#   * 0 FLIPS, PREDICTED 0.
+#   * THE `phase:` HEADERS WERE DIFFED, NOT THE FILE LIST: 344 headers
+#     before, 344 after, identical. The pin moves no header.
+#   * 4 FAILURES ARE THE STAMP, PREDICTED 2–4: ch01 §1.2's and the
+#     colophon's `--version` blocks, and §22.2's `toolchain 0.2.13` line
+#     twice (the chapter and exercise 22's file).
+#   * 2 FAILURES ARE s160 CATCHING THE BOOK, PREDICTED 0–1, and both
+#     are the compiler refusing a program the page taught as sound:
+#       - `book/ch08/s13` (§8.6): `title = parts[1]` copies a `str` out
+#         of the `command` region into a binding that lives in `store`.
+#         The prose said the copy "lands where `title` lives". A `str`
+#         copies its VIEW; the bytes stay where they are, and a `str`
+#         read through a projection now carries its place's sites
+#         (`[mem.region.escape]`, wolf-lang#321). E1010, and E1004 on
+#         the push that follows.
+#       - `book/ch15/part-roster` (§15.3): the roster is a `spawn proc`
+#         entry and sends `"shard restarted after {reason}"`, built in
+#         its own region — exactly what §15.2 teaches a proc must not
+#         send, one section earlier. `[mem.region.proc]`, wolf-lang#355.
+#     lupin 0.1.36 runs both clean: the words of a literal are static
+#     bytes, and the roster outlives the read. Both are sound at run
+#     time and both are refused by the rule as the specification
+#     writes it, which is the rule a reader's compiler enforces.
+#   * THE PAPERCUTS REACH ONE LEDGER ROW AND NO FENCE: ch04's #157
+#     function-value row, re-verified in the chapter.
+#   * THE SPEC ARTIFACTS, predicted from `git diff 4cc3dcd 30731a6`:
+#     grammar.ebnf unchanged; the catalog unchanged at 176 (the only
+#     edit to docs/diagnostics.md is E1010's fixture list); anchors
+#     496 -> 498 (`mem.region.proc`, `os.net.writev.head`).
 repo = "wolffe-lang/wolf-lang"
-rev = "4cc3dcdf8bb22eaeed2f054dcb6929a47dd626a8"
-impl_version = "0.2.13"
+rev = "30731a6509443ade03724707345da9ceb86a88bf"
+impl_version = "0.2.14"
 
 [lupin]
 # wolf-interp at the v0.1.30 release tag (is42): the stamped line names
@@ -1249,4 +1332,18 @@ pending = "is08"
 # Measured against the wolf-std checkout at 4f796b1 (2026-09-11). That
 # trunk moved while this was being measured; not chased, because a
 # branch is not a pin.
+#
+# RE-MEASURED AT THE v0.2.14 BUMP (bs49, 2026-09-15) against wolf-std
+# `073aa19`, the trunk whose own pin is wolf 0.2.14, with this file's new
+# pair. All four findings hold, so this stays a posture and not a rev:
+#   1. `gh api repos/wolffe-lang/wolf-std/releases` and `/tags` both
+#      answer 0. A sha is recorded here as the measurement's revision,
+#      not as a pin, because there is still no archive to take by digest.
+#   2. `use std.sort` with `sort.sorted_ints([5, 3, 9, 1])` under
+#      `wolf run --std-root`: `cannot compile this yet — an enum or row
+#      test inside a product pattern (deep trees)`, exit 1.
+#   3. `math.gcd(12, 18)`: the compiler prints `6`, exit 0; lupin 0.1.36
+#      with WOLF_STD set answers `unsupported: `math.gcd` does not
+#      resolve`, exit 4.
+#   4. `git grep '^use std\.' -- book principles` is empty.
 pending = "wolf-std publishes no release to pin (wolf-book#39)"
