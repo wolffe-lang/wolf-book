@@ -203,7 +203,7 @@ well as the block), and E0703's `help:` growing a suggestion body. A
 transcript a page abridges on purpose is not a smaller truth; it is a
 claim about what a tool says, and the whole of it is the claim.
 
-#### The twenty that are left, and how they declare themselves
+#### The blocks that are left, and how they declare themselves
 
 A declined block is reported by name with what a replay of it would
 need, because a number in a log is not a check but it is the difference
@@ -221,30 +221,43 @@ One decline is exempt from both directions and has to be, or the ledger
 could not balance on three hosts: a block the unix lane replays and
 windows declines — a built binary, a linked `wolf build` — is a third of
 the matrix standing down, not a hole in the book. Those print as
-OFF-LANE. The twenty rows hold everywhere; the raw decline count is 20
-on macOS and linux and 28 on windows.
+OFF-LANE. The declared rows hold on every host, and the raw count of
+declines does not, so this page carries no number for either. The runner
+prints both on every run, one line apiece: `samples-declined.toml: N
+declared row(s)`, the same on all three hosts, and `corpus console
+declines on <host>: D DECLINED + O OFF-LANE = raw`, which differs by
+host. On windows it differs in its split as well as its total. A block
+that carries a declared row can classify OFF-LANE there before the
+corpus admission rule is reached, so windows prints fewer DECLINED lines
+than the ledger has rows. The ledger still balances, because OFF-LANE is
+exempt in both directions (wolf-book#49).
 
-The three classes that remain, with what each one wants:
+The three classes that remain, with what each one wants. The
+declared-row line counts each class; the rows themselves, in
+`samples-declined.toml`, say what each block needs:
 
-- **A file or a project the corpus does not hold, 8 blocks.** Three are
-  the tool verbs: `wolf interface ./tokens/tokens.lu` (22-13's own, the
-  block wolf-book#24 was filed over), `wolf tree` with two `wolf why`
-  arms `--dir app`, and `wolf update` with `wolf audit --ci --dir app`.
-  Five more name a `.lu` that was never checked in: ch01's `hello.lu`,
-  ch22's `sum.lu` and two `main.lu`, ch26's `count.lu`.
-  `console,in(pkg/name)` already solves exactly this under `book/`, by
-  staging a checked-in fixture; what is missing is the fixtures —
-  `principles/exercises/ch22/tokens/`, an `app/` for chapters 23 and
-  24, and the five loose files — not the machinery.
-- **Something to type, 6 blocks.** Two `lupin eval '…'` and four REPL
-  sessions that open with a bare `$ lupin`. The REPL half is
-  `pending(is08)` and already counted there. The `eval` half would
-  replay today under a rule that admitted any command with no file
-  behind it; bs41 drew that rule at `wolf --explain` alone and left
-  these two, because an expression typed at a tool is the REPL lane's
-  shape and belongs with the four it is spelled like, not with a
-  catalog read. They are the cheapest two blocks left in the corpus.
-- **A built binary or a shell, 6 blocks.** Four `wolf build x.lu && ./x`
+- **A file or a project the corpus does not hold.** ch01's `hello.lu`
+  is the one file genuinely missing, and its transcript also wants a
+  warm build cache a fixture cannot carry. ch22's D32 demonstration is
+  not a missing file at all: an unmarked `widest.lu` joining `sum.lu`'s
+  module cannot be staged, because a corpus file carries `//! check:`
+  and so stands alone. ch23's `wolf tree`/`wolf why` arms and ch24's
+  `wolf update` with `wolf audit --ci` want the corpus rule to admit a
+  `--dir` package, and `samples/pkg/` already holds both packages. ch26's
+  `count.lu` wants the `Verb::Local` widening first and its fixture
+  second. bs44 closed the other three of this class, 22-13's `tokens`
+  block and the two `main.lu` prompts, which had named paths from the
+  wrong directory rather than files nobody checked in.
+- **Something to type.** Four REPL sessions that open with a bare
+  `$ lupin`, and three `lupin eval '…'` blocks: two in chapter 2's file
+  and exercise 2-1's in this file, which bs47 put inside the walk. The
+  REPL half is `pending(is08)` and already counted there. The `eval`
+  blocks would replay today under a rule that admitted any command with
+  no file behind it; bs41 drew that rule at `wolf --explain` alone and
+  left them, because an expression typed at a tool is the REPL lane's
+  shape and belongs with the sessions it is spelled like, not with a
+  catalog read. They are the cheapest blocks left in the corpus.
+- **A built binary or a shell.** Four `wolf build x.lu && ./x`
   pairs, one `diff <(…) <(…)`, one `grep … | wc -l`. The first class is
   the `Verb::Local` case the book lane already runs on unix, and
   admitting it in the corpus means changing what a corpus block is bound
