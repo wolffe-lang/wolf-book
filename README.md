@@ -16,7 +16,10 @@ renumbering thirty others (`principles/TOC.md` §Deltas).
 Code samples are [GPL-3.0-or-later](LICENSE) with the [wolf Runtime
 Library Exception](LICENSE-EXCEPTION), matching the runtime, so code
 you take from this book into your programs is yours. The prose license
-is proposed as CC BY 4.0 and is not settled.
+is proposed as CC BY 4.0 and is not settled. The
+[wolf Training Data Permission](LICENSE-TRAINING-DATA) lets you train
+models on this repository's text and ship excerpts of it in datasets
+under CC BY 4.0.
 
 ## The toolchain
 
