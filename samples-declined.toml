@@ -129,7 +129,7 @@ filed = "wolf-book#29 §2 (premise corrected at bs44)"
 retires = "the `--dir` widening, plus a re-reading of the transcript's own ordering"
 
 [[declined]]
-block = "principles/exercises/ch26/EXERCISES.md:124"
+block = "principles/exercises/ch26/EXERCISES.md:127"
 class = "file"
 needs = "two things, and the file is the second. `wolf build count.lu && ./count` ends in a `Verb::Local`, which the corpus rule refuses outright — the same widening the `binary-or-shell` rows below wait on. After that it needs `count.lu`, `one.txt` and `two.txt` with exactly the byte, word and line counts the transcript prints"
 filed = "wolf-book#29 §2 (premise corrected at bs44)"
@@ -152,7 +152,7 @@ retires = "the `Verb::Local` widening for corpus blocks, then the ch26 fixture"
 # for as long as the doctrine page sat outside both walks.
 
 [[declined]]
-block = "principles/EXERCISES.md:355"
+block = "principles/EXERCISES.md:368"
 class = "typed"
 needs = "an expression to type — exercise 2-1's three `lupin eval '…'` prompts have no file behind them, and the exemplar batch checks in no `ex2-1.lu` for them to name. The exercise declares its own machine as `lupin REPL` in its taxonomy line, so this is a REPL block written in `eval`'s spelling; it wants exactly what ch02:81 and ch02:101 want"
 filed = "wolf-book#44"
@@ -239,14 +239,14 @@ filed = "wolf-book#29 §5"
 retires = "the `Verb::Local` widening for corpus blocks (the book lane already runs it on unix)"
 
 [[declined]]
-block = "principles/exercises/ch30/EXERCISES.md:82"
+block = "principles/exercises/ch30/EXERCISES.md:84"
 class = "binary-or-shell"
 needs = "the corpus rule to admit a binary `wolf build` just produced — `./ex30-3` names no solution, it names a link product"
 filed = "wolf-book#29 §5"
 retires = "the `Verb::Local` widening for corpus blocks (the book lane already runs it on unix)"
 
 [[declined]]
-block = "principles/exercises/ch30/EXERCISES.md:111"
+block = "principles/exercises/ch30/EXERCISES.md:113"
 class = "binary-or-shell"
 needs = "the corpus rule to admit a binary `wolf build` just produced — `./ex30-4` names no solution, it names a link product"
 filed = "wolf-book#29 §5"
