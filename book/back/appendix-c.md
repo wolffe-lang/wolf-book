@@ -1,7 +1,7 @@
 # Appendix C — Diagnostics
 
 Every diagnostic the book shows, with the one-line summary the compiler's
-own catalog carries for it. The catalog holds 176 codes; these 58 are the
+own catalog carries for it. The catalog holds 176 codes; these 59 are the
 ones a page in this edition names. A code is stable: it identifies a
 rule, not a message, and `wolf --explain E1001` prints the whole entry
 for any of them (the summary, the reasoning, and the fix) whether or
@@ -34,6 +34,7 @@ shows both readings of it side by side.
 | `E0410` | a `let` binding cannot be assigned again | wolf | 3.1 |
 | `E0412` | this format spec is malformed | wolf | 18.3 |
 | `E0417` | a `Map` entry cannot be updated in place through its index | wolf | 5.4 |
+| `E0419` | an empty list literal has no element type here | wolf | 5.1 |
 | `E0501` | the generic body uses something its bounds do not provide | wolf | 5.3, 5.6 |
 | `E0502` | a type argument does not satisfy the generic's bound | wolf | 5.6 |
 | `E0602` | the error row does not include this tag | wolf | 26.4, 26.5 |
@@ -54,7 +55,7 @@ shows both readings of it side by side.
 | `E1006` | this type's `shared` references form a strong cycle | wolf | 8.5, 8.7 |
 | `E1007` | the argument's mode does not match the parameter's | wolf | 7.4 |
 | `E1008` | the method touches a field outside its declared view | wolf | 7.5 |
-| `E1010` | the value's region is freed while the value is still needed | wolf | 8.2, 8.4, 9.8 |
+| `E1010` | the value's region is freed while the value is still needed | wolf | 8.2, 8.4, 8.6, 9.8, 15.3 |
 | `E1011` | this would open a region while a region that contains it is open | wolf | 8.6 |
 | `E1012` | frozen data cannot be written | wolf | 8.5, 8.8, 30.4, 30.5 |
 | `E1101` | a task may not mutate state it captured from the enclosing function | both | 13.2 |
