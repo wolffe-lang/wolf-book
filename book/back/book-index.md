@@ -55,7 +55,7 @@ module 22.1 · `div-zero` (trap) 3.3
 ## E
 
 `else`, `else |err|` 6.2 · `env_args()` 26.5, 30.1 · `errdefer` 6.3 · error
-kernel 15.2 · error rows 6.1 · escape hatch, the three rings 9.1 ·
+kernel 15.2 · error rows 6.1 · error-set aliases 6.1 · escape hatch, the three rings 9.1 ·
 exclusivity 7.4, 7.5 · `exclusivity` (trap) 7.5 · exercises, how they are
 numbered, Notation · exhaustiveness 3.4 · exit codes 1.5, Notation ·
 expressions, everything is one 3.2 · export hash 22.2
@@ -64,11 +64,11 @@ expressions, everything is one 3.2 · export hash 22.2
 `E0110` 2.4 · `E0201` 1.5, 4.1, 12.4, 14.1 · `E0202` 1.5 · `E0301` 10.1 ·
 `E0302` 22.1 ·
 `E0303` 22.2 · `E0304` 22.1 · `E0305` 22.1 · `E0401` 3.2, 4.1 · `E0410` 3.1
-· `E0412` 18.3 · `E0501` 5.3 · `E0602` 26.4, 26.5 · `E0701` 18.4, 24.2 ·
+· `E0412` 18.3 · `E0419` 5.1 · `E0501` 5.3 · `E0602` 26.4, 26.5 · `E0701` 18.4, 24.2 ·
 `E0702` 18.4 · `E0703` 18.4 · `E0704` 18.4 · `E0705` 18.1 · `E0706` 18.1 ·
 `E0707` 18.3 · `E0709` 18.4 · `E0710` 18.1, 18.2, 22.3 · `E0801` 3.4 ·
 `E1001` 3.1, 7.1, 7.2, 7.6, 7.7, 9.8 · `E1002` 7.5 · `E1005` 8.3 · `E1006`
-8.5, 8.7 · `E1007` 7.4 · `E1008` 7.5 · `E1010` 8.2, 8.4, 9.8 · `E1011` 8.6 ·
+8.5, 8.7 · `E1007` 7.4 · `E1008` 7.5 · `E1010` 8.2, 8.4, 8.6, 9.8, 15.3 · `E1011` 8.6 ·
 `E1012` 8.5, 8.8, 30.4, 30.5 · `E1101` 13.2 · `E1102` 13.2 · `E1301` 9.2 ·
 `E1302` 9.2, 9.5, 32.2 · `E1303` 9.7, 32.3 · `E1305` 9.4 · `E1401` 9.3 ·
 `E1503` 24.2 · `E1504` 24.3 · `E1506` 23.3
@@ -106,7 +106,7 @@ K&R, the twins after it 26.1, 27.1, 28.1, 32.1
 ## L
 
 `let` 3.1 · line counts, how they are measured 26.3, 28.5, 30.4, 32.3 ·
-`link` 15.1 · `List` 5.1 · lockfile, see `wolf.sum`
+`link` 15.1 · `List` 5.1 · list literals 5.1 · lockfile, see `wolf.sum`
 
 ## M
 
@@ -138,7 +138,7 @@ and what traps in them 3.3 · provenance 9.3
 
 ## R
 
-raw tier 9.2 · readiness, and what it is not 33.2 · `refused` (row) 33.1 ·
+`range[int]`, `range[char]` 3.2 · raw tier 9.2 · readiness, and what it is not 33.2 · `refused` (row) 33.1 ·
 `region` (block form) 8.2 · `region-fault` (trap) 8.3, 8.5,
 8.6 · regions, as values 8.3 · regions, transferred between procs 16.1 ·
 REPL 1.4 · rings, the three 9.1 · rows, error 6.1 · Rust, compared 7.6, 16.3
