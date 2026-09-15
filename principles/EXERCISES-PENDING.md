@@ -20,8 +20,8 @@ verdict for a feature that does not exist yet.
 |---|---|---|---|
 | 7-5 (static half) | `fail(E1003)` | borrow-escape checking reaches no static verdict; wolfc leaves `channel` unresolved | s33-channels-select, then s18-tier0-exclusivity |
 | 8-7 | `run(exit=0, stdout="c a")` | field writes through a pool index (`pool[h].next = k`) do not denote a place in the interp std subset | s37-core-types (std surface pinning) |
-| 13-1 | `run(exit=0, stdout="285")` | `par` absent from the interp std subset | s32-tasks-scheduler / s37-core-types |
-| 13-6 | `run(exit=0)` | `par` absent from the interp std subset | s32-tasks-scheduler / s37-core-types |
+| 13-1 | `run(exit=0, stdout="285")` | `par` implemented on neither machine | wolf-lang#390 |
+| 13-6 | `run(exit=0)` | `par` implemented on neither machine | wolf-lang#390 |
 | 5-8 | `run(exit=0, stdout="marmot 5")` | `sorted_by` / `take` absent from the interp std subset | s37-core-types (std surface pinning) |
 | 17-6 | `run(exit=0)` | `--chaos` fault injection at declared effect points — and with it §17.3 of chapter 17, which is why this stem is written and **not printed** (TOC.md §Deltas, bs07) | s36-deterministic-scheduler |
 | 20-5 (was 19-1 until bs18) | `run(exit=0, stdout="3")` | perf-contract verification (I15) | s24–s26 WIR fact sprints |

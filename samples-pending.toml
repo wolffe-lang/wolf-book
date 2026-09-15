@@ -24,7 +24,10 @@
 # Recorded because it is what makes chapter 13 writable, and because a
 # differential those rows rested on is gone — lupin no longer runs a
 # racy capture to a silently wrong exit 0. The two ch13 rows left below
-# are `par`'s, and they are what holds §13.1.
+# are `par`'s, and they are what holds §13.1. bs49 re-pointed their
+# owner from two 0.1-line sprint ids at wolf-lang#390, the ruling
+# wolf-book#52 asked for: the spec still defines `[conc.task.par]` at
+# 0.2.14 and neither machine implements it.
 
 [[pending]]
 id = "ch05/ex5-8"
@@ -43,13 +46,13 @@ owner = "s37-core-types (std surface pinning)"
 
 [[pending]]
 id = "ch13/ex13-1"
-blocker = "`par` absent from the interp std subset"
-owner = "s32-tasks-scheduler / s37-core-types"
+blocker = "`par` implemented on neither machine: wolf 0.2.14 cannot compile it yet (methods on generic std data), lupin 0.1.36 has no method `par`"
+owner = "wolf-lang#390 (the ruling: implement [conc.task.par] or withdraw it)"
 
 [[pending]]
 id = "ch13/ex13-6"
-blocker = "`par` absent from the interp std subset"
-owner = "s32-tasks-scheduler / s37-core-types"
+blocker = "`par` implemented on neither machine: wolf 0.2.14 cannot compile it yet (methods on generic std data), lupin 0.1.36 has no method `par`"
+owner = "wolf-lang#390 (the ruling: implement [conc.task.par] or withdraw it)"
 
 
 # Removed at the bs09 pin bump, all three as reported FLIPs: `ch18/ex18-3`,

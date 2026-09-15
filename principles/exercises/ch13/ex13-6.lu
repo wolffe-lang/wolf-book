@@ -1,8 +1,8 @@
 //! check: run(exit=0)
 //! phase: run
 // Exercise 13-6: grep's parallel twin — the matching loop becomes one
-// par call over the lines. PENDING: `par` is not in the interpreter's
-// std subset yet (owner: s32-tasks-scheduler / s37-core-types).
+// par call over the lines. PENDING: `par` is implemented on neither
+// machine (owner: wolf-lang#390).
 fn contains(hay: str, needle: str) -> bool {
     if hay.len < needle.len { return false }
     var i = 0

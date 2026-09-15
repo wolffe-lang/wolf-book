@@ -14,9 +14,8 @@ on file, and not printed. They land with §13.1.
 
 ## §13.1 — `par`
 
-**Exercise 13-1** *(comprehension · pending — blocker: `par` absent
-from the interpreter's std subset; owner: s32-tasks-scheduler /
-s37-core-types)*. Nine numbers, squared and summed. The parallel
+**Exercise 13-1** *(comprehension · pending — blocker: `par`
+implemented on neither machine; owner: wolf-lang#390)*. Nine numbers, squared and summed. The parallel
 spelling replaces the squaring loop with one call:
 
 ```wolf
@@ -275,9 +274,8 @@ blank. The row makes the caller say which they meant: handle
 `EmptyPattern` with "all lines" if that is truly the wish. An API's
 defaults should serve its likeliest accident, not its cleverest use.
 
-**Exercise 13-6** *(extension · pending — blocker: `par` absent from
-the interpreter's std subset; owner: s32-tasks-scheduler /
-s37-core-types)*. Parallelize 13-5: collect the lines into a list and
+**Exercise 13-6** *(extension · pending — blocker: `par` implemented on
+neither machine; owner: wolf-lang#390)*. Parallelize 13-5: collect the lines into a list and
 map `contains` over them with `par`, counting matches from the
 returned flags. `ch13/ex13-6.lu` is on disk with the one-call
 spelling. Why is `contains` an ideal `par` body, and what about
