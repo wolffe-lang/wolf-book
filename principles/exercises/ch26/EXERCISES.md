@@ -9,9 +9,12 @@ transcripts are compiled rather than interpreted. `count` reads files,
 and until lupin 0.1.36 the reference interpreter had no filesystem — it
 declined the effect rather than mocking it — so the transcripts for
 anything touching `fs_read_text` are `wolf build` runs. The fs tier
-landed at is48 and those programs run on the interpreter too now; the
-transcripts stay compiled because nothing has re-recorded them, not
-because the interpreter refuses. The solution programs on disk here are the ones the
+landed at is48 and those programs run on the interpreter too now. The
+transcripts stay compiled by choice, taken at bs49: the chapter sets a
+built C program beside a wolf one, and the fair comparison is two
+binaries. Every program fence in the chapter carries `run(…)`, so CI
+executes each on both machines, and the console blocks hold the
+compiled output byte for byte. The solution programs on disk here are the ones the
 interpreter can run, plus one whose whole answer is a static verdict and
 therefore belongs to `wolf conform-run` either way.
 

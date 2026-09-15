@@ -652,7 +652,11 @@ sprint files remain the implementation contracts for everything else.
     fences still carry no `run` directive, which is now a choice
     nobody has revisited rather than a limit; they are checked by
     `conform-run`, and the console blocks assert the output. Filed as
-    the graduation this repository has not taken yet. `read_line`
+    the graduation this repository has not taken yet (wolf-book#50).
+    TAKEN at bs49: the three bare fences carry `run(…)`, measured
+    byte-identical on both machines, and the transcripts stay compiled
+    by decision, because the chapter's comparison is two built binaries.
+    `read_line`
     remains the interpreter's one decline here, for want of a pinned
     clause naming an injectable stdin.
   - **Chapter 27, `rpn`: both.** Identical five-line output under
@@ -920,7 +924,10 @@ sprint files remain the implementation contracts for everything else.
     chapter's one directive-carrying fence plus its three exercises
     were reported as FLIPs and graduated to `run(…)` on both machines.
     The bare `wolf` fences and the `wolf build` transcripts are
-    unchanged and are now a presentation choice. Everything the bs10
+    unchanged and are now a presentation choice. bs49 made it
+    (wolf-book#50): the one bare fence left carries `run(exit=0)`, both
+    machines run it, and the transcripts stay compiled for §30.3's
+    reason. Everything the bs10
     hold note recorded was re-run at the adopted pin and none of it
     moved: the 97-line program, the two transcripts byte-for-byte, two
     hundred consecutive runs at one output hash, one `stdout_sha256`

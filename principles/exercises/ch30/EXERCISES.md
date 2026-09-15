@@ -7,7 +7,9 @@ project reads files, and the reference interpreter had no filesystem by
 design — and that ended at lupin 0.1.36, whose fs tier (is48) runs
 every one of them. The three solution programs that carried
 `wolf-run(…)` directives graduated to `run(…)` as reported FLIPs at
-bs46; the transcripts below are still `wolf build` and a binary.
+bs46, and the chapter's last bare fence took `run(…)` at bs49. The
+transcripts below stay `wolf build` and a binary by choice, for the
+reason §30.3 gives.
 
 Two of the seven carry no program on disk, and both for stated reasons:
 30-2's modified program is *flaky by construction*, which is the whole
