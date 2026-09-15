@@ -556,6 +556,14 @@ pub fn run(root: &Path, args: &[String]) -> Result<()> {
             "samples: samples-declined.toml: {} declared row(s) — {classes} (wolf-book#29)",
             declined_ledger.rows().len()
         );
+        println!(
+            "{}",
+            raw_decline_line(
+                crate::oslane::host_os(),
+                console.corpus_skipped.len(),
+                console.corpus_off_lane.len(),
+            )
+        );
     }
     if repl_blocks > 0 {
         println!(
@@ -2288,9 +2296,36 @@ fn selftest_corpus_console(root: &Path, tools: &Tools, caught: &mut usize) -> Re
     Ok(())
 }
 
+/// The per-host raw decline count (wolf-book#49). The declared-row line
+/// above is the same on every host; this one is not, because a block the
+/// unix lane replays is OFF-LANE on windows and a DECLINED block can
+/// classify OFF-LANE before the corpus admission rule is reached. Prose
+/// used to carry these numbers and went stale; the log carries them now.
+fn raw_decline_line(host: &str, declined: usize, off_lane: usize) -> String {
+    format!(
+        "samples: corpus console declines on {host}: {declined} DECLINED + {off_lane} OFF-LANE \
+         = {} raw (wolf-book#49)",
+        declined + off_lane
+    )
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn raw_decline_line_sums_both_kinds_and_names_the_host() {
+        assert_eq!(
+            raw_decline_line("windows", 11, 15),
+            "samples: corpus console declines on windows: 11 DECLINED + 15 OFF-LANE = 26 raw \
+             (wolf-book#49)"
+        );
+        assert_eq!(
+            raw_decline_line("macos", 18, 0),
+            "samples: corpus console declines on macos: 18 DECLINED + 0 OFF-LANE = 18 raw \
+             (wolf-book#49)"
+        );
+    }
 
     /// The bug that cancelled two CI lanes at their 60-minute ceiling.
     /// A child that leaves a grandchild holding the pipes must still
