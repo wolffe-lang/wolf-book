@@ -2,6 +2,43 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs49, the book takes 0.2.14 — 2026-09-15 — a list you can write out, a range you can name, and two programs the new compiler caught
+
+The pin moves to wolf 0.2.14, taken from the release archive by digest;
+lupin stays at 0.1.36. The compiler's half of the pair closes again: it
+names `lupin 0.1.36`, the interpreter printed under it. The
+interpreter's half reads seventy-two commits. §1.2 and the colophon say
+so, and §22.2's interface listing names `toolchain 0.2.14` over hashes
+that did not move.
+
+**Two programs in this book were unsound and 0.2.14 refuses them.**
+0.2.14 charges a built string to the region it was built in, and two
+rules come with that. §8.6's two-windows example copied a word out of
+the scratch region with `title = parts[1]`, and the page said the copy
+landed in the store. For a `str` only the view is copied, so the example
+now builds the title in the store with `in store { "{parts[1]}" }`, and
+the paragraph says why. §15.3's roster, itself a proc, sent a line it
+had interpolated in its own region: exactly what §15.2 teaches a proc
+must not send. It sends a literal now, and the section explains.
+
+**Chapter 5 writes its lists out.** `[340, 275, 100]` replaces a
+constructor and three pushes wherever a block's lesson is not `push`
+itself. §5.1 teaches the literal, the annotated empty literal and E0419.
+The literal is the compiler's alone this printing, so six blocks are
+compiled runs, and §5.1 says so once. §5.6's integer lists carry
+`List[int]`, because an integer literal decided only by a bare bound
+is an `i32`, and the page says that too.
+
+**§3.2 names the range type and §6.1 names a row.** `range[int]` with
+`start` and `end` sits where `a..b` first appears, and error-set
+aliases sit beside the row they abbreviate. Both are compiled runs.
+
+Chapters 26 and 30 run every program on both machines now. Their
+transcripts stay compiled by decision: the chapters answer a built C
+program. The two `par` exercises point at a real issue instead of two
+retired sprint names, and the exercise ledger's decline counts live in
+the runner's log rather than in a sentence that went stale.
+
 ## bs44, the twenty that are left — 2026-09-12 — both machines now run chapter 5, a supervisor stops reading freed memory, and three of the corpus's twenty holes were never holes
 
 The pin moves to wolf 0.2.12 and lupin 0.1.34, both release tags, both
