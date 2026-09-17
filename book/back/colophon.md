@@ -6,19 +6,22 @@ against:
 
 ```console
 $ wolf --version
-wolf 0.2.14 (wolfgang, pin 30731a6)
-paired with lupin 0.1.36 (reference interpreter), pin a7f517e
+wolf 0.2.15 (wolfgang, pin 2e4ca76)
+paired with lupin 0.1.37 (reference interpreter), pin 41695e7
 $ lupin --version
-lupin 0.1.36 (wolf-interp, reference interpreter at pin a7f517e)
+lupin 0.1.37 (wolf-interp, reference interpreter at pin 41695e7)
 ```
 
 The two lines name each other, and this printing one name is exact.
 Each tool reports the revision of the other it was differentially
 tested against, and the two projects are cut on their own schedules.
-The compiler names `lupin 0.1.36`, the interpreter under it and not a
-release older — the half that opened at the last printing, closed
-again. The interpreter names `a7f517e`, seventy-two commits before the
-revision the compiler above it was built at. §1.2
+The compiler names `lupin 0.1.37`, the interpreter under it and not a
+release older. The interpreter names `41695e7`, which is on no branch
+in either project: an s166 development head, rebased away as it
+merged, preserved afterwards as the tag
+`lupin-0.1.37-conformance-pin` in the compiler's repository. It is not
+an ancestor of the compiler's own revision, so the two clauses are not
+a distance and no commit count between them means anything. §1.2
 teaches the reader to read the pair either way. This page prints them
 as they are. The compiler's first line is also this page's proof, read
 the other way round: a build made exactly at a release tag prints the
