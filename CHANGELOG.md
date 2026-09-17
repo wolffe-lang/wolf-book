@@ -2,6 +2,65 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs50, §13.1 and the book takes 0.2.15 — 2026-09-17 — the chapter chapter 6 promised, and the number it does not flatter
+
+**§13.1 exists.** Chapter 6 §6.5 has promised readers since Part 1 that
+the word counter "becomes parallel by changing one call", and named
+§13.1 as where that diff gets checked. The section has been deliberately
+vacant since the chapter shipped, because `par` was specified and
+implemented by nobody. wolf 0.2.15 and lupin 0.1.37 both have it, so the
+section is written, in the slot chapter 6 already points at. Nothing is
+renumbered. The `(held)` marker is off its `principles/TOC.md` row and
+the HOLD note in `book/ch13.md` is deleted with nothing in its place:
+the section is its own record.
+
+**The promise is kept, and the half of it that was overstated is
+corrected on the page that owed it.** The box said "signature, types,
+`top`, and `main` all stand". `main` does not stand: `par` maps over a
+list, §6.5's `count` takes one `str`, so the text has to be split and
+the tallies merged before one call can change anything. The merge loop
+is in the serial version too — it is what splitting costs, not what
+`par` costs — and §13.1 says so instead of papering over it. Against a
+counter that already works on pieces, the diff really is one call, and
+both printed programs run on both machines and print the same bytes.
+
+**And the number is the book's own, measured on the book's machine.**
+Apple M5 Pro, 18 logical cores, 72 pieces, binaries timed with the
+compile excluded. The word counter parallelized by changing one call is
+**2.3x slower** than the version that used one core — 0.87 s against
+1.98 s — because `word.lower()` allocates per word and tasks contend on
+the native root arena's lock; the serial run spends 0.02 s in the kernel
+and the parallel run spends 28.75 s. The same program with that one
+allocation removed is 11.4x faster, and a body that only computes is
+16.6x. §13.1 prints the row that does not scale first and quotes the
+specification's own sentence: speedup is not promised. Exercises 13-1,
+13-6 and 13-8 land with the section; the first two were pending rows and
+flipped.
+
+**The pin moves to wolf 0.2.15 and lupin 0.1.37**, both from the release
+archives by digest, and both halves of the pair move for the first time
+since bs46. Ten samples flipped — eight of them fences that lupin 0.1.37
+now serves, so chapter 5's six list-literal blocks, §3.2's range block
+and §6.1's error-alias block are ordinary two-machine runs and nine
+per-machine sentences come off the pages.
+
+**Five programs in this book were refused by 0.2.15's lend rule, and
+one issue said there would be one.** A `read` parameter is lent, so
+handing it back needs a value of the function's own: §5.6's `total`,
+`capped` and `Num` accumulators, exercise 5-3's `first[T]`, and §18.4's
+three const-expression returns all spell `copy` now, and §5.6 gains the
+paragraph that earns it. Three of those five were `wolf-run(…)` blocks
+that the compiler started refusing in the same bump the interpreter
+started serving them.
+
+**§1.2 and the colophon stop describing the pair as a distance.** The
+interpreter's pin, `41695e7`, is not an ancestor of the compiler's
+release revision at all — it is a development head that was rebased away
+as it merged and survives only as a tag in the compiler's repository. So
+counting commits between the two clauses means nothing, and the pages
+say what the pair actually guarantees: that these two builds were tested
+against each other.
+
 ## bs49, the book takes 0.2.14 — 2026-09-15 — a list you can write out, a range you can name, and two programs the new compiler caught
 
 The pin moves to wolf 0.2.14, taken from the release archive by digest;
