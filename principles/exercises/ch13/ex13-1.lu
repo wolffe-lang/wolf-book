@@ -1,8 +1,7 @@
 //! check: run(exit=0, stdout="285")
 //! phase: run
 // Exercise 13-1: the promise — parallelism by changing one call.
-// PENDING: `par` is implemented on neither machine (owner:
-// wolf-lang#390); CI verifies this file the day it lands.
+// Runs on both machines since wolf 0.2.15 / lupin 0.1.37 (bs50).
 fn main() -> !int {
     var xs = List[int]()
     for i in 1..=9 { (mut xs).push(i) }

@@ -1,21 +1,19 @@
 # Chapter 13 — Dividing one job: exercises
 
 Commands run from this directory; outputs are pasted from real runs.
-Two exercises in this chapter are Tier-PENDING: their programs are on
-disk with the outcome their directive headers claim, and the manifest
-names what blocks them. Nothing below shows an output that was not
-produced.
+No exercise in this chapter is pending any more: the two rows that were
+— 13-1 and 13-6, both `par`'s — flipped at the bs50 pin bump, when
+wolf 0.2.15 and lupin 0.1.37 both grew `par`, and their manifest rows
+were removed in the same commit range that wrote §13.1. Nothing below
+shows an output that was not produced.
 
-Seven of the ten are printed in the chapter: 13-2, 13-3 and 13-4 in
-§13.2, and 13-5, 13-7, 13-9 and 13-10 in the chapter batch. The other
-three are `par`'s — 13-1 and 13-6 hold pending rows, and 13-8's
-subject is `par`'s decomposition contract — so all three are written,
-on file, and not printed. They land with §13.1.
+All ten are printed in the chapter now: 13-1, 13-6 and 13-8 in §13.1,
+13-2, 13-3 and 13-4 in §13.2, and 13-5, 13-7, 13-9 and 13-10 in the
+chapter batch.
 
 ## §13.1 — `par`
 
-**Exercise 13-1** *(comprehension · pending — blocker: `par`
-implemented on neither machine; owner: wolf-lang#390)*. Nine numbers, squared and summed. The parallel
+**Exercise 13-1** *(comprehension · both machines)*. Nine numbers, squared and summed. The parallel
 spelling replaces the squaring loop with one call:
 
 ```wolf
@@ -41,15 +39,14 @@ The tasks join *inside* the call: `par` is structured concurrency in
 an expression, a scope that opens and closes between the parentheses,
 which is why `?` can propagate a child's error out of it (the join has
 already happened when `?` looks). The directive header pins
-`stdout="285"`; CI verifies it the day `par` lands.
-
-Today:
+`stdout="285"`, and CI has verified it on both machines since wolf
+0.2.15.
 
 ```console
 $ lupin ex13-1.lu
-ex13-1.lu: unsupported: `List` has no method `par` in this machine's std subset
+285
 $ echo $?
-4
+0
 ```
 
 **Exercise 13-2** *(fingers · lupin)*. Nine numbers, squared and
@@ -274,8 +271,7 @@ blank. The row makes the caller say which they meant: handle
 `EmptyPattern` with "all lines" if that is truly the wish. An API's
 defaults should serve its likeliest accident, not its cleverest use.
 
-**Exercise 13-6** *(extension · pending — blocker: `par` implemented on
-neither machine; owner: wolf-lang#390)*. Parallelize 13-5: collect the lines into a list and
+**Exercise 13-6** *(extension · both machines)*. Parallelize 13-5: collect the lines into a list and
 map `contains` over them with `par`, counting matches from the
 returned flags. `ch13/ex13-6.lu` is on disk with the one-call
 spelling. Why is `contains` an ideal `par` body, and what about
@@ -288,13 +284,11 @@ free call: the `for` loop *filtered* (pushing only hits), while `par`
 *maps*, so the parallel version computes a flag per line and counts
 afterward, keeping the reduction order-insensitive per 13-4's rule.
 
-Today:
-
 ```console
 $ lupin ex13-6.lu
-ex13-6.lu: unsupported: `List` has no method `par` in this machine's std subset
+2 match(es)
 $ echo $?
-4
+0
 ```
 
 **Exercise 13-7** *(comprehension · lupin)*. One Euler step for two
