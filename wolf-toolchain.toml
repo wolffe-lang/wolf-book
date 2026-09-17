@@ -695,9 +695,107 @@
 #     grammar.ebnf unchanged; the catalog unchanged at 176 (the only
 #     edit to docs/diagnostics.md is E1010's fixture list); anchors
 #     496 -> 498 (`mem.region.proc`, `os.net.writev.head`).
+#
+# ---- bs50, wave 45: wolf 0.2.15 + lupin 0.1.37, and BOTH halves move ----
+#
+# wolf-lang at the v0.2.15 release tag (`2e4ca76`), TAKEN FROM THE
+# RELEASE ARCHIVE and matched against the release's own published
+# digest BEFORE unpacking: sha256 166004ee..., 13,868,188 B, both read
+# from the API rather than from a memory of them. The archive holds
+# more than one executable, so every member is hashed BY NAME (wave
+# 44's rule; "the first binary it finds" can verify `_wolf` and still
+# look green):
+#
+#   wolf                 957a5210...   <- the pin of record
+#   _wolf                2d1e4801...   <- byte-identical to 0.2.13's
+#   wolf-cimport-worker  8f20ff26...
+#   libwolf_rt.a         1901f7d5...
+#
+# and the interpreter's archive sha256 06c07651..., member `lupin`
+# 586db0e6.... The CONTROL pair was re-fetched the same way (v0.2.14
+# `wolf` 4b25bbd4..., v0.1.36 `lupin` 13930e49...) rather than taken
+# from ~/.local/bin, which is the reader's install and never a lane's.
+#
+#   wolf 0.2.15 (wolfgang, pin 2e4ca76)
+#   paired with lupin 0.1.37 (reference interpreter), pin 41695e7
+#   lupin 0.1.37 (wolf-interp, reference interpreter at pin 41695e7)
+#
+# BOTH HALVES MOVE, which is what makes this bump different from
+# bs49's. The compiler's pairing half closes to zero again (it names
+# lupin 0.1.37 and this file pins 0.1.37) and the interpreter's half
+# closes to zero for the first time in three releases: lupin 0.1.37
+# declares `41695e7`, an s166 BRANCH HEAD that the rebase-merge left
+# reachable from no branch — preserved deliberately as
+# `refs/tags/lupin-0.1.37-conformance-pin` -> 41695e78437fbf36... IN
+# WOLF-LANG, which is where it belongs and is worth stating plainly:
+# a lupin release's `lupin-pin` names the WOLF-LANG revision that
+# release was differentially tested against, so the tag that rescues it
+# is wolf-lang's. Checked here in both repositories: wolf-interp has no
+# such tag and cannot resolve 41695e7 at all. A clone that cannot
+# resolve a PAIRING pin should look for a tag of that shape in the
+# compiler's repository before concluding the commit is lost.
+#
+# WHAT THE BOOK MEASURED, PREDICTION FIRST (scratch
+# bs50-predictions.txt, written before either archive was unpacked and
+# before any file in this tree was edited). The CONTROL ran on the
+# UNEDITED tree (trunk b3cb0db) with the OLD pair:
+#
+#   497 samples, 492 passed, 5 pending, 0 failed, 0 flips (119.0 s)
+#
+# The same tree with the NEW pair:
+#
+#   497 samples, 483 passed, 3 pending, 25 failed, 10 flips (112.9 s)
+#
+#   * 10 FLIPS, 2 PREDICTED BY NAME, AND THE PREDICTION WAS WRONG IN
+#     THE DIRECTION THIS PROJECT KEEPS BEING WRONG IN. Predicted:
+#     `ch13/ex13-1` and `ch13/ex13-6`, the two `par` rows, which is
+#     what this lane exists for and which flipped exactly as written.
+#     The eight unpredicted are ALL THE INTERPRETER'S: `book/ch03/
+#     part-span`, `book/ch05/s2`, `s5`, `s12`, `s15`, `s17`, `s18` and
+#     `book/ch06/part-readerrors` are `wolf-run(...)` fences that lupin
+#     0.1.37 now serves too. bs49's note said the interpreter's half
+#     carries the weight of a bump; this lane predicted two flips
+#     anyway and measured ten. THE INTERPRETER IS THE THING TO PREDICT.
+#   * PENDING 5 -> 3, and the row that did NOT flip was predicted not
+#     to: `ch05/ex5-8` names `sorted_by` AND `take`, and `take` is not
+#     one of `[type.comb.set]`'s ten, so the row half-heals. Its
+#     blocker text is re-measured rather than removed.
+#   * 5 PROGRAMS REFUSED BY s165's LEND RULE, 1 PREDICTED BY NAME —
+#     and the miss is a finding about wolf-book#57's sibling #56
+#     rather than about this bump. #56 was measured at THIS VERY TRUNK
+#     and reported "one file is affected": `ch05/ex5-3`. Measured here
+#     with the release archive, FIVE are: `ch05/ex5-3`, `book/ch05/s12`
+#     (SS5.6's `total[T: Add]`), `book/ch05/s17`, `book/ch05/s18` and
+#     `book/ch18/s13`. Four of the five are EXTRACTED book blocks, which
+#     is the shape of the miss: a sweep over `.lu` files on disk cannot
+#     see a program that lives in a fence until `cargo xtask samples`
+#     has written it out, and `samples/extracted/` is gitignored. A
+#     search that cannot reach the defect prints NONE either way.
+#   * THREE OF THOSE FIVE ARE ALSO FLIPS, and the pair of verdicts is
+#     not a contradiction: `book/ch05/s12`, `s17` and `s18` are
+#     `wolf-run(...)` blocks that the COMPILER now refuses (E1002) and
+#     the INTERPRETER now serves. A compiler-only fence became an
+#     interpreter-only program inside one pin bump.
+#   * 0 OUTPUT CHANGES FROM s167's `push` COPY RULE, PREDICTED 0, and
+#     the reason was written down in advance: lupin has had copy
+#     semantics all along and every book sample already agrees on both
+#     machines, so no book program's printed bytes could depend on the
+#     alias the compiler used to keep. wolf-book#57 is cost and
+#     teaching, not drift.
+#   * THE SPEC ARTIFACTS: anchors 498 -> 524, +26, NONE DROPPED, key
+#     sets diffed BOTH WAYS (wolf-lang#177's lesson). Predicted 524
+#     exactly, from the release notes' own claim. The catalog is
+#     unchanged at 176, predicted. grammar.ebnf CHANGED, PREDICTED
+#     UNCHANGED and wrong: `FORMAT_SPEC` is written out
+#     (`FMT_FILL`/`FMT_ALIGN`/`FMT_TYPE`, `[type.interp.spec]`) where
+#     it was a comment, so Appendix A regenerates.
+#   * `[conc.task.par]` IS THE SIX-CLAUSE SURFACE SS13.1 IS WRITTEN
+#     AGAINST: `.order`, `.fail`, `.capture`, `.chunk`, `.det` and
+#     `.cost` all arrive in this anchor set. `.cost` is the one the
+#     chapter quotes: speedup is not promised.
 repo = "wolffe-lang/wolf-lang"
-rev = "30731a6509443ade03724707345da9ceb86a88bf"
-impl_version = "0.2.14"
+rev = "2e4ca769b396219585a07ff18492529c944672d9"
+impl_version = "0.2.15"
 
 [lupin]
 # wolf-interp at the v0.1.30 release tag (is42): the stamped line names
@@ -1193,9 +1291,31 @@ impl_version = "0.2.14"
 # way it always did — those three are the compiler catching up); 0 of
 # the 24 failures are its doing, which is unusual and is the mark of a
 # release that added a tier instead of changing a rendering.
+#
+# ---- bs50, wave 45: 0.1.36 -> 0.1.37, and the largest bump measured ----
+#
+# THE INTERPRETER TOOK TWO PIN MOVES INSIDE ONE RELEASE
+# (`a7f517e` -> `30731a6` -> `41695e7`), so three wolf-interp lanes land
+# behind one tag. LIST LITERALS ARRIVE (wolf-interp#106, the note above
+# retires: `[1, 2, 3]` was E0201 on 0.1.36 and runs on 0.1.37) AND SO
+# DOES THE METHOD SURFACE, all ten of `[type.comb.set]` plus `par`.
+#
+# THE INTERPRETER'S SHARE OF THE MEASUREMENT: 10 of the 10 flips are
+# its doing, against 7 of 8 at the last bump — eight of them fences
+# graduating because lupin caught up, and two (`ch13/ex13-1`,
+# `ch13/ex13-6`) because BOTH machines grew `par` at once. 0 of the 25
+# failures are its doing; all 25 are the compiler's lend rule, four
+# diagnostic re-wordings and the stamp. That is two bumps running where
+# the interpreter moves the flips and the compiler moves the failures.
+#
+# `par` RUNS ON BOTH MACHINES, AND ONLY ONE OF THEM RUNS IT IN
+# PARALLEL. lupin executes `xs.par(f)` sequentially and answers the
+# same bytes (`[conc.task.par.order]` makes that conforming, not a
+# shortfall), which is why SS13.1 can carry a `run(...)` fence for the
+# parallel wordcount and must take its TIMES from the compiler alone.
 repo = "wolffe-lang/wolf-interp"
-rev = "6e94436b2cae285bf2ffc19477600535e33ccbbb"
-version = "lupin 0.1.36 (wolf-interp, reference interpreter at pin a7f517e)"
+rev = "552786e39c5660e2e58b7facadd54195df3243e8"
+version = "lupin 0.1.37 (wolf-interp, reference interpreter at pin 41695e7)"
 
 [wolf-lsp]
 # Source of the vendored tmLanguage grammars under highlight/.
