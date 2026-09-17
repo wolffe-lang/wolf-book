@@ -16,9 +16,7 @@ pasted from the run; `prose`: the solution is discussion, no program;
 `pending`: the stem and expected outcome exist, the feature does not —
 see `EXERCISES-PENDING.md` for each blocker and owner.
 
-Batches written and **not printed in their chapters**: ch13's 13-1,
-13-6 and 13-8 — all three `par`'s, whose section §13.1 is held while
-the rest of that chapter ships (`book/ch13.md`); ch17's 17-6, whose
+Batches written and **not printed in their chapters**: ch17's 17-6, whose
 section is held for want of fault injection (TOC.md §Deltas, bs07);
 ch20's contracts nine (20-5 … 20-13, the old ch19 set renumbered at
 the bs18 re-draw), which wait for the verifying compiler while their
@@ -66,7 +64,7 @@ several of its stems are tagged `· wolf` while the distilled solution
 program on disk runs under lupin — the tier column says what CI
 executed, and the exercise file says which is which and why.
 
-Tier totals: 198 run (lupin) · 9 run (lupin REPL) · 32 run (wolf) · 14 run (wolf + lupin) · 78 prose · 10 pending. That is 341.
+Tier totals: 198 run (lupin) · 9 run (lupin REPL) · 32 run (wolf) · 16 run (wolf + lupin) · 78 prose · 8 pending. That is 341.
 (The totals and the tables were recounted mechanically against the
 masters at bs21 — the previous header said 276/231 while the tables
 had drifted from the marker count, ch05's 5-9 and 5-10 among the
@@ -93,8 +91,8 @@ Taxonomy spread (tags, hybrids counted once per kind): fingers 62 ·
 comprehension 153 · extension 76 · spelunking 27 · design 37.
 
 Four stems are printed under a section other than the one this index
-assigns them, each deliberately: 13-2 (printed in §13.2 while §13.1 is
-held), 18-6 (printed in §18.4), 18-15 (a chapter-batch stem printed at
+assigns them, each deliberately: 13-2 (printed in §13.2, where the race
+it feeds lives), 18-6 (printed in §18.4), 18-15 (a chapter-batch stem printed at
 §18.4's end), and 23-6 (printed in §23.1). Two more
 are printed in another *chapter*: 4-3 and 4-4 end §7.4 and §7.5, because
 the call-site `mut` they need is taught there and the numbers are stable
@@ -328,14 +326,14 @@ ahead of 24-7; the batch is the chapter's last two either way.
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
-| §13.1 — `par` (held) | 13-1 | comprehension · pending | pending |
-| §13.1 — `par` (held) | 13-2 → printed in §13.2 | fingers · lupin | run (lupin) |
+| §13.1 — `par` | 13-1 | comprehension · wolf + lupin | run (wolf + lupin) |
+| §13.1 — `par` | 13-2 → printed in §13.2 | fingers · lupin | run (lupin) |
 | §13.2 — The race that does not compile | 13-3 | comprehension · wolf + lupin | run (wolf + lupin) |
 | §13.2 — The race that does not compile | 13-4 | spelunking · lupin | run (lupin) |
 | Chapter batch | 13-5 | extension · lupin | run (lupin) |
-| Chapter batch (held with §13.1) | 13-6 | extension · pending | pending |
+| §13.1 — `par` | 13-6 | extension · wolf + lupin | run (wolf + lupin) |
 | Chapter batch | 13-7 | comprehension · lupin | run (lupin) |
-| Chapter batch (held with §13.1) | 13-8 | design | prose |
+| §13.1 — `par` | 13-8 | design | prose |
 | Chapter batch | 13-9 | extension · lupin | run (lupin) |
 | Chapter batch | 13-10 | comprehension + extension · lupin | run (lupin) |
 | Chapter batch | 13-11 | extension · lupin | run (lupin) |
