@@ -451,14 +451,20 @@ top-1 is strictly less work than the chain performs. That is the
 trade the combinator style makes on purpose: the chain states the
 result's shape and lets the library choose the work; the loop states
 the work and leaves the reader to infer the shape. The solution
-program is on disk with its expected output in the header; CI runs it
-the day the std surface lands.
+program is on disk with its expected output in the header.
 
-Today:
+It is still pending at wolf 0.2.15 / lupin 0.1.37, and for two reasons
+that have both changed since this row was written. `sorted_by` exists
+now — it is one of `[type.comb.set]`'s ten — but it is a `std.list`
+function, and a combinator has to reach its home module, which needs a
+std root neither tool is given here (wolf-book#39). And `.take(1)` can
+never arrive at all: `take` is a keyword, so `fn take` is E0008 and no
+std function may carry the name (wolf-book#58). The message says the
+first half:
 
 ```console
 $ lupin ex5-8.lu
-ex5-8.lu: unsupported: `List` has no method `sorted_by` in this machine's std subset
+ex5-8.lu: unsupported: `List.sorted_by` is no builtin, so it reaches `List`'s home module `std.list` ([type.method.resolve] step 2), and no std root is configured: pass `--std-root DIR` or set `LUPIN_STD` (the compiler reads `WOLF_STD` or a `std` path dependency in `wolf.pkg`) — the counterparty's E0301 ([type.method.root])
 $ echo $?
 4
 ```
