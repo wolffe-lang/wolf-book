@@ -208,12 +208,9 @@ you can replay.*
 - Exercises 12-1 ….
 
 ### Chapter 13 — Dividing one job
-- (held) 13.1 `par` — parallelize Part 1's wordcount by changing one
-  call (the promise, kept). Held at rp01: `par` has no surface in
-  either implementation. The `(held)` prefix is what stops
-  `verify-docs` demanding the heading in a shipped chapter; drop it
-  when the section is written. The number stays reserved (§Deltas,
-  rp01).
+- 13.1 `par` — parallelize Part 1's wordcount by changing one call
+  (the promise, kept, and the half of it that was overstated). Written
+  at bs50, wolf 0.2.15.
 - 13.2 The race that does not compile — introduce a real race and read
   the rejection with its three suggested fixes.
 - Exercises 13-1 ….
@@ -1413,3 +1410,34 @@ sprint files remain the implementation contracts for everything else.
   bare statement send the compiler names is `?` or `else { … }`
   (wolf-book#21), and §10.1 says why a task's tail needs neither. No
   section number moves and no shipped anchor changes meaning.
+- **bs50 (§13.1 lands; the promise kept and half-corrected, 2026-09-17):**
+  the pin moves to wolf 0.2.15 and lupin 0.1.37, `par` exists in both
+  machines, and the slot rp01 reserved is written. Nothing is
+  renumbered, which was the whole point of holding the number: ch06
+  §6.5's boxed promise pointed at §13.1 for thirteen months of sprints
+  and now resolves to a heading that is there.
+  - **The box is corrected on §13.1's own page, not on ch06's.** It
+    claimed "signature, types, `top`, and `main` all stand"; `main`
+    does not stand, because `par` maps over a list and §6.5's `count`
+    takes one `str`, so the split and the merge have to be written
+    before one call can change anything. The merge loop is in the
+    serial version too — it is what splitting costs, not what `par`
+    costs — and §13.1 says so rather than papering it. ch06's box
+    invited exactly this ("if parallelizing this program turns out to
+    need a rewrite, the claim was false and the book will say so on
+    that page"); it is not a rewrite, so the box stays, and the page
+    that was promised carries the accounting.
+  - **The section states the book's own numbers and they are not the
+    compiler's.** On nomad-1 (Apple M5 Pro, 18 logical cores, 12
+    performance and 6 efficiency) the word counter parallelized by one
+    call is **2.3x slower**, because `word.lower()` allocates per word
+    and tasks contend on the native root arena's lock
+    (`[conc.task.par.cost]`); 28.75 s of system time against the
+    serial version's 0.02 s is the measurement that shows it. The same
+    program with that one allocation removed is 11.4x faster, and a
+    body that only computes is 16.6x. wolf-lang's changelog reports
+    11.2x on sixteen cores for a CPU-bound map; that figure has no
+    committed benchmark behind it, so the book measures its own and
+    prints the shape that does NOT scale first.
+  - **`(held)` comes off the row and the ch13 HOLD comment is deleted**
+    with nothing in its place: the section's existence is the record.
