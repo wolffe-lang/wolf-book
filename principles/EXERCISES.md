@@ -781,7 +781,7 @@ Solution. `ch05/ex5-3.lu`:
 
 ```wolf
 fn first[T](xs: List[T], fallback: T) -> T {
-    if xs.is_empty() { fallback } else { xs[0] }
+    if xs.is_empty() { copy fallback } else { copy xs[0] }
 }
 fn main() -> !int {
     var howls = List[str]()

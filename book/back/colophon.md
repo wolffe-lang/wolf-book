@@ -17,7 +17,7 @@ Each tool reports the revision of the other it was differentially
 tested against, and the two projects are cut on their own schedules.
 The compiler names `lupin 0.1.37`, the interpreter under it and not a
 release older. The interpreter names `41695e7`, which is on no branch
-in either project: an s166 development head, rebased away as it
+in either project: a development head, rebased away as it
 merged, preserved afterwards as the tag
 `lupin-0.1.37-conformance-pin` in the compiler's repository. It is not
 an ancestor of the compiler's own revision, so the two clauses are not

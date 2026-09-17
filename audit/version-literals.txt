@@ -54,19 +54,27 @@
 # names live in one and nothing executes them.
 
 # --- the compiler's clock ---
-book/ch01.md 0.2.14+dev.unknown 1 audited-at-wolf=0.2.14
-book/ch01.md 0.2.14 3 audited-at-wolf=0.2.14
-book/ch22.md 0.2.14 1 audited-at-wolf=0.2.14
-book/ch33.md 0.2.6 1 audited-at-wolf=0.2.14
-book/ch33.md 0.2.8 1 audited-at-wolf=0.2.14
+book/ch01.md 0.2.15+dev.unknown 1 audited-at-wolf=0.2.15
+book/ch01.md 0.2.15 3 audited-at-wolf=0.2.15
+book/ch22.md 0.2.15 1 audited-at-wolf=0.2.15
+# §5.6's `copy zero` paragraph and §13.1 both name the release that
+# started enforcing what they teach; §13.1 also names the rig its
+# timings were measured on. All three are claims about 0.2.15 itself,
+# so they ride the compiler's clock and want re-reading at the next
+# bump — the numbers in §13.1's table were measured on this pair and a
+# new compiler can move them.
+book/ch05.md 0.2.15 1 audited-at-wolf=0.2.15
+book/ch13.md 0.2.15 2 audited-at-wolf=0.2.15
+book/ch33.md 0.2.6 1 audited-at-wolf=0.2.15
+book/ch33.md 0.2.8 1 audited-at-wolf=0.2.15
 # Appendix E's formatter section names TWO releases on purpose from bs44
 # on: the braced-chain rule changed between them, and a page that shows
 # a canonical layout owes the reader the release it is canonical for.
 # `0.2.11` here is a historical claim about a formatter that no longer
 # exists and can never come back true; `0.2.12` is the live one and is
 # the same claim the fixture beside it is checked against every run.
-book/back/appendix-e.md 0.2.11 1 audited-at-wolf=0.2.14
-book/back/appendix-e.md 0.2.12 1 audited-at-wolf=0.2.14
+book/back/appendix-e.md 0.2.11 1 audited-at-wolf=0.2.15
+book/back/appendix-e.md 0.2.12 1 audited-at-wolf=0.2.15
 
 # --- both clocks ---
 # `0.1.31` is ONE literal on each of these two pages at bs40 (it was two
@@ -97,12 +105,38 @@ book/back/appendix-e.md 0.2.12 1 audited-at-wolf=0.2.14
 # there. So the `0.1.35` entries leave both pages with the sentences
 # that carried them, and one literal per page is left, still two
 # claims, still both clocks.
-book/ch01.md 0.1.36 1 audited-at-wolf=0.2.14 audited-at-lupin=0.1.36
-book/back/colophon.md 0.1.36 1 audited-at-wolf=0.2.14 audited-at-lupin=0.1.36
-book/ch04.md 0.1.36 1 audited-at-lupin=0.1.36
-book/ch06.md 0.1.36 1 audited-at-lupin=0.1.36
-book/ch27.md 0.1.36 1 audited-at-lupin=0.1.36
-book/ch30.md 0.1.36 1 audited-at-lupin=0.1.36
+# AT BS50 THE PAIR IS EQUAL AGAIN AND THE SENTENCES SAY SOMETHING NEW.
+# The compiler names `lupin 0.1.37` and `[lupin]` pins 0.1.37, so the
+# equal-numbers configuration holds for the third bump running. What
+# changed is the OTHER clause, and it is why both pages carry TWO
+# literals now instead of one: the interpreter's own pin, `41695e7`, is
+# not an ancestor of the compiler's release revision at all — it is a
+# development head that was rebased away as it merged and survives only
+# as a tag in the compiler's repository. So §1.2 and the colophon no
+# longer describe the pair as a distance in commits, because counting
+# between those two revisions is meaningless; they say that the two
+# builds were tested against each other, which is the whole claim the
+# pair ever made. Either pin moving falsifies both sentences, so both
+# entries keep both clocks, as they have since bs38.
+#
+# The four `0.1.36` entries below (ch04, ch06, ch27, ch30) were RE-READ
+# rather than re-stamped by reflex: every one of them is a sentence
+# about WHEN the interpreter grew a filesystem ("until lupin 0.1.36",
+# "retired at lupin 0.1.36"). A historical claim does not stop being
+# true when the pin moves past it, so the literal stays 0.1.36 and only
+# the audited-at moves. The same reading applies to ch33's `0.2.6` and
+# `0.2.8` and to appendix E's `0.2.11`, each of which dates a change
+# rather than describing the pinned tool.
+book/ch01.md 0.1.37 2 audited-at-wolf=0.2.15 audited-at-lupin=0.1.37
+book/back/colophon.md 0.1.37 2 audited-at-wolf=0.2.15 audited-at-lupin=0.1.37
+book/ch04.md 0.1.36 1 audited-at-lupin=0.1.37
+book/ch06.md 0.1.36 1 audited-at-lupin=0.1.37
+book/ch27.md 0.1.36 1 audited-at-lupin=0.1.37
+book/ch30.md 0.1.36 1 audited-at-lupin=0.1.37
+# §5.6's paragraph names both tools in one sentence (the lend rule
+# arrived in the compiler at 0.2.15; the list literals its blocks use
+# arrived in the interpreter at 0.1.37), so it rides both clocks.
+book/ch05.md 0.1.37 1 audited-at-wolf=0.2.15 audited-at-lupin=0.1.37
 
 # --- version-shaped, and about neither tool ---
 book/ch23.md 1.4.0 1 not-a-toolchain-version
