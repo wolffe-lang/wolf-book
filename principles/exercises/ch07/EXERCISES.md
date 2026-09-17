@@ -111,7 +111,7 @@ warning[W1003]: `w` is taken, never touched, and returned
   |
   = note: the caller gives the value up only to receive it back; if callers could reasonably keep
     it, the signature is wrong.
-help: drop the `take` (call sites drop theirs and keep their binding; owned payloads may then need a real transform)
+help: drop the `take` and hand back `copy w` (call sites drop theirs and keep their binding; a `read` parameter returned without the `copy` is E1002, #366)
   |
 5 | fn eat(w: str) -> str { w }
   |

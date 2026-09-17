@@ -721,11 +721,23 @@
 #   lupin 0.1.37 (wolf-interp, reference interpreter at pin 41695e7)
 #
 # BOTH HALVES MOVE, which is what makes this bump different from
-# bs49's. The compiler's pairing half closes to zero again (it names
-# lupin 0.1.37 and this file pins 0.1.37) and the interpreter's half
-# closes to zero for the first time in three releases: lupin 0.1.37
-# declares `41695e7`, an s166 BRANCH HEAD that the rebase-merge left
-# reachable from no branch — preserved deliberately as
+# bs49's. The compiler's pairing half closes to zero again: it names
+# lupin 0.1.37 and this file pins 0.1.37.
+#
+# THE INTERPRETER'S HALF DOES NOT CLOSE, AND IT CANNOT BE MEASURED THE
+# WAY THE OTHER NINE WERE. This lane's first draft of this note said it
+# closed to zero; that was wrong and is corrected here rather than
+# quietly. Measured: `41695e7` is **not an ancestor of v0.2.15 at
+# all**. It is 27 commits down a line that reaches NO BRANCH, from a
+# merge base (`4b56441f`) that is itself 110 commits behind the release
+# — an s166 branch head the rebase-merge stranded. So the ten-point
+# series bs35 has kept (14, 43, 65, 51, 84, 110, 91, 31, 43, 72), every
+# one of them a distance along one line, gets no eleventh number. The
+# honest entry is "off the line", and `git rev-list --count
+# 41695e7..2e4ca76` answers 110 for a reason that has nothing to do
+# with how far behind the interpreter is. A count between two revisions
+# means nothing until one is shown to be an ancestor of the other, and
+# this is the bump that proves it. The revision is preserved as
 # `refs/tags/lupin-0.1.37-conformance-pin` -> 41695e78437fbf36... IN
 # WOLF-LANG, which is where it belongs and is worth stating plainly:
 # a lupin release's `lupin-pin` names the WOLF-LANG revision that

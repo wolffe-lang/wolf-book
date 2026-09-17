@@ -869,7 +869,7 @@ warning[W1003]: `w` is taken, never touched, and returned
   |
   = note: the caller gives the value up only to receive it back; if callers could reasonably keep
     it, the signature is wrong.
-help: drop the `take` (call sites drop theirs and keep their binding; owned payloads may then need a real transform)
+help: drop the `take` and hand back `copy w` (call sites drop theirs and keep their binding; a `read` parameter returned without the `copy` is E1002, #366)
   |
 6 | fn adopt(w: str) -> str { w }
   |
@@ -3326,7 +3326,7 @@ warning[W1003]: `w` is taken, never touched, and returned
   |
   = note: the caller gives the value up only to receive it back; if callers could reasonably keep
     it, the signature is wrong.
-help: drop the `take` (call sites drop theirs and keep their binding; owned payloads may then need a real transform)
+help: drop the `take` and hand back `copy w` (call sites drop theirs and keep their binding; a `read` parameter returned without the `copy` is E1002, #366)
   |
 5 | fn eat(w: str) -> str { w }
   |
@@ -9546,7 +9546,7 @@ Solution. Both runs, one item and one number between them:
 ```console
 $ wolf interface ./wordcount/tokens/tokens.lu
 module pkg :: (root)
-  wolfi v0 · toolchain 0.2.14 · edition v1
+  wolfi v0 · toolchain 0.2.15 · edition v1
   export_hash 05a012a2ca47c85fc47f13e7e2c80930951ae8c59a84d1631ca8844e71669f3c
   pkg_hash    05a012a2ca47c85fc47f13e7e2c80930951ae8c59a84d1631ca8844e71669f3c
   deps: (none)
