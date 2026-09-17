@@ -322,7 +322,7 @@ the two accelerations separately with different roundings and the
 symmetry is gone. That observation is the seed of every reproducible
 n-body benchmark in Part 4.
 
-**Exercise 13-8** *(design)*. A million elements, a `par` map, and a
+**Exercise 13-8** *(design · §13.1)*. A million elements, a `par` map, and a
 machine with eight cores. Task-per-element is a million tasks;
 task-per-chunk is eight. Discuss: what does each choice cost, which
 one does a *structured* runtime prefer, and why must the answer never
@@ -333,14 +333,20 @@ element (for a cheap body, more bookkeeping than work) but exposes
 maximal parallelism and makes an uneven workload self-balancing.
 Task-per-chunk amortizes overhead to nearly nothing but invites
 stragglers: one slow chunk idles seven cores, and choosing chunk size
-is a tuning job that outlives its hardware. Runtimes therefore prefer
-neither statically: work-stealing splits eagerly while queues are
-hungry and coarsens when they are not, and `par` deliberately does
-not let you spell the split in the program. The last question is the
-contract doing its work: because `par` returns results in input order
-and joins inside the call, the decomposition is unobservable (13-4's
-lesson as an API guarantee), so the runtime may re-decide it per run,
-per machine, per load, without changing the program's result.
+is a tuning job that outlives its hardware. Wolf rules it rather than leaving it
+to taste, and the clause is worth reading against your own answer:
+the runtime splits `0..n` into `k = min(n, W)` contiguous chunks whose
+lengths differ by at most one, in index order, where `W` is its worker
+count — and a task per element is **not a conforming desugar**, because
+a spawn costs a record and a queue operation
+(`[conc.task.par.chunk]`). So the million-task option is not merely
+unwise here; it is not wolf, and the straggler cost is accepted on
+purpose. The last question is the contract doing its work: because
+`par` returns results in input order and joins inside the call, the
+decomposition is unobservable (13-4's lesson as an API guarantee), so
+the runtime may re-decide `k` per run, per machine, per load, without
+changing the program's result — and no clause lets a program ask what
+`k` was.
 
 **Exercise 13-9** *(extension · lupin)*. The caesar shift, sequential
 on purpose: `shift(s, k)` moves each lowercase letter `k` places with
