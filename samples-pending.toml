@@ -17,6 +17,15 @@
 # at this pin and both exercises are ordinary green samples with
 # reviewed snapshots.
 #
+# REMOVED AT THE bs50 PIN BUMP (wolf 0.2.15 / lupin 0.1.37), both as
+# reported FLIPs: `ch13/ex13-1` and `ch13/ex13-6`, the two `par` rows.
+# `par` is implemented on BOTH machines at this pair — it is the
+# language's own builtin (`[type.comb.builtin]`), not a std function,
+# so it needs no std root and both tools serve it. lupin runs it
+# sequentially and prints the same bytes, which `[conc.task.par.order]`
+# makes conforming. Their section, §13.1, is written in the same
+# commit range, which is what these two rows were holding.
+#
 # At the rp01 bump (lupin v0.1.6) the *interpreter* grew the same three
 # checks — E1101, E1102, E1103 — refusing at the resolve rung with
 # byte-identical codes and spans. No row moved, because none was waiting
@@ -31,8 +40,8 @@
 
 [[pending]]
 id = "ch05/ex5-8"
-blocker = "`sorted_by` / `take` absent from the interp std subset"
-owner = "s37-core-types (std surface pinning)"
+blocker = "TWO blockers, re-measured at bs50 against wolf 0.2.15 / lupin 0.1.37, and NEITHER is the one this row used to name. (1) `sorted_by` exists now — it is one of `[type.comb.set]`'s ten — but it is a `std.list` function that must reach its home module, and this repository configures no std root for either tool, so both machines decline at `[type.method.root]`: lupin `unsupported`, wolf E0301. That half is wolf-book#39, not a std-surface debt. (2) `.take(1)` can never arrive: `take` is a keyword, so `fn take` is E0008 on both machines and no std function may carry the name. This row is waiting on a spelling that cannot exist and the exercise wants rewriting (wolf-book#58)."
+owner = "wolf-book#39 (the std root) + wolf-book#58 (the unspellable `take`)"
 
 [[pending]]
 id = "ch07/ex7-5"
@@ -44,15 +53,7 @@ id = "ch08/ex8-7"
 blocker = "field writes through a pool index do not denote a place in the interp std subset"
 owner = "s37-core-types (std surface pinning)"
 
-[[pending]]
-id = "ch13/ex13-1"
-blocker = "`par` implemented on neither machine: wolf 0.2.14 cannot compile it yet (methods on generic std data), lupin 0.1.36 has no method `par`"
-owner = "wolf-lang#390 (the ruling: implement [conc.task.par] or withdraw it)"
 
-[[pending]]
-id = "ch13/ex13-6"
-blocker = "`par` implemented on neither machine: wolf 0.2.14 cannot compile it yet (methods on generic std data), lupin 0.1.36 has no method `par`"
-owner = "wolf-lang#390 (the ruling: implement [conc.task.par] or withdraw it)"
 
 
 # Removed at the bs09 pin bump, all three as reported FLIPs: `ch18/ex18-3`,
