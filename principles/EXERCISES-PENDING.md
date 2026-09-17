@@ -20,9 +20,7 @@ verdict for a feature that does not exist yet.
 |---|---|---|---|
 | 7-5 (static half) | `fail(E1003)` | borrow-escape checking reaches no static verdict; wolfc leaves `channel` unresolved | s33-channels-select, then s18-tier0-exclusivity |
 | 8-7 | `run(exit=0, stdout="c a")` | field writes through a pool index (`pool[h].next = k`) do not denote a place in the interp std subset | s37-core-types (std surface pinning) |
-| 13-1 | `run(exit=0, stdout="285")` | `par` implemented on neither machine | wolf-lang#390 |
-| 13-6 | `run(exit=0)` | `par` implemented on neither machine | wolf-lang#390 |
-| 5-8 | `run(exit=0, stdout="marmot 5")` | `sorted_by` / `take` absent from the interp std subset | s37-core-types (std surface pinning) |
+| 5-8 | `run(exit=0, stdout="marmot 5")` | two blockers, re-measured at bs50 and neither as written: `sorted_by` EXISTS (one of `[type.comb.set]`'s ten) but is a `std.list` function and this repo configures no std root, so both machines decline at `[type.method.root]`; and `.take(1)` can never arrive, because `take` is a keyword and `fn take` is E0008 | wolf-book#39 (std root) + wolf-book#58 (the unspellable `take`) |
 | 17-6 | `run(exit=0)` | `--chaos` fault injection at declared effect points — and with it §17.3 of chapter 17, which is why this stem is written and **not printed** (TOC.md §Deltas, bs07) | s36-deterministic-scheduler |
 | 20-5 (was 19-1 until bs18) | `run(exit=0, stdout="3")` | perf-contract verification (I15) | s24–s26 WIR fact sprints |
 | 21-8 | none — measurement exercise | bench rigs and CI perf gates | s44-perf-validation |
@@ -55,6 +53,31 @@ stays at three sections; `wolf bench` still answers `not yet`, so 19-1,
 are unmoved for the reasons their blockers name. Native concurrency and
 the compiler's mid-end are what this bump brought, and neither of them is
 what any of these rows is waiting on.
+
+## What the bs50 pin bump moved (2026-09-17)
+
+Two rows leave this table, as reported FLIPs, and they are the two the
+file has carried longest. At **wolf 0.2.15 / lupin 0.1.37** `par` is
+implemented on **both** machines, so 13-1 (`285`) and 13-6
+(`2 match(es)`) run and are printed in §13.1 — the section they were
+holding. `par` needs no std root, because it is the language's own
+builtin (`[type.comb.builtin]`) rather than a `std.list` function;
+lupin executes it sequentially and prints the same bytes, which
+`[conc.task.par.order]` makes conforming rather than a shortfall.
+
+wolf-lang#390 — the ruling this file's owner column has pointed at
+since bs49, "implement `[conc.task.par]` or withdraw it" — is answered
+by implementation and is closed.
+
+**And 5-8's row changed meaning without moving**, which is the finding
+worth keeping. Its blocker named the interpreter's std subset; the
+interpreter is no longer what blocks it. Half of it is now this
+repository's own gap (no std root for either tool, wolf-book#39) and
+half of it is **unsatisfiable**: `.take(1)` names a function that
+cannot exist, because `take` is a keyword. The pending mechanism
+reports a feature LANDING as a flip and a feature being WITHDRAWN not
+at all (wolf-book#52); this is a third shape — a row waiting on
+something that was never possible — and it is wolf-book#58.
 
 ## The bs18 re-draw (renumbers and one retirement, 2026-08-30)
 
