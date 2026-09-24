@@ -19,7 +19,7 @@ verdict for a feature that does not exist yet.
 | exercise | expected (directive) | blocker | owner |
 |---|---|---|---|
 | 7-5 (static half) | `fail(E1003)` | borrow-escape checking reaches no static verdict; wolfc leaves `channel` unresolved | s33-channels-select, then s18-tier0-exclusivity |
-| 8-7 | `run(exit=0, stdout="c a")` | field writes through a pool index (`pool[h].next = k`) do not denote a place in the interp std subset | s37-core-types (std surface pinning) |
+| 8-7 | `run(exit=0, stdout="c a")` | two blockers, one per machine (bs51): `pool[h].next = k` runs on wolf 0.2.16 and is `[type.map.key]` `unsupported` on lupin 0.1.38; `while cur != tail` runs on lupin and is "no `Eq` for these this edition" on wolf | wolf-book#60 |
 | 5-8 | `run(exit=0, stdout="marmot 5")` | two blockers, re-measured at bs50 and neither as written: `sorted_by` EXISTS (one of `[type.comb.set]`'s ten) but is a `std.list` function and this repo configures no std root, so both machines decline at `[type.method.root]`; and `.take(1)` can never arrive, because `take` is a keyword and `fn take` is E0008 | wolf-book#39 (std root) + wolf-book#58 (the unspellable `take`) |
 | 17-6 | `run(exit=0)` | `--chaos` fault injection at declared effect points — and with it §17.3 of chapter 17, which is why this stem is written and **not printed** (TOC.md §Deltas, bs07) | s36-deterministic-scheduler |
 | 20-5 (was 19-1 until bs18) | `run(exit=0, stdout="3")` | perf-contract verification (I15) | s24–s26 WIR fact sprints |

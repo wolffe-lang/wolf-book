@@ -50,8 +50,8 @@ owner = "s33-channels-select, then s18-tier0-exclusivity"
 
 [[pending]]
 id = "ch08/ex8-7"
-blocker = "field writes through a pool index do not denote a place in the interp std subset"
-owner = "s37-core-types (std surface pinning)"
+blocker = "TWO blockers, bisected at bs51 against wolf 0.2.16 / lupin 0.1.38 with two minimal programs rather than inferred from the exercise, and EACH MACHINE NOW SERVES THE HALF THE OTHER REFUSES. (1) The place write this row has always named — `pool[h].next = k` — LANDED ON THE COMPILER (s173: the pool is the base and the handle the index) and is still the interpreter's wall, in new words: lupin answers `unsupported: handle is not a `Map` key — a key is `str`, `int`, `char` or `bool` [type.map.key]` and exits 4, where wolf 0.2.16 runs the same program to exit 0. (2) A blocker that is NEW and is the COMPILER's: the LRU walk's `while cur != tail` compares two handles, and wolf answers `cannot compile this yet — `==` on a container, tuple or handle (no `Eq` for these this edition)` and exits 4, where lupin runs it. A conservatism line, not a rejection. bs51 predicted this row would flip on s173 and was wrong: s173 moved the half the row named and a second wall was behind it."
+owner = "wolf-book#60 (both halves, with the measurement)"
 
 
 
