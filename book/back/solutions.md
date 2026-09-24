@@ -5752,9 +5752,10 @@ search is for `.spawn(` plus `scope` blocks: the spawn surface is
 exactly the set of call sites that start a task and the set of braces
 they die at, which is the same audit `grep '(mut '` performs for
 mutation — with one difference this chapter's ledger records. A scope
-handle has no type name (wolf-lang#316), so `launch`'s parameter is a
-bare generic and the *signature* does not announce the capability; the
-call does. A capability you can grep for is a capability you can
+handle is named `Scope` in the compiler's prelude and nowhere in
+`lupin` (wolf-lang#316, wolf-interp#130), so a `launch` both machines
+accept takes a bare generic and its *signature* does not announce the
+capability; the call does. A capability you can grep for is a capability you can
 review, and here what you grep is the call, not the declaration.
 </details>
 
