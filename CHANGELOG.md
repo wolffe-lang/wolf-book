@@ -2,6 +2,73 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs51, the book takes 0.2.16 / 0.1.38 — 2026-09-24 — the moved leaf gets its test, and the rig stops reading prose
+
+**The pin moves to wolf 0.2.16 and lupin 0.1.38**, both from the release
+archives by digest, every member hashed by name. Nine samples flipped
+and **every one of them is the compiler's** — the inverse of the last
+two bumps, and the direction was predicted in advance with its
+arithmetic: lupin 0.1.37 → 0.1.38 is a re-pin release, while wolf
+0.2.15 → 0.2.16 is 148 commits carrying three separate lowering
+expansions. §7.9's shelf closer, §8.4's ring, §9.2's two sibling-pointer
+blocks, §16.4's frozen snapshot, §32.3's allocator and exercises 8-6,
+8-15 and 9-2 are ordinary two-machine runs now, and chapter 32's
+one-machine ledger row closes empty.
+
+**§7.2 says a moved place has nothing to read, and now there is a test
+that says so.** The maintainer, working through the section, added a
+line that reads the leaf `move d.meta.author` emptied — and the compiler
+accepted it and printed the moved value. That is wolf-lang#444, the
+third silent wrong answer in 0.2.15 and the first wrong on the native
+lane: an implicit move of a `Copy` place is a copy, and the explicit
+`move` operator was going through the same rule, so no move was ever
+recorded. The paragraph now carries the program, pinned `fail(E1001)`,
+with the interpreter's `trap(use-after-move)` beside it. On 0.2.16 both
+machines refuse it; on 0.2.15 only the interpreter did.
+
+**Both halves of the pair move, and the interpreter's clause becomes
+readable again.** lupin 0.1.38 re-pins on the released line, so the
+revision it names is the compiler's previous release tag — reachable,
+on the branch, an ancestor of the compiler's own. §1.2 and the colophon
+stop explaining a revision that was nowhere and go back to reading the
+two clauses as a distance: 148 commits, exactly one release. The
+paragraph about the rebased-away development head stays, one size
+smaller, as the case to watch for.
+
+**The two workarounds in the samples runner are retired, and the
+specification is what replaced them.** `[conf.exit]` rules the
+front-door status on every implementation — a rejection is 2, a refusal
+is 4, and neither is ever 0 or 1 — so the runner stops grepping the
+driver's closing prose to find out whether a program was ever built.
+The clause names this harness while ruling it. And `[proto.record.pass]`
+gives the default lane a `pass` verdict, so the graduation probe reads
+the record instead of reconstructing an answer from two proxies. Both
+changes come with the plant that proves them red, including one branch
+that could not exist before: a **refusal** under `run(exit=nonzero)`,
+which the retired grep never matched at all.
+
+**A scope handle and a proc handle have names now — the compiler's.**
+`Scope` and `Proc[T]` are prelude types at this pin, so chapter 11's
+sentence that no machine has such a name is false and is rewritten to
+say which machine does. The pages keep their bare generics, because the
+interpreter has neither name and the compiler's native binary never
+returns when a scope handle crosses a signature. Chapter 14 gains the
+block that direction makes possible: `fn watch(p: Proc[int])` and the
+typed `p.join()`, on the compiler alone, the first compiler-only row
+that chapter has had.
+
+**Three papercuts heal and one pending row turns out to have two
+blockers.** `wolf conform-run` answers `pass` on the default lane, so
+chapter 7's "the compiler has exactly one reader-showable voice" is
+over; `wolf test` reports a module the compiler rejected as REJECTED
+with its own counter, which is the different word chapter 18's row
+asked for; and `wolf test --schedules=N` no longer prints a replay
+command for a run it never explored. Exercise 8-7, the pool LRU pending
+since the fourth book sprint, did **not** flip: the place write it named
+landed on the compiler and is still the interpreter's wall, and behind
+it is a second one that is the compiler's — no `Eq` for a handle, which
+the LRU walk needs. Filed as wolf-book#60 with both measurements.
+
 ## bs50, §13.1 and the book takes 0.2.15 — 2026-09-17 — the chapter chapter 6 promised, and the number it does not flatter
 
 **§13.1 exists.** Chapter 6 §6.5 has promised readers since Part 1 that
