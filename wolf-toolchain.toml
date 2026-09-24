@@ -955,6 +955,30 @@
 #     the ch05/ex5-8 shape from bs50, one chapter over.
 #   * AND wolf-lang#431 REPRODUCES ON LINUX AT THE RELEASED PIN, which
 #     its own issue says it does not. See the ch11 and ch14 rows.
+#   * wolf-lang#449 COSTS THIS BOOK ZERO SITES, and the zero is a
+#     measurement rather than a silence. #449 is 0.2.16's regression:
+#     the new exclusivity check refuses a program where both arms of an
+#     if/else claim the same mutable place and a later call claims it
+#     again. Every `.lu` under `principles/exercises/` and
+#     `samples/extracted/` — the whole corpus, book fences extracted
+#     included — was asked of `wolf conform-run` on the 0.2.16 archive
+#     and grepped for the diagnostic's own phrase, "inside the outer
+#     call's extent": 0 hits. A per-program verdict diff against the
+#     0.2.15 archive, both directions, shows NO program moving from
+#     accepted to refused; the only 29 moves are `unsupported` ->
+#     `pass`, which is s169's default-lane verdict and not a behaviour
+#     change.
+#     THE SEARCH WAS PROVED CAPABLE OF FINDING IT before the zero was
+#     believed (wave 45's seventh shape: a search that cannot reach the
+#     defect prints NONE either way). A planted witness —
+#     `if 1 == 1 { add(mut s, 1) } else { add(mut s, 2) }` followed by
+#     `add(mut s, 3)` — answers on the same 0.2.16 archive:
+#       error[E1002]: `s` goes `mut` in a call evaluated while `s` is
+#       lent `mut` … ^ a second claim inside the outer call's extent
+#     while the same program on the 0.2.15 archive is `verdict:
+#     "unsupported"` at `wir`, lupin 0.1.38 runs it to exit 0 printing
+#     `1`, and the same shape with the `else` arm deleted is `pass` at
+#     0.2.16. Four legs, one archive, one grep that fires.
 repo = "wolffe-lang/wolf-lang"
 rev = "93a5fe504593ca7642b78ba83b4986e7a03cfe71"
 impl_version = "0.2.16"
