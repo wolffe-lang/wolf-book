@@ -6,23 +6,24 @@ against:
 
 ```console
 $ wolf --version
-wolf 0.2.15 (wolfgang, pin 2e4ca76)
-paired with lupin 0.1.37 (reference interpreter), pin 41695e7
+wolf 0.2.16 (wolfgang, pin 93a5fe5)
+paired with lupin 0.1.38 (reference interpreter), pin 2e4ca76
 $ lupin --version
-lupin 0.1.37 (wolf-interp, reference interpreter at pin 41695e7)
+lupin 0.1.38 (wolf-interp, reference interpreter at pin 2e4ca76)
 ```
 
-The two lines name each other, and this printing one name is exact.
-Each tool reports the revision of the other it was differentially
-tested against, and the two projects are cut on their own schedules.
-The compiler names `lupin 0.1.37`, the interpreter under it and not a
-release older. The interpreter names `41695e7`, which is on no branch
-in either project: a development head, rebased away as it
-merged, preserved afterwards as the tag
-`lupin-0.1.37-conformance-pin` in the compiler's repository. It is not
-an ancestor of the compiler's own revision, so the two clauses are not
-a distance and no commit count between them means anything. §1.2
-teaches the reader to read the pair either way. This page prints them
+The two lines name each other, and this printing both names are
+readable. Each tool reports the revision of the other it was
+differentially tested against, and the two projects are cut on their
+own schedules. The compiler names `lupin 0.1.38`, the interpreter
+under it and not a release older. The interpreter names `2e4ca76`,
+which is the compiler's previous release tag — reachable, on the
+branch, and an ancestor of the compiler's own revision, so the two
+clauses are a distance this printing: 148 commits, one release. The
+printing before this one was the other case, where the interpreter's
+clause named a rebased-away development head and no count between the
+two meant anything. §1.2 teaches the reader to check which case a pair
+is before reading it. This page prints them
 as they are. The compiler's first line is also this page's proof, read
 the other way round: a build made exactly at a release tag prints the
 bare version, and every other build names itself `+dev.<commit>` and
