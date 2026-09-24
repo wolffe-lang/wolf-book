@@ -805,9 +805,159 @@
 #     AGAINST: `.order`, `.fail`, `.capture`, `.chunk`, `.det` and
 #     `.cost` all arrive in this anchor set. `.cost` is the one the
 #     chapter quotes: speedup is not promised.
+#
+# ---- bs51, wave 46: wolf 0.2.16 + lupin 0.1.38, and the pin the
+#      interpreter's half can finally be READ as a distance ----
+#
+# wolf-lang at the v0.2.16 release tag (`93a5fe5`), TAKEN FROM THE
+# RELEASE ARCHIVE and matched against the release's own published
+# digest BEFORE unpacking: `wolf-0.2.16-x86_64-unknown-linux-gnu.tar.gz`
+# sha256 84e30c05e56b89fde2fe6e27eec8f7cec0a6aae6e1464a2993fcfc87a7a1829e,
+# 70,516,905 B, read from the release API and re-computed on the
+# downloaded bytes. The archive holds fourteen files and more than one
+# executable, so EVERY MEMBER IS HASHED BY NAME:
+#
+#   wolf                 b53b5328...   <- the pin of record
+#   wolf-cimport-worker  cf2c47a9...
+#   libwolf_rt.a         c4c5f670...
+#   wolf.1               afcf4f7c...
+#   _wolf                2d1e4801...   <- the zsh completion script
+#   wolf.bash            29eb2d75...
+#   wolf.fish            51a1b6a8...
+#
+# and the interpreter's archive sha256
+# 828b5c5571644107a1b123490b5e188da50020676c6b15b0bc53a899a7cc520b,
+# member `lupin` f202d47f.... The CONTROL pair was re-fetched the same
+# way (v0.2.15 `wolf` 0ede3f66..., v0.1.37 `lupin` 494fc13e...) rather
+# than taken from ~/.local/bin, which is the reader's install and never
+# a lane's.
+#
+# AND THE `_wolf` RULE IS WIDER THAN ONE FILE. sc51 measured that the
+# zsh completion script hashes to 2d1e4801... at every pin on every
+# platform, which makes a check that reads "the first binary it finds"
+# unfalsifiable. Measured here across 0.2.15 -> 0.2.16, TWO MORE
+# members are the same constant: `wolf.bash` (29eb2d75...) and
+# `wolf.fish` (51a1b6a8...) are byte-identical across the bump, and
+# `wolf.1` is the only non-executable that moved. Three completion
+# scripts, not one, and all three sort before `wolf` in ASCII.
+#
+#   wolf 0.2.16 (wolfgang, pin 93a5fe5)
+#   paired with lupin 0.1.38 (reference interpreter), pin 2e4ca76
+#   lupin 0.1.38 (wolf-interp, reference interpreter at pin 2e4ca76)
+#
+# PREDICTED TO THE CHARACTER in docs/audit/bs51-prediction-0216.md
+# (committed before either archive was downloaded) and measured
+# byte-identical.
+#
+# BOTH HALVES MOVE, AND THE INTERPRETER'S HALF STOPS BEING AN
+# EXCEPTION. The compiler's half is exact for the second printing
+# running: it names `lupin 0.1.38` and this file pins 0.1.38. The
+# interpreter's half names `2e4ca76` — v0.2.15's own revision, the
+# released tag, an ANCESTOR of the compiler's `93a5fe5` (checked with
+# `git merge-base --is-ancestor` in wolf-lang, not assumed). So for the
+# first time since 0.1.36 the two clauses can be read as a distance:
+# `git rev-list --count 2e4ca769..93a5fe50` is 148 commits on one line
+# of history, and EXACTLY ONE RELEASE. §1.2's and the colophon's
+# paragraphs about a printed revision that is not a place you can go
+# retire with it, and `refs/tags/lupin-0.1.37-conformance-pin` stops
+# being a sentence a reader needs.
+#
+# WHAT THE BOOK MEASURED, PREDICTION FIRST
+# (docs/audit/bs51-prediction-0216.md, committed at f653bb1 before
+# either archive was downloaded and before any other file in this tree
+# was edited). The CONTROL ran on the UNEDITED tree (trunk 44195fc)
+# with the OLD pair, on kasumi, from the release archives:
+#
+#   499 samples, 496 passed, 3 pending, 0 failed, 0 flips (28.3 s)
+#
+# The same tree with the NEW pair:
+#
+#   499 samples, 496 passed, 3 pending, 8 failed, 9 flips (28.1 s)
+#
+#   * 9 FLIPS, 10 PREDICTED, AND EVERY ONE OF THEM IS THE COMPILER'S.
+#     That is the inverse of the last two bumps and the direction was
+#     called in advance, with its arithmetic: lupin 0.1.37 -> 0.1.38 is
+#     a RE-PIN release, while wolf 0.2.15 -> 0.2.16 is 148 commits
+#     carrying three separate lowering expansions (s168's place model,
+#     s170's conc handles, s173's pool and unsafe tier). ZERO
+#     `wolf-run(...)` fences flipped, so the interpreter contributed
+#     nothing to this bump's graduations, against 10 of 10 at bs50.
+#     Two were predicted BY NAME and both landed: `book/ch07/s20` (the
+#     chapter's one "assignment through nested places (c06)" row, which
+#     is s168's element place walk) and `book/ch16/s2` (the frozen
+#     snapshot, which is s170's `[conc.proc.arg]`). The rest scored:
+#     ch08 predicted 2, measured 3 (`ex8-15`, `ex8-6`,
+#     `book/ch08/part-ring`); ch09 predicted 2, measured 3 (`ex9-2`,
+#     `book/ch09/s4`, `book/ch09/s5`); `book/ch32/part-alloc` was NOT
+#     predicted; and the four ch28 "mut arguments beyond local places"
+#     rows WERE predicted and did not move — s168 made a container
+#     ELEMENT a place, which is not the same thing as a `mut` argument
+#     beyond a local place, and the prediction conflated them.
+#   * 0 SAMPLE FAILURES, PREDICTED 0, and the prediction named the
+#     reason: wolf-lang#444 makes `move` on a `Copy` place record the
+#     move, and the only place in this book that reads a moved leaf is
+#     the §7.2 paragraph that had no sample. All 8 failures are
+#     console re-records.
+#   * 8 CONSOLE BLOCKS RE-RECORDED, 4 PREDICTED BY NAME AND 4 BY
+#     SURFACE. §1.2's and the colophon's `--version`; §22.2's `wolf
+#     interface` and exercise 22-13's, whose stamp line alone moves.
+#     The four unpredicted-by-name are ch18's four `wolf test`
+#     summaries, which gain `0 rejected;` from s169's REJECTED column —
+#     named as a surface that would move, without a count, because a
+#     figure no artifact carries is a memory. The count the prediction
+#     did not have is the interesting half: ALL 4 `wolf test` blocks
+#     moved and ZERO of the 23 `wolf conform-run` blocks did, although
+#     s169 rewrote both surfaces. The pages quote the tool's DIAGNOSTIC
+#     stream, and the protocol line they drop is where `pass` and
+#     `trap_message` live.
+#   * APPENDIX E'S HELP TRANSCRIPT DOES NOT RE-RECORD, PREDICTED TO
+#     RE-RECORD AND WRONG. `crates/wolf_driver/src/help.rs` moves +21
+#     lines across the span, so the prediction called the third
+#     re-record site at last firing. Measured, `wolf --help` is
+#     BYTE-IDENTICAL between the two archives (`diff` of the two
+#     binaries' output is empty): the new lines are `wolf test`'s four
+#     row words and `conform-run --deny-warnings`, which live in
+#     SUBCOMMAND help. A diffstat on a help module is not a prediction
+#     about the top-level listing.
+#   * THE SPEC ARTIFACTS: anchors 524 -> 539, +15, NONE DROPPED and
+#     none remapped, key sets diffed BOTH WAYS (wolf-lang#177's
+#     lesson), namespaces holding at 13 and documents at 11. The
+#     fifteen are `conc.proc.{arg,handle,join}`,
+#     `conf.exit{,.class,.collide,.refused,.static,.test}`,
+#     `mem.region.{imm.ret,root}`, `proto.cmp.pass`,
+#     `proto.record.{pass,trap}` and `type.err.alias.qualified`.
+#     grammar.ebnf is BYTE-IDENTICAL (sha256 2b6269d7... at both
+#     revisions and in vendor/), so Appendix A regenerates to itself.
+#     The catalog is unchanged at 176, derived from
+#     `docs/diagnostics.md` at both revisions and diffed both ways.
+#   * `[conf.exit]` CHANGED ZERO FENCES, PREDICTED ZERO. Five
+#     directives carry `exit=1` and all five are programs that RAN and
+#     returned an error; bs46's guard had been holding them. What the
+#     clause DID change is the rig: `wolf run` on a rejected program
+#     exits 2 at this pin and exited 1 at the last one (measured on
+#     both archives), so the two workarounds retire — see
+#     xtask/src/samples.rs.
+#   * THE DEFAULT LANE HAS A PASS VERDICT. `wolf conform-run` on a
+#     clean program answers `"verdict":"pass"` at `"phase_reached":
+#     "wir"`, where 0.2.15 answered `"unsupported"` at the same phase.
+#     Predicted, and it is the ch07 ledger row wolf-lang#150 has
+#     carried since bs12: the compiler has a second reader-showable
+#     voice.
+#   * EXERCISE 8-7 DID NOT FLIP, PREDICTED TO FLIP, AND ITS BLOCKER IS
+#     A DIFFERENT ONE NOW. s173 landed `pool[h].next = k` as a place
+#     write, so the row's stated blocker is false. Measured at this
+#     pair, the LRU walk's `cur != tail` is what stops it: `wolf run`
+#     answers "cannot compile this yet -- `==` on a container, tuple or
+#     handle (no `Eq` for these this edition)" and exits 4, and lupin
+#     answers "unsupported: handle is not a `Map` key" and exits 4.
+#     Both refuse, in different words, at a construct neither the old
+#     blocker nor s173 names. The row is RE-MEASURED, not removed —
+#     the ch05/ex5-8 shape from bs50, one chapter over.
+#   * AND wolf-lang#431 REPRODUCES ON LINUX AT THE RELEASED PIN, which
+#     its own issue says it does not. See the ch11 and ch14 rows.
 repo = "wolffe-lang/wolf-lang"
-rev = "2e4ca769b396219585a07ff18492529c944672d9"
-impl_version = "0.2.15"
+rev = "93a5fe504593ca7642b78ba83b4986e7a03cfe71"
+impl_version = "0.2.16"
 
 [lupin]
 # wolf-interp at the v0.1.30 release tag (is42): the stamped line names
@@ -1323,11 +1473,37 @@ impl_version = "0.2.15"
 # `par` RUNS ON BOTH MACHINES, AND ONLY ONE OF THEM RUNS IT IN
 # PARALLEL. lupin executes `xs.par(f)` sequentially and answers the
 # same bytes (`[conc.task.par.order]` makes that conforming, not a
-# shortfall), which is why SS13.1 can carry a `run(...)` fence for the
+# shortfall), which is why §13.1 can carry a `run(...)` fence for the
 # parallel wordcount and must take its TIMES from the compiler alone.
+#
+# ---- bs51, wave 46: 0.1.37 -> 0.1.38, the re-pin, and the smallest
+#      bump this book has measured ----
+#
+# THE RELEASE IS A RE-PIN. lupin 0.1.37 declared `41695e7`, a branch
+# head the rebase-merge left reachable from nothing, and 0.1.38
+# re-vendors spec and corpus at wolf-lang v0.2.15 and declares
+# `2e4ca76` — the released tag itself (wolf-interp#127). That is the
+# whole point of the release and it is why the pair above can be read
+# as a distance again.
+#
+# THE INTERPRETER'S SHARE OF THE MEASUREMENT: 0 of the 9 flips and 0 of
+# the 8 failures. Not one book fence moved because of the interpreter,
+# against 10 of 10 flips at bs50 and 7 of 8 at bs49. Three bumps, three
+# different answers to the same question, which is the argument for
+# measuring it every time rather than carrying last bump's shape
+# forward.
+#
+# WHAT THE INTERPRETER DOES NOT HAVE, AND THE BOOK NOW SAYS SO IN TWO
+# CHAPTERS. s170 gave the compiler prelude type names for the two
+# concurrency handles — `Scope` and `Proc[T]` (`[conc.proc.handle]`) —
+# and a typed `p.join()` (`[conc.proc.join]`). Measured here at this
+# pair: `fn watch(p: Proc[int])` is `verdict: "pass"` on the compiler
+# and `E0301: nothing named `Proc` is in scope` on lupin 0.1.38, exit
+# 2, and the same for `fn fan_out(s: Scope, ...)`. The open mirror is
+# wolf-interp#130, which is what ch11's and ch14's ledger rows name.
 repo = "wolffe-lang/wolf-interp"
-rev = "552786e39c5660e2e58b7facadd54195df3243e8"
-version = "lupin 0.1.37 (wolf-interp, reference interpreter at pin 41695e7)"
+rev = "ba357aa6a2e32040d4f089d2cefe05bab86c4f86"
+version = "lupin 0.1.38 (wolf-interp, reference interpreter at pin 2e4ca76)"
 
 [wolf-lsp]
 # Source of the vendored tmLanguage grammars under highlight/.
