@@ -188,6 +188,21 @@ because a trap claim retires on a runtime fact: the compiler accepts all
 of these programs today and simply does not fault the way the
 interpreter does. So trap rows carry no automatic flip and retire by
 hand, against the ledger row and the clause that put them there.
+
+What the probe READS changed at bs51. From bs31 to the 0.2.15 pin it
+could not use the verdict, because the default lane stamped
+`unsupported` on a program it had lowered cleanly as well as on one it
+declined — chapter 7's ledger carried that as wolf-lang#150 from bs12
+onward — so the probe reconstructed the answer from a `fail(` prefix
+and the presence of `x-unsupported-construct`. s169's
+`[proto.record.pass]` gives the default lane a `pass` verdict, so the
+probe reads the verdict itself now, which is strictly stronger: the old
+proxies could not see a decline that carried neither marker, and
+anything that is not `pass` is the compiler not serving the program. A
+two-directional self-test holds it — a `lupin-run(…)` fence on a
+program the compiler serves must report a flip, and the same fence on a
+program it declines must not.
+
 Reporting a graduation the runner cannot actually observe would be the
 same species of mistake as scoring a machine that was never asked.
 

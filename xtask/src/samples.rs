@@ -1274,22 +1274,35 @@ fn machine_probe(m: Machine, tools: &Tools, s: &Sample) -> Option<MachineRun> {
 /// these programs are deadlock exercises whose compiled binaries never
 /// return by design, so a probe that RUNS them is a probe that parks.
 ///
-/// The signal is deliberately weaker than the gate's. A refusal by name
-/// or a static rejection means nothing has changed; anything else means
-/// the compiler now accepts the program and a human should look at
-/// graduating the fence. Reporting that as a FLIP is the point — the
-/// runner remembers so nobody has to.
+/// **The workaround this used to carry is retired (bs51).** From bs31
+/// to the 0.2.15 pin the probe could not read the verdict, because the
+/// default lane stamped `unsupported` on a program it had lowered
+/// cleanly as well as on one it declined — the very row chapter 7's
+/// ledger carried as wolf-lang#150 since bs12 ("the compiler has
+/// exactly one reader-showable voice"). So it reconstructed the answer
+/// from two proxies: a `fail(` prefix, or the presence of
+/// `x-unsupported-construct`.
+///
+/// s169's `[proto.record.pass]` ends that. A clean lowering on the
+/// default lane is `pass`, measured on both release archives with one
+/// `print` program: `"verdict":"pass"` at `"phase_reached":"wir"` on
+/// 0.2.16, `"verdict":"unsupported"` at the same phase on 0.2.15. The
+/// probe reads the verdict now, which is both simpler and STRICTLY
+/// STRONGER — the old proxies could not see a decline that carried
+/// neither marker, and this cannot miss one, because anything that is
+/// not `pass` is the compiler declining to serve the program.
+///
+/// Reporting a graduation as a FLIP is the point — the runner
+/// remembers so nobody has to.
 fn compiler_still_declines(tools: &Tools, s: &Sample) -> bool {
     match conform_run_with(tools, s, false) {
         // No verdict at all is not evidence that anything changed.
         Err(_) => true,
-        // Two ways to decline and they are not interchangeable: a
-        // static rejection says the program is illegal, and an
-        // `x-unsupported-construct` says the compiler will not lower it.
-        // The bare verdict is useless here — `unsupported` is also what
-        // a perfectly good program reports, because `conform-run` stops
-        // before it would run one.
-        Ok(r) => r.verdict.starts_with("fail(") || r.unsupported_construct.is_some(),
+        // `pass` is the compiler saying it lowered the program cleanly
+        // ([proto.record.pass]). Every other verdict — `fail(CODE)`,
+        // `unsupported`, anything the record grows later — is the
+        // compiler not serving it.
+        Ok(r) => r.verdict != "pass",
     }
 }
 
@@ -1340,44 +1353,100 @@ fn refusal(r: &MachineRun) -> Option<String> {
     line("cannot compile this yet").or_else(|| line("unsupported:"))
 }
 
-/// Did the program fail to COMPILE, as opposed to running and exiting?
+/// `[conf.exit]`, and the prose grep it retires (bs51).
 ///
-/// `wolf run` compiles and then executes, and it exits **1** when the
-/// package does not compile — the same 1 a program that ran and returned
-/// an error exits with. `meets` compares the number alone, so for four
-/// pin bumps a `run(exit=1)` fence credited a program the compiler never
-/// built. bs46 measured it: `book/ch15/s5` and `ch15/ex15-2` were green
-/// at wolf 0.2.12 while `wolf run` answered `E0402: link takes 1
-/// argument, but this call passes 0`, and they only surfaced when
-/// s157's papercut made `w.link()` compile and the program finally ran.
+/// From bs46 to the 0.2.15 pin this rig answered "did the program
+/// actually RUN?" by grepping the driver's own closing line, *the
+/// package does not compile*. It had to: `wolf run` exited **1** when
+/// the package did not compile, which is the same 1 a program that ran
+/// and returned an error exits with, so `meets` comparing the number
+/// alone credited a program the compiler never built — four pin bumps
+/// of it, and two real samples living on it (`book/ch15/s5`,
+/// `ch15/ex15-2`, green at wolf 0.2.12 while `wolf run` answered
+/// `E0402: link takes 1 argument, but this call passes 0`).
 ///
-/// A refusal (`cannot compile this yet`) was already looked at, because
-/// that is the tool declining a construct. This is the other half: the
-/// tool accepting the job and the reader's program being rejected. The
-/// driver's own closing line is the marker, so the check reads what a
-/// reader reads rather than pattern-matching diagnostic codes.
-fn compile_failed(r: &MachineRun) -> bool {
-    r.stderr
-        .lines()
-        .chain(r.stdout.lines())
-        .any(|l| l.contains("the package does not compile"))
+/// s169 ruled it away and named this harness while doing it.
+/// `[conf.exit.static]` puts a rejection at **2**, `[conf.exit.refused]`
+/// a refusal at **4**, and `[conf.exit.collide]` gives the guarantee in
+/// the one direction a harness needs — "a rejection or a refusal NEVER
+/// exits 0 or 1 … a harness distinguishing outcomes by grepping a
+/// driver's prose is a harness owed this clause."
+///
+/// Measured on both release archives at the bs51 bump, one rejected
+/// program, one command: `wolf run` exits **2** at 0.2.16 and exited
+/// **1** at 0.2.15.
+///
+/// So the STATUS settles every fence whose claim is 0 or 1, on its own,
+/// with no text read at all. Only a claim that OVERLAPS the two
+/// reserved numbers has to ask anything further, and what it asks is
+/// the record, where the outcome is data rather than a number
+/// ([proto.invoke.exit], [proto.record.verdict]) — which is where the
+/// clause sends it.
+const EXIT_REJECTED: i32 = 2;
+const EXIT_REFUSED: i32 = 4;
+
+/// Can this status ALONE say the program ran? `None` means it cannot,
+/// and the caller has to read the record.
+fn ran_by_status(code: Option<i32>) -> Option<bool> {
+    match code {
+        Some(c) if c == EXIT_REJECTED || c == EXIT_REFUSED => None,
+        // Every other number is the program's own answer, passed
+        // through by `[conf.exit.class]`'s first row.
+        Some(_) => Some(true),
+        // Killed or timed out. Nothing to credit either way, and the
+        // caller reports the missing status as its own failure.
+        None => Some(true),
+    }
+}
+
+/// The sentence a reserved status earns when the record says the
+/// program never ran. Split out so the two callers word it once.
+fn never_ran_detail(code: i32, verdict: &str, construct: Option<&str>) -> String {
+    let what = if code == EXIT_REJECTED {
+        "a rejection"
+    } else {
+        "a refusal"
+    };
+    format!(
+        "exited {code}, which `[conf.exit]` reserves for {what}, and `wolf conform-run` \
+         answers `{verdict}`{} — so nothing ran, and the status is the compiler's rather \
+         than the program's",
+        construct.map(|c| format!(" ({c})")).unwrap_or_default()
+    )
 }
 
 /// Did this machine meet the fence's exit-and-stdout claim?
+///
+/// No text is read to decide it. `[conf.exit.collide]` guarantees that
+/// a rejection and a refusal are never 0 or 1, so a fence claiming
+/// either number is settled by the status; and a fence claiming one of
+/// the two RESERVED numbers is refused outright, because the status
+/// alone cannot say whether the program ran and no block in this book
+/// makes that claim. If one ever does, it reads the record — the
+/// clause says which, and this is the place to put it.
 fn meets(r: &MachineRun, exit: i32, stdout: Option<&str>) -> std::result::Result<(), String> {
-    if compile_failed(r) {
-        return Err(format!(
-            "the package does not compile, so `exit={exit}` is the COMPILER's exit and not the \
-             program's (stderr: {})",
-            r.stderr.trim()
-        ));
-    }
     if r.code != Some(exit) {
         let mut why = format!("exited {:?}, expected {exit}", r.code);
+        if ran_by_status(r.code).is_none() {
+            why.push_str(&format!(
+                " — and {:?} is one of `[conf.exit]`'s two reserved statuses ({EXIT_REJECTED} a \
+                 rejection, {EXIT_REFUSED} a refusal), so the program never ran and the status \
+                 is the tool's rather than the program's",
+                r.code.unwrap_or_default()
+            ));
+        }
         if !r.stderr.trim().is_empty() {
             why.push_str(&format!(" (stderr: {})", r.stderr.trim()));
         }
         return Err(why);
+    }
+    if ran_by_status(Some(exit)).is_none() {
+        return Err(format!(
+            "a fence may not claim `exit={exit}`: `[conf.exit]` reserves {EXIT_REJECTED} for a \
+             rejection and {EXIT_REFUSED} for a refusal, and a status alone cannot tell either \
+             from a program that returned the same number ([conf.exit.collide]). Spell the \
+             rejection `fail(CODE)`, which asks the record"
+        ));
     }
     if let Some(want) = stdout {
         let got = r.stdout.trim_end_matches('\n');
@@ -1389,20 +1458,63 @@ fn meets(r: &MachineRun, exit: i32, stdout: Option<&str>) -> std::result::Result
 }
 
 /// Did this machine die nonzero, having actually built the program?
-/// The compile check is not an extra here, it is the whole guard: a
-/// package that does not compile exits nonzero too, and without this
-/// `run(exit=nonzero)` would be a directive that passes anything.
-fn meets_nonzero(r: &MachineRun, stdout: Option<&str>) -> std::result::Result<(), String> {
-    if compile_failed(r) {
-        return Err(format!(
-            "the package does not compile, so nothing ran (stderr: {})",
-            r.stderr.trim()
-        ));
-    }
+///
+/// This is the directive `[conf.exit]` does NOT settle on its own, and
+/// the reason the clause has a `.collide` paragraph: a rejection (2)
+/// and a refusal (4) are nonzero too, so "nonzero" would pass anything
+/// without a guard. The status narrows it to two numbers and the
+/// RECORD decides those two, which is what `[conf.exit.collide]` tells
+/// a harness to do — the verdict is data there, not a number.
+///
+/// Asymmetric between the machines, deliberately. The compiler has a
+/// record this rig can read, so a wolf answer of 2 or 4 is settled
+/// exactly. The interpreter's record would need `lupin conform-run`
+/// and a second protocol reader, so a lupin answer of 2 or 4 is
+/// refused without appeal: those two numbers have meant "did not run"
+/// on that machine since before the clause existed, and the residual
+/// `[conf.exit.collide]` case — a program that returns 2 or 4 itself —
+/// would be a FALSE FAILURE, which is loud, rather than a false pass,
+/// which is the defect this guard exists to stop.
+fn meets_nonzero(
+    m: Machine,
+    tools: &Tools,
+    s: &Sample,
+    r: &MachineRun,
+    stdout: Option<&str>,
+) -> std::result::Result<(), String> {
     match r.code {
         Some(0) => Err("exited 0, expected a nonzero status".to_string()),
         None => Err("no exit status (killed or timed out), expected a nonzero one".to_string()),
-        Some(_) => {
+        Some(code) => {
+            if ran_by_status(Some(code)).is_none() {
+                match m {
+                    Machine::Wolf => match conform_run_with(tools, s, false) {
+                        Ok(cr) if cr.verdict == "pass" => {}
+                        Ok(cr) => {
+                            return Err(never_ran_detail(
+                                code,
+                                &cr.verdict,
+                                cr.unsupported_construct.as_deref(),
+                            ))
+                        }
+                        Err(e) => {
+                            return Err(format!(
+                                "exited {code}, one of `[conf.exit]`'s two reserved statuses, \
+                                 and the record that would settle it is unreadable: {e}"
+                            ))
+                        }
+                    },
+                    Machine::Lupin => {
+                        return Err(format!(
+                            "exited {code}, which `[conf.exit]` reserves for a rejection \
+                             ({EXIT_REJECTED}) or a refusal ({EXIT_REFUSED}); this rig reads no \
+                             record from the interpreter, so a reserved status is not credited \
+                             to a program (stderr: {})",
+                            r.stderr.trim()
+                        ))
+                    }
+                }
+            }
             if let Some(want) = stdout {
                 let got = r.stdout.trim_end_matches('\n');
                 if got != want {
@@ -1489,22 +1601,24 @@ fn execute(tools: &Tools, s: &Sample) -> Result<Outcome> {
             let lupin = machine_gate(Machine::Lupin, tools, s);
             let wolf = machine_gate(Machine::Wolf, tools, s);
             let mut why: Vec<String> = Vec::new();
-            if let Err(e) = meets_nonzero(&lupin, stdout.as_deref()) {
+            if let Err(e) = meets_nonzero(Machine::Lupin, tools, s, &lupin, stdout.as_deref()) {
                 why.push(format!("lupin: {e}"));
             }
             match refusal(&wolf) {
                 Some(word) => why.push(format!("wolf run: {word}{}", RUN_IS_BOTH)),
                 None => {
-                    if let Err(e) = meets_nonzero(&wolf, stdout.as_deref()) {
+                    if let Err(e) = meets_nonzero(Machine::Wolf, tools, s, &wolf, stdout.as_deref())
+                    {
                         why.push(format!("wolf run: {e}"));
                     }
                 }
             }
-            let blamed = if meets_nonzero(&lupin, stdout.as_deref()).is_err() {
-                &lupin
-            } else {
-                &wolf
-            };
+            let blamed =
+                if meets_nonzero(Machine::Lupin, tools, s, &lupin, stdout.as_deref()).is_err() {
+                    &lupin
+                } else {
+                    &wolf
+                };
             Ok(Outcome {
                 passed: why.is_empty(),
                 detail: why.join("\n     "),
@@ -2033,6 +2147,73 @@ fn selftest_nonzero_true(root: &Path, tools: &Tools, caught: &mut usize) -> Resu
     Ok(())
 }
 
+/// bs51's guard on the guard: the graduation probe, in BOTH
+/// directions, because it is the one check whose failure mode is
+/// silence. `compiler_still_declines` now reads the record's verdict
+/// (`[proto.record.pass]`) where it used to reconstruct the answer
+/// from two proxies, and a probe that is wrong in the lenient
+/// direction reports a flip that has not happened, while one wrong in
+/// the strict direction goes on reporting nothing forever — which is
+/// exactly the shape `samples-pending.toml` and `lupin-run(…)` exist
+/// to stop. So: a `lupin-run(…)` fence on a program the compiler SERVES
+/// must report a graduation, and the same fence on a program the
+/// compiler DECLINES must not.
+fn selftest_graduation_probe(root: &Path, tools: &Tools, caught: &mut usize) -> Result<()> {
+    let base = root.join("samples/selftest/graduation");
+    let _ = std::fs::remove_dir_all(&base);
+    let cases: [(&str, &str, bool); 2] = [
+        (
+            // Served: a plain program with nothing one-machine about
+            // it. Declared `lupin-run(…)` anyway, which is the stale
+            // fence a flip is supposed to name.
+            "served",
+            "fn main() -> !int {\n    print(\"served\")\n    0\n}\n",
+            true,
+        ),
+        (
+            // Declined: a borrow expression, which the compiler holds
+            // legal and will not lower (`cannot compile this yet —
+            // borrow expressions`). No flip is owed.
+            "declined",
+            "struct Doc { title: str }\nfn ref_out(d: Doc) -> Doc { &d }\nfn main() -> !int {\n    let d = Doc { title: \"regions\" }\n    let e = ref_out(d)\n    print(\"{e.title}\")\n    0\n}\n",
+            false,
+        ),
+    ];
+    for (name, source, expect_flip) in cases {
+        let dir = base.join(name);
+        std::fs::create_dir_all(&dir)?;
+        let file = format!("{name}.lu");
+        std::fs::write(dir.join(&file), source)?;
+        let sample = Sample {
+            id: format!("selftest/graduation-{name}"),
+            dir,
+            file_name: file,
+            check: Check::LupinRun {
+                exit: 0,
+                stdout: None,
+            },
+            origin: Origin::Corpus,
+            warns: Vec::new(),
+        };
+        let outcome = execute(tools, &sample)?;
+        let flipped = outcome.graduates.is_some();
+        if flipped != expect_flip {
+            bail!(
+                "self-test FAILED: the graduation probe {} a flip on the `{name}` program \
+                 (it should {})",
+                if flipped { "reported" } else { "reported no" },
+                if expect_flip { "have" } else { "not have" },
+            );
+        }
+        println!(
+            "samples: self-test graduation probe is right about the `{name}` program \
+             (flip: {flipped})"
+        );
+        *caught += 1;
+    }
+    Ok(())
+}
+
 /// The acceptance demonstration: a deliberately-broken sample must
 /// fail. Four breakages, one per checker lane, and the fourth is the
 /// bs31 rule — a `run(…)` fence on a program only one machine serves
@@ -2106,6 +2287,30 @@ fn selftest(root: &Path, tools: &Tools) -> Result<()> {
             "fn main() -> !int {\n    let x: int = \"not an int\"\n    Bad\n}\n",
             Check::RunNonzero { stdout: None },
         ),
+        (
+            // bs51's third plant, and the branch that did not exist
+            // before `[conf.exit]` did. A REFUSAL is 4, not 2, and 4 is
+            // nonzero: until s169 the compiler spelled both 1, and the
+            // grep this rig used to tell them apart matched the
+            // rejection's prose and never a refusal at all. So the
+            // retired workaround had a hole exactly here.
+            //
+            // The program is `one-machine.lu` again — a `comptime fn`,
+            // which the COMPILER evaluates and the INTERPRETER declines
+            // by design — under the weaker directive. lupin exits 4 and
+            // nothing ran, so `run(exit=nonzero)` must not credit it.
+            // It is the interpreter's side deliberately: on the
+            // compiler's side a refusal is caught one step earlier, by
+            // `refusal()` reading the driver's "cannot compile this
+            // yet" line, so `meets_nonzero`'s reserved-4 branch is
+            // reachable only for lupin — said here rather than left for
+            // someone to discover, because an unreachable branch that
+            // nobody names is the thing this file keeps being wrong
+            // about.
+            "refused-nonzero.lu",
+            "comptime fn sum_squares(n: int) -> int {\n    var acc = 0\n    var i = 1\n    while i <= n {\n        acc += i * i\n        i += 1\n    }\n    acc\n}\nfn main() -> !int {\n    const T = sum_squares(9)\n    print(\"{T}\")\n    Bad\n}\n",
+            Check::RunNonzero { stdout: None },
+        ),
     ];
 
     let mut broken_caught = 0;
@@ -2131,10 +2336,11 @@ fn selftest(root: &Path, tools: &Tools) -> Result<()> {
         broken_caught += 1;
     }
     selftest_nonzero_true(root, tools, &mut broken_caught)?;
+    selftest_graduation_probe(root, tools, &mut broken_caught)?;
     selftest_corpus_console(root, tools, &mut broken_caught)?;
     selftest_warns(root, tools, &mut broken_caught)?;
     selftest_declined(root, &mut broken_caught)?;
-    println!("samples: self-test ok — {broken_caught}/10 deliberate breakages caught");
+    println!("samples: self-test ok — {broken_caught}/13 deliberate breakages caught");
     Ok(())
 }
 
