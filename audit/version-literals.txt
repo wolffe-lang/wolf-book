@@ -127,8 +127,8 @@ book/back/appendix-e.md 0.2.12 1 audited-at-wolf=0.2.16
 # the audited-at moves. The same reading applies to ch33's `0.2.6` and
 # `0.2.8` and to appendix E's `0.2.11`, each of which dates a change
 # rather than describing the pinned tool.
-book/ch01.md 0.1.38 2 audited-at-wolf=0.2.16 audited-at-lupin=0.1.38
-book/back/colophon.md 0.1.38 2 audited-at-wolf=0.2.16 audited-at-lupin=0.1.38
+book/ch01.md 0.1.38 1 audited-at-wolf=0.2.16 audited-at-lupin=0.1.38
+book/back/colophon.md 0.1.38 1 audited-at-wolf=0.2.16 audited-at-lupin=0.1.38
 book/ch04.md 0.1.36 1 audited-at-lupin=0.1.38
 book/ch06.md 0.1.36 1 audited-at-lupin=0.1.38
 book/ch27.md 0.1.36 1 audited-at-lupin=0.1.38
