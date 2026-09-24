@@ -194,7 +194,7 @@ filed = "wolf-book#29 §4"
 retires = "wolf-interp is08 (the REPL replay lane)"
 
 [[declined]]
-block = "principles/exercises/ch11/EXERCISES.md:163"
+block = "principles/exercises/ch11/EXERCISES.md:164"
 class = "typed"
 needs = "an interactive session — the block opens on a bare `$ lupin`"
 filed = "wolf-book#29 §4"
