@@ -1,0 +1,14 @@
+error[E1001]: `d.meta.author` is used here after its value moved away
+  --> ./part-movedleaf.lu:10:13
+   |
+ 8 |     let who = move d.meta.author
+   |                    ------------- `d.meta.author` moved here
+ 9 |     print("{who} wrote it")
+10 |     print("{d.meta.author} wrote it")
+   |             ^^^^^^^^^^^^^ used after the move
+   |
+   = note: re-initializing the place (assigning to it) also makes it usable again.
+help: to keep the original, copy it at the move
+   |
+ 8 |     let who = move copy d.meta.author
+   |
