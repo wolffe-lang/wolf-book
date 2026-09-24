@@ -64,7 +64,7 @@ several of its stems are tagged `· wolf` while the distilled solution
 program on disk runs under lupin — the tier column says what CI
 executed, and the exercise file says which is which and why.
 
-Tier totals: 198 run (lupin) · 9 run (lupin REPL) · 32 run (wolf) · 16 run (wolf + lupin) · 78 prose · 8 pending. That is 341.
+Tier totals: 195 run (lupin) · 9 run (lupin REPL) · 32 run (wolf) · 19 run (wolf + lupin) · 78 prose · 8 pending. That is 341.
 (The totals and the tables were recounted mechanically against the
 masters at bs21 — the previous header said 276/231 while the tables
 had drifted from the marker count, ch05's 5-9 and 5-10 among the
@@ -243,7 +243,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §8.2 — The block form | 8-3 | comprehension · wolf | run (wolf) |
 | §8.3 — Regions are values | 8-4 | fingers · lupin REPL | run (lupin REPL) |
 | §8.3 — Regions are values | 8-5 | comprehension · lupin | run (lupin) |
-| §8.4 — Cycles are fine here | 8-6 | fingers · lupin | run (lupin) |
+| §8.4 — Cycles are fine here | 8-6 | fingers · wolf + lupin | run (wolf + lupin) |
 | §8.4 — Cycles are fine here | 8-7 | extension · pending | pending |
 | §8.5 — Freeze | 8-8 | comprehension · wolf + lupin | run (wolf + lupin) |
 | §8.5 — Freeze | 8-9 | comprehension + spelunking · wolf | run (wolf) |
@@ -252,7 +252,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §8.7 — `shared` and `handle` | 8-12 | comprehension · lupin | run (lupin) |
 | §8.7 — `shared` and `handle` | 8-13 | design | prose |
 | §8.8 — What the machine does | 8-14 | spelunking · wolf | run (wolf) |
-| Chapter batch | 8-15 | extension · lupin | run (lupin) |
+| Chapter batch | 8-15 | extension · wolf + lupin | run (wolf + lupin) |
 | Chapter batch | 8-16 | extension · lupin | run (lupin) |
 | Chapter batch | 8-17 | extension · lupin | run (lupin) |
 | §8.9 — The ledger, and a budget on it | 8-18 | fingers · lupin | run (lupin) |
@@ -263,7 +263,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | section | exercise | type · checker | tier |
 |---|---|---|---|
 | §9.1 — The three rings | 9-1 | fingers + spelunking | prose |
-| §9.2 — Raw-tier rules | 9-2 | fingers · lupin | run (lupin) |
+| §9.2 — Raw-tier rules | 9-2 | fingers · wolf + lupin | run (wolf + lupin) |
 | §9.2 — Raw-tier rules | 9-3 | comprehension · lupin | run (lupin) |
 | §9.2 — Raw-tier rules | 9-4 | comprehension · lupin | run (lupin) |
 | §9.3 — The oracle you actually run | 9-5 | fingers + comprehension · lupin | run (lupin) |
