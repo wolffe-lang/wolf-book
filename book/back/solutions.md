@@ -3735,11 +3735,12 @@ the cast-a-binding rule moved into this chapter.
 <details>
 <summary>Exercise 7-15. <a href="../ch07.md#7.8">§7.8</a></summary>
 
-**Exercise 7-15** *(extension · lupin)*. The longest common
-subsequence of two line lists is the skeleton every diff tool hangs
-on. Build the DP table as a `List[List[int]]` and return its corner.
-For the two three-line "files" in the solution, compute the answer on
-paper first: which two lines survive in both?
+**Exercise 7-15** *(extension · lupin)*. The longest common subsequence
+of two line lists is the skeleton every diff tool hangs on. Build the DP
+table as a `List[List[int]]` and return its corner. For two three-line
+"files" of your choosing, compute the answer on paper first, then check
+it. Note what the signature says about ownership: which of your
+parameters were moved, and how many annotations did it take to say so?
 
 Solution. `ch07/ex7-15.lu` (core):
 
@@ -3781,10 +3782,10 @@ $ lupin ex7-15.lu
 2
 ```
 
-"the wolf runs" and "the elk listens" survive; the moon line does not.
-Note what the function signature says about ownership: both lists are
-borrowed. The caller keeps them, un-moved, and no annotation was
-spent saying so.
+With the solution's two files, "the wolf runs" and "the elk listens"
+survive and the moon line does not. The signature's answer: neither
+parameter was moved. Both lists are borrowed, the caller keeps them,
+and it took no annotation at all to say so.
 </details>
 
 <details>
