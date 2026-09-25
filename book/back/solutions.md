@@ -3294,6 +3294,9 @@ fn main() -> !int {
 }
 ```
 
+Then change one word so it prints `1 2`, and say what the changed
+program costs that the original did not.
+
 Solution: it moves `a`, ints and all: the trap blames `a.x`'s read and
 points at `let b = a`. Structs move on assignment whatever they
 contain; there is no "cheap enough to copy silently" tier for
@@ -3314,7 +3317,9 @@ $ lupin ex7-4b.lu
 The wrong answer is "ints are `Copy`, so the struct copies." Wolf's
 rule is per-*decision*, not per-*type*: the reader of
 `let b = copy a` knows a duplication happened without looking up what
-`P` contains.
+`P` contains. That is also the cost the question asks for: a second
+`P`, made at the line that says `copy`. The original made none, because
+a move duplicates nothing a reader needs to account for.
 </details>
 
 <details>
