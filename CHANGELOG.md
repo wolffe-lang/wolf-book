@@ -2,6 +2,46 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs52, the exercises that moved — 2026-09-24 — chapter 7 numbers its own exercises, and four new ones end it
+
+**Chapter 7 is numbered in order of appearance.** It printed 7-4, then
+chapter 4's 4-3, then 7-6, then chapter 4's 4-4, and in §7.8 it printed
+7-17 and 7-18 ahead of 7-12. Both pairs had moved in with the material
+they needed and kept their old numbers, which is what the exercise
+doctrine asks, and the result read as a mistake. The chapter was
+renumbered once: 4-3 is 7-6, and the old 7-6 … 7-18 are 7-7 … 7-19.
+The doctrine records the exception, chapter 4 says where its two went,
+and the chapter-7 master carries the whole map.
+
+**7-6 is a bounded buffer now.** The old 4-3 asked for a `grow` and a
+`shrink` on a list, and its two copies (the chapter's and the solutions
+page's) asked different things. "Grow" read as capacity, which a wolf
+`List` does not expose, and its search half was 7-7's. The new stem
+holds a `cap` of its own, answers `{full}` when it is reached, and grows
+by moving the list into a larger buffer, and the stem says in one
+sentence why the capacity is the program's to keep.
+
+**4-4 is retired into 7-9.** It asked two calls' verdicts without giving
+either function's signature, and its solution's `wide` took a `mut`
+parameter it never wrote, so the transcript opened on a warning that
+had nothing to do with the lesson. 7-9 asked the same two calls as two
+of its four shapes. It now states `f`'s signature, asks for the
+sentence in `wolf --explain E1002` that decides all four, and shows all
+four verdicts on both machines with no warning in sight.
+
+**Four exercises end the chapter.** 7-20 returns 7-16's diff as a value,
+which is the step where copying or moving a line becomes a decision.
+7-21 to 7-23 are the shelf set: remove by title through `mut`, merge a
+shelf into another by `take`, and return the longest document from a
+lent shelf, which the compiler refuses. That refusal is the point: the
+reader meets the lend rule on a program of their own, reads the
+explanation, picks the repair, and learns why §7.3's version never
+tripped it.
+
+**Every chapter-7 solutions-page prompt is the chapter's prompt.** Eight
+had drifted from the stem the reader actually answered, some by a word
+and some by a whole second question; each now reads as printed.
+
 ## bs51, the book takes 0.2.16 / 0.1.38 — 2026-09-24 — the moved leaf gets its test, and the rig stops reading prose
 
 **The pin moves to wolf 0.2.16 and lupin 0.1.38**, both from the release
