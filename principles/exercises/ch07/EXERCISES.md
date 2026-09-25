@@ -508,11 +508,9 @@ two.
 
 **Exercise 7-11** *(design)*. Rust's zero-copy parser hands out `&str`
 slices of an input buffer it does not own, with lifetimes proving the
-buffer outlives every slice. Wolf has no lifetime annotations, so that
-API shape is not expressible for arbitrary callers. Sketch the wolf
-alternatives (copying the token text, returning byte ranges
-`(start, end)` into a caller-held string, or parsing inside a region
-and freezing the result) and argue which one a tokenizer library
+buffer outlives every slice. Sketch the wolf alternatives (copying the
+token text, returning byte ranges into a caller-held string, or parsing
+into memory the caller names) and argue which one a tokenizer library
 should ship. What does each cost, and who pays it?
 
 Solution (discussion): the range API is the honest default: tokens as
