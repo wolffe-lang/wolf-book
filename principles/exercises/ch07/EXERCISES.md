@@ -1022,3 +1022,55 @@ receive a new one back, which is the same program with a longer call
 site and a window in which the caller has no shelf at all. `mut` says
 exactly what happens: the caller's shelf is written through, in place,
 and the call site says so.
+
+**Exercise 7-22** *(extension · wolf + lupin)*. Second, `merge(mut
+into, take from)`: move every document of `from` onto the end of
+`into`. Why is `from` taken rather than `mut`, what may the caller do
+with its own binding after the call, and what would leaving `take` off
+the `push` inside the loop cost?
+
+Solution. `ch07/ex7-22.lu`:
+
+```wolf
+struct Doc { title: str, words: int, tags: List[str] }
+struct Shelf { docs: List[Doc] }
+fn merge(mut into: Shelf, take from: Shelf) {
+    for d in from.docs {
+        (mut into.docs).push(take d)
+    }
+}
+fn main() -> !int {
+    var a = Shelf { docs: List[Doc]() }
+    var b = Shelf { docs: List[Doc]() }
+    (mut a.docs).push(Doc { title: "regions", words: 900, tags: List[str]() })
+    (mut b.docs).push(Doc { title: "moves", words: 640, tags: List[str]() })
+    (mut b.docs).push(Doc { title: "tokens", words: 300, tags: List[str]() })
+    merge(mut a, take b)
+    print("{a.docs.len}: {a.docs[0].title} {a.docs[1].title} {a.docs[2].title}")
+    0
+}
+```
+
+```console
+$ lupin ex7-22.lu
+3: regions moves tokens
+$ wolf run ex7-22.lu
+3: regions moves tokens
+```
+
+`merge` is the end of `b` as a shelf, and `take` is the signature
+saying so. A `mut from` would leave the caller holding `b` after the
+call, so `merge` would either copy every document, and both shelves
+would hold them, or empty `b` by hand, and the caller would hold an
+empty shelf that nothing in the signature mentioned. With `take`, the
+caller wrote `take b` at the call and the binding is spent: add a line
+that reads `b.docs.len` after the call and the compiler stops it with
+E1001 at that read, naming `take b` as the move, while lupin runs up
+to it and traps `use-after-move`. The caller may assign `b` a new
+shelf and use it again; it may not read the old one.
+
+Because `from` is `merge`'s own, so are its documents, and `take d`
+moves each one onto `into` whole, its tags with it. Without the `take`
+the program prints the same line and copies every document it moves,
+tags included, into a list that is about to be dropped anyway: the
+container store copies unless the argument says otherwise.

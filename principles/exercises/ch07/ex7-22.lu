@@ -1,0 +1,21 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 7-22 solution: merge consumes the second shelf. `from` is
+// `take`, so its documents are this function's to move.
+struct Doc { title: str, words: int, tags: List[str] }
+struct Shelf { docs: List[Doc] }
+fn merge(mut into: Shelf, take from: Shelf) {
+    for d in from.docs {
+        (mut into.docs).push(take d)
+    }
+}
+fn main() -> !int {
+    var a = Shelf { docs: List[Doc]() }
+    var b = Shelf { docs: List[Doc]() }
+    (mut a.docs).push(Doc { title: "regions", words: 900, tags: List[str]() })
+    (mut b.docs).push(Doc { title: "moves", words: 640, tags: List[str]() })
+    (mut b.docs).push(Doc { title: "tokens", words: 300, tags: List[str]() })
+    merge(mut a, take b)
+    print("{a.docs.len}: {a.docs[0].title} {a.docs[1].title} {a.docs[2].title}")
+    0
+}
