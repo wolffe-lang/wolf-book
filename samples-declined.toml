@@ -152,7 +152,7 @@ retires = "the `Verb::Local` widening for corpus blocks, then the ch26 fixture"
 # for as long as the doctrine page sat outside both walks.
 
 [[declined]]
-block = "principles/EXERCISES.md:368"
+block = "principles/EXERCISES.md:373"
 class = "typed"
 needs = "an expression to type — exercise 2-1's three `lupin eval '…'` prompts have no file behind them, and the exemplar batch checks in no `ex2-1.lu` for them to name. The exercise declares its own machine as `lupin REPL` in its taxonomy line, so this is a REPL block written in `eval`'s spelling; it wants exactly what ch02:81 and ch02:101 want"
 filed = "wolf-book#44"
@@ -180,7 +180,7 @@ filed = "wolf-book#29 §4"
 retires = "the `eval` widening (with ch02:81), or wolf-interp is08 if the REPL lane takes both"
 
 [[declined]]
-block = "principles/exercises/ch07/EXERCISES.md:442"
+block = "principles/exercises/ch07/EXERCISES.md:448"
 class = "typed"
 needs = "an interactive session — the block opens on a bare `$ lupin`"
 filed = "wolf-book#29 §4"

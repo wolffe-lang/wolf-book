@@ -45,7 +45,12 @@ parenthetical form.
 
 K&R style, per chapter: **Exercise 3-2** is the second exercise of
 chapter 3. Numbers are stable once published — a retired exercise leaves
-a tombstone, not a renumbering. Sections end with the exercises they
+a tombstone, not a renumbering. Chapter 7 is the one exception, taken
+once and on the record at bs52: it printed chapter 4's 4-3 and 4-4 in
+§7.4 and §7.5 and chapter 5's old 5-9 and 5-10 as 7-17 and 7-18 in §7.8,
+ahead of 7-12, so a reader met 7-4, 4-3, 7-6, 4-4, 7-7. The chapter was
+renumbered in order of appearance, and its master's header carries the
+old-to-new map. Sections end with the exercises they
 earned; chapters end with a batch that mixes the chapter's sections.
 
 ## 2. Density

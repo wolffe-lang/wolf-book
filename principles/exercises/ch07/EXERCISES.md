@@ -6,6 +6,12 @@ at `impl_version 0.0.1`. Where the compiler cannot yet observe a
 program (its runner lands at s31), the solution shows the observation
 record it emits instead, and says so.
 
+Numbered in order of appearance since bs52 (EXERCISES.md §1 records the
+exception). The map, old to new: 4-3 → 7-6; 7-6 → 7-7; 7-7 → 7-8;
+7-8 → 7-9; 7-9 → 7-10; 7-10 → 7-11; 7-11 → 7-12; 7-17 → 7-13;
+7-18 → 7-14; 7-12 → 7-15; 7-13 → 7-16; 7-14 → 7-17; 7-15 → 7-18;
+7-16 → 7-19. 7-1 … 7-5 did not move, and 7-5 is still held.
+
 ## §7.1 — The error we owed you
 
 **Exercise 7-1** *(comprehension · wolf + lupin)*. Chapter 3's broken
