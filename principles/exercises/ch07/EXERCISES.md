@@ -1074,3 +1074,95 @@ moves each one onto `into` whole, its tags with it. Without the `take`
 the program prints the same line and copies every document it moves,
 tags included, into a list that is about to be dropped anyway: the
 container store copies unless the argument says otherwise.
+
+**Exercise 7-23** *(comprehension + spelunking · wolf + lupin)*.
+Third, `longest(s)`: return the document with the most words, the
+`Doc` itself and not its title, from a shelf passed with no mode. Write
+it the obvious way, ending on `s.docs[best]`, and build it. Read what
+the compiler says, then `wolf --explain E1002`, and pick one of the two
+repairs it offers: which one does a query on a shelf want? Then run the
+unrepaired program under `lupin`, and say why §7.3's `longest` never
+met this, and why it would not have met it even returning a `Doc`, as
+long as that `Doc` had no `tags`.
+
+Solution. `ch07/ex7-23.lu` (the function; `main` fills a shelf of
+three and prints the longest title and the shelf's length):
+
+```wolf
+struct Doc { title: str, words: int, tags: List[str] }
+struct Shelf { docs: List[Doc] }
+fn longest(s: Shelf) -> Doc {
+    var best = 0
+    var i = 1
+    while i < s.docs.len {
+        if s.docs[i].words > s.docs[best].words { best = i }
+        i += 1
+    }
+    s.docs[best]
+}
+```
+
+```console
+$ wolf conform-run ./ex7-23.lu
+error[E1002]: `s` is the caller's value, and it is returned here while the caller still holds it
+  --> ./ex7-23.lu:14:5
+   |
+ 7 | fn longest(s: Shelf) -> Doc {
+   |            - `s` is declared without a mode — that spells `read`: lent for the call, and still the caller's after it
+...
+14 |     s.docs[best]
+   |     ^^^^^^^^^^^^ this would be a second live path to the value `s` was lent
+   |
+   = note: a `read` parameter is lent, never given [mem.tier0.mode.read]. Handing it on past the
+     call would leave two places able to write one value, with no `shared` spelled anywhere
+     [mem.tier0.excl.1]. Hand on an independent value with `copy`, or declare the parameter
+     `take` so the caller gives it up (call sites then spell `take`).
+help: to hand on an independent value, copy it at the move
+   |
+14 |     copy s.docs[best]
+   |
+```
+
+This is the lend rule, and E1002 is its code because it is
+exclusivity again, one step removed. The shelf was lent: after the call
+it is still the caller's, whole. Returning `s.docs[best]` would hand the
+caller a second owner of a document the shelf still holds, and a `Doc`
+now carries a `List`, which is storage two owners could both write,
+with no `shared` written anywhere to say so. The explain text's second
+paragraph is the general rule, and its last sentence is the answer to
+the last question: "Values that cannot reach shared storage — a struct
+of scalars, a `str` — are not refused: their second path is a copy."
+§7.3's `longest` copied a title out and returned a `str`, and a `Doc`
+of a `title` and a `words` is a struct of a `str` and an `int`. The rule
+first has something to say when the value has a list inside it.
+
+The two repairs are two different claims. `take s` says the query
+consumes the shelf, so the caller would give up every document to learn
+which one is longest; that is the wrong signature for a question.
+`copy` at the move says the caller gets an independent document and the
+shelf is untouched, and it is what `ch07/ex7-23b.lu` writes:
+
+```console
+$ lupin ex7-23b.lu
+moves, and the shelf still holds 3
+$ wolf run ex7-23b.lu
+moves, and the shelf still holds 3
+```
+
+The copy costs the document and its tags list. A caller that only wants
+to look can skip even that by asking for the position, `best` itself,
+and reading `shelf.docs[i]` in place, the way §7.6's `Tok` hands back
+two integers instead of the text.
+
+The interpreter does not refuse the unrepaired program:
+
+```console
+$ lupin ex7-23.lu
+moves, and the shelf still holds 3
+```
+
+The lend rule is static, and `lupin` copies at the crossing, so the
+program it runs is the one with the `copy` already in it. That is why
+the compiler's verdict is the one this exercise is about: it is the
+machine that makes the copy a word you write, where a reader can see
+what it costs.

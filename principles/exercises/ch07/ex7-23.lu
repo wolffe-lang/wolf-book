@@ -1,0 +1,24 @@
+//! check: fail(E1002)
+//! phase: mem
+// Exercise 7-23: the longest document, written the obvious way. A `Doc`
+// with a list inside it cannot leave a lent shelf uncopied (the lend rule).
+struct Doc { title: str, words: int, tags: List[str] }
+struct Shelf { docs: List[Doc] }
+fn longest(s: Shelf) -> Doc {
+    var best = 0
+    var i = 1
+    while i < s.docs.len {
+        if s.docs[i].words > s.docs[best].words { best = i }
+        i += 1
+    }
+    s.docs[best]
+}
+fn main() -> !int {
+    var shelf = Shelf { docs: List[Doc]() }
+    (mut shelf.docs).push(Doc { title: "regions", words: 900, tags: List[str]() })
+    (mut shelf.docs).push(Doc { title: "moves", words: 1200, tags: List[str]() })
+    (mut shelf.docs).push(Doc { title: "tokens", words: 300, tags: List[str]() })
+    let d = longest(shelf)
+    print("{d.title}, and the shelf still holds {shelf.docs.len}")
+    0
+}
