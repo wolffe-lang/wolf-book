@@ -891,3 +891,69 @@ survives unchanged: every parameter is the default mode, and testing a
 value is not taking it. An arm that binds a non-`Copy` piece would move
 the whole scrutinee; every field here is an `int`, so nothing moves and
 `den` is still readable on the line after.
+
+**Exercise 7-20** *(extension · wolf + lupin)*. Take 7-16's walk one
+step further. Instead of printing, `diff(a, b)` returns the edits as a
+`List[Edit]`, with `struct Edit { mark: str, line: str }`, and the
+caller prints them and counts the changed lines. Before writing it,
+decide whether `diff` lends its two lists or takes them, and say in one
+sentence what the lines in the result are under each choice. Run it on
+a three-line config file and a four-line successor of your own.
+
+Solution. `ch07/ex7-20.lu` (the walk and `diff`; `build_table` is
+7-16's, unchanged):
+
+```wolf
+struct Edit { mark: str, line: str }
+fn walk(a: List[str], b: List[str], t: List[List[int]], i: int, j: int, mut out: List[Edit]) {
+    if i > 0 && j > 0 && a[i - 1] == b[j - 1] {
+        walk(a, b, t, i - 1, j - 1, mut out)
+        (mut out).push(Edit { mark: " ", line: a[i - 1] })
+    } else if j > 0 && (i == 0 || t[i][j - 1] >= t[i - 1][j]) {
+        walk(a, b, t, i, j - 1, mut out)
+        (mut out).push(Edit { mark: "+", line: b[j - 1] })
+    } else if i > 0 {
+        walk(a, b, t, i - 1, j, mut out)
+        (mut out).push(Edit { mark: "-", line: a[i - 1] })
+    }
+}
+fn diff(a: List[str], b: List[str]) -> List[Edit] {
+    let t = build_table(a, b)
+    var out = List[Edit]()
+    walk(a, b, t, a.len, b.len, mut out)
+    out
+}
+```
+
+```console
+$ lupin ex7-20.lu
+  host = kasumi
+- port = 80
++ port = 8080
+  user = ada
++ log = on
+3 of 5 lines changed; old still has 3
+$ wolf run ex7-20.lu
+  host = kasumi
+- port = 80
++ port = 8080
+  user = ada
++ log = on
+3 of 5 lines changed; old still has 3
+```
+
+`diff` lends both lists, and the last line of the run is the reason:
+the caller still has `old` afterward, and the caller of a diff usually
+wants both files next, to print beside the edits or to patch. The
+price is that every line in the result is a copy of the caller's. A
+`push` copies what it stores unless the argument is written `take`,
+and a line read out of a lent list cannot be taken: `take a[0]` on a
+parameter with no mode is a compile error and a `trap(exclusivity)`
+under lupin, both citing `[mem.tier0.mode.read]`.
+A `diff(take a, take b)` could `take` each line into its `Edit` and
+copy nothing, and the caller would have no files left to compare.
+
+The recursion in `walk` is 7-16's, with one change that is this
+chapter's whole subject: it cannot print, so it needs somewhere to put
+the edits, and `mut out` at both ends is that place. The edits come
+out forward for the same reason 7-16's lines did.
