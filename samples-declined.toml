@@ -180,7 +180,7 @@ filed = "wolf-book#29 §4"
 retires = "the `eval` widening (with ch02:81), or wolf-interp is08 if the REPL lane takes both"
 
 [[declined]]
-block = "principles/exercises/ch07/EXERCISES.md:545"
+block = "principles/exercises/ch07/EXERCISES.md:544"
 class = "typed"
 needs = "an interactive session — the block opens on a bare `$ lupin`"
 filed = "wolf-book#29 §4"

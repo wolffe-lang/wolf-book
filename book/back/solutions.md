@@ -3570,10 +3570,9 @@ of the other.
 <summary>Exercise 7-10. <a href="../ch07.md#7.6">§7.6</a></summary>
 
 **Exercise 7-10** *(spelunking · wolf)*. Run `wolf --explain E1001` and
-read all of it. Quote the sentence that licenses re-initialization
-(exercise 7-1's move), the phrase that states field granularity
-(exercise 7-3's), and the one word in the first paragraph that makes
-`let b = a` and `f(take a)` the same subject.
+read all of it. Quote the sentence that licenses re-initialization, the
+phrase that states field granularity, and the one word in the first
+paragraph that makes `let b = a` and `f(take a)` the same subject.
 
 Solution:
 
