@@ -70,7 +70,7 @@ $ lupin exB-5.lu
 exB-5.lu: trap(exclusivity): `p.a.n` is accessed as `mut` while `p.a` is held as `mut`; the paths conflict [mem.model.path.disjoint] at 9:19; `p.a` held here at 9:10
 ```
 
-`exclusivity`, `[mem.model.path.disjoint]` — the clause exercise 4-4
+`exclusivity`, `[mem.model.path.disjoint]` — the clause exercise 7-9
 met as E1002's citation, enforced here at the second claim.
 
 **Exercise B-6** *(comprehension · lupin)*. Reserve from a pool

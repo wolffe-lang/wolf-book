@@ -1,6 +1,6 @@
 # EXERCISES-INDEX.md — the corpus ledger
 
-Ledger of every exercise in the corpus: 341 total. Hand-kept, and
+Ledger of every exercise in the corpus: 340 total. Hand-kept, and
 every figure on this page is held to the table under it by
 `cargo xtask verify-docs` (wolf-book#40) — the page said "generated"
 for eleven bumps and nothing generated it. It cannot be: the tier
@@ -36,7 +36,7 @@ All of them stay in the corpus so the day their surface lands the stems
 and the sections arrive together. Two more are master-only by curation
 rather than blockage, from the bs21 ladder: 2-15 (entab — the printed
 page carries detab, the master holds the mirror) and 3-13 (a
-`loop`/`break`-value drill beside §3.2's own example). **292 of the 341
+`loop`/`break`-value drill beside §3.2's own example). **291 of the 340
 are printed**, and
 `cargo xtask verify-docs` fails the build if a printed stem has no
 published solution.
@@ -64,7 +64,7 @@ several of its stems are tagged `· wolf` while the distilled solution
 program on disk runs under lupin — the tier column says what CI
 executed, and the exercise file says which is which and why.
 
-Tier totals: 194 run (lupin) · 9 run (lupin REPL) · 32 run (wolf) · 20 run (wolf + lupin) · 78 prose · 8 pending. That is 341.
+Tier totals: 193 run (lupin) · 9 run (lupin REPL) · 31 run (wolf) · 21 run (wolf + lupin) · 78 prose · 8 pending. That is 340.
 (The totals and the tables were recounted mechanically against the
 masters at bs21 — the previous header said 276/231 while the tables
 had drifted from the marker count, ch05's 5-9 and 5-10 among the
@@ -87,16 +87,18 @@ lane executed a sample is not bookkeeping, and calling it that is what
 let chapter 1 teach a call the compiler does not carry: a `run(…)`
 directive is a claim about both machines, and a sample only one machine
 serves says which one (`principles/TWO-MACHINES.md`).
-Taxonomy spread (tags, hybrids counted once per kind): fingers 62 ·
-comprehension 153 · extension 76 · spelunking 27 · design 37.
+Taxonomy spread (tags, hybrids counted once per kind): fingers 61 ·
+comprehension 152 · extension 76 · spelunking 27 · design 37.
 
 Four stems are printed under a section other than the one this index
 assigns them, each deliberately: 13-2 (printed in §13.2, where the race
 it feeds lives), 18-6 (printed in §18.4), 18-15 (a chapter-batch stem printed at
 §18.4's end), and 23-6 (printed in §23.1). Two more
-is printed in another *chapter*: 4-4 ends §7.5, because the call-site
-`mut` it needs is taught there. 4-3, which ended §7.4 for the same
-reason, is chapter 7's 7-6 now. 24-8 is a chapter-batch stem printed inside §24.3,
+was printed in another *chapter* until bs52 and is not now: chapter
+4's 4-3 and 4-4 ended §7.4 and §7.5, because the call-site `mut` they
+need is taught there. 4-3 is chapter 7's 7-6, and 4-4 is retired into
+7-9, which asked the same question with its signatures given; neither
+number is reused (EXERCISES.md §1). 24-8 is a chapter-batch stem printed inside §24.3,
 ahead of 24-7; the batch is the chapter's last two either way.
 
 ## ch01 — 11 exercises
@@ -155,13 +157,12 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | Chapter batch | 3-14 | fingers · lupin | run (lupin) |
 | §3.2 — Everything is an expression | 3-15 | fingers · lupin | run (lupin) |
 
-## ch04 — 10 exercises
+## ch04 — 9 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
 | §4.2 — exemplar batch (EXERCISES.md §5) | 4-1 | fingers · lupin | run (lupin) |
 | §4.3 — exemplar batch (EXERCISES.md §5) | 4-2 | comprehension · lupin | run (lupin) |
-| §4.4 — exemplar batch (EXERCISES.md §5) | 4-4 | comprehension + spelunking · wolf | run (wolf) |
 | §4.1 — Signatures are the contract | 4-5 | comprehension · lupin | run (lupin) |
 | §4.3 — `defer` | 4-6 | comprehension · lupin | run (lupin) |
 | Chapter batch | 4-7 | extension · lupin | run (lupin) |
@@ -222,7 +223,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §7.4 — `mut` at both ends | 7-6 | extension · wolf + lupin | run (wolf + lupin) |
 | §7.4 — `mut` at both ends | 7-7 | fingers + spelunking · lupin | run (lupin) |
 | §7.5 — Field-granular exclusivity | 7-8 | comprehension · wolf + lupin | run (wolf + lupin) |
-| §7.5 — Field-granular exclusivity | 7-9 | comprehension + fingers · lupin | run (lupin) |
+| §7.5 — Field-granular exclusivity | 7-9 | comprehension + spelunking · wolf + lupin | run (wolf + lupin) |
 | §7.6 — Why there are no lifetimes | 7-10 | spelunking · wolf | run (wolf) |
 | §7.6 — Why there are no lifetimes | 7-11 | design | prose |
 | §7.7 — What the machine does | 7-12 | fingers · lupin REPL | run (lupin REPL) |

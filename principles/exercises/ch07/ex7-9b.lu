@@ -1,0 +1,21 @@
+//! check: fail(E1002)
+//! phase: mem
+// Exercise 7-9: the two shapes that overlap — a path and its prefix.
+// Every parameter is written, so nothing but the overlap is reported.
+struct Q { n: int }
+struct P { a: Q, b: Q }
+fn f3(mut x: Q, mut v: int) {
+    x.n += 1
+    v += 10
+}
+fn f4(mut w: P, mut y: Q) {
+    w.a.n += 1
+    y.n += 10
+}
+fn main() -> !int {
+    var p = P { a: Q { n: 5 }, b: Q { n: 7 } }
+    f3(mut p.a, mut p.a.n)
+    f4(mut p, mut p.b)
+    print("{p.a.n} {p.b.n}")
+    0
+}

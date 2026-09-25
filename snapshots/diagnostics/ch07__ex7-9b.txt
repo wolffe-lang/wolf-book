@@ -1,0 +1,19 @@
+error[E1002]: `p.a.n` cannot go `mut` here: it overlaps `p.a`, already passed `mut` in this call
+  --> ./ex7-9b.lu:17:21
+   |
+17 |     f3(mut p.a, mut p.a.n)
+   |            --- `p.a` is passed `mut` here
+   |                     ^^^^^ second exclusive claim on the same place
+   |
+   = note: `p.a.n` is inside `p.a` — a path and its prefix conflict [mem.model.path.disjoint].
+     Disjoint fields (`x.a` with `x.b`) are fine together.
+
+error[E1002]: `p.b` cannot go `mut` here: it overlaps `p`, already passed `mut` in this call
+  --> ./ex7-9b.lu:18:19
+   |
+18 |     f4(mut p, mut p.b)
+   |            - `p` is passed `mut` here
+   |                   ^^^ second exclusive claim on the same place
+   |
+   = note: `p.b` is inside `p` — a path and its prefix conflict [mem.model.path.disjoint]. Disjoint
+     fields (`x.a` with `x.b`) are fine together.

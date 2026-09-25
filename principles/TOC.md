@@ -76,7 +76,7 @@ wolf, without hearing the word "lifetime."*
 - 4.3 `defer` — put cleanup next to acquisition and predict LIFO order.
 - 4.4 Borrow by default — pass parameters with no sigils, return by
   move, and state the rule in one sentence.
-- Exercises 4-1 … 4-11; 4-3 moved to chapter 7 as 7-6.
+- Exercises 4-1 … 4-11; 4-3 and 4-4 moved to chapter 7 (7-6, and into 7-9).
 
 ### Chapter 5 — Collections and generics without fear
 - 5.1 `List`, `Map`, `Set`, tuples — build and index the workhorses.

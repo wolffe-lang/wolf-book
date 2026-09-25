@@ -50,7 +50,8 @@ once and on the record at bs52: it printed chapter 4's 4-3 and 4-4 in
 §7.4 and §7.5 and chapter 5's old 5-9 and 5-10 as 7-17 and 7-18 in §7.8,
 ahead of 7-12, so a reader met 7-4, 4-3, 7-6, 4-4, 7-7. The chapter was
 renumbered in order of appearance, and its master's header carries the
-old-to-new map. Sections end with the exercises they
+old-to-new map. 4-4 is the tombstone case: it asked 7-9's question with
+less, so it is retired into 7-9 and its number is not reused. Sections end with the exercises they
 earned; chapters end with a batch that mixes the chapter's sections.
 
 ## 2. Density
@@ -642,61 +643,6 @@ second registered
 first registered
 ```
 
-**Exercise 4-4** *(comprehension + spelunking · wolf)*. One of these
-calls is legal and one is not:
-
-```wolf
-bump(mut p.a.n, mut p.b.n)
-wide(mut p.a, mut p.a.n)
-```
-
-Say which and why, then check yourself against the compiler and against
-`wolf --explain E1002`.
-
-Solution: `bump` passes two *disjoint* paths, which is legal. `wide`
-passes a path and its own prefix; `p.a.n` lives inside `p.a`, so two
-exclusive claims overlap:
-
-```console
-$ wolf conform-run ./ex4-4.lu
-warning[W1002]: `i` is `mut`, and the body never writes it
- --> ./ex4-4.lu:7:9
-  |
-7 | fn wide(mut i: Inner, mut n: int) { n += 1 }
-  |         ^^^ writeback nothing uses
-  |
-  = note: every call site surrenders exclusive access for a write that never happens; the read
-    default is the honest mode.
-help: drop the `mut` here and at every call site — the parameter is never written
-  |
-7 | fn wide(i: Inner, mut n: int) { n += 1 }
-11 |     wide(p.a, mut p.a.n)
-  |
-
-error[E1002]: `p.a.n` cannot go `mut` here: it overlaps `p.a`, already passed `mut` in this call
-  --> ./ex4-4.lu:11:23
-   |
-11 |     wide(mut p.a, mut p.a.n)
-   |              --- `p.a` is passed `mut` here
-   |                       ^^^^^ second exclusive claim on the same place
-   |
-   = note: `p.a.n` is inside `p.a` — a path and its prefix conflict [mem.model.path.disjoint].
-     Disjoint fields (`x.a` with `x.b`) are fine together.
-```
-
-The warning above the error is the compiler's, not the exercise's:
-`wide` asks for `mut i` and never writes through it, which is W1002
-whatever else the program does. Read past it to the E1002 the exercise
-sets — and note that the two are independent, since dropping the `mut`
-on `i` as the help suggests would also dissolve the overlap by
-removing one of the two claims.
-
-The `--explain` entry states the general rule the diagnostic instances:
-"Two paths conflict iff one is a prefix of the other"
-(`[mem.model.path.disjoint]`). Under lupin the same program runs to the
-call and traps `exclusivity`, citing the same clause; predict that,
-too, and check it.
-
 ### Chapter 5 — Collections and generics
 
 **Exercise 5-1** *(fingers · lupin)*. A `List` is also a stack. Push
@@ -996,8 +942,10 @@ the REPL exercise), 3 under wolf conform-run (3-2 and 4-4 under both).
 All 23 solution programs on disk ran with the outputs shown; the REPL
 exercise (2-1) lives in its transcript, and the two design exercises have
 discussion solutions and no program. Those are the batch's numbers as
-written. One exercise has since left it: 4-3 is chapter 7's 7-6,
-where the call-site `mut` it needs is taught (§1).
+written. Two exercises have since left it for chapter 7, where the
+call-site `mut` they need is taught (§1): 4-3 is 7-6 there, and 4-4
+is retired into 7-9, which asks the same question with its signatures
+given.
 
 ---
 

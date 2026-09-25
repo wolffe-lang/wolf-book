@@ -1472,65 +1472,6 @@ first registered
 </details>
 
 <details>
-<summary>Exercise 4-4. <a href="../ch07.md#7.5">§7.5</a></summary>
-
-**Exercise 4-4** *(comprehension + spelunking · wolf)*. One of these
-calls is legal and one is not:
-
-```wolf
-bump(mut p.a.n, mut p.b.n)
-wide(mut p.a, mut p.a.n)
-```
-
-Say which and why, then check yourself against the compiler and against
-`wolf --explain E1002`.
-
-Solution: `bump` passes two *disjoint* paths, which is legal. `wide`
-passes a path and its own prefix; `p.a.n` lives inside `p.a`, so two
-exclusive claims overlap:
-
-```console
-$ wolf conform-run ./ex4-4.lu
-warning[W1002]: `i` is `mut`, and the body never writes it
- --> ./ex4-4.lu:7:9
-  |
-7 | fn wide(mut i: Inner, mut n: int) { n += 1 }
-  |         ^^^ writeback nothing uses
-  |
-  = note: every call site surrenders exclusive access for a write that never happens; the read
-    default is the honest mode.
-help: drop the `mut` here and at every call site — the parameter is never written
-  |
-7 | fn wide(i: Inner, mut n: int) { n += 1 }
-11 |     wide(p.a, mut p.a.n)
-  |
-
-error[E1002]: `p.a.n` cannot go `mut` here: it overlaps `p.a`, already passed `mut` in this call
-  --> ./ex4-4.lu:11:23
-   |
-11 |     wide(mut p.a, mut p.a.n)
-   |              --- `p.a` is passed `mut` here
-   |                       ^^^^^ second exclusive claim on the same place
-   |
-   = note: `p.a.n` is inside `p.a` — a path and its prefix conflict [mem.model.path.disjoint].
-     Disjoint fields (`x.a` with `x.b`) are fine together.
-```
-
-The warning above the error is the compiler's, not the exercise's:
-`wide` asks for `mut i` and never writes through it, which is W1002
-whatever else the program does. Read past it to the E1002 the exercise
-sets — and note that the two are independent, since dropping the `mut`
-on `i` as the help suggests would also dissolve the overlap by
-removing one of the two claims.
-
-The `--explain` entry states the general rule the diagnostic instances:
-"Two paths conflict iff one is a prefix of the other"
-(`[mem.model.path.disjoint]`). Under lupin the same program runs to the
-call and traps `exclusivity`, citing the same clause; predict that,
-too, and check it.
-</details>
-
-<details>
 <summary>Exercise 4-5. <a href="../ch04.md#4.1">§4.1</a></summary>
 
 **Exercise 4-5** *(comprehension · lupin)*. Euclid's algorithm, in the
@@ -3531,34 +3472,90 @@ optimizer (§7.7's subject).
 <details>
 <summary>Exercise 7-9. <a href="../ch07.md#7.5">§7.5</a></summary>
 
-**Exercise 7-9** *(comprehension + fingers · lupin)*. Four call shapes
-against `struct P { a: Q, b: Q }`, `struct Q { n: int }`. Verdict for
-each, before checking any:
+**Exercise 7-9** *(comprehension + spelunking · wolf + lupin)*. Four
+call shapes against `struct P { a: Q, b: Q }`, `struct Q { n: int }`.
+In each, `f` takes both of its arguments `mut` and writes through both,
+so its signature is the two argument types with `mut` on each: shape 1
+calls `fn f(mut x: Q, mut y: Q)`, shape 2 `fn f(mut u: int, mut v:
+int)`. Verdict for each, before checking any:
 
 1. `f(mut p.a, mut p.b)`
 2. `f(mut p.a.n, mut p.b.n)`
 3. `f(mut p.a, mut p.a.n)`
 4. `f(mut p, mut p.b)`
 
+Then check yourself against the compiler, and find the sentence in
+`wolf --explain E1002` that decides all four.
+
 Solution: 1 and 2 are legal: disjoint fields, and leaves of disjoint
 subtrees. 3 and 4 are rejected: in each, one path is a *prefix* of the
-other, and a place conflicts with every place inside it. The rule from
-exercise 4-4, one sentence: two paths conflict iff one is a prefix of
-the other (`[mem.model.path.disjoint]`). The legal pair, run:
+other, and a place conflicts with every place inside it. The legal
+pair, with every parameter written, `ch07/ex7-9.lu`:
 
 ```wolf
-fn bump(mut u: int, mut v: int) {
-    u += 1
-    v += 1
+fn f1(mut x: Q, mut y: Q) {
+    x.n += 1
+    y.n += 1
+}
+fn f2(mut u: int, mut v: int) {
+    u += 10
+    v += 10
 }
 var p = P { a: Q { n: 5 }, b: Q { n: 7 } }
-bump(mut p.a.n, mut p.b.n)
+f1(mut p.a, mut p.b)
+f2(mut p.a.n, mut p.b.n)
 ```
 
 ```console
 $ lupin ex7-9.lu
-6 8
+16 18
+$ wolf run ex7-9.lu
+16 18
 ```
+
+The other two, `ch07/ex7-9b.lu`, in one program: `f3` takes a `Q` and
+an `int`, `f4` a `P` and a `Q`, and both write both parameters, so the
+compiler has nothing to say about them except the overlap:
+
+```console
+$ wolf conform-run ./ex7-9b.lu
+error[E1002]: `p.a.n` cannot go `mut` here: it overlaps `p.a`, already passed `mut` in this call
+  --> ./ex7-9b.lu:17:21
+   |
+17 |     f3(mut p.a, mut p.a.n)
+   |            --- `p.a` is passed `mut` here
+   |                     ^^^^^ second exclusive claim on the same place
+   |
+   = note: `p.a.n` is inside `p.a` — a path and its prefix conflict [mem.model.path.disjoint].
+     Disjoint fields (`x.a` with `x.b`) are fine together.
+
+error[E1002]: `p.b` cannot go `mut` here: it overlaps `p`, already passed `mut` in this call
+  --> ./ex7-9b.lu:18:19
+   |
+18 |     f4(mut p, mut p.b)
+   |            - `p` is passed `mut` here
+   |                   ^^^ second exclusive claim on the same place
+   |
+   = note: `p.b` is inside `p` — a path and its prefix conflict [mem.model.path.disjoint]. Disjoint
+     fields (`x.a` with `x.b`) are fine together.
+```
+
+The compiler reports both calls; the interpreter stops at the first,
+because it finds the conflict by running into it:
+
+```console
+$ lupin ex7-9b.lu
+ex7-9b.lu: trap(exclusivity): `p.a.n` is accessed as `mut` while `p.a` is held as `mut`; the paths conflict [mem.model.path.disjoint] at 17:17; `p.a` held here at 17:8
+```
+
+The sentence in `wolf --explain E1002` is the second of its first
+paragraph: "Distinct fields are distinct places — `f(mut p.x, mut p.y)` is
+fine — but `f(mut p, p.x)` is not, because `p.x` lives inside `p`."
+Shapes 1 and 2 are its first half, and 3 and 4 its second, with the
+second argument written `mut` rather than read, which conflicts for the
+same reason. The clause both tools cite, `[mem.model.path.disjoint]`,
+is the same rule in one line: two paths conflict iff one is a prefix
+of the other.
 </details>
 
 <details>
