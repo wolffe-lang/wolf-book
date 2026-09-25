@@ -238,33 +238,66 @@ directive.
 
 ## §7.4 — `mut` at both ends
 
-**Exercise 7-6** *(extension · lupin)*. Give the list a `shrink`
-function to pair with `grow`. Then, without running anything, state how
-you would find every mutation in this program with one search.
+**Exercise 7-6** *(extension · wolf + lupin)*. A bounded buffer:
+`struct Buf { items: List[int], cap: int }`. Write `push(mut b, x)`,
+which adds `x` and returns the new length, or the error row `{full}`
+when `b` already holds `cap` items; and `grow(mut b, extra)`, which
+builds a larger `Buf` and moves the old list into it. Fill a buffer of
+two, watch the third push fail, grow it by two, and push again. The
+`cap` is yours because the list's is not: a wolf `List` grows on its
+own and exposes no capacity to read or reserve. How many elements does
+`grow` copy?
 
 Solution. `ch07/ex7-6.lu`:
 
 ```wolf
-fn grow(mut xs: List[int]) { (mut xs).push(7) }
-fn shrink(mut xs: List[int]) { let _ = (mut xs).pop() }
+struct Buf { items: List[int], cap: int }
+fn push(mut b: Buf, x: int) -> int ! {full} {
+    if b.items.len == b.cap { return full }
+    (mut b.items).push(x)
+    b.items.len
+}
+fn grow(mut b: Buf, extra: int) {
+    let bigger = Buf { items: move b.items, cap: b.cap + extra }
+    b = bigger
+}
 fn main() -> !int {
-    var xs = List[int]()
-    grow(mut xs)
-    grow(mut xs)
-    shrink(mut xs)
-    print("len={xs.len}")
+    var b = Buf { items: List[int](), cap: 2 }
+    let first = push(mut b, 10) else -1
+    let second = push(mut b, 20) else -1
+    let third = push(mut b, 30) else -1
+    print("{first} {second} {third}")
+    grow(mut b, 2)
+    let again = push(mut b, 30) else -1
+    print("{again} of {b.cap}: {b.items[0]} {b.items[1]} {b.items[2]}")
     0
 }
 ```
 
 ```console
 $ lupin ex7-6.lu
-len=1
+1 2 -1
+3 of 4: 10 20 30
+$ wolf run ex7-6.lu
+1 2 -1
+3 of 4: 10 20 30
 ```
 
-The search is `grep 'mut '` (or, stricter, `(mut `): call-site `mut` is
-required, so the callers are the complete mutation audit. That is X1's
-entire argument, performed on your own file.
+None. `move b.items` hands the list to the new `Buf` whole: the move
+copies the list's top-level words (§7.7's pointer, length and
+capacity) and no element, and it empties `b.items`. `b = bigger`
+then fills the emptied place, which §7.2 said assignment does, so `b`
+is a working name again by the time `grow` returns. Write `copy
+b.items` instead and the program prints the same two lines while
+duplicating every element to get there. The one word is the whole
+difference in cost, and it is written where the cost is paid.
+
+`push` answers `full` rather than trapping because a full buffer is
+not a defect in the program; it is a state the caller decides about,
+which is chapter 6's rule, and `else -1` is the smallest decision. The
+bound is a field because it has to be: the list underneath keeps its
+own capacity and grows it without asking, so the only limit a wolf
+program can hold is one it stores itself.
 
 **Exercise 7-7** *(fingers + spelunking · lupin)*. Write `swap` for two
 `int`s using `mut` at both ends, and verify it. Then state the single
@@ -294,9 +327,9 @@ $ lupin ex7-7.lu
 3 1
 ```
 
-The search is `grep '(mut '` (X1's argument, from exercise 7-6, now
-stated as a rule): call-site `mut` is mandatory, so a call that can
-write through an argument *says so at the call*. Add `grep 'var '` for
+The search is `grep '(mut '` (X1's argument, stated as a rule):
+call-site `mut` is mandatory, so a call that can write through an
+argument *says so at the call*. Add `grep 'var '` for
 locals and the audit is the whole mutation surface: two searches, no
 false negatives, which is what "required at both ends" buys.
 

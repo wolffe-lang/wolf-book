@@ -64,7 +64,7 @@ several of its stems are tagged `· wolf` while the distilled solution
 program on disk runs under lupin — the tier column says what CI
 executed, and the exercise file says which is which and why.
 
-Tier totals: 195 run (lupin) · 9 run (lupin REPL) · 32 run (wolf) · 19 run (wolf + lupin) · 78 prose · 8 pending. That is 341.
+Tier totals: 194 run (lupin) · 9 run (lupin REPL) · 32 run (wolf) · 20 run (wolf + lupin) · 78 prose · 8 pending. That is 341.
 (The totals and the tables were recounted mechanically against the
 masters at bs21 — the previous header said 276/231 while the tables
 had drifted from the marker count, ch05's 5-9 and 5-10 among the
@@ -219,7 +219,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §7.2 — Values are trees | 7-3 | extension (break-it-on-purpose) · wolf + lupin | run (wolf + lupin) |
 | §7.2 — Values are trees | 7-4 | comprehension · lupin | run (lupin) |
 | §7.3 — Borrowing without the word | 7-5 | comprehension · lupin; static verdict · pending | pending |
-| §7.4 — `mut` at both ends | 7-6 | extension · lupin | run (lupin) |
+| §7.4 — `mut` at both ends | 7-6 | extension · wolf + lupin | run (wolf + lupin) |
 | §7.4 — `mut` at both ends | 7-7 | fingers + spelunking · lupin | run (lupin) |
 | §7.5 — Field-granular exclusivity | 7-8 | comprehension · wolf + lupin | run (wolf + lupin) |
 | §7.5 — Field-granular exclusivity | 7-9 | comprehension + fingers · lupin | run (lupin) |

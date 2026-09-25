@@ -1,13 +1,25 @@
 //! check: run(exit=0)
 //! phase: run
-// Exercise 7-6 solution: mutation is visible at both ends.
-fn grow(mut xs: List[int]) { (mut xs).push(7) }
-fn shrink(mut xs: List[int]) { let _ = (mut xs).pop() }
+// Exercise 7-6 solution: a bounded buffer whose bound is the program's
+// own, and a grow that moves the list rather than copying it.
+struct Buf { items: List[int], cap: int }
+fn push(mut b: Buf, x: int) -> int ! {full} {
+    if b.items.len == b.cap { return full }
+    (mut b.items).push(x)
+    b.items.len
+}
+fn grow(mut b: Buf, extra: int) {
+    let bigger = Buf { items: move b.items, cap: b.cap + extra }
+    b = bigger
+}
 fn main() -> !int {
-    var xs = List[int]()
-    grow(mut xs)
-    grow(mut xs)
-    shrink(mut xs)
-    print("len={xs.len}")
+    var b = Buf { items: List[int](), cap: 2 }
+    let first = push(mut b, 10) else -1
+    let second = push(mut b, 20) else -1
+    let third = push(mut b, 30) else -1
+    print("{first} {second} {third}")
+    grow(mut b, 2)
+    let again = push(mut b, 30) else -1
+    print("{again} of {b.cap}: {b.items[0]} {b.items[1]} {b.items[2]}")
     0
 }
