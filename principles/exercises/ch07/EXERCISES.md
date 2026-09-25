@@ -342,7 +342,13 @@ false negatives, which is what "required at both ends" buys.
 ## §7.5 — Field-granular exclusivity
 
 **Exercise 7-8** *(comprehension · wolf + lupin)*. The simplest
-possible exclusivity violation: one place, claimed twice.
+possible exclusivity violation is one place claimed twice:
+`bump2(mut n, mut n)` where `bump2` takes two `mut int`s. Predict what
+each tool says, then answer the design question hiding under it: if the
+call *were* allowed, what would `n` be afterward, and why is "it
+depends on the body" the real reason for the rule?
+
+Solution. `ch07/ex7-8.lu`:
 
 ```wolf
 fn bump2(mut a: int, mut b: int) {
@@ -356,11 +362,7 @@ fn main() -> !int {
 }
 ```
 
-Predict what each tool says, then answer the design question hiding
-under it: if the call *were* allowed, what would `n` be afterward, and
-why is "it depends on the body" the real reason for the rule?
-
-Solution: wolf rejects, lupin traps, same rule:
+wolf rejects, lupin traps, same rule:
 
 ```console
 $ wolf conform-run ./ex7-8.lu
