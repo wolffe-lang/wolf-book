@@ -94,9 +94,9 @@ Four stems are printed under a section other than the one this index
 assigns them, each deliberately: 13-2 (printed in §13.2, where the race
 it feeds lives), 18-6 (printed in §18.4), 18-15 (a chapter-batch stem printed at
 §18.4's end), and 23-6 (printed in §23.1). Two more
-are printed in another *chapter*: 4-3 and 4-4 end §7.4 and §7.5, because
-the call-site `mut` they need is taught there and the numbers are stable
-(EXERCISES.md §1). 24-8 is a chapter-batch stem printed inside §24.3,
+is printed in another *chapter*: 4-4 ends §7.5, because the call-site
+`mut` it needs is taught there. 4-3, which ended §7.4 for the same
+reason, is chapter 7's 7-6 now. 24-8 is a chapter-batch stem printed inside §24.3,
 ahead of 24-7; the batch is the chapter's last two either way.
 
 ## ch01 — 11 exercises
@@ -155,13 +155,12 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | Chapter batch | 3-14 | fingers · lupin | run (lupin) |
 | §3.2 — Everything is an expression | 3-15 | fingers · lupin | run (lupin) |
 
-## ch04 — 11 exercises
+## ch04 — 10 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
 | §4.2 — exemplar batch (EXERCISES.md §5) | 4-1 | fingers · lupin | run (lupin) |
 | §4.3 — exemplar batch (EXERCISES.md §5) | 4-2 | comprehension · lupin | run (lupin) |
-| §4.4 — exemplar batch (EXERCISES.md §5) | 4-3 | extension · lupin | run (lupin) |
 | §4.4 — exemplar batch (EXERCISES.md §5) | 4-4 | comprehension + spelunking · wolf | run (wolf) |
 | §4.1 — Signatures are the contract | 4-5 | comprehension · lupin | run (lupin) |
 | §4.3 — `defer` | 4-6 | comprehension · lupin | run (lupin) |
@@ -211,7 +210,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | Chapter batch | 6-12 | extension · lupin | run (lupin) |
 | Chapter batch | 6-13 | extension · lupin | run (lupin) |
 
-## ch07 — 18 exercises
+## ch07 — 19 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
@@ -220,6 +219,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §7.2 — Values are trees | 7-3 | extension (break-it-on-purpose) · wolf + lupin | run (wolf + lupin) |
 | §7.2 — Values are trees | 7-4 | comprehension · lupin | run (lupin) |
 | §7.3 — Borrowing without the word | 7-5 | comprehension · lupin; static verdict · pending | pending |
+| §7.4 — `mut` at both ends | 7-6 | extension · lupin | run (lupin) |
 | §7.4 — `mut` at both ends | 7-7 | fingers + spelunking · lupin | run (lupin) |
 | §7.5 — Field-granular exclusivity | 7-8 | comprehension · wolf + lupin | run (wolf + lupin) |
 | §7.5 — Field-granular exclusivity | 7-9 | comprehension + fingers · lupin | run (lupin) |

@@ -1,7 +1,9 @@
 # Chapter 4 — Functions: exercises
 
-Exercises 4-1 through 4-4 are the doctrine's exemplar batch and live in
-`principles/EXERCISES.md` §5; numbering continues from them. Commands
+Exercises 4-1, 4-2 and 4-4 are the doctrine's exemplar batch and live in
+`principles/EXERCISES.md` §5; numbering continues from them. 4-3 moved
+to chapter 7 as 7-6, where the call-site `mut` it needs is taught; the
+number is not reused. Commands
 run from this directory; outputs are pasted from real runs.
 
 ## §4.1 — Signatures are the contract

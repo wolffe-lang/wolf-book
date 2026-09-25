@@ -637,34 +637,6 @@ second registered
 first registered
 ```
 
-**Exercise 4-3** *(extension · lupin)*. Give the list a `shrink`
-function to pair with `grow`. Then, without running anything, state how
-you would find every mutation in this program with one search.
-
-Solution. `ch04/ex4-3.lu`:
-
-```wolf
-fn grow(mut xs: List[int]) { (mut xs).push(7) }
-fn shrink(mut xs: List[int]) { let _ = (mut xs).pop() }
-fn main() -> !int {
-    var xs = List[int]()
-    grow(mut xs)
-    grow(mut xs)
-    shrink(mut xs)
-    print("len={xs.len}")
-    0
-}
-```
-
-```console
-$ lupin ex4-3.lu
-len=1
-```
-
-The search is `grep 'mut '` (or, stricter, `(mut `): call-site `mut` is
-required, so the callers are the complete mutation audit. That is X1's
-entire argument, performed on your own file.
-
 **Exercise 4-4** *(comprehension + spelunking · wolf)*. One of these
 calls is legal and one is not:
 
@@ -1018,7 +990,9 @@ spelunking-hybrid (4-4). Checkers: 23 exercised under lupin (including
 the REPL exercise), 3 under wolf conform-run (3-2 and 4-4 under both).
 All 23 solution programs on disk ran with the outputs shown; the REPL
 exercise (2-1) lives in its transcript, and the two design exercises have
-discussion solutions and no program.
+discussion solutions and no program. Those are the batch's numbers as
+written. One exercise has since left it: 4-3 is chapter 7's 7-6,
+where the call-site `mut` it needs is taught (§1).
 
 ---
 

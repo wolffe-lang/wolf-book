@@ -232,6 +232,34 @@ directive.
 
 ## §7.4 — `mut` at both ends
 
+**Exercise 7-6** *(extension · lupin)*. Give the list a `shrink`
+function to pair with `grow`. Then, without running anything, state how
+you would find every mutation in this program with one search.
+
+Solution. `ch07/ex7-6.lu`:
+
+```wolf
+fn grow(mut xs: List[int]) { (mut xs).push(7) }
+fn shrink(mut xs: List[int]) { let _ = (mut xs).pop() }
+fn main() -> !int {
+    var xs = List[int]()
+    grow(mut xs)
+    grow(mut xs)
+    shrink(mut xs)
+    print("len={xs.len}")
+    0
+}
+```
+
+```console
+$ lupin ex7-6.lu
+len=1
+```
+
+The search is `grep 'mut '` (or, stricter, `(mut `): call-site `mut` is
+required, so the callers are the complete mutation audit. That is X1's
+entire argument, performed on your own file.
+
 **Exercise 7-7** *(fingers + spelunking · lupin)*. Write `swap` for two
 `int`s using `mut` at both ends, and verify it. Then state the single
 search you would run over a strange codebase to find every line that can
@@ -260,7 +288,7 @@ $ lupin ex7-7.lu
 3 1
 ```
 
-The search is `grep '(mut '` (X1's argument, from exercise 4-3, now
+The search is `grep '(mut '` (X1's argument, from exercise 7-6, now
 stated as a rule): call-site `mut` is mandatory, so a call that can
 write through an argument *says so at the call*. Add `grep 'var '` for
 locals and the audit is the whole mutation surface: two searches, no
