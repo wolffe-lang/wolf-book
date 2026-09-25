@@ -232,13 +232,13 @@ directive.
 
 ## §7.4 — `mut` at both ends
 
-**Exercise 7-6** *(fingers + spelunking · lupin)*. Write `swap` for two
+**Exercise 7-7** *(fingers + spelunking · lupin)*. Write `swap` for two
 `int`s using `mut` at both ends, and verify it. Then state the single
 search you would run over a strange codebase to find every line that can
 mutate anything, and what property of the language makes the search
 complete.
 
-Solution. `ch07/ex7-6.lu`:
+Solution. `ch07/ex7-7.lu`:
 
 ```wolf
 fn swap(mut a: int, mut b: int) {
@@ -256,7 +256,7 @@ fn main() -> !int {
 ```
 
 ```console
-$ lupin ex7-6.lu
+$ lupin ex7-7.lu
 3 1
 ```
 
@@ -268,7 +268,7 @@ false negatives, which is what "required at both ends" buys.
 
 ## §7.5 — Field-granular exclusivity
 
-**Exercise 7-7** *(comprehension · wolf + lupin)*. The simplest
+**Exercise 7-8** *(comprehension · wolf + lupin)*. The simplest
 possible exclusivity violation: one place, claimed twice.
 
 ```wolf
@@ -290,9 +290,9 @@ why is "it depends on the body" the real reason for the rule?
 Solution: wolf rejects, lupin traps, same rule:
 
 ```console
-$ wolf conform-run ./ex7-7.lu
+$ wolf conform-run ./ex7-8.lu
 error[E1002]: `n` cannot go `mut` here: it overlaps `n`, already passed `mut` in this call
-  --> ./ex7-7.lu:10:22
+  --> ./ex7-8.lu:10:22
    |
 10 |     bump2(mut n, mut n)
    |               - `n` is passed `mut` here
@@ -302,8 +302,8 @@ error[E1002]: `n` cannot go `mut` here: it overlaps `n`, already passed `mut` in
 ```
 
 ```console
-$ lupin ex7-7.lu
-ex7-7.lu: trap(exclusivity): `n` is accessed as `mut` while `n` is held as `mut`; the paths conflict [mem.tier0.excl.1] at 10:18; `n` held here at 10:11
+$ lupin ex7-8.lu
+ex7-8.lu: trap(exclusivity): `n` is accessed as `mut` while `n` is held as `mut`; the paths conflict [mem.tier0.excl.1] at 10:18; `n` held here at 10:11
 ```
 
 If allowed, `n` could be 1 or 2 depending on whether `a` and `b` are
@@ -314,7 +314,7 @@ disjoint places, so aliasing questions are settled at the call site,
 which is also what lets the compiler hand `noalias` facts to the
 optimizer (§7.7's subject).
 
-**Exercise 7-8** *(comprehension + fingers · lupin)*. Four call shapes
+**Exercise 7-9** *(comprehension + fingers · lupin)*. Four call shapes
 against `struct P { a: Q, b: Q }`, `struct Q { n: int }`. Verdict for
 each, before checking any:
 
@@ -339,13 +339,13 @@ bump(mut p.a.n, mut p.b.n)
 ```
 
 ```console
-$ lupin ex7-8.lu
+$ lupin ex7-9.lu
 6 8
 ```
 
 ## §7.6 — Why there are no lifetimes
 
-**Exercise 7-9** *(spelunking · wolf)*. Run `wolf --explain E1001` and
+**Exercise 7-10** *(spelunking · wolf)*. Run `wolf --explain E1001` and
 read all of it. Quote the sentence that licenses re-initialization
 (exercise 7-1's move), the phrase that states field granularity
 (exercise 7-3's), and the one word in the first paragraph that makes
@@ -376,7 +376,7 @@ sentence puts assignment and argument passing under the same verb,
 which is why chapters 3 and 7 have been describing one mechanism, not
 two.
 
-**Exercise 7-10** *(design)*. Rust's zero-copy parser hands out `&str`
+**Exercise 7-11** *(design)*. Rust's zero-copy parser hands out `&str`
 slices of an input buffer it does not own, with lifetimes proving the
 buffer outlives every slice. Wolf has no lifetime annotations, so that
 API shape is not expressible for arbitrary callers. Sketch the wolf
@@ -404,7 +404,7 @@ that no signature in this paragraph mentions anything but values.
 
 ## §7.7 — What the machine does
 
-**Exercise 7-11** *(fingers · lupin REPL)*. In the REPL, move a string
+**Exercise 7-12** *(fingers · lupin REPL)*. In the REPL, move a string
 out of one binding into another, then read both, the corpse first. What
 does the session do that a compiled program cannot, and which clause tag
 names the reason the trap did not end your session?
@@ -432,11 +432,11 @@ a move is a transfer, never a destruction, and the machine-level story
 
 ## §7.8 — Deciding at run time
 
-**Exercise 7-17** *(extension · lupin)*. Add a third shape to the
+**Exercise 7-13** *(extension · lupin)*. Add a third shape to the
 `Draw` example, and then make `render` count its calls: what has to
 change, and what does not?
 
-Solution. `ch07/ex7-17.lu`, and the third impl is one line:
+Solution. `ch07/ex7-13.lu`, and the third impl is one line:
 
 ```wolf
 trait Draw {
@@ -466,7 +466,7 @@ fn main() -> !int {
 ```
 
 ```console
-$ lupin ex7-17.lu
+$ lupin ex7-13.lu
 dot at 3
 ring of 9
 star of 5
@@ -480,7 +480,7 @@ lives at the call sites, because `render` has nowhere to keep state.
 It reads its argument through the pair and owns nothing, which is
 §7.8's rule seen from the callee's side.
 
-**Exercise 7-18** *(design)*. The cast-a-binding rule exists because
+**Exercise 7-14** *(design)*. The cast-a-binding rule exists because
 the dyn pair points at its operand rather than owning it. What would
 the language have to invent for `Dot { x: 3 } as dyn Draw` to be legal,
 and who would pay for it?
@@ -495,18 +495,18 @@ the pair points at your value, in your frame or your region, and the
 allocate behind your back. The reader pays one visible line; the
 alternative is every reader paying an invisible allocation.
 
-Exercises 7-17 and 7-18 were chapter 5's 5-9 and 5-10 before `dyn` and
+Exercises 7-13 and 7-14 were chapter 5's 5-9 and 5-10 before `dyn` and
 the cast-a-binding rule moved into this chapter.
 
 ## Chapter batch
 
-**Exercise 7-12** *(extension · lupin)*. The longest common
+**Exercise 7-15** *(extension · lupin)*. The longest common
 subsequence of two line lists is the skeleton every diff tool hangs
 on. Build the DP table as a `List[List[int]]` and return its corner.
 For the two three-line "files" in the solution, compute the answer on
 paper first: which two lines survive in both?
 
-Solution. `ch07/ex7-12.lu` (core):
+Solution. `ch07/ex7-15.lu` (core):
 
 ```wolf
 fn lcs_len(a: List[str], b: List[str]) -> int {
@@ -542,7 +542,7 @@ fn lcs_len(a: List[str], b: List[str]) -> int {
 ```
 
 ```console
-$ lupin ex7-12.lu
+$ lupin ex7-15.lu
 2
 ```
 
@@ -551,14 +551,14 @@ Note what the function signature says about ownership: both lists are
 borrowed. The caller keeps them, un-moved, and no annotation was
 spent saying so.
 
-**Exercise 7-13** *(comprehension + extension · lupin)*. Extend 7-12
+**Exercise 7-16** *(comprehension + extension · lupin)*. Extend 7-15
 into a printing diff: walk the finished table backward from the corner,
 emitting `  ` for common lines, `- ` for deletions, `+ ` for
 additions. Before running, predict the full output for `old` = the
 wolf/moon/elk lines and `new` = wolf/elk/river. Then explain why the
 walk must go *backward*.
 
-Solution. `ch07/ex7-13.lu` (the walk):
+Solution. `ch07/ex7-16.lu` (the walk):
 
 ```wolf
 fn print_diff(a: List[str], b: List[str], table: List[List[int]], i: int, j: int) {
@@ -576,7 +576,7 @@ fn print_diff(a: List[str], b: List[str], table: List[List[int]], i: int, j: int
 ```
 
 ```console
-$ lupin ex7-13.lu
+$ lupin ex7-16.lu
   the wolf runs
 - the moon watches
   the elk listens
@@ -589,7 +589,7 @@ cell with its neighbors, and the neighbors that explain `(i, j)` are
 behind it. The recursion runs to the origin and prints on the way
 back out, so the output comes out forward.
 
-**Exercise 7-14** *(fingers · lupin)*. The plane-geometry kata: a
+**Exercise 7-17** *(fingers · lupin)*. The plane-geometry kata: a
 `Point`, a `Rect` of two points (low corner in, high corner out), and
 an `impl` giving `Rect` three methods — `contains(self, p)`,
 `overlaps(self, o)`, `area(self)`. Probe the edges: a point on the low
@@ -597,7 +597,7 @@ edge, a point on the high edge, a rectangle that shares only a corner
 line. Every method here borrows. How do you know that from the
 signatures alone?
 
-Solution. `ch07/ex7-14.lu`:
+Solution. `ch07/ex7-17.lu`:
 
 ```wolf
 struct Point { x: int, y: int }
@@ -625,7 +625,7 @@ fn main() -> !int {
 ```
 
 ```console
-$ lupin ex7-14.lu
+$ lupin ex7-17.lu
 area 12
 true false
 true false
@@ -641,7 +641,7 @@ mode, which chapter 7 defined as borrow-and-read. The absence *is*
 the documentation, and it is checkable — add a write to any method
 body and the compiler names the missing `mut` at both ends.
 
-**Exercise 7-15** *(extension · lupin)*. One job, two ownership
+**Exercise 7-18** *(extension · lupin)*. One job, two ownership
 stories: uppercase every string in a list. Write it consuming —
 `shouted(take xs)` returns a new list and the argument is gone — and
 lending — `shout(mut xs)` rewrites in place and returns nothing. Run
@@ -649,7 +649,7 @@ both. Count what each costs at the call site and in allocations, then
 answer: which one should a library export, and does the other need to
 exist at all?
 
-Solution. `ch07/ex7-15.lu`:
+Solution. `ch07/ex7-18.lu`:
 
 ```wolf
 fn shouted(take xs: List[str]) -> List[str] {
@@ -682,7 +682,7 @@ fn main() -> !int {
 ```
 
 ```console
-$ lupin ex7-15.lu
+$ lupin ex7-18.lu
 HOWL SCRATCH
 HOWL SCRATCH
 ```
@@ -698,8 +698,8 @@ impossible — a consumed argument cannot be un-eaten. An API should
 take the least ownership that does the job, precisely so the bigger
 appetite stays the caller's decision.
 
-**Exercise 7-16** *(fingers · lupin)*. The same plane geometry as
-7-14, asked of the arms instead of the fields. Write `corner(p)`,
+**Exercise 7-19** *(fingers · lupin)*. The same plane geometry as
+7-17, asked of the arms instead of the fields. Write `corner(p)`,
 which names where a `Point` sits relative to the axes, and `kind(r)`,
 which describes a `Rect` — both as a single `match` whose arms take
 the value apart by field name rather than reading `p.x` and
@@ -707,7 +707,7 @@ the value apart by field name rather than reading `p.x` and
 of `corner` would become unreachable if you moved it to the top, and
 why does `kind`'s second arm need no `_` beside it?
 
-Solution. `ch07/ex7-16.lu`:
+Solution. `ch07/ex7-19.lu`:
 
 ```wolf
 struct Point { x: int, y: int }
@@ -740,7 +740,7 @@ fn main() -> !int {
 ```
 
 ```console
-$ lupin ex7-16.lu
+$ lupin ex7-19.lu
 the origin
 3 1
 on the y axis
@@ -763,7 +763,7 @@ needs no `_` for the same reason in reverse — it binds all four
 coordinates and constrains none of them, so it already *is* the
 catch-all and the `match` is exhaustive without one.
 
-The signatures still carry no `mut` and no `take`, so 7-14's answer
+The signatures still carry no `mut` and no `take`, so 7-17's answer
 survives unchanged: every parameter is the default mode, and testing a
 value is not taking it. An arm that binds a non-`Copy` piece would move
 the whole scrutinee; every field here is an `int`, so nothing moves and

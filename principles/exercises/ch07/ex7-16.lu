@@ -1,31 +1,58 @@
 //! check: run(exit=0)
 //! phase: run
-// Exercise 7-16 solution: the plane-geometry kata, respelled with
-// struct-pattern match arms.
-struct Point { x: int, y: int }
-struct Rect { lo: Point, hi: Point }
-fn corner(p: Point) -> str {
-    match p {
-        Point { x: 0, y: 0 } => "the origin",
-        Point { x: 0, .. } => "on the y axis",
-        Point { y: 0, .. } => "on the x axis",
-        Point { x, y } => "{x} {y}",
+// Exercise 7-16 solution: the diff, read off the LCS table backward.
+fn build_table(a: List[str], b: List[str]) -> List[List[int]] {
+    var table = List[List[int]]()
+    var i = 0
+    while i <= a.len {
+        var row = List[int]()
+        var j = 0
+        while j <= b.len {
+            (mut row).push(0)
+            j += 1
+        }
+        (mut table).push(row)
+        i += 1
     }
+    i = 1
+    while i <= a.len {
+        var j = 1
+        while j <= b.len {
+            if a[i - 1] == b[j - 1] {
+                table[i][j] = table[i - 1][j - 1] + 1
+            } else if table[i - 1][j] >= table[i][j - 1] {
+                table[i][j] = table[i - 1][j]
+            } else {
+                table[i][j] = table[i][j - 1]
+            }
+            j += 1
+        }
+        i += 1
+    }
+    table
 }
-fn kind(r: Rect) -> str {
-    match r {
-        Rect { lo: Point { x: 0, y: 0 }, hi: Point { x, y } } => "anchored, {x} by {y}",
-        Rect { lo: Point { x: lx, y: ly }, hi: Point { x: hx, y: hy } } =>
-            "{hx - lx} by {hy - ly} at {lx} {ly}",
+fn print_diff(a: List[str], b: List[str], table: List[List[int]], i: int, j: int) {
+    if i > 0 && j > 0 && a[i - 1] == b[j - 1] {
+        print_diff(a, b, table, i - 1, j - 1)
+        print("  {a[i - 1]}")
+    } else if j > 0 && (i == 0 || table[i][j - 1] >= table[i - 1][j]) {
+        print_diff(a, b, table, i, j - 1)
+        print("+ {b[j - 1]}")
+    } else if i > 0 {
+        print_diff(a, b, table, i - 1, j)
+        print("- {a[i - 1]}")
     }
 }
 fn main() -> !int {
-    let den = Rect { lo: Point { x: 0, y: 0 }, hi: Point { x: 4, y: 3 } }
-    let ridge = Rect { lo: Point { x: 3, y: 1 }, hi: Point { x: 6, y: 5 } }
-    print(corner(den.lo))
-    print(corner(ridge.lo))
-    print(corner(Point { x: 0, y: 3 }))
-    print(kind(den))
-    print(kind(ridge))
+    var old = List[str]()
+    (mut old).push("the wolf runs")
+    (mut old).push("the moon watches")
+    (mut old).push("the elk listens")
+    var new = List[str]()
+    (mut new).push("the wolf runs")
+    (mut new).push("the elk listens")
+    (mut new).push("the river answers")
+    let table = build_table(old, new)
+    print_diff(old, new, table, old.len, new.len)
     0
 }

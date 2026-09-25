@@ -573,8 +573,8 @@ saving the reader from writing the list; it would be a poor trade to
 make them read it back out of an error message.
 
 Exercises 5-9 and 5-10 (the third `Draw` shape; the cast-a-binding
-rule) moved to chapter 7 with the material they belong to, as 7-17 and
-7-18. The numbers are not reused.
+rule) moved to chapter 7 with the material they belong to, as 7-13 and
+7-14. The numbers are not reused.
 
 The RPN evaluator that was exercise 5-7 moved to chapter 6 as 6-14,
 where `?` on `pop()` is the point. Its number is reused below for the

@@ -133,7 +133,7 @@ directives claim.
 
 The pin move to wolf v0.2.1 / lupin 0.1.20 made struct patterns and
 product match arms legal, and three exercises cash that: 3-14
-(FizzBuzz as one `match` over `(n % 3, n % 5)`), 7-16 (7-14's plane
+(FizzBuzz as one `match` over `(n % 3, n % 5)`), 7-19 (7-17's plane
 geometry respelled with struct-pattern arms) and 13-11 (a substring
 scan whose window is a slice of a *lent* byte view). The corpus grows
 244 → 248 `.lu` files: the three solutions plus `ex3-14b.lu`, the

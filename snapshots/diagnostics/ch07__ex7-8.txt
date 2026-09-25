@@ -1,5 +1,5 @@
 error[E1002]: `n` cannot go `mut` here: it overlaps `n`, already passed `mut` in this call
-  --> ./ex7-7.lu:10:22
+  --> ./ex7-8.lu:10:22
    |
 10 |     bump2(mut n, mut n)
    |               - `n` is passed `mut` here

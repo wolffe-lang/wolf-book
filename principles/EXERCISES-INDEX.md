@@ -220,19 +220,19 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §7.2 — Values are trees | 7-3 | extension (break-it-on-purpose) · wolf + lupin | run (wolf + lupin) |
 | §7.2 — Values are trees | 7-4 | comprehension · lupin | run (lupin) |
 | §7.3 — Borrowing without the word | 7-5 | comprehension · lupin; static verdict · pending | pending |
-| §7.4 — `mut` at both ends | 7-6 | fingers + spelunking · lupin | run (lupin) |
-| §7.5 — Field-granular exclusivity | 7-7 | comprehension · wolf + lupin | run (wolf + lupin) |
-| §7.5 — Field-granular exclusivity | 7-8 | comprehension + fingers · lupin | run (lupin) |
-| §7.6 — Why there are no lifetimes | 7-9 | spelunking · wolf | run (wolf) |
-| §7.6 — Why there are no lifetimes | 7-10 | design | prose |
-| §7.7 — What the machine does | 7-11 | fingers · lupin REPL | run (lupin REPL) |
-| §7.8 — Deciding at run time | 7-17 | extension · lupin | run (lupin) |
-| §7.8 — Deciding at run time | 7-18 | design | prose |
-| Chapter batch | 7-12 | extension · lupin | run (lupin) |
-| Chapter batch | 7-13 | comprehension + extension · lupin | run (lupin) |
-| Chapter batch | 7-14 | fingers · lupin | run (lupin) |
+| §7.4 — `mut` at both ends | 7-7 | fingers + spelunking · lupin | run (lupin) |
+| §7.5 — Field-granular exclusivity | 7-8 | comprehension · wolf + lupin | run (wolf + lupin) |
+| §7.5 — Field-granular exclusivity | 7-9 | comprehension + fingers · lupin | run (lupin) |
+| §7.6 — Why there are no lifetimes | 7-10 | spelunking · wolf | run (wolf) |
+| §7.6 — Why there are no lifetimes | 7-11 | design | prose |
+| §7.7 — What the machine does | 7-12 | fingers · lupin REPL | run (lupin REPL) |
+| §7.8 — Deciding at run time | 7-13 | extension · lupin | run (lupin) |
+| §7.8 — Deciding at run time | 7-14 | design | prose |
 | Chapter batch | 7-15 | extension · lupin | run (lupin) |
-| Chapter batch | 7-16 | fingers · lupin | run (lupin) |
+| Chapter batch | 7-16 | comprehension + extension · lupin | run (lupin) |
+| Chapter batch | 7-17 | fingers · lupin | run (lupin) |
+| Chapter batch | 7-18 | extension · lupin | run (lupin) |
+| Chapter batch | 7-19 | fingers · lupin | run (lupin) |
 
 ## ch08 — 19 exercises
 
