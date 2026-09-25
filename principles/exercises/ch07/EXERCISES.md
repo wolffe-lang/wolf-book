@@ -682,10 +682,10 @@ and it took no annotation at all to say so.
 
 **Exercise 7-16** *(comprehension + extension · lupin)*. Extend 7-15
 into a printing diff: walk the finished table backward from the corner,
-emitting `  ` for common lines, `- ` for deletions, `+ ` for
-additions. Before running, predict the full output for `old` = the
-wolf/moon/elk lines and `new` = wolf/elk/river. Then explain why the
-walk must go *backward*.
+emitting two spaces for common lines, `- ` for deletions, `+ ` for
+additions. Before running, predict the full output for `old` = wolf /
+moon / elk and `new` = wolf / elk / river. Then explain why the walk
+must go *backward*.
 
 Solution. `ch07/ex7-16.lu` (the walk):
 
