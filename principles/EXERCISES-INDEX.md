@@ -1,6 +1,6 @@
 # EXERCISES-INDEX.md — the corpus ledger
 
-Ledger of every exercise in the corpus: 341 total. Hand-kept, and
+Ledger of every exercise in the corpus: 342 total. Hand-kept, and
 every figure on this page is held to the table under it by
 `cargo xtask verify-docs` (wolf-book#40) — the page said "generated"
 for eleven bumps and nothing generated it. It cannot be: the tier
@@ -36,7 +36,7 @@ All of them stay in the corpus so the day their surface lands the stems
 and the sections arrive together. Two more are master-only by curation
 rather than blockage, from the bs21 ladder: 2-15 (entab — the printed
 page carries detab, the master holds the mirror) and 3-13 (a
-`loop`/`break`-value drill beside §3.2's own example). **292 of the 341
+`loop`/`break`-value drill beside §3.2's own example). **293 of the 342
 are printed**, and
 `cargo xtask verify-docs` fails the build if a printed stem has no
 published solution.
@@ -64,7 +64,7 @@ several of its stems are tagged `· wolf` while the distilled solution
 program on disk runs under lupin — the tier column says what CI
 executed, and the exercise file says which is which and why.
 
-Tier totals: 193 run (lupin) · 9 run (lupin REPL) · 31 run (wolf) · 22 run (wolf + lupin) · 78 prose · 8 pending. That is 341.
+Tier totals: 193 run (lupin) · 9 run (lupin REPL) · 31 run (wolf) · 23 run (wolf + lupin) · 78 prose · 8 pending. That is 342.
 (The totals and the tables were recounted mechanically against the
 masters at bs21 — the previous header said 276/231 while the tables
 had drifted from the marker count, ch05's 5-9 and 5-10 among the
@@ -88,7 +88,7 @@ let chapter 1 teach a call the compiler does not carry: a `run(…)`
 directive is a claim about both machines, and a sample only one machine
 serves says which one (`principles/TWO-MACHINES.md`).
 Taxonomy spread (tags, hybrids counted once per kind): fingers 61 ·
-comprehension 152 · extension 77 · spelunking 27 · design 37.
+comprehension 152 · extension 78 · spelunking 27 · design 37.
 
 Four stems are printed under a section other than the one this index
 assigns them, each deliberately: 13-2 (printed in §13.2, where the race
@@ -211,7 +211,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | Chapter batch | 6-12 | extension · lupin | run (lupin) |
 | Chapter batch | 6-13 | extension · lupin | run (lupin) |
 
-## ch07 — 20 exercises
+## ch07 — 21 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
@@ -235,6 +235,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | Chapter batch | 7-18 | extension · lupin | run (lupin) |
 | Chapter batch | 7-19 | fingers · lupin | run (lupin) |
 | Chapter batch | 7-20 | extension · wolf + lupin | run (wolf + lupin) |
+| Chapter batch | 7-21 | extension · wolf + lupin | run (wolf + lupin) |
 
 ## ch08 — 19 exercises
 

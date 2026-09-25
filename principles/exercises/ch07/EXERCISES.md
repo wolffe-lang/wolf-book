@@ -957,3 +957,68 @@ The recursion in `walk` is 7-16's, with one change that is this
 chapter's whole subject: it cannot print, so it needs somewhere to put
 the edits, and `mut out` at both ends is that place. The edits come
 out forward for the same reason 7-16's lines did.
+
+**Exercise 7-21** *(extension · wolf + lupin)*. The last three
+exercises share one shelf, whose documents now carry a list of their
+own: `struct Doc { title: str, words: int, tags: List[str] }` and
+`struct Shelf { docs: List[Doc] }`. First, `remove(mut s, title)`:
+take every document with that title off the shelf and return how many
+went, or the error row `{missing}` when none did. Build the shelf's new
+list by moving the survivors into it. How many documents does `remove`
+copy, and why is the shelf `mut` rather than `take`?
+
+Solution. `ch07/ex7-21.lu`:
+
+```wolf
+struct Doc { title: str, words: int, tags: List[str] }
+struct Shelf { docs: List[Doc] }
+fn remove(mut s: Shelf, title: str) -> int ! {missing} {
+    let old = move s.docs
+    var kept = List[Doc]()
+    var gone = 0
+    for d in old {
+        if d.title == title {
+            gone += 1
+        } else {
+            (mut kept).push(take d)
+        }
+    }
+    s.docs = kept
+    if gone == 0 { return missing }
+    gone
+}
+fn main() -> !int {
+    var shelf = Shelf { docs: List[Doc]() }
+    (mut shelf.docs).push(Doc { title: "regions", words: 900, tags: List[str]() })
+    (mut shelf.docs).push(Doc { title: "moves", words: 640, tags: List[str]() })
+    (mut shelf.docs).push(Doc { title: "regions", words: 1200, tags: List[str]() })
+    let n = remove(mut shelf, "regions") else 0
+    let m = remove(mut shelf, "lifetimes") else -1
+    print("{n} {m} {shelf.docs.len} {shelf.docs[0].title}")
+    0
+}
+```
+
+```console
+$ lupin ex7-21.lu
+2 -1 1 moves
+$ wolf run ex7-21.lu
+2 -1 1 moves
+```
+
+None. `move s.docs` hands the whole list to `old` and leaves the
+shelf's field empty; each survivor leaves `old` with `take d` and
+lands in `kept` whole, tags and all; `s.docs = kept` fills the emptied
+field again, which is §7.2's rule for an emptied place. The two
+documents titled `regions` are never handed anywhere, and they go when
+`old` does, at the end of the call. Leave `take` off the `push` and the
+program prints the same line while copying every survivor, because a
+container store copies what it is given unless the argument says
+`take`.
+
+The shelf is `mut` because `remove` changes it and the caller keeps
+it. A `take` signature would make every caller give the shelf up and
+receive a new one back, which is the same program with a longer call
+site and a window in which the caller has no shelf at all. `mut` says
+exactly what happens: the caller's shelf is written through, in place,
+and the call site says so.
