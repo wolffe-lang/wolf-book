@@ -51,11 +51,12 @@ anyway and prints `ada lin grace`.
 
 ## §7.2 — Values are trees
 
-**Exercise 7-2** *(fingers · lupin)*. Draw the ownership tree of `den`
-below before running anything: one box per value, one arrow per field.
-Then move the deepest leaf out with `move` and verify, by printing
-them, that the leaf's *sibling* and its *cousins* are all still
-usable:
+**Exercise 7-2** *(fingers · lupin)*. Given
+`struct Wolf { name: str, call: str }` and
+`struct Den { alpha: Wolf, beta: Wolf }`, draw the ownership tree of a
+`Den` before running anything: one box per value, one arrow per field.
+Then move the deepest leaf out with `move` and verify, by printing them,
+that the leaf's sibling and its cousins are all still usable.
 
 Solution. `ch07/ex7-2.lu`:
 
