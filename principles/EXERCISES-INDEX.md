@@ -64,7 +64,7 @@ several of its stems are tagged `· wolf` while the distilled solution
 program on disk runs under lupin — the tier column says what CI
 executed, and the exercise file says which is which and why.
 
-Tier totals: 193 run (lupin) · 9 run (lupin REPL) · 31 run (wolf) · 25 run (wolf + lupin) · 78 prose · 8 pending. That is 344.
+Tier totals: 192 run (lupin) · 9 run (lupin REPL) · 31 run (wolf) · 26 run (wolf + lupin) · 78 prose · 8 pending. That is 344.
 (The totals and the tables were recounted mechanically against the
 masters at bs21 — the previous header said 276/231 while the tables
 had drifted from the marker count, ch05's 5-9 and 5-10 among the
@@ -302,7 +302,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
-| §11.1 — The scope as a capability | 11-1 | fingers · lupin | run (lupin) |
+| §11.1 — The scope as a capability | 11-1 | fingers · wolf + lupin | run (wolf + lupin) |
 | §11.1 — The scope as a capability | 11-2 | comprehension · lupin | run (lupin) |
 | §11.1 — The scope as a capability | 11-3 | comprehension · lupin | run (lupin) |
 | §11.2 — The background refresher | 11-4 | extension · lupin | run (lupin) |
