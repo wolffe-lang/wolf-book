@@ -2,6 +2,30 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs53, the book at 0.2.17 — 2026-09-26 — the handles have names on both machines
+
+**The pair is wolf 0.2.17 / lupin 0.1.40.** Both from the release
+archives by digest. The compiler names the interpreter this book pins,
+and the interpreter's clause is 72 commits and one release behind the
+compiler's: §1.2 and the colophon say so.
+
+**A scope handle is a `Scope` and a proc handle is a `Proc[int]`.**
+Chapters 11 and 14 printed their handle parameters as bare generics
+(`[S]`, `[P]`) because the interpreter had no names for them and the
+compiled binary hung on a scope handle passed as an argument. lupin
+0.1.39 learned both names and wolf 0.2.17 fixed the hang, so §11.1,
+§11.2, §14.1 and §14.3 now spell the types, and with exercise 11-1 and
+§14.1's `watch` they run on both machines. §11.1 loses the paragraph
+apologising for the generic, and its audit paragraph gains a third
+search, `: Scope`, because the capability to spawn is written in the
+signature now. Exercise 11-2 takes the name too and stays an
+interpreter-run deadlock, which the specification permits.
+
+**Appendix A shows the moded index store** (`xs[i] = take v`). Nothing
+else a reader sees moved: the index store's copy-or-move ruling, the
+record's file index and lupin's `conform-run` directory reach no
+program in this book, and every other sample holds on both machines.
+
 ## bs52, the exercises that moved — 2026-09-24 — chapter 7 numbers its own exercises, and four new ones end it
 
 **Chapter 7 is numbered in order of appearance.** It printed 7-4, then
