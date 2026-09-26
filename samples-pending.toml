@@ -40,12 +40,12 @@
 
 [[pending]]
 id = "ch05/ex5-8"
-blocker = "TWO blockers, re-measured at bs50 against wolf 0.2.15 / lupin 0.1.37, and NEITHER is the one this row used to name. (1) `sorted_by` exists now — it is one of `[type.comb.set]`'s ten — but it is a `std.list` function that must reach its home module, and this repository configures no std root for either tool, so both machines decline at `[type.method.root]`: lupin `unsupported`, wolf E0301. That half is wolf-book#39, not a std-surface debt. (2) `.take(1)` can never arrive: `take` is a keyword, so `fn take` is E0008 on both machines and no std function may carry the name. This row is waiting on a spelling that cannot exist and the exercise wants rewriting (wolf-book#58)."
-owner = "wolf-book#39 (the std root) + wolf-book#58 (the unspellable `take`)"
+blocker = "TWO blockers, re-measured at bs50 against wolf 0.2.15 / lupin 0.1.37, and NEITHER is the one this row used to name. (1) `sorted_by` exists now — it is one of `[type.comb.set]`'s ten — but it is a `std.list` function that must reach its home module, and this repository configures no std root for either tool, so both machines decline at `[type.method.root]`: lupin `unsupported`, wolf E0301. That half is wolf-book#39, not a std-surface debt. (2) `.take(1)` can never arrive: `take` is a keyword, so `fn take` is E0008 on both machines and no std function may carry the name. This row is waiting on a spelling that cannot exist and the exercise wants rewriting (wolf-book#58). Re-measured at bs53 against wolf 0.2.17 / lupin 0.1.40, and identically against 0.2.16 / 0.1.38: lupin `unsupported` (`List.sorted_by` reaches `std.list` and no std root is configured), exit 4; wolf no longer says E0301 — it answers `cannot compile this yet — member access on a value whose type is still being inferred` at `resolve`, exit 4. wolf-book#39 closed on 2026-09-12 with the std posture recorded in `wolf-toolchain.toml`; its open successor is wolf-book#45."
+owner = "wolf-book#45 (the std root; successor of the closed #39) + wolf-book#58 (the unspellable `take`)"
 
 [[pending]]
 id = "ch07/ex7-5"
-blocker = "borrow-escape checking reaches no static verdict; wolfc leaves `channel` unresolved"
+blocker = "borrow-escape checking reaches no static verdict. Re-measured at bs53 against wolf 0.2.17 / lupin 0.1.40, and identically against 0.2.16 / 0.1.38: wolf answers `cannot compile this yet — borrow expressions` at `resolve` (exit 4; `channel` resolves now, so the old second clause is gone), and lupin runs the program to exit 0 with no static rung."
 owner = "s33-channels-select, then s18-tier0-exclusivity"
 
 [[pending]]
