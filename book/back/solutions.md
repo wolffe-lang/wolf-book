@@ -6055,7 +6055,7 @@ waits for children, and the trap names all four:
 
 ```console
 $ lupin ex11-2.lu
-ex11-2.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0), `task@677` (task 1), `task@677` (task 2), `task@677` (task 3) [conc.deadlock.trap] at 18:5
+ex11-2.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0), `task@890` (task 1), `task@890` (task 2), `task@890` (task 3) [conc.deadlock.trap] at 21:5
 $ echo $?
 3
 ```
