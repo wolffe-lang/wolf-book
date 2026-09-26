@@ -6,21 +6,21 @@ against:
 
 ```console
 $ wolf --version
-wolf 0.2.16 (wolfgang, pin 93a5fe5)
-paired with lupin 0.1.38 (reference interpreter), pin 2e4ca76
+wolf 0.2.17 (wolfgang, pin 02afce8)
+paired with lupin 0.1.40 (reference interpreter), pin 93a5fe5
 $ lupin --version
-lupin 0.1.38 (wolf-interp, reference interpreter at pin 2e4ca76)
+lupin 0.1.40 (wolf-interp, reference interpreter at pin 93a5fe5)
 ```
 
 The two lines name each other, and this printing both names are
 readable. Each tool reports the revision of the other it was
 differentially tested against, and the two projects are cut on their
-own schedules. The compiler names `lupin 0.1.38`, the interpreter
-under it and not a release older. The interpreter names `2e4ca76`,
+own schedules. The compiler names `lupin 0.1.40`, the interpreter
+under it and not a release older. The interpreter names `93a5fe5`,
 which is the compiler's previous release tag — reachable, on the
 branch, and an ancestor of the compiler's own revision, so the two
-clauses are a distance this printing: 148 commits, one release. The
-printing before this one was the other case, where the interpreter's
+clauses are a distance this printing: 72 commits, one release. An
+earlier printing was the other case, where the interpreter's
 clause named a rebased-away development head and no count between the
 two meant anything. §1.2 teaches the reader to check which case a pair
 is before reading it. This page prints them
