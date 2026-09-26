@@ -1,0 +1,88 @@
+=== new f1-watch
+lupin exit=0
+  out| 3
+wolf run exit=0
+  out| 3
+wolf conform-run exit=0
+{"commit":"02afce8","diagnostics":[],"file":"./f1-watch.lu","impl":"wolfgang","impl_version":"0.2.17","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+
+=== new g1-capability
+lupin exit=0
+  out| 2740 words, three readers, one scope
+wolf run exit=0
+  out| 2740 words, three readers, one scope
+wolf conform-run exit=0
+{"commit":"02afce8","diagnostics":[],"file":"./g1-capability.lu","impl":"wolfgang","impl_version":"0.2.17","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+
+=== new g2-refresher
+lupin exit=0
+  out| republished round 1
+  out| republished round 2
+  out| the refresher left with 2 rounds behind it
+wolf run exit=0
+  out| republished round 1
+  out| republished round 2
+  out| the refresher left with 2 rounds behind it
+wolf conform-run exit=0
+{"commit":"02afce8","diagnostics":[],"file":"./g2-refresher.lu","impl":"wolfgang","impl_version":"0.2.17","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+
+=== new g3-ex11-1
+lupin exit=0
+  out| 60
+wolf run exit=0
+  out| 60
+wolf conform-run exit=0
+{"commit":"02afce8","diagnostics":[],"file":"./g3-ex11-1.lu","impl":"wolfgang","impl_version":"0.2.17","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+
+=== new ex11-2
+lupin exit=3
+  err| ex11-2.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0), `task@677` (task 1), `task@677` (task 2), `task@677` (task 3) [conc.deadlock.trap] at 18:5
+wolf run exit=124
+wolf conform-run exit=0
+{"commit":"02afce8","diagnostics":[],"file":"./ex11-2.lu","impl":"wolfgang","impl_version":"0.2.17","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+
+=== new g4-reasons
+lupin exit=0
+  out| returned: normal(3)
+  out| failed: error(Corrupt)
+  out| killed: killed
+wolf run exit=0
+  out| returned: normal(3)
+  out| failed: error(Corrupt)
+  out| killed: killed
+wolf conform-run exit=0
+{"commit":"02afce8","diagnostics":[],"file":"./g4-reasons.lu","impl":"wolfgang","impl_version":"0.2.17","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+
+=== new g5-killcancel
+lupin exit=0
+  out| the shard closed its cursor
+  out| cancelled: cancelled
+  out| killed: killed
+wolf run exit=0
+  out| the shard closed its cursor
+  out| cancelled: cancelled
+  out| killed: killed
+wolf conform-run exit=0
+{"commit":"02afce8","diagnostics":[],"file":"./g5-killcancel.lu","impl":"wolfgang","impl_version":"0.2.17","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+
+=== new ex7-23
+lupin exit=0
+  out| moves, and the shelf still holds 3
+wolf run exit=2
+  err| error[E1002]: `s` is the caller's value, and it is returned here while the caller still holds it
+  err|   --> ./ex7-23.lu:14:5
+  err|    |
+  err|  7 | fn longest(s: Shelf) -> Doc {
+  err|    |            - `s` is declared without a mode — that spells `read`: lent for the call, and still the caller's after it
+  err| ...
+wolf conform-run exit=0
+{"commit":"02afce8","diagnostics":[{"code":"E1002","severity":"error","span":[450,462]}],"file":"./ex7-23.lu","impl":"wolfgang","impl_version":"0.2.17","phase_reached":"mem","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E1002)","warnings":[]}
+
+=== new ex7-23b
+lupin exit=0
+  out| moves, and the shelf still holds 3
+wolf run exit=0
+  out| moves, and the shelf still holds 3
+wolf conform-run exit=0
+{"commit":"02afce8","diagnostics":[],"file":"./ex7-23b.lu","impl":"wolfgang","impl_version":"0.2.17","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+

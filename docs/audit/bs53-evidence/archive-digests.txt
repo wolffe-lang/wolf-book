@@ -1,0 +1,4 @@
+828b5c5571644107a1b123490b5e188da50020676c6b15b0bc53a899a7cc520b  lupin-0.1.38-x86_64-unknown-linux-gnu.tar.gz
+509929e67b7ae97463973d6bb7c61b9f93dc47a523957055def816c56fb23384  lupin-0.1.40-x86_64-unknown-linux-gnu.tar.gz
+84e30c05e56b89fde2fe6e27eec8f7cec0a6aae6e1464a2993fcfc87a7a1829e  wolf-0.2.16-x86_64-unknown-linux-gnu.tar.gz
+a95d0f0f8fe384fdb70047bb893c857573cc62dd10b2967ab7788fc9a8ce24ce  wolf-0.2.17-x86_64-unknown-linux-gnu.tar.gz

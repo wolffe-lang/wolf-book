@@ -1,0 +1,73 @@
+=== old f1-watch
+lupin exit=2
+  err| f1-watch.lu: E0301: nothing named `Proc` is in scope — a type annotation names a type, and resolution is the rung that answers whether a name exists ([mod]); it is neither a built-in scalar, an item this module declares, nor a generic parameter of `watch` [gram.item.fn] at 2:13
+wolf run exit=0
+  out| 3
+wolf conform-run exit=0
+{"commit":"93a5fe5","diagnostics":[],"file":"./f1-watch.lu","impl":"wolfgang","impl_version":"0.2.16","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+
+=== old g1-capability
+lupin exit=2
+  err| g1-capability.lu: E0301: nothing named `Scope` is in scope — a type annotation names a type, and resolution is the rung that answers whether a name exists ([mod]); it is neither a built-in scalar, an item this module declares, nor a generic parameter of `tally_into` [gram.item.fn] at 3:18
+wolf run exit=124
+wolf conform-run exit=0
+{"commit":"93a5fe5","diagnostics":[],"file":"./g1-capability.lu","impl":"wolfgang","impl_version":"0.2.16","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+
+=== old g2-refresher
+lupin exit=2
+  err| g2-refresher.lu: E0301: nothing named `Scope` is in scope — a type annotation names a type, and resolution is the rung that answers whether a name exists ([mod]); it is neither a built-in scalar, an item this module declares, nor a generic parameter of `refresh_into` [gram.item.fn] at 1:20
+wolf run exit=0
+  out| republished round 1
+  out| republished round 2
+  out| the refresher left with 2 rounds behind it
+wolf conform-run exit=0
+{"commit":"93a5fe5","diagnostics":[],"file":"./g2-refresher.lu","impl":"wolfgang","impl_version":"0.2.16","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+
+=== old g3-ex11-1
+lupin exit=2
+  err| g3-ex11-1.lu: E0301: nothing named `Scope` is in scope — a type annotation names a type, and resolution is the rung that answers whether a name exists ([mod]); it is neither a built-in scalar, an item this module declares, nor a generic parameter of `launch` [gram.item.fn] at 6:14
+wolf run exit=124
+wolf conform-run exit=0
+{"commit":"93a5fe5","diagnostics":[],"file":"./g3-ex11-1.lu","impl":"wolfgang","impl_version":"0.2.16","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+
+=== old g4-reasons
+lupin exit=2
+  err| g4-reasons.lu: E0301: nothing named `Proc` is in scope — a type annotation names a type, and resolution is the rung that answers whether a name exists ([mod]); it is neither a built-in scalar, an item this module declares, nor a generic parameter of `reason_of` [gram.item.fn] at 8:17
+wolf run exit=0
+  out| returned: normal(3)
+  out| failed: error(Corrupt)
+  out| killed: killed
+wolf conform-run exit=0
+{"commit":"93a5fe5","diagnostics":[],"file":"./g4-reasons.lu","impl":"wolfgang","impl_version":"0.2.16","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+
+=== old g5-killcancel
+lupin exit=2
+  err| g5-killcancel.lu: E0301: nothing named `Proc` is in scope — a type annotation names a type, and resolution is the rung that answers whether a name exists ([mod]); it is neither a built-in scalar, an item this module declares, nor a generic parameter of `reason_of` [gram.item.fn] at 8:17
+wolf run exit=0
+  out| the shard closed its cursor
+  out| cancelled: cancelled
+  out| killed: killed
+wolf conform-run exit=0
+{"commit":"93a5fe5","diagnostics":[],"file":"./g5-killcancel.lu","impl":"wolfgang","impl_version":"0.2.16","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+
+=== old ex7-23
+lupin exit=0
+  out| moves, and the shelf still holds 3
+wolf run exit=2
+  err| error[E1002]: `s` is the caller's value, and it is returned here while the caller still holds it
+  err|   --> ./ex7-23.lu:14:5
+  err|    |
+  err|  7 | fn longest(s: Shelf) -> Doc {
+  err|    |            - `s` is declared without a mode — that spells `read`: lent for the call, and still the caller's after it
+  err| ...
+wolf conform-run exit=0
+{"commit":"93a5fe5","diagnostics":[{"code":"E1002","severity":"error","span":[450,462]}],"file":"./ex7-23.lu","impl":"wolfgang","impl_version":"0.2.16","phase_reached":"mem","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E1002)","warnings":[]}
+
+=== old ex7-23b
+lupin exit=0
+  out| moves, and the shelf still holds 3
+wolf run exit=0
+  out| moves, and the shelf still holds 3
+wolf conform-run exit=0
+{"commit":"93a5fe5","diagnostics":[],"file":"./ex7-23b.lu","impl":"wolfgang","impl_version":"0.2.16","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+

@@ -1,0 +1,23 @@
+=== old ex5-8
+lupin exit=4
+  err| ex5-8.lu: unsupported: `List.sorted_by` is no builtin, so it reaches `List`'s home module `std.list` ([type.method.resolve] step 2), and no std root is configured: pass `--std-root DIR` or set `LUPIN_STD` (the compiler reads `WOLF_STD` or a `std` path dependency in `wolf.pkg`) — the counterparty's E0301 ([type.method.root])
+wolf run exit=4
+  err| wolf run: cannot compile this yet — member access on a value whose type is still being inferred @300..303 (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)
+wolf conform-run exit=0
+{"commit":"93a5fe5","diagnostics":[],"file":"./ex5-8.lu","impl":"wolfgang","impl_version":"0.2.16","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"unsupported","warnings":[],"x-unsupported-construct":"member access on a value whose type is still being inferred","x-unsupported-span":[300,303]}
+
+=== old ex8-7
+lupin exit=4
+  err| ex8-7.lu: unsupported: handle is not a `Map` key — a key is `str`, `int`, `char` or `bool` ([type.map.key]; the compiler's E0418 where the key type is spelled)
+wolf run exit=4
+  err| wolf run: cannot compile this yet — `==` on a container, tuple or handle (no `Eq` for these this edition) @1926..1929 (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)
+wolf conform-run exit=0
+{"commit":"93a5fe5","diagnostics":[],"file":"./ex8-7.lu","impl":"wolfgang","impl_version":"0.2.16","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"unsupported","warnings":[],"x-unsupported-construct":"`==` on a container, tuple or handle (no `Eq` for these this edition)","x-unsupported-span":[1926,1929]}
+
+=== old ex7-5
+lupin exit=0
+wolf run exit=4
+  err| wolf run: cannot compile this yet — borrow expressions @365..367 (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)
+wolf conform-run exit=0
+{"commit":"93a5fe5","diagnostics":[],"file":"./ex7-5.lu","impl":"wolfgang","impl_version":"0.2.16","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"unsupported","warnings":[],"x-unsupported-construct":"borrow expressions","x-unsupported-span":[365,367]}
+

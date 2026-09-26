@@ -1,0 +1,12 @@
+f1-watch checked exit=0 "verdict":"unsupported" "stdout_inline":null
+g1-capability checked exit=0 "verdict":"unsupported" "stdout_inline":null
+g2-refresher checked exit=0 "verdict":"unsupported" "stdout_inline":null
+g3-ex11-1 checked exit=0 "verdict":"unsupported" "stdout_inline":null
+g4-reasons checked exit=0 "verdict":"unsupported" "stdout_inline":null
+g5-killcancel checked exit=0 "verdict":"unsupported" "stdout_inline":null
+ex11-2 checked exit=0 "verdict":"unsupported" "stdout_inline":null
+ex7-23 checked exit=0 "verdict":"fail(E1002)" "stdout_inline":null
+ex7-23b checked exit=0 "verdict":"exit(0)" "stdout_inline":"moves
+x-unsupported-construct":"structured concurrency in checked execution (C1 deferred)","x-unsupported-span":[121,136]
+x-unsupported-construct":"structured concurrency in checked execution (C1 deferred)","x-unsupported-span":[206,440]
+x-unsupported-construct":"structured concurrency in checked execution (C1 deferred)","x-unsupported-span":[394,409]

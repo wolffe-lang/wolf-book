@@ -1,0 +1,42 @@
+== control-0216.log
+samples: lupin = /home/mfwolffe/lanes/bs53/old/lupin-0.1.38-x86_64-unknown-linux-gnu/lupin
+samples: wolf  = /home/mfwolffe/lanes/bs53/old/wolf-0.2.16-x86_64-unknown-linux-gnu/wolf
+samples: 506 samples (249 corpus roots + 16 corpus members on disk, 257 book blocks)
+samples: 503 passed, 3 pending (report-only), 0 failed, 0 flips in 31.1s
+samples: 481 of 501 console block(s) replayed against the pinned tools
+samples: samples-declined.toml: 18 declared row(s) — 5 file, 7 typed, 6 binary-or-shell (wolf-book#29)
+samples: exported 370 corpus programs to samples/export/corpus/book/
+== subject-0217.log
+samples: lupin = /home/mfwolffe/lanes/bs53/new/lupin-0.1.40-x86_64-unknown-linux-gnu/lupin
+samples: wolf  = /home/mfwolffe/lanes/bs53/new/wolf-0.2.17-x86_64-unknown-linux-gnu/wolf
+samples: 506 samples (249 corpus roots + 16 corpus members on disk, 257 book blocks)
+samples: 503 passed, 3 pending (report-only), 4 failed, 1 flips in 31.0s
+samples: 477 of 501 console block(s) replayed against the pinned tools
+samples: samples-declined.toml: 18 declared row(s) — 5 file, 7 typed, 6 binary-or-shell (wolf-book#29)
+samples: exported 370 corpus programs to samples/export/corpus/book/
+samples: FAIL /home/mfwolffe/lanes/bs53/wolf-book/book/back/colophon.md:7: console block drifted from the real run
+samples: FAIL /home/mfwolffe/lanes/bs53/wolf-book/book/ch01.md:153: console block drifted from the real run
+samples: FAIL /home/mfwolffe/lanes/bs53/wolf-book/book/ch22.md:288: console block drifted from the real run
+samples: FAIL /home/mfwolffe/lanes/bs53/wolf-book/principles/exercises/ch22/EXERCISES.md:218: console block drifted from the real run
+samples: FLIP book/ch14/part-watch: directive `wolf-run(exit=0, stdout="3")` holds, but `lupin` now meets `run(exit=0…)` too — both machines serve this program now; graduate the fence to `run(…)`, retire the page's per-machine note, and close the ledger row in
+== gate-samples.log
+samples: lupin = /home/mfwolffe/lanes/bs53/new/lupin-0.1.40-x86_64-unknown-linux-gnu/lupin
+samples: wolf  = /home/mfwolffe/lanes/bs53/new/wolf-0.2.17-x86_64-unknown-linux-gnu/wolf
+samples: 506 samples (249 corpus roots + 16 corpus members on disk, 257 book blocks)
+samples: 503 passed, 3 pending (report-only), 0 failed, 0 flips in 30.5s
+samples: 481 of 501 console block(s) replayed against the pinned tools
+samples: samples-declined.toml: 18 declared row(s) — 5 file, 7 typed, 6 binary-or-shell (wolf-book#29)
+samples: exported 374 corpus programs to samples/export/corpus/book/
+22a0d3318f2356e8174e1aa0b51e4c142e3ef929
+== gate-samplesselftest.log
+samples: self-test holds the declined ledger the other way too: a row whose block replays is stale
+samples: self-test ok — 13/13 deliberate breakages caught
+== gate-verifydocs.log
+verify-docs: EXERCISES-INDEX.md agrees with the corpus — 344 exercises (295 printed); 8 pending · 78 prose · 9 run (lupin REPL) · 192 run (lupin) · 26 run (wolf + lupin) · 31 run (wolf); fingers 61 · comprehension 153 · extension 79 · spelunking 28 · design 37
+verify-docs: ok (corpus count 265, pins well-formed, TOC/stub numbering agrees)
+== gate-ledgercheck.log
+ledger: ch33.md    open   1 (filed   1, waived 0, UNFILED 0) closed   0
+ledger: 32 chapter ledger(s) — 132 open (125 filed, 7 waived, 0 unfiled), 99 closed
+== gate-backmattercheck.log
+backmatter: book/back/solutions.md up to date
+backmatter: vendored spec artifacts match the sibling wolf-lang checkout
