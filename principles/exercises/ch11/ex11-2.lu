@@ -7,9 +7,12 @@
 // Measured at wolf 0.2.7 / lupin 0.1.27: `lupin` traps `deadlock`
 // (exit 3); `wolf run` never returns. Not a debt, and nothing is
 // owed — see principles/TWO-MACHINES.md §5.
+// Re-measured at wolf 0.2.17 / lupin 0.1.40 with the handle typed `Scope`:
+// lupin traps `deadlock` (exit 3); `wolf run` is killed at a 120 s cap
+// (exit 124) with no output; `wolf conform-run` answers `pass`.
 // Exercise 11-2: the same program with a rendezvous channel — the
 // receives sit on the wrong side of the join.
-fn launch[S](s: S, ch: channel[int], n: int) {
+fn launch(s: Scope, ch: channel[int], n: int) {
     s.spawn(fn() { ch.send(n * 10) })
 }
 fn main() -> !int {

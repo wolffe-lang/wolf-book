@@ -1,8 +1,9 @@
 # Chapter 11 — Scopes as values: exercises
 
 Commands run from this directory; outputs are pasted from real runs.
-Every checker in this chapter is lupin; wolf conform-run reports
-`unsupported` for the concurrency surface.
+Every checker in this chapter is lupin; the checked machine (`wolf
+conform-run --checked`) reports `unsupported` for the concurrency
+surface.
 
 ## §11.1 — The scope as a capability
 
@@ -15,7 +16,7 @@ the call says "concurrent."
 Solution. `ch11/ex11-1.lu`:
 
 ```wolf
-fn launch[S](s: S, ch: channel[int], n: int) {
+fn launch(s: Scope, ch: channel[int], n: int) {
     s.spawn(fn() { ch.send(n * 10) })
 }
 fn main() -> !int {
@@ -49,7 +50,7 @@ waits for children, and the trap names all four:
 
 ```console
 $ lupin ex11-2.lu
-ex11-2.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0), `task@676` (task 1), `task@676` (task 2), `task@676` (task 3) [conc.deadlock.trap] at 18:5
+ex11-2.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0), `task@677` (task 1), `task@677` (task 2), `task@677` (task 3) [conc.deadlock.trap] at 18:5
 $ echo $?
 3
 ```
@@ -68,12 +69,11 @@ Solution (prose): `main` can spawn (it owns a `scope` block) and
 search is for `.spawn(` plus `scope` blocks: the spawn surface is
 exactly the set of call sites that start a task and the set of braces
 they die at, which is the same audit `grep '(mut '` performs for
-mutation — with one difference this chapter's ledger records. A scope
-handle is named `Scope` in the compiler's prelude and nowhere in
-`lupin` (wolf-lang#316, wolf-interp#130), so a `launch` both machines
-accept takes a bare generic and its *signature* does not announce the
-capability; the call does. A capability you can grep for is a capability you can
-review, and here what you grep is the call, not the declaration.
+mutation, and like a mode the capability is written at both ends:
+`launch(s: Scope, …)` announces it in the signature and `launch(s, …)`
+spends it at the call, so a third search, for `: Scope`, finds every
+function that can start work in a caller's brace. A capability you can
+grep for is a capability you can review.
 
 ## §11.2 — The background refresher
 
@@ -225,7 +225,7 @@ concurrently. Two candidate signatures:
 
 ```wolf
 fn fetch_all(urls: List[str]) -> List[Response]
-fn fetch_all[S](s: S, urls: List[str]) -> List[Response]
+fn fetch_all(s: Scope, urls: List[str]) -> List[Response]
 ```
 
 The first hides an internal scope; the second borrows the caller's.

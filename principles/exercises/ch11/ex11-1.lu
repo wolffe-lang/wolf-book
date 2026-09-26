@@ -1,9 +1,8 @@
-//! check: lupin-run(exit=0)
+//! check: run(exit=0)
 //! phase: run
 // Exercise 11-1 solution: the scope travels as a value ([conc.task.scope],
-// D16). The handle has no type name at this toolchain, so the parameter
-// is generic — see ch11's ledger row.
-fn launch[S](s: S, ch: channel[int], n: int) {
+// D16), typed by its prelude name `Scope` ([conc.proc.handle]).
+fn launch(s: Scope, ch: channel[int], n: int) {
     s.spawn(fn() { ch.send(n * 10) })
 }
 fn main() -> !int {
