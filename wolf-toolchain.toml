@@ -980,8 +980,46 @@
 #     `1`, and the same shape with the `else` arm deleted is `pass` at
 #     0.2.16. Four legs, one archive, one grep that fires.
 repo = "wolffe-lang/wolf-lang"
-rev = "93a5fe504593ca7642b78ba83b4986e7a03cfe71"
-impl_version = "0.2.16"
+# ---- bs53, wave 48: wolf 0.2.17 + lupin 0.1.40 — the compiler's
+#      half exact, the interpreter's half 72 commits ----
+#
+# wolf-lang at the v0.2.17 release tag (`02afce8`), TAKEN FROM THE
+# RELEASE ARCHIVE (release 397045016) and matched against the release's
+# published digest before unpacking:
+# `wolf-0.2.17-x86_64-unknown-linux-gnu.tar.gz` sha256
+# a95d0f0f8fe384fdb70047bb893c857573cc62dd10b2967ab7788fc9a8ce24ce.
+# Every member hashed BY NAME (docs/audit/bs53-results.md):
+#
+#   wolf                 5cdd936e...   <- the pin of record
+#   wolf-cimport-worker  7031dd13...
+#   libwolf_rt.a         c5384a5c...
+#   wolf.1               876250b5...
+#   _wolf                2d1e4801...   <- zsh completion, same at every pin
+#   wolf.bash            29eb2d75...   <- same as 0.2.16
+#   wolf.fish            51a1b6a8...   <- same as 0.2.16
+#
+#   wolf 0.2.17 (wolfgang, pin 02afce8)
+#   paired with lupin 0.1.40 (reference interpreter), pin 93a5fe5
+#   lupin 0.1.40 (wolf-interp, reference interpreter at pin 93a5fe5)
+#
+# PREDICTED TO THE CHARACTER in docs/audit/bs53-prediction.md (committed
+# at e4991f1, before either archive was downloaded) and measured
+# byte-identical. The compiler's half is EXACT: it names 0.1.40 and this
+# file pins 0.1.40. The interpreter's half names `93a5fe5`, v0.2.16's
+# tag, an ancestor of `02afce8`: `git rev-list --count 93a5fe50..02afce84`
+# is 72 commits, one release.
+#
+# What the release changed that the book can see: nothing on the
+# compiler's side moved a verdict (control and subject, the unedited
+# tree, 0 sample failures both). The flip and the five graduations this
+# bump carries are lupin 0.1.39's `Scope`/`Proc[T]` (wolf-interp#130)
+# meeting 0.2.17's native scope-handle fix (wolf-lang#431). #438's index
+# store, #437's file index and #386's `conform-run` working directory
+# reach no sample: no book program stores a place into an index, the
+# runner reads no record span, and the book's `lupin conform-run`
+# blocks are all the explorer's, which keeps its private root.
+rev = "02afce84f05c7841856a10671b6d7924f79193cc"
+impl_version = "0.2.17"
 
 [lupin]
 # wolf-interp at the v0.1.30 release tag (is42): the stamped line names
@@ -1525,9 +1563,21 @@ impl_version = "0.2.16"
 # and `E0301: nothing named `Proc` is in scope` on lupin 0.1.38, exit
 # 2, and the same for `fn fan_out(s: Scope, ...)`. The open mirror is
 # wolf-interp#130, which is what ch11's and ch14's ledger rows name.
+# ---- bs53, wave 48: 0.1.38 -> 0.1.40, two releases, and the handles
+#      get their names ----
+#
+# `lupin-0.1.40-x86_64-unknown-linux-gnu.tar.gz` (release 397033025)
+# sha256 509929e67b7ae97463973d6bb7c61b9f93dc47a523957055def816c56fb23384,
+# member `lupin` 18d64444.... The book never pinned 0.1.39, and 0.1.39
+# is the release that matters here: `Scope` and `Proc[T]` are prelude
+# type names and `p.join()` is the typed join (wolf-interp#130, CLOSED).
+# So ch14's `watch` flips (the one automatic flip of this bump), and
+# ch11's and ch14's generic `[S]`/`[P]` parameters take the handles'
+# real names and run on both machines. 0.1.40's own content (#438's
+# index store, #386's resolved confinement and cwd) moves no sample.
 repo = "wolffe-lang/wolf-interp"
-rev = "ba357aa6a2e32040d4f089d2cefe05bab86c4f86"
-version = "lupin 0.1.38 (wolf-interp, reference interpreter at pin 2e4ca76)"
+rev = "54f85e694d4c03e5cd40bef461f85ca0ac373332"
+version = "lupin 0.1.40 (wolf-interp, reference interpreter at pin 93a5fe5)"
 
 [wolf-lsp]
 # Source of the vendored tmLanguage grammars under highlight/.
