@@ -1018,8 +1018,51 @@ repo = "wolffe-lang/wolf-lang"
 # reach no sample: no book program stores a place into an index, the
 # runner reads no record span, and the book's `lupin conform-run`
 # blocks are all the explorer's, which keeps its private root.
-rev = "02afce84f05c7841856a10671b6d7924f79193cc"
-impl_version = "0.2.17"
+# ---- bs54, wave 50: wolf 0.2.18 + lupin 0.1.41 — the point release,
+#      the compiler's half exact, the interpreter's half 152 commits ----
+#
+# wolf-lang at the v0.2.18 release tag (`ec56a08`), TAKEN FROM THE
+# RELEASE ARCHIVE (release 397723077) and matched against the release's
+# published digest before unpacking:
+# `wolf-0.2.18-x86_64-unknown-linux-gnu.tar.gz` sha256
+# da027bf9da4c5a9dfa42c4ac6c7da3072ffce84922916650f024af83701e6bd4.
+# Every member hashed BY NAME (docs/audit/bs54-results.md):
+#
+#   wolf                 a9556245...   <- the pin of record
+#   wolf-cimport-worker  b2525d00...
+#   libwolf_rt.a         5360ecd6...
+#   wolf.1               988cb2a2...
+#   _wolf                2d1e4801...   <- zsh completion, same at every pin
+#   wolf.bash            29eb2d75...   <- same as 0.2.17
+#   wolf.fish            51a1b6a8...   <- same as 0.2.17
+#
+#   wolf 0.2.18 (wolfgang, pin ec56a08)
+#   paired with lupin 0.1.41 (reference interpreter), pin 93a5fe5
+#   lupin 0.1.41 (wolf-interp, reference interpreter at pin 93a5fe5)
+#
+# PREDICTED TO THE CHARACTER in docs/audit/bs54-prediction.md (committed
+# at 64a8e35, before either archive was downloaded) and measured
+# byte-identical. The compiler's half is EXACT: it names 0.1.41 and this
+# file pins 0.1.41. The interpreter's half names `93a5fe5`, v0.2.16's
+# tag, still: lupin 0.1.41 kept 0.1.40's pin, so the distance grew to
+# `git rev-list --count 93a5fe50..ec56a08f` = 152 commits, two releases.
+#
+# What the release changed that the book can see: NO VERDICT. The
+# point release is about moved places — an element is a place for moves
+# (EG1), a store no longer revives a moved sibling (#460), a `mut`
+# parameter must hold a value at every return (#464), the checked
+# machine stores index first (#452) — and the book moves no non-`Copy`
+# element and leaves no `mut` parameter moved-out anywhere (a static
+# search over all 573 program texts, shown first to hit all 13 of
+# wolf-lang's #460/#464/EG1 witnesses; the two planted on this archive are
+# `fail(E1001)`). Control and subject on the unedited tree: 0 program
+# failures, 0 flips; the six console failures are the four stamps and
+# E1001's `--explain` entry, which gained one paragraph (exercises 7-10
+# and C-1). Two prose claims moved with EG1 — §5.3's `best` and ch31's
+# shard papercut said an element binding made `xs.len` unreadable, and
+# it no longer does.
+rev = "ec56a08f04ff318ea659fd58683f7ae4f22dc7a5"
+impl_version = "0.2.18"
 
 [lupin]
 # wolf-interp at the v0.1.30 release tag (is42): the stamped line names
@@ -1575,9 +1618,20 @@ impl_version = "0.2.17"
 # ch11's and ch14's generic `[S]`/`[P]` parameters take the handles'
 # real names and run on both machines. 0.1.40's own content (#438's
 # index store, #386's resolved confinement and cwd) moves no sample.
+# ---- bs54, wave 50: 0.1.40 -> 0.1.41, the moved-element traps ----
+#
+# `lupin-0.1.41-x86_64-unknown-linux-gnu.tar.gz` (release 397709135)
+# sha256 18848901a5202162c9d0c3001a62fa3ac57276d8c0fce9c2d4f43d8d50b4e8d4,
+# member `lupin` c5a65edf.... Pin unchanged at `93a5fe5`. 0.1.41 makes
+# every read of a moved element trap (wolf-interp#141: the index read,
+# `get`/`first`/`last`/`pop`/`par`, slices, `for`). No book program
+# moves an element lupin does not copy — every element binding in the
+# book reads an `int`, `char`, `str`, handle or raw pointer, all `Copy`
+# in lupin's `is_copy` — so no sample meets the new trap. #143-#146
+# stay open and reach nothing here either.
 repo = "wolffe-lang/wolf-interp"
-rev = "54f85e694d4c03e5cd40bef461f85ca0ac373332"
-version = "lupin 0.1.40 (wolf-interp, reference interpreter at pin 93a5fe5)"
+rev = "0cfc0cfc89af5fd2aeb71d46c86742745b902869"
+version = "lupin 0.1.41 (wolf-interp, reference interpreter at pin 93a5fe5)"
 
 [wolf-lsp]
 # Source of the vendored tmLanguage grammars under highlight/.
