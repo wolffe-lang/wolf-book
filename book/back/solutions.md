@@ -3590,6 +3590,14 @@ off-limits. To keep using the original, make the duplication explicit
 where the move happens — `copy a` produces an independent value of
 any type — or give the name a new value first: assigning to a
 moved-from place makes it live again.
+
+A `mut` parameter is the caller's place, and the caller reads it again
+after the call, so it must hold a value at every return of the function
+([mem.tier0.mode.mut]). Moving out of it — the whole parameter, a
+field, an element, a map value — is fine as long as a value is stored
+back on every path before the function returns, the `?` error edge and
+an early `return` included. The refusal points at the move that is not
+put back on some path.
 ```
 
 The license is the last clause: "assigning to a moved-from place makes
@@ -9873,7 +9881,7 @@ Solution. Both runs, one item and one number between them:
 ```console
 $ wolf interface ./wordcount/tokens/tokens.lu
 module pkg :: (root)
-  wolfi v0 · toolchain 0.2.17 · edition v1
+  wolfi v0 · toolchain 0.2.18 · edition v1
   export_hash 05a012a2ca47c85fc47f13e7e2c80930951ae8c59a84d1631ca8844e71669f3c
   pkg_hash    05a012a2ca47c85fc47f13e7e2c80930951ae8c59a84d1631ca8844e71669f3c
   deps: (none)
