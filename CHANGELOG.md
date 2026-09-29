@@ -2,6 +2,30 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs54, the book at 0.2.18 — 2026-09-28 — the point release moves words, not programs
+
+**The pair is wolf 0.2.18 / lupin 0.1.41.** Both from the release
+archives by digest. The compiler names the interpreter this book pins;
+the interpreter kept its pin, so its clause is now 152 commits and two
+releases behind the compiler's, and §1.2 and the colophon say so.
+
+**No program in the book moved.** The release is about moved places —
+an element of a list is a place of its own for a move, a store no
+longer brings a moved neighbour back, a `mut` parameter must hold a
+value when its function returns, and the interpreter traps a read of a
+moved element — and no program in this book moves an element or leaves
+a parameter empty. Every sample passes on both machines, exactly as it
+did at 0.2.17.
+
+**§5.3 says where the uncopied `best` is refused.** The paragraph said
+the refusal lands on `xs.len`; a list's length is now readable after
+one of its elements moves, so the refusal lands on the loop's `xs[i]`,
+and the paragraph also names the lend rule's error that was already
+beside it.
+
+**`wolf --explain E1001` is longer by a paragraph**, the one about a
+`mut` parameter, and exercises 7-10 and C-1 print it.
+
 ## bs53, the book at 0.2.17 — 2026-09-26 — the handles have names on both machines
 
 **The pair is wolf 0.2.17 / lupin 0.1.40.** Both from the release
