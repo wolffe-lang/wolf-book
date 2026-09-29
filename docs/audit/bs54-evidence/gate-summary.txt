@@ -1,0 +1,53 @@
+== control-0217.log
+samples: lupin = ~/lanes/bs54/old/lupin-0.1.40-x86_64-unknown-linux-gnu/lupin
+samples: wolf  = ~/lanes/bs54/old/wolf-0.2.17-x86_64-unknown-linux-gnu/wolf
+samples: 506 samples (249 corpus roots + 16 corpus members on disk, 257 book blocks)
+samples: 503 passed, 3 pending (report-only), 0 failed, 0 flips in 32.2s
+samples: 481 of 501 console block(s) replayed against the pinned tools
+samples: samples-declined.toml: 18 declared row(s) — 5 file, 7 typed, 6 binary-or-shell (wolf-book#29)
+samples: exported 374 corpus programs to samples/export/corpus/book/
+EXIT 0
+== subject-0218.log
+samples: lupin = ~/lanes/bs54/new/lupin-0.1.41-x86_64-unknown-linux-gnu/lupin
+samples: wolf  = ~/lanes/bs54/new/wolf-0.2.18-x86_64-unknown-linux-gnu/wolf
+samples: 506 samples (249 corpus roots + 16 corpus members on disk, 257 book blocks)
+samples: 503 passed, 3 pending (report-only), 6 failed, 0 flips in 31.9s
+samples: 475 of 501 console block(s) replayed against the pinned tools
+samples: samples-declined.toml: 18 declared row(s) — 5 file, 7 typed, 6 binary-or-shell (wolf-book#29)
+samples: exported 374 corpus programs to samples/export/corpus/book/
+samples: FAIL ~/lanes/bs54/wolf-book/book/back/colophon.md:7: console block drifted from the real run
+samples: FAIL ~/lanes/bs54/wolf-book/book/ch01.md:153: console block drifted from the real run
+samples: FAIL ~/lanes/bs54/wolf-book/book/ch22.md:288: console block drifted from the real run
+samples: FAIL ~/lanes/bs54/wolf-book/principles/exercises/appx/EXERCISES.md:177: console block drifted from the real run
+samples: FAIL ~/lanes/bs54/wolf-book/principles/exercises/ch07/EXERCISES.md:486: console block drifted from the real run
+samples: FAIL ~/lanes/bs54/wolf-book/principles/exercises/ch22/EXERCISES.md:218: console block drifted from the real run
+EXIT 1
+== gate-samples.log
+samples: lupin = ~/lanes/bs54/new/lupin-0.1.41-x86_64-unknown-linux-gnu/lupin
+samples: wolf  = ~/lanes/bs54/new/wolf-0.2.18-x86_64-unknown-linux-gnu/wolf
+samples: 506 samples (249 corpus roots + 16 corpus members on disk, 257 book blocks)
+samples: 503 passed, 3 pending (report-only), 0 failed, 0 flips in 114.9s
+samples: 481 of 501 console block(s) replayed against the pinned tools
+samples: samples-declined.toml: 18 declared row(s) — 5 file, 7 typed, 6 binary-or-shell (wolf-book#29)
+samples: exported 374 corpus programs to samples/export/corpus/book/
+EXIT 0
+21c7cc322fcac46c7e5b288a526536dd5948d2d1
+== gate-samplesselftest.log
+samples: lupin = ~/lanes/bs54/new/lupin-0.1.41-x86_64-unknown-linux-gnu/lupin
+samples: wolf  = ~/lanes/bs54/new/wolf-0.2.18-x86_64-unknown-linux-gnu/wolf
+samples: self-test ok — 13/13 deliberate breakages caught
+EXIT 0
+== gate-verifydocs.log
+verify-docs: 27 version literal(s) in reader-facing text, each audited against wolf 0.2.18 / lupin 0.1.41
+verify-docs: EXERCISES-INDEX.md agrees with the corpus — 344 exercises (295 printed); 8 pending · 78 prose · 9 run (lupin REPL) · 192 run (lupin) · 26 run (wolf + lupin) · 31 run (wolf); fingers 61 · comprehension 153 · extension 79 · spelunking 28 · design 37
+verify-docs: ok (corpus count 265, pins well-formed, TOC/stub numbering agrees)
+EXIT 0
+== gate-ledgercheck.log
+ledger: 32 chapter ledger(s) — 132 open (125 filed, 7 waived, 0 unfiled), 99 closed
+EXIT 0
+== gate-backmattercheck.log
+backmatter: 295 solution(s) published, 330 on file
+backmatter: book/back/appendix-a.md up to date
+backmatter: book/back/solutions.md up to date
+backmatter: vendored spec artifacts match the sibling wolf-lang checkout
+EXIT 0

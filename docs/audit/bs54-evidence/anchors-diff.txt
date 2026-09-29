@@ -1,0 +1,11 @@
+# spec/anchors.json key sets, wolf-lang v0.2.17 (02afce84) vs v0.2.18 (ec56a08f), diffed both ways
+count v0.2.17: 541
+count v0.2.18: 542
+added (in v0.2.18 only):
+  + mem.model.place.elem
+dropped (in v0.2.17 only):
+  (none)
+remapped (same key, different document):
+  (none)
+grammar.ebnf sha256 v0.2.17: 910ff9d5f6e6747e50105de2c64a0afde80e58c0a20e3c230c14e9fe1604566f
+grammar.ebnf sha256 v0.2.18: 910ff9d5f6e6747e50105de2c64a0afde80e58c0a20e3c230c14e9fe1604566f
