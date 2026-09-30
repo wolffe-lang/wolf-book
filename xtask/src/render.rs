@@ -28,7 +28,14 @@ pub fn run(root: &Path, args: &[String]) -> Result<()> {
             render_pdf(root, require_pdf)?;
             check_dialect_markers(root)
         }
-        other => bail!("unknown render target `{other}` (web|md|pdf|all)"),
+        "pages" => {
+            render_web(root)?;
+            write_pages_redirects(
+                &root.join("target/render/web"),
+                &root.join("target/render/pages"),
+            )
+        }
+        other => bail!("unknown render target `{other}` (web|md|pdf|all|pages)"),
     }
 }
 
@@ -40,13 +47,208 @@ fn render_web(root: &Path) -> Result<()> {
     // and the build dir. This is `mdbook build`, cargo-only.
     let md =
         mdbook::MDBook::load(root).map_err(|e| anyhow::anyhow!("loading mdBook config: {e}"))?;
+    let site = md
+        .config
+        .html_config()
+        .and_then(|h| h.site_url)
+        .unwrap_or_else(|| "/".to_string());
     md.build()
         .map_err(|e| anyhow::anyhow!("mdbook build failed: {e}"))?;
     let out = root.join("target/render/web");
     supply_print_css(root, &out)?;
     reroot_index_links(&out)?;
+    root_the_404(&out, &site)?;
     println!("render: web edition at {}", out.display());
-    check_links(&out)
+    check_no_inline_scripts(&out)?;
+    check_links(&out, &site)
+}
+
+/// The 404 page is served at whatever path missed, so a relative link
+/// on it resolves against a directory the book may not have: from a
+/// miss at `/book/front/x.html`, `toc.js` is `/book/front/toc.js` and
+/// the page arrives with no sidebar and no styles. mdBook's answer is
+/// `<base href>` from `site-url`, and book.toml sets `/book/` — but
+/// lupp.us sends `base-uri 'none'`, under which a browser ignores
+/// `<base>` entirely (bs55, measured on three engines). So every
+/// relative `href`/`src` on this one page is written absolute under the
+/// site path; `<base>` stays for any host that honours it.
+fn root_the_404(out: &Path, site: &str) -> Result<()> {
+    let at = out.join("404.html");
+    if site == "/" || !at.is_file() {
+        return Ok(());
+    }
+    let html = std::fs::read_to_string(&at)?;
+    std::fs::write(&at, absolutize(&html, site))?;
+    Ok(())
+}
+
+/// Prefix every relative `href="…"`/`src="…"` value with `site`.
+pub fn absolutize(html: &str, site: &str) -> String {
+    let mut out = String::with_capacity(html.len() + 1024);
+    let mut rest = html;
+    loop {
+        let next = ["href=\"", "src=\""]
+            .iter()
+            .filter_map(|a| rest.find(a).map(|i| (i, a.len())))
+            .min();
+        let Some((at, len)) = next else {
+            out.push_str(rest);
+            return out;
+        };
+        out.push_str(&rest[..at + len]);
+        rest = &rest[at + len..];
+        let relative = !(rest.starts_with('/')
+            || rest.starts_with('#')
+            || rest.starts_with('"')
+            || rest.starts_with("mailto:")
+            || rest.starts_with("data:")
+            || rest.split('"').next().unwrap_or_default().contains("://"));
+        if relative {
+            out.push_str(site);
+        }
+    }
+}
+
+/// No page may carry an inline `<script>`: lupp.us serves the book
+/// under `script-src 'self'`, which refuses them, and three in the
+/// theme did not run there for months — the sidebar's links 404ed from
+/// every page one directory down, and the sidebar said "open" while it
+/// was drawn closed (bs55). A script belongs in a same-origin file.
+fn check_no_inline_scripts(out: &Path) -> Result<()> {
+    let mut pages = Vec::new();
+    collect_html(out, &mut pages)?;
+    pages.sort();
+    let mut bad = Vec::new();
+    for page in &pages {
+        let html = std::fs::read_to_string(page)?;
+        let n = inline_scripts(&html);
+        if n > 0 {
+            bad.push(format!(
+                "{}: {n} inline <script>",
+                page.strip_prefix(out).unwrap_or(page).display()
+            ));
+        }
+    }
+    if !bad.is_empty() {
+        for b in &bad {
+            eprintln!("render: CSP: {b}");
+        }
+        bail!(
+            "{} page(s) carry an inline <script>, which lupp.us's `script-src 'self'` refuses",
+            bad.len()
+        );
+    }
+    println!(
+        "render: CSP guard — {} pages, no inline <script> (lupp.us serves `script-src 'self'`)",
+        pages.len()
+    );
+    Ok(())
+}
+
+/// How many `<script>` elements in `html`, outside comments, have no `src`.
+pub fn inline_scripts(html: &str) -> usize {
+    let text = strip_html_comments(html);
+    let mut n = 0;
+    let mut rest = text.as_str();
+    while let Some(at) = rest.find("<script") {
+        rest = &rest[at + "<script".len()..];
+        if !(rest.starts_with('>') || rest.starts_with(' ') || rest.starts_with('\n')) {
+            continue;
+        }
+        let tag = &rest[..rest.find('>').unwrap_or(rest.len())];
+        if !tag.contains("src=") {
+            n += 1;
+        }
+    }
+    n
+}
+
+// ----------------------------------------------------------------- pages
+
+/// The book's one home. GitHub Pages served a full copy at
+/// `wolffe-lang.github.io/wolf-book/` without the site's headers, so it
+/// could not show a reader what lupp.us shows (bs55); it now answers
+/// every old address with a redirect to the same path here.
+pub const HOME: &str = "https://lupp.us/book/";
+/// The Pages project path the old links carry.
+pub const PAGES_BASE: &str = "/wolf-book/";
+
+/// Where an old Pages path now lives: the same path under HOME, with
+/// `index.html` as the directory itself.
+pub fn home_for(rel: &str) -> String {
+    let rel = rel.replace('\\', "/");
+    match rel.strip_suffix("index.html") {
+        Some(dir) if dir.is_empty() || dir.ends_with('/') => format!("{HOME}{dir}"),
+        _ => format!("{HOME}{rel}"),
+    }
+}
+
+fn attr_escape(s: &str) -> String {
+    s.replace('&', "&amp;").replace('"', "&quot;").replace('<', "&lt;")
+}
+
+/// One page's redirect: `rel=canonical` for search engines, a meta
+/// refresh for any browser, and one line of script (Pages sends no CSP)
+/// that carries the `#8.4` fragment a meta refresh would drop.
+pub fn redirect_stub(target: &str) -> String {
+    let t = attr_escape(target);
+    format!(
+        "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n\
+         <title>The Wolf Book has moved to lupp.us</title>\n\
+         <link rel=\"canonical\" href=\"{t}\">\n\
+         <meta name=\"robots\" content=\"noindex\">\n\
+         <script>location.replace(\"{t}\" + location.search + location.hash);</script>\n\
+         <meta http-equiv=\"refresh\" content=\"0; url={t}\">\n\
+         </head>\n<body>\n<p>The Wolf Book lives at <a href=\"{t}\">{t}</a>.</p>\n</body>\n</html>\n"
+    )
+}
+
+/// Any other old address (the PDF, a page that never existed): the same
+/// path under HOME, by script, and the book's front door without one.
+pub fn redirect_404() -> String {
+    format!(
+        "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n\
+         <title>The Wolf Book has moved to lupp.us</title>\n\
+         <meta name=\"robots\" content=\"noindex\">\n\
+         <script>location.replace(\"{HOME}\" + location.pathname.replace(/^\\/wolf-book\\/?/, \"\") + location.search + location.hash);</script>\n\
+         <meta http-equiv=\"refresh\" content=\"0; url={HOME}\">\n\
+         </head>\n<body>\n<p>The Wolf Book lives at <a href=\"{HOME}\">{HOME}</a>.</p>\n</body>\n</html>\n"
+    )
+}
+
+/// The Pages artifact: one redirect per page of the web render, at the
+/// page's own path, and a forwarding 404. Nothing else is published.
+fn write_pages_redirects(web: &Path, out: &Path) -> Result<()> {
+    if out.exists() {
+        std::fs::remove_dir_all(out).with_context(|| format!("clearing {}", out.display()))?;
+    }
+    let mut pages = Vec::new();
+    collect_html(web, &mut pages)?;
+    pages.sort();
+    let mut n = 0;
+    for page in &pages {
+        let rel = page
+            .strip_prefix(web)
+            .unwrap_or(page)
+            .to_string_lossy()
+            .replace('\\', "/");
+        if rel == "404.html" {
+            continue;
+        }
+        let dst = out.join(&rel);
+        if let Some(dir) = dst.parent() {
+            std::fs::create_dir_all(dir)?;
+        }
+        std::fs::write(&dst, redirect_stub(&home_for(&rel)))?;
+        n += 1;
+    }
+    std::fs::create_dir_all(out)?;
+    std::fs::write(out.join("404.html"), redirect_404())?;
+    println!(
+        "render: pages — {n} redirects to {HOME}<same path> and a forwarding 404 at {}",
+        out.display()
+    );
+    Ok(())
 }
 
 /// mdBook emits `css/print.css` only when `[output.html.print] enable`
@@ -107,7 +309,7 @@ fn reroot_index_links(out: &Path) -> Result<()> {
 /// outside, after publication (wolf-book#1) — and it found both of the
 /// defects the two functions above fix. A gate here is the reason
 /// neither can come back.
-fn check_links(out: &Path) -> Result<()> {
+fn check_links(out: &Path, site: &str) -> Result<()> {
     let mut pages = Vec::new();
     collect_html(out, &mut pages)?;
     pages.sort();
@@ -128,7 +330,11 @@ fn check_links(out: &Path) -> Result<()> {
                 continue;
             }
             checked += 1;
-            let at = if let Some(rest) = target.strip_prefix('/') {
+            // An absolute link is under the site path (`/book/` on the
+            // 404 page, root_the_404) or, with none set, under `/`.
+            let at = if let Some(rest) = target.strip_prefix(site) {
+                out.join(rest)
+            } else if let Some(rest) = target.strip_prefix('/') {
                 out.join(rest)
             } else {
                 dir.join(target)
@@ -847,6 +1053,51 @@ fn typst_code_lines(wolf: &Grammar, code: &str) -> Result<String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn absolutize_roots_relative_links_only() {
+        let html = r##"<link href="css/chrome.css"><script src="toc.js"></script>
+<a href="#document-not-found-404">x</a><a href="/elsewhere">y</a>
+<a href="https://lupp.us/">z</a><a href="">e</a><img src="data:image/png;base64,AA">
+<script src="wolf-boot.js"></script><a href="back/errata.html">w</a>"##;
+        let out = absolutize(html, "/book/");
+        assert!(out.contains(r#"href="/book/css/chrome.css""#));
+        assert!(out.contains(r#"src="/book/toc.js""#));
+        assert!(out.contains(r#"src="/book/wolf-boot.js""#));
+        assert!(out.contains(r#"href="/book/back/errata.html""#));
+        assert!(out.contains(r##"href="#document-not-found-404""##));
+        assert!(out.contains(r#"href="/elsewhere""#));
+        assert!(out.contains(r#"href="https://lupp.us/""#));
+        assert!(out.contains(r#"href="""#));
+        assert!(out.contains(r#"src="data:image/png;base64,AA""#));
+    }
+
+    #[test]
+    fn inline_scripts_are_counted_outside_comments() {
+        assert_eq!(inline_scripts(r#"<script src="book.js"></script>"#), 0);
+        assert_eq!(inline_scripts("<script>const path_to_root = \"\";</script>"), 1);
+        assert_eq!(
+            inline_scripts("<script>\nlet sidebar = null;\n</script><script\n>x</script>"),
+            2
+        );
+        assert_eq!(inline_scripts("<!-- an inline <script> is refused --><p>ok</p>"), 0);
+        // mdbook-sidebar-scrollbox is not a script element.
+        assert_eq!(inline_scripts("<scripture>x</scripture>"), 0);
+    }
+
+    #[test]
+    fn pages_redirect_to_the_same_path_home() {
+        assert_eq!(home_for("ch07.html"), "https://lupp.us/book/ch07.html");
+        assert_eq!(home_for("front/how-to-read.html"), "https://lupp.us/book/front/how-to-read.html");
+        assert_eq!(home_for("index.html"), "https://lupp.us/book/");
+        let stub = redirect_stub(&home_for("ch33.html"));
+        assert!(stub.contains(r#"<link rel="canonical" href="https://lupp.us/book/ch33.html">"#));
+        assert!(stub.contains(r#"<meta http-equiv="refresh" content="0; url=https://lupp.us/book/ch33.html">"#));
+        assert!(stub.contains("location.hash"), "the fragment survives the hop");
+        let nf = redirect_404();
+        assert!(nf.contains(r#"location.pathname.replace(/^\/wolf-book\/?/, "")"#), "{nf}");
+        assert!(nf.contains("https://lupp.us/book/"));
+    }
 
     #[test]
     fn summary_parses_in_order() {

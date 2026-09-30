@@ -22,6 +22,11 @@ renderer = ["html"]
 
 [output.html]
 theme = "theme"
+# The book lives at https://lupp.us/book/ (bs55); mdBook writes this into
+# 404.html's <base>. lupp.us sends `base-uri 'none'`, so browsers ignore
+# that <base> there, and render.rs also writes the 404 page's links
+# absolute under this path (root_the_404).
+site-url = "/book/"
 default-theme = "wolf"
 preferred-dark-theme = "wolf" # no dark mode at v1 (DESIGN.md §1)
 no-section-label = false
