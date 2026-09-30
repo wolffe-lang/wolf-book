@@ -278,3 +278,55 @@ jobs:
           name: wolf-book-web
           path: wolf-book/target/render/web/
           retention-days: 14
+
+  # Lane 4 — the contents (bs55). From every page of the render, click
+  # every sidebar entry and hold the landing to its label: HTTP 200, the
+  # label's name in <title>, the label's number in the <h1>. The render
+  # is served under /book/ with lupp.us's own response headers (serve.mjs
+  # copies wolf-web nginx/lupp.us.conf:51-58), because the site's CSP is
+  # what a reader's browser obeys and what GitHub Pages never sent: under
+  # `script-src 'self'` no inline script runs, and the sidebar's links
+  # 404ed from every page one directory down while a curl crawl and a
+  # Pages run both saw nothing. Three engines, a 390px phone and a 1440px
+  # desktop each; the sidebar's first-load state held to its drawing
+  # with and without stored state.
+  contents:
+    needs: render
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [chromium, firefox, webkit]
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: wolf-book
+      - uses: actions/download-artifact@v4
+        with:
+          name: wolf-book-web
+          path: wolf-book/target/render/web
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: install playwright and ${{ matrix.engine }}
+        shell: bash
+        working-directory: wolf-book/tests/contents
+        run: |
+          set -euo pipefail
+          npm install --no-audit --no-fund
+          npx playwright install --with-deps ${{ matrix.engine }}
+      - name: the gate's own tests
+        shell: bash
+        working-directory: wolf-book/tests/contents
+        run: npm test
+      - name: every sidebar entry from every page (${{ matrix.engine }}, phone + desktop)
+        shell: bash
+        working-directory: wolf-book/tests/contents
+        run: node contents.mjs --root ../../target/render/web --engines ${{ matrix.engine }} --json contents-${{ matrix.engine }}.out.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: contents-${{ matrix.engine }}
+          path: wolf-book/tests/contents/contents-${{ matrix.engine }}.out.json
+          retention-days: 14
