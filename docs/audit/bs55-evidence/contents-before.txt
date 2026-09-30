@@ -1,0 +1,23 @@
+# The contents gate against TODAY'S render (unedited tree 51725fe = trunk dadc38b's book), seen red
+## CI: run 36749726580 at f446763 (gate + CI wiring, no fix). Every other job green.
+### job 110005251654
+contents (chromium)	every sidebar entry from every page (chromium, phone + desktop)	2026-09-30T17:13:47.3839322Z contents: gate against http://127.0.0.1:44305/book/ (render served with lupp.us's headers)
+contents (chromium)	every sidebar entry from every page (chromium, phone + desktop)	2026-09-30T17:20:59.5046206Z contents: chromium phone: 49 pages, 45 entries, 2160 clicks, 1620 at 200 — FAIL {"status":540,"title":0,"number":288,"click":0,"load":0,"entries":1,"state":147,"search":1} in 432s
+contents (chromium)	every sidebar entry from every page (chromium, phone + desktop)	2026-09-30T17:28:17.8173604Z contents: chromium desktop: 49 pages, 45 entries, 2160 clicks, 1620 at 200 — FAIL {"status":540,"title":0,"number":288,"click":0,"load":0,"entries":1,"state":147,"search":1} in 438s
+contents (chromium)	every sidebar entry from every page (chromium, phone + desktop)	2026-09-30T17:28:17.8527931Z contents: FAILED
+### job 110005251722
+contents (webkit)	every sidebar entry from every page (webkit, phone + desktop)	2026-09-30T17:14:06.1090357Z contents: gate against http://127.0.0.1:42633/book/ (render served with lupp.us's headers)
+contents (webkit)	every sidebar entry from every page (webkit, phone + desktop)	2026-09-30T17:27:44.4811853Z contents: webkit phone: 49 pages, 45 entries, 2160 clicks, 1620 at 200 — FAIL {"status":540,"title":0,"number":288,"click":0,"load":0,"entries":1,"state":147,"search":1} in 817s
+contents (webkit)	every sidebar entry from every page (webkit, phone + desktop)	2026-09-30T17:42:04.3235591Z contents: webkit desktop: 49 pages, 45 entries, 2159 clicks, 1619 at 200 — FAIL {"status":540,"title":0,"number":288,"click":1,"load":0,"entries":1,"state":147,"search":1} in 860s
+contents (webkit)	every sidebar entry from every page (webkit, phone + desktop)	2026-09-30T17:42:04.3596337Z contents: FAILED
+### job 110005253755 (firefox): no summary line — hung 17 min in the first gate's unbounded animation wait, then cancelled (fixed at 786a515; the same red measured locally below)
+## local, Chromium desktop (the same render, served by serve.mjs)
+chromium desktop pages 49 entries 45 clicks 2160 at200 1620 {'status': 540, 'title': 0, 'number': 288, 'click': 0, 'load': 0, 'entries': 1, 'state': 147, 'search': 1}
+  status e.g. front/how-to-read.html -> "4. Functions": HTTP 404 http://127.0.0.1:59263/book/front/ch04.html title="Page not found - The Wolf Book" h1="Document not found (404)"
+  number e.g. ch01.html -> "26. The serving loop": HTTP 200 http://127.0.0.1:59263/book/ch33.html title="The serving loop - The Wolf Book" h1="33. The serving loop"
+  state e.g. front/how-to-read.html stored=null want open=true got {"checked":false,"cls":true,"drawn":false}
+  entries e.g. front/no-such-page.html: 0 sidebar entries, want 45
+  search e.g. searchindex HTTP null, 0 result(s); page errors: path_to_root is not defined | path_to_root is not defined
+## local, Firefox (fixed gate 786a515, same render)
+contents: firefox phone: 49 pages, 45 entries, 2160 clicks, 1620 at 200 — FAIL {"status":540,"title":0,"number":288,"click":0,"load":0,"entries":1,"state":147,"search":1} in 233s
+contents: firefox desktop: 49 pages, 45 entries, 2160 clicks, 1620 at 200 — FAIL {"status":540,"title":0,"number":288,"click":0,"load":0,"entries":1,"state":147,"search":1} in 247s

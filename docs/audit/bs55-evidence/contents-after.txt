@@ -1,0 +1,8 @@
+# The contents gate against the FIXED render (web-after: kasumi render of abdd193), local, served by serve.mjs with lupp.us's headers. Gate versions: chromium at c873be3, firefox at 786a515, webkit at d2c23cc. The CI run at the head is the record of the final gate on all three.
+chromium phone pages 49 entries 45 clicks 2205 at200 2205 {'status': 0, 'title': 0, 'number': 0, 'click': 0, 'load': 0, 'entries': 0, 'state': 0, 'search': 0}
+chromium desktop pages 49 entries 45 clicks 2205 at200 2205 {'status': 0, 'title': 0, 'number': 0, 'click': 0, 'load': 0, 'entries': 0, 'state': 0, 'search': 0}
+firefox phone pages 49 entries 45 clicks 2205 at200 2205 {'status': 0, 'title': 0, 'number': 0, 'click': 0, 'load': 0, 'entries': 0, 'state': 0, 'search': 0}
+firefox desktop pages 49 entries 45 clicks 2205 at200 2205 {'status': 0, 'title': 0, 'number': 0, 'click': 0, 'load': 0, 'entries': 0, 'state': 0, 'search': 0}
+webkit phone pages 49 entries 45 clicks 2205 at200 2205 {'status': 0, 'title': 0, 'number': 0, 'click': 0, 'load': 0, 'entries': 0, 'state': 0, 'search': 0}
+webkit desktop pages 49 entries 45 clicks 2205 at200 2205 {'status': 0, 'title': 0, 'number': 0, 'click': 0, 'load': 0, 'entries': 0, 'state': 0, 'search': 0}
+(webkit's first after-run, at 786a515, failed search only: fill() sends no key events and mdBook's searcher answers keys — the gate types since d2c23cc; the line above is the rerun)

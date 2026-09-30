@@ -1,0 +1,1092 @@
+# chromium phone: ch07 has 45 entries; first load {"checked":false,"cls":true,"drawn":false}; page errors: path_to_root is not defined
+chromium phone untoggled hop1 "How to read this book" -> HTTP 200 /book/front/how-to-read.html h1="How to read this book"
+chromium phone untoggled hop2 from /book/front/how-to-read.html "1. Hello, Wolf" -> HTTP 404 /book/front/ch01.html
+chromium phone untoggled hop1 "Notation" -> HTTP 200 /book/front/notation.html h1="Notation"
+chromium phone untoggled hop2 from /book/front/notation.html "1. Hello, Wolf" -> HTTP 404 /book/front/ch01.html
+chromium phone untoggled hop1 "1. Hello, Wolf" -> HTTP 200 /book/ch01.html h1="1. Hello, Wolf"
+chromium phone untoggled hop2 from /book/ch01.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone untoggled hop1 "2. Strings, honestly" -> HTTP 200 /book/ch02.html h1="2. Strings, honestly"
+chromium phone untoggled hop2 from /book/ch02.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone untoggled hop1 "3. Values and expressions" -> HTTP 200 /book/ch03.html h1="3. Values and expressions"
+chromium phone untoggled hop2 from /book/ch03.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone untoggled hop1 "4. Functions" -> HTTP 200 /book/ch04.html h1="4. Functions"
+chromium phone untoggled hop2 from /book/ch04.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone untoggled hop1 "5. Collections and generics" -> HTTP 200 /book/ch05.html h1="5. Collections and generics"
+chromium phone untoggled hop2 from /book/ch05.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone untoggled hop1 "6. Errors are values" -> HTTP 200 /book/ch06.html h1="6. Errors are values"
+chromium phone untoggled hop2 from /book/ch06.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone untoggled hop1 "7. Who owns this?" -> HTTP 200 /book/ch07.html h1="7. Who owns this?"
+chromium phone untoggled hop2 from /book/ch07.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone untoggled hop1 "8. Regions: memory in the shape you meant" -> HTTP 200 /book/ch08.html h1="8. Regions: memory in the shape you meant"
+chromium phone untoggled hop2 from /book/ch08.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone untoggled hop1 "9. The escape hatch is a door, not a cliff" -> HTTP 200 /book/ch09.html h1="9. The escape hatch is a door, not a cliff"
+chromium phone untoggled hop2 from /book/ch09.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone untoggled hop1 "10. Spawning is a scope" -> HTTP 200 /book/ch10.html h1="10. Spawning is a scope"
+chromium phone untoggled hop2 from /book/ch10.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone untoggled hop1 "11. Scopes as values" -> HTTP 200 /book/ch11.html h1="11. Scopes as values"
+chromium phone untoggled hop2 from /book/ch11.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone untoggled hop1 "12. Channels and select" -> HTTP 200 /book/ch12.html h1="12. Channels and select"
+chromium phone untoggled hop2 from /book/ch12.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone untoggled hop1 "13. Dividing one job" -> HTTP 200 /book/ch13.html h1="13. Dividing one job"
+chromium phone untoggled hop2 from /book/ch13.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone untoggled hop1 "14. Procs: the unit of failure" -> HTTP 200 /book/ch14.html h1="14. Procs: the unit of failure"
+chromium phone untoggled hop2 from /book/ch14.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone untoggled hop1 "15. Link, monitor, supervision" -> HTTP 200 /book/ch15.html h1="15. Link, monitor, supervision"
+chromium phone untoggled hop2 from /book/ch15.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone untoggled hop1 "16. Region transfer: fearless messaging" -> HTTP 200 /book/ch16.html h1="16. Region transfer: fearless messaging"
+chromium phone untoggled hop2 from /book/ch16.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone untoggled hop1 "17. The failing schedule, replayed" -> HTTP 200 /book/ch17.html h1="17. The failing schedule, replayed"
+chromium phone untoggled hop2 from /book/ch17.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone untoggled hop1 "18. Comptime: one tier, no macros" -> HTTP 200 /book/ch18.html h1="18. Comptime: one tier, no macros"
+chromium phone untoggled hop2 from /book/ch18.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone untoggled hop1 "19. Reading the release tier" -> HTTP 200 /book/ch19.html h1="19. Reading the release tier"
+chromium phone untoggled hop2 from /book/ch19.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone untoggled hop1 "20. Perf contracts" -> HTTP 200 /book/ch20.html h1="20. Perf contracts"
+chromium phone untoggled hop2 from /book/ch20.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone untoggled hop1 "21. Beating C honestly" -> HTTP 200 /book/ch21.html h1="21. Beating C honestly"
+chromium phone untoggled hop2 from /book/ch21.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone untoggled hop1 "22. Modules: the shape of a wolf project" -> HTTP 200 /book/ch22.html h1="22. Modules: the shape of a wolf project"
+chromium phone untoggled hop2 from /book/ch22.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone untoggled hop1 "23. Packages and dependencies" -> HTTP 200 /book/ch23.html h1="23. Packages and dependencies"
+chromium phone untoggled hop2 from /book/ch23.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone untoggled hop1 "24. The covenant: no build scripts" -> HTTP 200 /book/ch24.html h1="24. The covenant: no build scripts"
+chromium phone untoggled hop2 from /book/ch24.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone untoggled hop1 "25. Editions, stability, publishing" -> HTTP 200 /book/ch25.html h1="25. Editions, stability, publishing"
+chromium phone untoggled hop2 from /book/ch25.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone untoggled hop1 "26. The serving loop" -> HTTP 200 /book/ch33.html h1="33. The serving loop" FAULT number
+chromium phone untoggled hop2 from /book/ch33.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone untoggled hop1 "27. count, twice" -> HTTP 200 /book/ch26.html h1="26. count, twice" FAULT number
+chromium phone untoggled hop2 from /book/ch26.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone untoggled hop1 "28. rpn, twice" -> HTTP 200 /book/ch27.html h1="27. rpn, twice" FAULT number
+chromium phone untoggled hop2 from /book/ch27.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone untoggled hop1 "29. wordtree, twice" -> HTTP 200 /book/ch28.html h1="28. wordtree, twice" FAULT number
+chromium phone untoggled hop2 from /book/ch28.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone untoggled hop1 "30. tinyvm" -> HTTP 200 /book/ch29.html h1="29. tinyvm" FAULT number
+chromium phone untoggled hop2 from /book/ch29.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone untoggled hop1 "31. pargrep" -> HTTP 200 /book/ch30.html h1="30. pargrep" FAULT number
+chromium phone untoggled hop2 from /book/ch30.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone untoggled hop1 "32. logden, alone" -> HTTP 200 /book/ch31.html h1="31. logden, alone" FAULT number
+chromium phone untoggled hop2 from /book/ch31.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone untoggled hop1 "33. Coda: the allocator you never needed" -> HTTP 200 /book/ch32.html h1="32. Coda: the allocator you never needed" FAULT number
+chromium phone untoggled hop2 from /book/ch32.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone untoggled hop1 "Appendix A — Grammar summary" -> HTTP 200 /book/back/appendix-a.html h1="Appendix A — Grammar summary"
+chromium phone untoggled hop2 from /book/back/appendix-a.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium phone untoggled hop1 "Appendix B — Traps" -> HTTP 200 /book/back/appendix-b.html h1="Appendix B — Traps"
+chromium phone untoggled hop2 from /book/back/appendix-b.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium phone untoggled hop1 "Appendix C — Diagnostics" -> HTTP 200 /book/back/appendix-c.html h1="Appendix C — Diagnostics"
+chromium phone untoggled hop2 from /book/back/appendix-c.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium phone untoggled hop1 "Appendix D — Spec cross-reference" -> HTTP 200 /book/back/appendix-d.html h1="Appendix D — Spec cross-reference"
+chromium phone untoggled hop2 from /book/back/appendix-d.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium phone untoggled hop1 "Appendix E — The driver's surface" -> HTTP 200 /book/back/appendix-e.html h1="Appendix E — The driver’s surface"
+chromium phone untoggled hop2 from /book/back/appendix-e.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium phone untoggled hop1 "Solutions" -> HTTP 200 /book/back/solutions.html h1="Solutions"
+chromium phone untoggled hop2 from /book/back/solutions.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium phone untoggled hop1 "Glossary" -> HTTP 200 /book/back/glossary.html h1="Glossary"
+chromium phone untoggled hop2 from /book/back/glossary.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium phone untoggled hop1 "Index" -> HTTP 200 /book/back/book-index.html h1="Index"
+chromium phone untoggled hop2 from /book/back/book-index.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium phone untoggled hop1 "Errata" -> HTTP 200 /book/back/errata.html h1="Errata"
+chromium phone untoggled hop2 from /book/back/errata.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium phone untoggled hop1 "Colophon" -> HTTP 200 /book/back/colophon.html h1="Colophon"
+chromium phone untoggled hop2 from /book/back/colophon.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium phone toggled hop1 "How to read this book" -> HTTP 200 /book/front/how-to-read.html h1="How to read this book"
+chromium phone toggled hop2 from /book/front/how-to-read.html "1. Hello, Wolf" -> HTTP 404 /book/front/ch01.html
+chromium phone toggled hop1 "Notation" -> HTTP 200 /book/front/notation.html h1="Notation"
+chromium phone toggled hop2 from /book/front/notation.html "1. Hello, Wolf" -> HTTP 404 /book/front/ch01.html
+chromium phone toggled hop1 "1. Hello, Wolf" -> HTTP 200 /book/ch01.html h1="1. Hello, Wolf"
+chromium phone toggled hop2 from /book/ch01.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone toggled hop1 "2. Strings, honestly" -> HTTP 200 /book/ch02.html h1="2. Strings, honestly"
+chromium phone toggled hop2 from /book/ch02.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone toggled hop1 "3. Values and expressions" -> HTTP 200 /book/ch03.html h1="3. Values and expressions"
+chromium phone toggled hop2 from /book/ch03.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone toggled hop1 "4. Functions" -> HTTP 200 /book/ch04.html h1="4. Functions"
+chromium phone toggled hop2 from /book/ch04.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone toggled hop1 "5. Collections and generics" -> HTTP 200 /book/ch05.html h1="5. Collections and generics"
+chromium phone toggled hop2 from /book/ch05.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone toggled hop1 "6. Errors are values" -> HTTP 200 /book/ch06.html h1="6. Errors are values"
+chromium phone toggled hop2 from /book/ch06.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone toggled hop1 "7. Who owns this?" -> HTTP 200 /book/ch07.html h1="7. Who owns this?"
+chromium phone toggled hop2 from /book/ch07.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone toggled hop1 "8. Regions: memory in the shape you meant" -> HTTP 200 /book/ch08.html h1="8. Regions: memory in the shape you meant"
+chromium phone toggled hop2 from /book/ch08.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone toggled hop1 "9. The escape hatch is a door, not a cliff" -> HTTP 200 /book/ch09.html h1="9. The escape hatch is a door, not a cliff"
+chromium phone toggled hop2 from /book/ch09.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone toggled hop1 "10. Spawning is a scope" -> HTTP 200 /book/ch10.html h1="10. Spawning is a scope"
+chromium phone toggled hop2 from /book/ch10.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone toggled hop1 "11. Scopes as values" -> HTTP 200 /book/ch11.html h1="11. Scopes as values"
+chromium phone toggled hop2 from /book/ch11.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone toggled hop1 "12. Channels and select" -> HTTP 200 /book/ch12.html h1="12. Channels and select"
+chromium phone toggled hop2 from /book/ch12.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone toggled hop1 "13. Dividing one job" -> HTTP 200 /book/ch13.html h1="13. Dividing one job"
+chromium phone toggled hop2 from /book/ch13.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone toggled hop1 "14. Procs: the unit of failure" -> HTTP 200 /book/ch14.html h1="14. Procs: the unit of failure"
+chromium phone toggled hop2 from /book/ch14.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone toggled hop1 "15. Link, monitor, supervision" -> HTTP 200 /book/ch15.html h1="15. Link, monitor, supervision"
+chromium phone toggled hop2 from /book/ch15.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone toggled hop1 "16. Region transfer: fearless messaging" -> HTTP 200 /book/ch16.html h1="16. Region transfer: fearless messaging"
+chromium phone toggled hop2 from /book/ch16.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone toggled hop1 "17. The failing schedule, replayed" -> HTTP 200 /book/ch17.html h1="17. The failing schedule, replayed"
+chromium phone toggled hop2 from /book/ch17.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone toggled hop1 "18. Comptime: one tier, no macros" -> HTTP 200 /book/ch18.html h1="18. Comptime: one tier, no macros"
+chromium phone toggled hop2 from /book/ch18.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone toggled hop1 "19. Reading the release tier" -> HTTP 200 /book/ch19.html h1="19. Reading the release tier"
+chromium phone toggled hop2 from /book/ch19.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone toggled hop1 "20. Perf contracts" -> HTTP 200 /book/ch20.html h1="20. Perf contracts"
+chromium phone toggled hop2 from /book/ch20.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone toggled hop1 "21. Beating C honestly" -> HTTP 200 /book/ch21.html h1="21. Beating C honestly"
+chromium phone toggled hop2 from /book/ch21.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone toggled hop1 "22. Modules: the shape of a wolf project" -> HTTP 200 /book/ch22.html h1="22. Modules: the shape of a wolf project"
+chromium phone toggled hop2 from /book/ch22.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone toggled hop1 "23. Packages and dependencies" -> HTTP 200 /book/ch23.html h1="23. Packages and dependencies"
+chromium phone toggled hop2 from /book/ch23.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone toggled hop1 "24. The covenant: no build scripts" -> HTTP 200 /book/ch24.html h1="24. The covenant: no build scripts"
+chromium phone toggled hop2 from /book/ch24.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone toggled hop1 "25. Editions, stability, publishing" -> HTTP 200 /book/ch25.html h1="25. Editions, stability, publishing"
+chromium phone toggled hop2 from /book/ch25.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone toggled hop1 "26. The serving loop" -> HTTP 200 /book/ch33.html h1="33. The serving loop" FAULT number
+chromium phone toggled hop2 from /book/ch33.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone toggled hop1 "27. count, twice" -> HTTP 200 /book/ch26.html h1="26. count, twice" FAULT number
+chromium phone toggled hop2 from /book/ch26.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone toggled hop1 "28. rpn, twice" -> HTTP 200 /book/ch27.html h1="27. rpn, twice" FAULT number
+chromium phone toggled hop2 from /book/ch27.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone toggled hop1 "29. wordtree, twice" -> HTTP 200 /book/ch28.html h1="28. wordtree, twice" FAULT number
+chromium phone toggled hop2 from /book/ch28.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone toggled hop1 "30. tinyvm" -> HTTP 200 /book/ch29.html h1="29. tinyvm" FAULT number
+chromium phone toggled hop2 from /book/ch29.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone toggled hop1 "31. pargrep" -> HTTP 200 /book/ch30.html h1="30. pargrep" FAULT number
+chromium phone toggled hop2 from /book/ch30.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone toggled hop1 "32. logden, alone" -> HTTP 200 /book/ch31.html h1="31. logden, alone" FAULT number
+chromium phone toggled hop2 from /book/ch31.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone toggled hop1 "33. Coda: the allocator you never needed" -> HTTP 200 /book/ch32.html h1="32. Coda: the allocator you never needed" FAULT number
+chromium phone toggled hop2 from /book/ch32.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium phone toggled hop1 "Appendix A — Grammar summary" -> HTTP 200 /book/back/appendix-a.html h1="Appendix A — Grammar summary"
+chromium phone toggled hop2 from /book/back/appendix-a.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium phone toggled hop1 "Appendix B — Traps" -> HTTP 200 /book/back/appendix-b.html h1="Appendix B — Traps"
+chromium phone toggled hop2 from /book/back/appendix-b.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium phone toggled hop1 "Appendix C — Diagnostics" -> HTTP 200 /book/back/appendix-c.html h1="Appendix C — Diagnostics"
+chromium phone toggled hop2 from /book/back/appendix-c.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium phone toggled hop1 "Appendix D — Spec cross-reference" -> HTTP 200 /book/back/appendix-d.html h1="Appendix D — Spec cross-reference"
+chromium phone toggled hop2 from /book/back/appendix-d.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium phone toggled hop1 "Appendix E — The driver's surface" -> HTTP 200 /book/back/appendix-e.html h1="Appendix E — The driver’s surface"
+chromium phone toggled hop2 from /book/back/appendix-e.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium phone toggled hop1 "Solutions" -> HTTP 200 /book/back/solutions.html h1="Solutions"
+chromium phone toggled hop2 from /book/back/solutions.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium phone toggled hop1 "Glossary" -> HTTP 200 /book/back/glossary.html h1="Glossary"
+chromium phone toggled hop2 from /book/back/glossary.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium phone toggled hop1 "Index" -> HTTP 200 /book/back/book-index.html h1="Index"
+chromium phone toggled hop2 from /book/back/book-index.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium phone toggled hop1 "Errata" -> HTTP 200 /book/back/errata.html h1="Errata"
+chromium phone toggled hop2 from /book/back/errata.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium phone toggled hop1 "Colophon" -> HTTP 200 /book/back/colophon.html h1="Colophon"
+chromium phone toggled hop2 from /book/back/colophon.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+# chromium phone: hop1 90/90 at 200 (16 number mismatches); hop2 66/90 at 200
+# chromium desktop: ch07 has 45 entries; first load {"checked":false,"cls":true,"drawn":false}; page errors: path_to_root is not defined
+chromium desktop untoggled hop1 "How to read this book" -> HTTP 200 /book/front/how-to-read.html h1="How to read this book"
+chromium desktop untoggled hop2 from /book/front/how-to-read.html "1. Hello, Wolf" -> HTTP 404 /book/front/ch01.html
+chromium desktop untoggled hop1 "Notation" -> HTTP 200 /book/front/notation.html h1="Notation"
+chromium desktop untoggled hop2 from /book/front/notation.html "1. Hello, Wolf" -> HTTP 404 /book/front/ch01.html
+chromium desktop untoggled hop1 "1. Hello, Wolf" -> HTTP 200 /book/ch01.html h1="1. Hello, Wolf"
+chromium desktop untoggled hop2 from /book/ch01.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop untoggled hop1 "2. Strings, honestly" -> HTTP 200 /book/ch02.html h1="2. Strings, honestly"
+chromium desktop untoggled hop2 from /book/ch02.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop untoggled hop1 "3. Values and expressions" -> HTTP 200 /book/ch03.html h1="3. Values and expressions"
+chromium desktop untoggled hop2 from /book/ch03.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop untoggled hop1 "4. Functions" -> HTTP 200 /book/ch04.html h1="4. Functions"
+chromium desktop untoggled hop2 from /book/ch04.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop untoggled hop1 "5. Collections and generics" -> HTTP 200 /book/ch05.html h1="5. Collections and generics"
+chromium desktop untoggled hop2 from /book/ch05.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop untoggled hop1 "6. Errors are values" -> HTTP 200 /book/ch06.html h1="6. Errors are values"
+chromium desktop untoggled hop2 from /book/ch06.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop untoggled hop1 "7. Who owns this?" -> HTTP 200 /book/ch07.html h1="7. Who owns this?"
+chromium desktop untoggled hop2 from /book/ch07.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop untoggled hop1 "8. Regions: memory in the shape you meant" -> HTTP 200 /book/ch08.html h1="8. Regions: memory in the shape you meant"
+chromium desktop untoggled hop2 from /book/ch08.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop untoggled hop1 "9. The escape hatch is a door, not a cliff" -> HTTP 200 /book/ch09.html h1="9. The escape hatch is a door, not a cliff"
+chromium desktop untoggled hop2 from /book/ch09.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop untoggled hop1 "10. Spawning is a scope" -> HTTP 200 /book/ch10.html h1="10. Spawning is a scope"
+chromium desktop untoggled hop2 from /book/ch10.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop untoggled hop1 "11. Scopes as values" -> HTTP 200 /book/ch11.html h1="11. Scopes as values"
+chromium desktop untoggled hop2 from /book/ch11.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop untoggled hop1 "12. Channels and select" -> HTTP 200 /book/ch12.html h1="12. Channels and select"
+chromium desktop untoggled hop2 from /book/ch12.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop untoggled hop1 "13. Dividing one job" -> HTTP 200 /book/ch13.html h1="13. Dividing one job"
+chromium desktop untoggled hop2 from /book/ch13.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop untoggled hop1 "14. Procs: the unit of failure" -> HTTP 200 /book/ch14.html h1="14. Procs: the unit of failure"
+chromium desktop untoggled hop2 from /book/ch14.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop untoggled hop1 "15. Link, monitor, supervision" -> HTTP 200 /book/ch15.html h1="15. Link, monitor, supervision"
+chromium desktop untoggled hop2 from /book/ch15.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop untoggled hop1 "16. Region transfer: fearless messaging" -> HTTP 200 /book/ch16.html h1="16. Region transfer: fearless messaging"
+chromium desktop untoggled hop2 from /book/ch16.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop untoggled hop1 "17. The failing schedule, replayed" -> HTTP 200 /book/ch17.html h1="17. The failing schedule, replayed"
+chromium desktop untoggled hop2 from /book/ch17.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop untoggled hop1 "18. Comptime: one tier, no macros" -> HTTP 200 /book/ch18.html h1="18. Comptime: one tier, no macros"
+chromium desktop untoggled hop2 from /book/ch18.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop untoggled hop1 "19. Reading the release tier" -> HTTP 200 /book/ch19.html h1="19. Reading the release tier"
+chromium desktop untoggled hop2 from /book/ch19.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop untoggled hop1 "20. Perf contracts" -> HTTP 200 /book/ch20.html h1="20. Perf contracts"
+chromium desktop untoggled hop2 from /book/ch20.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop untoggled hop1 "21. Beating C honestly" -> HTTP 200 /book/ch21.html h1="21. Beating C honestly"
+chromium desktop untoggled hop2 from /book/ch21.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop untoggled hop1 "22. Modules: the shape of a wolf project" -> HTTP 200 /book/ch22.html h1="22. Modules: the shape of a wolf project"
+chromium desktop untoggled hop2 from /book/ch22.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop untoggled hop1 "23. Packages and dependencies" -> HTTP 200 /book/ch23.html h1="23. Packages and dependencies"
+chromium desktop untoggled hop2 from /book/ch23.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop untoggled hop1 "24. The covenant: no build scripts" -> HTTP 200 /book/ch24.html h1="24. The covenant: no build scripts"
+chromium desktop untoggled hop2 from /book/ch24.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop untoggled hop1 "25. Editions, stability, publishing" -> HTTP 200 /book/ch25.html h1="25. Editions, stability, publishing"
+chromium desktop untoggled hop2 from /book/ch25.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop untoggled hop1 "26. The serving loop" -> HTTP 200 /book/ch33.html h1="33. The serving loop" FAULT number
+chromium desktop untoggled hop2 from /book/ch33.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop untoggled hop1 "27. count, twice" -> HTTP 200 /book/ch26.html h1="26. count, twice" FAULT number
+chromium desktop untoggled hop2 from /book/ch26.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop untoggled hop1 "28. rpn, twice" -> HTTP 200 /book/ch27.html h1="27. rpn, twice" FAULT number
+chromium desktop untoggled hop2 from /book/ch27.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop untoggled hop1 "29. wordtree, twice" -> HTTP 200 /book/ch28.html h1="28. wordtree, twice" FAULT number
+chromium desktop untoggled hop2 from /book/ch28.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop untoggled hop1 "30. tinyvm" -> HTTP 200 /book/ch29.html h1="29. tinyvm" FAULT number
+chromium desktop untoggled hop2 from /book/ch29.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop untoggled hop1 "31. pargrep" -> HTTP 200 /book/ch30.html h1="30. pargrep" FAULT number
+chromium desktop untoggled hop2 from /book/ch30.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop untoggled hop1 "32. logden, alone" -> HTTP 200 /book/ch31.html h1="31. logden, alone" FAULT number
+chromium desktop untoggled hop2 from /book/ch31.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop untoggled hop1 "33. Coda: the allocator you never needed" -> HTTP 200 /book/ch32.html h1="32. Coda: the allocator you never needed" FAULT number
+chromium desktop untoggled hop2 from /book/ch32.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop untoggled hop1 "Appendix A — Grammar summary" -> HTTP 200 /book/back/appendix-a.html h1="Appendix A — Grammar summary"
+chromium desktop untoggled hop2 from /book/back/appendix-a.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium desktop untoggled hop1 "Appendix B — Traps" -> HTTP 200 /book/back/appendix-b.html h1="Appendix B — Traps"
+chromium desktop untoggled hop2 from /book/back/appendix-b.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium desktop untoggled hop1 "Appendix C — Diagnostics" -> HTTP 200 /book/back/appendix-c.html h1="Appendix C — Diagnostics"
+chromium desktop untoggled hop2 from /book/back/appendix-c.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium desktop untoggled hop1 "Appendix D — Spec cross-reference" -> HTTP 200 /book/back/appendix-d.html h1="Appendix D — Spec cross-reference"
+chromium desktop untoggled hop2 from /book/back/appendix-d.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium desktop untoggled hop1 "Appendix E — The driver's surface" -> HTTP 200 /book/back/appendix-e.html h1="Appendix E — The driver’s surface"
+chromium desktop untoggled hop2 from /book/back/appendix-e.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium desktop untoggled hop1 "Solutions" -> HTTP 200 /book/back/solutions.html h1="Solutions"
+chromium desktop untoggled hop2 from /book/back/solutions.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium desktop untoggled hop1 "Glossary" -> HTTP 200 /book/back/glossary.html h1="Glossary"
+chromium desktop untoggled hop2 from /book/back/glossary.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium desktop untoggled hop1 "Index" -> HTTP 200 /book/back/book-index.html h1="Index"
+chromium desktop untoggled hop2 from /book/back/book-index.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium desktop untoggled hop1 "Errata" -> HTTP 200 /book/back/errata.html h1="Errata"
+chromium desktop untoggled hop2 from /book/back/errata.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium desktop untoggled hop1 "Colophon" -> HTTP 200 /book/back/colophon.html h1="Colophon"
+chromium desktop untoggled hop2 from /book/back/colophon.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium desktop toggled hop1 "How to read this book" -> HTTP 200 /book/front/how-to-read.html h1="How to read this book"
+chromium desktop toggled hop2 from /book/front/how-to-read.html "1. Hello, Wolf" -> HTTP 404 /book/front/ch01.html
+chromium desktop toggled hop1 "Notation" -> HTTP 200 /book/front/notation.html h1="Notation"
+chromium desktop toggled hop2 from /book/front/notation.html "1. Hello, Wolf" -> HTTP 404 /book/front/ch01.html
+chromium desktop toggled hop1 "1. Hello, Wolf" -> HTTP 200 /book/ch01.html h1="1. Hello, Wolf"
+chromium desktop toggled hop2 from /book/ch01.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop toggled hop1 "2. Strings, honestly" -> HTTP 200 /book/ch02.html h1="2. Strings, honestly"
+chromium desktop toggled hop2 from /book/ch02.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop toggled hop1 "3. Values and expressions" -> HTTP 200 /book/ch03.html h1="3. Values and expressions"
+chromium desktop toggled hop2 from /book/ch03.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop toggled hop1 "4. Functions" -> HTTP 200 /book/ch04.html h1="4. Functions"
+chromium desktop toggled hop2 from /book/ch04.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop toggled hop1 "5. Collections and generics" -> HTTP 200 /book/ch05.html h1="5. Collections and generics"
+chromium desktop toggled hop2 from /book/ch05.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop toggled hop1 "6. Errors are values" -> HTTP 200 /book/ch06.html h1="6. Errors are values"
+chromium desktop toggled hop2 from /book/ch06.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop toggled hop1 "7. Who owns this?" -> HTTP 200 /book/ch07.html h1="7. Who owns this?"
+chromium desktop toggled hop2 from /book/ch07.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop toggled hop1 "8. Regions: memory in the shape you meant" -> HTTP 200 /book/ch08.html h1="8. Regions: memory in the shape you meant"
+chromium desktop toggled hop2 from /book/ch08.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop toggled hop1 "9. The escape hatch is a door, not a cliff" -> HTTP 200 /book/ch09.html h1="9. The escape hatch is a door, not a cliff"
+chromium desktop toggled hop2 from /book/ch09.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop toggled hop1 "10. Spawning is a scope" -> HTTP 200 /book/ch10.html h1="10. Spawning is a scope"
+chromium desktop toggled hop2 from /book/ch10.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop toggled hop1 "11. Scopes as values" -> HTTP 200 /book/ch11.html h1="11. Scopes as values"
+chromium desktop toggled hop2 from /book/ch11.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop toggled hop1 "12. Channels and select" -> HTTP 200 /book/ch12.html h1="12. Channels and select"
+chromium desktop toggled hop2 from /book/ch12.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop toggled hop1 "13. Dividing one job" -> HTTP 200 /book/ch13.html h1="13. Dividing one job"
+chromium desktop toggled hop2 from /book/ch13.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop toggled hop1 "14. Procs: the unit of failure" -> HTTP 200 /book/ch14.html h1="14. Procs: the unit of failure"
+chromium desktop toggled hop2 from /book/ch14.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop toggled hop1 "15. Link, monitor, supervision" -> HTTP 200 /book/ch15.html h1="15. Link, monitor, supervision"
+chromium desktop toggled hop2 from /book/ch15.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop toggled hop1 "16. Region transfer: fearless messaging" -> HTTP 200 /book/ch16.html h1="16. Region transfer: fearless messaging"
+chromium desktop toggled hop2 from /book/ch16.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop toggled hop1 "17. The failing schedule, replayed" -> HTTP 200 /book/ch17.html h1="17. The failing schedule, replayed"
+chromium desktop toggled hop2 from /book/ch17.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop toggled hop1 "18. Comptime: one tier, no macros" -> HTTP 200 /book/ch18.html h1="18. Comptime: one tier, no macros"
+chromium desktop toggled hop2 from /book/ch18.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop toggled hop1 "19. Reading the release tier" -> HTTP 200 /book/ch19.html h1="19. Reading the release tier"
+chromium desktop toggled hop2 from /book/ch19.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop toggled hop1 "20. Perf contracts" -> HTTP 200 /book/ch20.html h1="20. Perf contracts"
+chromium desktop toggled hop2 from /book/ch20.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop toggled hop1 "21. Beating C honestly" -> HTTP 200 /book/ch21.html h1="21. Beating C honestly"
+chromium desktop toggled hop2 from /book/ch21.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop toggled hop1 "22. Modules: the shape of a wolf project" -> HTTP 200 /book/ch22.html h1="22. Modules: the shape of a wolf project"
+chromium desktop toggled hop2 from /book/ch22.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop toggled hop1 "23. Packages and dependencies" -> HTTP 200 /book/ch23.html h1="23. Packages and dependencies"
+chromium desktop toggled hop2 from /book/ch23.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop toggled hop1 "24. The covenant: no build scripts" -> HTTP 200 /book/ch24.html h1="24. The covenant: no build scripts"
+chromium desktop toggled hop2 from /book/ch24.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop toggled hop1 "25. Editions, stability, publishing" -> HTTP 200 /book/ch25.html h1="25. Editions, stability, publishing"
+chromium desktop toggled hop2 from /book/ch25.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop toggled hop1 "26. The serving loop" -> HTTP 200 /book/ch33.html h1="33. The serving loop" FAULT number
+chromium desktop toggled hop2 from /book/ch33.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop toggled hop1 "27. count, twice" -> HTTP 200 /book/ch26.html h1="26. count, twice" FAULT number
+chromium desktop toggled hop2 from /book/ch26.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop toggled hop1 "28. rpn, twice" -> HTTP 200 /book/ch27.html h1="27. rpn, twice" FAULT number
+chromium desktop toggled hop2 from /book/ch27.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop toggled hop1 "29. wordtree, twice" -> HTTP 200 /book/ch28.html h1="28. wordtree, twice" FAULT number
+chromium desktop toggled hop2 from /book/ch28.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop toggled hop1 "30. tinyvm" -> HTTP 200 /book/ch29.html h1="29. tinyvm" FAULT number
+chromium desktop toggled hop2 from /book/ch29.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop toggled hop1 "31. pargrep" -> HTTP 200 /book/ch30.html h1="30. pargrep" FAULT number
+chromium desktop toggled hop2 from /book/ch30.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop toggled hop1 "32. logden, alone" -> HTTP 200 /book/ch31.html h1="31. logden, alone" FAULT number
+chromium desktop toggled hop2 from /book/ch31.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop toggled hop1 "33. Coda: the allocator you never needed" -> HTTP 200 /book/ch32.html h1="32. Coda: the allocator you never needed" FAULT number
+chromium desktop toggled hop2 from /book/ch32.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+chromium desktop toggled hop1 "Appendix A — Grammar summary" -> HTTP 200 /book/back/appendix-a.html h1="Appendix A — Grammar summary"
+chromium desktop toggled hop2 from /book/back/appendix-a.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium desktop toggled hop1 "Appendix B — Traps" -> HTTP 200 /book/back/appendix-b.html h1="Appendix B — Traps"
+chromium desktop toggled hop2 from /book/back/appendix-b.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium desktop toggled hop1 "Appendix C — Diagnostics" -> HTTP 200 /book/back/appendix-c.html h1="Appendix C — Diagnostics"
+chromium desktop toggled hop2 from /book/back/appendix-c.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium desktop toggled hop1 "Appendix D — Spec cross-reference" -> HTTP 200 /book/back/appendix-d.html h1="Appendix D — Spec cross-reference"
+chromium desktop toggled hop2 from /book/back/appendix-d.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium desktop toggled hop1 "Appendix E — The driver's surface" -> HTTP 200 /book/back/appendix-e.html h1="Appendix E — The driver’s surface"
+chromium desktop toggled hop2 from /book/back/appendix-e.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium desktop toggled hop1 "Solutions" -> HTTP 200 /book/back/solutions.html h1="Solutions"
+chromium desktop toggled hop2 from /book/back/solutions.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium desktop toggled hop1 "Glossary" -> HTTP 200 /book/back/glossary.html h1="Glossary"
+chromium desktop toggled hop2 from /book/back/glossary.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium desktop toggled hop1 "Index" -> HTTP 200 /book/back/book-index.html h1="Index"
+chromium desktop toggled hop2 from /book/back/book-index.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium desktop toggled hop1 "Errata" -> HTTP 200 /book/back/errata.html h1="Errata"
+chromium desktop toggled hop2 from /book/back/errata.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+chromium desktop toggled hop1 "Colophon" -> HTTP 200 /book/back/colophon.html h1="Colophon"
+chromium desktop toggled hop2 from /book/back/colophon.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+# chromium desktop: hop1 90/90 at 200 (16 number mismatches); hop2 66/90 at 200
+# firefox phone: ch07 has 45 entries; first load {"checked":false,"cls":true,"drawn":false}; page errors: path_to_root is not defined
+firefox phone untoggled hop1 "How to read this book" -> HTTP 200 /book/front/how-to-read.html h1="How to read this book"
+firefox phone untoggled hop2 from /book/front/how-to-read.html "1. Hello, Wolf" -> HTTP 404 /book/front/ch01.html
+firefox phone untoggled hop1 "Notation" -> HTTP 200 /book/front/notation.html h1="Notation"
+firefox phone untoggled hop2 from /book/front/notation.html "1. Hello, Wolf" -> HTTP 404 /book/front/ch01.html
+firefox phone untoggled hop1 "1. Hello, Wolf" -> HTTP 200 /book/ch01.html h1="1. Hello, Wolf"
+firefox phone untoggled hop2 from /book/ch01.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone untoggled hop1 "2. Strings, honestly" -> HTTP 200 /book/ch02.html h1="2. Strings, honestly"
+firefox phone untoggled hop2 from /book/ch02.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone untoggled hop1 "3. Values and expressions" -> HTTP 200 /book/ch03.html h1="3. Values and expressions"
+firefox phone untoggled hop2 from /book/ch03.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone untoggled hop1 "4. Functions" -> HTTP 200 /book/ch04.html h1="4. Functions"
+firefox phone untoggled hop2 from /book/ch04.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone untoggled hop1 "5. Collections and generics" -> HTTP 200 /book/ch05.html h1="5. Collections and generics"
+firefox phone untoggled hop2 from /book/ch05.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone untoggled hop1 "6. Errors are values" -> HTTP 200 /book/ch06.html h1="6. Errors are values"
+firefox phone untoggled hop2 from /book/ch06.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone untoggled hop1 "7. Who owns this?" -> HTTP 200 /book/ch07.html h1="7. Who owns this?"
+firefox phone untoggled hop2 from /book/ch07.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone untoggled hop1 "8. Regions: memory in the shape you meant" -> HTTP 200 /book/ch08.html h1="8. Regions: memory in the shape you meant"
+firefox phone untoggled hop2 from /book/ch08.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone untoggled hop1 "9. The escape hatch is a door, not a cliff" -> HTTP 200 /book/ch09.html h1="9. The escape hatch is a door, not a cliff"
+firefox phone untoggled hop2 from /book/ch09.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone untoggled hop1 "10. Spawning is a scope" -> HTTP 200 /book/ch10.html h1="10. Spawning is a scope"
+firefox phone untoggled hop2 from /book/ch10.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone untoggled hop1 "11. Scopes as values" -> HTTP 200 /book/ch11.html h1="11. Scopes as values"
+firefox phone untoggled hop2 from /book/ch11.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone untoggled hop1 "12. Channels and select" -> HTTP 200 /book/ch12.html h1="12. Channels and select"
+firefox phone untoggled hop2 from /book/ch12.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone untoggled hop1 "13. Dividing one job" -> HTTP 200 /book/ch13.html h1="13. Dividing one job"
+firefox phone untoggled hop2 from /book/ch13.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone untoggled hop1 "14. Procs: the unit of failure" -> HTTP 200 /book/ch14.html h1="14. Procs: the unit of failure"
+firefox phone untoggled hop2 from /book/ch14.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone untoggled hop1 "15. Link, monitor, supervision" -> HTTP 200 /book/ch15.html h1="15. Link, monitor, supervision"
+firefox phone untoggled hop2 from /book/ch15.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone untoggled hop1 "16. Region transfer: fearless messaging" -> HTTP 200 /book/ch16.html h1="16. Region transfer: fearless messaging"
+firefox phone untoggled hop2 from /book/ch16.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone untoggled hop1 "17. The failing schedule, replayed" -> HTTP 200 /book/ch17.html h1="17. The failing schedule, replayed"
+firefox phone untoggled hop2 from /book/ch17.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone untoggled hop1 "18. Comptime: one tier, no macros" -> HTTP 200 /book/ch18.html h1="18. Comptime: one tier, no macros"
+firefox phone untoggled hop2 from /book/ch18.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone untoggled hop1 "19. Reading the release tier" -> HTTP 200 /book/ch19.html h1="19. Reading the release tier"
+firefox phone untoggled hop2 from /book/ch19.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone untoggled hop1 "20. Perf contracts" -> HTTP 200 /book/ch20.html h1="20. Perf contracts"
+firefox phone untoggled hop2 from /book/ch20.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone untoggled hop1 "21. Beating C honestly" -> HTTP 200 /book/ch21.html h1="21. Beating C honestly"
+firefox phone untoggled hop2 from /book/ch21.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone untoggled hop1 "22. Modules: the shape of a wolf project" -> HTTP 200 /book/ch22.html h1="22. Modules: the shape of a wolf project"
+firefox phone untoggled hop2 from /book/ch22.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone untoggled hop1 "23. Packages and dependencies" -> HTTP 200 /book/ch23.html h1="23. Packages and dependencies"
+firefox phone untoggled hop2 from /book/ch23.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone untoggled hop1 "24. The covenant: no build scripts" -> HTTP 200 /book/ch24.html h1="24. The covenant: no build scripts"
+firefox phone untoggled hop2 from /book/ch24.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone untoggled hop1 "25. Editions, stability, publishing" -> HTTP 200 /book/ch25.html h1="25. Editions, stability, publishing"
+firefox phone untoggled hop2 from /book/ch25.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone untoggled hop1 "26. The serving loop" -> HTTP 200 /book/ch33.html h1="33. The serving loop" FAULT number
+firefox phone untoggled hop2 from /book/ch33.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone untoggled hop1 "27. count, twice" -> HTTP 200 /book/ch26.html h1="26. count, twice" FAULT number
+firefox phone untoggled hop2 from /book/ch26.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone untoggled hop1 "28. rpn, twice" -> HTTP 200 /book/ch27.html h1="27. rpn, twice" FAULT number
+firefox phone untoggled hop2 from /book/ch27.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone untoggled hop1 "29. wordtree, twice" -> HTTP 200 /book/ch28.html h1="28. wordtree, twice" FAULT number
+firefox phone untoggled hop2 from /book/ch28.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone untoggled hop1 "30. tinyvm" -> HTTP 200 /book/ch29.html h1="29. tinyvm" FAULT number
+firefox phone untoggled hop2 from /book/ch29.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone untoggled hop1 "31. pargrep" -> HTTP 200 /book/ch30.html h1="30. pargrep" FAULT number
+firefox phone untoggled hop2 from /book/ch30.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone untoggled hop1 "32. logden, alone" -> HTTP 200 /book/ch31.html h1="31. logden, alone" FAULT number
+firefox phone untoggled hop2 from /book/ch31.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone untoggled hop1 "33. Coda: the allocator you never needed" -> HTTP 200 /book/ch32.html h1="32. Coda: the allocator you never needed" FAULT number
+firefox phone untoggled hop2 from /book/ch32.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone untoggled hop1 "Appendix A — Grammar summary" -> HTTP 200 /book/back/appendix-a.html h1="Appendix A — Grammar summary"
+firefox phone untoggled hop2 from /book/back/appendix-a.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox phone untoggled hop1 "Appendix B — Traps" -> HTTP 200 /book/back/appendix-b.html h1="Appendix B — Traps"
+firefox phone untoggled hop2 from /book/back/appendix-b.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox phone untoggled hop1 "Appendix C — Diagnostics" -> HTTP 200 /book/back/appendix-c.html h1="Appendix C — Diagnostics"
+firefox phone untoggled hop2 from /book/back/appendix-c.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox phone untoggled hop1 "Appendix D — Spec cross-reference" -> HTTP 200 /book/back/appendix-d.html h1="Appendix D — Spec cross-reference"
+firefox phone untoggled hop2 from /book/back/appendix-d.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox phone untoggled hop1 "Appendix E — The driver's surface" -> HTTP 200 /book/back/appendix-e.html h1="Appendix E — The driver’s surface"
+firefox phone untoggled hop2 from /book/back/appendix-e.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox phone untoggled hop1 "Solutions" -> HTTP 200 /book/back/solutions.html h1="Solutions"
+firefox phone untoggled hop2 from /book/back/solutions.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox phone untoggled hop1 "Glossary" -> HTTP 200 /book/back/glossary.html h1="Glossary"
+firefox phone untoggled hop2 from /book/back/glossary.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox phone untoggled hop1 "Index" -> HTTP 200 /book/back/book-index.html h1="Index"
+firefox phone untoggled hop2 from /book/back/book-index.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox phone untoggled hop1 "Errata" -> HTTP 200 /book/back/errata.html h1="Errata"
+firefox phone untoggled hop2 from /book/back/errata.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox phone untoggled hop1 "Colophon" -> HTTP 200 /book/back/colophon.html h1="Colophon"
+firefox phone untoggled hop2 from /book/back/colophon.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox phone toggled hop1 "How to read this book" -> HTTP 200 /book/front/how-to-read.html h1="How to read this book"
+firefox phone toggled hop2 from /book/front/how-to-read.html "1. Hello, Wolf" -> HTTP 404 /book/front/ch01.html
+firefox phone toggled hop1 "Notation" -> HTTP 200 /book/front/notation.html h1="Notation"
+firefox phone toggled hop2 from /book/front/notation.html "1. Hello, Wolf" -> HTTP 404 /book/front/ch01.html
+firefox phone toggled hop1 "1. Hello, Wolf" -> HTTP 200 /book/ch01.html h1="1. Hello, Wolf"
+firefox phone toggled hop2 from /book/ch01.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone toggled hop1 "2. Strings, honestly" -> HTTP 200 /book/ch02.html h1="2. Strings, honestly"
+firefox phone toggled hop2 from /book/ch02.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone toggled hop1 "3. Values and expressions" -> HTTP 200 /book/ch03.html h1="3. Values and expressions"
+firefox phone toggled hop2 from /book/ch03.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone toggled hop1 "4. Functions" -> HTTP 200 /book/ch04.html h1="4. Functions"
+firefox phone toggled hop2 from /book/ch04.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone toggled hop1 "5. Collections and generics" -> HTTP 200 /book/ch05.html h1="5. Collections and generics"
+firefox phone toggled hop2 from /book/ch05.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone toggled hop1 "6. Errors are values" -> HTTP 200 /book/ch06.html h1="6. Errors are values"
+firefox phone toggled hop2 from /book/ch06.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone toggled hop1 "7. Who owns this?" -> HTTP 200 /book/ch07.html h1="7. Who owns this?"
+firefox phone toggled hop2 from /book/ch07.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone toggled hop1 "8. Regions: memory in the shape you meant" -> HTTP 200 /book/ch08.html h1="8. Regions: memory in the shape you meant"
+firefox phone toggled hop2 from /book/ch08.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone toggled hop1 "9. The escape hatch is a door, not a cliff" -> HTTP 200 /book/ch09.html h1="9. The escape hatch is a door, not a cliff"
+firefox phone toggled hop2 from /book/ch09.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone toggled hop1 "10. Spawning is a scope" -> HTTP 200 /book/ch10.html h1="10. Spawning is a scope"
+firefox phone toggled hop2 from /book/ch10.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone toggled hop1 "11. Scopes as values" -> HTTP 200 /book/ch11.html h1="11. Scopes as values"
+firefox phone toggled hop2 from /book/ch11.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone toggled hop1 "12. Channels and select" -> HTTP 200 /book/ch12.html h1="12. Channels and select"
+firefox phone toggled hop2 from /book/ch12.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone toggled hop1 "13. Dividing one job" -> HTTP 200 /book/ch13.html h1="13. Dividing one job"
+firefox phone toggled hop2 from /book/ch13.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone toggled hop1 "14. Procs: the unit of failure" -> HTTP 200 /book/ch14.html h1="14. Procs: the unit of failure"
+firefox phone toggled hop2 from /book/ch14.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone toggled hop1 "15. Link, monitor, supervision" -> HTTP 200 /book/ch15.html h1="15. Link, monitor, supervision"
+firefox phone toggled hop2 from /book/ch15.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone toggled hop1 "16. Region transfer: fearless messaging" -> HTTP 200 /book/ch16.html h1="16. Region transfer: fearless messaging"
+firefox phone toggled hop2 from /book/ch16.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone toggled hop1 "17. The failing schedule, replayed" -> HTTP 200 /book/ch17.html h1="17. The failing schedule, replayed"
+firefox phone toggled hop2 from /book/ch17.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone toggled hop1 "18. Comptime: one tier, no macros" -> HTTP 200 /book/ch18.html h1="18. Comptime: one tier, no macros"
+firefox phone toggled hop2 from /book/ch18.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone toggled hop1 "19. Reading the release tier" -> HTTP 200 /book/ch19.html h1="19. Reading the release tier"
+firefox phone toggled hop2 from /book/ch19.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone toggled hop1 "20. Perf contracts" -> HTTP 200 /book/ch20.html h1="20. Perf contracts"
+firefox phone toggled hop2 from /book/ch20.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone toggled hop1 "21. Beating C honestly" -> HTTP 200 /book/ch21.html h1="21. Beating C honestly"
+firefox phone toggled hop2 from /book/ch21.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone toggled hop1 "22. Modules: the shape of a wolf project" -> HTTP 200 /book/ch22.html h1="22. Modules: the shape of a wolf project"
+firefox phone toggled hop2 from /book/ch22.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone toggled hop1 "23. Packages and dependencies" -> HTTP 200 /book/ch23.html h1="23. Packages and dependencies"
+firefox phone toggled hop2 from /book/ch23.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone toggled hop1 "24. The covenant: no build scripts" -> HTTP 200 /book/ch24.html h1="24. The covenant: no build scripts"
+firefox phone toggled hop2 from /book/ch24.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone toggled hop1 "25. Editions, stability, publishing" -> HTTP 200 /book/ch25.html h1="25. Editions, stability, publishing"
+firefox phone toggled hop2 from /book/ch25.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone toggled hop1 "26. The serving loop" -> HTTP 200 /book/ch33.html h1="33. The serving loop" FAULT number
+firefox phone toggled hop2 from /book/ch33.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone toggled hop1 "27. count, twice" -> HTTP 200 /book/ch26.html h1="26. count, twice" FAULT number
+firefox phone toggled hop2 from /book/ch26.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone toggled hop1 "28. rpn, twice" -> HTTP 200 /book/ch27.html h1="27. rpn, twice" FAULT number
+firefox phone toggled hop2 from /book/ch27.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone toggled hop1 "29. wordtree, twice" -> HTTP 200 /book/ch28.html h1="28. wordtree, twice" FAULT number
+firefox phone toggled hop2 from /book/ch28.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone toggled hop1 "30. tinyvm" -> HTTP 200 /book/ch29.html h1="29. tinyvm" FAULT number
+firefox phone toggled hop2 from /book/ch29.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone toggled hop1 "31. pargrep" -> HTTP 200 /book/ch30.html h1="30. pargrep" FAULT number
+firefox phone toggled hop2 from /book/ch30.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone toggled hop1 "32. logden, alone" -> HTTP 200 /book/ch31.html h1="31. logden, alone" FAULT number
+firefox phone toggled hop2 from /book/ch31.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone toggled hop1 "33. Coda: the allocator you never needed" -> HTTP 200 /book/ch32.html h1="32. Coda: the allocator you never needed" FAULT number
+firefox phone toggled hop2 from /book/ch32.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox phone toggled hop1 "Appendix A — Grammar summary" -> HTTP 200 /book/back/appendix-a.html h1="Appendix A — Grammar summary"
+firefox phone toggled hop2 from /book/back/appendix-a.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox phone toggled hop1 "Appendix B — Traps" -> HTTP 200 /book/back/appendix-b.html h1="Appendix B — Traps"
+firefox phone toggled hop2 from /book/back/appendix-b.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox phone toggled hop1 "Appendix C — Diagnostics" -> HTTP 200 /book/back/appendix-c.html h1="Appendix C — Diagnostics"
+firefox phone toggled hop2 from /book/back/appendix-c.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox phone toggled hop1 "Appendix D — Spec cross-reference" -> HTTP 200 /book/back/appendix-d.html h1="Appendix D — Spec cross-reference"
+firefox phone toggled hop2 from /book/back/appendix-d.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox phone toggled hop1 "Appendix E — The driver's surface" -> HTTP 200 /book/back/appendix-e.html h1="Appendix E — The driver’s surface"
+firefox phone toggled hop2 from /book/back/appendix-e.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox phone toggled hop1 "Solutions" -> HTTP 200 /book/back/solutions.html h1="Solutions"
+firefox phone toggled hop2 from /book/back/solutions.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox phone toggled hop1 "Glossary" -> HTTP 200 /book/back/glossary.html h1="Glossary"
+firefox phone toggled hop2 from /book/back/glossary.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox phone toggled hop1 "Index" -> HTTP 200 /book/back/book-index.html h1="Index"
+firefox phone toggled hop2 from /book/back/book-index.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox phone toggled hop1 "Errata" -> HTTP 200 /book/back/errata.html h1="Errata"
+firefox phone toggled hop2 from /book/back/errata.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox phone toggled hop1 "Colophon" -> HTTP 200 /book/back/colophon.html h1="Colophon"
+firefox phone toggled hop2 from /book/back/colophon.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+# firefox phone: hop1 90/90 at 200 (16 number mismatches); hop2 66/90 at 200
+# firefox desktop: ch07 has 45 entries; first load {"checked":false,"cls":true,"drawn":false}; page errors: path_to_root is not defined
+firefox desktop untoggled hop1 "How to read this book" -> HTTP 200 /book/front/how-to-read.html h1="How to read this book"
+firefox desktop untoggled hop2 from /book/front/how-to-read.html "1. Hello, Wolf" -> HTTP 404 /book/front/ch01.html
+firefox desktop untoggled hop1 "Notation" -> HTTP 200 /book/front/notation.html h1="Notation"
+firefox desktop untoggled hop2 from /book/front/notation.html "1. Hello, Wolf" -> HTTP 404 /book/front/ch01.html
+firefox desktop untoggled hop1 "1. Hello, Wolf" -> HTTP 200 /book/ch01.html h1="1. Hello, Wolf"
+firefox desktop untoggled hop2 from /book/ch01.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop untoggled hop1 "2. Strings, honestly" -> HTTP 200 /book/ch02.html h1="2. Strings, honestly"
+firefox desktop untoggled hop2 from /book/ch02.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop untoggled hop1 "3. Values and expressions" -> HTTP 200 /book/ch03.html h1="3. Values and expressions"
+firefox desktop untoggled hop2 from /book/ch03.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop untoggled hop1 "4. Functions" -> HTTP 200 /book/ch04.html h1="4. Functions"
+firefox desktop untoggled hop2 from /book/ch04.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop untoggled hop1 "5. Collections and generics" -> HTTP 200 /book/ch05.html h1="5. Collections and generics"
+firefox desktop untoggled hop2 from /book/ch05.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop untoggled hop1 "6. Errors are values" -> HTTP 200 /book/ch06.html h1="6. Errors are values"
+firefox desktop untoggled hop2 from /book/ch06.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop untoggled hop1 "7. Who owns this?" -> HTTP 200 /book/ch07.html h1="7. Who owns this?"
+firefox desktop untoggled hop2 from /book/ch07.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop untoggled hop1 "8. Regions: memory in the shape you meant" -> HTTP 200 /book/ch08.html h1="8. Regions: memory in the shape you meant"
+firefox desktop untoggled hop2 from /book/ch08.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop untoggled hop1 "9. The escape hatch is a door, not a cliff" -> HTTP 200 /book/ch09.html h1="9. The escape hatch is a door, not a cliff"
+firefox desktop untoggled hop2 from /book/ch09.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop untoggled hop1 "10. Spawning is a scope" -> HTTP 200 /book/ch10.html h1="10. Spawning is a scope"
+firefox desktop untoggled hop2 from /book/ch10.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop untoggled hop1 "11. Scopes as values" -> HTTP 200 /book/ch11.html h1="11. Scopes as values"
+firefox desktop untoggled hop2 from /book/ch11.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop untoggled hop1 "12. Channels and select" -> HTTP 200 /book/ch12.html h1="12. Channels and select"
+firefox desktop untoggled hop2 from /book/ch12.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop untoggled hop1 "13. Dividing one job" -> HTTP 200 /book/ch13.html h1="13. Dividing one job"
+firefox desktop untoggled hop2 from /book/ch13.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop untoggled hop1 "14. Procs: the unit of failure" -> HTTP 200 /book/ch14.html h1="14. Procs: the unit of failure"
+firefox desktop untoggled hop2 from /book/ch14.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop untoggled hop1 "15. Link, monitor, supervision" -> HTTP 200 /book/ch15.html h1="15. Link, monitor, supervision"
+firefox desktop untoggled hop2 from /book/ch15.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop untoggled hop1 "16. Region transfer: fearless messaging" -> HTTP 200 /book/ch16.html h1="16. Region transfer: fearless messaging"
+firefox desktop untoggled hop2 from /book/ch16.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop untoggled hop1 "17. The failing schedule, replayed" -> HTTP 200 /book/ch17.html h1="17. The failing schedule, replayed"
+firefox desktop untoggled hop2 from /book/ch17.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop untoggled hop1 "18. Comptime: one tier, no macros" -> HTTP 200 /book/ch18.html h1="18. Comptime: one tier, no macros"
+firefox desktop untoggled hop2 from /book/ch18.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop untoggled hop1 "19. Reading the release tier" -> HTTP 200 /book/ch19.html h1="19. Reading the release tier"
+firefox desktop untoggled hop2 from /book/ch19.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop untoggled hop1 "20. Perf contracts" -> HTTP 200 /book/ch20.html h1="20. Perf contracts"
+firefox desktop untoggled hop2 from /book/ch20.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop untoggled hop1 "21. Beating C honestly" -> HTTP 200 /book/ch21.html h1="21. Beating C honestly"
+firefox desktop untoggled hop2 from /book/ch21.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop untoggled hop1 "22. Modules: the shape of a wolf project" -> HTTP 200 /book/ch22.html h1="22. Modules: the shape of a wolf project"
+firefox desktop untoggled hop2 from /book/ch22.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop untoggled hop1 "23. Packages and dependencies" -> HTTP 200 /book/ch23.html h1="23. Packages and dependencies"
+firefox desktop untoggled hop2 from /book/ch23.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop untoggled hop1 "24. The covenant: no build scripts" -> HTTP 200 /book/ch24.html h1="24. The covenant: no build scripts"
+firefox desktop untoggled hop2 from /book/ch24.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop untoggled hop1 "25. Editions, stability, publishing" -> HTTP 200 /book/ch25.html h1="25. Editions, stability, publishing"
+firefox desktop untoggled hop2 from /book/ch25.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop untoggled hop1 "26. The serving loop" -> HTTP 200 /book/ch33.html h1="33. The serving loop" FAULT number
+firefox desktop untoggled hop2 from /book/ch33.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop untoggled hop1 "27. count, twice" -> HTTP 200 /book/ch26.html h1="26. count, twice" FAULT number
+firefox desktop untoggled hop2 from /book/ch26.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop untoggled hop1 "28. rpn, twice" -> HTTP 200 /book/ch27.html h1="27. rpn, twice" FAULT number
+firefox desktop untoggled hop2 from /book/ch27.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop untoggled hop1 "29. wordtree, twice" -> HTTP 200 /book/ch28.html h1="28. wordtree, twice" FAULT number
+firefox desktop untoggled hop2 from /book/ch28.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop untoggled hop1 "30. tinyvm" -> HTTP 200 /book/ch29.html h1="29. tinyvm" FAULT number
+firefox desktop untoggled hop2 from /book/ch29.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop untoggled hop1 "31. pargrep" -> HTTP 200 /book/ch30.html h1="30. pargrep" FAULT number
+firefox desktop untoggled hop2 from /book/ch30.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop untoggled hop1 "32. logden, alone" -> HTTP 200 /book/ch31.html h1="31. logden, alone" FAULT number
+firefox desktop untoggled hop2 from /book/ch31.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop untoggled hop1 "33. Coda: the allocator you never needed" -> HTTP 200 /book/ch32.html h1="32. Coda: the allocator you never needed" FAULT number
+firefox desktop untoggled hop2 from /book/ch32.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop untoggled hop1 "Appendix A — Grammar summary" -> HTTP 200 /book/back/appendix-a.html h1="Appendix A — Grammar summary"
+firefox desktop untoggled hop2 from /book/back/appendix-a.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox desktop untoggled hop1 "Appendix B — Traps" -> HTTP 200 /book/back/appendix-b.html h1="Appendix B — Traps"
+firefox desktop untoggled hop2 from /book/back/appendix-b.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox desktop untoggled hop1 "Appendix C — Diagnostics" -> HTTP 200 /book/back/appendix-c.html h1="Appendix C — Diagnostics"
+firefox desktop untoggled hop2 from /book/back/appendix-c.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox desktop untoggled hop1 "Appendix D — Spec cross-reference" -> HTTP 200 /book/back/appendix-d.html h1="Appendix D — Spec cross-reference"
+firefox desktop untoggled hop2 from /book/back/appendix-d.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox desktop untoggled hop1 "Appendix E — The driver's surface" -> HTTP 200 /book/back/appendix-e.html h1="Appendix E — The driver’s surface"
+firefox desktop untoggled hop2 from /book/back/appendix-e.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox desktop untoggled hop1 "Solutions" -> HTTP 200 /book/back/solutions.html h1="Solutions"
+firefox desktop untoggled hop2 from /book/back/solutions.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox desktop untoggled hop1 "Glossary" -> HTTP 200 /book/back/glossary.html h1="Glossary"
+firefox desktop untoggled hop2 from /book/back/glossary.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox desktop untoggled hop1 "Index" -> HTTP 200 /book/back/book-index.html h1="Index"
+firefox desktop untoggled hop2 from /book/back/book-index.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox desktop untoggled hop1 "Errata" -> HTTP 200 /book/back/errata.html h1="Errata"
+firefox desktop untoggled hop2 from /book/back/errata.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox desktop untoggled hop1 "Colophon" -> HTTP 200 /book/back/colophon.html h1="Colophon"
+firefox desktop untoggled hop2 from /book/back/colophon.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox desktop toggled hop1 "How to read this book" -> HTTP 200 /book/front/how-to-read.html h1="How to read this book"
+firefox desktop toggled hop2 from /book/front/how-to-read.html "1. Hello, Wolf" -> HTTP 404 /book/front/ch01.html
+firefox desktop toggled hop1 "Notation" -> HTTP 200 /book/front/notation.html h1="Notation"
+firefox desktop toggled hop2 from /book/front/notation.html "1. Hello, Wolf" -> HTTP 404 /book/front/ch01.html
+firefox desktop toggled hop1 "1. Hello, Wolf" -> HTTP 200 /book/ch01.html h1="1. Hello, Wolf"
+firefox desktop toggled hop2 from /book/ch01.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop toggled hop1 "2. Strings, honestly" -> HTTP 200 /book/ch02.html h1="2. Strings, honestly"
+firefox desktop toggled hop2 from /book/ch02.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop toggled hop1 "3. Values and expressions" -> HTTP 200 /book/ch03.html h1="3. Values and expressions"
+firefox desktop toggled hop2 from /book/ch03.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop toggled hop1 "4. Functions" -> HTTP 200 /book/ch04.html h1="4. Functions"
+firefox desktop toggled hop2 from /book/ch04.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop toggled hop1 "5. Collections and generics" -> HTTP 200 /book/ch05.html h1="5. Collections and generics"
+firefox desktop toggled hop2 from /book/ch05.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop toggled hop1 "6. Errors are values" -> HTTP 200 /book/ch06.html h1="6. Errors are values"
+firefox desktop toggled hop2 from /book/ch06.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop toggled hop1 "7. Who owns this?" -> HTTP 200 /book/ch07.html h1="7. Who owns this?"
+firefox desktop toggled hop2 from /book/ch07.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop toggled hop1 "8. Regions: memory in the shape you meant" -> HTTP 200 /book/ch08.html h1="8. Regions: memory in the shape you meant"
+firefox desktop toggled hop2 from /book/ch08.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop toggled hop1 "9. The escape hatch is a door, not a cliff" -> HTTP 200 /book/ch09.html h1="9. The escape hatch is a door, not a cliff"
+firefox desktop toggled hop2 from /book/ch09.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop toggled hop1 "10. Spawning is a scope" -> HTTP 200 /book/ch10.html h1="10. Spawning is a scope"
+firefox desktop toggled hop2 from /book/ch10.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop toggled hop1 "11. Scopes as values" -> HTTP 200 /book/ch11.html h1="11. Scopes as values"
+firefox desktop toggled hop2 from /book/ch11.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop toggled hop1 "12. Channels and select" -> HTTP 200 /book/ch12.html h1="12. Channels and select"
+firefox desktop toggled hop2 from /book/ch12.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop toggled hop1 "13. Dividing one job" -> HTTP 200 /book/ch13.html h1="13. Dividing one job"
+firefox desktop toggled hop2 from /book/ch13.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop toggled hop1 "14. Procs: the unit of failure" -> HTTP 200 /book/ch14.html h1="14. Procs: the unit of failure"
+firefox desktop toggled hop2 from /book/ch14.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop toggled hop1 "15. Link, monitor, supervision" -> HTTP 200 /book/ch15.html h1="15. Link, monitor, supervision"
+firefox desktop toggled hop2 from /book/ch15.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop toggled hop1 "16. Region transfer: fearless messaging" -> HTTP 200 /book/ch16.html h1="16. Region transfer: fearless messaging"
+firefox desktop toggled hop2 from /book/ch16.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop toggled hop1 "17. The failing schedule, replayed" -> HTTP 200 /book/ch17.html h1="17. The failing schedule, replayed"
+firefox desktop toggled hop2 from /book/ch17.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop toggled hop1 "18. Comptime: one tier, no macros" -> HTTP 200 /book/ch18.html h1="18. Comptime: one tier, no macros"
+firefox desktop toggled hop2 from /book/ch18.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop toggled hop1 "19. Reading the release tier" -> HTTP 200 /book/ch19.html h1="19. Reading the release tier"
+firefox desktop toggled hop2 from /book/ch19.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop toggled hop1 "20. Perf contracts" -> HTTP 200 /book/ch20.html h1="20. Perf contracts"
+firefox desktop toggled hop2 from /book/ch20.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop toggled hop1 "21. Beating C honestly" -> HTTP 200 /book/ch21.html h1="21. Beating C honestly"
+firefox desktop toggled hop2 from /book/ch21.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop toggled hop1 "22. Modules: the shape of a wolf project" -> HTTP 200 /book/ch22.html h1="22. Modules: the shape of a wolf project"
+firefox desktop toggled hop2 from /book/ch22.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop toggled hop1 "23. Packages and dependencies" -> HTTP 200 /book/ch23.html h1="23. Packages and dependencies"
+firefox desktop toggled hop2 from /book/ch23.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop toggled hop1 "24. The covenant: no build scripts" -> HTTP 200 /book/ch24.html h1="24. The covenant: no build scripts"
+firefox desktop toggled hop2 from /book/ch24.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop toggled hop1 "25. Editions, stability, publishing" -> HTTP 200 /book/ch25.html h1="25. Editions, stability, publishing"
+firefox desktop toggled hop2 from /book/ch25.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop toggled hop1 "26. The serving loop" -> HTTP 200 /book/ch33.html h1="33. The serving loop" FAULT number
+firefox desktop toggled hop2 from /book/ch33.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop toggled hop1 "27. count, twice" -> HTTP 200 /book/ch26.html h1="26. count, twice" FAULT number
+firefox desktop toggled hop2 from /book/ch26.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop toggled hop1 "28. rpn, twice" -> HTTP 200 /book/ch27.html h1="27. rpn, twice" FAULT number
+firefox desktop toggled hop2 from /book/ch27.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop toggled hop1 "29. wordtree, twice" -> HTTP 200 /book/ch28.html h1="28. wordtree, twice" FAULT number
+firefox desktop toggled hop2 from /book/ch28.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop toggled hop1 "30. tinyvm" -> HTTP 200 /book/ch29.html h1="29. tinyvm" FAULT number
+firefox desktop toggled hop2 from /book/ch29.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop toggled hop1 "31. pargrep" -> HTTP 200 /book/ch30.html h1="30. pargrep" FAULT number
+firefox desktop toggled hop2 from /book/ch30.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop toggled hop1 "32. logden, alone" -> HTTP 200 /book/ch31.html h1="31. logden, alone" FAULT number
+firefox desktop toggled hop2 from /book/ch31.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop toggled hop1 "33. Coda: the allocator you never needed" -> HTTP 200 /book/ch32.html h1="32. Coda: the allocator you never needed" FAULT number
+firefox desktop toggled hop2 from /book/ch32.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+firefox desktop toggled hop1 "Appendix A — Grammar summary" -> HTTP 200 /book/back/appendix-a.html h1="Appendix A — Grammar summary"
+firefox desktop toggled hop2 from /book/back/appendix-a.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox desktop toggled hop1 "Appendix B — Traps" -> HTTP 200 /book/back/appendix-b.html h1="Appendix B — Traps"
+firefox desktop toggled hop2 from /book/back/appendix-b.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox desktop toggled hop1 "Appendix C — Diagnostics" -> HTTP 200 /book/back/appendix-c.html h1="Appendix C — Diagnostics"
+firefox desktop toggled hop2 from /book/back/appendix-c.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox desktop toggled hop1 "Appendix D — Spec cross-reference" -> HTTP 200 /book/back/appendix-d.html h1="Appendix D — Spec cross-reference"
+firefox desktop toggled hop2 from /book/back/appendix-d.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox desktop toggled hop1 "Appendix E — The driver's surface" -> HTTP 200 /book/back/appendix-e.html h1="Appendix E — The driver’s surface"
+firefox desktop toggled hop2 from /book/back/appendix-e.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox desktop toggled hop1 "Solutions" -> HTTP 200 /book/back/solutions.html h1="Solutions"
+firefox desktop toggled hop2 from /book/back/solutions.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox desktop toggled hop1 "Glossary" -> HTTP 200 /book/back/glossary.html h1="Glossary"
+firefox desktop toggled hop2 from /book/back/glossary.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox desktop toggled hop1 "Index" -> HTTP 200 /book/back/book-index.html h1="Index"
+firefox desktop toggled hop2 from /book/back/book-index.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox desktop toggled hop1 "Errata" -> HTTP 200 /book/back/errata.html h1="Errata"
+firefox desktop toggled hop2 from /book/back/errata.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+firefox desktop toggled hop1 "Colophon" -> HTTP 200 /book/back/colophon.html h1="Colophon"
+firefox desktop toggled hop2 from /book/back/colophon.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+# firefox desktop: hop1 90/90 at 200 (16 number mismatches); hop2 66/90 at 200
+# webkit phone: ch07 has 45 entries; first load {"checked":false,"cls":true,"drawn":false}; page errors: Can't find variable: path_to_root
+webkit phone untoggled hop1 "How to read this book" -> HTTP 200 /book/front/how-to-read.html h1="How to read this book"
+webkit phone untoggled hop2 from /book/front/how-to-read.html "1. Hello, Wolf" -> HTTP 404 /book/front/ch01.html
+webkit phone untoggled hop1 "Notation" -> HTTP 200 /book/front/notation.html h1="Notation"
+webkit phone untoggled hop2 from /book/front/notation.html "1. Hello, Wolf" -> HTTP 404 /book/front/ch01.html
+webkit phone untoggled hop1 "1. Hello, Wolf" -> HTTP 200 /book/ch01.html h1="1. Hello, Wolf"
+webkit phone untoggled hop2 from /book/ch01.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone untoggled hop1 "2. Strings, honestly" -> HTTP 200 /book/ch02.html h1="2. Strings, honestly"
+webkit phone untoggled hop2 from /book/ch02.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone untoggled hop1 "3. Values and expressions" -> HTTP 200 /book/ch03.html h1="3. Values and expressions"
+webkit phone untoggled hop2 from /book/ch03.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone untoggled hop1 "4. Functions" -> HTTP 200 /book/ch04.html h1="4. Functions"
+webkit phone untoggled hop2 from /book/ch04.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone untoggled hop1 "5. Collections and generics" -> HTTP 200 /book/ch05.html h1="5. Collections and generics"
+webkit phone untoggled hop2 from /book/ch05.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone untoggled hop1 "6. Errors are values" -> HTTP 200 /book/ch06.html h1="6. Errors are values"
+webkit phone untoggled hop2 from /book/ch06.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone untoggled hop1 "7. Who owns this?" -> HTTP 200 /book/ch07.html h1="7. Who owns this?"
+webkit phone untoggled hop2 from /book/ch07.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone untoggled hop1 "8. Regions: memory in the shape you meant" -> HTTP 200 /book/ch08.html h1="8. Regions: memory in the shape you meant"
+webkit phone untoggled hop2 from /book/ch08.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone untoggled hop1 "9. The escape hatch is a door, not a cliff" -> HTTP 200 /book/ch09.html h1="9. The escape hatch is a door, not a cliff"
+webkit phone untoggled hop2 from /book/ch09.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone untoggled hop1 "10. Spawning is a scope" -> HTTP 200 /book/ch10.html h1="10. Spawning is a scope"
+webkit phone untoggled hop2 from /book/ch10.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone untoggled hop1 "11. Scopes as values" -> HTTP 200 /book/ch11.html h1="11. Scopes as values"
+webkit phone untoggled hop2 from /book/ch11.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone untoggled hop1 "12. Channels and select" -> HTTP 200 /book/ch12.html h1="12. Channels and select"
+webkit phone untoggled hop2 from /book/ch12.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone untoggled hop1 "13. Dividing one job" -> HTTP 200 /book/ch13.html h1="13. Dividing one job"
+webkit phone untoggled hop2 from /book/ch13.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone untoggled hop1 "14. Procs: the unit of failure" -> HTTP 200 /book/ch14.html h1="14. Procs: the unit of failure"
+webkit phone untoggled hop2 from /book/ch14.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone untoggled hop1 "15. Link, monitor, supervision" -> HTTP 200 /book/ch15.html h1="15. Link, monitor, supervision"
+webkit phone untoggled hop2 from /book/ch15.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone untoggled hop1 "16. Region transfer: fearless messaging" -> HTTP 200 /book/ch16.html h1="16. Region transfer: fearless messaging"
+webkit phone untoggled hop2 from /book/ch16.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone untoggled hop1 "17. The failing schedule, replayed" -> HTTP 200 /book/ch17.html h1="17. The failing schedule, replayed"
+webkit phone untoggled hop2 from /book/ch17.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone untoggled hop1 "18. Comptime: one tier, no macros" -> HTTP 200 /book/ch18.html h1="18. Comptime: one tier, no macros"
+webkit phone untoggled hop2 from /book/ch18.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone untoggled hop1 "19. Reading the release tier" -> HTTP 200 /book/ch19.html h1="19. Reading the release tier"
+webkit phone untoggled hop2 from /book/ch19.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone untoggled hop1 "20. Perf contracts" -> HTTP 200 /book/ch20.html h1="20. Perf contracts"
+webkit phone untoggled hop2 from /book/ch20.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone untoggled hop1 "21. Beating C honestly" -> HTTP 200 /book/ch21.html h1="21. Beating C honestly"
+webkit phone untoggled hop2 from /book/ch21.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone untoggled hop1 "22. Modules: the shape of a wolf project" -> HTTP 200 /book/ch22.html h1="22. Modules: the shape of a wolf project"
+webkit phone untoggled hop2 from /book/ch22.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone untoggled hop1 "23. Packages and dependencies" -> HTTP 200 /book/ch23.html h1="23. Packages and dependencies"
+webkit phone untoggled hop2 from /book/ch23.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone untoggled hop1 "24. The covenant: no build scripts" -> HTTP 200 /book/ch24.html h1="24. The covenant: no build scripts"
+webkit phone untoggled hop2 from /book/ch24.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone untoggled hop1 "25. Editions, stability, publishing" -> HTTP 200 /book/ch25.html h1="25. Editions, stability, publishing"
+webkit phone untoggled hop2 from /book/ch25.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone untoggled hop1 "26. The serving loop" -> HTTP 200 /book/ch33.html h1="33. The serving loop" FAULT number
+webkit phone untoggled hop2 from /book/ch33.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone untoggled hop1 "27. count, twice" -> HTTP 200 /book/ch26.html h1="26. count, twice" FAULT number
+webkit phone untoggled hop2 from /book/ch26.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone untoggled hop1 "28. rpn, twice" -> HTTP 200 /book/ch27.html h1="27. rpn, twice" FAULT number
+webkit phone untoggled hop2 from /book/ch27.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone untoggled hop1 "29. wordtree, twice" -> HTTP 200 /book/ch28.html h1="28. wordtree, twice" FAULT number
+webkit phone untoggled hop2 from /book/ch28.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone untoggled hop1 "30. tinyvm" -> HTTP 200 /book/ch29.html h1="29. tinyvm" FAULT number
+webkit phone untoggled hop2 from /book/ch29.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone untoggled hop1 "31. pargrep" -> HTTP 200 /book/ch30.html h1="30. pargrep" FAULT number
+webkit phone untoggled hop2 from /book/ch30.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone untoggled hop1 "32. logden, alone" -> HTTP 200 /book/ch31.html h1="31. logden, alone" FAULT number
+webkit phone untoggled hop2 from /book/ch31.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone untoggled hop1 "33. Coda: the allocator you never needed" -> HTTP 200 /book/ch32.html h1="32. Coda: the allocator you never needed" FAULT number
+webkit phone untoggled hop2 from /book/ch32.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone untoggled hop1 "Appendix A — Grammar summary" -> HTTP 200 /book/back/appendix-a.html h1="Appendix A — Grammar summary"
+webkit phone untoggled hop2 from /book/back/appendix-a.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit phone untoggled hop1 "Appendix B — Traps" -> HTTP 200 /book/back/appendix-b.html h1="Appendix B — Traps"
+webkit phone untoggled hop2 from /book/back/appendix-b.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit phone untoggled hop1 "Appendix C — Diagnostics" -> HTTP 200 /book/back/appendix-c.html h1="Appendix C — Diagnostics"
+webkit phone untoggled hop2 from /book/back/appendix-c.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit phone untoggled hop1 "Appendix D — Spec cross-reference" -> HTTP 200 /book/back/appendix-d.html h1="Appendix D — Spec cross-reference"
+webkit phone untoggled hop2 from /book/back/appendix-d.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit phone untoggled hop1 "Appendix E — The driver's surface" -> HTTP 200 /book/back/appendix-e.html h1="Appendix E — The driver’s surface"
+webkit phone untoggled hop2 from /book/back/appendix-e.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit phone untoggled hop1 "Solutions" -> HTTP 200 /book/back/solutions.html h1="Solutions"
+webkit phone untoggled hop2 from /book/back/solutions.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit phone untoggled hop1 "Glossary" -> HTTP 200 /book/back/glossary.html h1="Glossary"
+webkit phone untoggled hop2 from /book/back/glossary.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit phone untoggled hop1 "Index" -> HTTP 200 /book/back/book-index.html h1="Index"
+webkit phone untoggled hop2 from /book/back/book-index.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit phone untoggled hop1 "Errata" -> HTTP 200 /book/back/errata.html h1="Errata"
+webkit phone untoggled hop2 from /book/back/errata.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit phone untoggled hop1 "Colophon" -> HTTP 200 /book/back/colophon.html h1="Colophon"
+webkit phone untoggled hop2 from /book/back/colophon.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit phone toggled hop1 "How to read this book" -> HTTP 200 /book/front/how-to-read.html h1="How to read this book"
+webkit phone toggled hop2 from /book/front/how-to-read.html "1. Hello, Wolf" -> HTTP 404 /book/front/ch01.html
+webkit phone toggled hop1 "Notation" -> HTTP 200 /book/front/notation.html h1="Notation"
+webkit phone toggled hop2 from /book/front/notation.html "1. Hello, Wolf" -> HTTP 404 /book/front/ch01.html
+webkit phone toggled hop1 "1. Hello, Wolf" -> HTTP 200 /book/ch01.html h1="1. Hello, Wolf"
+webkit phone toggled hop2 from /book/ch01.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone toggled hop1 "2. Strings, honestly" -> HTTP 200 /book/ch02.html h1="2. Strings, honestly"
+webkit phone toggled hop2 from /book/ch02.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone toggled hop1 "3. Values and expressions" -> HTTP 200 /book/ch03.html h1="3. Values and expressions"
+webkit phone toggled hop2 from /book/ch03.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone toggled hop1 "4. Functions" -> HTTP 200 /book/ch04.html h1="4. Functions"
+webkit phone toggled hop2 from /book/ch04.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone toggled hop1 "5. Collections and generics" -> HTTP 200 /book/ch05.html h1="5. Collections and generics"
+webkit phone toggled hop2 from /book/ch05.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone toggled hop1 "6. Errors are values" -> HTTP 200 /book/ch06.html h1="6. Errors are values"
+webkit phone toggled hop2 from /book/ch06.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone toggled hop1 "7. Who owns this?" -> HTTP 200 /book/ch07.html h1="7. Who owns this?"
+webkit phone toggled hop2 from /book/ch07.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone toggled hop1 "8. Regions: memory in the shape you meant" -> HTTP 200 /book/ch08.html h1="8. Regions: memory in the shape you meant"
+webkit phone toggled hop2 from /book/ch08.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone toggled hop1 "9. The escape hatch is a door, not a cliff" -> HTTP 200 /book/ch09.html h1="9. The escape hatch is a door, not a cliff"
+webkit phone toggled hop2 from /book/ch09.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone toggled hop1 "10. Spawning is a scope" -> HTTP 200 /book/ch10.html h1="10. Spawning is a scope"
+webkit phone toggled hop2 from /book/ch10.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone toggled hop1 "11. Scopes as values" -> HTTP 200 /book/ch11.html h1="11. Scopes as values"
+webkit phone toggled hop2 from /book/ch11.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone toggled hop1 "12. Channels and select" -> HTTP 200 /book/ch12.html h1="12. Channels and select"
+webkit phone toggled hop2 from /book/ch12.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone toggled hop1 "13. Dividing one job" -> HTTP 200 /book/ch13.html h1="13. Dividing one job"
+webkit phone toggled hop2 from /book/ch13.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone toggled hop1 "14. Procs: the unit of failure" -> HTTP 200 /book/ch14.html h1="14. Procs: the unit of failure"
+webkit phone toggled hop2 from /book/ch14.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone toggled hop1 "15. Link, monitor, supervision" -> HTTP 200 /book/ch15.html h1="15. Link, monitor, supervision"
+webkit phone toggled hop2 from /book/ch15.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone toggled hop1 "16. Region transfer: fearless messaging" -> HTTP 200 /book/ch16.html h1="16. Region transfer: fearless messaging"
+webkit phone toggled hop2 from /book/ch16.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone toggled hop1 "17. The failing schedule, replayed" -> HTTP 200 /book/ch17.html h1="17. The failing schedule, replayed"
+webkit phone toggled hop2 from /book/ch17.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone toggled hop1 "18. Comptime: one tier, no macros" -> HTTP 200 /book/ch18.html h1="18. Comptime: one tier, no macros"
+webkit phone toggled hop2 from /book/ch18.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone toggled hop1 "19. Reading the release tier" -> HTTP 200 /book/ch19.html h1="19. Reading the release tier"
+webkit phone toggled hop2 from /book/ch19.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone toggled hop1 "20. Perf contracts" -> HTTP 200 /book/ch20.html h1="20. Perf contracts"
+webkit phone toggled hop2 from /book/ch20.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone toggled hop1 "21. Beating C honestly" -> HTTP 200 /book/ch21.html h1="21. Beating C honestly"
+webkit phone toggled hop2 from /book/ch21.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone toggled hop1 "22. Modules: the shape of a wolf project" -> HTTP 200 /book/ch22.html h1="22. Modules: the shape of a wolf project"
+webkit phone toggled hop2 from /book/ch22.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone toggled hop1 "23. Packages and dependencies" -> HTTP 200 /book/ch23.html h1="23. Packages and dependencies"
+webkit phone toggled hop2 from /book/ch23.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone toggled hop1 "24. The covenant: no build scripts" -> HTTP 200 /book/ch24.html h1="24. The covenant: no build scripts"
+webkit phone toggled hop2 from /book/ch24.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone toggled hop1 "25. Editions, stability, publishing" -> HTTP 200 /book/ch25.html h1="25. Editions, stability, publishing"
+webkit phone toggled hop2 from /book/ch25.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone toggled hop1 "26. The serving loop" -> HTTP 200 /book/ch33.html h1="33. The serving loop" FAULT number
+webkit phone toggled hop2 from /book/ch33.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone toggled hop1 "27. count, twice" -> HTTP 200 /book/ch26.html h1="26. count, twice" FAULT number
+webkit phone toggled hop2 from /book/ch26.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone toggled hop1 "28. rpn, twice" -> HTTP 200 /book/ch27.html h1="27. rpn, twice" FAULT number
+webkit phone toggled hop2 from /book/ch27.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone toggled hop1 "29. wordtree, twice" -> HTTP 200 /book/ch28.html h1="28. wordtree, twice" FAULT number
+webkit phone toggled hop2 from /book/ch28.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone toggled hop1 "30. tinyvm" -> HTTP 200 /book/ch29.html h1="29. tinyvm" FAULT number
+webkit phone toggled hop2 from /book/ch29.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone toggled hop1 "31. pargrep" -> HTTP 200 /book/ch30.html h1="30. pargrep" FAULT number
+webkit phone toggled hop2 from /book/ch30.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone toggled hop1 "32. logden, alone" -> HTTP 200 /book/ch31.html h1="31. logden, alone" FAULT number
+webkit phone toggled hop2 from /book/ch31.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone toggled hop1 "33. Coda: the allocator you never needed" -> HTTP 200 /book/ch32.html h1="32. Coda: the allocator you never needed" FAULT number
+webkit phone toggled hop2 from /book/ch32.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit phone toggled hop1 "Appendix A — Grammar summary" -> HTTP 200 /book/back/appendix-a.html h1="Appendix A — Grammar summary"
+webkit phone toggled hop2 from /book/back/appendix-a.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit phone toggled hop1 "Appendix B — Traps" -> HTTP 200 /book/back/appendix-b.html h1="Appendix B — Traps"
+webkit phone toggled hop2 from /book/back/appendix-b.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit phone toggled hop1 "Appendix C — Diagnostics" -> HTTP 200 /book/back/appendix-c.html h1="Appendix C — Diagnostics"
+webkit phone toggled hop2 from /book/back/appendix-c.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit phone toggled hop1 "Appendix D — Spec cross-reference" -> HTTP 200 /book/back/appendix-d.html h1="Appendix D — Spec cross-reference"
+webkit phone toggled hop2 from /book/back/appendix-d.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit phone toggled hop1 "Appendix E — The driver's surface" -> HTTP 200 /book/back/appendix-e.html h1="Appendix E — The driver’s surface"
+webkit phone toggled hop2 from /book/back/appendix-e.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit phone toggled hop1 "Solutions" -> HTTP 200 /book/back/solutions.html h1="Solutions"
+webkit phone toggled hop2 from /book/back/solutions.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit phone toggled hop1 "Glossary" -> HTTP 200 /book/back/glossary.html h1="Glossary"
+webkit phone toggled hop2 from /book/back/glossary.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit phone toggled hop1 "Index" -> HTTP 200 /book/back/book-index.html h1="Index"
+webkit phone toggled hop2 from /book/back/book-index.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit phone toggled hop1 "Errata" -> HTTP 200 /book/back/errata.html h1="Errata"
+webkit phone toggled hop2 from /book/back/errata.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit phone toggled hop1 "Colophon" -> HTTP 200 /book/back/colophon.html h1="Colophon"
+webkit phone toggled hop2 from /book/back/colophon.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+# webkit phone: hop1 90/90 at 200 (16 number mismatches); hop2 66/90 at 200
+# webkit desktop: ch07 has 45 entries; first load {"checked":false,"cls":true,"drawn":false}; page errors: Can't find variable: path_to_root
+webkit desktop untoggled hop1 "How to read this book" -> HTTP 200 /book/front/how-to-read.html h1="How to read this book"
+webkit desktop untoggled hop2 from /book/front/how-to-read.html "1. Hello, Wolf" -> HTTP 404 /book/front/ch01.html
+webkit desktop untoggled hop1 "Notation" -> HTTP 200 /book/front/notation.html h1="Notation"
+webkit desktop untoggled hop2 from /book/front/notation.html "1. Hello, Wolf" -> HTTP 404 /book/front/ch01.html
+webkit desktop untoggled hop1 "1. Hello, Wolf" -> HTTP 200 /book/ch01.html h1="1. Hello, Wolf"
+webkit desktop untoggled hop2 from /book/ch01.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop untoggled hop1 "2. Strings, honestly" -> HTTP 200 /book/ch02.html h1="2. Strings, honestly"
+webkit desktop untoggled hop2 from /book/ch02.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop untoggled hop1 "3. Values and expressions" -> HTTP 200 /book/ch03.html h1="3. Values and expressions"
+webkit desktop untoggled hop2 from /book/ch03.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop untoggled hop1 "4. Functions" -> HTTP 200 /book/ch04.html h1="4. Functions"
+webkit desktop untoggled hop2 from /book/ch04.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop untoggled hop1 "5. Collections and generics" -> HTTP 200 /book/ch05.html h1="5. Collections and generics"
+webkit desktop untoggled hop2 from /book/ch05.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop untoggled hop1 "6. Errors are values" -> HTTP 200 /book/ch06.html h1="6. Errors are values"
+webkit desktop untoggled hop2 from /book/ch06.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop untoggled hop1 "7. Who owns this?" -> HTTP 200 /book/ch07.html h1="7. Who owns this?"
+webkit desktop untoggled hop2 from /book/ch07.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop untoggled hop1 "8. Regions: memory in the shape you meant" -> HTTP 200 /book/ch08.html h1="8. Regions: memory in the shape you meant"
+webkit desktop untoggled hop2 from /book/ch08.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop untoggled hop1 "9. The escape hatch is a door, not a cliff" -> HTTP 200 /book/ch09.html h1="9. The escape hatch is a door, not a cliff"
+webkit desktop untoggled hop2 from /book/ch09.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop untoggled hop1 "10. Spawning is a scope" -> HTTP 200 /book/ch10.html h1="10. Spawning is a scope"
+webkit desktop untoggled hop2 from /book/ch10.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop untoggled hop1 "11. Scopes as values" -> HTTP 200 /book/ch11.html h1="11. Scopes as values"
+webkit desktop untoggled hop2 from /book/ch11.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop untoggled hop1 "12. Channels and select" -> HTTP 200 /book/ch12.html h1="12. Channels and select"
+webkit desktop untoggled hop2 from /book/ch12.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop untoggled hop1 "13. Dividing one job" -> HTTP 200 /book/ch13.html h1="13. Dividing one job"
+webkit desktop untoggled hop2 from /book/ch13.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop untoggled hop1 "14. Procs: the unit of failure" -> HTTP 200 /book/ch14.html h1="14. Procs: the unit of failure"
+webkit desktop untoggled hop2 from /book/ch14.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop untoggled hop1 "15. Link, monitor, supervision" -> HTTP 200 /book/ch15.html h1="15. Link, monitor, supervision"
+webkit desktop untoggled hop2 from /book/ch15.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop untoggled hop1 "16. Region transfer: fearless messaging" -> HTTP 200 /book/ch16.html h1="16. Region transfer: fearless messaging"
+webkit desktop untoggled hop2 from /book/ch16.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop untoggled hop1 "17. The failing schedule, replayed" -> HTTP 200 /book/ch17.html h1="17. The failing schedule, replayed"
+webkit desktop untoggled hop2 from /book/ch17.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop untoggled hop1 "18. Comptime: one tier, no macros" -> HTTP 200 /book/ch18.html h1="18. Comptime: one tier, no macros"
+webkit desktop untoggled hop2 from /book/ch18.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop untoggled hop1 "19. Reading the release tier" -> HTTP 200 /book/ch19.html h1="19. Reading the release tier"
+webkit desktop untoggled hop2 from /book/ch19.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop untoggled hop1 "20. Perf contracts" -> HTTP 200 /book/ch20.html h1="20. Perf contracts"
+webkit desktop untoggled hop2 from /book/ch20.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop untoggled hop1 "21. Beating C honestly" -> HTTP 200 /book/ch21.html h1="21. Beating C honestly"
+webkit desktop untoggled hop2 from /book/ch21.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop untoggled hop1 "22. Modules: the shape of a wolf project" -> HTTP 200 /book/ch22.html h1="22. Modules: the shape of a wolf project"
+webkit desktop untoggled hop2 from /book/ch22.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop untoggled hop1 "23. Packages and dependencies" -> HTTP 200 /book/ch23.html h1="23. Packages and dependencies"
+webkit desktop untoggled hop2 from /book/ch23.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop untoggled hop1 "24. The covenant: no build scripts" -> HTTP 200 /book/ch24.html h1="24. The covenant: no build scripts"
+webkit desktop untoggled hop2 from /book/ch24.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop untoggled hop1 "25. Editions, stability, publishing" -> HTTP 200 /book/ch25.html h1="25. Editions, stability, publishing"
+webkit desktop untoggled hop2 from /book/ch25.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop untoggled hop1 "26. The serving loop" -> HTTP 200 /book/ch33.html h1="33. The serving loop" FAULT number
+webkit desktop untoggled hop2 from /book/ch33.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop untoggled hop1 "27. count, twice" -> HTTP 200 /book/ch26.html h1="26. count, twice" FAULT number
+webkit desktop untoggled hop2 from /book/ch26.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop untoggled hop1 "28. rpn, twice" -> HTTP 200 /book/ch27.html h1="27. rpn, twice" FAULT number
+webkit desktop untoggled hop2 from /book/ch27.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop untoggled hop1 "29. wordtree, twice" -> HTTP 200 /book/ch28.html h1="28. wordtree, twice" FAULT number
+webkit desktop untoggled hop2 from /book/ch28.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop untoggled hop1 "30. tinyvm" -> HTTP 200 /book/ch29.html h1="29. tinyvm" FAULT number
+webkit desktop untoggled hop2 from /book/ch29.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop untoggled hop1 "31. pargrep" -> HTTP 200 /book/ch30.html h1="30. pargrep" FAULT number
+webkit desktop untoggled hop2 from /book/ch30.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop untoggled hop1 "32. logden, alone" -> HTTP 200 /book/ch31.html h1="31. logden, alone" FAULT number
+webkit desktop untoggled hop2 from /book/ch31.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop untoggled hop1 "33. Coda: the allocator you never needed" -> HTTP 200 /book/ch32.html h1="32. Coda: the allocator you never needed" FAULT number
+webkit desktop untoggled hop2 from /book/ch32.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop untoggled hop1 "Appendix A — Grammar summary" -> HTTP 200 /book/back/appendix-a.html h1="Appendix A — Grammar summary"
+webkit desktop untoggled hop2 from /book/back/appendix-a.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit desktop untoggled hop1 "Appendix B — Traps" -> HTTP 200 /book/back/appendix-b.html h1="Appendix B — Traps"
+webkit desktop untoggled hop2 from /book/back/appendix-b.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit desktop untoggled hop1 "Appendix C — Diagnostics" -> HTTP 200 /book/back/appendix-c.html h1="Appendix C — Diagnostics"
+webkit desktop untoggled hop2 from /book/back/appendix-c.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit desktop untoggled hop1 "Appendix D — Spec cross-reference" -> HTTP 200 /book/back/appendix-d.html h1="Appendix D — Spec cross-reference"
+webkit desktop untoggled hop2 from /book/back/appendix-d.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit desktop untoggled hop1 "Appendix E — The driver's surface" -> HTTP 200 /book/back/appendix-e.html h1="Appendix E — The driver’s surface"
+webkit desktop untoggled hop2 from /book/back/appendix-e.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit desktop untoggled hop1 "Solutions" -> HTTP 200 /book/back/solutions.html h1="Solutions"
+webkit desktop untoggled hop2 from /book/back/solutions.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit desktop untoggled hop1 "Glossary" -> HTTP 200 /book/back/glossary.html h1="Glossary"
+webkit desktop untoggled hop2 from /book/back/glossary.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit desktop untoggled hop1 "Index" -> HTTP 200 /book/back/book-index.html h1="Index"
+webkit desktop untoggled hop2 from /book/back/book-index.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit desktop untoggled hop1 "Errata" -> HTTP 200 /book/back/errata.html h1="Errata"
+webkit desktop untoggled hop2 from /book/back/errata.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit desktop untoggled hop1 "Colophon" -> HTTP 200 /book/back/colophon.html h1="Colophon"
+webkit desktop untoggled hop2 from /book/back/colophon.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit desktop toggled hop1 "How to read this book" -> HTTP 200 /book/front/how-to-read.html h1="How to read this book"
+webkit desktop toggled hop2 from /book/front/how-to-read.html "1. Hello, Wolf" -> HTTP 404 /book/front/ch01.html
+webkit desktop toggled hop1 "Notation" -> HTTP 200 /book/front/notation.html h1="Notation"
+webkit desktop toggled hop2 from /book/front/notation.html "1. Hello, Wolf" -> HTTP 404 /book/front/ch01.html
+webkit desktop toggled hop1 "1. Hello, Wolf" -> HTTP 200 /book/ch01.html h1="1. Hello, Wolf"
+webkit desktop toggled hop2 from /book/ch01.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop toggled hop1 "2. Strings, honestly" -> HTTP 200 /book/ch02.html h1="2. Strings, honestly"
+webkit desktop toggled hop2 from /book/ch02.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop toggled hop1 "3. Values and expressions" -> HTTP 200 /book/ch03.html h1="3. Values and expressions"
+webkit desktop toggled hop2 from /book/ch03.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop toggled hop1 "4. Functions" -> HTTP 200 /book/ch04.html h1="4. Functions"
+webkit desktop toggled hop2 from /book/ch04.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop toggled hop1 "5. Collections and generics" -> HTTP 200 /book/ch05.html h1="5. Collections and generics"
+webkit desktop toggled hop2 from /book/ch05.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop toggled hop1 "6. Errors are values" -> HTTP 200 /book/ch06.html h1="6. Errors are values"
+webkit desktop toggled hop2 from /book/ch06.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop toggled hop1 "7. Who owns this?" -> HTTP 200 /book/ch07.html h1="7. Who owns this?"
+webkit desktop toggled hop2 from /book/ch07.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop toggled hop1 "8. Regions: memory in the shape you meant" -> HTTP 200 /book/ch08.html h1="8. Regions: memory in the shape you meant"
+webkit desktop toggled hop2 from /book/ch08.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop toggled hop1 "9. The escape hatch is a door, not a cliff" -> HTTP 200 /book/ch09.html h1="9. The escape hatch is a door, not a cliff"
+webkit desktop toggled hop2 from /book/ch09.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop toggled hop1 "10. Spawning is a scope" -> HTTP 200 /book/ch10.html h1="10. Spawning is a scope"
+webkit desktop toggled hop2 from /book/ch10.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop toggled hop1 "11. Scopes as values" -> HTTP 200 /book/ch11.html h1="11. Scopes as values"
+webkit desktop toggled hop2 from /book/ch11.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop toggled hop1 "12. Channels and select" -> HTTP 200 /book/ch12.html h1="12. Channels and select"
+webkit desktop toggled hop2 from /book/ch12.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop toggled hop1 "13. Dividing one job" -> HTTP 200 /book/ch13.html h1="13. Dividing one job"
+webkit desktop toggled hop2 from /book/ch13.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop toggled hop1 "14. Procs: the unit of failure" -> HTTP 200 /book/ch14.html h1="14. Procs: the unit of failure"
+webkit desktop toggled hop2 from /book/ch14.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop toggled hop1 "15. Link, monitor, supervision" -> HTTP 200 /book/ch15.html h1="15. Link, monitor, supervision"
+webkit desktop toggled hop2 from /book/ch15.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop toggled hop1 "16. Region transfer: fearless messaging" -> HTTP 200 /book/ch16.html h1="16. Region transfer: fearless messaging"
+webkit desktop toggled hop2 from /book/ch16.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop toggled hop1 "17. The failing schedule, replayed" -> HTTP 200 /book/ch17.html h1="17. The failing schedule, replayed"
+webkit desktop toggled hop2 from /book/ch17.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop toggled hop1 "18. Comptime: one tier, no macros" -> HTTP 200 /book/ch18.html h1="18. Comptime: one tier, no macros"
+webkit desktop toggled hop2 from /book/ch18.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop toggled hop1 "19. Reading the release tier" -> HTTP 200 /book/ch19.html h1="19. Reading the release tier"
+webkit desktop toggled hop2 from /book/ch19.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop toggled hop1 "20. Perf contracts" -> HTTP 200 /book/ch20.html h1="20. Perf contracts"
+webkit desktop toggled hop2 from /book/ch20.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop toggled hop1 "21. Beating C honestly" -> HTTP 200 /book/ch21.html h1="21. Beating C honestly"
+webkit desktop toggled hop2 from /book/ch21.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop toggled hop1 "22. Modules: the shape of a wolf project" -> HTTP 200 /book/ch22.html h1="22. Modules: the shape of a wolf project"
+webkit desktop toggled hop2 from /book/ch22.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop toggled hop1 "23. Packages and dependencies" -> HTTP 200 /book/ch23.html h1="23. Packages and dependencies"
+webkit desktop toggled hop2 from /book/ch23.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop toggled hop1 "24. The covenant: no build scripts" -> HTTP 200 /book/ch24.html h1="24. The covenant: no build scripts"
+webkit desktop toggled hop2 from /book/ch24.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop toggled hop1 "25. Editions, stability, publishing" -> HTTP 200 /book/ch25.html h1="25. Editions, stability, publishing"
+webkit desktop toggled hop2 from /book/ch25.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop toggled hop1 "26. The serving loop" -> HTTP 200 /book/ch33.html h1="33. The serving loop" FAULT number
+webkit desktop toggled hop2 from /book/ch33.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop toggled hop1 "27. count, twice" -> HTTP 200 /book/ch26.html h1="26. count, twice" FAULT number
+webkit desktop toggled hop2 from /book/ch26.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop toggled hop1 "28. rpn, twice" -> HTTP 200 /book/ch27.html h1="27. rpn, twice" FAULT number
+webkit desktop toggled hop2 from /book/ch27.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop toggled hop1 "29. wordtree, twice" -> HTTP 200 /book/ch28.html h1="28. wordtree, twice" FAULT number
+webkit desktop toggled hop2 from /book/ch28.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop toggled hop1 "30. tinyvm" -> HTTP 200 /book/ch29.html h1="29. tinyvm" FAULT number
+webkit desktop toggled hop2 from /book/ch29.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop toggled hop1 "31. pargrep" -> HTTP 200 /book/ch30.html h1="30. pargrep" FAULT number
+webkit desktop toggled hop2 from /book/ch30.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop toggled hop1 "32. logden, alone" -> HTTP 200 /book/ch31.html h1="31. logden, alone" FAULT number
+webkit desktop toggled hop2 from /book/ch31.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop toggled hop1 "33. Coda: the allocator you never needed" -> HTTP 200 /book/ch32.html h1="32. Coda: the allocator you never needed" FAULT number
+webkit desktop toggled hop2 from /book/ch32.html "1. Hello, Wolf" -> HTTP 200 /book/ch01.html
+webkit desktop toggled hop1 "Appendix A — Grammar summary" -> HTTP 200 /book/back/appendix-a.html h1="Appendix A — Grammar summary"
+webkit desktop toggled hop2 from /book/back/appendix-a.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit desktop toggled hop1 "Appendix B — Traps" -> HTTP 200 /book/back/appendix-b.html h1="Appendix B — Traps"
+webkit desktop toggled hop2 from /book/back/appendix-b.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit desktop toggled hop1 "Appendix C — Diagnostics" -> HTTP 200 /book/back/appendix-c.html h1="Appendix C — Diagnostics"
+webkit desktop toggled hop2 from /book/back/appendix-c.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit desktop toggled hop1 "Appendix D — Spec cross-reference" -> HTTP 200 /book/back/appendix-d.html h1="Appendix D — Spec cross-reference"
+webkit desktop toggled hop2 from /book/back/appendix-d.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit desktop toggled hop1 "Appendix E — The driver's surface" -> HTTP 200 /book/back/appendix-e.html h1="Appendix E — The driver’s surface"
+webkit desktop toggled hop2 from /book/back/appendix-e.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit desktop toggled hop1 "Solutions" -> HTTP 200 /book/back/solutions.html h1="Solutions"
+webkit desktop toggled hop2 from /book/back/solutions.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit desktop toggled hop1 "Glossary" -> HTTP 200 /book/back/glossary.html h1="Glossary"
+webkit desktop toggled hop2 from /book/back/glossary.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit desktop toggled hop1 "Index" -> HTTP 200 /book/back/book-index.html h1="Index"
+webkit desktop toggled hop2 from /book/back/book-index.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit desktop toggled hop1 "Errata" -> HTTP 200 /book/back/errata.html h1="Errata"
+webkit desktop toggled hop2 from /book/back/errata.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+webkit desktop toggled hop1 "Colophon" -> HTTP 200 /book/back/colophon.html h1="Colophon"
+webkit desktop toggled hop2 from /book/back/colophon.html "1. Hello, Wolf" -> HTTP 404 /book/back/ch01.html
+# webkit desktop: hop1 90/90 at 200 (16 number mismatches); hop2 66/90 at 200

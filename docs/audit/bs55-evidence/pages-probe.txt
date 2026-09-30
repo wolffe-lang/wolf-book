@@ -1,0 +1,46 @@
+# Pages redirect artifact (render pages at 2186000+), served at /wolf-book/ with no CSP, three engines, JS on and off
+chromium js /wolf-book/ -> https://lupp.us/book/
+chromium js /wolf-book/ch07.html#7.4 -> https://lupp.us/book/ch07.html#7.4
+chromium js /wolf-book/front/how-to-read.html -> https://lupp.us/book/front/how-to-read.html
+chromium js /wolf-book/back/errata.html -> https://lupp.us/book/back/errata.html
+chromium js /wolf-book/wolf-book.pdf -> NO REDIRECT http://127.0.0.1:62723/wolf-book/wolf-book.pdf
+chromium js /wolf-book/no/such.html -> https://lupp.us/book/no/such.html
+chromium nojs /wolf-book/ -> https://lupp.us/book/
+chromium nojs /wolf-book/ch07.html#7.4 -> https://lupp.us/book/ch07.html
+chromium nojs /wolf-book/front/how-to-read.html -> https://lupp.us/book/front/how-to-read.html
+chromium nojs /wolf-book/back/errata.html -> https://lupp.us/book/back/errata.html
+chromium nojs /wolf-book/wolf-book.pdf -> https://lupp.us/book/
+chromium nojs /wolf-book/no/such.html -> https://lupp.us/book/
+firefox js /wolf-book/ -> https://lupp.us/book/
+firefox js /wolf-book/ch07.html#7.4 -> https://lupp.us/book/ch07.html#7.4
+firefox js /wolf-book/front/how-to-read.html -> https://lupp.us/book/front/how-to-read.html
+firefox js /wolf-book/back/errata.html -> https://lupp.us/book/back/errata.html
+firefox js /wolf-book/wolf-book.pdf -> NO REDIRECT http://127.0.0.1:62723/wolf-book/wolf-book.pdf
+firefox js /wolf-book/no/such.html -> https://lupp.us/book/no/such.html
+firefox nojs /wolf-book/ -> https://lupp.us/book/
+firefox nojs /wolf-book/ch07.html#7.4 -> https://lupp.us/book/ch07.html
+firefox nojs /wolf-book/front/how-to-read.html -> https://lupp.us/book/front/how-to-read.html
+firefox nojs /wolf-book/back/errata.html -> https://lupp.us/book/back/errata.html
+firefox nojs /wolf-book/wolf-book.pdf -> https://lupp.us/book/
+firefox nojs /wolf-book/no/such.html -> https://lupp.us/book/
+webkit js /wolf-book/ -> https://lupp.us/book/
+webkit js /wolf-book/ch07.html#7.4 -> https://lupp.us/book/ch07.html#7.4
+webkit js /wolf-book/front/how-to-read.html -> https://lupp.us/book/front/how-to-read.html
+webkit js /wolf-book/back/errata.html -> https://lupp.us/book/back/errata.html
+webkit js /wolf-book/wolf-book.pdf -> NO REDIRECT http://127.0.0.1:62723/wolf-book/wolf-book.pdf
+webkit js /wolf-book/no/such.html -> https://lupp.us/book/no/such.html
+webkit nojs /wolf-book/ -> https://lupp.us/book/
+webkit nojs /wolf-book/ch07.html#7.4 -> https://lupp.us/book/ch07.html
+webkit nojs /wolf-book/front/how-to-read.html -> https://lupp.us/book/front/how-to-read.html
+webkit nojs /wolf-book/back/errata.html -> https://lupp.us/book/back/errata.html
+webkit nojs /wolf-book/wolf-book.pdf -> https://lupp.us/book/
+webkit nojs /wolf-book/no/such.html -> https://lupp.us/book/
+# the PDF with JS on: the forward is a download
+  request https://lupp.us/book/wolf-book.pdf
+chromium js /wolf-book/wolf-book.pdf -> NO REDIRECT http://127.0.0.1:62773/wolf-book/wolf-book.pdf
+  download https://lupp.us/book/wolf-book.pdf
+  request https://lupp.us/book/wolf-book.pdf
+firefox js /wolf-book/wolf-book.pdf -> NO REDIRECT http://127.0.0.1:62773/wolf-book/wolf-book.pdf
+  download https://lupp.us/book/wolf-book.pdf
+  request https://lupp.us/book/wolf-book.pdf
+webkit js /wolf-book/wolf-book.pdf -> NO REDIRECT http://127.0.0.1:62773/wolf-book/wolf-book.pdf

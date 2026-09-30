@@ -1,0 +1,10 @@
+== old/wolf-0.2.18-x86_64-unknown-linux-gnu/wolf
+wolf 0.2.18 (wolfgang, pin ec56a08)
+paired with lupin 0.1.41 (reference interpreter), pin 93a5fe5
+== old/lupin-0.1.41-x86_64-unknown-linux-gnu/lupin
+lupin 0.1.41 (wolf-interp, reference interpreter at pin 93a5fe5)
+== new/wolf-0.2.19-x86_64-unknown-linux-gnu/wolf
+wolf 0.2.19 (wolfgang, pin c2401f0)
+paired with lupin 0.1.42 (reference interpreter), pin ec56a08
+== new/lupin-0.1.42-x86_64-unknown-linux-gnu/lupin
+lupin 0.1.42 (wolf-interp, reference interpreter at pin ec56a08)

@@ -1,0 +1,736 @@
+=== old ex5-8.lu
+lupin exit=4
+  out| ex5-8.lu: unsupported: `List.sorted_by` is no builtin, so it reaches `List`'s home module `std.list` ([type.method.resolve] step 2), and no std root is configured: pass `--std-root DIR` or set `LUPIN_STD` (the compiler reads `WOLF_STD` or a `std` path dependency in `wolf.pkg`) — the counterparty's E0301 ([type.method.root])
+wolf run exit=4
+  out| wolf run: cannot compile this yet — member access on a value whose type is still being inferred @300..303 (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)
+wolf conform-run exit=0
+  out| wolf conform-run: unsupported — member access on a value whose type is still being inferred @300..303
+  out| {"commit":"ec56a08","diagnostics":[],"file":"./ex5-8.lu","impl":"wolfgang","impl_version":"0.2.18","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"unsupported","warnings":[],"x-unsupported-construct":"member access on a value whose type is still being inferred","x-unsupported-span":[300,303]}
+wolf conform-run --checked exit=0
+  out| wolf conform-run: unsupported — member access on a value whose type is still being inferred @300..303
+  out| {"commit":"ec56a08","diagnostics":[],"file":"./ex5-8.lu","impl":"wolfgang","impl_version":"0.2.18","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"unsupported","warnings":[],"x-unsupported-construct":"member access on a value whose type is still being inferred","x-unsupported-span":[300,303]}
+
+=== old ex7-5.lu
+lupin exit=0
+  out| 
+wolf run exit=4
+  out| wolf run: cannot compile this yet — borrow expressions @365..367 (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)
+wolf conform-run exit=0
+  out| wolf conform-run: unsupported — borrow expressions @365..367
+  out| {"commit":"ec56a08","diagnostics":[],"file":"./ex7-5.lu","impl":"wolfgang","impl_version":"0.2.18","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"unsupported","warnings":[],"x-unsupported-construct":"borrow expressions","x-unsupported-span":[365,367]}
+wolf conform-run --checked exit=0
+  out| wolf conform-run: unsupported — borrow expressions @365..367
+  out| {"commit":"ec56a08","diagnostics":[],"file":"./ex7-5.lu","impl":"wolfgang","impl_version":"0.2.18","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"unsupported","warnings":[],"x-unsupported-construct":"borrow expressions","x-unsupported-span":[365,367]}
+
+=== old ex8-7.lu
+lupin exit=4
+  out| ex8-7.lu: unsupported: handle is not a `Map` key — a key is `str`, `int`, `char` or `bool` ([type.map.key]; the compiler's E0418 where the key type is spelled)
+wolf run exit=4
+  out| wolf run: cannot compile this yet — `==` on a container, tuple or handle (no `Eq` for these this edition) @1926..1929 (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)
+wolf conform-run exit=0
+  out| wolf conform-run: unsupported — `==` on a container, tuple or handle (no `Eq` for these this edition) @1926..1929
+  out| {"commit":"ec56a08","diagnostics":[],"file":"./ex8-7.lu","impl":"wolfgang","impl_version":"0.2.18","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"unsupported","warnings":[],"x-unsupported-construct":"`==` on a container, tuple or handle (no `Eq` for these this edition)","x-unsupported-span":[1926,1929]}
+wolf conform-run --checked exit=0
+  out| wolf conform-run: unsupported — `==` on a container, tuple or handle (no `Eq` for these this edition) @1926..1929
+  out| {"commit":"ec56a08","diagnostics":[],"file":"./ex8-7.lu","impl":"wolfgang","impl_version":"0.2.18","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"unsupported","warnings":[],"x-unsupported-construct":"`==` on a container, tuple or handle (no `Eq` for these this edition)","x-unsupported-span":[1926,1929]}
+
+=== old ex7-23.lu
+lupin exit=0
+  out| moves, and the shelf still holds 3
+wolf run exit=2
+  out| error[E1002]: `s` is the caller's value, and it is returned here while the caller still holds it
+  out|   --> ./ex7-23.lu:14:5
+  out|    |
+  out|  7 | fn longest(s: Shelf) -> Doc {
+  out|    |            - `s` is declared without a mode — that spells `read`: lent for the call, and still the caller's after it
+  out| ...
+  out| 14 |     s.docs[best]
+  out|    |     ^^^^^^^^^^^^ this would be a second live path to the value `s` was lent
+  out|    |
+  out|    = note: a `read` parameter is lent, never given [mem.tier0.mode.read]. Handing it on past the
+  out|      call would leave two places able to write one value, with no `shared` spelled anywhere
+  out|      [mem.tier0.excl.1]. Hand on an independent value with `copy`, or declare the parameter
+  out|      `take` so the caller gives it up (call sites then spell `take`).
+  out| help: to hand on an independent value, copy it at the move
+  out|    |
+  out| 14 |     copy s.docs[best]
+  out|    |
+  out| 
+  out| wolf run: the package does not compile; fix the errors above (`wolf --explain E1002` explains this code, or any other, by name)
+wolf conform-run exit=0
+  out| error[E1002]: `s` is the caller's value, and it is returned here while the caller still holds it
+  out|   --> ./ex7-23.lu:14:5
+  out|    |
+  out|  7 | fn longest(s: Shelf) -> Doc {
+  out|    |            - `s` is declared without a mode — that spells `read`: lent for the call, and still the caller's after it
+  out| ...
+  out| 14 |     s.docs[best]
+  out|    |     ^^^^^^^^^^^^ this would be a second live path to the value `s` was lent
+  out|    |
+  out|    = note: a `read` parameter is lent, never given [mem.tier0.mode.read]. Handing it on past the
+  out|      call would leave two places able to write one value, with no `shared` spelled anywhere
+  out|      [mem.tier0.excl.1]. Hand on an independent value with `copy`, or declare the parameter
+  out|      `take` so the caller gives it up (call sites then spell `take`).
+  out| help: to hand on an independent value, copy it at the move
+  out|    |
+  out| 14 |     copy s.docs[best]
+  out|    |
+  out| 
+  out| {"commit":"ec56a08","diagnostics":[{"code":"E1002","severity":"error","span":[450,462]}],"file":"./ex7-23.lu","impl":"wolfgang","impl_version":"0.2.18","phase_reached":"mem","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E1002)","warnings":[]}
+wolf conform-run --checked exit=0
+  out| error[E1002]: `s` is the caller's value, and it is returned here while the caller still holds it
+  out|   --> ./ex7-23.lu:14:5
+  out|    |
+  out|  7 | fn longest(s: Shelf) -> Doc {
+  out|    |            - `s` is declared without a mode — that spells `read`: lent for the call, and still the caller's after it
+  out| ...
+  out| 14 |     s.docs[best]
+  out|    |     ^^^^^^^^^^^^ this would be a second live path to the value `s` was lent
+  out|    |
+  out|    = note: a `read` parameter is lent, never given [mem.tier0.mode.read]. Handing it on past the
+  out|      call would leave two places able to write one value, with no `shared` spelled anywhere
+  out|      [mem.tier0.excl.1]. Hand on an independent value with `copy`, or declare the parameter
+  out|      `take` so the caller gives it up (call sites then spell `take`).
+  out| help: to hand on an independent value, copy it at the move
+  out|    |
+  out| 14 |     copy s.docs[best]
+  out|    |
+  out| 
+  out| {"commit":"ec56a08","diagnostics":[{"code":"E1002","severity":"error","span":[450,462]}],"file":"./ex7-23.lu","impl":"wolfgang","impl_version":"0.2.18","phase_reached":"mem","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E1002)","warnings":[]}
+
+=== old ex7-23b.lu
+lupin exit=0
+  out| moves, and the shelf still holds 3
+wolf run exit=0
+  out| moves, and the shelf still holds 3
+wolf conform-run exit=0
+  out| {"commit":"ec56a08","diagnostics":[],"file":"./ex7-23b.lu","impl":"wolfgang","impl_version":"0.2.18","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+wolf conform-run --checked exit=0
+  out| {"commit":"ec56a08","diagnostics":[],"file":"./ex7-23b.lu","impl":"wolfgang","impl_version":"0.2.18","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"moves, and the shelf still holds 3\n","stdout_sha256":"fc515ef413e928fb08102454658e939853425d7ff511e26c30608c653e15b5a0","verdict":"exit(0)","warnings":[]}
+
+=== old ex28-1.lu
+lupin exit=0
+  out|    1 apple
+  out|    1 moon
+  out|    1 runs
+  out|    3 the
+  out|    1 watches
+  out|    2 wolf
+  out|    1 zebra
+wolf run exit=4
+  out| wolf run: cannot compile this yet — `copy` of a value nested this deep @445..452 (pipeline is honest through `mem`; the conservatism ledger, not a bug in your program)
+wolf conform-run exit=0
+  out| wolf conform-run: unsupported — `copy` of a value nested this deep @445..452
+  out| {"commit":"ec56a08","diagnostics":[],"file":"./ex28-1.lu","impl":"wolfgang","impl_version":"0.2.18","phase_reached":"mem","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"unsupported","warnings":[],"x-unsupported-construct":"`copy` of a value nested this deep","x-unsupported-span":[445,452]}
+wolf conform-run --checked exit=0
+  out| {"commit":"ec56a08","diagnostics":[],"file":"./ex28-1.lu","impl":"wolfgang","impl_version":"0.2.18","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"   1 apple\n   1 moon\n   1 runs\n   3 the\n   1 watches\n   2 wolf\n   1 zebra\n","stdout_sha256":"26fa9e1c649fbbc7715afc6a3b99a950834a4c7c702effc20204a0b05e895290","verdict":"exit(0)","warnings":[]}
+
+=== old e1-best-nocopy.lu
+lupin exit=0
+  out| 340 espresso
+wolf run exit=2
+  out| error[E1001]: `xs[i]` is used here after its value moved away
+  out|  --> ./e1-best-nocopy.lu:5:19
+  out|   |
+  out| 2 |     var b = xs[0]
+  out|   |             ----- `xs[0]` moved here
+  out| ...
+  out| 5 |         if better(xs[i], b) { b = xs[i] }
+  out|   |                   ^^^^^ used after the move
+  out|   |
+  out|   = note: `xs[i]` may reach the moved `xs[0]`: an index that is not a literal is one place with
+  out|     every other index of its container [mem.model.place.elem]. Distinct literal indices stay
+  out|     usable.
+  out|   = note: re-initializing the place (assigning to it) also makes it usable again.
+  out| help: to keep the original, copy it at the move
+  out|   |
+  out| 2 |     var b = copy xs[0]
+  out|   |
+  out| 
+  out| error[E1001]: `xs[i]` is used here after its value moved away
+  out|  --> ./e1-best-nocopy.lu:5:35
+  out|   |
+  out| 2 |     var b = xs[0]
+  out|   |             ----- `xs[0]` moved here
+  out| ...
+  out| 5 |         if better(xs[i], b) { b = xs[i] }
+  out|   |                                   ^^^^^ used after the move
+  out|   |
+  out| help: to keep the original, copy it at the move
+  out|   |
+  out| 2 |     var b = copy xs[0]
+  out|   |
+  out| 
+  out| error[E1002]: `xs` is the caller's value, and it is returned here while the caller still holds it
+  out|  --> ./e1-best-nocopy.lu:8:5
+  out|   |
+  out| 1 | fn best[T](xs: List[T], better: fn(T, T) -> bool) -> T {
+  out|   |            -- `xs` is declared without a mode — that spells `read`: lent for the call, and still the caller's after it
+  out| 2 |     var b = xs[0]
+  out|   |             ----- `xs`'s value is moved out here
+  out| ...
+  out| 8 |     b
+  out|   |     ^ this would be a second live path to the value `xs` was lent
+  out|   |
+  out|   = note: a `read` parameter is lent, never given [mem.tier0.mode.read]. Handing it on past the
+  out|     call would leave two places able to write one value, with no `shared` spelled anywhere
+  out|     [mem.tier0.excl.1]. Hand on an independent value with `copy`, or declare the parameter
+  out|     `take` so the caller gives it up (call sites then spell `take`).
+  out| help: to hand on an independent value, copy it at the move
+  out|   |
+  out| 2 |     var b = copy xs[0]
+  out|   |
+  out| 
+  out| wolf run: the package does not compile; fix the errors above (`wolf --explain E1001` explains this code, or any other, by name)
+wolf conform-run exit=0
+  out| error[E1001]: `xs[i]` is used here after its value moved away
+  out|  --> ./e1-best-nocopy.lu:5:19
+  out|   |
+  out| 2 |     var b = xs[0]
+  out|   |             ----- `xs[0]` moved here
+  out| ...
+  out| 5 |         if better(xs[i], b) { b = xs[i] }
+  out|   |                   ^^^^^ used after the move
+  out|   |
+  out|   = note: `xs[i]` may reach the moved `xs[0]`: an index that is not a literal is one place with
+  out|     every other index of its container [mem.model.place.elem]. Distinct literal indices stay
+  out|     usable.
+  out|   = note: re-initializing the place (assigning to it) also makes it usable again.
+  out| help: to keep the original, copy it at the move
+  out|   |
+  out| 2 |     var b = copy xs[0]
+  out|   |
+  out| 
+  out| error[E1001]: `xs[i]` is used here after its value moved away
+  out|  --> ./e1-best-nocopy.lu:5:35
+  out|   |
+  out| 2 |     var b = xs[0]
+  out|   |             ----- `xs[0]` moved here
+  out| ...
+  out| 5 |         if better(xs[i], b) { b = xs[i] }
+  out|   |                                   ^^^^^ used after the move
+  out|   |
+  out| help: to keep the original, copy it at the move
+  out|   |
+  out| 2 |     var b = copy xs[0]
+  out|   |
+  out| 
+  out| error[E1002]: `xs` is the caller's value, and it is returned here while the caller still holds it
+  out|  --> ./e1-best-nocopy.lu:8:5
+  out|   |
+  out| 1 | fn best[T](xs: List[T], better: fn(T, T) -> bool) -> T {
+  out|   |            -- `xs` is declared without a mode — that spells `read`: lent for the call, and still the caller's after it
+  out| 2 |     var b = xs[0]
+  out|   |             ----- `xs`'s value is moved out here
+  out| ...
+  out| 8 |     b
+  out|   |     ^ this would be a second live path to the value `xs` was lent
+  out|   |
+  out|   = note: a `read` parameter is lent, never given [mem.tier0.mode.read]. Handing it on past the
+  out|     call would leave two places able to write one value, with no `shared` spelled anywhere
+  out|     [mem.tier0.excl.1]. Hand on an independent value with `copy`, or declare the parameter
+  out|     `take` so the caller gives it up (call sites then spell `take`).
+  out| help: to hand on an independent value, copy it at the move
+  out|   |
+  out| 2 |     var b = copy xs[0]
+  out|   |
+  out| 
+  out| {"commit":"ec56a08","diagnostics":[{"code":"E1001","severity":"error","span":[130,135]},{"code":"E1001","severity":"error","span":[146,151]},{"code":"E1002","severity":"error","span":[179,180]}],"file":"./e1-best-nocopy.lu","impl":"wolfgang","impl_version":"0.2.18","phase_reached":"mem","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E1001)","warnings":[]}
+wolf conform-run --checked exit=0
+  out| error[E1001]: `xs[i]` is used here after its value moved away
+  out|  --> ./e1-best-nocopy.lu:5:19
+  out|   |
+  out| 2 |     var b = xs[0]
+  out|   |             ----- `xs[0]` moved here
+  out| ...
+  out| 5 |         if better(xs[i], b) { b = xs[i] }
+  out|   |                   ^^^^^ used after the move
+  out|   |
+  out|   = note: `xs[i]` may reach the moved `xs[0]`: an index that is not a literal is one place with
+  out|     every other index of its container [mem.model.place.elem]. Distinct literal indices stay
+  out|     usable.
+  out|   = note: re-initializing the place (assigning to it) also makes it usable again.
+  out| help: to keep the original, copy it at the move
+  out|   |
+  out| 2 |     var b = copy xs[0]
+  out|   |
+  out| 
+  out| error[E1001]: `xs[i]` is used here after its value moved away
+  out|  --> ./e1-best-nocopy.lu:5:35
+  out|   |
+  out| 2 |     var b = xs[0]
+  out|   |             ----- `xs[0]` moved here
+  out| ...
+  out| 5 |         if better(xs[i], b) { b = xs[i] }
+  out|   |                                   ^^^^^ used after the move
+  out|   |
+  out| help: to keep the original, copy it at the move
+  out|   |
+  out| 2 |     var b = copy xs[0]
+  out|   |
+  out| 
+  out| error[E1002]: `xs` is the caller's value, and it is returned here while the caller still holds it
+  out|  --> ./e1-best-nocopy.lu:8:5
+  out|   |
+  out| 1 | fn best[T](xs: List[T], better: fn(T, T) -> bool) -> T {
+  out|   |            -- `xs` is declared without a mode — that spells `read`: lent for the call, and still the caller's after it
+  out| 2 |     var b = xs[0]
+  out|   |             ----- `xs`'s value is moved out here
+  out| ...
+  out| 8 |     b
+  out|   |     ^ this would be a second live path to the value `xs` was lent
+  out|   |
+  out|   = note: a `read` parameter is lent, never given [mem.tier0.mode.read]. Handing it on past the
+  out|     call would leave two places able to write one value, with no `shared` spelled anywhere
+  out|     [mem.tier0.excl.1]. Hand on an independent value with `copy`, or declare the parameter
+  out|     `take` so the caller gives it up (call sites then spell `take`).
+  out| help: to hand on an independent value, copy it at the move
+  out|   |
+  out| 2 |     var b = copy xs[0]
+  out|   |
+  out| 
+  out| {"commit":"ec56a08","diagnostics":[{"code":"E1001","severity":"error","span":[130,135]},{"code":"E1001","severity":"error","span":[146,151]},{"code":"E1002","severity":"error","span":[179,180]}],"file":"./e1-best-nocopy.lu","impl":"wolfgang","impl_version":"0.2.18","phase_reached":"mem","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E1001)","warnings":[]}
+
+=== old e2-shards.lu
+lupin exit=0
+  out| north
+  out| south
+wolf run exit=2
+  out| error[E1001]: `shards[i]` is used here after its value moved away
+  out|  --> ./e2-shards.lu:8:17
+  out|   |
+  out| 8 |         let s = shards[i]
+  out|   |                 ^^^^^^^^^ used after the move
+  out|   |                 --------- `shards[i]` moved here
+  out|   |
+  out|   = note: re-initializing the place (assigning to it) also makes it usable again.
+  out| help: to keep the original, copy it at the move
+  out|   |
+  out| 8 |         let s = copy shards[i]
+  out|   |
+  out| 
+  out| wolf run: the package does not compile; fix the errors above (`wolf --explain E1001` explains this code, or any other, by name)
+wolf conform-run exit=0
+  out| error[E1001]: `shards[i]` is used here after its value moved away
+  out|  --> ./e2-shards.lu:8:17
+  out|   |
+  out| 8 |         let s = shards[i]
+  out|   |                 ^^^^^^^^^ used after the move
+  out|   |                 --------- `shards[i]` moved here
+  out|   |
+  out|   = note: re-initializing the place (assigning to it) also makes it usable again.
+  out| help: to keep the original, copy it at the move
+  out|   |
+  out| 8 |         let s = copy shards[i]
+  out|   |
+  out| 
+  out| {"commit":"ec56a08","diagnostics":[{"code":"E1001","severity":"error","span":[261,270]}],"file":"./e2-shards.lu","impl":"wolfgang","impl_version":"0.2.18","phase_reached":"mem","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E1001)","warnings":[]}
+wolf conform-run --checked exit=0
+  out| error[E1001]: `shards[i]` is used here after its value moved away
+  out|  --> ./e2-shards.lu:8:17
+  out|   |
+  out| 8 |         let s = shards[i]
+  out|   |                 ^^^^^^^^^ used after the move
+  out|   |                 --------- `shards[i]` moved here
+  out|   |
+  out|   = note: re-initializing the place (assigning to it) also makes it usable again.
+  out| help: to keep the original, copy it at the move
+  out|   |
+  out| 8 |         let s = copy shards[i]
+  out|   |
+  out| 
+  out| {"commit":"ec56a08","diagnostics":[{"code":"E1001","severity":"error","span":[261,270]}],"file":"./e2-shards.lu","impl":"wolfgang","impl_version":"0.2.18","phase_reached":"mem","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E1001)","warnings":[]}
+
+=== old p1-eg2.lu
+lupin exit=0
+  out| 2
+wolf run exit=2
+  out| error[E1002]: `xs[1]` cannot go `mut` here: it overlaps `xs[0]`, already passed `mut` in this call
+  out|   --> ./p1-eg2.lu:26:25
+  out|    |
+  out| 26 |     add2(mut xs[0], mut xs[1])
+  out|    |              ----- `xs[0]` is passed `mut` here
+  out|    |                         ^^^^^ second exclusive claim on the same place
+  out|    |
+  out|    = note: `xs[0]` and `xs[1]` are elements of one container, and a `mut` claim still treats a
+  out|      container's elements as one place [mem.model.place.elem].
+  out| 
+  out| wolf run: the package does not compile; fix the errors above (`wolf --explain E1002` explains this code, or any other, by name)
+wolf conform-run exit=0
+  out| error[E1002]: `xs[1]` cannot go `mut` here: it overlaps `xs[0]`, already passed `mut` in this call
+  out|   --> ./p1-eg2.lu:26:25
+  out|    |
+  out| 26 |     add2(mut xs[0], mut xs[1])
+  out|    |              ----- `xs[0]` is passed `mut` here
+  out|    |                         ^^^^^ second exclusive claim on the same place
+  out|    |
+  out|    = note: `xs[0]` and `xs[1]` are elements of one container, and a `mut` claim still treats a
+  out|      container's elements as one place [mem.model.place.elem].
+  out| 
+  out| {"commit":"ec56a08","diagnostics":[{"code":"E1002","severity":"error","span":[1050,1055]}],"file":"./p1-eg2.lu","impl":"wolfgang","impl_version":"0.2.18","phase_reached":"mem","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E1002)","warnings":[]}
+wolf conform-run --checked exit=0
+  out| error[E1002]: `xs[1]` cannot go `mut` here: it overlaps `xs[0]`, already passed `mut` in this call
+  out|   --> ./p1-eg2.lu:26:25
+  out|    |
+  out| 26 |     add2(mut xs[0], mut xs[1])
+  out|    |              ----- `xs[0]` is passed `mut` here
+  out|    |                         ^^^^^ second exclusive claim on the same place
+  out|    |
+  out|    = note: `xs[0]` and `xs[1]` are elements of one container, and a `mut` claim still treats a
+  out|      container's elements as one place [mem.model.place.elem].
+  out| 
+  out| {"commit":"ec56a08","diagnostics":[{"code":"E1002","severity":"error","span":[1050,1055]}],"file":"./p1-eg2.lu","impl":"wolfgang","impl_version":"0.2.18","phase_reached":"mem","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E1002)","warnings":[]}
+
+=== new ex5-8.lu
+lupin exit=4
+  out| ex5-8.lu: unsupported: `List.sorted_by` is no builtin, so it reaches `List`'s home module `std.list` ([type.method.resolve] step 2), and no std root is configured: pass `--std-root DIR` or set `LUPIN_STD` (the compiler reads `WOLF_STD` or a `std` path dependency in `wolf.pkg`) — the counterparty's E0301 ([type.method.root])
+wolf run exit=4
+  out| wolf run: cannot compile this yet — member access on a value whose type is still being inferred @300..303 (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)
+wolf conform-run exit=0
+  out| wolf conform-run: unsupported — member access on a value whose type is still being inferred @300..303
+  out| {"commit":"c2401f0","diagnostics":[],"file":"./ex5-8.lu","impl":"wolfgang","impl_version":"0.2.19","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"unsupported","warnings":[],"x-unsupported-construct":"member access on a value whose type is still being inferred","x-unsupported-span":[300,303]}
+wolf conform-run --checked exit=0
+  out| wolf conform-run: unsupported — member access on a value whose type is still being inferred @300..303
+  out| {"commit":"c2401f0","diagnostics":[],"file":"./ex5-8.lu","impl":"wolfgang","impl_version":"0.2.19","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"unsupported","warnings":[],"x-unsupported-construct":"member access on a value whose type is still being inferred","x-unsupported-span":[300,303]}
+
+=== new ex7-5.lu
+lupin exit=0
+  out| 
+wolf run exit=4
+  out| wolf run: cannot compile this yet — borrow expressions @365..367 (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)
+wolf conform-run exit=0
+  out| wolf conform-run: unsupported — borrow expressions @365..367
+  out| {"commit":"c2401f0","diagnostics":[],"file":"./ex7-5.lu","impl":"wolfgang","impl_version":"0.2.19","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"unsupported","warnings":[],"x-unsupported-construct":"borrow expressions","x-unsupported-span":[365,367]}
+wolf conform-run --checked exit=0
+  out| wolf conform-run: unsupported — borrow expressions @365..367
+  out| {"commit":"c2401f0","diagnostics":[],"file":"./ex7-5.lu","impl":"wolfgang","impl_version":"0.2.19","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"unsupported","warnings":[],"x-unsupported-construct":"borrow expressions","x-unsupported-span":[365,367]}
+
+=== new ex8-7.lu
+lupin exit=4
+  out| ex8-7.lu: unsupported: handle is not a `Map` key — a key is `str`, `int`, `char` or `bool` ([type.map.key]; the compiler's E0418 where the key type is spelled)
+wolf run exit=4
+  out| wolf run: cannot compile this yet — `==` on a container, tuple or handle (no `Eq` for these this edition) @1926..1929 (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)
+wolf conform-run exit=0
+  out| wolf conform-run: unsupported — `==` on a container, tuple or handle (no `Eq` for these this edition) @1926..1929
+  out| {"commit":"c2401f0","diagnostics":[],"file":"./ex8-7.lu","impl":"wolfgang","impl_version":"0.2.19","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"unsupported","warnings":[],"x-unsupported-construct":"`==` on a container, tuple or handle (no `Eq` for these this edition)","x-unsupported-span":[1926,1929]}
+wolf conform-run --checked exit=0
+  out| wolf conform-run: unsupported — `==` on a container, tuple or handle (no `Eq` for these this edition) @1926..1929
+  out| {"commit":"c2401f0","diagnostics":[],"file":"./ex8-7.lu","impl":"wolfgang","impl_version":"0.2.19","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"unsupported","warnings":[],"x-unsupported-construct":"`==` on a container, tuple or handle (no `Eq` for these this edition)","x-unsupported-span":[1926,1929]}
+
+=== new ex7-23.lu
+lupin exit=0
+  out| moves, and the shelf still holds 3
+wolf run exit=2
+  out| error[E1002]: `s` is the caller's value, and it is returned here while the caller still holds it
+  out|   --> ./ex7-23.lu:14:5
+  out|    |
+  out|  7 | fn longest(s: Shelf) -> Doc {
+  out|    |            - `s` is declared without a mode — that spells `read`: lent for the call, and still the caller's after it
+  out| ...
+  out| 14 |     s.docs[best]
+  out|    |     ^^^^^^^^^^^^ this would be a second live path to the value `s` was lent
+  out|    |
+  out|    = note: a `read` parameter is lent, never given [mem.tier0.mode.read]. Handing it on past the
+  out|      call would leave two places able to write one value, with no `shared` spelled anywhere
+  out|      [mem.tier0.excl.1]. Hand on an independent value with `copy`, or declare the parameter
+  out|      `take` so the caller gives it up (call sites then spell `take`).
+  out| help: to hand on an independent value, copy it at the move
+  out|    |
+  out| 14 |     copy s.docs[best]
+  out|    |
+  out| 
+  out| wolf run: the package does not compile; fix the errors above (`wolf --explain E1002` explains this code, or any other, by name)
+wolf conform-run exit=0
+  out| error[E1002]: `s` is the caller's value, and it is returned here while the caller still holds it
+  out|   --> ./ex7-23.lu:14:5
+  out|    |
+  out|  7 | fn longest(s: Shelf) -> Doc {
+  out|    |            - `s` is declared without a mode — that spells `read`: lent for the call, and still the caller's after it
+  out| ...
+  out| 14 |     s.docs[best]
+  out|    |     ^^^^^^^^^^^^ this would be a second live path to the value `s` was lent
+  out|    |
+  out|    = note: a `read` parameter is lent, never given [mem.tier0.mode.read]. Handing it on past the
+  out|      call would leave two places able to write one value, with no `shared` spelled anywhere
+  out|      [mem.tier0.excl.1]. Hand on an independent value with `copy`, or declare the parameter
+  out|      `take` so the caller gives it up (call sites then spell `take`).
+  out| help: to hand on an independent value, copy it at the move
+  out|    |
+  out| 14 |     copy s.docs[best]
+  out|    |
+  out| 
+  out| {"commit":"c2401f0","diagnostics":[{"code":"E1002","severity":"error","span":[450,462]}],"file":"./ex7-23.lu","impl":"wolfgang","impl_version":"0.2.19","phase_reached":"mem","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E1002)","warnings":[]}
+wolf conform-run --checked exit=0
+  out| error[E1002]: `s` is the caller's value, and it is returned here while the caller still holds it
+  out|   --> ./ex7-23.lu:14:5
+  out|    |
+  out|  7 | fn longest(s: Shelf) -> Doc {
+  out|    |            - `s` is declared without a mode — that spells `read`: lent for the call, and still the caller's after it
+  out| ...
+  out| 14 |     s.docs[best]
+  out|    |     ^^^^^^^^^^^^ this would be a second live path to the value `s` was lent
+  out|    |
+  out|    = note: a `read` parameter is lent, never given [mem.tier0.mode.read]. Handing it on past the
+  out|      call would leave two places able to write one value, with no `shared` spelled anywhere
+  out|      [mem.tier0.excl.1]. Hand on an independent value with `copy`, or declare the parameter
+  out|      `take` so the caller gives it up (call sites then spell `take`).
+  out| help: to hand on an independent value, copy it at the move
+  out|    |
+  out| 14 |     copy s.docs[best]
+  out|    |
+  out| 
+  out| {"commit":"c2401f0","diagnostics":[{"code":"E1002","severity":"error","span":[450,462]}],"file":"./ex7-23.lu","impl":"wolfgang","impl_version":"0.2.19","phase_reached":"mem","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E1002)","warnings":[]}
+
+=== new ex7-23b.lu
+lupin exit=0
+  out| moves, and the shelf still holds 3
+wolf run exit=0
+  out| moves, and the shelf still holds 3
+wolf conform-run exit=0
+  out| {"commit":"c2401f0","diagnostics":[],"file":"./ex7-23b.lu","impl":"wolfgang","impl_version":"0.2.19","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+wolf conform-run --checked exit=0
+  out| {"commit":"c2401f0","diagnostics":[],"file":"./ex7-23b.lu","impl":"wolfgang","impl_version":"0.2.19","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"moves, and the shelf still holds 3\n","stdout_sha256":"fc515ef413e928fb08102454658e939853425d7ff511e26c30608c653e15b5a0","verdict":"exit(0)","warnings":[]}
+
+=== new ex28-1.lu
+lupin exit=0
+  out|    1 apple
+  out|    1 moon
+  out|    1 runs
+  out|    3 the
+  out|    1 watches
+  out|    2 wolf
+  out|    1 zebra
+wolf run exit=4
+  out| wolf run: cannot compile this yet — `copy` of a value nested this deep @445..452 (pipeline is honest through `mem`; the conservatism ledger, not a bug in your program)
+wolf conform-run exit=0
+  out| wolf conform-run: unsupported — `copy` of a value nested this deep @445..452
+  out| {"commit":"c2401f0","diagnostics":[],"file":"./ex28-1.lu","impl":"wolfgang","impl_version":"0.2.19","phase_reached":"mem","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"unsupported","warnings":[],"x-unsupported-construct":"`copy` of a value nested this deep","x-unsupported-span":[445,452]}
+wolf conform-run --checked exit=0
+  out| {"commit":"c2401f0","diagnostics":[],"file":"./ex28-1.lu","impl":"wolfgang","impl_version":"0.2.19","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"   1 apple\n   1 moon\n   1 runs\n   3 the\n   1 watches\n   2 wolf\n   1 zebra\n","stdout_sha256":"26fa9e1c649fbbc7715afc6a3b99a950834a4c7c702effc20204a0b05e895290","verdict":"exit(0)","warnings":[]}
+
+=== new e1-best-nocopy.lu
+lupin exit=0
+  out| 340 espresso
+wolf run exit=2
+  out| error[E1001]: `xs[i]` is used here after its value moved away
+  out|  --> ./e1-best-nocopy.lu:5:19
+  out|   |
+  out| 2 |     var b = xs[0]
+  out|   |             ----- `xs[0]` moved here
+  out| ...
+  out| 5 |         if better(xs[i], b) { b = xs[i] }
+  out|   |                   ^^^^^ used after the move
+  out|   |
+  out|   = note: `xs[i]` may reach the moved `xs[0]`: an index that is not a literal is one place with
+  out|     every other index of its container [mem.model.place.elem]. Distinct literal indices stay
+  out|     usable.
+  out|   = note: re-initializing the place (assigning to it) also makes it usable again.
+  out| help: to keep the original, copy it at the move
+  out|   |
+  out| 2 |     var b = copy xs[0]
+  out|   |
+  out| 
+  out| error[E1001]: `xs[i]` is used here after its value moved away
+  out|  --> ./e1-best-nocopy.lu:5:35
+  out|   |
+  out| 2 |     var b = xs[0]
+  out|   |             ----- `xs[0]` moved here
+  out| ...
+  out| 5 |         if better(xs[i], b) { b = xs[i] }
+  out|   |                                   ^^^^^ used after the move
+  out|   |
+  out| help: to keep the original, copy it at the move
+  out|   |
+  out| 2 |     var b = copy xs[0]
+  out|   |
+  out| 
+  out| error[E1002]: `xs` is the caller's value, and it is returned here while the caller still holds it
+  out|  --> ./e1-best-nocopy.lu:8:5
+  out|   |
+  out| 1 | fn best[T](xs: List[T], better: fn(T, T) -> bool) -> T {
+  out|   |            -- `xs` is declared without a mode — that spells `read`: lent for the call, and still the caller's after it
+  out| 2 |     var b = xs[0]
+  out|   |             ----- `xs`'s value is moved out here
+  out| ...
+  out| 8 |     b
+  out|   |     ^ this would be a second live path to the value `xs` was lent
+  out|   |
+  out|   = note: a `read` parameter is lent, never given [mem.tier0.mode.read]. Handing it on past the
+  out|     call would leave two places able to write one value, with no `shared` spelled anywhere
+  out|     [mem.tier0.excl.1]. Hand on an independent value with `copy`, or declare the parameter
+  out|     `take` so the caller gives it up (call sites then spell `take`).
+  out| help: to hand on an independent value, copy it at the move
+  out|   |
+  out| 2 |     var b = copy xs[0]
+  out|   |
+  out| 
+  out| wolf run: the package does not compile; fix the errors above (`wolf --explain E1001` explains this code, or any other, by name)
+wolf conform-run exit=0
+  out| error[E1001]: `xs[i]` is used here after its value moved away
+  out|  --> ./e1-best-nocopy.lu:5:19
+  out|   |
+  out| 2 |     var b = xs[0]
+  out|   |             ----- `xs[0]` moved here
+  out| ...
+  out| 5 |         if better(xs[i], b) { b = xs[i] }
+  out|   |                   ^^^^^ used after the move
+  out|   |
+  out|   = note: `xs[i]` may reach the moved `xs[0]`: an index that is not a literal is one place with
+  out|     every other index of its container [mem.model.place.elem]. Distinct literal indices stay
+  out|     usable.
+  out|   = note: re-initializing the place (assigning to it) also makes it usable again.
+  out| help: to keep the original, copy it at the move
+  out|   |
+  out| 2 |     var b = copy xs[0]
+  out|   |
+  out| 
+  out| error[E1001]: `xs[i]` is used here after its value moved away
+  out|  --> ./e1-best-nocopy.lu:5:35
+  out|   |
+  out| 2 |     var b = xs[0]
+  out|   |             ----- `xs[0]` moved here
+  out| ...
+  out| 5 |         if better(xs[i], b) { b = xs[i] }
+  out|   |                                   ^^^^^ used after the move
+  out|   |
+  out| help: to keep the original, copy it at the move
+  out|   |
+  out| 2 |     var b = copy xs[0]
+  out|   |
+  out| 
+  out| error[E1002]: `xs` is the caller's value, and it is returned here while the caller still holds it
+  out|  --> ./e1-best-nocopy.lu:8:5
+  out|   |
+  out| 1 | fn best[T](xs: List[T], better: fn(T, T) -> bool) -> T {
+  out|   |            -- `xs` is declared without a mode — that spells `read`: lent for the call, and still the caller's after it
+  out| 2 |     var b = xs[0]
+  out|   |             ----- `xs`'s value is moved out here
+  out| ...
+  out| 8 |     b
+  out|   |     ^ this would be a second live path to the value `xs` was lent
+  out|   |
+  out|   = note: a `read` parameter is lent, never given [mem.tier0.mode.read]. Handing it on past the
+  out|     call would leave two places able to write one value, with no `shared` spelled anywhere
+  out|     [mem.tier0.excl.1]. Hand on an independent value with `copy`, or declare the parameter
+  out|     `take` so the caller gives it up (call sites then spell `take`).
+  out| help: to hand on an independent value, copy it at the move
+  out|   |
+  out| 2 |     var b = copy xs[0]
+  out|   |
+  out| 
+  out| {"commit":"c2401f0","diagnostics":[{"code":"E1001","severity":"error","span":[130,135]},{"code":"E1001","severity":"error","span":[146,151]},{"code":"E1002","severity":"error","span":[179,180]}],"file":"./e1-best-nocopy.lu","impl":"wolfgang","impl_version":"0.2.19","phase_reached":"mem","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E1001)","warnings":[]}
+wolf conform-run --checked exit=0
+  out| error[E1001]: `xs[i]` is used here after its value moved away
+  out|  --> ./e1-best-nocopy.lu:5:19
+  out|   |
+  out| 2 |     var b = xs[0]
+  out|   |             ----- `xs[0]` moved here
+  out| ...
+  out| 5 |         if better(xs[i], b) { b = xs[i] }
+  out|   |                   ^^^^^ used after the move
+  out|   |
+  out|   = note: `xs[i]` may reach the moved `xs[0]`: an index that is not a literal is one place with
+  out|     every other index of its container [mem.model.place.elem]. Distinct literal indices stay
+  out|     usable.
+  out|   = note: re-initializing the place (assigning to it) also makes it usable again.
+  out| help: to keep the original, copy it at the move
+  out|   |
+  out| 2 |     var b = copy xs[0]
+  out|   |
+  out| 
+  out| error[E1001]: `xs[i]` is used here after its value moved away
+  out|  --> ./e1-best-nocopy.lu:5:35
+  out|   |
+  out| 2 |     var b = xs[0]
+  out|   |             ----- `xs[0]` moved here
+  out| ...
+  out| 5 |         if better(xs[i], b) { b = xs[i] }
+  out|   |                                   ^^^^^ used after the move
+  out|   |
+  out| help: to keep the original, copy it at the move
+  out|   |
+  out| 2 |     var b = copy xs[0]
+  out|   |
+  out| 
+  out| error[E1002]: `xs` is the caller's value, and it is returned here while the caller still holds it
+  out|  --> ./e1-best-nocopy.lu:8:5
+  out|   |
+  out| 1 | fn best[T](xs: List[T], better: fn(T, T) -> bool) -> T {
+  out|   |            -- `xs` is declared without a mode — that spells `read`: lent for the call, and still the caller's after it
+  out| 2 |     var b = xs[0]
+  out|   |             ----- `xs`'s value is moved out here
+  out| ...
+  out| 8 |     b
+  out|   |     ^ this would be a second live path to the value `xs` was lent
+  out|   |
+  out|   = note: a `read` parameter is lent, never given [mem.tier0.mode.read]. Handing it on past the
+  out|     call would leave two places able to write one value, with no `shared` spelled anywhere
+  out|     [mem.tier0.excl.1]. Hand on an independent value with `copy`, or declare the parameter
+  out|     `take` so the caller gives it up (call sites then spell `take`).
+  out| help: to hand on an independent value, copy it at the move
+  out|   |
+  out| 2 |     var b = copy xs[0]
+  out|   |
+  out| 
+  out| {"commit":"c2401f0","diagnostics":[{"code":"E1001","severity":"error","span":[130,135]},{"code":"E1001","severity":"error","span":[146,151]},{"code":"E1002","severity":"error","span":[179,180]}],"file":"./e1-best-nocopy.lu","impl":"wolfgang","impl_version":"0.2.19","phase_reached":"mem","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E1001)","warnings":[]}
+
+=== new e2-shards.lu
+lupin exit=0
+  out| north
+  out| south
+wolf run exit=2
+  out| error[E1001]: `shards[i]` is used here after its value moved away
+  out|  --> ./e2-shards.lu:8:17
+  out|   |
+  out| 8 |         let s = shards[i]
+  out|   |                 ^^^^^^^^^ used after the move
+  out|   |                 --------- `shards[i]` moved here
+  out|   |
+  out|   = note: re-initializing the place (assigning to it) also makes it usable again.
+  out| help: to keep the original, copy it at the move
+  out|   |
+  out| 8 |         let s = copy shards[i]
+  out|   |
+  out| 
+  out| wolf run: the package does not compile; fix the errors above (`wolf --explain E1001` explains this code, or any other, by name)
+wolf conform-run exit=0
+  out| error[E1001]: `shards[i]` is used here after its value moved away
+  out|  --> ./e2-shards.lu:8:17
+  out|   |
+  out| 8 |         let s = shards[i]
+  out|   |                 ^^^^^^^^^ used after the move
+  out|   |                 --------- `shards[i]` moved here
+  out|   |
+  out|   = note: re-initializing the place (assigning to it) also makes it usable again.
+  out| help: to keep the original, copy it at the move
+  out|   |
+  out| 8 |         let s = copy shards[i]
+  out|   |
+  out| 
+  out| {"commit":"c2401f0","diagnostics":[{"code":"E1001","severity":"error","span":[261,270]}],"file":"./e2-shards.lu","impl":"wolfgang","impl_version":"0.2.19","phase_reached":"mem","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E1001)","warnings":[]}
+wolf conform-run --checked exit=0
+  out| error[E1001]: `shards[i]` is used here after its value moved away
+  out|  --> ./e2-shards.lu:8:17
+  out|   |
+  out| 8 |         let s = shards[i]
+  out|   |                 ^^^^^^^^^ used after the move
+  out|   |                 --------- `shards[i]` moved here
+  out|   |
+  out|   = note: re-initializing the place (assigning to it) also makes it usable again.
+  out| help: to keep the original, copy it at the move
+  out|   |
+  out| 8 |         let s = copy shards[i]
+  out|   |
+  out| 
+  out| {"commit":"c2401f0","diagnostics":[{"code":"E1001","severity":"error","span":[261,270]}],"file":"./e2-shards.lu","impl":"wolfgang","impl_version":"0.2.19","phase_reached":"mem","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E1001)","warnings":[]}
+
+=== new p1-eg2.lu
+lupin exit=0
+  out| 2
+wolf run exit=0
+  out| 2
+wolf conform-run exit=0
+  out| {"commit":"c2401f0","diagnostics":[],"file":"./p1-eg2.lu","impl":"wolfgang","impl_version":"0.2.19","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+wolf conform-run --checked exit=0
+  out| {"commit":"c2401f0","diagnostics":[],"file":"./p1-eg2.lu","impl":"wolfgang","impl_version":"0.2.19","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"2\n","stdout_sha256":"53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3","verdict":"exit(0)","warnings":[]}
+

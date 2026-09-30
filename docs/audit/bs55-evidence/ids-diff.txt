@@ -1,0 +1,2 @@
+files: before 77, after 78; only before: []; only after: ['wolf-boot.js']
+html pages: 48 before, 48 after; id attributes (before) 1130; pages whose id set changed: 0
