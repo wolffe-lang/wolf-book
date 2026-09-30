@@ -290,7 +290,11 @@ async function gateOne(browser, base, vpName, opt) {
         await page.goto(base + "ch07.html", { waitUntil: "load" });
         try {
             await page.click("#search-toggle", { timeout: 5000 });
-            await page.fill("#searchbar", "region");
+            // Keys, as a reader types them: mdBook's searcher listens for
+            // key events, so a programmatic fill() searches nothing on
+            // any engine (measured; WebKit's first run read that as a
+            // broken search).
+            await page.locator("#searchbar").pressSequentially("region", { delay: 20 });
             await page.waitForSelector("#searchresults li", { timeout: 10000 });
         } catch (e) {
             /* judged below */
