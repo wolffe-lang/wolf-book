@@ -170,8 +170,6 @@ pub fn inline_scripts(html: &str) -> usize {
 /// could not show a reader what lupp.us shows (bs55); it now answers
 /// every old address with a redirect to the same path here.
 pub const HOME: &str = "https://lupp.us/book/";
-/// The Pages project path the old links carry.
-pub const PAGES_BASE: &str = "/wolf-book/";
 
 /// Where an old Pages path now lives: the same path under HOME, with
 /// `index.html` as the directory itself.
@@ -184,7 +182,9 @@ pub fn home_for(rel: &str) -> String {
 }
 
 fn attr_escape(s: &str) -> String {
-    s.replace('&', "&amp;").replace('"', "&quot;").replace('<', "&lt;")
+    s.replace('&', "&amp;")
+        .replace('"', "&quot;")
+        .replace('<', "&lt;")
 }
 
 /// One page's redirect: `rel=canonical` for search engines, a meta
@@ -204,7 +204,9 @@ pub fn redirect_stub(target: &str) -> String {
 }
 
 /// Any other old address (the PDF, a page that never existed): the same
-/// path under HOME, by script, and the book's front door without one.
+/// path under HOME, by script — the old links carry the Pages project
+/// path `/wolf-book/`, which the script drops — and the book's front
+/// door without one.
 pub fn redirect_404() -> String {
     format!(
         "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n\
@@ -1075,12 +1077,18 @@ mod tests {
     #[test]
     fn inline_scripts_are_counted_outside_comments() {
         assert_eq!(inline_scripts(r#"<script src="book.js"></script>"#), 0);
-        assert_eq!(inline_scripts("<script>const path_to_root = \"\";</script>"), 1);
+        assert_eq!(
+            inline_scripts("<script>const path_to_root = \"\";</script>"),
+            1
+        );
         assert_eq!(
             inline_scripts("<script>\nlet sidebar = null;\n</script><script\n>x</script>"),
             2
         );
-        assert_eq!(inline_scripts("<!-- an inline <script> is refused --><p>ok</p>"), 0);
+        assert_eq!(
+            inline_scripts("<!-- an inline <script> is refused --><p>ok</p>"),
+            0
+        );
         // mdbook-sidebar-scrollbox is not a script element.
         assert_eq!(inline_scripts("<scripture>x</scripture>"), 0);
     }
@@ -1088,14 +1096,25 @@ mod tests {
     #[test]
     fn pages_redirect_to_the_same_path_home() {
         assert_eq!(home_for("ch07.html"), "https://lupp.us/book/ch07.html");
-        assert_eq!(home_for("front/how-to-read.html"), "https://lupp.us/book/front/how-to-read.html");
+        assert_eq!(
+            home_for("front/how-to-read.html"),
+            "https://lupp.us/book/front/how-to-read.html"
+        );
         assert_eq!(home_for("index.html"), "https://lupp.us/book/");
         let stub = redirect_stub(&home_for("ch33.html"));
         assert!(stub.contains(r#"<link rel="canonical" href="https://lupp.us/book/ch33.html">"#));
-        assert!(stub.contains(r#"<meta http-equiv="refresh" content="0; url=https://lupp.us/book/ch33.html">"#));
-        assert!(stub.contains("location.hash"), "the fragment survives the hop");
+        assert!(stub.contains(
+            r#"<meta http-equiv="refresh" content="0; url=https://lupp.us/book/ch33.html">"#
+        ));
+        assert!(
+            stub.contains("location.hash"),
+            "the fragment survives the hop"
+        );
         let nf = redirect_404();
-        assert!(nf.contains(r#"location.pathname.replace(/^\/wolf-book\/?/, "")"#), "{nf}");
+        assert!(
+            nf.contains(r#"location.pathname.replace(/^\/wolf-book\/?/, "")"#),
+            "{nf}"
+        );
         assert!(nf.contains("https://lupp.us/book/"));
     }
 
