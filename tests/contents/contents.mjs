@@ -85,10 +85,27 @@ export function judge(label, landed) {
 
 const norm = (s) => (s || "").replace(/\s+/g, " ").trim();
 
+/// Let the sidebar's transition finish. Bounded: a page the browser
+/// does not consider visible may never tick an animation (Firefox), and
+/// an unbounded wait here hung the first CI run for seventeen minutes.
 async function settle(page) {
     await page.evaluate(() =>
-        Promise.all(document.getAnimations().map((a) => a.finished.catch(() => null))),
+        Promise.race([
+            Promise.all(document.getAnimations().map((a) => a.finished.catch(() => null))),
+            new Promise((ok) => setTimeout(ok, 1000)),
+        ]),
     );
+}
+
+/// No single click may take the run with it.
+function bounded(ms, what, work) {
+    let timer;
+    return Promise.race([
+        work.finally(() => clearTimeout(timer)),
+        new Promise((_, no) => {
+            timer = setTimeout(() => no(new Error(`${what}: no answer in ${ms / 1000}s`)), ms);
+        }),
+    ]);
 }
 
 async function sidebarState(page) {
@@ -161,13 +178,14 @@ async function sources(browser, base) {
     };
 }
 
+/// Run `tasks` on `n` workers; `fn(task, w)` learns which worker it is.
 async function pool(n, tasks, fn) {
     let next = 0;
     await Promise.all(
-        Array.from({ length: Math.min(n, tasks.length) }, async () => {
+        Array.from({ length: Math.min(n, tasks.length) }, async (_, w) => {
             while (next < tasks.length) {
                 const t = tasks[next++];
-                await fn(t);
+                await fn(t, w);
             }
         }),
     );
@@ -211,7 +229,9 @@ async function gateOne(browser, base, vpName, opt) {
         await ctx.close();
     }
 
-    // 2. Every entry from every page.
+    // 2. Every entry from every page. One context and one page per
+    // worker, reused: each worker's page is its context's only page, so
+    // no engine treats it as a background tab.
     const ctx = await browser.newContext({ viewport: vp });
     const tasks = [];
     const perSource = new Map();
@@ -230,26 +250,32 @@ async function gateOne(browser, base, vpName, opt) {
         }
         await page.close();
     }
-    await pool(opt.workers, tasks, async ({ src, i }) => {
-        const page = await ctx.newPage();
+    await ctx.close();
+    const workers = [];
+    for (let w = 0; w < opt.workers; w++) {
+        const wctx = await browser.newContext({ viewport: vp });
+        workers.push({ ctx: wctx, page: await wctx.newPage() });
+    }
+    await pool(opt.workers, tasks, async ({ src, i }, w) => {
+        const page = workers[w].page;
         try {
-            await page.goto(base + src, { waitUntil: "load" });
-            await openSidebar(page);
-            const { label, landed } = await clickEntry(page, i);
-            r.clicks++;
-            if (landed.status === 200) r.landed200++;
-            for (const f of judge(label, landed)) {
-                r.faults[f].push(
-                    `${src} -> "${label}": HTTP ${landed.status} ${landed.url} title="${landed.title}" h1="${landed.h1}"`,
-                );
-            }
+            await bounded(60000, `${src} entry ${i}`, (async () => {
+                await page.goto(base + src, { waitUntil: "load" });
+                await openSidebar(page);
+                const { label, landed } = await clickEntry(page, i);
+                r.clicks++;
+                if (landed.status === 200) r.landed200++;
+                for (const f of judge(label, landed)) {
+                    r.faults[f].push(
+                        `${src} -> "${label}": HTTP ${landed.status} ${landed.url} title="${landed.title}" h1="${landed.h1}"`,
+                    );
+                }
+            })());
         } catch (e) {
             r.faults.click.push(`${src} entry ${i}: ${String(e.message).split("\n")[0]}`);
-        } finally {
-            await page.close();
         }
     });
-    await ctx.close();
+    for (const w of workers) await w.ctx.close();
 
     // 3. Search loads its index.
     {
