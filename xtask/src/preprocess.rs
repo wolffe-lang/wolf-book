@@ -203,6 +203,17 @@ fn transform_item(grammars: &Grammars, item: &mut serde_json::Value) -> Result<(
         return Ok(());
     };
     if let Some(content) = chapter.get("content").and_then(|c| c.as_str()) {
+        // The sidebar's label is mdBook's `number` field, which it
+        // assigns by POSITION in SUMMARY. Chapter 33 sits between 25 and
+        // 26 (front/how-to-read.md: numbers are permanent links), so the
+        // positional count labelled it "26." and every later chapter one
+        // off (bs55). The chapter's own `# N.` heading is the number; a
+        // numbered chapter takes it, an unnumbered one stays unnumbered.
+        if chapter.get("number").is_some_and(|n| !n.is_null()) {
+            if let Some(n) = own_number(content) {
+                chapter["number"] = serde_json::json!([n]);
+            }
+        }
         let name = chapter
             .get("name")
             .and_then(|n| n.as_str())
@@ -220,9 +231,56 @@ fn transform_item(grammars: &Grammars, item: &mut serde_json::Value) -> Result<(
     Ok(())
 }
 
+/// The number a chapter gives itself: its first line, `# 33. The
+/// serving loop`, says 33. Nothing else is a chapter's number.
+pub fn own_number(content: &str) -> Option<u32> {
+    let first = content.lines().find(|l| !l.trim().is_empty())?;
+    let text = first.strip_prefix("# ")?.trim_start();
+    let (num, rest) = text.split_once(". ")?;
+    if num.is_empty() || !num.chars().all(|c| c.is_ascii_digit()) || rest.trim().is_empty() {
+        return None;
+    }
+    num.parse().ok()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn own_number_is_the_first_heading() {
+        assert_eq!(own_number("# 33. The serving loop\n\nBody."), Some(33));
+        assert_eq!(own_number("\n# 1. Hello, Wolf\n"), Some(1));
+        assert_eq!(own_number("# How to read this book\n"), None);
+        assert_eq!(own_number("# Appendix A — Grammar summary\n"), None);
+        // A section heading is not a chapter number, nor is a later line.
+        assert_eq!(own_number("## 33.1 Accept\n"), None);
+        assert_eq!(own_number("Intro.\n# 7. Late\n"), None);
+        assert_eq!(own_number("# 33.\n"), None);
+    }
+
+    #[test]
+    fn chapter_takes_its_own_number_not_its_position() {
+        // mdBook numbered ch33 "26" by its place in SUMMARY.
+        let mut item = serde_json::json!({"Chapter": {
+            "name": "The serving loop",
+            "content": "# 33. The serving loop\n\nText.\n",
+            "number": [26],
+            "sub_items": []
+        }});
+        let grammars = load_grammars(&crate::repo_root().unwrap()).unwrap();
+        transform_item(&grammars, &mut item).unwrap();
+        assert_eq!(item["Chapter"]["number"], serde_json::json!([33]));
+        // A prefix chapter (no number) stays unnumbered.
+        let mut front = serde_json::json!({"Chapter": {
+            "name": "How to read this book",
+            "content": "# How to read this book\n",
+            "number": null,
+            "sub_items": []
+        }});
+        transform_item(&grammars, &mut front).unwrap();
+        assert!(front["Chapter"]["number"].is_null());
+    }
 
     #[test]
     fn chapter_heading_anchor() {
