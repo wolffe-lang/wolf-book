@@ -2,6 +2,37 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs55, the book at 0.2.19 — 2026-09-30 — the contents work on lupp.us
+
+**The contents' links work from every page.** On lupp.us, a sidebar
+link clicked from any page in the front or back matter — How to read
+this book, Notation, every appendix, Solutions, the Glossary, the
+Index, Errata, the Colophon — went to a page that does not exist. The
+site's security policy refuses scripts written inside a page, and the
+one that told the sidebar where the book's root is was one of them.
+Nothing the book runs is written inside a page any more, and a gate in
+CI now clicks every entry from every page in three browsers, at phone
+and desktop widths, under the site's own policy.
+
+**The contents number chapters the way the chapters do.** "The serving
+loop" is chapter 33, and the contents called it 26 and moved every
+later chapter up by one. Each entry now carries its chapter's own
+number. No chapter, section, anchor or address changed.
+
+**The contents open on a wide screen, and say so.** The sidebar was
+drawn closed on a desktop while the page said it was open; now it
+opens unless you closed it last time, and it is drawn the way it is
+described, to your screen reader too.
+
+**The not-found page links into the book** from any address it is
+shown at, and **the old GitHub Pages address forwards** every page to
+the same page on lupp.us.
+
+**The pair is wolf 0.2.19 / lupin 0.1.42.** Both from the release
+archives by digest. Each tool now names the other's release exactly,
+and the interpreter's clause is one release and 105 commits behind the
+compiler's: §1.2 and the colophon say so. No program in the book moved.
+
 ## bs54, the book at 0.2.18 — 2026-09-28 — the point release moves words, not programs
 
 **The pair is wolf 0.2.18 / lupin 0.1.41.** Both from the release
