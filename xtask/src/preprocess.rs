@@ -202,18 +202,22 @@ fn transform_item(grammars: &Grammars, item: &mut serde_json::Value) -> Result<(
     let Some(chapter) = item.get_mut("Chapter") else {
         return Ok(());
     };
-    if let Some(content) = chapter.get("content").and_then(|c| c.as_str()) {
-        // The sidebar's label is mdBook's `number` field, which it
-        // assigns by POSITION in SUMMARY. Chapter 33 sits between 25 and
-        // 26 (front/how-to-read.md: numbers are permanent links), so the
-        // positional count labelled it "26." and every later chapter one
-        // off (bs55). The chapter's own `# N.` heading is the number; a
-        // numbered chapter takes it, an unnumbered one stays unnumbered.
-        if chapter.get("number").is_some_and(|n| !n.is_null()) {
-            if let Some(n) = own_number(content) {
-                chapter["number"] = serde_json::json!([n]);
-            }
+    // The sidebar's label is mdBook's `number` field, which it assigns
+    // by POSITION in SUMMARY. Chapter 33 sits between 25 and 26
+    // (front/how-to-read.md: numbers are permanent links), so the
+    // positional count labelled it "26." and every later chapter one off
+    // (bs55). The chapter's own `# N.` heading is the number; a numbered
+    // chapter takes it, an unnumbered one stays unnumbered.
+    let own = chapter
+        .get("content")
+        .and_then(|c| c.as_str())
+        .and_then(own_number);
+    if let Some(n) = own {
+        if chapter.get("number").is_some_and(|v| !v.is_null()) {
+            chapter["number"] = serde_json::json!([n]);
         }
+    }
+    if let Some(content) = chapter.get("content").and_then(|c| c.as_str()) {
         let name = chapter
             .get("name")
             .and_then(|n| n.as_str())
