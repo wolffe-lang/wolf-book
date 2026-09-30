@@ -1061,8 +1061,45 @@ repo = "wolffe-lang/wolf-lang"
 # and C-1). Two prose claims moved with EG1 — §5.3's `best` and ch31's
 # shard papercut said an element binding made `xs.len` unreadable, and
 # it no longer does.
-rev = "ec56a08f04ff318ea659fd58683f7ae4f22dc7a5"
-impl_version = "0.2.18"
+# ---- bs55, wave 52: wolf 0.2.19 + lupin 0.1.42 — EG2 and the header
+#      reads; both halves of the pair EXACT, the distance one release ----
+#
+# wolf-lang at the v0.2.19 release tag (`c2401f0`), TAKEN FROM THE
+# RELEASE ARCHIVE (release 400208356) and matched against the release's
+# published digest before unpacking:
+# `wolf-0.2.19-x86_64-unknown-linux-gnu.tar.gz` sha256
+# 9f3873d80118681a583a7bc00ead8d00186d447d2584aea75bc65a81f8238c8e.
+# Every member hashed BY NAME (docs/audit/bs55-evidence/members.txt):
+#
+#   wolf                 3821bfaa...   <- the pin of record
+#   wolf-cimport-worker  65498b6a...
+#   libwolf_rt.a         f7e7236d...
+#   wolf.1               cd04e9d8...
+#   _wolf                2d1e4801...   <- zsh completion, same at every pin
+#   wolf.bash            29eb2d75...   <- same as 0.2.18
+#   wolf.fish            51a1b6a8...   <- same as 0.2.18
+#
+#   wolf 0.2.19 (wolfgang, pin c2401f0)
+#   paired with lupin 0.1.42 (reference interpreter), pin ec56a08
+#   lupin 0.1.42 (wolf-interp, reference interpreter at pin ec56a08)
+#
+# PREDICTED TO THE CHARACTER in docs/audit/bs55-prediction.md (committed
+# at 51725fe, before either archive was downloaded) and measured
+# byte-identical. The compiler's half is EXACT on both fields: it names
+# 0.1.42 and `ec56a08`, and lupin 0.1.42 prints `ec56a08`. The
+# interpreter's half names v0.2.18's tag, so the distance CLOSED to
+# `git rev-list --count ec56a08f..c2401f05` = 105 commits, one release.
+#
+# What the release changed that the book can see: NO VERDICT, as
+# predicted. 0.2.19 widens — `mut` claims on two literal elements (EG2),
+# a member read beside an element claim, `count`/`is_empty` beside a
+# moved element — and no book program makes two element claims in one
+# call (ch28's `add(mut n.left[0], w)` is one claim, still held by
+# push's plain copy, wolf-book#57) or moves an element at all. Control
+# (0.2.18 / 0.1.41) and subject on the unedited tree: 0 program
+# failures, 0 flips; the four console failures are the four stamps.
+rev = "c2401f05f37794a078d2acf62f837dad98e5950d"
+impl_version = "0.2.19"
 
 [lupin]
 # wolf-interp at the v0.1.30 release tag (is42): the stamped line names
@@ -1629,9 +1666,19 @@ impl_version = "0.2.18"
 # book reads an `int`, `char`, `str`, handle or raw pointer, all `Copy`
 # in lupin's `is_copy` — so no sample meets the new trap. #143-#146
 # stay open and reach nothing here either.
+# ---- bs55, wave 52: 0.1.41 -> 0.1.42, the re-pin and the mirrors ----
+#
+# `lupin-0.1.42-x86_64-unknown-linux-gnu.tar.gz` (release 400022505)
+# sha256 9856335aacbb26d22bd3fde867f28238c6ffde98e5d9fc15ecdedf4103998ab6,
+# member `lupin` 03f4a710.... Pin MOVES `93a5fe5` -> `ec56a08` (v0.2.18's
+# tag, r24's re-pin). New traps: a whole read of a place holding a
+# moved part (#143, #149), a `Map` read that moves a non-`Copy` value
+# out (#144), the caller seeing a callee's move-out (#146). None reaches
+# a sample: the book moves no element, every spelled `Map` is
+# `Map[str, int]`, and no `mut` parameter is left moved-out.
 repo = "wolffe-lang/wolf-interp"
-rev = "0cfc0cfc89af5fd2aeb71d46c86742745b902869"
-version = "lupin 0.1.41 (wolf-interp, reference interpreter at pin 93a5fe5)"
+rev = "8e2516dc47bf808512388cc687e070981d331d98"
+version = "lupin 0.1.42 (wolf-interp, reference interpreter at pin ec56a08)"
 
 [wolf-lsp]
 # Source of the vendored tmLanguage grammars under highlight/.
