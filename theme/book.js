@@ -4,17 +4,36 @@
 // clipboard, no playground, no telemetry.
 "use strict";
 
+// The first-paint state is wolf-boot.js's (bs55); this keeps the class,
+// the ARIA attributes and the links' tab order in step with the checkbox
+// from then on. The ARIA half was an inline script the site's CSP never
+// ran, so assistive tech was told nothing on lupp.us.
 (function sidebarState() {
     const checkbox = document.getElementById("sidebar-toggle-anchor");
     if (!checkbox) {
         return;
     }
+    function reflect() {
+        const open = checkbox.checked;
+        document.documentElement.classList.toggle("sidebar-visible", open);
+        const toggle = document.getElementById("sidebar-toggle");
+        if (toggle) {
+            toggle.setAttribute("aria-expanded", String(open));
+        }
+        const sidebar = document.getElementById("sidebar");
+        if (sidebar) {
+            sidebar.setAttribute("aria-hidden", String(!open));
+            sidebar.querySelectorAll("a").forEach(function (link) {
+                link.setAttribute("tabIndex", open ? 0 : -1);
+            });
+        }
+    }
+    reflect();
     checkbox.addEventListener("change", function () {
         try {
             localStorage.setItem("mdbook-sidebar", checkbox.checked ? "visible" : "hidden");
         } catch (e) { /* storage unavailable: state simply does not persist */ }
-        document.documentElement.classList.toggle("sidebar-visible", checkbox.checked);
-        document.getElementById("sidebar").setAttribute("aria-hidden", String(!checkbox.checked));
+        reflect();
     });
 })();
 

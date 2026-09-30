@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="{{ language }}" class="wolf sidebar-visible" dir="{{ text_direction }}">
+<html lang="{{ language }}" class="wolf" dir="{{ text_direction }}">
     <head>
         <!-- The Wolf Book — full theme replacement (bs00, DESIGN.md §1–3).
              White ground, Charter body, one measure; highlight.js is not
@@ -42,41 +42,22 @@
         <link rel="stylesheet" href="{{ resource this }}">
         {{/each}}
 
-        <script>
-            const path_to_root = "{{ path_to_root }}";
-            const default_light_theme = "wolf";
-            const default_dark_theme = "wolf";
-        {{#if search_js}}
-            window.path_to_searchindex_js = "{{ resource "searchindex.js" }}";
-        {{/if}}
-        </script>
-        <!-- The ToC rail is rendered by toc.js (mdBook's mechanism). -->
+        <!-- No inline script element anywhere in this template (bs55): lupp.us
+             serves the book under `script-src 'self'`, which refuses
+             them, and three did not run there for months. `path_to_root`
+             and the sidebar's first-paint state live in wolf-boot.js,
+             loaded at the top of <body>; tests/contents holds every page
+             to the site's CSP on three engines.
+             The ToC rail is rendered by toc.js (mdBook's mechanism). -->
         <script src="{{ resource "toc.js" }}"></script>
     </head>
     <body>
     <div id="body-container">
-        <script>
-            document.documentElement.classList.add("js");
-        </script>
+        <!-- autocomplete=off: Firefox otherwise restores a checkbox's last
+             state on reload and back, after wolf-boot.js has set it. -->
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden" autocomplete="off">
 
-        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
-
-        <script>
-            let sidebar = null;
-            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
-            if (document.body.clientWidth >= 1080) {
-                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
-                sidebar = sidebar || 'visible';
-            } else {
-                sidebar = 'hidden';
-                sidebar_toggle.checked = false;
-            }
-            if (sidebar === 'visible') {
-                sidebar_toggle.checked = true;
-            } else {
-                document.documentElement.classList.remove('sidebar-visible');
-            }
-        </script>
+        <script src="{{ path_to_root }}wolf-boot.js"></script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
@@ -126,14 +107,6 @@
                 </div>
                 {{/if}}
 
-                <script>
-                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
-                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
-                    });
-                </script>
-
                 <div id="content" class="content">
                     <!-- Prev/next at top as well as bottom (DESIGN.md §3). -->
                     <nav class="nav-inline nav-top" aria-label="Page navigation (top)">
@@ -164,24 +137,6 @@
 
         </div>
 
-        {{#if live_reload_endpoint}}
-        <!-- Livereload script (if served using the cli tool) -->
-        <script>
-            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsAddress = wsProtocol + "//" + location.host + "/" + "{{{live_reload_endpoint}}}";
-            const socket = new WebSocket(wsAddress);
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
-        {{/if}}
-
         {{#if search_js}}
         <script src="{{ resource "elasticlunr.min.js" }}"></script>
         <script src="{{ resource "mark.min.js" }}"></script>
@@ -193,21 +148,6 @@
         {{#each additional_js}}
         <script src="{{ resource this}}"></script>
         {{/each}}
-
-        {{#if fragment_map}}
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const fragmentMap =
-                    {{{fragment_map}}}
-                ;
-                const target = fragmentMap[window.location.hash];
-                if (target) {
-                    let url = new URL(target, window.location.href);
-                    window.location.replace(url.href);
-                }
-            });
-        </script>
-        {{/if}}
 
     </div>
     </body>
