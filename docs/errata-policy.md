@@ -44,8 +44,10 @@ down.
 
 `.github/workflows/book.yml` accepts a `repository_dispatch` event of
 type `toolchain-release`. A release in wolf-lang or wolf-interp fires it,
-the book's whole suite runs against the pin, and the web edition
-redeploys if it passes. The nightly lane does the same thing against the
+the book's whole suite runs against the pin, and the web edition at
+https://lupp.us/book/ (its only home, deployed by the site's build in
+wolf-web) is redeployed if it passes. GitHub Pages carries redirects to
+it and nothing else (bs55). The nightly lane does the same thing against the
 compiler's main branch, report-only, so drift is visible before a release
 makes it urgent. A dry run of the release path is a
 `workflow_dispatch` on the same workflow.

@@ -13,7 +13,8 @@ on:
   pull_request:
   # A toolchain release re-verifies the book by construction: wolf-lang and
   # wolf-interp fire this event on release, the whole suite runs at the pin,
-  # and the web edition redeploys if it passes (docs/errata-policy.md).
+  # and the web edition at lupp.us/book/ redeploys if it passes
+  # (docs/errata-policy.md; GitHub Pages carries only redirects, bs55).
   # `workflow_dispatch` is the dry run of that path.
   repository_dispatch:
     types: [toolchain-release]
