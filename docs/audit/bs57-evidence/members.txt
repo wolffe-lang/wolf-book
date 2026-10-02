@@ -1,0 +1,14 @@
+3610f43eb60f9c58a2de671267ca0bed715a6044756cc73dc83aa75907371491  ./lupin-0.1.42-x86_64-unknown-linux-gnu/CHANGELOG.md
+3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986  ./lupin-0.1.42-x86_64-unknown-linux-gnu/LICENSE
+03f4a710944378db1b7c543e50fe2e8fb74704138e30b74a2905a81180ebc660  ./lupin-0.1.42-x86_64-unknown-linux-gnu/lupin
+6015b469601c4cabf3561b2536e96e656b98e5e39bb6e8c7fc1b40be71d62094  ./lupin-0.1.42-x86_64-unknown-linux-gnu/README.md
+f7e7236dd61144830d9a3c4de9dcd617993226790cb8310bea7db3e4c735dda9  ./wolf-0.2.19-x86_64-unknown-linux-gnu/libwolf_rt.a
+3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986  ./wolf-0.2.19-x86_64-unknown-linux-gnu/LICENSE
+a0eec20d7b98b1cd0e5b4d23c3965667c97b68fb365ec95a9516b0c3cbc4fec4  ./wolf-0.2.19-x86_64-unknown-linux-gnu/LICENSE-EXCEPTION
+d0ff56987aadef79536bde1ea38f56676850554b49c81429c8c95554f8da5be9  ./wolf-0.2.19-x86_64-unknown-linux-gnu/README.md
+2d1e48018333e3dd70473b34dfc78723f91f71d44a3d95287b68ce85fbbc2221  ./wolf-0.2.19-x86_64-unknown-linux-gnu/_wolf
+3821bfaa3a4e3fd4b7970a88482d9fc37bfc09738cd70dc56d60f2484ae313f9  ./wolf-0.2.19-x86_64-unknown-linux-gnu/wolf
+cd04e9d8c7fc9f833fded8c3525eaedc9a0b746c0d35e4e95cbe4861569b61bf  ./wolf-0.2.19-x86_64-unknown-linux-gnu/wolf.1
+29eb2d752591ab80fe54aed9e368f51aa9bfd557e48dd7ff2cc95e47fad27d97  ./wolf-0.2.19-x86_64-unknown-linux-gnu/wolf.bash
+65498b6ae4510e837b1089a7d403ec98a8d9b5f5b97c8f10d94b94825ab26e99  ./wolf-0.2.19-x86_64-unknown-linux-gnu/wolf-cimport-worker
+51a1b6a8e12d6e3def4621af12cefee13ec6181ed1687ec9eba7f43f17550c2f  ./wolf-0.2.19-x86_64-unknown-linux-gnu/wolf.fish

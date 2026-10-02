@@ -1,0 +1,2 @@
+9f3873d80118681a583a7bc00ead8d00186d447d2584aea75bc65a81f8238c8e  wolf-0.2.19-x86_64-unknown-linux-gnu.tar.gz
+9856335aacbb26d22bd3fde867f28238c6ffde98e5d9fc15ecdedf4103998ab6  lupin-0.1.42-x86_64-unknown-linux-gnu.tar.gz

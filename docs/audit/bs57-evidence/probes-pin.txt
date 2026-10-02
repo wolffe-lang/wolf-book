@@ -1,0 +1,48 @@
+===== rowmatch.lu
+--- lupin 0.1.42: lupin rowmatch.lu
+no comma
+no comma
+`lots` at byte 7 is not a number
+no comma
+exit 0
+--- wolf 0.2.19: wolf run rowmatch.lu
+wolf run: cannot compile this yet — `match` over a fallible value (unwrap with `?` or bind the error with `else |err|`) @374..562 (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)
+exit 4
+--- wolf 0.2.19: wolf conform-run --json rowmatch.lu
+wolf conform-run: unsupported — `match` over a fallible value (unwrap with `?` or bind the error with `else |err|`) @374..562
+{"commit":"c2401f0","diagnostics":[],"file":"./rowmatch.lu","impl":"wolfgang","impl_version":"0.2.19","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"unsupported","warnings":[],"x-unsupported-construct":"`match` over a fallible value (unwrap with `?` or bind the error with `else |err|`)","x-unsupported-span":[374,562]}
+exit 0
+--- wolf 0.2.19: wolf conform-run --json --checked rowmatch.lu
+wolf conform-run: unsupported — `match` over a fallible value (unwrap with `?` or bind the error with `else |err|`) @374..562
+{"commit":"c2401f0","diagnostics":[],"file":"./rowmatch.lu","impl":"wolfgang","impl_version":"0.2.19","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"unsupported","warnings":[],"x-unsupported-construct":"`match` over a fallible value (unwrap with `?` or bind the error with `else |err|`)","x-unsupported-span":[374,562]}
+exit 0
+===== rowmiss.lu
+--- lupin 0.1.42: lupin rowmiss.lu
+no_comma
+exit 0
+--- wolf 0.2.19: wolf run rowmiss.lu
+wolf run: cannot compile this yet — `match` over a fallible value (unwrap with `?` or bind the error with `else |err|`) @374..459 (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)
+exit 4
+--- wolf 0.2.19: wolf conform-run --json rowmiss.lu
+wolf conform-run: unsupported — `match` over a fallible value (unwrap with `?` or bind the error with `else |err|`) @374..459
+{"commit":"c2401f0","diagnostics":[],"file":"./rowmiss.lu","impl":"wolfgang","impl_version":"0.2.19","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"unsupported","warnings":[],"x-unsupported-construct":"`match` over a fallible value (unwrap with `?` or bind the error with `else |err|`)","x-unsupported-span":[374,459]}
+exit 0
+--- wolf 0.2.19: wolf conform-run --json --checked rowmiss.lu
+wolf conform-run: unsupported — `match` over a fallible value (unwrap with `?` or bind the error with `else |err|`) @374..459
+{"commit":"c2401f0","diagnostics":[],"file":"./rowmiss.lu","impl":"wolfgang","impl_version":"0.2.19","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"unsupported","warnings":[],"x-unsupported-construct":"`match` over a fallible value (unwrap with `?` or bind the error with `else |err|`)","x-unsupported-span":[374,459]}
+exit 0
+===== ex6-15.lu
+--- lupin 0.1.42: lupin ex6-15.lu
+7 -4 Weird
+exit 0
+--- wolf 0.2.19: wolf run ex6-15.lu
+wolf run: cannot compile this yet — `match` over a fallible value (unwrap with `?` or bind the error with `else |err|`) @144..233 (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)
+exit 4
+--- wolf 0.2.19: wolf conform-run --json ex6-15.lu
+wolf conform-run: unsupported — `match` over a fallible value (unwrap with `?` or bind the error with `else |err|`) @144..233
+{"commit":"c2401f0","diagnostics":[],"file":"./ex6-15.lu","impl":"wolfgang","impl_version":"0.2.19","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"unsupported","warnings":[],"x-unsupported-construct":"`match` over a fallible value (unwrap with `?` or bind the error with `else |err|`)","x-unsupported-span":[144,233]}
+exit 0
+--- wolf 0.2.19: wolf conform-run --json --checked ex6-15.lu
+wolf conform-run: unsupported — `match` over a fallible value (unwrap with `?` or bind the error with `else |err|`) @144..233
+{"commit":"c2401f0","diagnostics":[],"file":"./ex6-15.lu","impl":"wolfgang","impl_version":"0.2.19","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"unsupported","warnings":[],"x-unsupported-construct":"`match` over a fallible value (unwrap with `?` or bind the error with `else |err|`)","x-unsupported-span":[144,233]}
+exit 0

@@ -1,0 +1,19 @@
+== 999f5e00d23831b143a013c31b651ab79667f19a extracted book/ch06/s7 under s197 78753bcfeb778134de789745255eaa0fdb6bdb32
+--- wolf conform-run --json s7.lu
+error[E0801]: this `match` does not cover `no_comma`
+  --> ./s7.lu:17:16
+   |
+17 |     let owed = match cents("tip 100") {
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^
+18 |         NotANumber(bad) => 0 - bad.at,
+19 |         n => n,
+20 |     }
+   | ^^^^^ not every value is matched
+   |
+   = note: over a fallible value a row arm covers one tag of the row, a value pattern covers values
+     of the ok type, and `_` covers whatever is left on both halves ([type.row.match]).
+   = note: add arms for the missing cases, or end the `match` with a `_` arm to catch the rest
+     deliberately.
+
+{"commit":"78753bc","diagnostics":[{"code":"E0801","severity":"error","span":[495,580]}],"file":"./s7.lu","impl":"wolfgang","impl_version":"0.2.20+dev.78753bc","phase_reached":"typecheck","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0801)","warnings":[]}
+exit 0

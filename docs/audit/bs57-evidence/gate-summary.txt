@@ -1,0 +1,49 @@
+== gate head
+999f5e00d23831b143a013c31b651ab79667f19a
+== gate-samples.log
+samples: lupin = /home/mfwolffe/lanes/bs57/new/lupin-0.1.42-x86_64-unknown-linux-gnu/lupin
+samples: wolf  = /home/mfwolffe/lanes/bs57/new/wolf-0.2.19-x86_64-unknown-linux-gnu/wolf
+samples: PENDING ch06/ex6-15 [run(exit=0, stdout="7 -4 -99")] — blocker: 6-6's `code_for` as one `match` over `probe(n)` — a row arm, a value arm, `_` for the open row's rest. Expected on both machine
+samples: PENDING book/ch06/part-rowmatch [run(exit=0)] — blocker: §6.6's worked sample, `match cents(row) { no_comma => …, NotANumber(bad) => …, 0 => …, n => … }`. Expected on both machines: exit 0 an
+samples: PENDING book/ch06/s7 [fail(E0801)] — blocker: §6.6's deliberate refusal: the same `match` with `no_comma` forgotten, `fail(E0801)` naming `no_comma`. Measured at bs57 against the pin (release
+samples: PENDING diagnostic,from(book/ch06/s7) on /home/mfwolffe/lanes/bs57/wolf-book/book/ch06.md — the sample is on samples-pending.toml, so the shown text is compared the day its row leaves (blocke
+samples: PENDING /home/mfwolffe/lanes/bs57/wolf-book/book/ch06.md:444: console block beside pending sample book/ch06/part-rowmatch — not compared until its samples-pending.toml row leaves (blocker: §6
+samples: 509 samples (250 corpus roots + 16 corpus members on disk, 259 book blocks)
+samples: 503 passed, 6 pending (report-only), 0 failed, 0 flips in 58.5s
+samples: 481 of 502 console block(s) replayed against the pinned tools
+EXIT 0
+== gate-samplesselftest.log
+samples: lupin = /home/mfwolffe/lanes/bs57/new/lupin-0.1.42-x86_64-unknown-linux-gnu/lupin
+samples: wolf  = /home/mfwolffe/lanes/bs57/new/wolf-0.2.19-x86_64-unknown-linux-gnu/wolf
+samples: self-test ok — 14/14 deliberate breakages caught
+EXIT 0
+== gate-verifydocs.log
+verify-docs: 10 line-count claim(s) recomputed
+verify-docs: 6 project program(s) match the chapters that print them
+verify-docs: 27 version literal(s) in reader-facing text, each audited against wolf 0.2.19 / lupin 0.1.42
+verify-docs: 655 wolf listing(s) scanned for interpolation the vendored grammar cannot paint (wolf-book#5)
+verify-docs: EXERCISES-INDEX.md agrees with the corpus — 345 exercises (296 printed); 9 pending · 78 prose · 9 run (lupin REPL) · 192 run (lupin) · 26 run (wolf + lupin) · 31 run (wolf); fingers 61 · 
+verify-docs: ok (corpus count 266, pins well-formed, TOC/stub numbering agrees)
+EXIT 0
+== gate-ledgercheck.log
+ledger: 32 chapter ledger(s) — 133 open (126 filed, 7 waived, 0 unfiled), 99 closed
+EXIT 0
+== gate-backmattercheck.log
+backmatter: 296 solution(s) published, 331 on file
+backmatter: book/back/appendix-a.md up to date
+backmatter: book/back/solutions.md up to date
+backmatter: vendored spec artifacts match the sibling wolf-lang checkout
+EXIT 0
+== gate-contrast.log
+contrast: rust — 3 file(s) compiled and asserted, 5 book block(s) matched
+contrast: c — 9 printed transcript(s) checked against their cases
+contrast: c — 6 twin(s) compiled with cc -std=c99 -Wall -Werror, 14/14 case(s) asserted, 13 book block(s) matched
+EXIT 0
+== gate-renderweb.log
+render: web edition at /home/mfwolffe/lanes/bs57/wolf-book/target/render/web
+render: CSP guard — 48 pages, no inline <script> (lupp.us serves `script-src 'self'`)
+render: link check — 1328 internal links across 48 pages, none dead
+EXIT 0
+== gate-rendermd.log
+render: single-file markdown at /home/mfwolffe/lanes/bs57/wolf-book/target/render/wolf-book.md
+EXIT 0

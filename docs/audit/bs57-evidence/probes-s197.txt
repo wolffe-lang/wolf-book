@@ -1,0 +1,106 @@
+== wolf-lang branch s197 at 78753bcfeb778134de789745255eaa0fdb6bdb32 (a BRANCH build)
+wolf 0.2.20+dev.78753bc (wolfgang, pin 78753bc)
+paired with lupin 0.1.43 (reference interpreter), pin c2401f0
+===== rowmatch.lu
+--- wolf run rowmatch.lu
+340 cents
+nothing owed
+`lots` at byte 7 is not a number
+no comma
+exit 0
+--- wolf conform-run --json rowmatch.lu
+{"commit":"78753bc","diagnostics":[],"file":"./rowmatch.lu","impl":"wolfgang","impl_version":"0.2.20+dev.78753bc","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+exit 0
+--- wolf conform-run --json --checked rowmatch.lu
+{"commit":"78753bc","diagnostics":[],"file":"./rowmatch.lu","impl":"wolfgang","impl_version":"0.2.20+dev.78753bc","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"340 cents\nnothing owed\n`lots` at byte 7 is not a number\nno comma\n","stdout_sha256":"3b787e1fa449f9fdcacbe60f5c7c933f6c6360306d072736b38ecabe47fa2db4","verdict":"exit(0)","warnings":[]}
+exit 0
+--- wolf conform-run --json --native rowmatch.lu
+{"commit":"78753bc","diagnostics":[],"file":"./rowmatch.lu","impl":"wolfgang","impl_version":"0.2.20+dev.78753bc","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"340 cents\nnothing owed\n`lots` at byte 7 is not a number\nno comma\n","stdout_sha256":"3b787e1fa449f9fdcacbe60f5c7c933f6c6360306d072736b38ecabe47fa2db4","verdict":"exit(0)","warnings":[]}
+exit 0
+===== rowmiss.lu
+--- wolf run rowmiss.lu
+error[E0801]: this `match` does not cover `no_comma`
+  --> ./rowmiss.lu:14:16
+   |
+14 |     let owed = match cents("tip 100") {
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^
+15 |         NotANumber(bad) => 0 - bad.at,
+16 |         n => n,
+17 |     }
+   | ^^^^^ not every value is matched
+   |
+   = note: over a fallible value a row arm covers one tag of the row, a value pattern covers values
+     of the ok type, and `_` covers whatever is left on both halves ([type.row.match]).
+   = note: add arms for the missing cases, or end the `match` with a `_` arm to catch the rest
+     deliberately.
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0801` explains this code, or any other, by name)
+exit 2
+--- wolf conform-run --json rowmiss.lu
+error[E0801]: this `match` does not cover `no_comma`
+  --> ./rowmiss.lu:14:16
+   |
+14 |     let owed = match cents("tip 100") {
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^
+15 |         NotANumber(bad) => 0 - bad.at,
+16 |         n => n,
+17 |     }
+   | ^^^^^ not every value is matched
+   |
+   = note: over a fallible value a row arm covers one tag of the row, a value pattern covers values
+     of the ok type, and `_` covers whatever is left on both halves ([type.row.match]).
+   = note: add arms for the missing cases, or end the `match` with a `_` arm to catch the rest
+     deliberately.
+
+{"commit":"78753bc","diagnostics":[{"code":"E0801","severity":"error","span":[374,459]}],"file":"./rowmiss.lu","impl":"wolfgang","impl_version":"0.2.20+dev.78753bc","phase_reached":"typecheck","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0801)","warnings":[]}
+exit 0
+--- wolf conform-run --json --checked rowmiss.lu
+error[E0801]: this `match` does not cover `no_comma`
+  --> ./rowmiss.lu:14:16
+   |
+14 |     let owed = match cents("tip 100") {
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^
+15 |         NotANumber(bad) => 0 - bad.at,
+16 |         n => n,
+17 |     }
+   | ^^^^^ not every value is matched
+   |
+   = note: over a fallible value a row arm covers one tag of the row, a value pattern covers values
+     of the ok type, and `_` covers whatever is left on both halves ([type.row.match]).
+   = note: add arms for the missing cases, or end the `match` with a `_` arm to catch the rest
+     deliberately.
+
+{"commit":"78753bc","diagnostics":[{"code":"E0801","severity":"error","span":[374,459]}],"file":"./rowmiss.lu","impl":"wolfgang","impl_version":"0.2.20+dev.78753bc","phase_reached":"typecheck","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0801)","warnings":[]}
+exit 0
+--- wolf conform-run --json --native rowmiss.lu
+error[E0801]: this `match` does not cover `no_comma`
+  --> ./rowmiss.lu:14:16
+   |
+14 |     let owed = match cents("tip 100") {
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^
+15 |         NotANumber(bad) => 0 - bad.at,
+16 |         n => n,
+17 |     }
+   | ^^^^^ not every value is matched
+   |
+   = note: over a fallible value a row arm covers one tag of the row, a value pattern covers values
+     of the ok type, and `_` covers whatever is left on both halves ([type.row.match]).
+   = note: add arms for the missing cases, or end the `match` with a `_` arm to catch the rest
+     deliberately.
+
+{"commit":"78753bc","diagnostics":[{"code":"E0801","severity":"error","span":[374,459]}],"file":"./rowmiss.lu","impl":"wolfgang","impl_version":"0.2.20+dev.78753bc","phase_reached":"typecheck","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0801)","warnings":[]}
+exit 0
+===== ex6-15.lu
+--- wolf run ex6-15.lu
+7 -4 -99
+exit 0
+--- wolf conform-run --json ex6-15.lu
+{"commit":"78753bc","diagnostics":[],"file":"./ex6-15.lu","impl":"wolfgang","impl_version":"0.2.20+dev.78753bc","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+exit 0
+--- wolf conform-run --json --checked ex6-15.lu
+wolf conform-run --checked: unsupported — module items in checked execution @64..69
+{"commit":"78753bc","diagnostics":[],"file":"./ex6-15.lu","impl":"wolfgang","impl_version":"0.2.20+dev.78753bc","phase_reached":"mem","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"unsupported","warnings":[],"x-unsupported-construct":"module items in checked execution","x-unsupported-span":[64,69]}
+exit 0
+--- wolf conform-run --json --native ex6-15.lu
+{"commit":"78753bc","diagnostics":[],"file":"./ex6-15.lu","impl":"wolfgang","impl_version":"0.2.20+dev.78753bc","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"7 -4 -99\n","stdout_sha256":"060b7157b825ca37c9fef79f2a4dfe8aca89683a96786d2bcd67fd421bcfe5b9","verdict":"exit(0)","warnings":[]}
+exit 0

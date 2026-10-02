@@ -1,0 +1,13 @@
+== cargo xtask samples with WOLF= the s197 branch build (78753bcf) and LUPIN= 0.1.42, at wolf-book 999f5e00
+samples: lupin = /home/mfwolffe/lanes/bs57/new/lupin-0.1.42-x86_64-unknown-linux-gnu/lupin
+samples: wolf  = /home/mfwolffe/lanes/bs57/wolf-lang-s197/target/release/wolf
+samples: 509 samples (250 corpus roots + 16 corpus members on disk, 259 book blocks)
+samples: 503 passed, 4 pending (report-only), 4 failed, 2 flips in 36.0s
+samples: 477 of 502 console block(s) replayed against the pinned tools
+samples: FAIL /home/mfwolffe/lanes/bs57/wolf-book/book/back/colophon.md:7: console block drifted from the real run
+samples: FAIL /home/mfwolffe/lanes/bs57/wolf-book/book/ch01.md:153: console block drifted from the real run
+samples: FAIL /home/mfwolffe/lanes/bs57/wolf-book/book/ch22.md:288: console block drifted from the real run
+samples: FAIL /home/mfwolffe/lanes/bs57/wolf-book/principles/exercises/ch22/EXERCISES.md:218: console block drifted from the real run
+samples: FLIP book/ch06/part-rowmatch: directive `run(exit=0)` now PASSES but the sample is on samples-pending.toml (blocker was: §6.6's worked sample, `match cents(row) { no_comma => …, NotANumber(bad) => …, 0 => …, n =
+samples: FLIP book/ch06/s7: directive `fail(E0801)` now PASSES but the sample is on samples-pending.toml (blocker was: §6.6's deliberate refusal: the same `match` with `no_comma` forgotten, `fail(E0801)` naming `no_comma
+EXIT 1
