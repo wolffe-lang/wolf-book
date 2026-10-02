@@ -1,7 +1,10 @@
 // The contents gate (bs55). From every page of the web edition, click
 // every sidebar entry, and hold each click to three things: the landing
-// response is HTTP 200, the landing page's <title> is the label's name,
-// and the landing page's first <h1> carries the label's number. It also
+// response is HTTP 200 (or 304, a page the browser already held and the
+// server confirmed — lupp.us serves the book `no-cache`, and Firefox and
+// WebKit report the revalidation as the navigation's status, #67), the
+// landing page's <title> is the label's name, and the landing page's
+// first <h1> carries the label's number. It also
 // holds the sidebar's state to its drawing on first load (the checkbox,
 // the `sidebar-visible` class and where the sidebar is actually drawn),
 // with no stored state and with `mdbook-sidebar` stored as `visible` and
@@ -76,13 +79,22 @@ export function parseLabel(text) {
     return m ? { num: m[1], name: m[2] } : { num: null, name: text };
 }
 
-/// A click lands on the page its label names: 200, the title is the
-/// label's name, and the h1's number is the label's number.
+/// The navigation response says a page arrived: 200, or 304 for a page
+/// the browser held and the server confirmed unchanged. Which page it
+/// is, the title and the h1 say; a 304 on the wrong page is that page's
+/// faults, never a pass.
+export function isLanding(status) {
+    return status === 200 || status === 304;
+}
+
+/// A click lands on the page its label names: the response is a
+/// landing, the title is the label's name, and the h1's number is the
+/// label's number.
 export function judge(label, landed) {
     const want = parseLabel(label);
     const h1num = landed.h1 ? parseLabel(landed.h1).num : null;
     const faults = [];
-    if (landed.status !== 200) faults.push("status");
+    if (!isLanding(landed.status)) faults.push("status");
     else {
         if (landed.title !== want.name + TITLE_SUFFIX) faults.push("title");
         if (h1num !== want.num) faults.push("number");
@@ -208,6 +220,7 @@ async function gateOne(browser, base, vpName, opt) {
         pages: list.length,
         clicks: 0,
         landed200: 0,
+        landed304: 0,
         faults: { status: [], title: [], number: [], click: [], load: [], entries: [], state: [], search: [] },
     };
 
@@ -272,6 +285,7 @@ async function gateOne(browser, base, vpName, opt) {
                 const { label, landed } = await clickEntry(page, i);
                 r.clicks++;
                 if (landed.status === 200) r.landed200++;
+                if (landed.status === 304) r.landed304++;
                 for (const f of judge(label, landed)) {
                     r.faults[f].push(
                         `${src} -> "${label}": HTTP ${landed.status} ${landed.url} title="${landed.title}" h1="${landed.h1}"`,
@@ -330,7 +344,7 @@ async function retryOne(browser, base, vpName, lines) {
     const count = (await entries(page)).length;
     const first = await sidebarState(page);
     lines.push(`# ${eng} ${vpName}: ch07 has ${count} entries; first load ${JSON.stringify(first)}; page errors: ${[...new Set(errors)].join(" | ") || "none"}`);
-    const tally = { hop1: 0, hop1ok: 0, hop2: 0, hop2ok: 0, numberMismatch: 0 };
+    const tally = { hop1: 0, hop1ok: 0, hop1at304: 0, hop2: 0, hop2ok: 0, hop2at304: 0, numberMismatch: 0 };
     for (const variant of ["untoggled", "toggled"]) {
         for (let i = 0; i < count; i++) {
             await page.goto(base + "ch07.html", { waitUntil: "load" });
@@ -360,15 +374,17 @@ async function retryOne(browser, base, vpName, lines) {
             }
             tally.hop1++;
             const faults = judge(label, landed);
-            if (landed.status === 200) tally.hop1ok++;
+            if (isLanding(landed.status)) tally.hop1ok++;
+            if (landed.status === 304) tally.hop1at304++;
             if (faults.includes("number")) tally.numberMismatch++;
             lines.push(`${eng} ${vpName} ${variant} hop1 "${label}" -> HTTP ${landed.status} ${new URL(landed.url).pathname} h1="${landed.h1}"${faults.length ? " FAULT " + faults.join(",") : ""}`);
-            if (landed.status !== 200) continue;
+            if (!isLanding(landed.status)) continue;
             try {
                 await openSidebar(page);
                 const second = await clickEntry(page, 2);
                 tally.hop2++;
-                if (second.landed.status === 200) tally.hop2ok++;
+                if (isLanding(second.landed.status)) tally.hop2ok++;
+                if (second.landed.status === 304) tally.hop2at304++;
                 lines.push(`${eng} ${vpName} ${variant} hop2 from ${new URL(landed.url).pathname} "${second.label}" -> HTTP ${second.landed.status} ${new URL(second.landed.url).pathname}`);
             } catch (e) {
                 lines.push(`${eng} ${vpName} ${variant} hop2 from ${new URL(landed.url).pathname}: ERROR ${String(e.message).split("\n")[0]}`);
@@ -376,7 +392,10 @@ async function retryOne(browser, base, vpName, lines) {
         }
     }
     await ctx.close();
-    lines.push(`# ${eng} ${vpName}: hop1 ${tally.hop1ok}/${tally.hop1} at 200 (${tally.numberMismatch} number mismatches); hop2 ${tally.hop2ok}/${tally.hop2} at 200`);
+    lines.push(
+        `# ${eng} ${vpName}: hop1 ${tally.hop1ok}/${tally.hop1} landed, ${tally.hop1at304} at 304 (${tally.numberMismatch} number mismatches); ` +
+            `hop2 ${tally.hop2ok}/${tally.hop2} landed, ${tally.hop2at304} at 304`,
+    );
     return tally;
 }
 
@@ -415,7 +434,7 @@ async function main() {
             failed ||= bad;
             console.log(
                 `contents: ${name} ${vp}: ${r.pages} pages, ${r.entries} entries, ${r.clicks} clicks, ` +
-                    `${r.landed200} at 200 — ${bad ? "FAIL" : "ok"} ${JSON.stringify(n)} in ${((Date.now() - t0) / 1000).toFixed(0)}s`,
+                    `${r.landed200} at 200, ${r.landed304} at 304 — ${bad ? "FAIL" : "ok"} ${JSON.stringify(n)} in ${((Date.now() - t0) / 1000).toFixed(0)}s`,
             );
             for (const [k, v] of Object.entries(r.faults)) {
                 for (const line of v.slice(0, 12)) console.log(`  ${k}: ${line}`);

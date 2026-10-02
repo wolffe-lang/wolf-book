@@ -5,7 +5,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { parseLabel, judge } from "./contents.mjs";
+import { parseLabel, judge, isLanding } from "./contents.mjs";
 import { resolve, serve, version, validators, notModified, LUPP_HEADERS } from "./serve.mjs";
 
 test("a label splits into its number and its name", () => {
@@ -50,6 +50,7 @@ test("a revalidated landing (304) is a landing, judged by its title and number (
     assert.deepEqual(judge("33. The serving loop", { ...ok, status: 404 }), ["status"]);
     assert.deepEqual(judge("33. The serving loop", { ...ok, status: 301 }), ["status"]);
     assert.deepEqual(judge("33. The serving loop", { ...ok, status: null }), ["status"]);
+    assert.deepEqual([200, 304, 404, 301, 500, null].map(isLanding), [true, true, false, false, false, false]);
 });
 
 function tree() {
