@@ -2,6 +2,19 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs57, `match` over the value — 2026-10-02 — chapter 6's third form
+
+**Chapter 6 teaches `match` straight over a fallible value** (§6.6, the
+maintainer's ruling #21). The arms are of two kinds: a row arm names a
+tag and binds its payload, a value arm is any pattern over the value,
+`_` covers what is left of both, and the compiler names the tag you
+forgot. §6.2's opening now names all three ways a row is handled —
+`?`, `else`, and `match` — as the specification does. The section's
+two samples and its exercise, 6-15, are pending: no published
+toolchain serves the form yet, so they run report-only and the page
+waits for the pin that does. No number moved; §6.6 is the next free
+one and sits after §6.2, where the reader needs it.
+
 ## bs56, the contents, twice more — 2026-10-01 — a versioned script, a re-checked page
 
 **The contents' links survive a version tag.** The small script that
