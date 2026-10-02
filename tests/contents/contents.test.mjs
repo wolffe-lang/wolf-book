@@ -6,7 +6,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { parseLabel, judge } from "./contents.mjs";
-import { resolve, serve, LUPP_HEADERS } from "./serve.mjs";
+import { resolve, serve, version, LUPP_HEADERS } from "./serve.mjs";
 
 test("a label splits into its number and its name", () => {
     assert.deepEqual(parseLabel("33. The serving loop"), { num: "33", name: "The serving loop" });
@@ -68,6 +68,35 @@ test("the server sends lupp.us's CSP and the book's 404 page on a miss", async (
         assert.equal(miss.status, 404);
         assert.match(await miss.text(), /Document not found/);
         assert.equal(miss.headers.get("content-security-policy"), LUPP_HEADERS["Content-Security-Policy"]);
+    } finally {
+        await s.close();
+    }
+});
+
+test("the versioned serve suffixes every script and stylesheet, wolf-boot.js included", async () => {
+    const page =
+        '<link rel="stylesheet" href="../css/chrome.css"><script src="../toc.js"></script>' +
+        '<script src="../wolf-boot.js"></script><script src="/book/wolf-boot.js"></script>' +
+        '<a href="../ch07.html">7</a><script src="x.js?v=old"></script><img src="a.png">';
+    assert.equal(
+        version(page, "abc"),
+        '<link rel="stylesheet" href="../css/chrome.css?v=abc"><script src="../toc.js?v=abc"></script>' +
+            '<script src="../wolf-boot.js?v=abc"></script><script src="/book/wolf-boot.js?v=abc"></script>' +
+            '<a href="../ch07.html">7</a><script src="x.js?v=old"></script><img src="a.png">',
+    );
+    const d = tree();
+    fs.writeFileSync(path.join(d, "ch07.html"), '<script src="wolf-boot.js"></script><h1>7. Who owns this?</h1>');
+    const s = await serve(d, 0, { version: "t1" });
+    try {
+        const hit = await fetch(s.url + "ch07.html");
+        assert.equal(hit.status, 200);
+        assert.match(await hit.text(), /src="wolf-boot\.js\?v=t1"/);
+        const bare = await serve(d, 0);
+        try {
+            assert.match(await (await fetch(bare.url + "ch07.html")).text(), /src="wolf-boot\.js"/);
+        } finally {
+            await bare.close();
+        }
     } finally {
         await s.close();
     }

@@ -19,6 +19,10 @@
 //
 // Options: --engines a,b  --viewports phone,desktop  --workers N
 //          --json FILE (the full record)  --log FILE (the retry's lines)
+//          --version TAG (every script and stylesheet reference served
+//          as `?v=TAG`, wolf-boot.js included — wolf-web's cache-busting,
+//          which broke the root on every page one level down, #66;
+//          default `gate`)  --unversioned (serve the render as written)
 //
 // Exit 0 only when every check on every engine and viewport held.
 // PLAYWRIGHT_MODULE names a playwright(-core) to load instead of the
@@ -45,6 +49,7 @@ function args(argv) {
         viewports: ["phone", "desktop"],
         workers: 4,
         retry: false,
+        version: "gate",
     };
     for (let i = 0; i < argv.length; i++) {
         const a = argv[i];
@@ -57,6 +62,8 @@ function args(argv) {
         else if (a === "--json") o.json = next();
         else if (a === "--log") o.log = next();
         else if (a === "--retry") o.retry = true;
+        else if (a === "--version") o.version = next();
+        else if (a === "--unversioned") o.version = null;
         else throw new Error(`unknown option ${a}`);
     }
     if (!o.root === !o.base) throw new Error("exactly one of --root DIR or --base URL");
@@ -379,11 +386,14 @@ async function main() {
     let server = null;
     let base = opt.base;
     if (opt.root) {
-        server = await serve(opt.root, 0);
+        server = await serve(opt.root, 0, { version: opt.version });
         base = server.url;
     }
     if (!base.endsWith("/")) base += "/";
-    console.log(`contents: ${opt.retry ? "retry" : "gate"} against ${base} (${opt.root ? "render served with lupp.us's headers" : "live"})`);
+    const how = opt.root
+        ? `render served with lupp.us's headers${opt.version ? `, scripts versioned ?v=${opt.version}` : ", unversioned"}`
+        : "live";
+    console.log(`contents: ${opt.retry ? "retry" : "gate"} against ${base} (${how})`);
     let failed = false;
     const record = [];
     const lines = [];

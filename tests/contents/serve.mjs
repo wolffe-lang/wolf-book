@@ -12,8 +12,9 @@
 // `<script>`, and `base-uri 'none'` makes a `<base>` inert. A gate that
 // serves the render without them tests a site nobody reads.
 //
-// Usage: node serve.mjs <render-dir> [port]   (port 0 picks one)
-// As a module: `await serve(root, port)` resolves { url, close }.
+// Usage: node serve.mjs <render-dir> [port] [tag]   (port 0 picks one;
+// a tag versions every script and stylesheet reference, `?v=<tag>`)
+// As a module: `await serve(root, port, { version })` resolves { url, close }.
 
 import http from "node:http";
 import fs from "node:fs";
@@ -32,6 +33,18 @@ export const LUPP_HEADERS = {
 };
 
 export const PREFIX = "/book/";
+
+/// Every script and stylesheet reference in a page, versioned the way
+/// wolf-web's build publishes the book: `toc.js` becomes `toc.js?v=<tag>`
+/// (`scripts/version-book-assets.py`, ww35). The build had to leave
+/// `wolf-boot.js` bare because the file read its root off its own `src`
+/// and a query string broke it (wolf-book#66); here nothing is left
+/// bare, so the gate holds the file to a versioned `src` from every
+/// page, the 404 page's absolute `/book/wolf-boot.js` included. A
+/// reference that already carries a `?` or `#` is left alone.
+export function version(html, tag) {
+    return html.replace(/\b(src|href)="([^"?#]+\.(?:js|css))"/g, `$1="$2?v=${tag}"`);
+}
 
 const TYPES = {
     ".html": "text/html",
@@ -76,12 +89,14 @@ export function resolve(root, urlPath) {
     return null;
 }
 
-export function serve(root, port = 0) {
+export function serve(root, port = 0, opts = {}) {
+    const tag = opts.version || null;
     const server = http.createServer((req, res) => {
         const urlPath = new URL(req.url, "http://x").pathname;
         const send = (status, file) => {
-            const body = fs.readFileSync(file);
+            let body = fs.readFileSync(file);
             const type = TYPES[path.extname(file)] || "application/octet-stream";
+            if (tag && type === "text/html") body = Buffer.from(version(body.toString("utf8"), tag));
             res.writeHead(status, { ...LUPP_HEADERS, "Content-Type": type });
             res.end(req.method === "HEAD" ? undefined : body);
         };
@@ -122,6 +137,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
         console.error("usage: node serve.mjs <render-dir> [port]  (no index.html there)");
         process.exit(2);
     }
-    const s = await serve(root, Number(process.argv[3] || 8055));
-    console.log(`serving ${root} at ${s.url} with lupp.us's headers`);
+    const tag = process.argv[4] || null;
+    const s = await serve(root, Number(process.argv[3] || 8055), { version: tag });
+    console.log(`serving ${root} at ${s.url} with lupp.us's headers${tag ? `, scripts versioned ?v=${tag}` : ""}`);
 }
