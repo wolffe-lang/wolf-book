@@ -8,7 +8,7 @@ to be. The day a blocking feature lands, its exercises join the CI run
 their headers already describe; until then this manifest is the honest
 list. No aspirational green.
 
-Note for the compiler track: the whole corpus — 265 directive-headed
+Note for the compiler track: the whole corpus — 266 directive-headed
 `.lu` files under `principles/exercises/`, runnable and pending alike —
 is a seed farm for the toolchain's corpus and fuzz harnesses. The
 pending files are the most valuable seeds: each one encodes an expected
@@ -18,6 +18,7 @@ verdict for a feature that does not exist yet.
 
 | exercise | expected (directive) | blocker | owner |
 |---|---|---|---|
+| 6-15 | `run(exit=0, stdout="7 -4 -99")` | `match` straight over a fallible value (`[type.row.match]`, ruling #21 of 2026-10-02): wolf 0.2.19 and 0.2.20 refuse the shape at `resolve` with «`match` over a fallible value (unwrap with `?` or bind the error with `else |err|`)»; the compiler's half is s197 (in flight), the interpreter's is67 (bs57) | wolf-lang#497, s197 |
 | 7-5 (static half) | `fail(E1003)` | borrow-escape checking reaches no static verdict: wolf 0.2.19 answers «borrow expressions» at `resolve`, lupin 0.1.42 runs it (bs55, unchanged since bs53) | s33-channels-select, then s18-tier0-exclusivity |
 | 8-7 | `run(exit=0, stdout="c a")` | two blockers, one per machine (bs51, unchanged at bs53, bs54 and bs55): `pool[h].next = k` runs on wolf 0.2.19 and is `[type.map.key]` `unsupported` on lupin 0.1.42; `while cur != tail` runs on lupin and is "no `Eq` for these this edition" on wolf | wolf-book#60 |
 | 5-8 | `run(exit=0, stdout="marmot 5")` | two blockers, re-measured at bs50 and neither as written: `sorted_by` EXISTS (one of `[type.comb.set]`'s ten) but is a `std.list` function and this repo configures no std root, so both machines decline at `[type.method.root]`; and `.take(1)` can never arrive, because `take` is a keyword and `fn take` is E0008 | wolf-book#45 (std root; #39 closed) + wolf-book#58 (the unspellable `take`) |

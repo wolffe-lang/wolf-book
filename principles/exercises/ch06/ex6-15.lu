@@ -1,0 +1,22 @@
+//! check: run(exit=0, stdout="7 -4 -99")
+//! phase: run
+// Exercise 6-15 solution: 6-6's code_for as one match over probe(n)
+// itself — a row arm, a value arm, and `_` for the open row's rest.
+// Pending: no published toolchain serves `[type.row.match]` yet
+// (wolf-lang#497, ruling #21); the row in samples-pending.toml holds it.
+fn probe(n: int) -> int ! {Io(int), ..} {
+    if n < 0 { return Weird }
+    if n == 0 { return Io(4) }
+    n
+}
+fn code_for(n: int) -> int {
+    match probe(n) {
+        Io(code) => 0 - code,
+        v => v,
+        _ => 0 - 99,
+    }
+}
+fn main() -> !int {
+    print("{code_for(7)} {code_for(0)} {code_for(-1)}")
+    0
+}
