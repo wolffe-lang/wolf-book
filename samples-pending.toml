@@ -38,6 +38,31 @@
 # wolf-book#52 asked for: the spec still defines `[conc.task.par]` at
 # 0.2.14 and neither machine implements it.
 
+# ADDED AT bs57 (2026-10-02), the three rows of ruling #21's book half:
+# `match` straight over a fallible value, `[type.row.match]`. No
+# published toolchain serves the form — wolf 0.2.19 (the pin) and
+# 0.2.20 refuse it at `resolve`, lupin 0.1.42 runs what it can of it —
+# so §6.6 and exercise 6-15 are held here, report-only, until the bs pin
+# bump whose compiler carries s197. The expected bytes in each row are
+# the ones the page prints. The section's PR does not merge before that
+# bump: merged earlier it would hand a reader a program their tool
+# refuses, which is the hole principles/TWO-MACHINES.md exists to close.
+
+[[pending]]
+id = "book/ch06/part-rowmatch"
+blocker = "§6.6's worked sample, `match cents(row) { no_comma => …, NotANumber(bad) => …, 0 => …, n => … }`. Expected on both machines: exit 0 and the four lines `340 cents` / `nothing owed` / `` `lots` at byte 7 is not a number `` / `no comma`. Measured at bs57 against the pin (release archives by digest, docs/audit/bs57-evidence/probes-pin.txt): wolf 0.2.19 refuses it at `resolve` (`conform-run` verdict `unsupported`, `wolf run` exit 4) with «`match` over a fallible value (unwrap with `?` or bind the error with `else |err|`)» @374..562, on the default and the checked lane alike; lupin 0.1.42 runs it to exit 0 and prints `no comma` / `no comma` / `` `lots` at byte 7 is not a number `` / `no comma` — a bare tag arm over a SUCCESS value binds it first-arm-wins (340 and 0 both land in `no_comma`), the shape bs02 found on bound failures and bs12 saw healed there; the payload arm dispatches. That is the value half is67 owns. Neither machine meets the directive."
+owner = "wolf-lang#497 (ruling #21; s197 the compiler, is67 lupin)"
+
+[[pending]]
+id = "book/ch06/s7"
+blocker = "§6.6's deliberate refusal: the same `match` with `no_comma` forgotten, `fail(E0801)` naming `no_comma`. Measured at bs57 against the pin (release archives by digest, docs/audit/bs57-evidence/probes-pin.txt): wolf 0.2.19 refuses it at `resolve` with the same «`match` over a fallible value …» text @374..459 — sema refuses the shape before coverage runs, so the verdict is `unsupported`, not `fail(E0801)`; lupin 0.1.42 runs it to exit 0 and prints `no_comma`: the value arm `n => n` binds the raw tag and `print` renders it, so the missing arm goes unnoticed. Neither machine meets the directive."
+owner = "wolf-lang#497 (ruling #21; s197 the compiler, is67 lupin)"
+
+[[pending]]
+id = "ch06/ex6-15"
+blocker = "6-6's `code_for` as one `match` over `probe(n)` — a row arm, a value arm, `_` for the open row's rest. Expected on both machines: `7 -4 -99`, exit 0. Measured at bs57 against the pin (release archives by digest, docs/audit/bs57-evidence/probes-pin.txt): wolf 0.2.19 refuses it at `resolve` with the same text @144..233; lupin 0.1.42 runs it to exit 0 and prints `7 -4 Weird` — the value arm `v => v` binds the open row's unnamed tag and `_` is never reached. Neither machine meets the directive."
+owner = "wolf-lang#497 (ruling #21; s197 the compiler, is67 lupin)"
+
 [[pending]]
 id = "ch05/ex5-8"
 blocker = "TWO blockers, re-measured at bs50 against wolf 0.2.15 / lupin 0.1.37, and NEITHER is the one this row used to name. (1) `sorted_by` exists now — it is one of `[type.comb.set]`'s ten — but it is a `std.list` function that must reach its home module, and this repository configures no std root for either tool, so both machines decline at `[type.method.root]`: lupin `unsupported`, wolf E0301. That half is wolf-book#39, not a std-surface debt. (2) `.take(1)` can never arrive: `take` is a keyword, so `fn take` is E0008 on both machines and no std function may carry the name. This row is waiting on a spelling that cannot exist and the exercise wants rewriting (wolf-book#58). Re-measured at bs53 against wolf 0.2.17 / lupin 0.1.40, and identically against 0.2.16 / 0.1.38: lupin `unsupported` (`List.sorted_by` reaches `std.list` and no std root is configured), exit 4; wolf no longer says E0301 — it answers `cannot compile this yet — member access on a value whose type is still being inferred` at `resolve`, exit 4. wolf-book#39 closed on 2026-09-12 with the std posture recorded in `wolf-toolchain.toml`; its open successor is wolf-book#45. Re-measured at bs54 against wolf 0.2.18 / lupin 0.1.41, and identically against 0.2.17 / 0.1.40 the same hour: both answers unchanged, word for word, at the same span (@300..303). Re-measured at bs55 against wolf 0.2.19 / lupin 0.1.42 and 0.2.18 / 0.1.41 the same hour: identical on both pairs, word for word, same span."
