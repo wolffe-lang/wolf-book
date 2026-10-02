@@ -1,0 +1,27 @@
+# tests/contents/wolf-boot.test.mjs against book/wolf-boot.js at trunk bd3484e (tree 477cada plus the test file, before the fix) — nomad-1, node v26.7.0, 2026-10-02T01:57:21Z
+## node --test wolf-boot.test.mjs
+✔ the root is what precedes the file's name, from any depth (1.54675ms)
+✖ a query string or a fragment on the src does not move the root (#66) (0.792791ms)
+✔ a src that is not this file gives no root rather than a wrong one (0.388084ms)
+ℹ tests 3
+ℹ pass 2
+ℹ fail 1
+✖ failing tests:
+✖ a query string or a fragment on the src does not move the root (#66) (0.792791ms)
+    actual: '',
+    expected: '../',
+EXIT 1
+## each case, src -> path_to_root (want); the first six are the prediction's
+ok  "wolf-boot.js" -> "" (want "")
+ok  "../wolf-boot.js" -> "../" (want "../")
+RED "../../wolf-boot.js?v=abc" -> "" (want "../../")
+RED "/book/wolf-boot.js?v=abc" -> "" (want "/book/")
+ok  "wolf-boot.js#top" -> "" (want "")
+RED "../wolf-boot.js?v=1#x" -> "" (want "../")
+ok  "wolf-boot.js?v=abc" -> "" (want "")
+RED "../wolf-boot.js?v=bd3484e" -> "" (want "../")
+ok  "../../wolf-boot.js" -> "../../" (want "../../")
+ok  "/book/wolf-boot.js" -> "/book/" (want "/book/")
+ok  "../toc.js?v=abc" -> "" (want "")
+ok  "" -> "" (want "")
+4 of 12 cases red; of the first six: 3 red
