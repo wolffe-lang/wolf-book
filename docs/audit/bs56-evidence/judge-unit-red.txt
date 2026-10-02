@@ -1,0 +1,28 @@
+# tests/contents/contents.test.mjs: the judge 304 test against judge() at trunk bd3484e (tree e484b28 plus the test, before the judge moves) — nomad-1, node v26.7.0, 2026-10-02T02:01:19Z
+## node --test contents.test.mjs
+✔ a label splits into its number and its name (0.838375ms)
+✔ a click lands when the status, the title and the number agree (0.121166ms)
+✖ a revalidated landing (304) is a landing, judged by its title and number (#67) (0.577541ms)
+✔ resolve is nginx's try_files: the file, the directory's index, then .html (2.95625ms)
+✔ the server sends lupp.us's CSP and the book's 404 page on a miss (16.983708ms)
+✔ the versioned serve suffixes every script and stylesheet, wolf-boot.js included (7.443416ms)
+✔ the server revalidates like nginx under /book/: no-cache, validators, 304 on a hit, never on a miss (4.973375ms)
+ℹ tests 7
+ℹ pass 6
+ℹ fail 1
+✖ failing tests:
+✖ a revalidated landing (304) is a landing, judged by its title and number (#67) (0.577541ms)
+  + actual - expected
+  + [
+  +   'status'
+  + ]
+  - []
+    actual: [ 'status' ],
+    expected: [],
+EXIT 1
+## each 304 case, judge(label, landed) -> faults (want)
+RED 304 right -> ["status"] (want [])
+RED 304 wrong title -> ["status"] (want ["title"])
+RED 304 wrong number -> ["status"] (want ["number"])
+ok  404 right -> ["status"] (want ["status"])
+3 of 4 cases red

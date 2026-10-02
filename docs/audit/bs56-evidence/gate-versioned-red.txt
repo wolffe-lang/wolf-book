@@ -1,0 +1,19 @@
+# contents gate at 477cada (serve versions every script, wolf-boot.js included; trunk wolf-boot.js) against the kasumi render of bd3484e (web-before), nomad-1, chromium phone, started 2026-10-02T01:57:21Z
+# gate at 477cada, chromium phone only here; the CI run at 477cada carries all three engines at both viewports. Summary from the --json record: status faults by code and directory, and the source pages.
+# chromium phone clicks 2205 at200 1620 status by code/dir {"404 under front/":135,"404 under back/":450} source pages 13: front/how-to-read.html front/notation.html back/appendix-a.html back/appendix-b.html back/appendix-c.html back/appendix-d.html back/appendix-e.html back/solutions.html back/glossary.html back/book-index.html back/errata.html back/colophon.html front/no-such-page.html
+contents: gate against http://127.0.0.1:53010/book/ (render served with lupp.us's headers, scripts versioned ?v=gate)
+contents: chromium phone: 49 pages, 45 entries, 2205 clicks, 1620 at 200 — FAIL {"status":585,"title":0,"number":0,"click":0,"load":0,"entries":0,"state":0,"search":0} in 153s
+  status: front/how-to-read.html -> "Notation": HTTP 404 http://127.0.0.1:53010/book/front/front/notation.html title="Page not found - The Wolf Book" h1="Document not found (404)"
+  status: front/how-to-read.html -> "1. Hello, Wolf": HTTP 404 http://127.0.0.1:53010/book/front/ch01.html title="Page not found - The Wolf Book" h1="Document not found (404)"
+  status: front/how-to-read.html -> "How to read this book": HTTP 404 http://127.0.0.1:53010/book/front/front/how-to-read.html title="Page not found - The Wolf Book" h1="Document not found (404)"
+  status: front/how-to-read.html -> "2. Strings, honestly": HTTP 404 http://127.0.0.1:53010/book/front/ch02.html title="Page not found - The Wolf Book" h1="Document not found (404)"
+  status: front/how-to-read.html -> "3. Values and expressions": HTTP 404 http://127.0.0.1:53010/book/front/ch03.html title="Page not found - The Wolf Book" h1="Document not found (404)"
+  status: front/how-to-read.html -> "4. Functions": HTTP 404 http://127.0.0.1:53010/book/front/ch04.html title="Page not found - The Wolf Book" h1="Document not found (404)"
+  status: front/how-to-read.html -> "5. Collections and generics": HTTP 404 http://127.0.0.1:53010/book/front/ch05.html title="Page not found - The Wolf Book" h1="Document not found (404)"
+  status: front/how-to-read.html -> "6. Errors are values": HTTP 404 http://127.0.0.1:53010/book/front/ch06.html title="Page not found - The Wolf Book" h1="Document not found (404)"
+  status: front/how-to-read.html -> "7. Who owns this?": HTTP 404 http://127.0.0.1:53010/book/front/ch07.html title="Page not found - The Wolf Book" h1="Document not found (404)"
+  status: front/how-to-read.html -> "8. Regions: memory in the shape you meant": HTTP 404 http://127.0.0.1:53010/book/front/ch08.html title="Page not found - The Wolf Book" h1="Document not found (404)"
+  status: front/how-to-read.html -> "9. The escape hatch is a door, not a cliff": HTTP 404 http://127.0.0.1:53010/book/front/ch09.html title="Page not found - The Wolf Book" h1="Document not found (404)"
+  status: front/how-to-read.html -> "10. Spawning is a scope": HTTP 404 http://127.0.0.1:53010/book/front/ch10.html title="Page not found - The Wolf Book" h1="Document not found (404)"
+  status: … 573 more
+contents: FAILED

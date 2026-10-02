@@ -35,6 +35,23 @@ test("a click lands when the status, the title and the number agree", () => {
     assert.deepEqual(judge("Errata", { status: 200, title: "Errata - The Wolf Book", h1: "7. Errata" }), ["number"]);
 });
 
+test("a revalidated landing (304) is a landing, judged by its title and number (#67)", () => {
+    // lupp.us sends `Cache-Control: no-cache` under /book/, so a page the
+    // browser holds is asked for again and answered 304; Firefox and
+    // WebKit report that as the navigation's status while rendering the
+    // right page. The page, not the code, decides.
+    const ok = { status: 304, title: "The serving loop - The Wolf Book", h1: "33. The serving loop" };
+    assert.deepEqual(judge("33. The serving loop", ok), []);
+    assert.deepEqual(judge("33. The serving loop", { ...ok, title: "Notation - The Wolf Book" }), ["title"]);
+    assert.deepEqual(judge("33. The serving loop", { ...ok, h1: "26. The serving loop" }), ["number"]);
+    // A 304 that lands on a wrong page is that page's faults, never a pass.
+    assert.deepEqual(judge("Errata", { status: 304, title: "Errata - The Wolf Book", h1: "7. Errata" }), ["number"]);
+    // Anything else is still a status fault, whatever the page says.
+    assert.deepEqual(judge("33. The serving loop", { ...ok, status: 404 }), ["status"]);
+    assert.deepEqual(judge("33. The serving loop", { ...ok, status: 301 }), ["status"]);
+    assert.deepEqual(judge("33. The serving loop", { ...ok, status: null }), ["status"]);
+});
+
 function tree() {
     const d = fs.mkdtempSync(path.join(os.tmpdir(), "bs55-serve-"));
     fs.mkdirSync(path.join(d, "front"));
