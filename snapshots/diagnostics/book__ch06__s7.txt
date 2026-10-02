@@ -1,0 +1,14 @@
+error[E0801]: this `match` does not cover `no_comma`
+  --> ./s7.lu:17:16
+   |
+17 |     let owed = match cents("tip 100") {
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^
+18 |         NotANumber(bad) => 0 - bad.at,
+19 |         n => n,
+20 |     }
+   | ^^^^^ not every value is matched
+   |
+   = note: over a fallible value a row arm covers one tag of the row, a value pattern covers values
+     of the ok type, and `_` covers whatever is left on both halves ([type.row.match]).
+   = note: add arms for the missing cases, or end the `match` with a `_` arm to catch the rest
+     deliberately.
