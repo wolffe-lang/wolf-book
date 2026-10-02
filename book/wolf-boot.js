@@ -20,10 +20,14 @@
 // mdBook's toc.js and searcher.js read a global `path_to_root`. This
 // file is linked as `{{ path_to_root }}wolf-boot.js`, so its own src
 // attribute carries the value; the 404 page's rewrite to `/book/…`
-// (render.rs) reaches it the same way.
+// (render.rs) reaches it the same way. A query string or a fragment on
+// the src (`wolf-boot.js?v=bd3484e`, the cache-busting wolf-web's build
+// adds to every book script) is not part of the path and is cut before
+// the name is compared; without that the root read as `""` and every
+// sidebar link from front/ or back/ landed one folder too deep (#66).
 var path_to_root = (function () {
     var me = document.currentScript;
-    var src = (me && me.getAttribute("src")) || "";
+    var src = ((me && me.getAttribute("src")) || "").replace(/[?#].*$/, "");
     var name = "wolf-boot.js";
     return src.slice(-name.length) === name ? src.slice(0, -name.length) : "";
 })();
