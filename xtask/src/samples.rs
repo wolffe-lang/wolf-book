@@ -372,20 +372,25 @@ pub fn run(root: &Path, args: &[String]) -> Result<()> {
 
     // ---- diagnostic,from(…) cross-checks (doc truth) ----
     for (md, from_id, block_text) in &diag_checks {
-        match diagnostics.get(from_id) {
-            None => failures.push(format!(
+        let captured = diagnostics.get(from_id).map(String::as_str);
+        match diagnostic_verdict(pending.contains_key(from_id), captured, block_text) {
+            DiagVerdict::Matches => {}
+            DiagVerdict::Pending => println!(
+                "samples: PENDING diagnostic,from({from_id}) on {} — the sample is on \
+                 samples-pending.toml, so the shown text is compared the day its row \
+                 leaves (blocker: {})",
+                md.display(),
+                pending[from_id].blocker
+            ),
+            DiagVerdict::NothingRan => failures.push(format!(
                 "{}: diagnostic,from({from_id}) — no fail() sample with that id ran",
                 md.display()
             )),
-            Some(actual) => {
-                if normalize(block_text) != normalize(actual) {
-                    failures.push(format!(
-                        "{}: diagnostic,from({from_id}) drifted from the captured \
-                         diagnostic — update the block from the real run",
-                        md.display()
-                    ));
-                }
-            }
+            DiagVerdict::Drifted => failures.push(format!(
+                "{}: diagnostic,from({from_id}) drifted from the captured \
+                 diagnostic — update the block from the real run",
+                md.display()
+            )),
         }
     }
 
@@ -411,7 +416,18 @@ pub fn run(root: &Path, args: &[String]) -> Result<()> {
 
     // ---- Console blocks (the prompt lines are output too) ----
     let console = if filter.is_none() {
-        crate::console::check(root, &tools, &console_blocks, &programs, &os_ledger)?
+        let pending_blockers: BTreeMap<String, String> = pending
+            .iter()
+            .map(|(id, row)| (id.clone(), row.blocker.clone()))
+            .collect();
+        crate::console::check(
+            root,
+            &tools,
+            &console_blocks,
+            &programs,
+            &os_ledger,
+            &pending_blockers,
+        )?
     } else {
         crate::console::Report {
             checked: 0,
@@ -421,9 +437,13 @@ pub fn run(root: &Path, args: &[String]) -> Result<()> {
             corpus_replayed: Vec::new(),
             skipped: Vec::new(),
             declared: Vec::new(),
+            pending: Vec::new(),
             failures: Vec::new(),
         }
     };
+    for line in &console.pending {
+        println!("samples: PENDING {line}");
+    }
     // A [[transcript]] row naming no block is stale, on every lane.
     if filter.is_none() {
         for key in os_ledger.all_transcript_blocks() {
@@ -1984,6 +2004,32 @@ enum SnapshotResult {
     Mismatch(String),
 }
 
+/// What a `diagnostic,from(id)` block is worth on this run.
+#[derive(Debug, PartialEq, Eq)]
+enum DiagVerdict {
+    /// The page shows the text the compiler printed.
+    Matches,
+    /// The sample is a pending row (bs57): the compiler has not printed
+    /// the diagnostic the page shows yet — or printed a refusal in its
+    /// place — and the row's flip is what makes the comparison due.
+    /// Reported by name, never skipped silently, like every other
+    /// pending line.
+    Pending,
+    /// No `fail(…)` sample with that id ran at all.
+    NothingRan,
+    /// The compiler printed something else.
+    Drifted,
+}
+
+fn diagnostic_verdict(is_pending: bool, captured: Option<&str>, shown: &str) -> DiagVerdict {
+    match (is_pending, captured) {
+        (true, _) => DiagVerdict::Pending,
+        (false, None) => DiagVerdict::NothingRan,
+        (false, Some(actual)) if normalize(shown) == normalize(actual) => DiagVerdict::Matches,
+        (false, Some(_)) => DiagVerdict::Drifted,
+    }
+}
+
 fn check_snapshot(root: &Path, id: &str, diag: &str, bless: bool) -> Result<SnapshotResult> {
     let dir = root.join("snapshots/diagnostics");
     std::fs::create_dir_all(&dir)?;
@@ -2340,7 +2386,7 @@ fn selftest(root: &Path, tools: &Tools) -> Result<()> {
     selftest_corpus_console(root, tools, &mut broken_caught)?;
     selftest_warns(root, tools, &mut broken_caught)?;
     selftest_declined(root, &mut broken_caught)?;
-    println!("samples: self-test ok — {broken_caught}/13 deliberate breakages caught");
+    println!("samples: self-test ok — {broken_caught}/14 deliberate breakages caught");
     Ok(())
 }
 
@@ -2470,8 +2516,9 @@ fn selftest_corpus_console(root: &Path, tools: &Tools, caught: &mut usize) -> Re
     let programs = BTreeMap::new();
     let os = crate::oslane::Ledger::load(root)?;
 
+    let no_pending = BTreeMap::new();
     let truthful = block("$ lupin ex-selftest.lu\nplanted\n");
-    let report = crate::console::check(root, tools, &[truthful], &programs, &os)?;
+    let report = crate::console::check(root, tools, &[truthful], &programs, &os, &no_pending)?;
     if report.corpus_checked != 1 || !report.failures.is_empty() {
         bail!(
             "self-test FAILED: a TRUE corpus transcript did not replay clean — \
@@ -2484,7 +2531,7 @@ fn selftest_corpus_console(root: &Path, tools: &Tools, caught: &mut usize) -> Re
     println!("samples: self-test corpus console lane replays a true transcript");
 
     let planted = block("$ lupin ex-selftest.lu\nplainted\n");
-    let report = crate::console::check(root, tools, &[planted], &programs, &os)?;
+    let report = crate::console::check(root, tools, &[planted], &programs, &os, &no_pending)?;
     if report.failures.len() != 1 {
         bail!(
             "self-test FAILED: a corpus transcript that misquotes the interpreter by one \
@@ -2498,7 +2545,73 @@ fn selftest_corpus_console(root: &Path, tools: &Tools, caught: &mut usize) -> Re
         report.failures[0].lines().next().unwrap_or_default()
     );
     *caught += 1;
+    selftest_pending_console(root, tools, &os, caught)?;
     let _ = std::fs::remove_dir_all(&dir);
+    Ok(())
+}
+
+/// bs57's two-sided plant for the book console lane. A block beside a
+/// program that is on `samples-pending.toml` prints the transcript a
+/// future pin produces, so the pinned tools cannot match it: it must be
+/// reported PENDING by name and never red. The same block beside the
+/// same program with NO row must be red, or the pending line would be a
+/// way to quiet the runner.
+fn selftest_pending_console(
+    root: &Path,
+    tools: &Tools,
+    os: &crate::oslane::Ledger,
+    caught: &mut usize,
+) -> Result<()> {
+    let program = "fn main() -> !int {\n    print(\"today\")\n    0\n}\n".to_string();
+    let mut programs = BTreeMap::new();
+    programs.insert("book/selftest/s1".to_string(), program.clone());
+    let block = ConsoleBlock {
+        stem: "selftest-pending".to_string(),
+        md: root.join("samples/selftest/pending.md"),
+        line: 1,
+        text: "$ lupin s1.lu\ntomorrow\n".to_string(),
+        program: Some(program),
+        from: None,
+        fixture: None,
+        corpus_dir: None,
+    };
+    let mut pending = BTreeMap::new();
+    pending.insert(
+        "book/selftest/s1".to_string(),
+        "planted blocker".to_string(),
+    );
+    let report = crate::console::check(
+        root,
+        tools,
+        std::slice::from_ref(&block),
+        &programs,
+        os,
+        &pending,
+    )?;
+    if report.pending.len() != 1 || !report.failures.is_empty() || report.checked != 0 {
+        bail!(
+            "self-test FAILED: a console block beside a PENDING sample was not reported \
+             pending — pending {:?}, failures {:?}, checked {}",
+            report.pending,
+            report.failures,
+            report.checked
+        );
+    }
+    println!("samples: self-test pending console block reported by name, not compared");
+    let none = BTreeMap::new();
+    let report = crate::console::check(root, tools, &[block], &programs, os, &none)?;
+    if report.failures.len() != 1 {
+        bail!(
+            "self-test FAILED: the same block with NO pending row was not red — \
+             failures {:?}",
+            report.failures
+        );
+    }
+    println!(
+        "samples: self-test caught the pending-console plant without its row: {}",
+        report.failures[0].lines().next().unwrap_or_default()
+    );
+    *caught += 1;
     Ok(())
 }
 
@@ -2518,6 +2631,38 @@ fn raw_decline_line(host: &str, declined: usize, off_lane: usize) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    // --- diagnostic,from(…) beside a pending row (bs57) -----------------
+
+    #[test]
+    fn a_pending_sample_s_diagnostic_block_is_reported_not_compared() {
+        // The compiler answered a refusal (or nothing) where the page
+        // shows the diagnostic a future pin prints: named, not red.
+        assert_eq!(
+            diagnostic_verdict(true, None, "error[E0801]: …"),
+            DiagVerdict::Pending
+        );
+        assert_eq!(
+            diagnostic_verdict(true, Some("unsupported"), "error[E0801]: …"),
+            DiagVerdict::Pending
+        );
+    }
+
+    #[test]
+    fn a_live_sample_s_diagnostic_block_is_held_to_the_run() {
+        assert_eq!(
+            diagnostic_verdict(false, None, "error[E0801]: …"),
+            DiagVerdict::NothingRan
+        );
+        assert_eq!(
+            diagnostic_verdict(false, Some("error[E0801]: x"), "error[E0801]: x"),
+            DiagVerdict::Matches
+        );
+        assert_eq!(
+            diagnostic_verdict(false, Some("error[E0801]: y"), "error[E0801]: x"),
+            DiagVerdict::Drifted
+        );
+    }
 
     #[test]
     fn raw_decline_line_sums_both_kinds_and_names_the_host() {

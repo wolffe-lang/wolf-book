@@ -38,16 +38,32 @@ pub fn run(root: &Path) -> Result<()> {
         ));
     }
 
-    // 4. Pending-manifest rows must name exercises the pending doc knows.
+    // 4. Pending-manifest rows must name exercises the pending doc knows,
+    //    or in-chapter samples whose page exists (bs57: a row may hold a
+    //    printed section's own block, by the id the samples lane gives
+    //    it — `book/ch06/s7`, `book/ch06/part-rowmatch`; that lane
+    //    already fails a row naming no sample, so this check asks only
+    //    that the chapter file is there).
     let pending_doc = std::fs::read_to_string(root.join("principles/EXERCISES-PENDING.md"))?;
     let manifest = std::fs::read_to_string(root.join("samples-pending.toml"))?;
     let parsed: toml::Value = manifest.parse()?;
     if let Some(rows) = parsed.get("pending").and_then(|p| p.as_array()) {
         for row in rows {
             let id = row.get("id").and_then(|v| v.as_str()).unwrap_or("");
-            let file = root.join("principles/exercises").join(format!("{id}.lu"));
-            if !file.is_file() {
-                failures.push(format!("samples-pending.toml: `{id}` has no .lu file"));
+            match pending_subject(id) {
+                PendingSubject::BookSample(md) => {
+                    if !root.join(&md).is_file() {
+                        failures.push(format!(
+                            "samples-pending.toml: `{id}` names an in-chapter sample but \
+                             {md} does not exist"
+                        ));
+                    }
+                }
+                PendingSubject::Exercise(lu) => {
+                    if !root.join(&lu).is_file() {
+                        failures.push(format!("samples-pending.toml: `{id}` has no .lu file"));
+                    }
+                }
             }
             // ch13/ex13-1 → "13-1" must appear in the pending doc.
             if let Some(ex) = id.rsplit('/').next().and_then(|f| f.strip_prefix("ex")) {
@@ -891,6 +907,32 @@ fn verify_tense(root: &Path, failures: &mut Vec<String>) -> Result<()> {
         }
     }
     Ok(())
+}
+
+/// What a `samples-pending.toml` id names on disk. An exercise id
+/// (`ch06/ex6-15`) is a directive-headed `.lu` under the corpus; an
+/// in-chapter id (`book/ch06/s7`, `book/ch06/part-rowmatch`, the ids
+/// the samples lane extracts) is a block of a chapter file, and the
+/// chapter file is the thing that must exist here — the block's own
+/// existence is the samples lane's check, which fails a row that names
+/// no sample.
+#[derive(Debug, PartialEq, Eq)]
+enum PendingSubject {
+    Exercise(String),
+    BookSample(String),
+}
+
+fn pending_subject(id: &str) -> PendingSubject {
+    match id.strip_prefix("book/") {
+        Some(rest) => {
+            // `ch06/s7` → `book/ch06.md`; `front/notation/s1` →
+            // `book/front/notation.md` (the stem is the path up to the
+            // block name).
+            let stem = rest.rsplit_once('/').map(|(s, _)| s).unwrap_or(rest);
+            PendingSubject::BookSample(format!("book/{stem}.md"))
+        }
+        None => PendingSubject::Exercise(format!("principles/exercises/{id}.lu")),
+    }
 }
 
 fn claimed_corpus_count(root: &Path) -> Result<usize> {
@@ -2145,6 +2187,32 @@ mod tests {
 
     fn printed2() -> BTreeSet<String> {
         ["1-1", "1-2"].iter().map(|s| s.to_string()).collect()
+    }
+
+    // --- samples-pending.toml ids (bs57) --------------------------------
+
+    #[test]
+    fn an_exercise_id_names_its_lu_file() {
+        assert_eq!(
+            pending_subject("ch06/ex6-15"),
+            PendingSubject::Exercise("principles/exercises/ch06/ex6-15.lu".into())
+        );
+    }
+
+    #[test]
+    fn an_in_chapter_id_names_its_chapter_file() {
+        assert_eq!(
+            pending_subject("book/ch06/s7"),
+            PendingSubject::BookSample("book/ch06.md".into())
+        );
+        assert_eq!(
+            pending_subject("book/ch06/part-rowmatch"),
+            PendingSubject::BookSample("book/ch06.md".into())
+        );
+        assert_eq!(
+            pending_subject("book/front/notation/s1"),
+            PendingSubject::BookSample("book/front/notation.md".into())
+        );
     }
 
     #[test]

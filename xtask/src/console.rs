@@ -399,6 +399,29 @@ fn stage(from: &Path, to: &Path) -> Result<()> {
 /// opening fence's line — `book/ch23.md:117`. The absolute path the
 /// messages carry is the runner's; the key has to be the same three
 /// characters on all three hosts.
+/// The pending row a book console block is bound to, if any: by
+/// `from(id)` when the block names its sample, else by the program text
+/// the page printed above it (the same text `collect_book` keyed under
+/// the sample's id). Returns the id and the row's blocker.
+fn pending_program(
+    from: &Option<String>,
+    program: Option<&String>,
+    programs: &std::collections::BTreeMap<String, String>,
+    pending: &std::collections::BTreeMap<String, String>,
+) -> Option<(String, String)> {
+    if pending.is_empty() {
+        return None;
+    }
+    if let Some(id) = from {
+        return pending.get(id).map(|why| (id.clone(), why.clone()));
+    }
+    let text = program?;
+    pending
+        .iter()
+        .find(|(id, _)| programs.get(*id).is_some_and(|p| p == text))
+        .map(|(id, why)| (id.clone(), why.clone()))
+}
+
 pub fn block_key(root: &Path, block: &ConsoleBlock) -> String {
     let rel = block
         .md
@@ -431,6 +454,11 @@ pub struct Report {
     /// Blocks that matched a per-host declared transcript rather than
     /// the book's — reported by name, never silent.
     pub declared: Vec<String>,
+    /// Blocks beside a program that is a `samples-pending.toml` row
+    /// (bs57): the pinned tools do not print the page's transcript yet,
+    /// and the row's flip is what makes the byte-compare due. Reported
+    /// by name, never silent, like the sample itself.
+    pub pending: Vec<String>,
     pub failures: Vec<String>,
 }
 
@@ -440,6 +468,7 @@ pub fn check(
     blocks: &[ConsoleBlock],
     programs: &std::collections::BTreeMap<String, String>,
     os: &crate::oslane::Ledger,
+    pending: &std::collections::BTreeMap<String, String>,
 ) -> Result<Report> {
     let base = root.join("samples/extracted/console");
     let _ = std::fs::remove_dir_all(&base);
@@ -451,6 +480,7 @@ pub fn check(
         corpus_replayed: Vec::new(),
         skipped: Vec::new(),
         declared: Vec::new(),
+        pending: Vec::new(),
         failures: Vec::new(),
     };
     for block in blocks {
@@ -494,6 +524,21 @@ pub fn check(
             },
             None => block.program.as_ref(),
         };
+        // A book block beside a PENDING program (bs57): the page prints
+        // the transcript the pinned tools will produce when the row's
+        // feature lands, and today they produce something else by
+        // definition. Named, not compared, and compared the day the row
+        // leaves the manifest — the same discipline as the sample's own
+        // directive. Corpus blocks are bound to files, not ids, and a
+        // pending exercise prints no transcript (7-5's precedent), so
+        // this branch is the book lane's alone.
+        if let Some((id, why)) = pending_program(&block.from, program, programs, pending) {
+            report.pending.push(format!(
+                "{where_}: console block beside pending sample {id} — not compared until \
+                 its samples-pending.toml row leaves (blocker: {why})"
+            ));
+            continue;
+        }
         let dir = base.join(&block.stem).join(format!("l{}", block.line));
         // A fixture block gets the project staged into a private copy —
         // `wolf add`/`update` rewrite manifests and ledgers, and the
