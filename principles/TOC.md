@@ -108,6 +108,10 @@ wolf, without hearing the word "lifetime."*
 - 6.5 Capstone: wordcount — build Part 1's whole toolkit into one real
   program, with a boxed promise: in Part 3 this loop parallelizes by
   changing one call.
+- 6.6 `match` over the value — match on the call itself, row arms
+  beside value arms, and the compiler naming the tag you forgot. The
+  number is permanent and the section sits after 6.2, where the reader
+  needs it (how-to-read's rule; added by bs57 for ruling #21).
 - Exercises 6-1 … 6-5.
 
 ## Part 2 — Memory
