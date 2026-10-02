@@ -4,7 +4,7 @@
   "description": "bs55: every sidebar entry from every page, on three engines, under lupp.us's headers",
   "type": "module",
   "scripts": {
-    "test": "node --test contents.test.mjs",
+    "test": "node --test contents.test.mjs wolf-boot.test.mjs",
     "gate": "node contents.mjs --root ../../target/render/web"
   },
   "devDependencies": {
