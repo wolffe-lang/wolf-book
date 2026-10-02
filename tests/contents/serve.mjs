@@ -6,6 +6,15 @@
 // book's location. A miss under `/book/` answers the book's own
 // `404.html` with status 404 — the posture ww35 gives nginx.
 //
+// It revalidates the way nginx does under `/book/` (bs56, wolf-book#67):
+// `Cache-Control: no-cache` (lupp.us.conf:118), an `ETag` and a
+// `Last-Modified` from the file, and a hit whose `If-None-Match` or
+// `If-Modified-Since` still holds answers 304 with no body. Firefox and
+// WebKit report that 304 as the navigation's status while they render
+// the cached copy — the right page — which the gate must not read as a
+// miss. A miss never revalidates (nginx's not-modified filter runs on
+// 200 only): a 404 is always a full 404.
+//
 // The headers are the point. GitHub Pages sends no CSP, and a curl
 // crawl reads hrefs without running a script, so neither saw what a
 // reader on lupp.us sees: `script-src 'self'` refuses every inline
@@ -33,6 +42,38 @@ export const LUPP_HEADERS = {
 };
 
 export const PREFIX = "/book/";
+
+// lupp.us.conf:118, the book's location only.
+export const BOOK_CACHE = { "Cache-Control": "no-cache" };
+
+/// nginx's validators for a file: `"<mtime hex>-<size hex>"`, and the
+/// mtime to the second.
+export function validators(st) {
+    const sec = Math.floor(st.mtimeMs / 1000);
+    return {
+        ETag: `"${sec.toString(16)}-${st.size.toString(16)}"`,
+        "Last-Modified": new Date(sec * 1000).toUTCString(),
+    };
+}
+
+/// The request's conditions still hold for a file with these
+/// validators: `If-None-Match` decides when present (any listed tag,
+/// weak or strong, or `*`), else `If-Modified-Since`.
+export function notModified(headers, v) {
+    const inm = headers["if-none-match"];
+    if (inm !== undefined) {
+        return inm
+            .split(",")
+            .map((t) => t.trim().replace(/^W\//, ""))
+            .some((t) => t === "*" || t === v.ETag);
+    }
+    const ims = headers["if-modified-since"];
+    if (ims !== undefined) {
+        const since = Date.parse(ims);
+        return !Number.isNaN(since) && Date.parse(v["Last-Modified"]) <= since;
+    }
+    return false;
+}
 
 /// Every script and stylesheet reference in a page, versioned the way
 /// wolf-web's build publishes the book: `toc.js` becomes `toc.js?v=<tag>`
@@ -94,10 +135,16 @@ export function serve(root, port = 0, opts = {}) {
     const server = http.createServer((req, res) => {
         const urlPath = new URL(req.url, "http://x").pathname;
         const send = (status, file) => {
+            const v = validators(fs.statSync(file));
+            if (status === 200 && notModified(req.headers, v)) {
+                res.writeHead(304, { ...LUPP_HEADERS, ...BOOK_CACHE, ...v });
+                res.end();
+                return;
+            }
             let body = fs.readFileSync(file);
             const type = TYPES[path.extname(file)] || "application/octet-stream";
             if (tag && type === "text/html") body = Buffer.from(version(body.toString("utf8"), tag));
-            res.writeHead(status, { ...LUPP_HEADERS, "Content-Type": type });
+            res.writeHead(status, { ...LUPP_HEADERS, ...BOOK_CACHE, ...v, "Content-Type": type });
             res.end(req.method === "HEAD" ? undefined : body);
         };
         if (urlPath === "/book") {

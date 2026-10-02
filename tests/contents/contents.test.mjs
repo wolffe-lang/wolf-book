@@ -6,7 +6,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { parseLabel, judge } from "./contents.mjs";
-import { resolve, serve, version, LUPP_HEADERS } from "./serve.mjs";
+import { resolve, serve, version, validators, notModified, LUPP_HEADERS } from "./serve.mjs";
 
 test("a label splits into its number and its name", () => {
     assert.deepEqual(parseLabel("33. The serving loop"), { num: "33", name: "The serving loop" });
@@ -100,4 +100,43 @@ test("the versioned serve suffixes every script and stylesheet, wolf-boot.js inc
     } finally {
         await s.close();
     }
+});
+
+test("the server revalidates like nginx under /book/: no-cache, validators, 304 on a hit, never on a miss", async () => {
+    const d = tree();
+    const s = await serve(d, 0);
+    try {
+        const hit = await fetch(s.url + "ch07.html");
+        assert.equal(hit.status, 200);
+        assert.equal(hit.headers.get("cache-control"), "no-cache");
+        const etag = hit.headers.get("etag");
+        const lm = hit.headers.get("last-modified");
+        assert.match(etag, /^"[0-9a-f]+-[0-9a-f]+"$/);
+        assert.equal(Number.isNaN(Date.parse(lm)), false);
+        const again = await fetch(s.url + "ch07.html", { headers: { "If-None-Match": etag } });
+        assert.equal(again.status, 304);
+        assert.equal(await again.text(), "");
+        assert.equal(again.headers.get("content-security-policy"), LUPP_HEADERS["Content-Security-Policy"]);
+        assert.equal(again.headers.get("etag"), etag);
+        const since = await fetch(s.url + "ch07.html", { headers: { "If-Modified-Since": lm } });
+        assert.equal(since.status, 304);
+        const stale = await fetch(s.url + "ch07.html", { headers: { "If-None-Match": '"0-0"' } });
+        assert.equal(stale.status, 200);
+        const miss = await fetch(s.url + "front/ch01.html");
+        assert.equal(miss.status, 404);
+        const missAgain = await fetch(s.url + "front/ch01.html", { headers: { "If-None-Match": miss.headers.get("etag") } });
+        assert.equal(missAgain.status, 404);
+        assert.match(await missAgain.text(), /Document not found/);
+    } finally {
+        await s.close();
+    }
+    const v = validators({ mtimeMs: 1790800052000, size: 95507 });
+    assert.deepEqual(v, { ETag: '"6abd70b4-17513"', "Last-Modified": "Wed, 30 Sep 2026 20:27:32 GMT" });
+    assert.equal(notModified({ "if-none-match": 'W/"6abd70b4-17513"' }, v), true);
+    assert.equal(notModified({ "if-none-match": '"x", "6abd70b4-17513"' }, v), true);
+    assert.equal(notModified({ "if-none-match": '"x"' }, v), false);
+    assert.equal(notModified({ "if-modified-since": "Wed, 30 Sep 2026 20:27:31 GMT" }, v), false);
+    assert.equal(notModified({ "if-modified-since": "Wed, 30 Sep 2026 20:27:32 GMT" }, v), true);
+    assert.equal(notModified({ "if-none-match": "*" }, v), true);
+    assert.equal(notModified({}, v), false);
 });
