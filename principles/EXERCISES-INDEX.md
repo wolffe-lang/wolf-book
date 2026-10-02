@@ -36,7 +36,7 @@ All of them stay in the corpus so the day their surface lands the stems
 and the sections arrive together. Two more are master-only by curation
 rather than blockage, from the bs21 ladder: 2-15 (entab — the printed
 page carries detab, the master holds the mirror) and 3-13 (a
-`loop`/`break`-value drill beside §3.2's own example). **295 of the 344
+`loop`/`break`-value drill beside §3.2's own example). **296 of the 345
 are printed**, and
 `cargo xtask verify-docs` fails the build if a printed stem has no
 published solution.

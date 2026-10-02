@@ -232,9 +232,8 @@ same loop parallelizes by changing one call; the boxed promise stands.
 
 ## §6.6 — `match` over the value
 
-**Exercise 6-15** *(comprehension · wolf + lupin; pending — blocker:
-the compiler refuses a `match` over a fallible value at this pin;
-owner: wolf-lang#497, s197)*. Exercise 6-6's `code_for` handles
+**Exercise 6-15** *(comprehension · wolf + lupin)*. Exercise 6-6's
+`code_for` handles
 `probe`'s open row through `else |err|` and a `match`. Rewrite it as
 one `match` over `probe(n)` itself, with the arms `Io(code)`, `v` and
 `_`. Predict the three numbers, then say what `_` covers when `v`
@@ -274,11 +273,11 @@ naming, and nothing but `_` can cover a tag that has no name. Leave it
 out and the compiler refuses the `match` as it refuses any other
 `match` with a case uncovered: E0801, the same code the missing
 `no_comma` drew in §6.6, pointing at the open row. The directive header
-records the expected run and no transcript is printed here, because
-neither published tool answers it: wolf 0.2.19 refuses the `match` at
-`resolve`, and lupin 0.1.42 runs the program to `7 -4 Weird`, the `v`
+records the expected run, and no transcript is printed here because
+no published tool produces one: the compiler refuses the `match`
+before it runs, and the interpreter runs it to `7 -4 Weird`, the `v`
 arm binding the unnamed tag instead of leaving it to `_`
-(`EXERCISES-PENDING.md`).
+(`EXERCISES-PENDING.md` carries the measurement).
 
 ## Chapter batch
 
