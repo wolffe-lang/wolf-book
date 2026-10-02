@@ -281,11 +281,14 @@ jobs:
           retention-days: 14
 
   # Lane 4 — the contents (bs55). From every page of the render, click
-  # every sidebar entry and hold the landing to its label: HTTP 200, the
+  # every sidebar entry and hold the landing to its label: a page arrived
+  # (HTTP 200, or 304 for a held copy the server confirmed, #67), the
   # label's name in <title>, the label's number in the <h1>. The render
-  # is served under /book/ with lupp.us's own response headers (serve.mjs
-  # copies wolf-web nginx/lupp.us.conf:51-58), because the site's CSP is
-  # what a reader's browser obeys and what GitHub Pages never sent: under
+  # is served under /book/ the way lupp.us serves it (serve.mjs: the
+  # response headers of wolf-web nginx/lupp.us.conf:51-58 and :118,
+  # revalidation with an ETag, and every script reference versioned
+  # `?v=…`, wolf-boot.js included, #66), because the site's CSP is what a
+  # reader's browser obeys and what GitHub Pages never sent: under
   # `script-src 'self'` no inline script runs, and the sidebar's links
   # 404ed from every page one directory down while a curl crawl and a
   # Pages run both saw nothing. Three engines, a 390px phone and a 1440px
