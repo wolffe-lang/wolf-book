@@ -1,0 +1,12 @@
+# CI run 36953625229 at e484b28 (serve.mjs revalidates: no-cache, ETag, Last-Modified, 304 on a hit; judge() as at trunk bd3484e, demanding 200; wolf-boot.js fixed at 2dec44a): the #67 red — Firefox and WebKit fail on landings that are 304 and right, Chromium passes. Job ids and the summary lines.
+## job 110672507140
+contents: chromium phone: 49 pages, 45 entries, 2205 clicks, 2205 at 200 — ok {"status":0,"title":0,"number":0,"click":0,"load":0,"entries":0,"state":0,"search":0} in 230s
+contents: chromium desktop: 49 pages, 45 entries, 2205 clicks, 2205 at 200 — ok {"status":0,"title":0,"number":0,"click":0,"load":0,"entries":0,"state":0,"search":0} in 184s
+## job 110672507225
+contents: firefox phone: 49 pages, 45 entries, 2205 clicks, 168 at 200 — FAIL {"status":2037,"title":0,"number":0,"click":0,"load":0,"entries":0,"state":0,"search":0} in 503s
+contents: firefox desktop: 49 pages, 45 entries, 2205 clicks, 167 at 200 — FAIL {"status":2038,"title":0,"number":0,"click":0,"load":0,"entries":0,"state":0,"search":0} in 432s
+## job 110672507295
+contents: webkit phone: 49 pages, 45 entries, 2205 clicks, 383 at 200 — FAIL {"status":1822,"title":0,"number":0,"click":0,"load":0,"entries":0,"state":0,"search":0} in 417s
+  status: ch01.html -> "2. Strings, honestly": HTTP 304 http://127.0.0.1:42879/book/ch02.html title="Strings, honestly - The Wolf Book" h1="2. Strings, honestly"
+contents: webkit desktop: 49 pages, 45 entries, 2205 clicks, 383 at 200 — FAIL {"status":1822,"title":0,"number":0,"click":0,"load":0,"entries":0,"state":0,"search":0} in 358s
+# CI run 36953697042 at e1190f2 (the judge 304 test added, before the judge moves): every contents job failed at the step named "the gate own tests" (jobs 110673149436, 110673149456, 110673149472).

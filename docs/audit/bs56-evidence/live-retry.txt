@@ -1,0 +1,11 @@
+# contents --retry at d7f0cd5, LIVE https://lupp.us/book/, from ch07: every entry untoggled and toggled, then a second click from wherever it landed, three engines, phone and desktop, nomad-1, started after the full gate
+# the retry ran after the full gate finished (the stamp on the next line is the launch of the chain, not the retry); its per-hop lines are live-retry.log; 0 HTTP 404 lines, 0 ERROR lines in 1086 hop lines
+# retry started 2026-10-02T02:13:10Z
+contents: retry against https://lupp.us/book/ (live)
+# chromium phone: hop1 90/90 landed, 0 at 304 (0 number mismatches); hop2 90/90 landed, 0 at 304
+# chromium desktop: hop1 90/90 landed, 0 at 304 (0 number mismatches); hop2 90/90 landed, 0 at 304
+# firefox phone: hop1 90/90 landed, 47 at 304 (0 number mismatches); hop2 90/90 landed, 89 at 304
+# firefox desktop: hop1 90/90 landed, 47 at 304 (0 number mismatches); hop2 90/90 landed, 89 at 304
+# webkit phone: hop1 90/90 landed, 45 at 304 (0 number mismatches); hop2 90/90 landed, 89 at 304
+# webkit desktop: hop1 90/90 landed, 45 at 304 (0 number mismatches); hop2 90/90 landed, 89 at 304
+contents: ok — every entry from every page lands where its label says

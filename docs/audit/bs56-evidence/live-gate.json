@@ -1,0 +1,121 @@
+[
+ {
+  "engine": "chromium",
+  "viewport": "phone",
+  "entries": 45,
+  "pages": 49,
+  "clicks": 2205,
+  "landed200": 2205,
+  "landed304": 0,
+  "faults": {
+   "status": [],
+   "title": [],
+   "number": [],
+   "click": [],
+   "load": [],
+   "entries": [],
+   "state": [],
+   "search": []
+  }
+ },
+ {
+  "engine": "chromium",
+  "viewport": "desktop",
+  "entries": 45,
+  "pages": 49,
+  "clicks": 2205,
+  "landed200": 2205,
+  "landed304": 0,
+  "faults": {
+   "status": [],
+   "title": [],
+   "number": [],
+   "click": [],
+   "load": [],
+   "entries": [],
+   "state": [],
+   "search": []
+  }
+ },
+ {
+  "engine": "firefox",
+  "viewport": "phone",
+  "entries": 45,
+  "pages": 49,
+  "clicks": 2205,
+  "landed200": 162,
+  "landed304": 2043,
+  "faults": {
+   "status": [],
+   "title": [],
+   "number": [],
+   "click": [],
+   "load": [],
+   "entries": [],
+   "state": [],
+   "search": []
+  }
+ },
+ {
+  "engine": "firefox",
+  "viewport": "desktop",
+  "entries": 45,
+  "pages": 49,
+  "clicks": 2205,
+  "landed200": 162,
+  "landed304": 2043,
+  "faults": {
+   "status": [],
+   "title": [],
+   "number": [],
+   "click": [],
+   "load": [],
+   "entries": [],
+   "state": [],
+   "search": []
+  }
+ },
+ {
+  "engine": "webkit",
+  "viewport": "phone",
+  "entries": 45,
+  "pages": 49,
+  "clicks": 2203,
+  "landed200": 381,
+  "landed304": 1822,
+  "faults": {
+   "status": [],
+   "title": [],
+   "number": [],
+   "click": [
+    "ch29.html entry 30: locator.click: Timeout 10000ms exceeded.",
+    "ch29.html entry 27: page.waitForNavigation: Timeout 15000ms exceeded."
+   ],
+   "load": [],
+   "entries": [],
+   "state": [],
+   "search": []
+  }
+ },
+ {
+  "engine": "webkit",
+  "viewport": "desktop",
+  "entries": 45,
+  "pages": 49,
+  "clicks": 2204,
+  "landed200": 379,
+  "landed304": 1825,
+  "faults": {
+   "status": [],
+   "title": [],
+   "number": [],
+   "click": [
+    "ch02.html entry 20: page.goto: Timeout 30000ms exceeded."
+   ],
+   "load": [],
+   "entries": [],
+   "state": [],
+   "search": []
+  }
+ }
+]

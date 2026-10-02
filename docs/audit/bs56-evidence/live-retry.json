@@ -1,0 +1,68 @@
+[
+ {
+  "engine": "chromium",
+  "viewport": "phone",
+  "hop1": 90,
+  "hop1ok": 90,
+  "hop1at304": 0,
+  "hop2": 90,
+  "hop2ok": 90,
+  "hop2at304": 0,
+  "numberMismatch": 0
+ },
+ {
+  "engine": "chromium",
+  "viewport": "desktop",
+  "hop1": 90,
+  "hop1ok": 90,
+  "hop1at304": 0,
+  "hop2": 90,
+  "hop2ok": 90,
+  "hop2at304": 0,
+  "numberMismatch": 0
+ },
+ {
+  "engine": "firefox",
+  "viewport": "phone",
+  "hop1": 90,
+  "hop1ok": 90,
+  "hop1at304": 47,
+  "hop2": 90,
+  "hop2ok": 90,
+  "hop2at304": 89,
+  "numberMismatch": 0
+ },
+ {
+  "engine": "firefox",
+  "viewport": "desktop",
+  "hop1": 90,
+  "hop1ok": 90,
+  "hop1at304": 47,
+  "hop2": 90,
+  "hop2ok": 90,
+  "hop2at304": 89,
+  "numberMismatch": 0
+ },
+ {
+  "engine": "webkit",
+  "viewport": "phone",
+  "hop1": 90,
+  "hop1ok": 90,
+  "hop1at304": 45,
+  "hop2": 90,
+  "hop2ok": 90,
+  "hop2at304": 89,
+  "numberMismatch": 0
+ },
+ {
+  "engine": "webkit",
+  "viewport": "desktop",
+  "hop1": 90,
+  "hop1ok": 90,
+  "hop1at304": 45,
+  "hop2": 90,
+  "hop2ok": 90,
+  "hop2at304": 89,
+  "numberMismatch": 0
+ }
+]

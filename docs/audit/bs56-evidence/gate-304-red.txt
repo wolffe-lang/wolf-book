@@ -1,0 +1,36 @@
+# contents gate at e484b28 (server sends ETag/Last-Modified/no-cache and 304s on a hit; judge() still demands 200; wolf-boot.js fixed at 2dec44a) against the kasumi render of 2dec44a (web-after), nomad-1, three engines at phone, started 2026-10-02T02:00:43Z
+# classified from the --json record (bs56-classify.js: status faults by code; a 304 is told right/wrong by the gate own title and number test on the fault line):
+# chromium phone: clicks 2205, at200 2205, at304 -, status-by-code {}, 304-landed-right 0, 304-wrong 0, other {}
+# firefox phone: clicks 2205, at200 164, at304 -, status-by-code {"304":2041}, 304-landed-right 2041, 304-wrong 0, other {}
+# webkit phone: clicks 2205, at200 381, at304 -, status-by-code {"304":1824}, 304-landed-right 1824, 304-wrong 0, other {}
+contents: gate against http://127.0.0.1:53308/book/ (render served with lupp.us's headers, scripts versioned ?v=gate)
+contents: chromium phone: 49 pages, 45 entries, 2205 clicks, 2205 at 200 — ok {"status":0,"title":0,"number":0,"click":0,"load":0,"entries":0,"state":0,"search":0} in 151s
+contents: firefox phone: 49 pages, 45 entries, 2205 clicks, 164 at 200 — FAIL {"status":2041,"title":0,"number":0,"click":0,"load":0,"entries":0,"state":0,"search":0} in 191s
+  status: front/how-to-read.html -> "How to read this book": HTTP 304 http://127.0.0.1:53308/book/front/how-to-read.html title="How to read this book - The Wolf Book" h1="How to read this book"
+  status: front/notation.html -> "How to read this book": HTTP 304 http://127.0.0.1:53308/book/front/how-to-read.html title="How to read this book - The Wolf Book" h1="How to read this book"
+  status: front/notation.html -> "1. Hello, Wolf": HTTP 304 http://127.0.0.1:53308/book/ch01.html title="Hello, Wolf - The Wolf Book" h1="1. Hello, Wolf"
+  status: front/notation.html -> "Notation": HTTP 304 http://127.0.0.1:53308/book/front/notation.html title="Notation - The Wolf Book" h1="Notation"
+  status: front/notation.html -> "3. Values and expressions": HTTP 304 http://127.0.0.1:53308/book/ch03.html title="Values and expressions - The Wolf Book" h1="3. Values and expressions"
+  status: front/notation.html -> "14. Procs: the unit of failure": HTTP 304 http://127.0.0.1:53308/book/ch14.html title="Procs: the unit of failure - The Wolf Book" h1="14. Procs: the unit of failure"
+  status: front/notation.html -> "18. Comptime: one tier, no macros": HTTP 304 http://127.0.0.1:53308/book/ch18.html title="Comptime: one tier, no macros - The Wolf Book" h1="18. Comptime: one tier, no macros"
+  status: front/notation.html -> "22. Modules: the shape of a wolf project": HTTP 304 http://127.0.0.1:53308/book/ch22.html title="Modules: the shape of a wolf project - The Wolf Book" h1="22. Modules: the shape of a wolf project"
+  status: front/notation.html -> "Appendix C — Diagnostics": HTTP 304 http://127.0.0.1:53308/book/back/appendix-c.html title="Appendix C — Diagnostics - The Wolf Book" h1="Appendix C — Diagnostics"
+  status: front/notation.html -> "Glossary": HTTP 304 http://127.0.0.1:53308/book/back/glossary.html title="Glossary - The Wolf Book" h1="Glossary"
+  status: front/notation.html -> "Errata": HTTP 304 http://127.0.0.1:53308/book/back/errata.html title="Errata - The Wolf Book" h1="Errata"
+  status: ch01.html -> "How to read this book": HTTP 304 http://127.0.0.1:53308/book/front/how-to-read.html title="How to read this book - The Wolf Book" h1="How to read this book"
+  status: … 2029 more
+contents: webkit phone: 49 pages, 45 entries, 2205 clicks, 381 at 200 — FAIL {"status":1824,"title":0,"number":0,"click":0,"load":0,"entries":0,"state":0,"search":0} in 178s
+  status: front/notation.html -> "3. Values and expressions": HTTP 304 http://127.0.0.1:53308/book/ch03.html title="Values and expressions - The Wolf Book" h1="3. Values and expressions"
+  status: front/notation.html -> "8. Regions: memory in the shape you meant": HTTP 304 http://127.0.0.1:53308/book/ch08.html title="Regions: memory in the shape you meant - The Wolf Book" h1="8. Regions: memory in the shape you meant"
+  status: front/notation.html -> "9. The escape hatch is a door, not a cliff": HTTP 304 http://127.0.0.1:53308/book/ch09.html title="The escape hatch is a door, not a cliff - The Wolf Book" h1="9. The escape hatch is a door, not a cliff"
+  status: front/notation.html -> "12. Channels and select": HTTP 304 http://127.0.0.1:53308/book/ch12.html title="Channels and select - The Wolf Book" h1="12. Channels and select"
+  status: front/notation.html -> "16. Region transfer: fearless messaging": HTTP 304 http://127.0.0.1:53308/book/ch16.html title="Region transfer: fearless messaging - The Wolf Book" h1="16. Region transfer: fearless messaging"
+  status: front/notation.html -> "17. The failing schedule, replayed": HTTP 304 http://127.0.0.1:53308/book/ch17.html title="The failing schedule, replayed - The Wolf Book" h1="17. The failing schedule, replayed"
+  status: front/notation.html -> "20. Perf contracts": HTTP 304 http://127.0.0.1:53308/book/ch20.html title="Perf contracts - The Wolf Book" h1="20. Perf contracts"
+  status: front/notation.html -> "21. Beating C honestly": HTTP 304 http://127.0.0.1:53308/book/ch21.html title="Beating C honestly - The Wolf Book" h1="21. Beating C honestly"
+  status: front/notation.html -> "24. The covenant: no build scripts": HTTP 304 http://127.0.0.1:53308/book/ch24.html title="The covenant: no build scripts - The Wolf Book" h1="24. The covenant: no build scripts"
+  status: front/notation.html -> "25. Editions, stability, publishing": HTTP 304 http://127.0.0.1:53308/book/ch25.html title="Editions, stability, publishing - The Wolf Book" h1="25. Editions, stability, publishing"
+  status: front/notation.html -> "31. logden, alone": HTTP 304 http://127.0.0.1:53308/book/ch31.html title="logden, alone - The Wolf Book" h1="31. logden, alone"
+  status: front/notation.html -> "Appendix C — Diagnostics": HTTP 304 http://127.0.0.1:53308/book/back/appendix-c.html title="Appendix C — Diagnostics - The Wolf Book" h1="Appendix C — Diagnostics"
+  status: … 1812 more
+contents: FAILED

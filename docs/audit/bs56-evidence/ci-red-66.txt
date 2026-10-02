@@ -1,0 +1,17 @@
+# CI run 36953219958 at 477cada (serve.mjs versions every script reference, wolf-boot.js included; book/wolf-boot.js as at trunk bd3484e): the contents gate on three engines, phone and desktop — the #66 red. Job ids and the summary lines, from gh run view --job <id> --log.
+## job 110670654205
+contents: webkit phone: 49 pages, 45 entries, 2205 clicks, 1620 at 200 — FAIL {"status":585,"title":0,"number":0,"click":0,"load":0,"entries":0,"state":0,"search":0} in 411s
+  status: front/how-to-read.html -> "1. Hello, Wolf": HTTP 404 http://127.0.0.1:44117/book/front/ch01.html title="Page not found - The Wolf Book" h1="Document not found (404)"
+contents: webkit desktop: 49 pages, 45 entries, 2205 clicks, 1620 at 200 — FAIL {"status":585,"title":0,"number":0,"click":0,"load":0,"entries":0,"state":0,"search":0} in 359s
+  status: front/how-to-read.html -> "1. Hello, Wolf": HTTP 404 http://127.0.0.1:44117/book/front/ch01.html title="Page not found - The Wolf Book" h1="Document not found (404)"
+## job 110670654218
+contents: firefox phone: 49 pages, 45 entries, 2205 clicks, 1620 at 200 — FAIL {"status":585,"title":0,"number":0,"click":0,"load":0,"entries":0,"state":0,"search":0} in 514s
+  status: front/how-to-read.html -> "1. Hello, Wolf": HTTP 404 http://127.0.0.1:35803/book/front/ch01.html title="Page not found - The Wolf Book" h1="Document not found (404)"
+contents: firefox desktop: 49 pages, 45 entries, 2205 clicks, 1620 at 200 — FAIL {"status":585,"title":0,"number":0,"click":0,"load":0,"entries":0,"state":0,"search":0} in 452s
+  status: front/how-to-read.html -> "1. Hello, Wolf": HTTP 404 http://127.0.0.1:35803/book/front/ch01.html title="Page not found - The Wolf Book" h1="Document not found (404)"
+## job 110670654296
+contents: chromium phone: 49 pages, 45 entries, 2205 clicks, 1620 at 200 — FAIL {"status":585,"title":0,"number":0,"click":0,"load":0,"entries":0,"state":0,"search":0} in 266s
+  status: front/how-to-read.html -> "1. Hello, Wolf": HTTP 404 http://127.0.0.1:39905/book/front/ch01.html title="Page not found - The Wolf Book" h1="Document not found (404)"
+contents: chromium desktop: 49 pages, 45 entries, 2205 clicks, 1620 at 200 — FAIL {"status":585,"title":0,"number":0,"click":0,"load":0,"entries":0,"state":0,"search":0} in 228s
+  status: front/how-to-read.html -> "1. Hello, Wolf": HTTP 404 http://127.0.0.1:39905/book/front/ch01.html title="Page not found - The Wolf Book" h1="Document not found (404)"
+# run 36953386790 at 2cc0f7a (the wolf-boot unit test added, not yet wired into npm test) is a second #66 red of the same shape: its gate step failed on all three engines.

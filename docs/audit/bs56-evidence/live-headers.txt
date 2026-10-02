@@ -1,0 +1,36 @@
+# lupp.us headers under /book/ as probed 2026-10-02 (ww35 config installed): curl -sI, then a conditional GET
+## GET -I https://lupp.us/book/ch07.html
+HTTP/2 200 
+content-length: 95507
+last-modified: Wed, 30 Sep 2026 20:27:32 GMT
+etag: "6abd70b4-17513"
+cache-control: no-cache
+content-security-policy: default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'self'
+## GET -I https://lupp.us/book/wolf-boot.js
+HTTP/2 200 
+content-length: 2462
+last-modified: Wed, 30 Sep 2026 20:27:32 GMT
+etag: "6abd70b4-99e"
+cache-control: no-cache
+content-security-policy: default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'self'
+## GET -I https://lupp.us/book/front/how-to-read.html
+HTTP/2 200 
+content-length: 9875
+last-modified: Wed, 30 Sep 2026 20:27:32 GMT
+etag: "6abd70b4-2693"
+cache-control: no-cache
+content-security-policy: default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'self'
+## GET -I https://lupp.us/book/front/no-such-page.html
+HTTP/2 404 
+content-length: 5667
+etag: "6abd70b4-1623"
+cache-control: no-cache
+content-security-policy: default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'self'
+## GET ch07.html with If-None-Match: "6abd70b4-17513" -> HTTP 304
+## script tags on front/how-to-read.html
+<script src="../toc.js?v=bd3484e">
+<script src="../wolf-boot.js">
+<script src="../elasticlunr.min.js?v=bd3484e">
+<script src="../mark.min.js?v=bd3484e">
+<script src="../searcher.js?v=bd3484e">
+<script src="../book.js?v=bd3484e">

@@ -1,0 +1,22 @@
+# contents gate at d7f0cd5 (the head gate: a 304 is a landing; versioning is the serve side and does not apply to --base), LIVE https://lupp.us/book/ (bs55 render bd3484e, ww35 config installed), three engines, phone and desktop, nomad-1, started 2026-10-02T02:13:10Z
+# classified from the --json record (bs56-classify.js); the three click faults are Playwright timeouts over the public internet, none a wrong landing:
+# chromium phone: clicks 2205, at200 2205, at304 0, status-by-code {}, 304-landed-right 0, 304-wrong 0, other {}
+# chromium desktop: clicks 2205, at200 2205, at304 0, status-by-code {}, 304-landed-right 0, 304-wrong 0, other {}
+# firefox phone: clicks 2205, at200 162, at304 2043, status-by-code {}, 304-landed-right 0, 304-wrong 0, other {}
+# firefox desktop: clicks 2205, at200 162, at304 2043, status-by-code {}, 304-landed-right 0, 304-wrong 0, other {}
+# webkit phone: clicks 2203, at200 381, at304 1822, status-by-code {}, 304-landed-right 0, 304-wrong 0, other {"click":2}
+#    click: ch29.html entry 30: locator.click: Timeout 10000ms exceeded.
+#    click: ch29.html entry 27: page.waitForNavigation: Timeout 15000ms exceeded.
+# webkit desktop: clicks 2204, at200 379, at304 1825, status-by-code {}, 304-landed-right 0, 304-wrong 0, other {"click":1}
+#    click: ch02.html entry 20: page.goto: Timeout 30000ms exceeded.
+contents: gate against https://lupp.us/book/ (live)
+contents: chromium phone: 49 pages, 45 entries, 2205 clicks, 2205 at 200, 0 at 304 — ok {"status":0,"title":0,"number":0,"click":0,"load":0,"entries":0,"state":0,"search":0} in 369s
+contents: chromium desktop: 49 pages, 45 entries, 2205 clicks, 2205 at 200, 0 at 304 — ok {"status":0,"title":0,"number":0,"click":0,"load":0,"entries":0,"state":0,"search":0} in 253s
+contents: firefox phone: 49 pages, 45 entries, 2205 clicks, 162 at 200, 2043 at 304 — ok {"status":0,"title":0,"number":0,"click":0,"load":0,"entries":0,"state":0,"search":0} in 364s
+contents: firefox desktop: 49 pages, 45 entries, 2205 clicks, 162 at 200, 2043 at 304 — ok {"status":0,"title":0,"number":0,"click":0,"load":0,"entries":0,"state":0,"search":0} in 258s
+contents: webkit phone: 49 pages, 45 entries, 2203 clicks, 381 at 200, 1822 at 304 — FAIL {"status":0,"title":0,"number":0,"click":2,"load":0,"entries":0,"state":0,"search":0} in 622s
+  click: ch29.html entry 30: locator.click: Timeout 10000ms exceeded.
+  click: ch29.html entry 27: page.waitForNavigation: Timeout 15000ms exceeded.
+contents: webkit desktop: 49 pages, 45 entries, 2204 clicks, 379 at 200, 1825 at 304 — FAIL {"status":0,"title":0,"number":0,"click":1,"load":0,"entries":0,"state":0,"search":0} in 336s
+  click: ch02.html entry 20: page.goto: Timeout 30000ms exceeded.
+contents: FAILED

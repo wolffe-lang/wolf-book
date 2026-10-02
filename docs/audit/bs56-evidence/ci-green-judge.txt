@@ -1,0 +1,10 @@
+# CI run 36953773273 at d7f0cd5 (the judge fix: a 304 is a landing; the server revalidates; the serve versions every script): green on three engines, phone and desktop, with the landings split 200 / 304. Run 36954643067 at fe2c97a (npm test wired to wolf-boot.test.mjs) is the same shape with 10 unit tests.
+## job 110674178725
+contents: chromium phone: 49 pages, 45 entries, 2205 clicks, 2205 at 200, 0 at 304 — ok {"status":0,"title":0,"number":0,"click":0,"load":0,"entries":0,"state":0,"search":0} in 241s
+contents: chromium desktop: 49 pages, 45 entries, 2205 clicks, 2205 at 200, 0 at 304 — ok {"status":0,"title":0,"number":0,"click":0,"load":0,"entries":0,"state":0,"search":0} in 198s
+## job 110674178770
+contents: firefox phone: 49 pages, 45 entries, 2205 clicks, 165 at 200, 2040 at 304 — ok {"status":0,"title":0,"number":0,"click":0,"load":0,"entries":0,"state":0,"search":0} in 487s
+contents: firefox desktop: 49 pages, 45 entries, 2205 clicks, 168 at 200, 2037 at 304 — ok {"status":0,"title":0,"number":0,"click":0,"load":0,"entries":0,"state":0,"search":0} in 441s
+## job 110674178830
+contents: webkit phone: 49 pages, 45 entries, 2205 clicks, 388 at 200, 1817 at 304 — ok {"status":0,"title":0,"number":0,"click":0,"load":0,"entries":0,"state":0,"search":0} in 395s
+contents: webkit desktop: 49 pages, 45 entries, 2205 clicks, 378 at 200, 1827 at 304 — ok {"status":0,"title":0,"number":0,"click":0,"load":0,"entries":0,"state":0,"search":0} in 347s

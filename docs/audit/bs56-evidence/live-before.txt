@@ -1,0 +1,19 @@
+# contents gate at trunk bd3484e (judge() demands exactly 200), LIVE https://lupp.us/book/ with ww35 config installed (no-cache, ETag), firefox phone, nomad-1, started 2026-10-02T02:03:32Z
+# classified from the --json record:
+# firefox phone: clicks 2205, at200 163, at304 -, status-by-code {"304":2042}, 304-landed-right 2042, 304-wrong 0, other {}
+contents: gate against https://lupp.us/book/ (live)
+contents: firefox phone: 49 pages, 45 entries, 2205 clicks, 163 at 200 — FAIL {"status":2042,"title":0,"number":0,"click":0,"load":0,"entries":0,"state":0,"search":0} in 385s
+  status: front/how-to-read.html -> "How to read this book": HTTP 304 https://lupp.us/book/front/how-to-read.html title="How to read this book - The Wolf Book" h1="How to read this book"
+  status: front/notation.html -> "How to read this book": HTTP 304 https://lupp.us/book/front/how-to-read.html title="How to read this book - The Wolf Book" h1="How to read this book"
+  status: front/notation.html -> "Notation": HTTP 304 https://lupp.us/book/front/notation.html title="Notation - The Wolf Book" h1="Notation"
+  status: front/notation.html -> "2. Strings, honestly": HTTP 304 https://lupp.us/book/ch02.html title="Strings, honestly - The Wolf Book" h1="2. Strings, honestly"
+  status: front/notation.html -> "6. Errors are values": HTTP 304 https://lupp.us/book/ch06.html title="Errors are values - The Wolf Book" h1="6. Errors are values"
+  status: front/notation.html -> "10. Spawning is a scope": HTTP 304 https://lupp.us/book/ch10.html title="Spawning is a scope - The Wolf Book" h1="10. Spawning is a scope"
+  status: front/notation.html -> "17. The failing schedule, replayed": HTTP 304 https://lupp.us/book/ch17.html title="The failing schedule, replayed - The Wolf Book" h1="17. The failing schedule, replayed"
+  status: front/notation.html -> "25. Editions, stability, publishing": HTTP 304 https://lupp.us/book/ch25.html title="Editions, stability, publishing - The Wolf Book" h1="25. Editions, stability, publishing"
+  status: front/notation.html -> "27. rpn, twice": HTTP 304 https://lupp.us/book/ch27.html title="rpn, twice - The Wolf Book" h1="27. rpn, twice"
+  status: front/notation.html -> "28. wordtree, twice": HTTP 304 https://lupp.us/book/ch28.html title="wordtree, twice - The Wolf Book" h1="28. wordtree, twice"
+  status: front/notation.html -> "29. tinyvm": HTTP 304 https://lupp.us/book/ch29.html title="tinyvm - The Wolf Book" h1="29. tinyvm"
+  status: front/notation.html -> "Appendix A — Grammar summary": HTTP 304 https://lupp.us/book/back/appendix-a.html title="Appendix A — Grammar summary - The Wolf Book" h1="Appendix A — Grammar summary"
+  status: … 2030 more
+contents: FAILED
