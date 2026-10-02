@@ -2,6 +2,27 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs56, the contents, twice more — 2026-10-01 — a versioned script, a re-checked page
+
+**The contents' links survive a version tag.** The small script that
+tells the sidebar where the book's root is read that root off its own
+address, and an address with a version tag on the end
+(`wolf-boot.js?v=…`, which the site adds to every other book script so
+a returning reader gets the current one) left the root empty: the same
+wrong links from the front and back matter as before, waiting to come
+back. The script now ignores the tag, and the gate in CI serves every
+script with one.
+
+**The gate no longer fails a page that came from the browser's cache.**
+lupp.us now asks the browser to re-check every page of the book before
+showing a held copy; when the copy is current the server answers "not
+modified" and the browser shows what it has. Firefox and WebKit report
+that answer rather than the page's own status, and the gate read it as
+a missing page, so a run against the live site read red on landings
+that were right. It now judges the page it landed on, by title and
+number, and a held copy of the wrong page is still a fault. Nothing a
+reader sees changed.
+
 ## bs55, the book at 0.2.19 — 2026-09-30 — the contents work on lupp.us
 
 **The contents' links work from every page.** On lupp.us, a sidebar
