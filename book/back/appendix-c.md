@@ -1,7 +1,7 @@
 # Appendix C — Diagnostics
 
 Every diagnostic the book shows, with the one-line summary the compiler's
-own catalog carries for it. The catalog holds 176 codes; these 59 are the
+own catalog carries for it. The catalog holds 178 codes; these 59 are the
 ones a page in this edition names. A code is stable: it identifies a
 rule, not a message, and `wolf --explain E1001` prints the whole entry
 for any of them (the summary, the reasoning, and the fix) whether or
@@ -48,7 +48,7 @@ shows both readings of it side by side.
 | `E0708` | layout is unresolved until codegen | wolf | Solutions |
 | `E0709` | invalid comptime budget attribute | wolf | 18.4 |
 | `E0710` | a comptime assertion failed | wolf | 18.1, 18.2, 22.3 |
-| `E0801` | this `match` does not cover every case | wolf | 3.4 |
+| `E0801` | this `match` does not cover every case | wolf | 3.4, 6.6 |
 | `E1001` | this value was moved away (or never given one) before this use | wolf | 3.1, 7.1, 7.2, 7.6, 7.7, 9.8, Notation |
 | `E1002` | this needs exclusive access, but the value is in use here | wolf | 7.5 |
 | `E1005` | the region is open here, so its handle cannot move or freeze | wolf | 8.3 |
