@@ -1098,8 +1098,48 @@ repo = "wolffe-lang/wolf-lang"
 # push's plain copy, wolf-book#57) or moves an element at all. Control
 # (0.2.18 / 0.1.41) and subject on the unedited tree: 0 program
 # failures, 0 flips; the four console failures are the four stamps.
-rev = "c2401f05f37794a078d2acf62f837dad98e5950d"
-impl_version = "0.2.19"
+# ---- bs58, wave 53: wolf 0.2.21 + lupin 0.1.44 — `match` over the
+#      value; the compiler's half EXACT, the distance one release ----
+#
+# wolf-lang at the v0.2.21 release tag (`dfcc2f1`), TAKEN FROM THE
+# RELEASE ARCHIVE (release 402328307) and matched against the release's
+# published digest before unpacking:
+# `wolf-0.2.21-x86_64-unknown-linux-gnu.tar.gz` sha256
+# 09e0a6f55d9bc1a707b3eb69b32912e03418c37069fff726eed4685bd5812cd2.
+# Every member hashed BY NAME (docs/audit/bs58-evidence/members.txt):
+#
+#   wolf                 8adbe35d...   <- the pin of record
+#   wolf-cimport-worker  6293a86a...
+#   libwolf_rt.a         83ae4782...
+#   wolf.1               04c95206...
+#   _wolf                2d1e4801...   <- zsh completion, same at every pin
+#   wolf.bash            29eb2d75...   <- same as 0.2.19
+#   wolf.fish            51a1b6a8...   <- same as 0.2.19
+#
+#   wolf 0.2.21 (wolfgang, pin dfcc2f1)
+#   paired with lupin 0.1.44 (reference interpreter), pin cdde128
+#   lupin 0.1.44 (wolf-interp, reference interpreter at pin cdde128)
+#
+# PREDICTED TO THE CHARACTER in docs/audit/bs58-prediction.md (committed
+# at 68563a8, before either archive was downloaded) and measured
+# byte-identical. The book never pinned 0.2.20, so the span is two
+# releases and 246 commits. The compiler's half is EXACT (it names
+# 0.1.44 and `cdde128`, and lupin 0.1.44 prints `cdde128`). The
+# interpreter's half names v0.2.20's tag:
+# `git rev-list --count cdde128a..dfcc2f13` = 91 commits, one release.
+#
+# What the release changed that the book can see: THREE FLIPS, all
+# bs57's pending rows for §6.6 (`match` over a fallible value, ruling
+# #21, `[type.row.match]`), and nothing else. Control (0.2.19 / 0.1.42)
+# and subject on the unedited tree 68563a8: 0 program failures; the
+# four console failures are the four stamps; the 19 non-trap
+# `lupin-run` fences and 6 `wolf-run` fences keep their refusals word
+# for word. E0611 (`?` under a defer), #458's `i32` binding literal and
+# #486's moving shorthand reach no book program. Spec: anchors 542 ->
+# 546 (none dropped), catalogue 176 -> 178 (E0611, E0816), grammar
+# unchanged.
+rev = "dfcc2f13e7c73182bdd41fc9bec2802c7da3b024"
+impl_version = "0.2.21"
 
 [lupin]
 # wolf-interp at the v0.1.30 release tag (is42): the stamped line names
@@ -1676,9 +1716,22 @@ impl_version = "0.2.19"
 # out (#144), the caller seeing a callee's move-out (#146). None reaches
 # a sample: the book moves no element, every spelled `Map` is
 # `Map[str, int]`, and no `mut` parameter is left moved-out.
+# ---- bs58, wave 53: 0.1.42 -> 0.1.44, two re-pins and the mirrors ----
+#
+# `lupin-0.1.44-x86_64-unknown-linux-gnu.tar.gz` (release 402215729)
+# sha256 e44aae0651693364fe9dc8943fed9b44eb4e9f17ac9362aef4b570ed85387dc0,
+# member `lupin` be9bf9fc.... Pin MOVES `ec56a08` -> `cdde128` (v0.2.20's
+# tag, r26's re-pin; 0.1.43 pinned v0.2.19). What reaches the book: a
+# `match` over a fallible value has two halves (is67), so §6.6's worked
+# sample prints its four lines, s7 is E0801 naming `no_comma`, and 6-15
+# prints `7 -4 -99` — the three rows that flip. wolf-interp#176 (an
+# inferred empty row read as open) reaches nothing: every `match` over a
+# fallible value in the book spells its row. Two-phase arguments, the
+# shorthand-as-longhand and the receiver claims (0.1.43) meet no sample;
+# appendix B-5's path-and-prefix re-claim still traps `exclusivity`.
 repo = "wolffe-lang/wolf-interp"
-rev = "8e2516dc47bf808512388cc687e070981d331d98"
-version = "lupin 0.1.42 (wolf-interp, reference interpreter at pin ec56a08)"
+rev = "ba4762714d75c37bb14b300610e2d52630665a05"
+version = "lupin 0.1.44 (wolf-interp, reference interpreter at pin cdde128)"
 
 [wolf-lsp]
 # Source of the vendored tmLanguage grammars under highlight/.
