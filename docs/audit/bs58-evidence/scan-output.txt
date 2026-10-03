@@ -1,0 +1,23 @@
+== defer_try 0
+== numlit 0
+== shorthand 2
+   principles/exercises/ch07/ex7-19.lu 12 Point { x, y } => "{x} {y}",
+   principles/exercises/ch07/ex7-19.lu 17 Rect { lo: Point { x: 0, y: 0 }, hi: Point { x, y } } => "anchored, {x} by {y}",
+match_any 55 lines in 48 programs
+== assert_msg 11
+   book/ch18.md:26 18 assert(slot == 2, "1234 lands in slot 2 of sixteen")
+   book/ch18.md:64 18 assert(slot == 2, "1234 lands in slot 2 of sixteen")
+   book/ch18.md:232 12 assert(d.words == 900, "the count survived construction")
+   book/ch18.md:308 14 assert(implements(T, Eq))
+   book/ch18.md:308 23 assert(p.a == 1 && p.b == 2, "both fields survived construction")
+   book/ch18.md:345 8 assert(implements(T, Eq))
+   book/ch18.md:345 17 assert(p.x == 1 && p.y == 2, "both fields survived construction")
+   book/ch18.md:458 18 assert(1 + 1 == 2, "three return types agreed with three declarations")
+   book/ch22.md:352 10 assert(handlers(a, b, c).len == 19)
+   book/ch22.md:399 10 assert(handlers(a, b, c).len == 26)
+   principles/exercises/ch22/ex22-7.lu 18 assert(handlers(a, b, c, d).len == 27)
+== errdefer_block 2
+   book/ch06.md:550 12 errdefer print("partial results discarded")
+   principles/exercises/ch06/ex6-5.lu 11 errdefer print("cleanup ran")
+== else_try_in_scrut 0
+== fnvalue_moded 0

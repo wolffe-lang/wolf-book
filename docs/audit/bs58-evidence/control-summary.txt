@@ -1,0 +1,10 @@
+samples: lupin = /home/mfwolffe/lanes/bs58/old/lupin-0.1.42-x86_64-unknown-linux-gnu/lupin
+samples: wolf  = /home/mfwolffe/lanes/bs58/old/wolf-0.2.19-x86_64-unknown-linux-gnu/wolf
+samples: 125 corpus file(s) held back from the export — one-machine directives the other runner cannot spell (principles/TWO-MACHINES.md)
+samples: 509 samples (250 corpus roots + 16 corpus members on disk, 259 book blocks)
+samples: 503 passed, 6 pending (report-only), 0 failed, 0 flips in 109.0s
+samples: 481 of 502 console block(s) replayed against the pinned tools
+samples: 1 warning set(s) asserted by warns(…); 30 sample(s) warn with no warns(…) directive (report-only, wolf-book#21)
+samples: exported 377 corpus programs to samples/export/corpus/book/
+EXIT 0
+307a9328525fa05e68984c7bf0f10feffb2fe625
