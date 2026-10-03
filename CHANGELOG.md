@@ -2,6 +2,30 @@
 
 What changed for the reader, entry per merged sprint (D65).
 
+## bs58, the book at 0.2.21 — 2026-10-03 — §6.6 runs everywhere
+
+**The book is true for wolf 0.2.21 and lupin 0.1.44.** Both come from
+their release archives, checked against the published digests. The
+compiler names the interpreter this printing pins, exactly; the
+interpreter was tested against the compiler's previous release, one
+release and 91 commits behind.
+
+**§6.6's `match` over a fallible value now runs on both machines.** The
+worked sample prints its four lines, the forgotten tag is refused with
+the compiler naming `no_comma`, and exercise 6-15 prints `7 -4 -99`,
+on the compiler and the interpreter alike. The section stops being
+held for a later toolchain and joins every other sample in CI.
+
+**§5.6 no longer says a bare integer list is refused.** A literal that
+reaches a generic only through a bound takes the type the bound's impl
+names, so `[340, 275, 100]` passed to `total` is an `int` list without
+the annotation; the page said E0502 for five releases after the
+compiler stopped refusing it. The annotations stay, as the page's
+statement of the type.
+
+**Appendix C counts 178 codes.** The two new ones, E0611 and E0816,
+are not shown on any page, so the appendix's list is unchanged.
+
 ## bs57, `match` over the value — 2026-10-02 — chapter 6's third form
 
 **Chapter 6 teaches `match` straight over a fallible value** (§6.6, the
