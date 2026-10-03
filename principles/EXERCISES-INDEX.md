@@ -64,7 +64,7 @@ several of its stems are tagged `· wolf` while the distilled solution
 program on disk runs under lupin — the tier column says what CI
 executed, and the exercise file says which is which and why.
 
-Tier totals: 192 run (lupin) · 9 run (lupin REPL) · 31 run (wolf) · 26 run (wolf + lupin) · 78 prose · 9 pending. That is 345.
+Tier totals: 192 run (lupin) · 9 run (lupin REPL) · 31 run (wolf) · 27 run (wolf + lupin) · 78 prose · 8 pending. That is 345.
 (The totals and the tables were recounted mechanically against the
 masters at bs21 — the previous header said 276/231 while the tables
 had drifted from the marker count, ch05's 5-9 and 5-10 among the
@@ -206,7 +206,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §6.2 — `?`, `else`, `else |err|` | 6-7 | extension · lupin | run (lupin) |
 | §6.4 — Hardening by refactor | 6-9 | extension · lupin | run (lupin) |
 | §6.5 — Capstone: wordcount | 6-10 | extension · lupin | run (lupin) |
-| §6.6 — `match` over the value | 6-15 | comprehension · wolf + lupin; pending | pending |
+| §6.6 — `match` over the value | 6-15 | comprehension · wolf + lupin | run (wolf + lupin) |
 | Chapter batch | 6-8 | design | prose |
 | Chapter batch | 6-11 | extension · lupin | run (lupin) |
 | Chapter batch | 6-12 | extension · lupin | run (lupin) |
