@@ -1,0 +1,11 @@
+spec/anchors.json key sets, v0.2.19 (c2401f05) vs v0.2.21 (dfcc2f13), diffed both ways
+v0.2.19: 542 keys; v0.2.21: 546 keys
+in v0.2.21 not in v0.2.19 (added):
+  + mem.tier0.excl.4 -> 02-memory-model.md
+  + type.row.defer -> 10-types.md
+  + type.row.else -> 10-types.md
+  + type.row.match -> 10-types.md
+in v0.2.19 not in v0.2.21 (dropped): none
+in both, document changed (remapped): none
+grammar.ebnf sha256 910ff9d5f6e6747e... at v0.2.19, v0.2.20 and v0.2.21 (11286 bytes each)
+docs/diagnostics.md codes: 176 -> 178, added E0611, E0816; none removed

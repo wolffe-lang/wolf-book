@@ -1,0 +1,82 @@
+== head gate on kasumi, wolf-book 960a2924eca2348da3e42fa1b60cbf087091b07d, wolf 0.2.21 / lupin 0.1.44 (release archives by digest), WOLF_LANG_PATH = wolf-lang at v0.2.21 (dfcc2f13e7c73182bdd41fc9bec2802c7da3b024)
+== log mtimes (run launched 05:24 local on kasumi; gate.done last):
+05:26:39 gate-backmattercheck.log
+05:26:41 gate-contrast.log
+05:26:43 gate.done
+05:26:38 gate-ledgercheck.log
+05:26:43 gate-renderweb.log
+05:26:35 gate-samples.log
+05:26:38 gate-samplesselftest.log
+05:26:38 gate-verifydocs.log
+== gate-samples.log
+samples: lupin = /home/mfwolffe/lanes/bs58/new/lupin-0.1.44-x86_64-unknown-linux-gnu/lupin
+samples: wolf  = /home/mfwolffe/lanes/bs58/new/wolf-0.2.21-x86_64-unknown-linux-gnu/wolf
+samples: 125 corpus file(s) held back from the export — one-machine directives the other runner cannot spell (principles/TWO-MACHINES.md)
+samples: 509 samples (250 corpus roots + 16 corpus members on disk, 259 book blocks)
+samples: 506 passed, 3 pending (report-only), 0 failed, 0 flips in 100.4s
+samples: 482 of 502 console block(s) replayed against the pinned tools
+samples: 1 warning set(s) asserted by warns(…); 30 sample(s) warn with no warns(…) directive (report-only, wolf-book#21)
+samples: exported 377 corpus programs to samples/export/corpus/book/
+EXIT 0
+== gate-samplesselftest.log
+samples: lupin = /home/mfwolffe/lanes/bs58/new/lupin-0.1.44-x86_64-unknown-linux-gnu/lupin
+samples: wolf  = /home/mfwolffe/lanes/bs58/new/wolf-0.2.21-x86_64-unknown-linux-gnu/wolf
+samples: self-test caught wrong-stdout.lu: lupin: stdout mismatch: expected "goodbye, wolf", got "hello, wolf"
+samples: self-test caught wrong-exit.lu: lupin: exited Some(0), expected 7
+samples: self-test caught wrong-code.lu: wolf verdict `fail(E1001)`, expected `fail(E9999)`
+samples: self-test caught one-machine.lu: lupin: exited Some(4), expected 0 — and 4 is one of `[conf.exit]`'s two reserved statuses (2 a rejection, 4 a refusal), so the program never ran and the status is the tool's rather than the program's (stderr: one-machine.lu: unsupported: `sum_squares` is a `
+samples: self-test caught never-compiled.lu: wolf run: exited Some(2), expected 1 — and 2 is one of `[conf.exit]`'s two reserved statuses (2 a rejection, 4 a refusal), so the program never ran and the status is the tool's rather than the program's (stderr: error[E0401]: this is `str`, but `x` is dec
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0401` explains this code, or any other, by name))
+samples: self-test caught never-compiled-nonzero.lu: wolf run: exited 2, which `[conf.exit]` reserves for a rejection, and `wolf conform-run` answers `fail(E0401)` — so nothing ran, and the status is the compiler's rather than the program's
+samples: self-test caught refused-nonzero.lu: lupin: exited 4, which `[conf.exit]` reserves for a rejection (2) or a refusal (4); this rig reads no record from the interpreter, so a reserved status is not credited to a program (stderr: refused-nonzero.lu: unsupported: `sum_squares` is a `comptime fn
+samples: self-test run(exit=nonzero) credits a program that really dies nonzero
+samples: self-test graduation probe is right about the `served` program (flip: true)
+samples: self-test graduation probe is right about the `declined` program (flip: false)
+samples: self-test corpus console lane replays a true transcript
+samples: self-test caught corpus-console drift: /home/mfwolffe/lanes/bs58/wolf-book/samples/selftest/corpus-console/EXERCISES.md:1: console block drifted from the real run
+samples: self-test pending console block reported by name, not compared
+samples: self-test caught the pending-console plant without its row: /home/mfwolffe/lanes/bs58/wolf-book/samples/selftest/pending.md:1: console block drifted from the real run
+samples: self-test warning ledger holds a true warns(W0601)
+samples: self-test caught planted warns(W0601): warns(W0601) declared, but the compiler printed [] — the fence asserts the exact set, in both directions
+samples: self-test caught an undeclared corpus decline: principles/exercises/ch00/EXERCISES.md:1
+samples: self-test holds the declined ledger the other way too: a row whose block replays is stale
+samples: self-test ok — 14/14 deliberate breakages caught
+EXIT 0
+== gate-verifydocs.log
+verify-docs: 10 line-count claim(s) recomputed
+verify-docs: 6 project program(s) match the chapters that print them
+verify-docs: 27 version literal(s) in reader-facing text, each audited against wolf 0.2.21 / lupin 0.1.44
+verify-docs: 655 wolf listing(s) scanned for interpolation the vendored grammar cannot paint (wolf-book#5)
+verify-docs: EXERCISES-INDEX.md agrees with the corpus — 345 exercises (296 printed); 8 pending · 78 prose · 9 run (lupin REPL) · 192 run (lupin) · 27 run (wolf + lupin) · 31 run (wolf); fingers 61 · comprehension 154 · extension 79 · spelunking 28 · design 37
+verify-docs: ok (corpus count 266, pins well-formed, TOC/stub numbering agrees)
+EXIT 0
+== gate-ledgercheck.log
+ledger: 32 chapter ledger(s) — 131 open (124 filed, 7 waived, 0 unfiled), 101 closed
+EXIT 0
+== gate-backmattercheck.log
+backmatter: 296 solution(s) published, 331 on file
+backmatter: book/back/appendix-a.md up to date
+backmatter: book/back/solutions.md up to date
+backmatter: vendored spec artifacts match the sibling wolf-lang checkout
+EXIT 0
+== gate-contrast.log
+contrast: ok samples/contrast/recency_ring.rs
+contrast: ok samples/contrast/shelf_share.rs
+contrast: ok samples/contrast/zero_copy_tokens.rs
+contrast: rust — 3 file(s) compiled and asserted, 5 book block(s) matched
+contrast: c — 9 printed transcript(s) checked against their cases
+contrast: ok samples/contrast/arena_nodes.c (cc -std=c99 -Wall -Werror)
+contrast: ok samples/contrast/count.c (cc -std=c99 -Wall -Werror)
+contrast: ok samples/contrast/rpn.c (cc -std=c99 -Wall -Werror)
+contrast: ok samples/contrast/saxpy.c (cc -std=c99 -Wall -Werror)
+contrast: ok samples/contrast/saxpy_restrict.c (cc -std=c99 -Wall -Werror)
+contrast: ok samples/contrast/wordtree.c (cc -std=c99 -Wall -Werror)
+contrast: c — 6 twin(s) compiled with cc -std=c99 -Wall -Werror, 14/14 case(s) asserted, 13 book block(s) matched
+EXIT 0
+== gate-renderweb.log
+render: web edition at /home/mfwolffe/lanes/bs58/wolf-book/target/render/web
+render: CSP guard — 48 pages, no inline <script> (lupp.us serves `script-src 'self'`)
+render: link check — 1328 internal links across 48 pages, none dead
+EXIT 0
+== git status after the gate:
+== control (0.2.19 / 0.1.42) on the unedited head 307a9328525fa05e68984c7bf0f10feffb2fe625: see control-summary.txt; subject: subject-summary.txt

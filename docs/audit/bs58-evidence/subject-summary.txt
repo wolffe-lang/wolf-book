@@ -1,0 +1,18 @@
+== subject: the unedited tree at 68563a89b71d4e444d8f4ebc941a8c4291cfb206, wolf 0.2.21 / lupin 0.1.44 (release archives by digest)
+samples: lupin = /home/mfwolffe/lanes/bs58/new/lupin-0.1.44-x86_64-unknown-linux-gnu/lupin
+samples: wolf  = /home/mfwolffe/lanes/bs58/new/wolf-0.2.21-x86_64-unknown-linux-gnu/wolf
+samples: 125 corpus file(s) held back from the export — one-machine directives the other runner cannot spell (principles/TWO-MACHINES.md)
+samples: 509 samples (250 corpus roots + 16 corpus members on disk, 259 book blocks)
+samples: 503 passed, 3 pending (report-only), 4 failed, 3 flips in 107.1s
+samples: 477 of 502 console block(s) replayed against the pinned tools
+samples: 1 warning set(s) asserted by warns(…); 30 sample(s) warn with no warns(…) directive (report-only, wolf-book#21)
+samples: exported 377 corpus programs to samples/export/corpus/book/
+samples: FAIL /home/mfwolffe/lanes/bs58/wolf-book/book/back/colophon.md:7: console block drifted from the real run
+samples: FAIL /home/mfwolffe/lanes/bs58/wolf-book/book/ch01.md:153: console block drifted from the real run
+samples: FAIL /home/mfwolffe/lanes/bs58/wolf-book/book/ch22.md:288: console block drifted from the real run
+samples: FAIL /home/mfwolffe/lanes/bs58/wolf-book/principles/exercises/ch22/EXERCISES.md:218: console block drifted from the real run
+samples: FLIP ch06/ex6-15: directive `run(exit=0, stdout="7 -4 -99")` now PASSES but the sample is on samples-pending.toml (blocker was: 6-6's `code_for` as one `match` over `probe(n)` — a row arm, a value arm, `_` for the open row's rest. Expected on both machines: `7 -4 -99`, exit 0. Measured at bs57 against the pin (release archives by digest, docs/audit/bs57-evidence/probes-pin.txt): wolf 0.2.
+samples: FLIP book/ch06/part-rowmatch: directive `run(exit=0)` now PASSES but the sample is on samples-pending.toml (blocker was: §6.6's worked sample, `match cents(row) { no_comma => …, NotANumber(bad) => …, 0 => …, n => … }`. Expected on both machines: exit 0 and the four lines `340 cents` / `nothing owed` / `` `lots` at byte 7 is not a number `` / `no comma`. Measured at bs57 against the pin (r
+samples: FLIP book/ch06/s7: directive `fail(E0801)` now PASSES but the sample is on samples-pending.toml (blocker was: §6.6's deliberate refusal: the same `match` with `no_comma` forgotten, `fail(E0801)` naming `no_comma`. Measured at bs57 against the pin (release archives by digest, docs/audit/bs57-evidence/probes-pin.txt): wolf 0.2.19 refuses it at `resolve` with the same «`match` over a fallibl
+EXIT 1
+== git status after the run:

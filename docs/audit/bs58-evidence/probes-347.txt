@@ -1,0 +1,60 @@
+## wolf-lang#347 / ch05 ba:diagnostic (bs43) and §5.6's E0502 sentence — three programs, both pairs
+## pair=old wolf=wolf 0.2.19 (wolfgang, pin c2401f0) lupin=lupin 0.1.42 (wolf-interp, reference interpreter at pin ec56a08)
+=== old probe | ch05 ba:diagnostic (bs43), wolf-lang#347, form=lit
+lupin exit=0
+  out| -340
+wolf conform-run exit=0
+  verdict= pass |   | diags= []
+wolf conform-run --checked exit=0
+  verdict= exit(0) |  | stdout= -340/
+
+=== old probe | ch05 ba:diagnostic (bs43), wolf-lang#347, form=bound
+lupin exit=0
+  out| -340
+wolf conform-run exit=0
+  verdict= pass |   | diags= []
+wolf conform-run --checked exit=0
+  verdict= exit(0) |  | stdout= -340/
+
+## pair=new wolf=wolf 0.2.21 (wolfgang, pin dfcc2f1) lupin=lupin 0.1.44 (wolf-interp, reference interpreter at pin cdde128)
+=== new probe | ch05 ba:diagnostic (bs43), wolf-lang#347, form=bound
+lupin exit=0
+  out| -340
+wolf conform-run exit=0
+  verdict= pass |   | diags= []
+wolf conform-run --checked exit=0
+  verdict= exit(0) |  | stdout= -340/
+
+=== new probe | ch05 ba:diagnostic (bs43), wolf-lang#347, form=lit
+lupin exit=0
+  out| -340
+wolf conform-run exit=0
+  verdict= pass |   | diags= []
+wolf conform-run --checked exit=0
+  verdict= exit(0) |  | stdout= -340/
+
+EXIT 0
+## pair=old wolf=wolf 0.2.19 (wolfgang, pin c2401f0) lupin=lupin 0.1.42 (wolf-interp, reference interpreter at pin ec56a08)
+=== old probe | ch05 §5.6 total block without List[int] (the page's E0502 claim, ba:diagnostic bs43, wolf-lang#347)
+lupin exit=0
+  out| 715 5.75
+wolf conform-run exit=0
+  verdict= pass |   | diags= []
+wolf conform-run --checked exit=0
+  verdict= exit(0) |  | stdout= 715 5.75/
+
+wolf run exit:
+715 5.75
+rc=0
+## pair=new wolf=wolf 0.2.21 (wolfgang, pin dfcc2f1) lupin=lupin 0.1.44 (wolf-interp, reference interpreter at pin cdde128)
+=== new probe | ch05 §5.6 total block without List[int] (the page's E0502 claim, ba:diagnostic bs43, wolf-lang#347)
+lupin exit=0
+  out| 715 5.75
+wolf conform-run exit=0
+  verdict= pass |   | diags= []
+wolf conform-run --checked exit=0
+  verdict= exit(0) |  | stdout= 715 5.75/
+
+wolf run exit:
+715 5.75
+rc=0
