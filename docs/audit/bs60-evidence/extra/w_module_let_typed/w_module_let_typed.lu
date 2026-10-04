@@ -1,0 +1,8 @@
+let USAGE: str = """
+    usage: wordcount TEXT
+    """
+
+fn main() -> !int {
+    print(USAGE)
+    0
+}

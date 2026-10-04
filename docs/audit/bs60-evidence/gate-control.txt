@@ -1,0 +1,33 @@
+== control pair, API read (nomad-1 gh) at the download minute
+wolf-0.2.22-x86_64-unknown-linux-gnu.tar.gz sha256:df0f2fea26d9d26de5e577ee5d2cbabeaafe6d93ecfa447cb6be97ae442d8dba
+lupin-0.1.45-x86_64-unknown-linux-gnu.tar.gz sha256:907cfb1ac473c82a36013064ae3cee7b03d879b44a6ce6ad775e2e26353424c7
+2026-10-04T19:30Z
+== sha256sum on kasumi
+907cfb1ac473c82a36013064ae3cee7b03d879b44a6ce6ad775e2e26353424c7  lupin-0.1.45-x86_64-unknown-linux-gnu.tar.gz
+df0f2fea26d9d26de5e577ee5d2cbabeaafe6d93ecfa447cb6be97ae442d8dba  wolf-0.2.22-x86_64-unknown-linux-gnu.tar.gz
+
+== control run on a23a0613cd70ddceb855c298b20815ca001d1038, WOLF/LUPIN = /home/mfwolffe/lanes/bs60/old/wolf-0.2.22-x86_64-unknown-linux-gnu /home/mfwolffe/lanes/bs60/old/lupin-0.1.45-x86_64-unknown-linux-gnu from the archives above
+samples: SKIP extraction book/back/solutions.md — generated from the two places solutions live, and this run reaches both directly: the exercise corpus under principles/exercises/ (chapters 7+) and principles/EXERCISES.md §5, the master for the chapter 1-6 exemplar batch (wolf-book#44). Every console block on both is replayed below; cargo xtask backmatter --check holds the page to them
+samples: 125 corpus file(s) held back from the export — one-machine directives the other runner cannot spell (principles/TWO-MACHINES.md)
+samples: 509 samples (250 corpus roots + 16 corpus members on disk, 259 book blocks)
+samples: 506 passed, 3 pending (report-only), 0 failed, 0 flips in 29.9s
+samples: 482 of 502 console block(s) replayed against the pinned tools
+samples: SKIP console /home/mfwolffe/lanes/bs60/wolf-book/book/ch01.md:322: `(cd wolf-lang` needs a shell
+samples: SKIP console /home/mfwolffe/lanes/bs60/wolf-book/book/ch07.md:515: `grep -n '(mut ' shelf.lu` is not a pinned tool
+samples: SKIP pending(is08): 12 wolf-repl block(s) counted, not replayed — the REPL replay lane lands with wolf-interp is08
+samples: 1 warning set(s) asserted by warns(…); 30 sample(s) warn with no warns(…) directive (report-only, wolf-book#21)
+EXIT 0
+
+== verify-docs
+verify-docs: 10 line-count claim(s) recomputed
+verify-docs: 6 project program(s) match the chapters that print them
+verify-docs: 30 version literal(s) in reader-facing text, each audited against wolf 0.2.22 / lupin 0.1.45
+verify-docs: 655 wolf listing(s) scanned for interpolation the vendored grammar cannot paint (wolf-book#5)
+verify-docs: EXERCISES-INDEX.md agrees with the corpus — 345 exercises (296 printed); 8 pending · 78 prose · 9 run (lupin REPL) · 191 run (lupin) · 28 run (wolf + lupin) · 31 run (wolf); fingers 61 · comprehension 154 · extension 79 · spelunking 28 · design 37
+verify-docs: ok (corpus count 266, pins well-formed, TOC/stub numbering agrees)
+EXIT 0
+
+== ledger --check
+ledger: ch33.md    open   1 (filed   1, waived 0, UNFILED 0) closed   0
+ledger: 32 chapter ledger(s) — 132 open (125 filed, 7 waived, 0 unfiled), 101 closed
+EXIT 0

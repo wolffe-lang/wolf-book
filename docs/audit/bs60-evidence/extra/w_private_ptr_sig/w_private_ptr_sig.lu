@@ -1,0 +1,8 @@
+import c "stdlib.h"
+/// §9.2's s3 without the `pub`: a module-private fn may carry `*T` ([mem.unsafe.sig]).
+fn header_len(p: *u8) -> int {
+    8
+}
+fn main() -> !int {
+    0
+}

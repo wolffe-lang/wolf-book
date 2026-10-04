@@ -1,0 +1,1 @@
+witness | ch22 ledger: a module-level const with a comptime initializer (0.2.22: item-initializer lowering (globals))

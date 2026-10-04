@@ -1,0 +1,10 @@
+#[repr(c)]
+struct Vec2 {
+    x: f64,
+    y: f64,
+}
+fn main() -> !int {
+    const S = size_of(Vec2)
+    print("{S}")
+    if S == 16 { 0 } else { 1 }
+}
