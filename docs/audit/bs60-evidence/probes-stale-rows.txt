@@ -1,0 +1,60 @@
+# bs60: the stale ledger rows, measured on both pairs from the release archives, kasumi 2026-10-04T20:00Z
+# ch32: §32.3's allocator, the three part(alloc) fences of book/ch32.md assembled in page order
+== old: wolf 0.2.22 (wolfgang, pin 8e36bc1) / lupin 0.1.45 (wolf-interp, reference interpreter at pin dfcc2f1)
+$ wolf build allocator.lu
+exit 0 (diagnostics: )
+$ ./allocator
+a=3 b=9 free=13
+42
+d=3 free=13
+exit 0
+$ lupin allocator.lu
+a=3 b=9 free=13
+42
+d=3 free=13
+exit 0
+== new: wolf 0.2.23 (wolfgang, pin 8edac3e) / lupin 0.1.46 (wolf-interp, reference interpreter at pin 8e36bc1)
+$ wolf build allocator.lu
+exit 0 (diagnostics: )
+$ ./allocator
+a=3 b=9 free=13
+42
+d=3 free=13
+exit 0
+$ lupin allocator.lu
+a=3 b=9 free=13
+42
+d=3 free=13
+exit 0
+
+# ch03 #153: an else-less if used as a value (witness w_elseless_if_value)
+== old: wolf 0.2.22 (wolfgang, pin 8e36bc1) / lupin 0.1.45 (wolf-interp, reference interpreter at pin dfcc2f1)
+  src| fn main() -> !int {
+  src|     let cents = 340
+  src|     let mark = if cents > 300 { "*" }
+  src|     print("{mark}")
+  src|     0
+  src| }
+$ lupin w_elseless_if_value.lu
+w_elseless_if_value.lu: E0401: this is a value, but its block is a unit context and its value is `()` — `[type.unit.context]`: the then-block of an `if` with no `else`, a loop body and the body of a fn whose result is `()` are consumed by no one, whatever the tail's type. End the block with a statement (`let _ = …` keeps a discard visible), give the `if` an `else`, or declare the result [type.unit.context] at 3:33
+exit 2
+$ wolf run w_elseless_if_value.lu
+exit 2
+error[E0401]: this is `str`, but an `if` without `else` produces `()`
+ --> ./w_elseless_if_value.lu:3:33
+  |
+== new: wolf 0.2.23 (wolfgang, pin 8edac3e) / lupin 0.1.46 (wolf-interp, reference interpreter at pin 8e36bc1)
+  src| fn main() -> !int {
+  src|     let cents = 340
+  src|     let mark = if cents > 300 { "*" }
+  src|     print("{mark}")
+  src|     0
+  src| }
+$ lupin w_elseless_if_value.lu
+w_elseless_if_value.lu: E0401: this is a value, but its block is a unit context and its value is `()` — `[type.unit.context]`: the then-block of an `if` with no `else`, a loop body and the body of a fn whose result is `()` are consumed by no one, whatever the tail's type. End the block with a statement (`let _ = …` keeps a discard visible), give the `if` an `else`, or declare the result [type.unit.context] at 3:33
+exit 2
+$ wolf run w_elseless_if_value.lu
+exit 2
+error[E0401]: this is `str`, but an `if` without `else` produces `()`
+ --> ./w_elseless_if_value.lu:3:33
+  |
