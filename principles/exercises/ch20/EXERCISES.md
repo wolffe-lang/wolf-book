@@ -10,9 +10,10 @@ about function-level contract attributes under a verifying compiler,
 and none exists: until wolf 0.2.22 the four attributes parsed and were
 verified by nothing (probed at the bs18 pins: `wolf run`, `wolf build`
 and lupin all executed a `#[noalloc]` function whose first line
-allocates, exit 0), and since 0.2.22 the compiler refuses them by name
-(E0817, "not implemented yet", naming wolf-lang#180) while lupin still
-reads no attribute at all (wolf-interp#174). A stem cannot carry that
+allocates, exit 0). Since 0.2.22 the compiler refuses them by name
+(E0817, "not implemented yet", naming wolf-lang#180), and since lupin
+0.1.46 the interpreter does too (E0817, wolf-interp#174), so neither
+machine runs one. Refused is not verified, and a stem cannot carry that
 gap into a reader's text. The set stays in
 the corpus so the chapter's verified-contracts section and its
 exercises arrive together the day the checker lands. The old
@@ -115,9 +116,10 @@ contract attributes are *verified* by nothing — the checker that
 proves them against WIR facts is I15's machinery (wolf-lang#180). At
 the bs18 pins they parsed and meant nothing. Since wolf 0.2.22 the
 attribute set is closed and the compiler refuses all four by name
-(E0817), so a program carrying one does not compile at all; lupin
-reads no attribute and runs it as before. Each exercise says which
-side of that line it stands on. The stems reason about what a verifying compiler must
+(E0817), so a program carrying one does not compile at all; since lupin
+0.1.46 the interpreter refuses them by name as well, where 0.1.45 read
+no attribute and ran the program. Each exercise says which side of
+that line it stands on. The stems reason about what a verifying compiler must
 do, which is why they can be written before it exists and printed
 only after.
 
@@ -135,22 +137,22 @@ outcome in prose.) Today, honestly:
 
 ```console
 $ lupin ex20-5.lu
-3
+ex20-5.lu: E0817: `#[noalloc]` is not an attribute wolf implements: the set is closed (`trusted`, `consttime`, `allow`, `index`, `budget`, `repr(c)`, `cfg(target = "…")`), and an attribute nothing reads is refused, never ignored ([gram.item.attr.set]) [gram.item.attr.set] at 10:3
 $ echo $?
-0
+2
 ```
 
-lupin executes the program — attributes are inert in the dynamic
-tier. The compiler does not: `wolf run ex20-5.lu` stops at the
-attribute with E0817, "`noalloc` is not implemented yet", and the
-note says why — the performance contracts have no checker, "and an
-unchecked promise is worse than none." That is the file's directive,
-`fail(E0817)`. It is not the verifying compiler's answer: E0817 is
+Neither machine runs it. lupin refuses the attribute by name and exits
+2; through 0.1.45 it treated attributes as inert and printed `3`. The
+compiler stops at the same attribute: `wolf run ex20-5.lu` is E0817,
+"`noalloc` is not implemented yet", and the note says why — the
+performance contracts have no checker, "and an unchecked promise is
+worse than none." That is the file's directive, `fail(E0817)`. It is not the verifying compiler's answer: E0817 is
 about the *attribute*, and would fire on a body that keeps the
 promise too (20-8). The verifying compiler's rejection is about the
 *body*, and the program stays this chapter's pending row until a code
-for it exists. Neither tool claims to have checked the promise; one
-refuses to accept it unchecked. Until wolf 0.2.22 the compiler ran it
+for it exists. Neither tool claims to have checked the promise; both
+refuse to accept it unchecked. Until wolf 0.2.22 the compiler ran it
 too, to `3`, and said nothing.
 
 **Exercise 20-6** *(comprehension · prose)*. Four bodies, one
@@ -209,18 +211,24 @@ fn main() -> !int {
 
 ```console
 $ lupin ex20-8.lu
-13
+ex20-8.lu: E0817: `#[noalloc]` is not an attribute wolf implements: the set is closed (`trusted`, `consttime`, `allow`, `index`, `budget`, `repr(c)`, `cfg(target = "…")`), and an attribute nothing reads is refused, never ignored ([gram.item.attr.set]) [gram.item.attr.set] at 9:3
+$ echo $?
+2
 ```
 
-The two machines claim different things, and neither claims the
-promise was kept. lupin prints 13: it reads no attribute
-(wolf-interp#174), so the run proves the body computes a dot product
-and proves nothing about `#[noalloc]`. The compiler refuses the
-program — `wolf run ex20-8.lu` is E0817, "`noalloc` is not
-implemented yet", exit 2 — although the body keeps the promise,
-because nothing can tell a kept promise from a broken one until I15's
-checker exists (wolf-lang#180). Delete the attribute and both print
-13. Before wolf 0.2.22 the compiler ran this too and claimed nothing.
+The two machines claim the same thing, and neither claims the promise
+was kept: both refuse the attribute by name, E0817, exit 2, although
+the body keeps the promise, because nothing can tell a kept promise
+from a broken one until I15's checker exists (wolf-lang#180). `wolf
+run ex20-8.lu` says "`noalloc` is not implemented yet". Read the two
+notes side by side and they still differ in one place: the
+compiler's list of the attributes it implements has grown
+`repr(c, packed)`, `repr(c, align(N))` and `section(".name")`, which
+the interpreter does not implement yet (wolf-interp#188, #190). Delete
+the attribute and both print 13. Before wolf 0.2.22 the compiler ran
+this too and claimed nothing, and until lupin 0.1.46 the interpreter
+did, printing 13, which proved the body computes a dot product and
+nothing about `#[noalloc]`.
 An unverified contract is a comment with better syntax, and the
 compiler now declines to compile the comment.
 

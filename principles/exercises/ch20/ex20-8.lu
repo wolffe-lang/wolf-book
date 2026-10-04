@@ -3,8 +3,8 @@
 // Exercise 20-8: a promise the body keeps — arithmetic on fields, no
 // allocation anywhere. The compiler still refuses the attribute by name
 // (E0817): nothing verifies it yet (I15, wolf-lang#180), and a promise
-// nothing checks is not accepted, even a true one. lupin reads no
-// attribute (wolf-interp#174) and prints 13.
+// nothing checks is not accepted, even a true one. lupin refuses it by
+// name too since 0.1.46 (E0817, wolf-interp#174); 0.1.45 printed 13.
 struct Vec3 { x: f64, y: f64, z: f64 }
 #[noalloc]
 fn dot(a: Vec3, b: Vec3) -> f64 {

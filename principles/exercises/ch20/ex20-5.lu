@@ -5,8 +5,8 @@
 // Until a checker exists the attribute is refused by name — E0817, "not
 // implemented yet" — so the compiler never runs the lie. The verifying
 // compiler will reject this program for its CONTENT instead, with a code
-// today's catalog does not assign. lupin reads no attribute
-// (wolf-interp#174) and still prints 3.
+// today's catalog does not assign. lupin refuses the attribute by name
+// too since 0.1.46 (E0817, wolf-interp#174); 0.1.45 read none and printed 3.
 #[noalloc]
 fn build() -> List[int] {
     var xs = List[int]()
