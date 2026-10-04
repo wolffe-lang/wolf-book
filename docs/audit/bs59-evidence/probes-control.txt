@@ -1,0 +1,767 @@
+## pair=old wolf=wolf 0.2.21 (wolfgang, pin dfcc2f1) lupin=lupin 0.1.44 (wolf-interp, reference interpreter at pin cdde128)
+=== old principles/exercises/appx/exB-11.lu | lupin-run(exit=trap(ub))
+lupin exit=3
+  out| appx_exB_11_lu.lu: ub(mem.ub) §7/L2: read through an exposed pointer into alloc#0, which was freed [mem.unsafe.raw.1] at 14:17; tag created at 9:17
+  out|   licenses O8: escape analysis / stack promotion without conservatively pinning addresses
+  out|   alloc#0 `c.malloc(8)` 8 byte(s), FREED, owned by region #0
+  out|     tag#0 c.malloc(8)#root Disabled exposed
+wolf run exit=4
+  out| warning[W1301]: this `unsafe` block does not state its invariant
+  out|  --> ./appx_exB_11_lu.lu:8:5
+  out|   |
+  out| 8 |     unsafe {
+wolf conform-run exit=0
+  verdict= unsupported | raw casts that change the machine shape (integer/pointer round trips) [337, 345] | diags= ['W1301']
+wolf conform-run --checked exit=0
+  verdict= ub(mem.ub) |  | stdout= 
+
+=== old principles/exercises/appx/exB-4.lu | lupin-run(exit=trap(use-after-move))
+lupin exit=3
+  out| appx_exB_4_lu.lu: trap(use-after-move): `s` was moved out and is uninitialized here [mem.tier0.move.2] at 7:11; `s` moved here at 6:13
+wolf run exit=2
+  out| error[E1001]: `s` is used here after its value moved away
+  out|  --> ./appx_exB_4_lu.lu:7:11
+  out|   |
+  out| 6 |     let t = move s
+wolf conform-run exit=0
+  verdict= fail(E1001) |   | diags= ['E1001']
+wolf conform-run --checked exit=0
+  verdict= fail(E1001) |  | stdout= 
+
+=== old principles/exercises/appx/exB-5.lu | lupin-run(exit=trap(exclusivity))
+lupin exit=3
+  out| appx_exB_5_lu.lu: trap(exclusivity): `p.a.n` is accessed as `mut` while `p.a` is held as `mut`; the paths conflict [mem.model.path.disjoint] at 9:19; `p.a` held here at 9:10
+wolf run exit=2
+  out| warning[W1002]: `i` is `mut`, and the body never writes it
+  out|  --> ./appx_exB_5_lu.lu:6:9
+  out|   |
+  out| 6 | fn wide(mut i: Inner, mut n: int) { n += 1 }
+wolf conform-run exit=0
+  verdict= fail(E1002) |   | diags= ['W1002', 'E1002']
+wolf conform-run --checked exit=0
+  verdict= fail(E1002) |  | stdout= 
+
+=== old principles/exercises/appx/exB-6.lu | lupin-run(exit=trap(region-fault))
+lupin exit=3
+  out| appx_exB_6_lu.lu: trap(region-fault): region #1 is frozen: `imm` data is immutable forever [mem.region.freeze.1] at 9:13
+wolf run exit=2
+  out| error[E0804]: `reserve` takes its receiver `mut`, but the call site does not say so
+  out|  --> ./appx_exB_6_lu.lu:9:13
+  out|   |
+  out| 9 |     let h = p.reserve()
+wolf conform-run exit=0
+  verdict= fail(E0804) |   | diags= ['E0804']
+wolf conform-run --checked exit=0
+  verdict= fail(E0804) |  | stdout= 
+
+=== old principles/exercises/appx/exB-7.lu | lupin-run(exit=trap(stale-handle))
+lupin exit=3
+  out| appx_exB_7_lu.lu: trap(stale-handle): handle into pool#0 slot 0 carries generation 0, the slot is at generation 1; a stale handle is a deterministic fault in every profile, never UB [mem.shared.handle.2] at 11:9
+wolf run exit=2
+  out| error[E0804]: `reserve` takes its receiver `mut`, but the call site does not say so
+  out|  --> ./appx_exB_7_lu.lu:8:17
+  out|   |
+  out| 8 |         let h = pool.reserve()
+wolf conform-run exit=0
+  verdict= fail(E0804) |   | diags= ['E0804', 'E0804', 'E0804']
+wolf conform-run --checked exit=0
+  verdict= fail(E0804) |  | stdout= 
+
+=== old principles/exercises/appx/exB-9.lu | lupin-run(exit=trap(deadlock))
+lupin exit=3
+  out| appx_exB_9_lu.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0) [conc.deadlock.trap] at 14:13
+wolf run exit=124
+wolf conform-run exit=0
+  verdict= pass |   | diags= []
+wolf conform-run --checked exit=0
+  verdict= trap(deadlock) |  | stdout= 
+
+=== old book/ch02.md:145 | lupin-run(exit=0)
+lupin exit=0
+  out| [dear reader,
+  out|   this line keeps its two spaces
+  out| and this one does not
+  out| ]
+  out| 68 bytes, 3 lines
+wolf run exit=4
+  out| wolf run: cannot compile this yet — interpolation inside a multiline string @58..164 (pipeline is honest through `mem`; the conservatism ledger, not a bug in your program)
+wolf conform-run exit=0
+  verdict= unsupported | interpolation inside a multiline string [58, 164] | diags= []
+wolf conform-run --checked exit=0
+  verdict= unsupported | interpolation inside a multiline string | stdout= 
+
+=== old principles/exercises/ch03/ex3-13.lu | lupin-run(exit=0, stdout="1024")
+lupin exit=0
+  out| 1024
+wolf run exit=4
+  out| wolf run: cannot compile this yet — `break` with a value (loop values) @248..249 (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)
+wolf conform-run exit=0
+  verdict= unsupported | `break` with a value (loop values) [248, 249] | diags= []
+wolf conform-run --checked exit=0
+  verdict= unsupported | `break` with a value (loop values) | stdout= 
+
+=== old book/ch03.md:407 | lupin-run(exit=0)
+lupin exit=0
+  out| 8 8 8
+wolf run exit=4
+  out| wolf run: cannot compile this yet — `break` with a value (loop values) @304..305 (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)
+wolf conform-run exit=0
+  verdict= unsupported | `break` with a value (loop values) [304, 305] | diags= []
+wolf conform-run --checked exit=0
+  verdict= unsupported | `break` with a value (loop values) | stdout= 
+
+=== old book/ch03.md:489 | lupin-run(exit=trap(overflow))
+lupin exit=3
+  out| ch03_md_489.lu: trap(overflow): `+` produced 2147483700, outside `i32` — checked arithmetic traps in every profile (X3); spell intended overflow `wrapping[i32]` [arith.checked] at 4:9
+wolf run exit=2
+  out| error[E0401]: this is `int`, but `till` is `i32`
+  out|  --> ./ch03_md_489.lu:4:17
+  out|   |
+  out| 4 |         till += row.to_int() else 0
+wolf conform-run exit=0
+  verdict= fail(E0401) |   | diags= ['E0401']
+wolf conform-run --checked exit=0
+  verdict= fail(E0401) |  | stdout= 
+
+=== old book/ch03.md:520 | lupin-run(exit=trap(div-zero))
+lupin exit=3
+  out| ch03_md_520.lu: trap(div-zero): division by zero is defined behavior in wolf: it traps [mem.ub.defined] at 9:18
+wolf run exit=134
+  out| wolf-trap: div-zero
+  out|   at ./ch03_md_520.lu:9:5
+wolf conform-run exit=0
+  verdict= pass |   | diags= []
+wolf conform-run --checked exit=0
+  verdict= trap(div-zero) |  | stdout= 
+
+=== old book/ch03.md:550 | lupin-run(exit=0)
+lupin exit=0
+  out| -2147483648 2147483647
+wolf run exit=2
+  out| error[E0301]: nothing named `saturating` is in scope
+  out|  --> ./ch03_md_550.lu:4:18
+  out|   |
+  out| 4 |     var clamped: saturating[i32] = 2147483647
+wolf conform-run exit=0
+  verdict= fail(E0301) |   | diags= ['E0301']
+wolf conform-run --checked exit=0
+  verdict= fail(E0301) |  | stdout= 
+
+=== old principles/exercises/ch05/ex5-8.lu | run(exit=0, stdout="marmot 5")
+lupin exit=4
+  out| ch05_ex5_8_lu.lu: unsupported: `List.sorted_by` is no builtin, so it reaches `List`'s home module `std.list` ([type.method.resolve] step 2), and no std root is configured: pass `--std-root DIR` or set `LUPIN_STD` (the compiler reads `WOLF_STD` or a `std` path dependency in `wolf.pkg`) — the counterparty's E0301 ([type.method.root])
+wolf run exit=4
+  out| wolf run: cannot compile this yet — member access on a value whose type is still being inferred @300..303 (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)
+wolf conform-run exit=0
+  verdict= unsupported | member access on a value whose type is still being inferred [300, 303] | diags= []
+wolf conform-run --checked exit=0
+  verdict= unsupported | member access on a value whose type is still being inferred | stdout= 
+
+=== old book/ch06.md:621 | lupin-run(exit=trap(bounds))
+lupin exit=3
+  out| ch06_md_621.lu: trap(bounds): byte range 10..11 is outside a 10-byte string [mem.ub.defined] at 10:15
+wolf run exit=134
+  out| wolf-trap: bounds
+  out|   at ./ch06_md_621.lu:10:9
+wolf conform-run exit=0
+  verdict= pass |   | diags= []
+wolf conform-run --checked exit=0
+  verdict= trap(bounds) |  | stdout= 
+
+=== old book/ch06.md:880 | lupin-run(exit=0)
+lupin exit=0
+  out| 17 words, 11 distinct
+  out| the                 5  #####
+  out| wolf                2  ##
+  out| moon                2  ##
+  out| runs                1  #
+wolf run exit=4
+  out| wolf run: cannot compile this yet — an item without a declared type (E0407 upstream) @1188..1193 (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)
+wolf conform-run exit=0
+  verdict= unsupported | an item without a declared type (E0407 upstream) [1188, 1193] | diags= []
+wolf conform-run --checked exit=0
+  verdict= unsupported | an item without a declared type (E0407 upstream) | stdout= 
+
+=== old principles/exercises/ch07/ex7-4.lu | lupin-run(exit=trap(use-after-move))
+lupin exit=3
+  out| ch07_ex7_4_lu.lu: trap(use-after-move): `a.x` was moved out and is uninitialized here [mem.tier0.move.2] at 8:13; `a` moved here at 7:13
+wolf run exit=2
+  out| error[E1001]: `a.x` is used here after its value moved away
+  out|  --> ./ch07_ex7_4_lu.lu:8:13
+  out|   |
+  out| 7 |     let b = a
+wolf conform-run exit=0
+  verdict= fail(E1001) |   | diags= ['E1001']
+wolf conform-run --checked exit=0
+  verdict= fail(E1001) |  | stdout= 
+
+=== old principles/exercises/ch07/ex7-5.lu | fail(E1003)
+lupin exit=0
+  out| 
+wolf run exit=4
+  out| wolf run: cannot compile this yet — borrow expressions @365..367 (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)
+wolf conform-run exit=0
+  verdict= unsupported | borrow expressions [365, 367] | diags= []
+wolf conform-run --checked exit=0
+  verdict= unsupported | borrow expressions | stdout= 
+
+=== old principles/exercises/ch08/ex8-10.lu | lupin-run(exit=trap(region-fault))
+lupin exit=3
+  out| ch08_ex8_10_lu.lu: trap(region-fault): region #1 is frozen: `imm` data is immutable forever [mem.region.freeze.1] at 9:13
+wolf run exit=2
+  out| error[E0804]: `reserve` takes its receiver `mut`, but the call site does not say so
+  out|  --> ./ch08_ex8_10_lu.lu:9:13
+  out|   |
+  out| 9 |     let h = p.reserve()
+wolf conform-run exit=0
+  verdict= fail(E0804) |   | diags= ['E0804']
+wolf conform-run --checked exit=0
+  verdict= fail(E0804) |  | stdout= 
+
+=== old principles/exercises/ch08/ex8-12.lu | lupin-run(exit=trap(stale-handle))
+lupin exit=3
+  out| ch08_ex8_12_lu.lu: trap(stale-handle): handle into pool#0 slot 0 carries generation 0, the slot is at generation 1; a stale handle is a deterministic fault in every profile, never UB [mem.shared.handle.2] at 11:17
+wolf run exit=134
+  out| wolf-trap: stale-handle
+  out|   at ./ch08_ex8_12_lu.lu:11:9
+wolf conform-run exit=0
+  verdict= pass |   | diags= []
+wolf conform-run --checked exit=0
+  verdict= trap(stale-handle) |  | stdout= 
+
+=== old principles/exercises/ch08/ex8-5.lu | lupin-run(exit=trap(region-fault))
+lupin exit=3
+  out| ch08_ex8_5_lu.lu: trap(region-fault): region #1 is open here and cannot be transferred; a region moves as a closed subtree (the compiler's E1005) [mem.region.freeze.3] at 10:17
+wolf run exit=2
+  out| error[E1005]: region `r` is open, so its handle cannot move or freeze
+  out|   --> ./ch08_ex8_5_lu.lu:10:22
+  out|    |
+  out|  7 |     in r {
+wolf conform-run exit=0
+  verdict= fail(E1005) |   | diags= ['E1005']
+wolf conform-run --checked exit=0
+  verdict= fail(E1005) |  | stdout= 
+
+=== old principles/exercises/ch08/ex8-7.lu | run(exit=0, stdout="c a")
+lupin exit=4
+  out| ch08_ex8_7_lu.lu: unsupported: handle is not a `Map` key — a key is `str`, `int`, `char` or `bool` ([type.map.key]; the compiler's E0418 where the key type is spelled)
+wolf run exit=4
+  out| wolf run: cannot compile this yet — `==` on a container, tuple or handle (no `Eq` for these this edition) @1926..1929 (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)
+wolf conform-run exit=0
+  verdict= unsupported | `==` on a container, tuple or handle (no `Eq` for these this edition) [1926, 1929] | diags= []
+wolf conform-run --checked exit=0
+  verdict= unsupported | `==` on a container, tuple or handle (no `Eq` for these this edition) | stdout= 
+
+=== old book/ch08.md:221 | lupin-run(exit=0, stdout="2 docs, store closed=true")
+lupin exit=0
+  out| 2 docs, store closed=true
+wolf run exit=4
+  out| wolf run: cannot compile this yet — methods on builtin types (the std surface) @417..434 (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)
+wolf conform-run exit=0
+  verdict= unsupported | methods on builtin types (the std surface) [417, 434] | diags= []
+wolf conform-run --checked exit=0
+  verdict= unsupported | methods on builtin types (the std surface) | stdout= 
+
+=== old book/ch08.md:323 | lupin-run(exit=trap(region-fault))
+lupin exit=3
+  out| ch08_md_323.lu: trap(region-fault): region #1 is open here and cannot be transferred; a region moves as a closed subtree (the compiler's E1005) [mem.region.freeze.3] at 7:17
+wolf run exit=2
+  out| error[E1005]: region `r` is open, so its handle cannot move or freeze
+  out|  --> ./ch08_md_323.lu:7:22
+  out|   |
+  out| 4 |     in r {
+wolf conform-run exit=0
+  verdict= fail(E1005) |   | diags= ['E1005']
+wolf conform-run --checked exit=0
+  verdict= fail(E1005) |  | stdout= 
+
+=== old book/ch08.md:433 | lupin-run(exit=0, stdout="regions closed=true")
+lupin exit=0
+  out| regions closed=true
+wolf run exit=4
+  out| wolf run: cannot compile this yet — methods on builtin types (the std surface) @237..260 (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)
+wolf conform-run exit=0
+  verdict= unsupported | methods on builtin types (the std surface) [237, 260] | diags= []
+wolf conform-run --checked exit=0
+  verdict= unsupported | methods on builtin types (the std surface) | stdout= 
+
+=== old book/ch08.md:823 | lupin-run(exit=0, stdout="regions, 3 strong, index sees 900")
+lupin exit=0
+  out| regions, 3 strong, index sees 900
+wolf run exit=2
+  out| error[E0403]: `shared Doc` has no method named `strong_count`
+  out|  --> ./ch08_md_823.lu:8:31
+  out|   |
+  out| 8 |     print("{held.title}, {doc.strong_count()} strong, index sees {seen.words}")
+wolf conform-run exit=0
+  verdict= fail(E0403) |   | diags= ['E0403']
+wolf conform-run --checked exit=0
+  verdict= fail(E0403) |  | stdout= 
+
+=== old book/ch08.md:894 | lupin-run(exit=trap(stale-handle))
+lupin exit=3
+  out| cached: regions
+  out| ch08_md_894.lu: trap(stale-handle): handle into pool#0 slot 0 carries generation 0, the slot is at generation 1; a stale handle is a deterministic fault in every profile, never UB [mem.shared.handle.2] at 11:25
+wolf run exit=134
+  out| cached: regions
+  out| wolf-trap: stale-handle
+  out|   at ./ch08_md_894.lu:11:9
+wolf conform-run exit=0
+  verdict= pass |   | diags= []
+wolf conform-run --checked exit=0
+  verdict= trap(stale-handle) |  | stdout= cached: regions/
+
+=== old book/ch08.md:967 | lupin-run(exit=trap(stale-handle))
+lupin exit=3
+  out| ch08_md_967.lu: trap(stale-handle): handle into pool#0 slot 0 carries generation 0, the slot is at generation 1; a stale handle is a deterministic fault in every profile, never UB [mem.shared.handle.2] at 8:17
+wolf run exit=134
+  out| wolf-trap: stale-handle
+  out|   at ./ch08_md_967.lu:8:9
+wolf conform-run exit=0
+  verdict= pass |   | diags= []
+wolf conform-run --checked exit=0
+  verdict= trap(stale-handle) |  | stdout= 
+
+=== old principles/exercises/ch09/ex9-13.lu | lupin-run(exit=trap(ub))
+lupin exit=3
+  out| ch09_ex9_13_lu.lu: ub(mem.ub) §7/P5: `assume noalias` asserts these ranges are disjoint, and alloc#0[0..1) overlaps alloc#0[0..1) — the assertion is false [mem.unsafe.raw.2] at 11:9; tag created at 9:17
+  out|   licenses O5: the asserted ranges get `noalias` treatment in Tier-3 code — vectorization/reordering as if proven
+  out|   alloc#0 `c.malloc(8)` 8 byte(s), live, owned by region #0
+  out|     tag#0 c.malloc(8)#root Active exposed
+wolf run exit=0
+wolf conform-run exit=0
+  verdict= pass |   | diags= []
+wolf conform-run --checked exit=0
+  verdict= ub(mem.ub) |  | stdout= 
+
+=== old principles/exercises/ch09/ex9-14.lu | lupin-run(exit=trap(ub))
+lupin exit=3
+  out| ch09_ex9_14_lu.lu: ub(mem.ub) §7/P1: read through tag#1 (`borrow … from`), which is Disabled at alloc#0[0] [mem.prov.state] at 15:17; tag created at 13:22
+  out|   licenses O1: `mut` params lower to `noalias` + `dereferenceable`; unique-tag stores forward without memory checks
+  out|   alloc#0 `c.malloc(8)` 8 byte(s), live, owned by region #1
+  out|     tag#0 c.malloc(8)#root Active exposed
+  out|       tag#1 `borrow … from` Disabled|Reserved|Reserved|Reserved|Reserved|Reserved|Reserved|Reserved
+wolf run exit=4
+  out| wolf run: cannot compile this yet — indexing / generic application @484..493 (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)
+wolf conform-run exit=0
+  verdict= unsupported | indexing / generic application [484, 493] | diags= []
+wolf conform-run --checked exit=0
+  verdict= unsupported | indexing / generic application | stdout= 
+
+=== old principles/exercises/ch09/ex9-15.lu | lupin-run(exit=0)
+lupin exit=0
+  out| 120 86 52 18
+  out| true
+wolf run exit=2
+  out| error[E0415]: `305419896` does not fit `u8`
+  out|  --> ./ch09_ex9_15_lu.lu:7:13
+  out|   |
+  out| 7 |     let n = 305419896
+wolf conform-run exit=0
+  verdict= fail(E0415) |   | diags= ['E0415', 'E0415', 'E0415', 'E0415', 'E0415', 'E0415', 'E0415', 'E0415', 'E0401', 'E0401']
+wolf conform-run --checked exit=0
+  verdict= fail(E0415) |  | stdout= 
+
+=== old principles/exercises/ch09/ex9-3.lu | lupin-run(exit=trap(ub))
+lupin exit=3
+  out| ch09_ex9_3_lu.lu: ub(mem.ub) §7/P3: write of 1 byte(s) at alloc#0[8], which holds 8 [mem.ub] at 11:9; tag created at 9:17
+  out|   licenses O3a: `dereferenceable(n)` on known-size accesses; bounds-based alias disproof between distinct allocations
+  out|   alloc#0 `c.malloc(8)` 8 byte(s), live, owned by region #0
+  out|     tag#0 c.malloc(8)#root Active exposed
+wolf run exit=0
+wolf conform-run exit=0
+  verdict= pass |   | diags= []
+wolf conform-run --checked exit=0
+  verdict= ub(mem.ub) |  | stdout= 
+
+=== old principles/exercises/ch09/ex9-4.lu | lupin-run(exit=trap(ub))
+lupin exit=3
+  out| ch09_ex9_4_lu.lu: ub(mem.ub) §7/L2: read through an exposed pointer into alloc#0, which was freed [mem.unsafe.raw.1] at 14:17; tag created at 9:17
+  out|   licenses O8: escape analysis / stack promotion without conservatively pinning addresses
+  out|   alloc#0 `c.malloc(8)` 8 byte(s), FREED, owned by region #0
+  out|     tag#0 c.malloc(8)#root Disabled exposed
+wolf run exit=4
+  out| wolf run: cannot compile this yet — raw casts that change the machine shape (integer/pointer round trips) @390..398 (pipeline is honest through `mem`; the conservatism ledger, not a bug in your program)
+wolf conform-run exit=0
+  verdict= unsupported | raw casts that change the machine shape (integer/pointer round trips) [390, 398] | diags= []
+wolf conform-run --checked exit=0
+  verdict= ub(mem.ub) |  | stdout= 
+
+=== old principles/exercises/ch09/ex9-5.lu | lupin-run(exit=trap(ub))
+lupin exit=3
+  out| ch09_ex9_5_lu.lu: ub(mem.ub) §7/P1: read through tag#0 (c.malloc(8)#root), which is Disabled at alloc#0[0] [mem.prov.state] at 11:17; tag created at 8:17
+  out|   licenses O1: `mut` params lower to `noalias` + `dereferenceable`; unique-tag stores forward without memory checks
+  out|   alloc#0 `c.malloc(8)` 8 byte(s), FREED, owned by region #0
+  out|     tag#0 c.malloc(8)#root Disabled exposed
+wolf run exit=250
+wolf conform-run exit=0
+  verdict= pass |   | diags= []
+wolf conform-run --checked exit=0
+  verdict= ub(mem.ub) |  | stdout= 
+
+=== old principles/exercises/ch09/ex9-6.lu | lupin-run(exit=trap(ub))
+lupin exit=3
+  out| ch09_ex9_6_lu.lu: ub(mem.ub) §7/L1: read of alloc#0[0], which nothing has written [mem.ub] at 10:17; tag created at 9:17
+  out|   licenses O7: moves lower to memcpy-and-forget; dead-store elimination on moved-from places; no zero-init of locals
+  out|   alloc#0 `c.malloc(64)` 64 byte(s), live, owned by region #0
+  out|     tag#0 c.malloc(64)#root Active exposed
+wolf run exit=0
+  out| 0
+wolf conform-run exit=0
+  verdict= pass |   | diags= []
+wolf conform-run --checked exit=0
+  verdict= ub(mem.ub) |  | stdout= 
+
+=== old principles/exercises/ch09/ex9-7a.lu | lupin-run(exit=0)
+lupin exit=0
+  out| 
+wolf run exit=4
+  out| wolf run: cannot compile this yet — indexing / generic application @445..449 (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)
+wolf conform-run exit=0
+  verdict= unsupported | indexing / generic application [445, 449] | diags= []
+wolf conform-run --checked exit=0
+  verdict= unsupported | indexing / generic application | stdout= 
+
+=== old principles/exercises/ch09/ex9-7b.lu | lupin-run(exit=trap(ub))
+lupin exit=3
+  out| ch09_ex9_7b_lu.lu: ub(mem.ub) §7/P6: `borrow region #1 from` a pointer into alloc#0, which is owned by `program` (region #0) — the obligation is that the allocation lies wholly inside the named region's footprint [mem.unsafe.door] at 12:17; tag created at 10:17
+  out|   licenses O6: safe-tier code after the door keeps all safe-tier entitlements (O1–O4) — the door is where trust concentrates
+  out|   alloc#0 `c.malloc(8)` 8 byte(s), live, owned by region #0
+  out|     tag#0 c.malloc(8)#root Active exposed
+wolf run exit=4
+  out| wolf run: cannot compile this yet — indexing / generic application @433..437 (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)
+wolf conform-run exit=0
+  verdict= unsupported | indexing / generic application [433, 437] | diags= []
+wolf conform-run --checked exit=0
+  verdict= unsupported | indexing / generic application | stdout= 
+
+=== old principles/exercises/ch09/ex9-9.lu | lupin-run(exit=trap(ub))
+lupin exit=3
+  out| ch09_ex9_9_lu.lu: ub(mem.ub) §7/P4: read at alloc#0[0], whose owning region #1 was freed wholesale [mem.prov.region] at 14:17; tag created at 10:25
+  out|   licenses O3b: one alias-scope domain per region — pointers into distinct regions never alias; O4: regions not open in the current scope yield `invariant.load`
+  out|   alloc#0 `c.malloc(8)` 8 byte(s), live, owned by region #1
+  out|     tag#0 c.malloc(8)#root Disabled exposed
+wolf run exit=5
+wolf conform-run exit=0
+  verdict= pass |   | diags= []
+wolf conform-run --checked exit=0
+  verdict= ub(mem.ub) |  | stdout= 
+
+=== old book/ch09.md:163 | fail(E1302)
+lupin exit=2
+  out| ch09_md_163.lu: E1302: `header_len`'s parameter `p` carries a raw pointer, but this boundary stays fully safe: there are no `unsafe fn`s — the proof lives at the `unsafe` block and the module is the audit granule. Pass a `handle` or a region value, or keep the `*T` in a module-private field [mem.unsafe.scope] at 2:15
+wolf run exit=2
+  out| error[E1302]: `header_len`'s parameter `p` carries a raw pointer, but this boundary stays fully safe
+  out|  --> ./ch09_md_163.lu:2:15
+  out|   |
+  out| 2 | fn header_len(p: *u8) -> int {
+wolf conform-run exit=0
+  verdict= fail(E1302) |   | diags= ['E1302']
+wolf conform-run --checked exit=0
+  verdict= fail(E1302) |  | stdout= 
+
+=== old book/ch09.md:472 | lupin-run(exit=0, stdout="9")
+lupin exit=0
+  out| 9
+wolf run exit=4
+  out| wolf run: cannot compile this yet — indexing / generic application @378..387 (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)
+wolf conform-run exit=0
+  verdict= unsupported | indexing / generic application [378, 387] | diags= []
+wolf conform-run --checked exit=0
+  verdict= unsupported | indexing / generic application | stdout= 
+
+=== old book/ch09.md:537 | lupin-run(exit=trap(ub))
+lupin exit=3
+  out| ch09_md_537.lu: ub(mem.ub) §7/P6: `borrow region #1 from` a pointer into alloc#0, which is owned by `program` (region #0) — the obligation is that the allocation lies wholly inside the named region's footprint [mem.unsafe.door] at 11:22; tag created at 9:17
+  out|   licenses O6: safe-tier code after the door keeps all safe-tier entitlements (O1–O4) — the door is where trust concentrates
+  out|   alloc#0 `c.malloc(8)` 8 byte(s), live, owned by region #0
+  out|     tag#0 c.malloc(8)#root Active exposed
+wolf run exit=4
+  out| wolf run: cannot compile this yet — indexing / generic application @395..404 (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)
+wolf conform-run exit=0
+  verdict= unsupported | indexing / generic application [395, 404] | diags= []
+wolf conform-run --checked exit=0
+  verdict= unsupported | indexing / generic application | stdout= 
+
+=== old principles/exercises/ch10/ex10-4.lu | lupin-run(exit=trap(deadlock))
+lupin exit=3
+  out| ch10_ex10_4_lu.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0), `task@654` (task 1) [conc.deadlock.trap] at 13:5
+wolf run exit=2
+  out| error[E0401]: this is `()`, but the closure's context needs `{integer}`
+  out|   --> ./ch10_ex10_4_lu.lu:16:13
+  out|    |
+  out| 14 |         s.spawn(fn() {
+wolf conform-run exit=0
+  verdict= fail(E0401) |   | diags= ['E0401']
+wolf conform-run --checked exit=0
+  verdict= fail(E0401) |  | stdout= 
+
+=== old book/ch10.md:218 | lupin-run(exit=trap(deadlock))
+lupin exit=3
+  out| ch10_md_218.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0), `task@82` (task 1) [conc.deadlock.trap] at 3:5
+wolf run exit=2
+  out| error[E0401]: this is `()`, but the closure's context needs `{integer}`
+  out|  --> ./ch10_md_218.lu:6:13
+  out|   |
+  out| 4 |         readers.spawn(fn() {
+wolf conform-run exit=0
+  verdict= fail(E0401) |   | diags= ['E0401']
+wolf conform-run --checked exit=0
+  verdict= fail(E0401) |  | stdout= 
+
+=== old principles/exercises/ch11/ex11-2.lu | lupin-run(exit=trap(deadlock))
+lupin exit=3
+  out| ch11_ex11_2_lu.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0), `task@890` (task 1), `task@890` (task 2), `task@890` (task 3) [conc.deadlock.trap] at 21:5
+wolf run exit=124
+wolf conform-run exit=0
+  verdict= pass |   | diags= []
+wolf conform-run --checked exit=0
+  verdict= unsupported | structured concurrency in checked execution (C1 deferred) | stdout= 
+
+=== old principles/exercises/ch12/ex12-2.lu | lupin-run(exit=trap(deadlock))
+lupin exit=3
+  out| ch12_ex12_2_lu.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0) [conc.deadlock.trap] at 15:5
+wolf run exit=124
+wolf conform-run exit=0
+  verdict= pass |   | diags= []
+wolf conform-run --checked exit=0
+  verdict= trap(deadlock) |  | stdout= 
+
+=== old book/ch12.md:215 | lupin-run(exit=trap(use-after-move))
+lupin exit=3
+  out| ch12_md_215.lu: trap(use-after-move): `batch` was moved out and is uninitialized here [mem.tier0.move.2] at 6:20; `batch` moved here at 5:16
+wolf run exit=2
+  out| error[E1001]: `batch` is used here after its value moved away
+  out|  --> ./ch12_md_215.lu:6:20
+  out|   |
+  out| 5 |     inbox.send(move batch)?
+wolf conform-run exit=0
+  verdict= fail(E1001) |   | diags= ['E1001']
+wolf conform-run --checked exit=0
+  verdict= fail(E1001) |  | stdout= 
+
+=== old book/ch15.md:86 | lupin-run(exit=0)
+lupin exit=0
+  out| b went with a: killed
+wolf run exit=2
+  out| error[E0604]: `?` propagates an error, but `parked` cannot fail
+  out|  --> ./ch15_md_86.lu:3:13
+  out|   |
+  out| 1 | fn parked() -> int {
+wolf conform-run exit=0
+  verdict= fail(E0604) |   | diags= ['E0604']
+wolf conform-run --checked exit=0
+  verdict= fail(E0604) |  | stdout= 
+
+=== old principles/exercises/ch16/ex16-3.lu | lupin-run(exit=trap(use-after-move))
+lupin exit=3
+  out| ch16_ex16_3_lu.lu: trap(use-after-move): `r` was moved out and is uninitialized here [mem.tier0.move.2] at 9:16; `r` moved here at 8:13
+wolf run exit=2
+  out| error[E1001]: `r` is used here after its value moved away
+  out|  --> ./ch16_ex16_3_lu.lu:9:16
+  out|   |
+  out| 8 |     ch.send(move r)?
+wolf conform-run exit=0
+  verdict= fail(E1001) |   | diags= ['E1001']
+wolf conform-run --checked exit=0
+  verdict= fail(E1001) |  | stdout= 
+
+=== old book/ch16.md:27 | lupin-run(exit=0)
+lupin exit=0
+  out| regions moves errors regions 
+wolf run exit=2
+  out| error[E1010]: this value is allocated in region `store`, which is freed before the receiver could ever use it
+  out|  --> ./ch16_md_27.lu:9:14
+  out|   |
+  out| 3 |     let store = inbox.recv() else |_| { return 1 }
+wolf conform-run exit=0
+  verdict= fail(E1010) |   | diags= ['E1010']
+wolf conform-run --checked exit=0
+  verdict= fail(E1010) |  | stdout= 
+
+=== old principles/exercises/ch17/ex17-9.lu | lupin-run(exit=trap(deadlock))
+lupin exit=3
+  out| ch17_ex17_9_lu.lu: trap(deadlock): every live task is blocked at a runtime-owned blocking point and no timer is pending; blocked-task roster: `main` (task 0), `task@689` (task 1), `task@810` (task 2) [conc.deadlock.trap] at 14:5
+wolf run exit=124
+wolf conform-run exit=0
+  verdict= pass |   | diags= []
+wolf conform-run --checked exit=0
+  verdict= unsupported | structured concurrency in checked execution (C1 deferred) | stdout= 
+
+=== old principles/exercises/ch18/ex18-11.lu | wolf-run(exit=0, stdout="A-B--A--A-B")
+lupin exit=4
+  out| ch18_ex18_11_lu.lu: unsupported: `expand` is a `comptime fn`; compile-time evaluation with its sandbox and budgets is the compiler's engine (s16), and nothing in `spec/` pins it — the `comptime` namespace is still a reserved forward one
+wolf run exit=0
+  out| A-B--A--A-B
+wolf conform-run exit=0
+  verdict= pass |   | diags= []
+wolf conform-run --checked exit=0
+  verdict= exit(0) |  | stdout= A-B--A--A-B/
+
+=== old principles/exercises/ch18/ex18-15.lu | wolf-run(exit=0, stdout="MCMXCIV 2026")
+lupin exit=4
+  out| ch18_ex18_15_lu.lu: unsupported: `to_roman` is a `comptime fn`; compile-time evaluation with its sandbox and budgets is the compiler's engine (s16), and nothing in `spec/` pins it — the `comptime` namespace is still a reserved forward one
+wolf run exit=0
+  out| MCMXCIV 2026
+wolf conform-run exit=0
+  verdict= pass |   | diags= []
+wolf conform-run --checked exit=0
+  verdict= exit(0) |  | stdout= MCMXCIV 2026/
+
+=== old principles/exercises/ch18/ex18-3.lu | wolf-run(exit=0, stdout="285")
+lupin exit=4
+  out| ch18_ex18_3_lu.lu: unsupported: `sum_squares` is a `comptime fn`; compile-time evaluation with its sandbox and budgets is the compiler's engine (s16), and nothing in `spec/` pins it — the `comptime` namespace is still a reserved forward one
+wolf run exit=0
+  out| 285
+wolf conform-run exit=0
+  verdict= pass |   | diags= []
+wolf conform-run --checked exit=0
+  verdict= exit(0) |  | stdout= 285/
+
+=== old principles/exercises/ch18/ex18-5.lu | wolf-run(exit=0)
+lupin exit=4
+  out| ch18_ex18_5_lu.lu: unsupported: `field_count` is a `comptime fn`; compile-time evaluation with its sandbox and budgets is the compiler's engine (s16), and nothing in `spec/` pins it — the `comptime` namespace is still a reserved forward one
+wolf run exit=0
+  out| 3
+wolf conform-run exit=0
+  verdict= pass |   | diags= []
+wolf conform-run --checked exit=0
+  verdict= exit(0) |  | stdout= 3/
+
+=== old principles/exercises/ch20/ex20-5.lu | run(exit=0, stdout="3")
+lupin exit=0
+  out| 3
+wolf run exit=0
+  out| 3
+wolf conform-run exit=0
+  verdict= pass |   | diags= []
+wolf conform-run --checked exit=0
+  verdict= exit(0) |  | stdout= 3/
+
+=== old principles/exercises/ch20/ex20-8.lu | run(exit=0, stdout="13")
+lupin exit=0
+  out| 13
+wolf run exit=0
+  out| 13
+wolf conform-run exit=0
+  verdict= pass |   | diags= []
+wolf conform-run --checked exit=0
+  verdict= exit(0) |  | stdout= 13/
+
+=== old principles/exercises/ch22/ex22-7.lu | wolf-run(exit=0, stdout="Ingest Report Purge Reindex")
+lupin exit=4
+  out| ch22_ex22_7_lu.lu: unsupported: `handlers` is a `comptime fn`; compile-time evaluation with its sandbox and budgets is the compiler's engine (s16), and nothing in `spec/` pins it — the `comptime` namespace is still a reserved forward one
+wolf run exit=0
+  out| Ingest Report Purge Reindex
+wolf conform-run exit=0
+  verdict= pass |   | diags= []
+wolf conform-run --checked exit=0
+  verdict= exit(0) |  | stdout= Ingest Report Purge Reindex/
+
+=== old principles/exercises/ch27/ex27-3.lu | lupin-run(exit=0)
+lupin exit=0
+  out| error: `+` wanted two operands and found 1
+  out| error: `end of line` wanted two operands and found 2
+  out| 5
+wolf run exit=4
+  out| warning[W0603]: the mark `DivZero` is spelled CapCase
+  out|   --> ./ch27_ex27_3_lu.lu:24:74
+  out|    |
+  out| 24 | fn eval(line: str) -> int ! {NotNumber(Bad), Unknown(Bad), Empty(Short), DivZero} {
+wolf conform-run exit=0
+  verdict= unsupported | row payload slots with conflicting types across tags (spilled union layout, c06) [676, 1714] | diags= ['W0603']
+wolf conform-run --checked exit=0
+  verdict= exit(0) |  | stdout= error: `+` wanted two operands and found 1/error: `end of line` wanted two opera
+
+=== old principles/exercises/ch28/ex28-1.lu | lupin-run(exit=0)
+lupin exit=0
+  out|    1 apple
+  out|    1 moon
+  out|    1 runs
+  out|    3 the
+  out|    1 watches
+  out|    2 wolf
+  out|    1 zebra
+wolf run exit=4
+  out| wolf run: cannot compile this yet — `copy` of a value nested this deep @445..452 (pipeline is honest through `mem`; the conservatism ledger, not a bug in your program)
+wolf conform-run exit=0
+  verdict= unsupported | `copy` of a value nested this deep [445, 452] | diags= []
+wolf conform-run --checked exit=0
+  verdict= exit(0) |  | stdout=    1 apple/   1 moon/   1 runs/   3 the/   1 watches/   2 wolf/   1 zebra/
+
+=== old principles/exercises/ch28/ex28-2.lu | lupin-run(exit=0)
+lupin exit=0
+  out|    1 WOLF
+  out|    1 Wolf
+  out|    1 wolf
+  out|    1 wolfs
+wolf run exit=4
+  out| wolf run: cannot compile this yet — `copy` of a value nested this deep @433..440 (pipeline is honest through `mem`; the conservatism ledger, not a bug in your program)
+wolf conform-run exit=0
+  verdict= unsupported | `copy` of a value nested this deep [433, 440] | diags= []
+wolf conform-run --checked exit=0
+  verdict= exit(0) |  | stdout=    1 WOLF/   1 Wolf/   1 wolf/   1 wolfs/
+
+=== old principles/exercises/ch28/ex28-3.lu | lupin-run(exit=0)
+lupin exit=0
+  out|    3 the
+  out|    2 wolf
+  out|    1 moon
+  out|    1 runs
+  out|    1 watches
+wolf run exit=4
+  out| wolf run: cannot compile this yet — `copy` of a value nested this deep @444..451 (pipeline is honest through `mem`; the conservatism ledger, not a bug in your program)
+wolf conform-run exit=0
+  verdict= unsupported | `copy` of a value nested this deep [444, 451] | diags= []
+wolf conform-run --checked exit=0
+  verdict= exit(0) |  | stdout=    3 the/   2 wolf/   1 moon/   1 runs/   1 watches/
+
+=== old principles/exercises/ch28/ex28-4.lu | lupin-run(exit=trap(bounds))
+lupin exit=3
+  out| ch28_ex28_4_lu.lu: trap(bounds): index 0 is outside a collection of 0 element(s) [mem.ub.defined] at 29:10
+wolf run exit=4
+  out| wolf run: cannot compile this yet — `copy` of a value nested this deep @460..467 (pipeline is honest through `mem`; the conservatism ledger, not a bug in your program)
+wolf conform-run exit=0
+  verdict= unsupported | `copy` of a value nested this deep [460, 467] | diags= []
+wolf conform-run --checked exit=0
+  verdict= trap(bounds) |  | stdout= 
+
+=== old principles/exercises/ch28/ex28-6.lu | lupin-run(exit=0)
+lupin exit=0
+  out|    1 moon
+  out|    1 runs
+  out|    3 the
+  out|    1 watches
+  out|    2 wolf
+  out| 5 nodes, depth 3
+wolf run exit=4
+  out| wolf run: cannot compile this yet — `copy` of a value nested this deep @422..429 (pipeline is honest through `mem`; the conservatism ledger, not a bug in your program)
+wolf conform-run exit=0
+  verdict= unsupported | `copy` of a value nested this deep [422, 429] | diags= []
+wolf conform-run --checked exit=0
+  verdict= exit(0) |  | stdout=    1 moon/   1 runs/   3 the/   1 watches/   2 wolf/5 nodes, depth 3/
+
+=== old book/ch28.md:318 | lupin-run(exit=0)
+lupin exit=0
+  out|    1 moon
+  out|    1 runs
+  out|    3 the
+  out|    1 watches
+  out|    2 wolf
+wolf run exit=4
+  out| wolf run: cannot compile this yet — `copy` of a value nested this deep @337..344 (pipeline is honest through `mem`; the conservatism ledger, not a bug in your program)
+wolf conform-run exit=0
+  verdict= unsupported | `copy` of a value nested this deep [337, 344] | diags= []
+wolf conform-run --checked exit=0
+  verdict= exit(0) |  | stdout=    1 moon/   1 runs/   3 the/   1 watches/   2 wolf/
+
+=== old book/ch33.md:360 | wolf-run(exit=0, stdout="a hand answered regions, and it exited 0")
+lupin exit=4
+  out| ch33_md_360.lu: unsupported: fd inheritance across os_spawn_with in checked execution
+wolf run exit=0
+  out| a hand answered regions, and it exited 0
+wolf conform-run exit=0
+  verdict= pass |   | diags= []
+wolf conform-run --checked exit=0
+  verdict= unsupported | fd inheritance across os_spawn_with in checked execution | stdout= 
+
