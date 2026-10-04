@@ -102,25 +102,31 @@ struct of two `f64` fields is 16 on every target wolf supports. Predict
 the verdict of `const S = size_of(Vec2)` anyway, and then explain why a
 number that obvious is refused at comptime.
 
-Solution: E0708. Layout belongs to the code generator, and the
-checker refuses to promise a number another phase owns. The obviousness
-is the trap: field reordering, padding, and target ABIs make aggregate
-layout a codegen fact, and a comptime that guessed would have to be
-right forever:
+Solution: E0708. `Vec2` has the native layout, which belongs to the
+code generator, and the checker refuses to promise a number another
+phase owns. The obviousness is the trap: field reordering, padding, and
+target ABIs make a native layout a codegen fact, and a comptime that
+guessed would have to be right forever:
 
 ```console
 $ wolf conform-run ./ex18-4.lu
-error[E0708]: the size of `Vec2` is not resolved until codegen lays it out
+error[E0708]: the layout of `Vec2` is not resolved until codegen lays it out
  --> ./ex18-4.lu:9:15
   |
 9 |     const S = size_of(Vec2)
   |               ^^^^^^^^^^^^^ unresolved until codegen
   |               ------------- while evaluating `main`, entered here
   |
-  = note: layout (sizes, offsets) is decided by the code generator, not the type checker; comptime
-    answers for fixed-width primitives, whose widths the type alone settles, and cannot
-    answer for an aggregate until the layout that decides its offsets exists.
+  = note: `size_of`, `align_of` and `offset_of` answer at comptime for scalars and `#[repr(c)]`
+    structs, whose layout the clause fixes ([abi.layout.query]); any other type has the
+    native layout, which the code generator chooses ([abi.native.layout]) — mark the struct
+    `#[repr(c)]` to make its layout a fact.
 ```
+
+The note names the way out. Put `#[repr(c)]` above `struct Vec2` and
+the layout stops being the backend's choice: it is the C layout the
+specification fixes, the same `const` answers 16, and the program exits
+0 on the compiler. The number was never the problem; who owned it was.
 
 **Exercise 18-5** *(extension · wolf)*. Write `field_count(T: type)`
 using `typeinfo`, and apply it to a struct of your own. Predict what
