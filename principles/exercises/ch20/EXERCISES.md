@@ -7,10 +7,13 @@ the language's own promises, the ledger, the floors and ratchets, the
 exceptions file. The contracts corpus (20-5 through 20-13, the old
 ch19 nine, renumbered with their subject) is UNPRINTED: it reasons
 about function-level contract attributes under a verifying compiler,
-the four attributes parse today and are verified by nothing (probed
-at the bs18 pins: `wolf run`, `wolf build` and lupin all execute a
-`#[noalloc]` function whose first line allocates, exit 0), and a
-stem cannot carry that gap into a reader's text. The set stays in
+and none exists: until wolf 0.2.22 the four attributes parsed and were
+verified by nothing (probed at the bs18 pins: `wolf run`, `wolf build`
+and lupin all executed a `#[noalloc]` function whose first line
+allocates, exit 0), and since 0.2.22 the compiler refuses them by name
+(E0817, "not implemented yet", naming wolf-lang#180) while lupin still
+reads no attribute at all (wolf-interp#174). A stem cannot carry that
+gap into a reader's text. The set stays in
 the corpus so the chapter's verified-contracts section and its
 exercises arrive together the day the checker lands. The old
 bench-format set that previously held these numbers is retired
@@ -107,11 +110,14 @@ regression test for the method's arrival.
 
 ## The contracts corpus (unprinted; the verifying compiler's set)
 
-One honesty governs this set, recorded when it was written and still
-true at the bs18 pins: the four contract attributes parse and are
-*verified* by nothing — the checker that proves them against WIR
-facts is I15's machinery. Each exercise says which side of that line
-it stands on. The stems reason about what a verifying compiler must
+One honesty governs this set, recorded when it was written: the four
+contract attributes are *verified* by nothing — the checker that
+proves them against WIR facts is I15's machinery (wolf-lang#180). At
+the bs18 pins they parsed and meant nothing. Since wolf 0.2.22 the
+attribute set is closed and the compiler refuses all four by name
+(E0817), so a program carrying one does not compile at all; lupin
+reads no attribute and runs it as before. Each exercise says which
+side of that line it stands on. The stems reason about what a verifying compiler must
 do, which is why they can be written before it exists and printed
 only after.
 
@@ -135,10 +141,17 @@ $ echo $?
 ```
 
 lupin executes the program — attributes are inert in the dynamic
-tier — and `wolf conform-run` reports `verdict=unsupported` at
-`phase_reached=mem`. Neither tool lies about checking the promise;
-neither checks it. That gap is this chapter's ledger entry, and CI
-flips these exercises to verified the day I15's checker lands.
+tier. The compiler does not: `wolf run ex20-5.lu` stops at the
+attribute with E0817, "`noalloc` is not implemented yet", and the
+note says why — the performance contracts have no checker, "and an
+unchecked promise is worse than none." That is the file's directive,
+`fail(E0817)`. It is not the verifying compiler's answer: E0817 is
+about the *attribute*, and would fire on a body that keeps the
+promise too (20-8). The verifying compiler's rejection is about the
+*body*, and the program stays this chapter's pending row until a code
+for it exists. Neither tool claims to have checked the promise; one
+refuses to accept it unchecked. Until wolf 0.2.22 the compiler ran it
+too, to `3`, and said nothing.
 
 **Exercise 20-6** *(comprehension · prose)*. Four bodies, one
 attribute. Which of these could carry `#[noalloc]` under a verifying
@@ -174,9 +187,10 @@ separately. The cheap fixes each change the promise: `wrapping[i32]`
 keeps `nopanic` and changes the arithmetic; dropping the attribute
 keeps the arithmetic and changes the promise.
 
-**Exercise 20-8** *(fingers · lupin)*. Annotate a genuinely
-allocation-free function with `#[noalloc]` and run it. Then state
-precisely what today's toolchain claimed about your attribute.
+**Exercise 20-8** *(fingers · wolf + lupin)*. Annotate a genuinely
+allocation-free function with `#[noalloc]` and run it on both
+machines. Then state precisely what today's toolchain claimed about
+your attribute.
 
 Solution. `ch20/ex20-8.lu`:
 
@@ -198,10 +212,17 @@ $ lupin ex20-8.lu
 13
 ```
 
-Today's toolchain claimed nothing. The run proves the body computes a
-dot product; it proves nothing about the attribute, which no tool read.
-An unverified contract is a comment with better syntax — until I15,
-exactly that, and this book will not pretend otherwise.
+The two machines claim different things, and neither claims the
+promise was kept. lupin prints 13: it reads no attribute
+(wolf-interp#174), so the run proves the body computes a dot product
+and proves nothing about `#[noalloc]`. The compiler refuses the
+program — `wolf run ex20-8.lu` is E0817, "`noalloc` is not
+implemented yet", exit 2 — although the body keeps the promise,
+because nothing can tell a kept promise from a broken one until I15's
+checker exists (wolf-lang#180). Delete the attribute and both print
+13. Before wolf 0.2.22 the compiler ran this too and claimed nothing.
+An unverified contract is a comment with better syntax, and the
+compiler now declines to compile the comment.
 
 **Exercise 20-9** *(comprehension · prose)*. `#[inplace]` promises a
 function mutates through its `mut` parameters without allocating
@@ -219,22 +240,29 @@ both versions is identical, which is the reason the contract exists:
 callers on a hot path cannot see the difference in the signature
 unless the signature says it.
 
-**Exercise 20-10** *(spelunking · wolf)*. The pinned corpus states
-I15's rule in one comment (`upstream/corpus/comptime.lu`): "`#[noalloc]`
-is compiler-VERIFIED against WIR facts, not a comment that rots."
-Explain the "comment that rots" failure mode this contracts against,
-and then reconcile the claim with what `wolf conform-run` did to
-exercise 20-5 today.
+**Exercise 20-10** *(spelunking · wolf)*. Until wolf 0.2.22 the
+pinned corpus stated I15's rule in one comment
+(`upstream/corpus/comptime.lu`, above a `#[noalloc]` on its `dot`):
+"`#[noalloc]` is compiler-VERIFIED against WIR facts, not a comment
+that rots." At 0.2.22 the attribute is gone from that file and the
+comment says why: no checker exists (wolf-lang#180), so the attribute
+is refused by name, E0817. Explain the "comment that rots" failure
+mode the rule contracts against, and then reconcile the old claim
+with what `wolf conform-run` does to exercise 20-5 today.
 
 Solution: a performance comment rots because nothing fails when it
 stops being true — the function grows an allocation in a refactor,
 the comment stays, and callers keep budgeting against fiction. The
 contract moves the claim into the signature where a checker can
-contradict it. Reconciliation: the corpus comment states the *design*
-(I15, decided); today's `verdict=unsupported` states the
-*implementation* (the WIR fact engine is s24–s26's deliverable). The
-corpus and this book share one honesty model — expected outcomes are
-recorded before the machinery exists, and nothing reports green
+contradict it. Reconciliation: the old comment stated the *design*
+(I15, decided); today's `verdict: "fail(E0817)"` states the
+*implementation* (the WIR fact engine is s24–s26's deliverable, and
+there is no checker). And the comment rotted in exactly the way it
+warned about: for as long as it said "VERIFIED", the compiler
+compiled the attribute and checked nothing, which is why 0.2.22
+removed both the attribute and the claim instead of leaving either.
+The corpus and this book share one honesty model — expected outcomes
+are recorded before the machinery exists, and nothing reports green
 meanwhile.
 
 **Exercise 20-11** *(comprehension · prose)*. Your dependency's
