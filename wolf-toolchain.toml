@@ -1178,8 +1178,54 @@ repo = "wolffe-lang/wolf-lang"
 # the handle renumbering reach no book program (bs59-evidence/scan.py).
 # Spec: anchors 546 -> 569 (none dropped), catalogue 178 -> 181 (E0817,
 # E0818, E1306), grammar unchanged.
-rev = "8e36bc1a0f92bbbbc6861b10d5b2638f76412d6a"
-impl_version = "0.2.22"
+# ---- bs60, wave 53: wolf 0.2.23 + lupin 0.1.46 — module state, exact
+#      layout, int/pointer; the compiler's half EXACT, the distance one
+#      release ----
+#
+# wolf-lang at the v0.2.23 release tag (`8edac3e`), TAKEN FROM THE
+# RELEASE ARCHIVE (release 403069562) and matched against the release's
+# published digest before unpacking:
+# `wolf-0.2.23-x86_64-unknown-linux-gnu.tar.gz` sha256
+# 6f505eb542d340d3f818e6b4de57ef13736d0186b8b4efae999aa4aa1a4e44b0.
+# Every member hashed BY NAME (docs/audit/bs60-evidence/members.txt):
+#
+#   wolf                 97b5404b...   <- the pin of record
+#   wolf-cimport-worker  23599021...
+#   libwolf_rt.a         5af08d0e...
+#   wolf.1               91260e8f...   <- the version line moves
+#   _wolf                2d1e4801...   <- same at every pin
+#   wolf.bash            29eb2d75...   <- same as 0.2.22
+#   wolf.fish            51a1b6a8...   <- same as 0.2.22
+#
+#   wolf 0.2.23 (wolfgang, pin 8edac3e)
+#   paired with lupin 0.1.46 (reference interpreter), pin 8e36bc1
+#   lupin 0.1.46 (wolf-interp, reference interpreter at pin 8e36bc1)
+#
+# PREDICTED TO THE CHARACTER in docs/audit/bs60-prediction.md (committed
+# at aaf28b1, before either archive was downloaded) and measured
+# byte-identical. The compiler's half is EXACT; the interpreter's names
+# v0.2.22's tag: `git rev-list --count 8e36bc1a..8edac3ee` = 200
+# commits, one release.
+#
+# What the release changed that the book can see: NO FLIPS and no
+# program that stopped meeting its verdict. Five diagnostics moved
+# under fences that still hold: E0708's headline and note (kw08: a
+# `#[repr(c)]` struct's layout is a comptime fact now, so the note says
+# how to get one; ex18-4), E0817's list of implemented attributes
+# (kw08, kw09; ex20-5, ex20-8), and chapter 18's two module-level
+# `const` witnesses, whose failed comptime `assert` is now reported
+# twice, once at the call site and once by kw09's module-state
+# evaluation (wolf-lang#584, filed by this bump; the page prints what
+# the compiler prints). Four of the five predicted by name; the
+# doubling was missed and is explained in bs60-results.md. The
+# int/pointer casts (kw06) compile exercise 9-4 and B-11 natively now,
+# which moves a ledger row and no fence (trap fences carry no
+# graduation probe). Volatile, packed/align, `#[section]` and `extern
+# "c" let` reach no book program (bs60-evidence/scan.py).
+# Spec: anchors 569 -> 586 (none dropped), catalogue 181 -> 185 (E0819,
+# E0820, E0821, E1307), grammar MOVES (`extern_let_item`, kw09).
+rev = "8edac3eeb48632b32f02ef41ea87d484d1423492"
+impl_version = "0.2.23"
 
 [lupin]
 # wolf-interp at the v0.1.30 release tag (is42): the stamped line names
@@ -1783,9 +1829,24 @@ impl_version = "0.2.22"
 # #176's healing, the view traps (#126), the unit value (#103), the
 # declared scalars (#138), nested-fn modes (#169) and the offset calls
 # meet no sample.
+# ---- bs60, wave 53: 0.1.45 -> 0.1.46, is70 and ruling #34's mirror ----
+#
+# `lupin-0.1.46-x86_64-unknown-linux-gnu.tar.gz` (release 403040421)
+# sha256 d13a03790f35f2033570c6284795802dccdb6a0833f1ebdbd132dd4b8049be32,
+# member `lupin` fa4e6c35.... Pin MOVES `dfcc2f1` -> `8e36bc1` (v0.2.22's
+# tag, r28's re-pin). What reaches the book: lupin reads the closed
+# attribute set now (wolf-interp#174), so the ch20 `#[noalloc]` programs
+# that printed 3 and 13 here are refused by name, E0817, exit 2, as the
+# compiler refuses them; and E1302 stops at `pub` signatures here too
+# (wolf-interp#181), so a module-private `*T` signature runs on both
+# machines and chapter 9's split closes. The first-diagnostic rework
+# (#175), `errdefer` in an infallible fn (#179), E0602 at an annotated
+# binding (#180), the region-block `return` trap (#178) and the
+# provenance methods (#184) meet no sample; every other lupin transcript
+# in the book replays byte for byte.
 repo = "wolffe-lang/wolf-interp"
-rev = "9f4e4a175da109bc4dc0acec3e8a4bc54358b941"
-version = "lupin 0.1.45 (wolf-interp, reference interpreter at pin dfcc2f1)"
+rev = "f9269e3364169585fdfe92407639418220be373b"
+version = "lupin 0.1.46 (wolf-interp, reference interpreter at pin 8e36bc1)"
 
 [wolf-lsp]
 # Source of the vendored tmLanguage grammars under highlight/.
