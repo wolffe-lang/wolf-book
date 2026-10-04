@@ -10,3 +10,16 @@ error[E0710]: this comptime assertion failed
    |
    = note: a failed comptime `assert` stops compilation — it is the witness mechanism for facts the
      checker cannot see on its own.
+
+error[E0710]: this comptime assertion failed
+  --> ./s2.lu:13:5
+   |
+13 |     assert(shard_mask(shards) == want)
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluated to `false` at compile time
+...
+17 | const SIXTEEN_SHARDS: bool = expect_mask(16, 14)
+   |                              ------------------- while evaluating `expect_mask`, entered here
+   |                              ------------------- while evaluating `const SIXTEEN_SHARDS`, entered here
+   |
+   = note: `SIXTEEN_SHARDS` is module state: its initializer is evaluated at compile time and its
+     value is part of the image ([mem.static.3]).
