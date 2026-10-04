@@ -109,7 +109,7 @@ strictly more promise; removing it later would be the major (the
 for the verifying compiler: at wolf 0.2.22 (c) does not compile at all,
 because `#[noalloc]` is refused by name, E0817, until I15's checker
 exists (wolf-lang#180), and an interface cannot carry a contract no
-pass reads. (d) patch
+pass reads. Since lupin 0.1.46 the interpreter refuses it too. (d) patch
 from the world's point of view — the edition is package-local
 (25-1) and the compiled surface is unchanged; the version exists so
 the history says when the move happened. The pattern: semver is
