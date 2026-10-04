@@ -1138,8 +1138,48 @@ repo = "wolffe-lang/wolf-lang"
 # #486's moving shorthand reach no book program. Spec: anchors 542 ->
 # 546 (none dropped), catalogue 176 -> 178 (E0611, E0816), grammar
 # unchanged.
-rev = "dfcc2f13e7c73182bdd41fc9bec2802c7da3b024"
-impl_version = "0.2.21"
+# ---- bs59, wave 53: wolf 0.2.22 + lupin 0.1.45 — the attribute set
+#      closes; the compiler's half EXACT, the distance one release ----
+#
+# wolf-lang at the v0.2.22 release tag (`8e36bc1`), TAKEN FROM THE
+# RELEASE ARCHIVE (release 402696856) and matched against the release's
+# published digest before unpacking:
+# `wolf-0.2.22-x86_64-unknown-linux-gnu.tar.gz` sha256
+# df0f2fea26d9d26de5e577ee5d2cbabeaafe6d93ecfa447cb6be97ae442d8dba.
+# Every member hashed BY NAME (docs/audit/bs59-evidence/members.txt):
+#
+#   wolf                 56f90a92...   <- the pin of record
+#   wolf-cimport-worker  2437fe56...
+#   libwolf_rt.a         dbf8ccb5...
+#   wolf.1               bf1c9e37...   <- `build` gains `--target`
+#   _wolf                2d1e4801...   <- same at every pin
+#   wolf.bash            29eb2d75...   <- same as 0.2.21
+#   wolf.fish            51a1b6a8...   <- same as 0.2.21
+#
+#   wolf 0.2.22 (wolfgang, pin 8e36bc1)
+#   paired with lupin 0.1.45 (reference interpreter), pin dfcc2f1
+#   lupin 0.1.45 (wolf-interp, reference interpreter at pin dfcc2f1)
+#
+# PREDICTED TO THE CHARACTER in docs/audit/bs59-prediction.md (committed
+# at a8a88d3, before either archive was downloaded) and measured
+# byte-identical. The compiler's half is EXACT; the interpreter's names
+# v0.2.21's tag: `git rev-list --count dfcc2f13..8e36bc1a` = 222
+# commits, one release.
+#
+# What the release changed that the book can see: NO FLIPS and FOUR
+# PROGRAMS that stopped meeting their fences, all four predicted by
+# name. `#[noalloc]` is E0817 (the attribute set is closed, kw01), so
+# ex20-5 and ex20-8 are refused by `wolf run`; a module-private fn may
+# carry `*T` (K9(b) = B, kw02), so ch09's E1302 sample stopped being
+# refused; and lupin 0.1.45 no longer trims a cutset (wolf-interp#125),
+# so the chapter 6 capstone's `trim(".,;!?")` is declined on the one
+# machine that ran it. Each is rewritten in this bump, not pinned.
+# Narrowing casts, the `for`-piece E1010, the first-diagnostic rule and
+# the handle renumbering reach no book program (bs59-evidence/scan.py).
+# Spec: anchors 546 -> 569 (none dropped), catalogue 178 -> 181 (E0817,
+# E0818, E1306), grammar unchanged.
+rev = "8e36bc1a0f92bbbbc6861b10d5b2638f76412d6a"
+impl_version = "0.2.22"
 
 [lupin]
 # wolf-interp at the v0.1.30 release tag (is42): the stamped line names
@@ -1729,9 +1769,23 @@ impl_version = "0.2.21"
 # fallible value in the book spells its row. Two-phase arguments, the
 # shorthand-as-longhand and the receiver claims (0.1.43) meet no sample;
 # appendix B-5's path-and-prefix re-claim still traps `exclusivity`.
+# ---- bs59, wave 53: 0.1.44 -> 0.1.45, the re-pin, #176 and the mirror ----
+#
+# `lupin-0.1.45-x86_64-unknown-linux-gnu.tar.gz` (release 402670966)
+# sha256 907cfb1ac473c82a36013064ae3cee7b03d879b44a6ce6ad775e2e26353424c7,
+# member `lupin` 6b88de73.... Pin MOVES `cdde128` -> `dfcc2f1` (v0.2.21's
+# tag, r27's re-pin). What reaches the book: `trim` and its family take
+# no argument (is68, #125), so §6.5's capstone, which trimmed a cutset on
+# this machine alone, is declined by name and rewritten. Still reading
+# no attribute (wolf-interp#174), so the ch20 `#[noalloc]` programs run
+# here as before; still pinned at v0.2.21, so a module-private `*T`
+# signature is E1302 here where 0.2.22 compiles it (wolf-interp#181).
+# #176's healing, the view traps (#126), the unit value (#103), the
+# declared scalars (#138), nested-fn modes (#169) and the offset calls
+# meet no sample.
 repo = "wolffe-lang/wolf-interp"
-rev = "ba4762714d75c37bb14b300610e2d52630665a05"
-version = "lupin 0.1.44 (wolf-interp, reference interpreter at pin cdde128)"
+rev = "9f4e4a175da109bc4dc0acec3e8a4bc54358b941"
+version = "lupin 0.1.45 (wolf-interp, reference interpreter at pin dfcc2f1)"
 
 [wolf-lsp]
 # Source of the vendored tmLanguage grammars under highlight/.
