@@ -1,0 +1,263 @@
+# wolf-lang#584 and #585 witnesses, kasumi 2026-10-04T19:54Z; each program alone in its own directory
+# #584: ch18's two module-level fail(E0710) fences (book/ch18.md lines 64 and 345), both pairs
+===== old wolf 0.2.22 (wolfgang, pin 8e36bc1) :: p1_line64
+  src| comptime fn shard_mask(shards: int) -> int {
+  src|     var mask = 1
+  src|     while mask < shards {
+  src|         mask = mask * 2
+  src|     }
+  src|     mask - 1
+  src| }
+  src| 
+  src| comptime fn expect_mask(shards: int, want: int) -> bool {
+  src|     assert(shard_mask(shards) == want)
+  src|     true
+  src| }
+  src| 
+  src| const SIXTEEN_SHARDS: bool = expect_mask(16, 14)
+  src| 
+  src| fn test_the_mask_selects_four_bits() {
+  src|     let slot = 1234 % 16
+  src|     assert(slot == 2, "1234 lands in slot 2 of sixteen")
+  src| }
+error[E0710]: this comptime assertion failed
+  --> ./p1_line64.lu:10:5
+   |
+10 |     assert(shard_mask(shards) == want)
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluated to `false` at compile time
+...
+14 | const SIXTEEN_SHARDS: bool = expect_mask(16, 14)
+   |                              ------------------- while evaluating `expect_mask`, entered here
+   |                              ------------------- while evaluating `SIXTEEN_SHARDS`, entered here
+   |
+   = note: a failed comptime `assert` stops compilation — it is the witness mechanism for facts the
+     checker cannot see on its own.
+
+verdict fail(E0710) codes ['E0710']
+===== new wolf 0.2.23 (wolfgang, pin 8edac3e) :: p1_line64
+  src| comptime fn shard_mask(shards: int) -> int {
+  src|     var mask = 1
+  src|     while mask < shards {
+  src|         mask = mask * 2
+  src|     }
+  src|     mask - 1
+  src| }
+  src| 
+  src| comptime fn expect_mask(shards: int, want: int) -> bool {
+  src|     assert(shard_mask(shards) == want)
+  src|     true
+  src| }
+  src| 
+  src| const SIXTEEN_SHARDS: bool = expect_mask(16, 14)
+  src| 
+  src| fn test_the_mask_selects_four_bits() {
+  src|     let slot = 1234 % 16
+  src|     assert(slot == 2, "1234 lands in slot 2 of sixteen")
+  src| }
+error[E0710]: this comptime assertion failed
+  --> ./p1_line64.lu:10:5
+   |
+10 |     assert(shard_mask(shards) == want)
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluated to `false` at compile time
+...
+14 | const SIXTEEN_SHARDS: bool = expect_mask(16, 14)
+   |                              ------------------- while evaluating `expect_mask`, entered here
+   |                              ------------------- while evaluating `SIXTEEN_SHARDS`, entered here
+   |
+   = note: a failed comptime `assert` stops compilation — it is the witness mechanism for facts the
+     checker cannot see on its own.
+
+error[E0710]: this comptime assertion failed
+  --> ./p1_line64.lu:10:5
+   |
+10 |     assert(shard_mask(shards) == want)
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluated to `false` at compile time
+...
+14 | const SIXTEEN_SHARDS: bool = expect_mask(16, 14)
+   |                              ------------------- while evaluating `expect_mask`, entered here
+   |                              ------------------- while evaluating `const SIXTEEN_SHARDS`, entered here
+   |
+   = note: `SIXTEEN_SHARDS` is module state: its initializer is evaluated at compile time and its
+     value is part of the image ([mem.static.3]).
+
+verdict fail(E0710) codes ['E0710', 'E0710']
+===== old wolf 0.2.22 (wolfgang, pin 8e36bc1) :: p2_line345
+  src| trait Eq {
+  src|     fn eq(a: Self, b: Self) -> bool
+  src| }
+  src| 
+  src| struct Point { x: int, y: int }
+  src| 
+  src| comptime fn eq_ready(T: type) -> bool {
+  src|     assert(implements(T, Eq))
+  src|     assert(typeinfo(T).kind == "struct")
+  src|     true
+  src| }
+  src| 
+  src| const POINT_IS_EQ_READY: bool = eq_ready(Point)
+  src| 
+  src| fn test_points_carry_their_fields() {
+  src|     let p = Point { x: 1, y: 2 }
+  src|     assert(p.x == 1 && p.y == 2, "both fields survived construction")
+  src| }
+error[E0710]: this comptime assertion failed
+  --> ./p2_line345.lu:8:5
+   |
+ 8 |     assert(implements(T, Eq))
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^ evaluated to `false` at compile time
+...
+13 | const POINT_IS_EQ_READY: bool = eq_ready(Point)
+   |                                 --------------- while evaluating `eq_ready`, entered here
+   |                                 --------------- while evaluating `POINT_IS_EQ_READY`, entered here
+   |
+   = note: a failed comptime `assert` stops compilation — it is the witness mechanism for facts the
+     checker cannot see on its own.
+
+verdict fail(E0710) codes ['E0710']
+===== new wolf 0.2.23 (wolfgang, pin 8edac3e) :: p2_line345
+  src| trait Eq {
+  src|     fn eq(a: Self, b: Self) -> bool
+  src| }
+  src| 
+  src| struct Point { x: int, y: int }
+  src| 
+  src| comptime fn eq_ready(T: type) -> bool {
+  src|     assert(implements(T, Eq))
+  src|     assert(typeinfo(T).kind == "struct")
+  src|     true
+  src| }
+  src| 
+  src| const POINT_IS_EQ_READY: bool = eq_ready(Point)
+  src| 
+  src| fn test_points_carry_their_fields() {
+  src|     let p = Point { x: 1, y: 2 }
+  src|     assert(p.x == 1 && p.y == 2, "both fields survived construction")
+  src| }
+error[E0710]: this comptime assertion failed
+  --> ./p2_line345.lu:8:5
+   |
+ 8 |     assert(implements(T, Eq))
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^ evaluated to `false` at compile time
+...
+13 | const POINT_IS_EQ_READY: bool = eq_ready(Point)
+   |                                 --------------- while evaluating `eq_ready`, entered here
+   |                                 --------------- while evaluating `POINT_IS_EQ_READY`, entered here
+   |
+   = note: a failed comptime `assert` stops compilation — it is the witness mechanism for facts the
+     checker cannot see on its own.
+
+error[E0710]: this comptime assertion failed
+  --> ./p2_line345.lu:8:5
+   |
+ 8 |     assert(implements(T, Eq))
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^ evaluated to `false` at compile time
+...
+13 | const POINT_IS_EQ_READY: bool = eq_ready(Point)
+   |                                 --------------- while evaluating `eq_ready`, entered here
+   |                                 --------------- while evaluating `const POINT_IS_EQ_READY`, entered here
+   |
+   = note: `POINT_IS_EQ_READY` is module state: its initializer is evaluated at compile time and
+     its value is part of the image ([mem.static.3]).
+
+verdict fail(E0710) codes ['E0710', 'E0710']
+
+# #585: module-level triple-quoted strings (a, b) against controls (c, d, e), wolf 0.2.23 / lupin 0.1.46
+===== a
+  src| let U: str = """
+  src|     two
+  src|       lines
+  src|     """
+  src| fn main() -> !int {
+  src|     print(U)
+  src|     0
+  src| }
+-- lupin
+two
+  lines
+
+exit 0
+-- wolf run
+""
+    two
+      lines
+    ""
+exit 0
+-- conform-run --checked
+exit(0) '""\n    two\n      lines\n    ""\n'
+===== b
+  src| const U: str = """
+  src|     two
+  src|       lines
+  src|     """
+  src| fn main() -> !int {
+  src|     print(U)
+  src|     0
+  src| }
+-- lupin
+two
+  lines
+
+exit 0
+-- wolf run
+""
+    two
+      lines
+    ""
+exit 0
+-- conform-run --checked
+exit(0) '""\n    two\n      lines\n    ""\n'
+===== c
+  src| let U: str = "tab\there"
+  src| fn main() -> !int {
+  src|     print(U)
+  src|     print("{U.len}")
+  src|     0
+  src| }
+-- lupin
+tab	here
+8
+exit 0
+-- wolf run
+tab	here
+8
+exit 0
+-- conform-run --checked
+exit(0) 'tab\there\n8\n'
+===== d
+  src| fn main() -> !int {
+  src|     let U: str = """
+  src|         two
+  src|           lines
+  src|         """
+  src|     print(U)
+  src|     0
+  src| }
+-- lupin
+two
+  lines
+
+exit 0
+-- wolf run
+two
+  lines
+
+exit 0
+-- conform-run --checked
+exit(0) 'two\n  lines\n\n'
+===== e
+  src| let U: str = "plain"
+  src| fn main() -> !int {
+  src|     print(U)
+  src|     print("{U.len}")
+  src|     0
+  src| }
+-- lupin
+plain
+5
+exit 0
+-- wolf run
+plain
+5
+exit 0
+-- conform-run --checked
+exit(0) 'plain\n5\n'

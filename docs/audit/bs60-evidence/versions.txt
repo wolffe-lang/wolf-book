@@ -1,0 +1,14 @@
+== old
+$ wolf --version
+wolf 0.2.22 (wolfgang, pin 8e36bc1)
+paired with lupin 0.1.45 (reference interpreter), pin dfcc2f1
+$ lupin --version
+lupin 0.1.45 (wolf-interp, reference interpreter at pin dfcc2f1)
+glibc ceiling: wolf GLIBC_2.34, lupin GLIBC_2.34
+== new
+$ wolf --version
+wolf 0.2.23 (wolfgang, pin 8edac3e)
+paired with lupin 0.1.46 (reference interpreter), pin 8e36bc1
+$ lupin --version
+lupin 0.1.46 (wolf-interp, reference interpreter at pin 8e36bc1)
+glibc ceiling: wolf GLIBC_2.34, lupin GLIBC_2.34

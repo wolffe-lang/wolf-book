@@ -1,0 +1,22 @@
+# anchor key sets, wolf-lang spec/anchors.json at v0.2.22 (8e36bc1a) and v0.2.23 (8edac3ee)
+v0.2.22: 569  v0.2.23: 586
+in v0.2.23 and not v0.2.22 (17):
+  + abi.interrupt -> 04-abi.md
+  + abi.layout.align -> 04-abi.md
+  + abi.layout.packed -> 04-abi.md
+  + abi.layout.query -> 04-abi.md
+  + abi.link -> 04-abi.md
+  + abi.link.extern -> 04-abi.md
+  + abi.link.script -> 04-abi.md
+  + abi.link.section -> 04-abi.md
+  + mem.prov.device -> 02-memory-model.md
+  + mem.static -> 02-memory-model.md
+  + mem.static.1 -> 02-memory-model.md
+  + mem.static.2 -> 02-memory-model.md
+  + mem.static.3 -> 02-memory-model.md
+  + mem.unsafe.volatile -> 02-memory-model.md
+  + mem.unsafe.volatile.1 -> 02-memory-model.md
+  + mem.unsafe.volatile.2 -> 02-memory-model.md
+  + mem.unsafe.volatile.3 -> 02-memory-model.md
+in v0.2.22 and not v0.2.23 (0):
+same key, different document (0):
