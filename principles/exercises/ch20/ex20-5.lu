@@ -1,9 +1,12 @@
-//! check: run(exit=0, stdout="3")
-//! phase: run
+//! check: fail(E0817)
+//! phase: typecheck
 // Exercise 20-5: a broken promise. `build` allocates; the attribute says
-// it does not. PENDING: perf-contract verification (I15) — once the WIR
-// fact engine (s24–s26) feeds the checker, this program is a static
-// rejection; the fail code is unassigned in today's catalog.
+// it does not. PENDING: perf-contract verification (I15, wolf-lang#180).
+// Until a checker exists the attribute is refused by name — E0817, "not
+// implemented yet" — so the compiler never runs the lie. The verifying
+// compiler will reject this program for its CONTENT instead, with a code
+// today's catalog does not assign. lupin reads no attribute
+// (wolf-interp#174) and still prints 3.
 #[noalloc]
 fn build() -> List[int] {
     var xs = List[int]()

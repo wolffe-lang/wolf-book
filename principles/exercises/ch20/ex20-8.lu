@@ -1,8 +1,10 @@
-//! check: run(exit=0, stdout="13")
-//! phase: run
+//! check: fail(E0817)
+//! phase: typecheck
 // Exercise 20-8: a promise the body keeps — arithmetic on fields, no
-// allocation anywhere. Verification of the attribute is pending (I15);
-// the program's behavior is not.
+// allocation anywhere. The compiler still refuses the attribute by name
+// (E0817): nothing verifies it yet (I15, wolf-lang#180), and a promise
+// nothing checks is not accepted, even a true one. lupin reads no
+// attribute (wolf-interp#174) and prints 13.
 struct Vec3 { x: f64, y: f64, z: f64 }
 #[noalloc]
 fn dot(a: Vec3, b: Vec3) -> f64 {

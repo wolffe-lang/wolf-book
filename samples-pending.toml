@@ -5,9 +5,11 @@
 # in the same commit that bumps the pin. Rows are removed, never
 # silently absorbed. Workflow-only pending exercises (21-8, 22-7,
 # 23-7, 24-6, B-10) have no .lu file and no row; 20-5's program (19-1
-# until the bs18 re-draw renumbered the contracts corpus) runs green
-# today (its pending-ness is the unverified #[noalloc], not the run)
-# so it carries no row either. Old 20-6, the bench-baseline workflow
+# until the bs18 re-draw renumbered the contracts corpus) meets its
+# directive today (its pending-ness is the unverified #[noalloc], not
+# the verdict) so it carries no row either. Until wolf 0.2.22 that
+# directive was `run(exit=0, stdout="3")`; at 0.2.22 the attribute is
+# refused by name and the file reads `fail(E0817)` (bs59). Old 20-6, the bench-baseline workflow
 # exercise, retired with its chapter at bs18 (EXERCISES-PENDING.md's
 # re-draw note).
 #
