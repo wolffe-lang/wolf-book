@@ -1,0 +1,29 @@
+== control, head 731f966e756ad5d19e39177be34442d1a4b4b591, wolf 0.2.21 / lupin 0.1.44
+samples: SKIP extraction book/back/solutions.md — generated from the two places solutions live, and this run reaches both directly: the exercise corpus under principles/exercises/ (chapters 7+) and principles/EXERCISES.md §5, the master for the chapter 1-6 exemplar batch (wolf-book#44). Every console block on both is replayed below; cargo xtask backmatter --check holds the page to them
+samples: 125 corpus file(s) held back from the export — one-machine directives the other runner cannot spell (principles/TWO-MACHINES.md)
+samples: 509 samples (250 corpus roots + 16 corpus members on disk, 259 book blocks)
+samples: 506 passed, 3 pending (report-only), 0 failed, 0 flips in 36.6s
+samples: 482 of 502 console block(s) replayed against the pinned tools
+samples: 1 warning set(s) asserted by warns(…); 30 sample(s) warn with no warns(…) directive (report-only, wolf-book#21)
+samples: exported 377 corpus programs to samples/export/corpus/book/
+EXIT 0
+
+== subject, head a8a88d310848503638fdf6d96016fc057ed8962b, wolf 0.2.22 / lupin 0.1.45
+samples: SKIP extraction book/back/solutions.md — generated from the two places solutions live, and this run reaches both directly: the exercise corpus under principles/exercises/ (chapters 7+) and principles/EXERCISES.md §5, the master for the chapter 1-6 exemplar batch (wolf-book#44). Every console block on both is replayed below; cargo xtask backmatter --check holds the page to them
+samples: 125 corpus file(s) held back from the export — one-machine directives the other runner cannot spell (principles/TWO-MACHINES.md)
+samples: 509 samples (250 corpus roots + 16 corpus members on disk, 259 book blocks)
+samples: 502 passed, 3 pending (report-only), 10 failed, 0 flips in 33.6s
+samples: 477 of 502 console block(s) replayed against the pinned tools
+samples: 1 warning set(s) asserted by warns(…); 30 sample(s) warn with no warns(…) directive (report-only, wolf-book#21)
+samples: exported 377 corpus programs to samples/export/corpus/book/
+samples: FAIL ch20/ex20-5: wolf run: exited Some(2), expected 0 — and 2 is one of `[conf.exit]`'s two reserved statuses (2 a rejection, 4 a refusal), so the program never ran and the status is the tool's rather than the program's (stderr: error[E0817]: `noalloc` is not implemented yet
+samples: FAIL ch20/ex20-8: wolf run: exited Some(2), expected 0 — and 2 is one of `[conf.exit]`'s two reserved statuses (2 a rejection, 4 a refusal), so the program never ran and the status is the tool's rather than the program's (stderr: error[E0817]: `noalloc` is not implemented yet
+samples: FAIL book/ch06/part-wordcount: lupin: exited Some(4), expected 0 — and 4 is one of `[conf.exit]`'s two reserved statuses (2 a rejection, 4 a refusal), so the program never ran and the status is the tool's rather than the program's (stderr: part-wordcount.lu: unsupported: `trim` takes 0 arguments, but this call passes 1 — `[mem.str.ws]`'s family takes no argument (E0402, which this machine decides at resolve 
+samples: FAIL book/ch09/s3: wolf verdict `pass`, expected `fail(E1302)`
+samples: FAIL /home/mfwolffe/lanes/bs59/wolf-book/book/ch09.md: diagnostic,from(book/ch09/s3) drifted from the captured diagnostic — update the block from the real run
+samples: FAIL /home/mfwolffe/lanes/bs59/wolf-book/book/back/colophon.md:7: console block drifted from the real run
+samples: FAIL /home/mfwolffe/lanes/bs59/wolf-book/book/ch01.md:153: console block drifted from the real run
+samples: FAIL /home/mfwolffe/lanes/bs59/wolf-book/book/ch06.md:900: console block drifted from the real run
+samples: FAIL /home/mfwolffe/lanes/bs59/wolf-book/book/ch22.md:288: console block drifted from the real run
+samples: FAIL /home/mfwolffe/lanes/bs59/wolf-book/principles/exercises/ch22/EXERCISES.md:218: console block drifted from the real run
+EXIT 1

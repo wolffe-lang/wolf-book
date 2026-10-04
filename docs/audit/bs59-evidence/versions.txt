@@ -1,0 +1,16 @@
+== old
+$ wolf --version
+wolf 0.2.21 (wolfgang, pin dfcc2f1)
+paired with lupin 0.1.44 (reference interpreter), pin cdde128
+$ lupin --version
+lupin 0.1.44 (wolf-interp, reference interpreter at pin cdde128)
+glibc max wolf: GLIBC_2.34
+glibc max lupin: GLIBC_2.34
+== new
+$ wolf --version
+wolf 0.2.22 (wolfgang, pin 8e36bc1)
+paired with lupin 0.1.45 (reference interpreter), pin dfcc2f1
+$ lupin --version
+lupin 0.1.45 (wolf-interp, reference interpreter at pin dfcc2f1)
+glibc max wolf: GLIBC_2.34
+glibc max lupin: GLIBC_2.34

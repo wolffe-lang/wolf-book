@@ -1,0 +1,8 @@
+== archive digests (sha256, read against gh api releases/<id> assets the same minute)
+e44aae0651693364fe9dc8943fed9b44eb4e9f17ac9362aef4b570ed85387dc0  lupin-0.1.44-x86_64-unknown-linux-gnu.tar.gz
+09e0a6f55d9bc1a707b3eb69b32912e03418c37069fff726eed4685bd5812cd2  wolf-0.2.21-x86_64-unknown-linux-gnu.tar.gz
+907cfb1ac473c82a36013064ae3cee7b03d879b44a6ce6ad775e2e26353424c7  lupin-0.1.45-x86_64-unknown-linux-gnu.tar.gz
+df0f2fea26d9d26de5e577ee5d2cbabeaafe6d93ecfa447cb6be97ae442d8dba  wolf-0.2.22-x86_64-unknown-linux-gnu.tar.gz
+== API
+sha256:df0f2fea26d9d26de5e577ee5d2cbabeaafe6d93ecfa447cb6be97ae442d8dba wolf-0.2.22-x86_64-unknown-linux-gnu.tar.gz
+sha256:907cfb1ac473c82a36013064ae3cee7b03d879b44a6ce6ad775e2e26353424c7 lupin-0.1.45-x86_64-unknown-linux-gnu.tar.gz

@@ -1,0 +1,26 @@
+anchors (spec/anchors.json .anchors keys) v0.2.21: 546 v0.2.22: 569
+in v0.2.22 not v0.2.21 (23):
+  + abi.asm
+  + abi.asm.inline
+  + abi.asm.link
+  + abi.asm.machines
+  + abi.asm.roster
+  + abi.c.export
+  + abi.c.import
+  + abi.layout.c
+  + abi.target
+  + abi.target.entry
+  + abi.target.none
+  + abi.target.none.alloc
+  + abi.target.none.codegen
+  + abi.target.none.hooks
+  + gram.item.attr.cfg
+  + gram.item.attr.set
+  + mem.unsafe.sig
+  + os.fs.read_at
+  + os.fs.seek
+  + os.fs.std
+  + os.fs.tell
+  + proto.record.first
+  + type.numlit.cast.narrow
+in v0.2.21 not v0.2.22 (0):
