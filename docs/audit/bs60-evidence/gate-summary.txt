@@ -1,0 +1,113 @@
+== head gate on kasumi, wolf-book 4c38c7e3b520a85a926ce7ff4d8a33f70213d671, wolf 0.2.23 / lupin 0.1.46 (release archives by digest, ~/lanes/bs60/new/), WOLF_LANG_PATH = wolf-lang at v0.2.23 (8edac3eeb48632b32f02ef41ea87d484d1423492)
+== strict evidence (wolf-lang#571): every log below is the command's full 2>&1 output; SKIP lines counted per log; xtask's own tests ran with --nocapture
+== git status after the gate: 0 changed paths
+== log mtimes:
+20:02:50Z gate-backmattercheck.log
+20:02:52Z gate-contrast.log
+20:02:50Z gate-ledgercheck.log
+20:02:53Z gate-renderweb.log
+20:02:48Z gate-samples.log
+20:02:49Z gate-samplesselftest.log
+20:02:50Z gate-verifydocs.log
+20:03:08Z gate-xtasktest.log
+20:03:08Z gate.done
+== gate-samples.log (SKIP lines: 4)
+samples: lupin = /home/mfwolffe/lanes/bs60/new/lupin-0.1.46-x86_64-unknown-linux-gnu/lupin
+samples: wolf  = /home/mfwolffe/lanes/bs60/new/wolf-0.2.23-x86_64-unknown-linux-gnu/wolf
+samples: SKIP extraction book/back/solutions.md — generated from the two places solutions live, and this run reaches both directly: the exercise corpus under principles/exercises/ (chapters 7+) and principles/EXERCISES.md §5, the master for
+samples: PENDING ch05/ex5-8 [run(exit=0, stdout="marmot 5")] — blocker: TWO blockers, re-measured at bs50 against wolf 0.2.15 / lupin 0.1.37, and NEITHER is the one this row used to name. (1) `sorted_by` exists now — it is one of `[type.com
+samples: PENDING ch07/ex7-5 [fail(E1003)] — blocker: borrow-escape checking reaches no static verdict. Re-measured at bs53 against wolf 0.2.17 / lupin 0.1.40, and identically against 0.2.16 / 0.1.38: wolf answers `cannot compile this yet — 
+samples: PENDING ch08/ex8-7 [run(exit=0, stdout="c a")] — blocker: TWO blockers, bisected at bs51 against wolf 0.2.16 / lupin 0.1.38 with two minimal programs rather than inferred from the exercise, and EACH MACHINE NOW SERVES THE HALF THE 
+samples: 125 corpus file(s) held back from the export — one-machine directives the other runner cannot spell (principles/TWO-MACHINES.md)
+samples: 509 samples (250 corpus roots + 16 corpus members on disk, 259 book blocks)
+samples: 506 passed, 3 pending (report-only), 0 failed, 0 flips in 55.6s
+samples: 482 of 502 console block(s) replayed against the pinned tools
+samples: of those, 227 of 229 book block(s) and 255 of 273 exercise-corpus block(s) (wolf-book#24)
+samples: SKIP console /home/mfwolffe/lanes/bs60/wolf-book/book/ch01.md:322: `(cd wolf-lang` needs a shell
+samples: SKIP console /home/mfwolffe/lanes/bs60/wolf-book/book/ch07.md:515: `grep -n '(mut ' shelf.lu` is not a pinned tool
+samples: DECLINED corpus console principles/exercises/ch01/EXERCISES.md:18 [typed]: an interactive session — the block opens on a bare `$ lupin` and the transcript is what a reader types into the prompt — wolf-book#29 §4, retires at wolf-in
+samples: DECLINED corpus console principles/exercises/ch01/EXERCISES.md:145 [file]: `ch01/hello.lu` — the one genuinely missing file of the eight — AND a warm cache the fixture cannot carry: the transcript is the SECOND build's (`reused obj
+samples: DECLINED corpus console principles/exercises/ch01/EXERCISES.md:198 [binary-or-shell]: a shell — `diff <(./hello) <(lupin hello.lu)` is process substitution, which `words()` declines by design (and the `hello.lu` of ch01:145 besides
+samples: DECLINED corpus console principles/exercises/ch02/EXERCISES.md:81 [typed]: an expression to type — `lupin eval '"\n".len'` has no file behind it. Cheapest of the twenty: it needs no fixture and no lane, only a rule that admits an e
+samples: DECLINED corpus console principles/exercises/ch02/EXERCISES.md:101 [typed]: an expression to type — `lupin eval '"wolf"[..2]'` has no file behind it — wolf-book#29 §4, retires at the `eval` widening (with ch02:81), or wolf-interp i
+samples: DECLINED corpus console principles/exercises/ch07/EXERCISES.md:550 [typed]: an interactive session — the block opens on a bare `$ lupin` — wolf-book#29 §4, retires at wolf-interp is08 (the REPL replay lane)
+samples: DECLINED corpus console principles/exercises/ch08/EXERCISES.md:134 [typed]: an interactive session — the block opens on a bare `$ lupin` — wolf-book#29 §4, retires at wolf-interp is08 (the REPL replay lane)
+samples: DECLINED corpus console principles/exercises/ch09/EXERCISES.md:17 [binary-or-shell]: a shell — `grep -rn 'unsafe {' ch01 … | wc -l` is a pipeline over the corpus tree, which `words()` declines by design — wolf-book#29 §5, retires a
+samples: DECLINED corpus console principles/exercises/ch09/EXERCISES.md:240 [binary-or-shell]: the corpus rule to admit a binary `wolf build` just produced — `./ex9-8` names no solution, it names a link product — wolf-book#29 §5, retires at
+samples: DECLINED corpus console principles/exercises/ch11/EXERCISES.md:164 [typed]: an interactive session — the block opens on a bare `$ lupin` — wolf-book#29 §4, retires at wolf-interp is08 (the REPL replay lane)
+samples: DECLINED corpus console principles/exercises/ch19/EXERCISES.md:23 [binary-or-shell]: the corpus rule to admit a binary `wolf build` just produced — `./ex19-1` names no solution, it names a link product — wolf-book#29 §5, retires at
+samples: DECLINED corpus console principles/exercises/ch22/EXERCISES.md:114 [file]: NOT a missing file. The block is exercise 22-11's D32 demonstration — an unmarked `widest.lu` joining `sum.lu`'s module, E0302 on `main`. A corpus `.lu` mus
+samples: DECLINED corpus console principles/exercises/ch23/EXERCISES.md:124 [file]: the corpus rule to admit a `--dir` package, not a fixture. None of the six commands carries a `.lu` argument, and `plain_run_of_a_solution` declines any `wo
+samples: DECLINED corpus console principles/exercises/ch24/EXERCISES.md:136 [file]: the same `--dir` widening as ch23's, and then one more thing: the transcript runs `wolf update` BEFORE `wolf audit --ci` and still expects the ACQUIRES line
+samples: DECLINED corpus console principles/exercises/ch26/EXERCISES.md:127 [file]: two things, and the file is the second. `wolf build count.lu && ./count` ends in a `Verb::Local`, which the corpus rule refuses outright — the same widening
+samples: DECLINED corpus console principles/exercises/ch30/EXERCISES.md:84 [binary-or-shell]: the corpus rule to admit a binary `wolf build` just produced — `./ex30-3` names no solution, it names a link product — wolf-book#29 §5, retires at
+samples: DECLINED corpus console principles/exercises/ch30/EXERCISES.md:113 [binary-or-shell]: the corpus rule to admit a binary `wolf build` just produced — `./ex30-4` names no solution, it names a link product — wolf-book#29 §5, retires a
+samples: DECLINED corpus console principles/EXERCISES.md:374 [typed]: an expression to type — exercise 2-1's three `lupin eval '…'` prompts have no file behind them, and the exemplar batch checks in no `ex2-1.lu` for them to name. The exerc
+samples: samples-declined.toml: 18 declared row(s) — 5 file, 7 typed, 6 binary-or-shell (wolf-book#29)
+samples: corpus console declines on linux: 18 DECLINED + 0 OFF-LANE = 18 raw (wolf-book#49)
+samples: SKIP pending(is08): 12 wolf-repl block(s) counted, not replayed — the REPL replay lane lands with wolf-interp is08
+samples: 1 warning set(s) asserted by warns(…); 30 sample(s) warn with no warns(…) directive (report-only, wolf-book#21)
+samples: exported 377 corpus programs to samples/export/corpus/book/
+EXIT 0
+== gate-samplesselftest.log (SKIP lines: 1)
+samples: SKIP extraction book/back/solutions.md — generated from the two places solutions live, and this run reaches both directly: the exercise corpus under principles/exercises/ (chapters 7+) and pr
+samples: self-test caught wrong-stdout.lu: lupin: stdout mismatch: expected "goodbye, wolf", got "hello, wolf"
+samples: self-test caught wrong-exit.lu: lupin: exited Some(0), expected 7
+samples: self-test caught wrong-code.lu: wolf verdict `fail(E1001)`, expected `fail(E9999)`
+samples: self-test caught one-machine.lu: lupin: exited Some(4), expected 0 — and 4 is one of `[conf.exit]`'s two reserved statuses (2 a rejection, 4 a refusal), so the program never ran and the statu
+samples: self-test caught never-compiled.lu: lupin: exited Some(2), expected 1 — and 2 is one of `[conf.exit]`'s two reserved statuses (2 a rejection, 4 a refusal), so the program never ran and the st
+samples: self-test caught never-compiled-nonzero.lu: lupin: exited 2, which `[conf.exit]` reserves for a rejection (2) or a refusal (4); this rig reads no record from the interpreter, so a reserved st
+samples: self-test caught refused-nonzero.lu: lupin: exited 4, which `[conf.exit]` reserves for a rejection (2) or a refusal (4); this rig reads no record from the interpreter, so a reserved status is
+samples: self-test run(exit=nonzero) credits a program that really dies nonzero
+samples: self-test graduation probe is right about the `served` program (flip: true)
+samples: self-test graduation probe is right about the `declined` program (flip: false)
+samples: self-test corpus console lane replays a true transcript
+samples: self-test caught corpus-console drift: /home/mfwolffe/lanes/bs60/wolf-book/samples/selftest/corpus-console/EXERCISES.md:1: console block drifted from the real run
+samples: self-test pending console block reported by name, not compared
+samples: self-test caught the pending-console plant without its row: /home/mfwolffe/lanes/bs60/wolf-book/samples/selftest/pending.md:1: console block drifted from the real run
+samples: self-test warning ledger holds a true warns(W0601)
+samples: self-test caught planted warns(W0601): warns(W0601) declared, but the compiler printed [] — the fence asserts the exact set, in both directions
+samples: self-test caught an undeclared corpus decline: principles/exercises/ch00/EXERCISES.md:1
+samples: self-test holds the declined ledger the other way too: a row whose block replays is stale
+samples: self-test ok — 14/14 deliberate breakages caught
+EXIT 0
+== gate-verifydocs.log (SKIP lines: 0)
+verify-docs: 10 line-count claim(s) recomputed
+verify-docs: 6 project program(s) match the chapters that print them
+verify-docs: 30 version literal(s) in reader-facing text, each audited against wolf 0.2.23 / lupin 0.1.46
+verify-docs: 655 wolf listing(s) scanned for interpolation the vendored grammar cannot paint (wolf-book#5)
+verify-docs: EXERCISES-INDEX.md agrees with the corpus — 345 exercises (296 printed); 8 pending · 78 prose · 9 run (lupin REPL) · 191 run (lupin) · 28 run (wolf + lupin) · 31 run (wolf); fingers 61 · comprehension 154 · extension 79 · spelunking 28 · design 37
+verify-docs: ok (corpus count 266, pins well-formed, TOC/stub numbering agrees)
+EXIT 0
+== gate-ledgercheck.log (SKIP lines: 0)
+ledger: 32 chapter ledger(s) — 128 open (121 filed, 7 waived, 0 unfiled), 106 closed
+EXIT 0
+== gate-backmattercheck.log (SKIP lines: 0)
+backmatter: 296 solution(s) published, 331 on file
+backmatter: book/back/appendix-a.md up to date
+backmatter: book/back/solutions.md up to date
+backmatter: vendored spec artifacts match the sibling wolf-lang checkout
+EXIT 0
+== gate-contrast.log (SKIP lines: 0)
+contrast: ok samples/contrast/recency_ring.rs
+contrast: ok samples/contrast/shelf_share.rs
+contrast: ok samples/contrast/zero_copy_tokens.rs
+contrast: rust — 3 file(s) compiled and asserted, 5 book block(s) matched
+contrast: c — 9 printed transcript(s) checked against their cases
+contrast: ok samples/contrast/arena_nodes.c (cc -std=c99 -Wall -Werror)
+contrast: ok samples/contrast/count.c (cc -std=c99 -Wall -Werror)
+contrast: ok samples/contrast/rpn.c (cc -std=c99 -Wall -Werror)
+contrast: ok samples/contrast/saxpy.c (cc -std=c99 -Wall -Werror)
+contrast: ok samples/contrast/saxpy_restrict.c (cc -std=c99 -Wall -Werror)
+contrast: ok samples/contrast/wordtree.c (cc -std=c99 -Wall -Werror)
+contrast: c — 6 twin(s) compiled with cc -std=c99 -Wall -Werror, 14/14 case(s) asserted, 13 book block(s) matched
+EXIT 0
+== gate-renderweb.log (SKIP lines: 0)
+render: web edition at /home/mfwolffe/lanes/bs60/wolf-book/target/render/web
+render: CSP guard — 48 pages, no inline <script> (lupp.us serves `script-src 'self'`)
+render: link check — 1328 internal links across 48 pages, none dead
+EXIT 0
+== gate-xtasktest.log (SKIP lines: 0)
+running 178 tests
+test result: ok. 178 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.02s
+EXIT 0
