@@ -64,7 +64,7 @@ several of its stems are tagged `· wolf` while the distilled solution
 program on disk runs under lupin — the tier column says what CI
 executed, and the exercise file says which is which and why.
 
-Tier totals: 192 run (lupin) · 9 run (lupin REPL) · 31 run (wolf) · 27 run (wolf + lupin) · 78 prose · 8 pending. That is 345.
+Tier totals: 191 run (lupin) · 9 run (lupin REPL) · 31 run (wolf) · 28 run (wolf + lupin) · 78 prose · 8 pending. That is 345.
 (The totals and the tables were recounted mechanically against the
 masters at bs21 — the previous header said 276/231 while the tables
 had drifted from the marker count, ch05's 5-9 and 5-10 among the
@@ -451,7 +451,7 @@ until the verifying compiler lands.)*
 | Contracts corpus (unprinted) | 20-5 | comprehension · pending | pending |
 | Contracts corpus (unprinted) | 20-6 | comprehension · prose | prose |
 | Contracts corpus (unprinted) | 20-7 | comprehension · prose | prose |
-| Contracts corpus (unprinted) | 20-8 | fingers · lupin | run (lupin) |
+| Contracts corpus (unprinted) | 20-8 | fingers · wolf + lupin | run (wolf + lupin) |
 | Contracts corpus (unprinted) | 20-9 | comprehension · prose | prose |
 | Contracts corpus (unprinted) | 20-10 | spelunking · wolf | run (wolf) |
 | Contracts corpus (unprinted) | 20-11 | comprehension · prose | prose |
