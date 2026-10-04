@@ -1,0 +1,77 @@
+== head gate on kasumi, wolf-book 5808a892375f1260ceb7c27769252f53189a473f, wolf 0.2.22 / lupin 0.1.45 (release archives by digest), WOLF_LANG_PATH = wolf-lang at v0.2.22 (8e36bc1a0f92bbbbc6861b10d5b2638f76412d6a)
+== log mtimes:
+22:23:07 gate-backmattercheck.log
+22:23:08 gate-contrast.log
+22:23:07 gate-ledgercheck.log
+22:23:09 gate-renderweb.log
+22:23:06 gate-samples.log
+22:23:07 gate-samplesselftest.log
+22:23:07 gate-verifydocs.log
+22:23:09 gate.done
+== gate-backmattercheck.log
+backmatter: 296 solution(s) published, 331 on file
+backmatter: book/back/appendix-a.md up to date
+backmatter: book/back/solutions.md up to date
+backmatter: vendored spec artifacts match the sibling wolf-lang checkout
+EXIT 0
+== gate-contrast.log
+contrast: rust — 3 file(s) compiled and asserted, 5 book block(s) matched
+contrast: c — 9 printed transcript(s) checked against their cases
+contrast: c — 6 twin(s) compiled with cc -std=c99 -Wall -Werror, 14/14 case(s) asserted, 13 book block(s) matched
+EXIT 0
+== gate-ledgercheck.log
+ledger: 32 chapter ledger(s) — 132 open (125 filed, 7 waived, 0 unfiled), 101 closed
+EXIT 0
+== gate-renderweb.log
+render: web edition at /home/mfwolffe/lanes/bs59/wolf-book/target/render/web
+render: CSP guard — 48 pages, no inline <script> (lupp.us serves `script-src 'self'`)
+render: link check — 1328 internal links across 48 pages, none dead
+EXIT 0
+== gate-samples.log
+samples: lupin = /home/mfwolffe/lanes/bs59/new/lupin-0.1.45-x86_64-unknown-linux-gnu/lupin
+samples: wolf  = /home/mfwolffe/lanes/bs59/new/wolf-0.2.22-x86_64-unknown-linux-gnu/wolf
+samples: 125 corpus file(s) held back from the export — one-machine directives the other runner cannot spell (principles/TWO-MACHINES.md)
+
+samples: 509 samples (250 corpus roots + 16 corpus members on disk, 259 book blocks)
+samples: 506 passed, 3 pending (report-only), 0 failed, 0 flips in 31.4s
+samples: 482 of 502 console block(s) replayed against the pinned tools
+samples: of those, 227 of 229 book block(s) and 255 of 273 exercise-corpus block(s) (wolf-book#24)
+samples: samples-declined.toml: 18 declared row(s) — 5 file, 7 typed, 6 binary-or-shell (wolf-book#29)
+samples: corpus console declines on linux: 18 DECLINED + 0 OFF-LANE = 18 raw (wolf-book#49)
+samples: 1 warning set(s) asserted by warns(…); 30 sample(s) warn with no warns(…) directive (report-only, wolf-book#21)
+samples: exported 377 corpus programs to samples/export/corpus/book/
+EXIT 0
+== gate-samplesselftest.log
+samples: lupin = /home/mfwolffe/lanes/bs59/new/lupin-0.1.45-x86_64-unknown-linux-gnu/lupin
+samples: wolf  = /home/mfwolffe/lanes/bs59/new/wolf-0.2.22-x86_64-unknown-linux-gnu/wolf
+     wolf run: stdout mismatch: expected "goodbye, wolf", got "hello, wolf"
+     wolf run: exited Some(0), expected 7
+     wolf run: exited Some(2), expected 1 — and 2 is one of `[conf.exit]`'s two reserved statuses (2 a rejection, 4 a refusal), so the program never ran and the status is the tool's rather than the program's (stderr: error[E0401]: this is `str`, but `x` is declared as `int`
+ --> ./never-compiled.lu:2:18
+  |
+2 |     let x: int = "not an int"
+  |            --- the annotation is here
+  |                  ^^^^^^^^^^^^ found `str` here
+  |
+  = note: expected `int`, found `str`
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0401` explains this code, or any other, by name))
+     wolf run: exited 2, which `[conf.exit]` reserves for a rejection, and `wolf conform-run` answers `fail(E0401)` — so nothing ran, and the status is the compiler's rather than the program's
+samples: self-test run(exit=nonzero) credits a program that really dies nonzero
+samples: self-test graduation probe is right about the `served` program (flip: true)
+samples: self-test graduation probe is right about the `declined` program (flip: false)
+samples: self-test corpus console lane replays a true transcript
+samples: self-test pending console block reported by name, not compared
+samples: self-test warning ledger holds a true warns(W0601)
+samples: self-test holds the declined ledger the other way too: a row whose block replays is stale
+samples: self-test ok — 14/14 deliberate breakages caught
+EXIT 0
+== gate-verifydocs.log
+verify-docs: 10 line-count claim(s) recomputed
+verify-docs: 6 project program(s) match the chapters that print them
+verify-docs: 30 version literal(s) in reader-facing text, each audited against wolf 0.2.22 / lupin 0.1.45
+verify-docs: 655 wolf listing(s) scanned for interpolation the vendored grammar cannot paint (wolf-book#5)
+verify-docs: EXERCISES-INDEX.md agrees with the corpus — 345 exercises (296 printed); 8 pending · 78 prose · 9 run (lupin REPL) · 191 run (lupin) · 28 run (wolf + lupin) · 31 run (wolf); fingers 61 · comprehension 154 · extension 79 · spelunking 28 · design 37
+verify-docs: ok (corpus count 266, pins well-formed, TOC/stub numbering agrees)
+EXIT 0
+== gate-status.txt
