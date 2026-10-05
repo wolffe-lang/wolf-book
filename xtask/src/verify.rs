@@ -667,14 +667,17 @@ fn verify_solutions(root: &Path, failures: &mut Vec<String>) -> Result<()> {
     Ok(())
 }
 
-/// Every `Solution. `chNN/exN-M.lu`:` fence in `principles/EXERCISES.md`
-/// is the file it names (wolf-book#44).
+/// Every solution fence on every exercise page is the file it names
+/// (wolf-book#44 for the doctrine page, wolf-book#48 and ruling #41 for
+/// the rest).
 ///
-/// The doctrine page is the MASTER for the chapter 1-6 exemplar batch,
-/// and `backmatter::solutions` harvests those bodies straight out of it
-/// into `book/back/solutions.md`. So the reader's Solutions page prints
-/// the FENCE, while CI executes the `.lu` — two different bytes with
-/// nothing between them.
+/// The pages are the doctrine page `principles/EXERCISES.md`, the MASTER
+/// for the chapter 1-6 exemplar batch, and every per-chapter
+/// `principles/exercises/*/EXERCISES.md`. `backmatter::solutions`
+/// harvests the bodies of all of them straight into
+/// `book/back/solutions.md`. So the reader's Solutions page prints the
+/// FENCE, while CI executes the `.lu` — two different bytes with nothing
+/// between them but this check.
 ///
 /// `cargo xtask backmatter --check` does not close this, and it is worth
 /// being exact about why, because the samples runner's own comment used
@@ -683,65 +686,115 @@ fn verify_solutions(root: &Path, failures: &mut Vec<String>) -> Result<()> {
 /// solutions.md == the fence, never fence == the `.lu`. It is a loop, and
 /// a fence could say anything at all without breaking it.
 ///
-/// Measured when this check was written: three of the eleven labeled
-/// fences disagreed with their files (exercises 4-3, 5-1, 5-3), all of
-/// them printing the bare `xs.push(…)` receiver where the file spells
-/// `(mut xs).push(…)`. That spelling is `E0804` under wolf and
-/// `trap(exclusivity)` under lupin at the book's own pins, so the
-/// shipped Solutions page carried three programs neither machine would
-/// take, on a page whose own header promises "every solution program is
-/// a sample like any other: extracted, executed, and snapshot-checked in
-/// the same CI run as the chapters."
+/// Measured when this check was written (bs47, the doctrine page only):
+/// three of the eleven labeled fences disagreed with their files
+/// (exercises 4-3, 5-1, 5-3), all printing the bare `xs.push(…)`
+/// receiver where the file spells `(mut xs).push(…)` — `E0804` under
+/// wolf and `trap(exclusivity)` under lupin. Measured when it widened to
+/// every page (bs61, wolf-book `e7772338`): 114 fences, 20 disagreeing —
+/// 19 windows that did not say so, and ch14's 14-7, which printed a
+/// line its file does not carry.
 ///
-/// An `(excerpt)` label means the fence shows a window on the file
-/// rather than the whole of it, so the fence's lines must appear in the
-/// file as one contiguous run — with the one elision the page is allowed
-/// to make, a lone `...` line standing for the body it skips.
+/// The rule is ruling #41's, the doctrine page's own convention: a fence
+/// is the whole file, or its label says `(excerpt)` — a parenthetical
+/// that opens with the word, so `(excerpt — the walk)` keeps its
+/// description — and the fence is the file's own lines, at the file's
+/// own indentation, in order, with a lone `...` standing for each run of
+/// lines it skips. Dropping `fn main` is an elision like any other.
 ///
-/// The check is the doctrine page's alone. The corpus pages under
-/// `principles/exercises/` quote their files too, on a looser convention
-/// (a fence there routinely drops `fn main` with no label saying so),
-/// and holding them to this rule is its own piece of work rather than a
-/// side effect of this one.
+/// A label is any line that opens `Solution. ` with a backticked `.lu`
+/// name, whatever follows the name before the colon; a bare name
+/// (`ex27-1.lu`) is the page's own directory's file. Labels that name a
+/// package DIRECTORY (`ch22/metrics/`) are not held here: their fences
+/// name the file in a first-line comment, and the corpus rule for a
+/// package is the runner's, not this one's.
 fn verify_quoted_solutions(root: &Path, failures: &mut Vec<String>) -> Result<()> {
-    let rel = "principles/EXERCISES.md";
-    let text = std::fs::read_to_string(root.join(rel))?;
-    let quotes = quoted_bodies(&text);
-    if quotes.is_empty() {
-        failures.push(format!(
-            "{rel}: no `Solution. `chNN/exN-M.lu`:` fence found — the exemplar batch's \
-             quotation form moved and this check went quiet without saying so"
-        ));
-        return Ok(());
+    let mut pages = vec![PathBuf::from("principles/EXERCISES.md")];
+    let dir = root.join("principles/exercises");
+    let mut subs: Vec<PathBuf> = std::fs::read_dir(&dir)
+        .with_context(|| format!("reading {}", dir.display()))?
+        .filter_map(|e| e.ok())
+        .map(|e| e.path())
+        .filter(|p| p.is_dir() && p.join("EXERCISES.md").is_file())
+        .collect();
+    subs.sort();
+    for sub in subs {
+        let name = sub
+            .file_name()
+            .unwrap_or_default()
+            .to_string_lossy()
+            .into_owned();
+        pages.push(PathBuf::from(format!(
+            "principles/exercises/{name}/EXERCISES.md"
+        )));
     }
-    for q in &quotes {
-        let path = root.join("principles/exercises").join(&q.named);
-        let Ok(body) = std::fs::read_to_string(&path) else {
+    let (mut fences, mut excerpts, mut bad) = (0usize, 0usize, 0usize);
+    for rel in &pages {
+        let rel_s = rel.to_string_lossy().replace('\\', "/");
+        let text = std::fs::read_to_string(root.join(rel))?;
+        let quotes = quoted_bodies(&text);
+        if quotes.is_empty() && rel_s == "principles/EXERCISES.md" {
             failures.push(format!(
-                "{rel}:{}: quotes `{}`, which is not in the corpus",
-                q.line, q.named
+                "{rel_s}: no `Solution. `chNN/exN-M.lu`:` fence found — the exemplar batch's \
+                 quotation form moved and this check went quiet without saying so"
             ));
+            bad += 1;
             continue;
-        };
-        let file = solution_body(&body);
-        let ok = if q.excerpt {
-            excerpt_of(&q.fence, &file)
-        } else {
-            q.fence == file
-        };
-        if !ok {
-            failures.push(format!(
-                "{rel}:{}: the fence quoting `{}` is not what the file says, so the \
-                 Solutions page prints a program CI never ran{}",
-                q.line,
-                q.named,
-                if q.excerpt {
-                    " (the `(excerpt)` label admits a window on the file, not a different program)"
-                } else {
-                    ""
-                }
-            ));
         }
+        let page_dir = root
+            .join(rel)
+            .parent()
+            .map(Path::to_path_buf)
+            .unwrap_or_default();
+        for q in &quotes {
+            fences += 1;
+            if q.excerpt {
+                excerpts += 1;
+            }
+            let path = if q.named.contains('/') {
+                root.join("principles/exercises").join(&q.named)
+            } else {
+                page_dir.join(&q.named)
+            };
+            let Ok(body) = std::fs::read_to_string(&path) else {
+                failures.push(format!(
+                    "{rel_s}:{}: quotes `{}`, which is not in the corpus",
+                    q.line, q.named
+                ));
+                bad += 1;
+                continue;
+            };
+            let file = solution_body(&body);
+            let ok = if q.excerpt {
+                excerpt_of(&q.fence, &file)
+            } else {
+                q.fence == file
+            };
+            if !ok {
+                bad += 1;
+                failures.push(format!(
+                    "{rel_s}:{}: the fence quoting `{}` is not what the file says, so the \
+                     Solutions page prints a program CI never ran{}",
+                    q.line,
+                    q.named,
+                    if q.excerpt {
+                        " (the `(excerpt)` label admits the file's own lines with `...` at \
+                         each elision, not a different program)"
+                    } else {
+                        " (a fence that is not the whole file says `(excerpt)` and marks each \
+                         elision with `...`, ruling #41)"
+                    }
+                ));
+            }
+        }
+    }
+    if bad == 0 {
+        println!(
+            "verify-docs: {fences} quoted solution fences on {} exercise pages are their \
+             files ({} whole, {excerpts} excerpts)",
+            pages.len(),
+            fences - excerpts
+        );
     }
     Ok(())
 }
@@ -765,12 +818,16 @@ struct QuotedBody {
 /// output). Searching past that fence for the next ```` ```wolf ````
 /// would reach the NEXT exercise's program and grade it against this
 /// exercise's file — a false failure that looks exactly like a real one.
+///
+/// The label's text runs from its line to that fence, so a label that
+/// wraps, or that says what it shows before its colon, is read whole
+/// when deciding whether it says `(excerpt)`.
 fn quoted_bodies(text: &str) -> Vec<QuotedBody> {
     let lines: Vec<&str> = text.lines().collect();
     let mut out = Vec::new();
     let mut i = 0usize;
     while i < lines.len() {
-        let Some((named, excerpt)) = quoted_solution_label(lines[i]) else {
+        let Some(named) = quoted_solution_label(lines[i]) else {
             i += 1;
             continue;
         };
@@ -785,6 +842,7 @@ fn quoted_bodies(text: &str) -> Vec<QuotedBody> {
             i += 1;
             continue;
         }
+        let excerpt = label_says_excerpt(&lines[i..j].join(" "));
         let mut k = j + 1;
         let mut fence: Vec<String> = Vec::new();
         while k < lines.len() && !lines[k].starts_with("```") {
@@ -802,18 +860,26 @@ fn quoted_bodies(text: &str) -> Vec<QuotedBody> {
     out
 }
 
-/// ``Solution. `ch04/ex4-3.lu`:`` → `("ch04/ex4-3.lu", false)`; the same
-/// line with `(excerpt)` before the colon → `true`.
-fn quoted_solution_label(line: &str) -> Option<(String, bool)> {
+/// ``Solution. `ch04/ex4-3.lu`:`` → `ch04/ex4-3.lu`. Anything may follow
+/// the name — `(excerpt)`, a description, a sentence — because the
+/// pairing, not the label's punctuation, decides what is quoted.
+fn quoted_solution_label(line: &str) -> Option<String> {
     let rest = line.strip_prefix("Solution. `")?;
-    let (named, rest) = rest.split_once('`')?;
-    if !named.ends_with(".lu") {
-        return None;
-    }
-    let rest = rest.trim_start();
-    let excerpt = rest.starts_with("(excerpt)");
-    let rest = rest.strip_prefix("(excerpt)").unwrap_or(rest).trim_start();
-    rest.starts_with(':').then(|| (named.to_string(), excerpt))
+    let (named, _) = rest.split_once('`')?;
+    named.ends_with(".lu").then(|| named.to_string())
+}
+
+/// A label says `(excerpt)` when a parenthetical OPENS with the word:
+/// `(excerpt)`, `(excerpt — the table helpers …)`. `(main excerpt)`
+/// does not, because a reader skimming for the convention's one word
+/// looks where the convention puts it.
+fn label_says_excerpt(label: &str) -> bool {
+    label.match_indices("(excerpt").any(|(at, m)| {
+        label[at + m.len()..]
+            .chars()
+            .next()
+            .is_some_and(|c| !c.is_alphanumeric())
+    })
 }
 
 /// A corpus file's program: the `//!` directive header and the comment
@@ -843,19 +909,23 @@ fn trim_blank_tail(mut lines: Vec<String>) -> Vec<String> {
 
 /// The quoted lines appear in the file as contiguous runs, in order,
 /// with a lone `...` standing for whatever the page skipped between two
-/// of them.
+/// of them. Blank lines at a run's edges are layout around the `...`;
+/// a blank line INSIDE a run is a line of the file like any other.
 fn excerpt_of(quoted: &[String], file: &[String]) -> bool {
     let mut at = 0usize;
     for run in quoted.split(|l| l.trim() == "...") {
-        let run: Vec<&String> = run.iter().filter(|l| !l.trim().is_empty()).collect();
-        if run.is_empty() {
+        let first = run.iter().position(|l| !l.trim().is_empty());
+        let last = run.iter().rposition(|l| !l.trim().is_empty());
+        let (Some(first), Some(last)) = (first, last) else {
             continue;
+        };
+        let run = &run[first..=last];
+        if run.len() > file.len() {
+            return false;
         }
-        let Some(found) = (at..=file.len().saturating_sub(run.len())).find(|start| {
-            run.iter()
-                .zip(file[*start..].iter())
-                .all(|(a, b)| a.as_str() == b.as_str())
-        }) else {
+        let Some(found) = (at..=file.len() - run.len())
+            .find(|start| run.iter().zip(file[*start..].iter()).all(|(a, b)| a == b))
+        else {
             return false;
         };
         at = found + run.len();
@@ -2370,24 +2440,66 @@ mod tests {
     // --- the quoted exemplar bodies (wolf-book#44) ----------------------
 
     #[test]
-    fn a_quoted_solution_label_is_read_with_and_without_excerpt() {
+    fn a_quoted_solution_label_names_its_program_whatever_follows() {
         assert_eq!(
             quoted_solution_label("Solution. `ch04/ex4-3.lu`:"),
-            Some(("ch04/ex4-3.lu".into(), false))
+            Some("ch04/ex4-3.lu".into())
         );
         assert_eq!(
             quoted_solution_label("Solution. `ch06/ex6-3.lu` (excerpt):"),
-            Some(("ch06/ex6-3.lu".into(), true))
+            Some("ch06/ex6-3.lu".into())
         );
-        // Prose that merely mentions a file is not a label.
+        // bs47's parser read only those two spellings, so every label
+        // below was dark: 12 windows hid behind them at e7772338.
+        assert_eq!(
+            quoted_solution_label("Solution. `ch07/ex7-16.lu` (the walk):"),
+            Some("ch07/ex7-16.lu".into())
+        );
+        assert_eq!(
+            quoted_solution_label("Solution. `ex27-1.lu`. Two edits: `37` joins"),
+            Some("ex27-1.lu".into())
+        );
+        // Prose that merely mentions a file is not a label, and a
+        // directory is not a program.
         assert_eq!(
             quoted_solution_label("Solution: it prints `working`."),
             None
         );
-        assert_eq!(
-            quoted_solution_label("Solution. `ch01/ex1-1.lu` runs."),
-            None
+        assert_eq!(quoted_solution_label("Solution. `ch22/metrics/`:"), None);
+    }
+
+    #[test]
+    fn only_a_parenthetical_that_opens_with_excerpt_says_excerpt() {
+        assert!(label_says_excerpt("Solution. `ch06/ex6-3.lu` (excerpt):"));
+        assert!(label_says_excerpt(
+            "Solution. `ch18/ex18-15.lu` (excerpt — the table helpers are if-chains):"
+        ));
+        assert!(!label_says_excerpt(
+            "Solution. `ch14/ex14-9.lu` (main excerpt):"
+        ));
+        assert!(!label_says_excerpt("Solution. `ch07/ex7-15.lu` (core):"));
+        assert!(!label_says_excerpt("Solution. `x.lu` (excerpts):"));
+        assert!(!label_says_excerpt("Solution. `ch01/ex1-1.lu`:"));
+    }
+
+    #[test]
+    fn a_wrapped_label_is_read_to_its_fence() {
+        let page = concat!(
+            "Solution. `ch18/ex18-15.lu` (excerpt — the table helpers are\n",
+            "if-chains over an index):\n\n",
+            "```wolf\nfn main() -> !int {\n...\n}\n```\n",
         );
+        let q = quoted_bodies(page);
+        assert_eq!(q.len(), 1, "{q:#?}");
+        assert!(q[0].excerpt);
+        let page = concat!(
+            "Solution. `ex27-1.lu`. Two edits, and the arm\n",
+            "the `47` arm has (excerpt):\n\n",
+            "```wolf\n    37 => 0,\n```\n",
+        );
+        let q = quoted_bodies(page);
+        assert_eq!(q[0].named, "ex27-1.lu");
+        assert!(q[0].excerpt);
     }
 
     #[test]
@@ -2436,6 +2548,39 @@ mod tests {
         assert!(!excerpt_of(&invented, &file));
     }
 
+    fn lines(v: &[&str]) -> Vec<String> {
+        v.iter().map(|s| s.to_string()).collect()
+    }
+
+    #[test]
+    fn an_excerpt_run_may_span_a_blank_line_of_the_file() {
+        // Before bs61 the run's blanks were dropped and the rest compared
+        // to the file's lines contiguously, blank included, so a window
+        // over two functions and the blank between them could never match.
+        let file = lines(&[
+            "fn a() -> int { 1 }",
+            "",
+            "fn b() -> int { 2 }",
+            "fn main() {",
+            "}",
+        ]);
+        let q = lines(&["fn a() -> int { 1 }", "", "fn b() -> int { 2 }", "..."]);
+        assert!(excerpt_of(&q, &file));
+        // Blank lines around a `...` are layout, not lines of the file.
+        let q = lines(&["fn a() -> int { 1 }", "", "...", "", "fn main() {"]);
+        assert!(excerpt_of(&q, &file));
+    }
+
+    #[test]
+    fn a_dedented_window_is_not_an_excerpt() {
+        // wolf-book#48's four: a body lifted out of `fn main` and printed
+        // at column 0. Ruling #41 keeps the file's indentation and marks
+        // the dropped header with `...`; the checker does not learn dedent.
+        let file = lines(&["fn main() -> !int {", "    let x = 1", "    0", "}"]);
+        assert!(!excerpt_of(&lines(&["let x = 1"]), &file));
+        assert!(excerpt_of(&lines(&["...", "    let x = 1", "..."]), &file));
+    }
+
     #[test]
     fn a_label_whose_page_prints_only_output_pairs_with_nothing() {
         // ch06/ex6-9's shape on the corpus pages: the label is followed
@@ -2470,8 +2615,9 @@ mod tests {
     }
 
     #[test]
-    fn the_real_exemplar_fences_are_the_files_ci_runs() {
-        // The check as CI runs it, against the repository's own files.
+    fn every_real_solution_fence_is_the_file_ci_runs() {
+        // The check as CI runs it, against the repository's own files:
+        // the doctrine page and all thirty corpus pages.
         let root = crate::repo_root().expect("repo root");
         let mut failures = Vec::new();
         verify_quoted_solutions(&root, &mut failures).expect("check runs");
@@ -2507,6 +2653,76 @@ mod tests {
         assert!(
             failures.iter().any(|f| f.contains("ch05/ex5-1.lu")),
             "a quoted body that drifted from its file was not caught: {failures:#?}"
+        );
+    }
+
+    #[test]
+    fn a_corpus_page_fence_that_drifts_from_its_file_is_caught() {
+        // The planted break on a CORPUS page, the half bs47 left dark:
+        // 14-6's fence printed back the way 14-7's sat at e7772338, the
+        // bare send its file stopped carrying at 2372871.
+        let root = crate::repo_root().expect("repo root");
+        let rel = "principles/exercises/ch14/EXERCISES.md";
+        let text = std::fs::read_to_string(root.join(rel)).expect("the ch14 page");
+        let good =
+            "        if c == 0 { replies.send(total) else { return total } } else { total += c }";
+        assert!(
+            text.contains(good),
+            "14-6's fence no longer carries the line this break plants against; re-aim it"
+        );
+        let broken = text.replacen(
+            good,
+            "        if c == 0 { replies.send(total) } else { total += c }",
+            1,
+        );
+        let dir = std::env::temp_dir().join(format!("bs61-plant-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&dir);
+        copy_tree(
+            &root.join("principles/exercises"),
+            &dir.join("principles/exercises"),
+        );
+        std::fs::copy(
+            root.join("principles/EXERCISES.md"),
+            dir.join("principles/EXERCISES.md"),
+        )
+        .expect("doctrine page");
+        std::fs::write(dir.join(rel), broken).expect("planting");
+        let mut failures = Vec::new();
+        verify_quoted_solutions(&dir, &mut failures).expect("check runs");
+        let _ = std::fs::remove_dir_all(&dir);
+        assert_eq!(failures.len(), 1, "{failures:#?}");
+        assert!(failures[0].contains("ch14/ex14-6.lu"), "{failures:#?}");
+    }
+
+    #[test]
+    fn a_bare_name_is_the_page_directorys_file() {
+        let dir = std::env::temp_dir().join(format!("bs61-bare-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&dir);
+        std::fs::create_dir_all(dir.join("principles/exercises/ch27")).expect("staging");
+        std::fs::write(
+            dir.join("principles/EXERCISES.md"),
+            "Solution. `ch27/ex27-1.lu`:\n\n```wolf\nfn main() -> !int { 0 }\n```\n",
+        )
+        .expect("doctrine");
+        std::fs::write(
+            dir.join("principles/exercises/ch27/ex27-1.lu"),
+            "//! check: run(exit=0)\nfn main() -> !int { 0 }\n",
+        )
+        .expect("file");
+        std::fs::write(
+            dir.join("principles/exercises/ch27/EXERCISES.md"),
+            "Solution. `ex27-1.lu`:\n\n```wolf\nfn main() -> !int { 1 }\n```\n",
+        )
+        .expect("page");
+        let mut failures = Vec::new();
+        verify_quoted_solutions(&dir, &mut failures).expect("check runs");
+        let _ = std::fs::remove_dir_all(&dir);
+        // The doctrine page's quote is right; the corpus page's bare
+        // name found ITS file and caught the `1`.
+        assert_eq!(failures.len(), 1, "{failures:#?}");
+        assert!(
+            failures[0].starts_with("principles/exercises/ch27/EXERCISES.md:1:"),
+            "{failures:#?}"
         );
     }
 
