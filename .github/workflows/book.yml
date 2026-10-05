@@ -201,6 +201,37 @@ jobs:
           WOLF: ${{ github.workspace }}/wolf-lang/target/release/wolf${{ runner.os == 'Windows' && '.exe' || '' }}
           LUPIN: ${{ github.workspace }}/wolf-interp/target/release/lupin${{ runner.os == 'Windows' && '.exe' || '' }}
         run: cargo xtask samples --self-test
+      # bs62: the memory diagrams in chapter 7 are drawn from lupin's place
+      # trace (`--trace-places`, wolf-interp is72). The trace lupin is the
+      # rev in [lupin-trace]: the [lupin] pin itself when a release carries
+      # the trace (then nothing extra is built), a source build of is72's
+      # head until then. Its own target dir, so the pinned lupin the
+      # samples ran is never rebuilt under them.
+      - name: build the trace lupin ([lupin-trace])
+        id: tracer
+        if: steps.acquire.outputs.toolchain == 'full'
+        shell: bash
+        run: |
+          set -euo pipefail
+          rev() { awk -v s="[$1]" '$0==s{f=1} f&&/^rev = /{gsub(/"/,"",$3); print $3; exit}' wolf-book/wolf-toolchain.toml; }
+          exe='${{ runner.os == 'Windows' && '.exe' || '' }}'
+          t="$(rev lupin-trace)"; l="$(rev lupin)"
+          if [ "$t" = "$l" ]; then
+            echo "trace lupin = the pinned lupin ($l)"
+            echo "lupin=${{ github.workspace }}/wolf-interp/target/release/lupin$exe" >> "$GITHUB_OUTPUT"
+          else
+            echo "trace lupin = wolf-interp $t (the pinned lupin is $l)"
+            git -C wolf-interp worktree add --detach ../wolf-interp-trace "$t"
+            (cd wolf-interp-trace && cargo build --release --bin lupin)
+            echo "lupin=${{ github.workspace }}/wolf-interp-trace/target/release/lupin$exe" >> "$GITHUB_OUTPUT"
+          fi
+      - name: memory diagrams re-taken from a fresh trace
+        if: steps.acquire.outputs.toolchain == 'full'
+        shell: bash
+        working-directory: wolf-book
+        env:
+          LUPIN_TRACE: ${{ steps.tracer.outputs.lupin }}
+        run: cargo xtask diagrams --check
       - name: doc truth
         shell: bash
         working-directory: wolf-book
