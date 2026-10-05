@@ -1,20 +1,33 @@
 # EXERCISES-INDEX.md — the corpus ledger
 
-Ledger of every exercise in the corpus: 345 total. Hand-kept, and
-every figure on this page is held to the table under it by
-`cargo xtask verify-docs` (wolf-book#40) — the page said "generated"
-for eleven bumps and nothing generated it. It cannot be: the tier
-column is not a function of anything on disk (below), and the notes
-are editorial. So the prose is written and the arithmetic is CI's.
-Sources:
+Ledger of every exercise in the corpus: 345 total. The rows, the
+type · checker column and the notes are hand-kept; the **tier column
+and the totals line are generated** by `cargo xtask tiers` from each
+exercise's `//! check:` head (ruling #40, wolf-book#43), and CI runs
+`cargo xtask tiers --check`, so a hand-edited tier fails the build.
+Every other figure on this page is held to the table under it by
+`cargo xtask verify-docs` (wolf-book#40). The page said "generated"
+for eleven bumps before bs61 and nothing generated it; at bs61 168 of
+the 237 rows with a program said something other than what their
+heads ask. Sources:
 the exemplar batch in `principles/EXERCISES.md` §5 (26 exercises,
 folded in unchanged) and the per-chapter files
 `principles/exercises/chNN/EXERCISES.md` (+ `appx/` for the
-appendix-adjacent sets). Tier meanings — `run (…)`: the solution
-program is on disk and was executed by the named checker(s), output
-pasted from the run; `prose`: the solution is discussion, no program;
-`pending`: the stem and expected outcome exist, the feature does not —
-see `EXERCISES-PENDING.md` for each blocker and owner.
+appendix-adjacent sets). Tier meanings — `run (…)` names **the
+machines CI executed the solution program on**, read off its head the
+way the samples runner reads it: `run(…)` (and `ub(…)`) is both
+machines, `run (wolf + lupin)`; `lupin-run(…)` is the interpreter
+alone, `run (lupin)`; `wolf-run(…)`, `fail(…)` and `audit(…)` are the
+compiler alone, `run (wolf)` — for a `fail(…)` file that is the
+compiler's static verdict, the only one the runner asks for. An
+exercise with two files (`ex9-7a.lu`, `ex9-7b.lu`) or a package
+directory takes the union of their machines. `pending`: a program
+whose directive the runner expects to fail today (`samples-pending.toml`),
+or a stem with no program yet — see `EXERCISES-PENDING.md` for each
+blocker and owner. `prose`: the solution is discussion, no program.
+A row with no program on disk (prose, the REPL rows, transcripts
+replayed against a fixture) keeps the tier written here; the generator
+says how many — 108 at bs61.
 
 Batches written and **not printed in their chapters**: ch17's 17-6, whose
 section is held for want of fault injection (TOC.md §Deltas, bs07);
@@ -33,7 +46,10 @@ either lane (`samples-pending.toml`); and ch05's 5-8, unprinted at bs11
 because its whole subject is the combinator chain, and a stem cannot
 carry a blocker note in a reader's text (TONE.md §Tense discipline).
 All of them stay in the corpus so the day their surface lands the stems
-and the sections arrive together. Two more are master-only by curation
+and the sections arrive together. Two of them carry a `run` tier, not
+`pending`, since bs61: 17-6's `run(exit=0)` and 20-5's `fail(E0817)`
+are met by CI today, so the column says so; what keeps each unprinted
+is its stem's subject, and EXERCISES-PENDING.md carries it. Two more are master-only by curation
 rather than blockage, from the bs21 ladder: 2-15 (entab — the printed
 page carries detab, the master holds the mirror) and 3-13 (a
 `loop`/`break`-value drill beside §3.2's own example). **296 of the 345
@@ -54,15 +70,21 @@ which shipped with its chapter; ch29's batch lands with its chapter. Chapter 31 
 design*: it publishes milestone checkpoints, not exercises (EXERCISES.md
 §4). Chapter 32, the coda, carries no batch.
 
-One reading note for chapters 26–28. Elsewhere the checker tag and the
-tier agree; here they can differ, because a project's *chapter* and a
-project's *solution program* are not always run by the same tool.
-Chapter 26's `count` prints compiled transcripts (the interpreter's
-missing filesystem until lupin 0.1.36; since bs49 a choice the chapter
-makes, with every program fence run on both machines), so
-several of its stems are tagged `· wolf` while the distilled solution
-program on disk runs under lupin — the tier column says what CI
-executed, and the exercise file says which is which and why.
+One reading note for the two machine columns, since bs61 made them
+mean different things on purpose. The checker tag beside the type
+(`fingers · lupin`) is the stem's: which machine its answer is written
+against and its transcripts show. The tier is the program's: which
+machines CI ran it on. So `fingers · lupin` beside `run (wolf + lupin)`
+is the ordinary case, not a contradiction — the page shows the
+interpreter, and the runner held the compiler to the same output (a
+`run(…)` directive is a claim about both machines). A `fail(…)` row
+reads `run (wolf)` even where its page prints lupin's refusal too: the
+console gate replays that transcript, but the head asks the compiler
+alone, and the column is the head's. Chapter 26's `count` is the
+mirror case: it prints compiled transcripts (the interpreter's missing
+filesystem until lupin 0.1.36; since bs49 a choice the chapter makes),
+so several of its stems are tagged `· wolf` while the distilled
+solution program on disk is a `run(…)` file both machines execute.
 
 Tier totals: 38 run (lupin) · 9 run (lupin REPL) · 41 run (wolf) · 173 run (wolf + lupin) · 78 prose · 6 pending. That is 345.
 (The totals and the tables were recounted mechanically against the
@@ -78,11 +100,12 @@ between 334 and 341; separately the totals line was re-based at
 afterwards, which is the gap between 327 and 334. The header tracked
 the table until `0e17afa` and has been exactly three behind since
 `510aa70` added three rows without moving it.)
-Five of the 32 `run (wolf)` are the `wolf-run(…)` lane the bs09 bump
+Five of the 41 `run (wolf)` are the `wolf-run(…)` lane the bs09 bump
 added — 18-3, 18-5, 18-11, 18-15 and 22-7, each holding a `comptime fn` that the
-reference interpreter declines by design. 24-6 is the sixth addition and
-is a package walkthrough rather than a file, so it has no `.lu`: its
-transcript is the verbs' own output, replayed against a fixture. Which
+reference interpreter declines by design. Twenty-eight are `fail(…)`
+files, the compiler's static verdict. The other eight have no `.lu`
+and keep a written tier; 24-6 among them is a package walkthrough, so
+its transcript is the verbs' own output, replayed against a fixture. Which
 lane executed a sample is not bookkeeping, and calling it that is what
 let chapter 1 teach a call the compiler does not carry: a `run(…)`
 directive is a claim about both machines, and a sample only one machine
