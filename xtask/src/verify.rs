@@ -1793,7 +1793,7 @@ struct IndexRow {
 /// cells that matter are counted back from the end rather than forward
 /// from the start, which is the bug that made a hand count of this table
 /// come out at 331 instead of 334.
-fn index_row_cells(line: &str) -> Option<(String, String, String)> {
+pub(crate) fn index_row_cells(line: &str) -> Option<(String, String, String)> {
     let t = line.trim();
     if !t.starts_with('|') || !t.ends_with('|') {
         return None;
