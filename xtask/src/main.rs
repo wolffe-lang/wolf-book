@@ -10,11 +10,13 @@
 //!   verify-docs        doc-truth checks (counts, pins, TOC↔stub numbering)
 //!   ledger             audit-ledger state; --check gates unfiled open rows
 //!   tiers              EXERCISES-INDEX's tier column from the corpus heads; --check for CI
+//!   diagrams           memory diagrams from lupin's place trace; --check for CI
 
 mod backmatter;
 mod console;
 mod contrast;
 mod declined;
+mod diagrams;
 mod dialects;
 mod directives;
 mod fence;
@@ -56,6 +58,7 @@ fn dispatch(args: &[String]) -> Result<()> {
         Some("verify-docs") => verify::run(&repo_root()?),
         Some("ledger") => ledger::run(&repo_root()?, rest),
         Some("tiers") => tiers::run(&repo_root()?, rest),
+        Some("diagrams") => diagrams::run(&repo_root()?, rest),
         Some("help") | None => {
             print_help();
             Ok(())
@@ -81,7 +84,9 @@ fn print_help() {
          \x20 ledger [--check]      audit-ledger state per chapter; --check fails\n\
          \x20                       on open ba:* rows neither filed nor waived\n\
          \x20 tiers [--check]       write EXERCISES-INDEX's tier column from each\n\
-         \x20                       exercise's `//! check:` head; --check fails on drift"
+         \x20                       exercise's `//! check:` head; --check fails on drift\n\
+         \x20 diagrams [--check]    draw every `memory` fence from the place trace\n\
+         \x20                       (LUPIN_TRACE); --check fails on drift without writing"
     );
 }
 
