@@ -190,7 +190,7 @@ join surfaced the error
 return the sum. Why is it correct to `close` only after the scope's
 closing brace: what has the join already proved by then?
 
-Solution. `ch10/ex10-7.lu`:
+Solution. `ch10/ex10-7.lu` (excerpt):
 
 ```wolf
 fn gather_all() -> !int {
