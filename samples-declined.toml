@@ -152,7 +152,7 @@ retires = "the `Verb::Local` widening for corpus blocks, then the ch26 fixture"
 # for as long as the doctrine page sat outside both walks.
 
 [[declined]]
-block = "principles/EXERCISES.md:374"
+block = "principles/EXERCISES.md:376"
 class = "typed"
 needs = "an expression to type — exercise 2-1's three `lupin eval '…'` prompts have no file behind them, and the exemplar batch checks in no `ex2-1.lu` for them to name. The exercise declares its own machine as `lupin REPL` in its taxonomy line, so this is a REPL block written in `eval`'s spelling; it wants exactly what ch02:81 and ch02:101 want"
 filed = "wolf-book#44"
@@ -194,7 +194,7 @@ filed = "wolf-book#29 §4"
 retires = "wolf-interp is08 (the REPL replay lane)"
 
 [[declined]]
-block = "principles/exercises/ch11/EXERCISES.md:164"
+block = "principles/exercises/ch11/EXERCISES.md:166"
 class = "typed"
 needs = "an interactive session — the block opens on a bare `$ lupin`"
 filed = "wolf-book#29 §4"
@@ -225,7 +225,7 @@ filed = "wolf-book#29 §5"
 retires = "nothing planned; the count it prints is a fact about the corpus, not about a tool"
 
 [[declined]]
-block = "principles/exercises/ch09/EXERCISES.md:240"
+block = "principles/exercises/ch09/EXERCISES.md:243"
 class = "binary-or-shell"
 needs = "the corpus rule to admit a binary `wolf build` just produced — `./ex9-8` names no solution, it names a link product"
 filed = "wolf-book#29 §5"
