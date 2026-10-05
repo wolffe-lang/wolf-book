@@ -255,14 +255,16 @@ main asks for the total. Run it under seeds 0, 1, 5, 9. Predict first:
 does the total vary with the schedule, and why not? Then name the thing
 that *does* vary between those runs even though no output shows it.
 
-Solution. `ch14/ex14-9.lu` (main excerpt):
+Solution. `ch14/ex14-9.lu` (excerpt — `main`):
 
 ```wolf
+...
     scope s {
         s.spawn(fn() { client(cmds) })
         s.spawn(fn() { client(cmds) })
     }
     cmds.send(0)?
+...
 ```
 
 ```console
