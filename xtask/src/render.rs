@@ -521,6 +521,11 @@ fn render_pdf(root: &Path, require: bool) -> Result<()> {
     let pdf_path = dir.join("wolf-book.pdf");
     let status = std::process::Command::new(&typst)
         .arg("compile")
+        // The memory diagrams are set from `book/diagrams/` by an
+        // absolute path under the repository (bs62), and typst reads no
+        // file outside its root.
+        .arg("--root")
+        .arg(root)
         .arg("--font-path")
         .arg(root.join("print/fonts"))
         .arg(&typ_path)
@@ -587,6 +592,7 @@ fn typst_preamble() -> String {
   breakable: true,
 )[#set text(font: "Source Code Pro", size: 8.8pt); #set par(justify: false, leading: 0.55em); #body]
 #let epigraph(body) = block(above: 1.2em, below: 1.6em, width: 100%)[#body]
+#let memfig(path, w) = block(above: 0.9em, below: 1.1em, width: 100%)[#align(center)[#image(path, width: w)]]
 "##,
     ) + &crate::dialects::typst_defs()
         + r##"
@@ -626,6 +632,17 @@ fn markdown_to_typst(wolf: &Grammar, content: &str) -> Result<String> {
     let mut out = String::new();
     for seg in segments(content) {
         match seg {
+            Segment::Fence(f) if crate::diagrams::svg_for_info(f.info.trim()).is_some() => {
+                // A memory diagram (bs62): the same SVG the web edition
+                // shows, set by typst as vector art.
+                let svg = crate::diagrams::svg_for_info(f.info.trim()).unwrap_or_default();
+                let _ = writeln!(
+                    out,
+                    "#memfig({}, {}pt)",
+                    typst_str(&format!("/book/{svg}")),
+                    memfig_width_pt(&svg)?
+                );
+            }
             Segment::Fence(f) => {
                 // The same taxonomy the web render classes fences with
                 // (dialects.rs, rp03): the PDF sets each dialect in its
@@ -665,6 +682,21 @@ fn markdown_to_typst(wolf: &Grammar, content: &str) -> Result<String> {
         }
     }
     Ok(out)
+}
+
+/// The printed width of a memory diagram: its own width at 96 px to the
+/// inch (0.75pt a pixel), never wider than the text column (US letter
+/// less 1.4in margins each side: 5.7in, 410pt).
+fn memfig_width_pt(svg_rel: &str) -> Result<u32> {
+    let at = crate::repo_root()?.join("book").join(svg_rel);
+    let svg = std::fs::read_to_string(&at)
+        .with_context(|| format!("{}: missing — run `cargo xtask diagrams`", at.display()))?;
+    let w: u32 = svg
+        .split_once("width=\"")
+        .and_then(|(_, r)| r.split_once('"'))
+        .and_then(|(n, _)| n.parse().ok())
+        .with_context(|| format!("{}: no integer width on the <svg>", at.display()))?;
+    Ok((w * 3 / 4).min(410))
 }
 
 /// rp03's visual regression guard, run by `render all`: every declared
