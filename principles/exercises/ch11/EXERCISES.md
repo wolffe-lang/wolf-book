@@ -125,15 +125,17 @@ part of the program, or part of the schedule? Run under seed 1 and seed
 Solution. `ch11/ex11-5.lu` (excerpt):
 
 ```wolf
-scope s {
-    for w in 0..2 {
-        s.spawn(fn() {
-            for j in jobs { results.send("worker {w} took job {j}")? }
-        })
+...
+    scope s {
+        for w in 0..2 {
+            s.spawn(fn() {
+                for j in jobs { results.send("worker {w} took job {j}")? }
+            })
+        }
+        for j in 1..=4 { jobs.send(j)? }
+        jobs.close()
     }
-    for j in 1..=4 { jobs.send(j)? }
-    jobs.close()
-}
+...
 ```
 
 ```console
