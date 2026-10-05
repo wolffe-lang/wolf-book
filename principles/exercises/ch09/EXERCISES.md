@@ -131,13 +131,16 @@ the oracle's finding, and (the actual question) what is identical
 between the two runs that would *not* be identical for a use-after-free
 in C?
 
-Solution. `ch09/ex9-5.lu`:
+Solution. `ch09/ex9-5.lu` (excerpt):
 
 ```wolf
-let p = c.malloc(8) as *u8
-p[0] = 7
-c.free(p)
-let v = p[0]
+...
+    unsafe {
+        let p = c.malloc(8) as *u8
+        p[0] = 7
+        c.free(p)
+        let v = p[0]
+...
 ```
 
 ```console
@@ -373,14 +376,17 @@ the shortest program you can in which the *assertion*, not any access,
 is the undefined behavior: use `assume noalias` on two pointers that
 alias. Predict the oracle's wording: what does it say overlaps what?
 
-Solution. `ch09/ex9-13.lu`:
+Solution. `ch09/ex9-13.lu` (excerpt):
 
 ```wolf
-let p = c.malloc(8) as *u8
-let q = p
-assume noalias p, q
-p[0] = 1
-q[0] = 2
+...
+    unsafe {
+        let p = c.malloc(8) as *u8
+        let q = p
+        assume noalias p, q
+        p[0] = 1
+        q[0] = 2
+...
 ```
 
 ```console
