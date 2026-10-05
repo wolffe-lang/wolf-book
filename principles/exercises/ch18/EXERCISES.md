@@ -489,6 +489,7 @@ comptime fn to_roman(n: int) -> str {
     }
     out
 }
+...
 comptime fn from_roman(s: str) -> int {
     var total = 0
     var i = 0
