@@ -37,7 +37,7 @@ compile time.
 five elements, `a = 2.0`, `ys` all tens. Predict both printed values
 first.
 
-Solution. `ch21/ex21-2.lu`:
+Solution. `ch21/ex21-2.lu` (excerpt):
 
 ```wolf
 fn saxpy(a: f64, xs: List[f64], mut ys: List[f64]) {
