@@ -3365,8 +3365,10 @@ $ lupin ex7-4b.lu
 1 2
 ```
 
-The wrong answer is "ints are `Copy`, so the struct copies." Wolf's
-rule is per-*decision*, not per-*type*: the reader of
+The wrong answer is "ints are `Copy`, so the struct copies." `Copy` is
+a property of a few built-in types (§7.1's table), and no struct has it,
+whatever its fields. For a type you define the rule is per-*decision*,
+not per-*type*: the reader of
 `let b = copy a` knows a duplication happened without looking up what
 `P` contains. That is also the cost the question asks for: a second
 `P`, made at the line that says `copy`. The original made none, because
@@ -3691,7 +3693,8 @@ that no signature in this paragraph mentions anything but values.
 <summary>Exercise 7-12. <a href="../ch07.md#7.7">§7.7</a></summary>
 
 **Exercise 7-12** *(fingers · lupin REPL)*. In the REPL, move a string
-out of one binding into another, then read both, the corpse first. What
+out of one binding into another with `move` (a plain `=` would copy it),
+then read both, the corpse first. What
 does the session do that a compiled program cannot, and which clause tag
 names the reason the trap did not end your session?
 
