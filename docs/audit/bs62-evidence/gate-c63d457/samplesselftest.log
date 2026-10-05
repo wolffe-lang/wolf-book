@@ -1,0 +1,36 @@
+samples: lupin = /home/mfwolffe/lanes/bs62/rel/lupin-0.1.46-x86_64-unknown-linux-gnu/lupin
+samples: wolf  = /home/mfwolffe/lanes/bs62/rel/wolf-0.2.23-x86_64-unknown-linux-gnu/wolf
+samples: SKIP extraction book/back/solutions.md — generated from the two places solutions live, and this run reaches both directly: the exercise corpus under principles/exercises/ (chapters 7+) and principles/EXERCISES.md §5, the master for the chapter 1-6 exemplar batch (wolf-book#44). Every console block on both is replayed below; cargo xtask backmatter --check holds the page to them
+samples: self-test caught wrong-stdout.lu: lupin: stdout mismatch: expected "goodbye, wolf", got "hello, wolf"
+     wolf run: stdout mismatch: expected "goodbye, wolf", got "hello, wolf"
+samples: self-test caught wrong-exit.lu: lupin: exited Some(0), expected 7
+     wolf run: exited Some(0), expected 7
+samples: self-test caught wrong-code.lu: wolf verdict `fail(E1001)`, expected `fail(E9999)`
+samples: self-test caught one-machine.lu: lupin: exited Some(4), expected 0 — and 4 is one of `[conf.exit]`'s two reserved statuses (2 a rejection, 4 a refusal), so the program never ran and the status is the tool's rather than the program's (stderr: one-machine.lu: unsupported: `sum_squares` is a `comptime fn`; compile-time evaluation with its sandbox and budgets is the compiler's engine (s16), and nothing in `spec/` pins it — the `comptime` namespace is still a reserved forward one)
+samples: self-test caught never-compiled.lu: lupin: exited Some(2), expected 1 — and 2 is one of `[conf.exit]`'s two reserved statuses (2 a rejection, 4 a refusal), so the program never ran and the status is the tool's rather than the program's (stderr: never-compiled.lu: E0401: this binding's declared type is `int` and this is `str`: no conversion between the two happens implicitly — build the text with interpolation ("{value}"), compare to make a `bool`, or parse a `str` with `to_int()` [type.str] at 2:18)
+     wolf run: exited Some(2), expected 1 — and 2 is one of `[conf.exit]`'s two reserved statuses (2 a rejection, 4 a refusal), so the program never ran and the status is the tool's rather than the program's (stderr: error[E0401]: this is `str`, but `x` is declared as `int`
+ --> ./never-compiled.lu:2:18
+  |
+2 |     let x: int = "not an int"
+  |            --- the annotation is here
+  |                  ^^^^^^^^^^^^ found `str` here
+  |
+  = note: expected `int`, found `str`
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0401` explains this code, or any other, by name))
+samples: self-test caught never-compiled-nonzero.lu: lupin: exited 2, which `[conf.exit]` reserves for a rejection (2) or a refusal (4); this rig reads no record from the interpreter, so a reserved status is not credited to a program (stderr: never-compiled-nonzero.lu: E0401: this binding's declared type is `int` and this is `str`: no conversion between the two happens implicitly — build the text with interpolation ("{value}"), compare to make a `bool`, or parse a `str` with `to_int()` [type.str] at 2:18)
+     wolf run: exited 2, which `[conf.exit]` reserves for a rejection, and `wolf conform-run` answers `fail(E0401)` — so nothing ran, and the status is the compiler's rather than the program's
+samples: self-test caught refused-nonzero.lu: lupin: exited 4, which `[conf.exit]` reserves for a rejection (2) or a refusal (4); this rig reads no record from the interpreter, so a reserved status is not credited to a program (stderr: refused-nonzero.lu: unsupported: `sum_squares` is a `comptime fn`; compile-time evaluation with its sandbox and budgets is the compiler's engine (s16), and nothing in `spec/` pins it — the `comptime` namespace is still a reserved forward one)
+samples: self-test run(exit=nonzero) credits a program that really dies nonzero
+samples: self-test graduation probe is right about the `served` program (flip: true)
+samples: self-test graduation probe is right about the `declined` program (flip: false)
+samples: self-test corpus console lane replays a true transcript
+samples: self-test caught corpus-console drift: /home/mfwolffe/lanes/bs62/wolf-book/samples/selftest/corpus-console/EXERCISES.md:1: console block drifted from the real run
+samples: self-test pending console block reported by name, not compared
+samples: self-test caught the pending-console plant without its row: /home/mfwolffe/lanes/bs62/wolf-book/samples/selftest/pending.md:1: console block drifted from the real run
+samples: self-test warning ledger holds a true warns(W0601)
+samples: self-test caught planted warns(W0601): warns(W0601) declared, but the compiler printed [] — the fence asserts the exact set, in both directions
+samples: self-test caught an undeclared corpus decline: principles/exercises/ch00/EXERCISES.md:1
+samples: self-test holds the declined ledger the other way too: a row whose block replays is stale
+samples: self-test ok — 14/14 deliberate breakages caught
+EXIT 0
