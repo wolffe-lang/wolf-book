@@ -3801,7 +3801,7 @@ table as a `List[List[int]]` and return its corner. For two three-line
 it. Note what the signature says about ownership: which of your
 parameters were moved, and how many annotations did it take to say so?
 
-Solution. `ch07/ex7-15.lu` (core):
+Solution. `ch07/ex7-15.lu` (excerpt — the core):
 
 ```wolf
 fn lcs_len(a: List[str], b: List[str]) -> int {
@@ -3857,7 +3857,7 @@ additions. Before running, predict the full output for `old` = wolf /
 moon / elk and `new` = wolf / elk / river. Then explain why the walk
 must go *backward*.
 
-Solution. `ch07/ex7-16.lu` (the walk):
+Solution. `ch07/ex7-16.lu` (excerpt — the walk):
 
 ```wolf
 fn print_diff(a: List[str], b: List[str], table: List[List[int]], i: int, j: int) {
@@ -4092,11 +4092,12 @@ decide whether `diff` lends its two lists or takes them, and say in one
 sentence what the lines in the result are under each choice. Run it on
 a three-line config file and a four-line successor of your own.
 
-Solution. `ch07/ex7-20.lu` (the walk and `diff`; `build_table` is
-7-16's, unchanged):
+Solution. `ch07/ex7-20.lu` (excerpt — the walk and `diff`;
+`build_table` is 7-16's, unchanged):
 
 ```wolf
 struct Edit { mark: str, line: str }
+...
 fn walk(a: List[str], b: List[str], t: List[List[int]], i: int, j: int, mut out: List[Edit]) {
     if i > 0 && j > 0 && a[i - 1] == b[j - 1] {
         walk(a, b, t, i - 1, j - 1, mut out)
@@ -4289,8 +4290,8 @@ unrepaired program under `lupin`, and say why §7.3's `longest` never
 met this, and why it would not have met it even returning a `Doc`, as
 long as that `Doc` had no `tags`.
 
-Solution. `ch07/ex7-23.lu` (the function; `main` fills a shelf of
-three and prints the longest title and the shelf's length):
+Solution. `ch07/ex7-23.lu` (excerpt — the function; `main` fills a
+shelf of three and prints the longest title and the shelf's length):
 
 ```wolf
 struct Doc { title: str, words: int, tags: List[str] }
@@ -4583,20 +4584,23 @@ you land?), and two steps backward. Rust folklore says this program
 requires `unsafe` or `Rc<RefCell<…>>`; say in one sentence why wolf's
 checker does not object here.
 
-Solution. `ch08/ex8-6.lu` (core):
+Solution. `ch08/ex8-6.lu` (excerpt — the core):
 
 ```wolf
 struct Node { value: int, next: handle Node, prev: handle Node }
-var pool = Pool[Node]()
-var hs = List[handle Node]()
-for _ in 0..5 { (mut hs).push((mut pool).reserve()) }
-for i in 0..5 {
-    (mut pool).init(hs[i], Node {
-        value: (i + 1) * 10,
-        next: hs[(i + 1) % 5],
-        prev: hs[(i + 4) % 5],
-    })
-}
+fn main() -> !int {
+    region r: pool(Node) {
+        var pool = Pool[Node]()
+        var hs = List[handle Node]()
+        for _ in 0..5 { (mut hs).push((mut pool).reserve()) }
+        for i in 0..5 {
+            (mut pool).init(hs[i], Node {
+                value: (i + 1) * 10,
+                next: hs[(i + 1) % 5],
+                prev: hs[(i + 4) % 5],
+            })
+        }
+...
 ```
 
 ```console
@@ -4910,13 +4914,16 @@ path north, east, west, south, printing the room at each step. Predict
 the four lines before running; the fourth is the one that checks your
 `south` links are real.
 
-Solution. `ch08/ex8-15.lu` (walk shown; full wiring on disk):
+Solution. `ch08/ex8-15.lu` (excerpt — the walk; the full wiring is on
+disk):
 
 ```wolf
-for step in path {
-    if step == "north" { here = pool[here].north } else if step == "south" { here = pool[here].south } else if step == "east" { here = pool[here].east } else { here = pool[here].west }
-    print("you are at the {pool[here].name}")
-}
+...
+        for step in path {
+            if step == "north" { here = pool[here].north } else if step == "south" { here = pool[here].south } else if step == "east" { here = pool[here].east } else { here = pool[here].west }
+            print("you are at the {pool[here].name}")
+        }
+...
 ```
 
 ```console
@@ -5313,13 +5320,16 @@ the oracle's finding, and (the actual question) what is identical
 between the two runs that would *not* be identical for a use-after-free
 in C?
 
-Solution. `ch09/ex9-5.lu`:
+Solution. `ch09/ex9-5.lu` (excerpt):
 
 ```wolf
-let p = c.malloc(8) as *u8
-p[0] = 7
-c.free(p)
-let v = p[0]
+...
+    unsafe {
+        let p = c.malloc(8) as *u8
+        p[0] = 7
+        c.free(p)
+        let v = p[0]
+...
 ```
 
 ```console
@@ -5575,14 +5585,17 @@ the shortest program you can in which the *assertion*, not any access,
 is the undefined behavior: use `assume noalias` on two pointers that
 alias. Predict the oracle's wording: what does it say overlaps what?
 
-Solution. `ch09/ex9-13.lu`:
+Solution. `ch09/ex9-13.lu` (excerpt):
 
 ```wolf
-let p = c.malloc(8) as *u8
-let q = p
-assume noalias p, q
-p[0] = 1
-q[0] = 2
+...
+    unsafe {
+        let p = c.malloc(8) as *u8
+        let q = p
+        assume noalias p, q
+        p[0] = 1
+        q[0] = 2
+...
 ```
 
 ```console
@@ -5922,7 +5935,7 @@ join surfaced the error
 return the sum. Why is it correct to `close` only after the scope's
 closing brace: what has the join already proved by then?
 
-Solution. `ch10/ex10-7.lu`:
+Solution. `ch10/ex10-7.lu` (excerpt):
 
 ```wolf
 fn gather_all() -> !int {
@@ -6199,15 +6212,17 @@ part of the program, or part of the schedule? Run under seed 1 and seed
 Solution. `ch11/ex11-5.lu` (excerpt):
 
 ```wolf
-scope s {
-    for w in 0..2 {
-        s.spawn(fn() {
-            for j in jobs { results.send("worker {w} took job {j}")? }
-        })
+...
+    scope s {
+        for w in 0..2 {
+            s.spawn(fn() {
+                for j in jobs { results.send("worker {w} took job {j}")? }
+            })
+        }
+        for j in 1..=4 { jobs.send(j)? }
+        jobs.close()
     }
-    for j in 1..=4 { jobs.send(j)? }
-    jobs.close()
-}
+...
 ```
 
 ```console
@@ -6988,7 +7003,7 @@ matching lines. Substring search is yours to write with byte slices. Why
 is the empty pattern an *error* here, when POSIX grep happily matches it
 everywhere?
 
-Solution. `ch13/ex13-5.lu`:
+Solution. `ch13/ex13-5.lu` (excerpt):
 
 ```wolf
 fn contains(hay: str, needle: str) -> bool {
@@ -7037,12 +7052,14 @@ f64 arithmetic?
 Solution. `ch13/ex13-7.lu` (excerpt):
 
 ```wolf
-let r = absf(x2 - x1)
-let a = g / (r * r)
-v1 += a * dt
-v2 -= a * dt
-x1 += v1 * dt
-x2 += v2 * dt
+...
+    let r = absf(x2 - x1)
+    let a = g / (r * r)
+    v1 += a * dt
+    v2 -= a * dt
+    x1 += v1 * dt
+    x2 += v2 * dt
+...
 ```
 
 ```console
@@ -7464,9 +7481,11 @@ prediction safe, and which chapter taught it?
 Solution. `ch14/ex14-7.lu` (excerpt):
 
 ```wolf
+...
     for c in cmds {
-        if c == 0 { replies.send(total) } else if c == 0 - 1 { total = 0 } else { total += c }
+        if c == 0 { replies.send(total) else { return total } } else if c == 0 - 1 { total = 0 } else { total += c }
     }
+...
 ```
 
 ```console
@@ -7513,14 +7532,16 @@ main asks for the total. Run it under seeds 0, 1, 5, 9. Predict first:
 does the total vary with the schedule, and why not? Then name the thing
 that *does* vary between those runs even though no output shows it.
 
-Solution. `ch14/ex14-9.lu` (main excerpt):
+Solution. `ch14/ex14-9.lu` (excerpt — `main`):
 
 ```wolf
+...
     scope s {
         s.spawn(fn() { client(cmds) })
         s.spawn(fn() { client(cmds) })
     }
     cmds.send(0)?
+...
 ```
 
 ```console
@@ -7798,7 +7819,7 @@ pattern). Predict the output, run it, and then answer: your budget is
 3. What single-character change makes this worker's recovery
 impossible, and what does the output become?
 
-Solution. `ch15/ex15-6.lu` (worker):
+Solution. `ch15/ex15-6.lu` (excerpt — the worker):
 
 ```wolf
 fn worker(attempt: int) -> !int {
@@ -7940,19 +7961,21 @@ freight: build the two-element list in `main`, send the region to a
 receiving task, and have the receiver sum the list *it never built*.
 Print the sum from the receiver's side.
 
-Solution. `ch16/ex16-2.lu` (receiver):
+Solution. `ch16/ex16-2.lu` (excerpt — the receiver):
 
 ```wolf
-    s.spawn(fn() {
-        let r2 = ch.recv() else |_| { return }
-        let total = in r2 {
-            var t = 0
-            for x in xs { t += x }
-            t
-        }
-        print("sum={total}")
-    })
-    ch.send(move r)?
+...
+        s.spawn(fn() {
+            let r2 = ch.recv() else |_| { return }
+            let total = in r2 {
+                var t = 0
+                for x in xs { t += x }
+                t
+            }
+            print("sum={total}")
+        })
+        ch.send(move r)?
+...
 ```
 
 ```console
@@ -8099,8 +8122,8 @@ breadth-first-searches it in place and prints the shortest-path distance
 from corner to corner. Seed 1: run it. Before you do, answer: how many
 times is the wall table copied between carver and solver?
 
-Solution. `ch16/ex16-7.lu` (the transfer; carve and solve are in the
-file):
+Solution. `ch16/ex16-7.lu` (excerpt — the transfer; `carve` and
+`solve` are in the file):
 
 ```wolf
 fn main() -> !int {
@@ -9103,6 +9126,7 @@ comptime fn to_roman(n: int) -> str {
     }
     out
 }
+...
 comptime fn from_roman(s: str) -> int {
     var total = 0
     var i = 0
@@ -9402,7 +9426,7 @@ compile time.
 five elements, `a = 2.0`, `ys` all tens. Predict both printed values
 first.
 
-Solution. `ch21/ex21-2.lu`:
+Solution. `ch21/ex21-2.lu` (excerpt):
 
 ```wolf
 fn saxpy(a: f64, xs: List[f64], mut ys: List[f64]) {
@@ -10538,15 +10562,19 @@ answer is the one §26.5 gives: know which of the two you copied.
 predict what your arm does for `7 0 %` before you run it, and say whether
 you had to write anything the `/` arm did not already show you.
 
-Solution. `ex27-1.lu`. Two edits: `37` joins `is_operator`'s list of
-bytes, and a `37 =>` arm joins the `match` with the same zero guard the
-`47` arm has:
+Solution. `ex27-1.lu` (excerpt). Two edits: `37` joins `is_operator`'s
+list of bytes, and a `37 =>` arm joins the `match` with the same zero
+guard the `47` arm has:
 
 ```wolf
+...
+    b == 43 || b == 45 || b == 42 || b == 47 || b == 37
+...
                 37 => {
                     if b == 0 { return DivZero }
                     a % b
                 },
+...
 ```
 
 ```console
