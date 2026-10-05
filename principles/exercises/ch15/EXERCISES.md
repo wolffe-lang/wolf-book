@@ -171,7 +171,7 @@ pattern). Predict the output, run it, and then answer: your budget is
 3. What single-character change makes this worker's recovery
 impossible, and what does the output become?
 
-Solution. `ch15/ex15-6.lu` (worker):
+Solution. `ch15/ex15-6.lu` (excerpt — the worker):
 
 ```wolf
 fn worker(attempt: int) -> !int {
