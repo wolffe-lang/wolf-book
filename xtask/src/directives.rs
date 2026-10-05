@@ -373,6 +373,10 @@ pub struct FenceInfo {
     /// counted and named in the log, report-only, so a dropped-row
     /// warning the interpreter cannot see is at least seen by a gate.
     pub warns: Vec<String>,
+    /// `memory,from(book/ch07/s3),line(5)` — the program line a memory
+    /// diagram draws (bs62, `diagrams.rs`). One-based, as the compiler
+    /// and the interpreter count.
+    pub line: Option<u32>,
 }
 
 pub fn parse_fence_info(info: &str) -> Result<FenceInfo> {
@@ -387,6 +391,7 @@ pub fn parse_fence_info(info: &str) -> Result<FenceInfo> {
         in_fixture: None,
         file: None,
         warns: Vec::new(),
+        line: None,
     };
     for item in items {
         let item = item.trim();
@@ -425,6 +430,15 @@ pub fn parse_fence_info(info: &str) -> Result<FenceInfo> {
             .and_then(|r| r.strip_suffix(')'))
         {
             fi.warns = parse_warning_codes(inner, "warns()")?;
+        } else if let Some(inner) = item.strip_prefix("line(").and_then(|r| r.strip_suffix(')')) {
+            let n: u32 = inner
+                .trim()
+                .parse()
+                .map_err(|_| anyhow::anyhow!("line() needs a line number, not `{inner}`"))?;
+            if n == 0 {
+                bail!("line() counts from 1");
+            }
+            fi.line = Some(n);
         } else if !item.is_empty() {
             bail!("unrecognized fence directive: `{item}` in `{info}`");
         }
@@ -644,6 +658,16 @@ mod tests {
                 stdout: Some("counted".into())
             })
         );
+    }
+
+    #[test]
+    fn fence_memory_from_and_line() {
+        let fi = parse_fence_info("memory,from(book/ch07/s3),line(5)").unwrap();
+        assert_eq!(fi.lang, "memory");
+        assert_eq!(fi.from.as_deref(), Some("book/ch07/s3"));
+        assert_eq!(fi.line, Some(5));
+        assert!(parse_fence_info("memory,line(0)").is_err());
+        assert!(parse_fence_info("memory,line(five)").is_err());
     }
 
     #[test]
