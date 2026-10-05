@@ -131,7 +131,8 @@ pub fn run(root: &Path) -> Result<()> {
     // 14. EXERCISES-INDEX.md's figures against its own table, and that
     //     table against the corpus it ledgers (wolf-book#40). The file
     //     said "generated view" and was typed; it is hand-kept now and
-    //     says so, and every number on it is arithmetic CI owns.
+    //     says so, and every number on it is arithmetic CI owns. Its
+    //     tier column alone is generated (`cargo xtask tiers`, bs61).
     verify_exercises_index(root, &mut failures)?;
 
     if failures.is_empty() {
@@ -1753,12 +1754,13 @@ fn version_literal_failures(
 // EXERCISES-INDEX.md (wolf-book#40)
 //
 // The file called itself a "generated view" and nothing generated it.
-// It cannot be generated: its tier column is not a function of anything
-// on disk (a `run(…)` corpus file executes on BOTH machines, and 136
-// rows spelling that directive are tiered `run (lupin)` anyway), and
-// four fifths of the page is editorial prose about which batches are
-// held and why. So it stays hand-kept and says so — and every number on
-// it is arithmetic over its own table, held in both directions here.
+// Four fifths of the page is editorial prose about which batches are
+// held and why, so the page stays hand-kept and says so — and every
+// number on it is arithmetic over its own table, held in both
+// directions here. The one column that IS a function of the disk, the
+// tier, has been generated since bs61 (ruling #40): `cargo xtask tiers`
+// reads it off each exercise's `//! check:` head, and its `--check`
+// holds every row to its head. This check holds the totals to the rows.
 //
 // What that catches, measured at this head: chapter 33 shipped seven
 // exercises in `673183b` and the index never grew a section for them,
