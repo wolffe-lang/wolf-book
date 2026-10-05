@@ -987,6 +987,14 @@ fn typst_spans(line: &str) -> String {
             Some(end) => {
                 out.push_str(&format!("#raw({})", typst_str(&after[1..1 + end])));
                 rest = &after[end + 2..];
+                // Typst ends an embedded `#expr` at a `;` and swallows
+                // it, so "a `List`; a `str`" printed "a List a str" in
+                // every PDF until bs62 saw it in chapter 7's table: the
+                // semicolon after inline code is escaped.
+                if let Some(r) = rest.strip_prefix(';') {
+                    out.push_str("\\;");
+                    rest = r;
+                }
             }
             None => {
                 out.push_str(&typst_escape_inline(after));
@@ -1215,6 +1223,12 @@ mod tests {
         // An unnumbered heading anchors nowhere and labels nothing.
         let plain = typst_prose("## Exercises\n");
         assert!(!plain.contains("<sec-"), "got: {plain}");
+    }
+
+    #[test]
+    fn a_semicolon_after_inline_code_survives_into_typst() {
+        let t = typst_spans("deep for a `List`; a `str` shares");
+        assert_eq!(t, "deep for a #raw(\"List\")\\; a #raw(\"str\") shares");
     }
 
     #[test]
