@@ -69,9 +69,11 @@ chapters 1–6 exemplar batch, folded in unchanged; the chapter files
 continue its numbering); `EXERCISES-INDEX.md` maps section → exercise →
 tier, and `EXERCISES-PENDING.md` is the honest list of the ones whose
 blocking features have not landed, each named with its blocker and
-owner. 232 exercises have a solution program that CI executes (the run
-tiers); 76 are discussion solutions or read a tool's output, 9 live in
-a REPL transcript, and 11 are pending their feature.
+owner. Of the 345, 252 carry a run tier — 234 of them a solution
+program whose `//! check:` head says which machines CI runs it on, the
+column `cargo xtask tiers` generates (ruling #40), and 18 a tier
+written by hand with no `.lu` behind it; 78 are discussion solutions,
+9 live in a REPL transcript, and 6 are pending.
 
 ## 3. Taxonomy
 
