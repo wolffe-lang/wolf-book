@@ -1,0 +1,10 @@
+struct Meta { author: str, words: int }
+fn make() -> Meta {
+    let m = Meta { author: "ada", words: 900 }
+    m
+}
+fn main() -> !int {
+    let b = make()
+    print("{b.author}")
+    0
+}

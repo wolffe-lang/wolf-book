@@ -1,0 +1,6 @@
+fn main() -> !int {
+    let t = (1, 2)
+    let u = t
+    print("{t.0} {u.1}")
+    0
+}

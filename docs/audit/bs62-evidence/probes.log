@@ -1,0 +1,351 @@
+wolf 0.2.23 (wolfgang, pin 8edac3e)
+paired with lupin 0.1.46 (reference interpreter), pin 8e36bc1
+lupin 0.1.46 (wolf-interp, reference interpreter at pin 8e36bc1)
+=== p01_strcopy.lu
+--- lupin
+ada ada
+exit 0
+--- wolf run
+ada ada
+exit 0
+--- conform-run --checked
+exit(0) run ''
+=== p02_boolchar.lu
+--- lupin
+true true w w 2.5 2.5 wolf wolf
+exit 0
+--- wolf run
+true true w w 2.5 2.5 wolf wolf
+exit 0
+--- conform-run --checked
+exit(0) run ''
+=== p03_takestr.lu
+--- lupin
+p03_takestr.lu: trap(use-after-move): `s` was moved out and is uninitialized here [mem.tier0.move.2] at 5:17; `s` moved here at 4:19
+exit 3
+--- wolf run
+warning[W1003]: `w` is taken, never touched, and returned
+1 | fn adopt(take w: str) -> str { w }
+help: drop the `take` and hand back `copy w` (call sites drop theirs and keep their binding; a `read` parameter returned without the `copy` is E1002, #366)
+1 | fn adopt(w: str) -> str { w }
+error[E1001]: `s` is used here after its value moved away
+4 |     let a = adopt(take s)
+5 |     print("{a} {s}")
+help: to keep the original, copy it at the move
+exit 2
+--- conform-run --checked
+fail(E1001) mem ''
+=== p04_moveint.lu
+--- lupin
+p04_moveint.lu: trap(use-after-move): `m` was moved out and is uninitialized here [mem.tier0.move.2] at 4:17; `m` moved here at 3:13
+exit 3
+--- wolf run
+error[E1001]: `m` is used here after its value moved away
+3 |     let n = move m
+4 |     print("{n} {m}")
+help: to keep the original, copy it at the move
+3 |     let n = move copy m
+wolf run: the package does not compile; fix the errors above (`wolf --explain E1001` explains this code, or any other, by name)
+exit 2
+--- conform-run --checked
+fail(E1001) mem ''
+=== p05_plainarg.lu
+--- lupin
+900 ada
+exit 0
+--- wolf run
+900 ada
+exit 0
+--- conform-run --checked
+exit(0) run ''
+=== p06_return.lu
+--- lupin
+ada
+exit 0
+--- wolf run
+ada
+exit 0
+--- conform-run --checked
+exit(0) run ''
+=== p07_assignmove.lu
+--- lupin
+p07_assignmove.lu: trap(use-after-move): `a.words` was moved out and is uninitialized here [mem.tier0.move.2] at 6:24; `a` moved here at 5:9
+exit 3
+--- wolf run
+error[E1001]: `a.words` is used here after its value moved away
+5 |     b = a
+6 |     print("{b.author} {a.words}")
+help: to keep the original, copy it at the move
+5 |     b = copy a
+wolf run: the package does not compile; fix the errors above (`wolf --explain E1001` explains this code, or any other, by name)
+exit 2
+--- conform-run --checked
+fail(E1001) mem ''
+=== p08_fieldstore.lu
+--- lupin
+regions regions
+p08_fieldstore.lu: trap(use-after-move): `m.words` was moved out and is uninitialized here [mem.tier0.move.2] at 8:13; `m` moved here at 6:35
+exit 3
+--- wolf run
+error[E1001]: `m.words` is used here after its value moved away
+6 |     var d = Doc { title: s, meta: m }
+7 |     print("{s} {d.title}")
+8 |     print("{m.words}")
+help: to keep the original, copy it at the move
+6 |     var d = Doc { title: s, meta: copy m }
+wolf run: the package does not compile; fix the errors above (`wolf --explain E1001` explains this code, or any other, by name)
+exit 2
+--- conform-run --checked
+fail(E1001) mem ''
+=== p09_copylist.lu
+--- lupin
+1 2
+exit 0
+--- wolf run
+1 2
+exit 0
+--- conform-run --checked
+exit(0) run ''
+=== p10_structmove_ok.lu
+--- lupin
+ada, 900 words
+exit 0
+--- wolf run
+ada, 900 words
+exit 0
+--- conform-run --checked
+exit(0) run ''
+=== p11_tuple.lu
+--- lupin
+p11_tuple.lu: trap(use-after-move): `t[0]` was moved out and is uninitialized here [mem.tier0.move.2] at 4:13; `t` moved here at 3:13
+exit 3
+--- wolf run
+error[E1001]: `t.0` is used here after its value moved away
+3 |     let u = t
+4 |     print("{t.0} {u.1}")
+help: to keep the original, copy it at the move
+3 |     let u = copy t
+wolf run: the package does not compile; fix the errors above (`wolf --explain E1001` explains this code, or any other, by name)
+exit 2
+--- conform-run --checked
+fail(E1001) mem ''
+=== p12_strparam_return.lu
+--- lupin
+ada ada
+exit 0
+--- wolf run
+ada ada
+exit 0
+--- conform-run --checked
+exit(0) run ''
+=== p13_listmove.lu
+--- lupin
+1
+exit 0
+--- wolf run
+1
+exit 0
+--- conform-run --checked
+exit(0) run ''
+=== p14_enum.lu
+--- lupin
+p14_enum.lu: unsupported: `Mood.calm` does not resolve
+exit 4
+--- wolf run
+error[E1001]: `a` is used here after its value moved away
+4 |     let b = a
+5 |     match a { Mood.calm => print("calm"), Mood.howl => print("howl") }
+help: to keep the original, copy it at the move
+4 |     let b = copy a
+wolf run: the package does not compile; fix the errors above (`wolf --explain E1001` explains this code, or any other, by name)
+exit 2
+--- conform-run --checked
+fail(E1001) mem ''
+=== p15_moveintfield.lu
+--- lupin
+1 1
+exit 0
+--- wolf run
+1 1
+exit 0
+--- conform-run --checked
+exit(0) run ''
+=== p16_copystruct.lu
+--- lupin
+900 900
+exit 0
+--- wolf run
+900 900
+exit 0
+--- conform-run --checked
+exit(0) run ''
+=== pack.lu
+--- lupin
+ada lin grace
+lin
+exit 0
+--- wolf run
+warning[W1003]: `w` is taken, never touched, and returned
+6 | fn adopt(take w: str) -> str { w }
+help: drop the `take` and hand back `copy w` (call sites drop theirs and keep their binding; a `read` parameter returned without the `copy` is E1002, #366)
+6 | fn adopt(w: str) -> str { w }
+ada lin grace
+lin
+exit 0
+--- conform-run --checked
+exit(0) run ''
+=== q01_enum.lu
+--- lupin
+q01_enum.lu: trap(use-after-move): `a` was moved out and is uninitialized here [mem.tier0.move.2] at 5:13; `a` moved here at 4:13
+exit 3
+--- wolf run
+error[E1001]: `a` is used here after its value moved away
+4 |     let b = a
+5 |     let c = a
+help: to keep the original, copy it at the move
+4 |     let b = copy a
+wolf run: the package does not compile; fix the errors above (`wolf --explain E1001` explains this code, or any other, by name)
+exit 2
+--- conform-run --checked
+fail(E1001) mem ''
+=== q02_distinct.lu
+--- lupin
+ok
+exit 0
+--- wolf run
+error[E1001]: `a` is used here after its value moved away
+4 |     let b = a
+5 |     let c = a
+help: to keep the original, copy it at the move
+4 |     let b = copy a
+wolf run: the package does not compile; fix the errors above (`wolf --explain E1001` explains this code, or any other, by name)
+exit 2
+--- conform-run --checked
+fail(E1001) mem ''
+=== q03_copyread.lu
+--- lupin
+ada ada / true true / w w / 900 900
+exit 0
+--- wolf run
+ada ada / true true / w w / 900 900
+exit 0
+--- conform-run --checked
+exit(0) run ''
+=== q04_structmove.lu
+--- lupin
+ada, 900 words
+exit 0
+--- wolf run
+ada, 900 words
+exit 0
+--- conform-run --checked
+exit(0) run ''
+=== q05_fieldmove.lu
+--- lupin
+regions / regions / ada
+exit 0
+--- wolf run
+regions / regions / ada
+exit 0
+--- conform-run --checked
+exit(0) run ''
+=== q06_fieldmove_read.lu
+--- lupin
+ada
+q06_fieldmove_read.lu: trap(use-after-move): `d.meta.words` was moved out and is uninitialized here [mem.tier0.move.2] at 7:13; `d.meta` moved here at 5:13
+exit 3
+--- wolf run
+error[E1001]: `d.meta.words` is used here after its value moved away
+5 |     let m = d.meta
+6 |     print("{m.author}")
+7 |     print("{d.meta.words}")
+help: to keep the original, copy it at the move
+5 |     let m = copy d.meta
+wolf run: the package does not compile; fix the errors above (`wolf --explain E1001` explains this code, or any other, by name)
+exit 2
+--- conform-run --checked
+fail(E1001) mem ''
+=== q07_pushcopy.lu
+--- lupin
+regions 1
+exit 0
+--- wolf run
+regions 1
+exit 0
+--- conform-run --checked
+exit(0) run ''
+=== q08_pushtake.lu
+--- lupin
+q08_pushtake.lu: trap(use-after-move): `d.title` was moved out and is uninitialized here [mem.tier0.move.2] at 6:13; `d` moved here at 5:21
+exit 3
+--- wolf run
+error[E1001]: `d.title` is used here after its value moved away
+5 |     (mut docs).push(take d)
+6 |     print("{d.title} {docs.len}")
+help: to keep the original, copy it at the move
+5 |     (mut docs).push(take copy d)
+wolf run: the package does not compile; fix the errors above (`wolf --explain E1001` explains this code, or any other, by name)
+exit 2
+--- conform-run --checked
+fail(E1001) mem ''
+=== q09_ret_str.lu
+--- lupin
+regions wolf regions
+exit 0
+--- wolf run
+regions wolf regions
+exit 0
+--- conform-run --checked
+exit(0) run ''
+=== q10_tok.lu
+--- lupin
+q10_tok.lu: trap(use-after-move): `t.start` was moved out and is uninitialized here [mem.tier0.move.2] at 5:13; `t` moved here at 4:13
+exit 3
+--- wolf run
+error[E1001]: `t.start` is used here after its value moved away
+4 |     let u = t
+5 |     print("{t.start} {u.end}")
+help: to keep the original, copy it at the move
+4 |     let u = copy t
+wolf run: the package does not compile; fix the errors above (`wolf --explain E1001` explains this code, or any other, by name)
+exit 2
+--- conform-run --checked
+fail(E1001) mem ''
+=== q11_pack_shout.lu
+--- lupin
+ADA lin grace
+lin
+exit 0
+--- wolf run
+ADA lin grace
+lin
+exit 0
+--- conform-run --checked
+exit(0) run ''
+=== q12_strmove_explicit.lu
+--- lupin
+ada lin
+exit 0
+--- wolf run
+ada lin
+exit 0
+--- conform-run --checked
+exit(0) run ''
+=== r01_longest_nocopy.lu
+--- lupin
+regions, longest of 2
+exit 0
+--- wolf run
+regions, longest of 2
+exit 0
+--- conform-run --checked
+exit(0) run ''
+=== r02_repl_str.lu
+--- lupin
+wolf wolf
+exit 0
+--- wolf run
+wolf wolf
+exit 0
+--- conform-run --checked
+exit(0) run ''

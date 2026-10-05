@@ -1,0 +1,20 @@
+struct Doc { title: str, words: int }
+fn longest(docs: List[Doc]) -> str {
+    var best = ""
+    var most = 0
+    for d in docs {
+        if d.words > most {
+            most = d.words
+            best = d.title
+        }
+    }
+    best
+}
+fn main() -> !int {
+    var docs = List[Doc]()
+    (mut docs).push(Doc { title: "regions", words: 900 })
+    (mut docs).push(Doc { title: "moves", words: 640 })
+    let title = longest(docs)
+    print("{title}, longest of {docs.len}")
+    0
+}

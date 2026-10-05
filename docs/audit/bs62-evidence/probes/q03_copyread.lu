@@ -1,0 +1,12 @@
+fn main() -> !int {
+    let lead = "ada"
+    let done = true
+    let mark = 'w'
+    let words = 900
+    let a = lead
+    let b = done
+    let c = mark
+    let n = words
+    print("{lead} {a} / {done} {b} / {mark} {c} / {words} {n}")
+    0
+}

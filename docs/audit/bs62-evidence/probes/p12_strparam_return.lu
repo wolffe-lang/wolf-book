@@ -1,0 +1,7 @@
+fn same(w: str) -> str { w }
+fn main() -> !int {
+    let s = "ada"
+    let t = same(s)
+    print("{s} {t}")
+    0
+}

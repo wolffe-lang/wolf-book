@@ -1,0 +1,7 @@
+struct Meta { author: str, words: int }
+fn main() -> !int {
+    let a = Meta { author: "ada", words: 900 }
+    let b = a
+    print("{b.author}, {b.words} words")
+    0
+}

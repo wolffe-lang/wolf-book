@@ -1,0 +1,6 @@
+bs62 probes: each file run alone in its own directory by run.sh on kasumi,
+against the release archives wolf 0.2.23 (sha256 6f505eb5…) and lupin 0.1.46
+(sha256 d13a0379…): lupin, `wolf run`, `wolf conform-run --json --checked`.
+../probes.log is every probe here plus pack.lu, one run, same host and archives.
+pack.lu is the maintainer's ~/scratch/wolf/ch7/pack.lu (sha256 4305b433…),
+copied for the run, never edited, and not kept here.

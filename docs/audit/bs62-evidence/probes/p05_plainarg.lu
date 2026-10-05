@@ -1,0 +1,8 @@
+struct Meta { author: str, words: int }
+fn count(m: Meta) -> int { m.words }
+fn main() -> !int {
+    let a = Meta { author: "ada", words: 900 }
+    let n = count(a)
+    print("{n} {a.author}")
+    0
+}

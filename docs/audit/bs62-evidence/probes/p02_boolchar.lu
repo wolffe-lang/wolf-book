@@ -1,0 +1,12 @@
+fn main() -> !int {
+    let b = true
+    let k = 'w'
+    let f = 2.5
+    let s = "wolf"
+    let b2 = b
+    let k2 = k
+    let f2 = f
+    let s2 = s
+    print("{b} {b2} {k} {k2} {f} {f2} {s} {s2}")
+    0
+}

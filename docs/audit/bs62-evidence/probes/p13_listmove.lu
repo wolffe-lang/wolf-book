@@ -1,0 +1,7 @@
+fn main() -> !int {
+    var names = List[str]()
+    (mut names).push("ada")
+    let roster = names
+    print("{roster.len}")
+    0
+}

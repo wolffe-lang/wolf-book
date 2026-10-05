@@ -1,0 +1,6 @@
+fn main() -> !int {
+    let a = "wolf"
+    let b = a
+    print("{a} {b}")
+    0
+}

@@ -1,0 +1,7 @@
+struct Tok { start: int, end: int }
+fn main() -> !int {
+    let t = Tok { start: 0, end: 3 }
+    let u = t
+    print("{t.start} {u.end}")
+    0
+}

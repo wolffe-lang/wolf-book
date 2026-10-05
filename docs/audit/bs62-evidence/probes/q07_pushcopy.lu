@@ -1,0 +1,8 @@
+struct Doc { title: str, words: int }
+fn main() -> !int {
+    var docs = List[Doc]()
+    let d = Doc { title: "regions", words: 900 }
+    (mut docs).push(d)
+    print("{d.title} {docs.len}")
+    0
+}

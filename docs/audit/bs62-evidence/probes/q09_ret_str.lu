@@ -1,0 +1,12 @@
+fn pick(a: str, b: str) -> str {
+    var best = a
+    if b.len > a.len { best = b }
+    best
+}
+fn main() -> !int {
+    let x = "wolf"
+    let y = "regions"
+    let w = pick(x, y)
+    print("{w} {x} {y}")
+    0
+}

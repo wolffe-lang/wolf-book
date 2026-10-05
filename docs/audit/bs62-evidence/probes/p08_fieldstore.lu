@@ -1,0 +1,10 @@
+struct Meta { author: str, words: int }
+struct Doc { title: str, meta: Meta }
+fn main() -> !int {
+    var s = "regions"
+    let m = Meta { author: "ada", words: 900 }
+    var d = Doc { title: s, meta: m }
+    print("{s} {d.title}")
+    print("{m.words}")
+    0
+}

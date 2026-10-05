@@ -1,0 +1,9 @@
+struct Meta { author: str, words: int }
+struct Doc { title: str, meta: Meta }
+fn main() -> !int {
+    var d = Doc { title: "regions", meta: Meta { author: "ada", words: 900 } }
+    let t = d.title
+    let m = d.meta
+    print("{t} / {d.title} / {m.author}")
+    0
+}

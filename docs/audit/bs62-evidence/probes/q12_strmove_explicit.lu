@@ -1,0 +1,7 @@
+fn main() -> !int {
+    var lead = "ada"
+    let a = move lead
+    lead = "lin"
+    print("{a} {lead}")
+    0
+}

@@ -1,0 +1,8 @@
+enum Ordering { Less, Equal, Greater }
+fn main() -> !int {
+    let a = Ordering.Less
+    let b = a
+    let c = a
+    print("ok")
+    0
+}

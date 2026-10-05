@@ -1,0 +1,7 @@
+fn adopt(take w: str) -> str { w }
+fn main() -> !int {
+    var s = "ada"
+    let a = adopt(take s)
+    print("{a} {s}")
+    0
+}

@@ -1,0 +1,6 @@
+fn main() -> !int {
+    var m = 7
+    let n = move m
+    print("{n} {m}")
+    0
+}

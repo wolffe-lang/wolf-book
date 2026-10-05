@@ -1,0 +1,7 @@
+enum Mood { calm, howl }
+fn main() -> !int {
+    let a = Mood.calm
+    let b = a
+    match a { Mood.calm => print("calm"), Mood.howl => print("howl") }
+    0
+}
