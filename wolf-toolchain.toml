@@ -1848,6 +1848,17 @@ repo = "wolffe-lang/wolf-interp"
 rev = "f9269e3364169585fdfe92407639418220be373b"
 version = "lupin 0.1.46 (wolf-interp, reference interpreter at pin 8e36bc1)"
 
+[lupin-trace]
+# bs62: chapter 7's memory diagrams are drawn from lupin's place trace
+# (`--trace-places`, schema version 1, wolf-interp is72, PR #195), which no
+# release carries yet. CI builds lupin at this rev for `cargo xtask
+# diagrams --check` alone; every sample still runs on [lupin]. When a
+# release carries the trace and [lupin] moves to it, this rev becomes
+# [lupin].rev (the one line to move) and the CI step builds nothing extra.
+# a56f924: is72's head as its lane handed it over (2026-10-05); the traces
+# it takes are byte-identical to the ones under snapshots/traces/.
+repo = "wolffe-lang/wolf-interp"
+rev = "a56f924485ff20859fc66c98333a68ad57adba29"
 [wolf-lsp]
 # Source of the vendored tmLanguage grammars under highlight/.
 # `cargo xtask grammar-sync --check` fails on drift against this pin.
