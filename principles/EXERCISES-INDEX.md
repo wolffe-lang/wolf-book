@@ -64,7 +64,7 @@ several of its stems are tagged `· wolf` while the distilled solution
 program on disk runs under lupin — the tier column says what CI
 executed, and the exercise file says which is which and why.
 
-Tier totals: 191 run (lupin) · 9 run (lupin REPL) · 31 run (wolf) · 28 run (wolf + lupin) · 78 prose · 8 pending. That is 345.
+Tier totals: 38 run (lupin) · 9 run (lupin REPL) · 41 run (wolf) · 173 run (wolf + lupin) · 78 prose · 6 pending. That is 345.
 (The totals and the tables were recounted mechanically against the
 masters at bs21 — the previous header said 276/231 while the tables
 had drifted from the marker count, ch05's 5-9 and 5-10 among the
@@ -105,136 +105,136 @@ ahead of 24-7; the batch is the chapter's last two either way.
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
-| §1.1 — exemplar batch (EXERCISES.md §5) | 1-1 | fingers · lupin | run (lupin) |
-| §1.3 — exemplar batch (EXERCISES.md §5) | 1-2 | comprehension · lupin | run (lupin) |
-| §1.1 — exemplar batch (EXERCISES.md §5) | 1-3 | fingers · lupin | run (lupin) |
+| §1.1 — exemplar batch (EXERCISES.md §5) | 1-1 | fingers · lupin | run (wolf + lupin) |
+| §1.3 — exemplar batch (EXERCISES.md §5) | 1-2 | comprehension · lupin | run (wolf + lupin) |
+| §1.1 — exemplar batch (EXERCISES.md §5) | 1-3 | fingers · lupin | run (wolf + lupin) |
 | §1.4 — The REPL: a spec you can interrogate | 1-4 | fingers · lupin REPL | run (lupin REPL) |
-| §1.3 — Scripts before projects | 1-5 | fingers + extension · lupin | run (lupin) |
-| §1.5 — What `run` was doing for you | 1-6 | spelunking · lupin | run (lupin) |
+| §1.3 — Scripts before projects | 1-5 | fingers + extension · lupin | run (wolf + lupin) |
+| §1.5 — What `run` was doing for you | 1-6 | spelunking · lupin | run (wolf) |
 | §1.5 — What `run` was doing for you | 1-8 | comprehension · wolf + lupin | run (wolf + lupin) |
 | §1.2 — Two implementations, one language | 1-7 | fingers · wolf + lupin | run (wolf + lupin) |
-| §1.3 — Scripts before projects | 1-9 | fingers · lupin | run (lupin) |
-| §1.5 — What `run` was doing for you | 1-10 | comprehension · lupin | run (lupin) |
-| §1.1 — A program worth keeping | 1-11 | fingers · lupin | run (lupin) |
+| §1.3 — Scripts before projects | 1-9 | fingers · lupin | run (wolf + lupin) |
+| §1.5 — What `run` was doing for you | 1-10 | comprehension · lupin | run (wolf + lupin) |
+| §1.1 — A program worth keeping | 1-11 | fingers · lupin | run (wolf + lupin) |
 
 ## ch02 — 15 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
 | §2.3 — exemplar batch (EXERCISES.md §5) | 2-1 | comprehension · lupin REPL | run (lupin REPL) |
-| §2.1 — exemplar batch (EXERCISES.md §5) | 2-2 | fingers · lupin | run (lupin) |
-| §2.3 — exemplar batch (EXERCISES.md §5) | 2-3 | comprehension · lupin | run (lupin) |
-| §2.4 — exemplar batch (EXERCISES.md §5) | 2-4 | extension · lupin | run (lupin) |
+| §2.1 — exemplar batch (EXERCISES.md §5) | 2-2 | fingers · lupin | run (wolf + lupin) |
+| §2.3 — exemplar batch (EXERCISES.md §5) | 2-3 | comprehension · lupin | run (wolf + lupin) |
+| §2.4 — exemplar batch (EXERCISES.md §5) | 2-4 | extension · lupin | run (wolf + lupin) |
 | §2.2 — Multiline and raw | 2-5 | comprehension · lupin REPL | run (lupin REPL) |
 | §2.3 — Bytes, honestly | 2-6 | comprehension · lupin REPL | run (lupin REPL) |
-| §2.4 — Iterating meaning | 2-7 | extension · lupin | run (lupin) |
-| §2.4 — Iterating meaning | 2-9 | comprehension · wolf | run (wolf) |
+| §2.4 — Iterating meaning | 2-7 | extension · lupin | run (wolf + lupin) |
+| §2.4 — Iterating meaning | 2-9 | comprehension · wolf | run (wolf + lupin) |
 | §2.5 — What the machine does | 2-8 | comprehension · lupin REPL | run (lupin REPL) |
-| §2.1 — Literals, methods, interpolation | 2-12 | comprehension + extension · lupin | run (lupin) |
-| §2.2 — Multiline and raw | 2-13 | fingers · lupin | run (lupin) |
-| §2.4 — Iterating meaning | 2-10 | fingers · lupin | run (lupin) |
-| §2.4 — Iterating meaning | 2-11 | fingers · lupin | run (lupin) |
-| §2.4 — Iterating meaning | 2-14 | fingers · lupin | run (lupin) |
-| §2.4 — Iterating meaning (master only, not printed) | 2-15 | extension · lupin | run (lupin) |
+| §2.1 — Literals, methods, interpolation | 2-12 | comprehension + extension · lupin | run (wolf + lupin) |
+| §2.2 — Multiline and raw | 2-13 | fingers · lupin | run (wolf + lupin) |
+| §2.4 — Iterating meaning | 2-10 | fingers · lupin | run (wolf + lupin) |
+| §2.4 — Iterating meaning | 2-11 | fingers · lupin | run (wolf + lupin) |
+| §2.4 — Iterating meaning | 2-14 | fingers · lupin | run (wolf + lupin) |
+| §2.4 — Iterating meaning (master only, not printed) | 2-15 | extension · lupin | run (wolf + lupin) |
 
 ## ch03 — 15 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
-| §3.2, §3.4 — exemplar batch (EXERCISES.md §5) | 3-1 | comprehension · lupin | run (lupin) |
-| §3.1 — exemplar batch (EXERCISES.md §5) | 3-2 | comprehension · wolf + lupin | run (wolf + lupin) |
-| §3.3 — exemplar batch (EXERCISES.md §5) | 3-3 | comprehension · lupin | run (lupin) |
-| §3.3 — exemplar batch (EXERCISES.md §5) | 3-4 | comprehension · lupin | run (lupin) |
+| §3.2, §3.4 — exemplar batch (EXERCISES.md §5) | 3-1 | comprehension · lupin | run (wolf + lupin) |
+| §3.1 — exemplar batch (EXERCISES.md §5) | 3-2 | comprehension · wolf + lupin | run (wolf) |
+| §3.3 — exemplar batch (EXERCISES.md §5) | 3-3 | comprehension · lupin | run (wolf + lupin) |
+| §3.3 — exemplar batch (EXERCISES.md §5) | 3-4 | comprehension · lupin | run (wolf + lupin) |
 | §3.2 — exemplar batch (EXERCISES.md §5) | 3-5 | design | prose |
-| §3.3 — Arithmetic that traps | 3-6 | extension (break-it-on-purpose) · lupin | run (lupin) |
-| §3.3 — Arithmetic that traps | 3-7 | comprehension · lupin | run (lupin) |
-| §3.1 — `let`, `var`, and handing values over | 3-8 | comprehension · lupin | run (lupin) |
-| §3.2 — Everything is an expression | 3-9 | fingers · lupin | run (lupin) |
-| Chapter batch | 3-10 | extension · lupin | run (lupin) |
-| Chapter batch | 3-11 | fingers · lupin | run (lupin) |
-| Chapter batch | 3-12 | fingers · lupin | run (lupin) |
+| §3.3 — Arithmetic that traps | 3-6 | extension (break-it-on-purpose) · lupin | run (wolf + lupin) |
+| §3.3 — Arithmetic that traps | 3-7 | comprehension · lupin | run (wolf + lupin) |
+| §3.1 — `let`, `var`, and handing values over | 3-8 | comprehension · lupin | run (wolf + lupin) |
+| §3.2 — Everything is an expression | 3-9 | fingers · lupin | run (wolf + lupin) |
+| Chapter batch | 3-10 | extension · lupin | run (wolf + lupin) |
+| Chapter batch | 3-11 | fingers · lupin | run (wolf + lupin) |
+| Chapter batch | 3-12 | fingers · lupin | run (wolf + lupin) |
 | Chapter batch (master only, not printed) | 3-13 | comprehension · lupin | run (lupin) |
-| Chapter batch | 3-14 | fingers · lupin | run (lupin) |
-| §3.2 — Everything is an expression | 3-15 | fingers · lupin | run (lupin) |
+| Chapter batch | 3-14 | fingers · lupin | run (wolf + lupin) |
+| §3.2 — Everything is an expression | 3-15 | fingers · lupin | run (wolf + lupin) |
 
 ## ch04 — 9 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
-| §4.2 — exemplar batch (EXERCISES.md §5) | 4-1 | fingers · lupin | run (lupin) |
-| §4.3 — exemplar batch (EXERCISES.md §5) | 4-2 | comprehension · lupin | run (lupin) |
-| §4.1 — Signatures are the contract | 4-5 | comprehension · lupin | run (lupin) |
-| §4.3 — `defer` | 4-6 | comprehension · lupin | run (lupin) |
-| Chapter batch | 4-7 | extension · lupin | run (lupin) |
-| §4.1 — Signatures are the contract | 4-10 | fingers · lupin | run (lupin) |
-| §4.2 — Functions as values | 4-9 | extension · lupin | run (lupin) |
-| Chapter batch | 4-8 | fingers · lupin | run (lupin) |
-| Chapter batch | 4-11 | extension · lupin | run (lupin) |
+| §4.2 — exemplar batch (EXERCISES.md §5) | 4-1 | fingers · lupin | run (wolf + lupin) |
+| §4.3 — exemplar batch (EXERCISES.md §5) | 4-2 | comprehension · lupin | run (wolf + lupin) |
+| §4.1 — Signatures are the contract | 4-5 | comprehension · lupin | run (wolf + lupin) |
+| §4.3 — `defer` | 4-6 | comprehension · lupin | run (wolf + lupin) |
+| Chapter batch | 4-7 | extension · lupin | run (wolf + lupin) |
+| §4.1 — Signatures are the contract | 4-10 | fingers · lupin | run (wolf + lupin) |
+| §4.2 — Functions as values | 4-9 | extension · lupin | run (wolf + lupin) |
+| Chapter batch | 4-8 | fingers · lupin | run (wolf + lupin) |
+| Chapter batch | 4-11 | extension · lupin | run (wolf + lupin) |
 
 ## ch05 — 16 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
-| §5.1 — exemplar batch (EXERCISES.md §5) | 5-1 | fingers · lupin | run (lupin) |
-| §5.1 — exemplar batch (EXERCISES.md §5) | 5-2 | fingers · lupin | run (lupin) |
-| §5.3 — exemplar batch (EXERCISES.md §5) | 5-3 | extension · lupin | run (lupin) |
-| §5.4 — exemplar batch (EXERCISES.md §5) | 5-4 | comprehension · lupin | run (lupin) |
+| §5.1 — exemplar batch (EXERCISES.md §5) | 5-1 | fingers · lupin | run (wolf + lupin) |
+| §5.1 — exemplar batch (EXERCISES.md §5) | 5-2 | fingers · lupin | run (wolf + lupin) |
+| §5.3 — exemplar batch (EXERCISES.md §5) | 5-3 | extension · lupin | run (wolf + lupin) |
+| §5.4 — exemplar batch (EXERCISES.md §5) | 5-4 | comprehension · lupin | run (wolf + lupin) |
 | §5.3 — exemplar batch (EXERCISES.md §5) | 5-5 | design | prose |
 | §5.1 — `List`, `Map`, `Set`, tuples | 5-6 | extension · wolf + lupin | run (wolf + lupin) |
 | §5.2 — The combinator style | 5-8 | comprehension · pending | pending |
-| §5.5 — Structs | 5-16 | fingers · lupin | run (lupin) |
-| §5.5 — Structs | 5-17 | extension · lupin | run (lupin) |
+| §5.5 — Structs | 5-16 | fingers · lupin | run (wolf + lupin) |
+| §5.5 — Structs | 5-17 | extension · lupin | run (wolf + lupin) |
 | §5.6 — Traits | 5-18 | design | prose |
-| Chapter batch | 5-7 | fingers + extension · lupin | run (lupin) |
-| §5.1 — `List`, `Map`, `Set`, tuples | 5-12 | fingers · lupin | run (lupin) |
-| §5.1 — `List`, `Map`, `Set`, tuples | 5-14 | fingers · lupin | run (lupin) |
-| Chapter batch | 5-11 | extension · lupin | run (lupin) |
-| Chapter batch | 5-13 | extension · lupin | run (lupin) |
-| Chapter batch | 5-15 | extension · lupin | run (lupin) |
+| Chapter batch | 5-7 | fingers + extension · lupin | run (wolf + lupin) |
+| §5.1 — `List`, `Map`, `Set`, tuples | 5-12 | fingers · lupin | run (wolf + lupin) |
+| §5.1 — `List`, `Map`, `Set`, tuples | 5-14 | fingers · lupin | run (wolf + lupin) |
+| Chapter batch | 5-11 | extension · lupin | run (wolf + lupin) |
+| Chapter batch | 5-13 | extension · lupin | run (wolf + lupin) |
+| Chapter batch | 5-15 | extension · lupin | run (wolf + lupin) |
 
 ## ch06 — 15 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
-| §6.1 — exemplar batch (EXERCISES.md §5) | 6-1 | fingers · lupin | run (lupin) |
-| §6.2 — exemplar batch (EXERCISES.md §5) | 6-2 | comprehension · lupin | run (lupin) |
-| §6.1 — exemplar batch (EXERCISES.md §5) | 6-3 | extension · lupin | run (lupin) |
-| §6.2 — exemplar batch (EXERCISES.md §5) | 6-4 | comprehension · lupin | run (lupin) |
-| §6.3 — exemplar batch (EXERCISES.md §5) | 6-5 | comprehension · lupin | run (lupin) |
-| §6.1 — `!T` and the row | 6-6 | comprehension · lupin | run (lupin) |
-| §6.2 — `?`, `else`, `else |err|` | 6-14 | comprehension + extension · lupin | run (lupin) |
-| §6.2 — `?`, `else`, `else |err|` | 6-7 | extension · lupin | run (lupin) |
-| §6.4 — Hardening by refactor | 6-9 | extension · lupin | run (lupin) |
-| §6.5 — Capstone: wordcount | 6-10 | extension · lupin | run (lupin) |
+| §6.1 — exemplar batch (EXERCISES.md §5) | 6-1 | fingers · lupin | run (wolf + lupin) |
+| §6.2 — exemplar batch (EXERCISES.md §5) | 6-2 | comprehension · lupin | run (wolf + lupin) |
+| §6.1 — exemplar batch (EXERCISES.md §5) | 6-3 | extension · lupin | run (wolf + lupin) |
+| §6.2 — exemplar batch (EXERCISES.md §5) | 6-4 | comprehension · lupin | run (wolf + lupin) |
+| §6.3 — exemplar batch (EXERCISES.md §5) | 6-5 | comprehension · lupin | run (wolf + lupin) |
+| §6.1 — `!T` and the row | 6-6 | comprehension · lupin | run (wolf + lupin) |
+| §6.2 — `?`, `else`, `else |err|` | 6-14 | comprehension + extension · lupin | run (wolf + lupin) |
+| §6.2 — `?`, `else`, `else |err|` | 6-7 | extension · lupin | run (wolf + lupin) |
+| §6.4 — Hardening by refactor | 6-9 | extension · lupin | run (wolf + lupin) |
+| §6.5 — Capstone: wordcount | 6-10 | extension · lupin | run (wolf + lupin) |
 | §6.6 — `match` over the value | 6-15 | comprehension · wolf + lupin | run (wolf + lupin) |
 | Chapter batch | 6-8 | design | prose |
-| Chapter batch | 6-11 | extension · lupin | run (lupin) |
-| Chapter batch | 6-12 | extension · lupin | run (lupin) |
-| Chapter batch | 6-13 | extension · lupin | run (lupin) |
+| Chapter batch | 6-11 | extension · lupin | run (wolf + lupin) |
+| Chapter batch | 6-12 | extension · lupin | run (wolf + lupin) |
+| Chapter batch | 6-13 | extension · lupin | run (wolf + lupin) |
 
 ## ch07 — 23 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
 | §7.1 — The error we owed you | 7-1 | comprehension · wolf + lupin | run (wolf + lupin) |
-| §7.2 — Values are trees | 7-2 | fingers · lupin | run (lupin) |
-| §7.2 — Values are trees | 7-3 | extension (break-it-on-purpose) · wolf + lupin | run (wolf + lupin) |
-| §7.2 — Values are trees | 7-4 | comprehension · lupin | run (lupin) |
+| §7.2 — Values are trees | 7-2 | fingers · lupin | run (wolf + lupin) |
+| §7.2 — Values are trees | 7-3 | extension (break-it-on-purpose) · wolf + lupin | run (wolf) |
+| §7.2 — Values are trees | 7-4 | comprehension · lupin | run (wolf + lupin) |
 | §7.3 — Borrowing without the word | 7-5 | comprehension · lupin; static verdict · pending | pending |
 | §7.4 — `mut` at both ends | 7-6 | extension · wolf + lupin | run (wolf + lupin) |
-| §7.4 — `mut` at both ends | 7-7 | fingers + spelunking · lupin | run (lupin) |
-| §7.5 — Field-granular exclusivity | 7-8 | comprehension · wolf + lupin | run (wolf + lupin) |
+| §7.4 — `mut` at both ends | 7-7 | fingers + spelunking · lupin | run (wolf + lupin) |
+| §7.5 — Field-granular exclusivity | 7-8 | comprehension · wolf + lupin | run (wolf) |
 | §7.5 — Field-granular exclusivity | 7-9 | comprehension + spelunking · wolf + lupin | run (wolf + lupin) |
 | §7.6 — Why there are no lifetimes | 7-10 | spelunking · wolf | run (wolf) |
 | §7.6 — Why there are no lifetimes | 7-11 | design | prose |
 | §7.7 — What the machine does | 7-12 | fingers · lupin REPL | run (lupin REPL) |
-| §7.8 — Deciding at run time | 7-13 | extension · lupin | run (lupin) |
+| §7.8 — Deciding at run time | 7-13 | extension · lupin | run (wolf + lupin) |
 | §7.8 — Deciding at run time | 7-14 | design | prose |
-| Chapter batch | 7-15 | extension · lupin | run (lupin) |
-| Chapter batch | 7-16 | comprehension + extension · lupin | run (lupin) |
-| Chapter batch | 7-17 | fingers · lupin | run (lupin) |
-| Chapter batch | 7-18 | extension · lupin | run (lupin) |
-| Chapter batch | 7-19 | fingers · lupin | run (lupin) |
+| Chapter batch | 7-15 | extension · lupin | run (wolf + lupin) |
+| Chapter batch | 7-16 | comprehension + extension · lupin | run (wolf + lupin) |
+| Chapter batch | 7-17 | fingers · lupin | run (wolf + lupin) |
+| Chapter batch | 7-18 | extension · lupin | run (wolf + lupin) |
+| Chapter batch | 7-19 | fingers · lupin | run (wolf + lupin) |
 | Chapter batch | 7-20 | extension · wolf + lupin | run (wolf + lupin) |
 | Chapter batch | 7-21 | extension · wolf + lupin | run (wolf + lupin) |
 | Chapter batch | 7-22 | extension · wolf + lupin | run (wolf + lupin) |
@@ -245,24 +245,24 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | section | exercise | type · checker | tier |
 |---|---|---|---|
 | §8.1 — You already think in regions | 8-1 | comprehension · prose | prose |
-| §8.2 — The block form | 8-2 | fingers · lupin | run (lupin) |
+| §8.2 — The block form | 8-2 | fingers · lupin | run (wolf + lupin) |
 | §8.2 — The block form | 8-3 | comprehension · wolf | run (wolf) |
 | §8.3 — Regions are values | 8-4 | fingers · lupin REPL | run (lupin REPL) |
 | §8.3 — Regions are values | 8-5 | comprehension · lupin | run (lupin) |
 | §8.4 — Cycles are fine here | 8-6 | fingers · wolf + lupin | run (wolf + lupin) |
 | §8.4 — Cycles are fine here | 8-7 | extension · pending | pending |
-| §8.5 — Freeze | 8-8 | comprehension · wolf + lupin | run (wolf + lupin) |
+| §8.5 — Freeze | 8-8 | comprehension · wolf + lupin | run (wolf) |
 | §8.5 — Freeze | 8-9 | comprehension + spelunking · wolf | run (wolf) |
 | §8.5 — Freeze | 8-10 | comprehension · lupin | run (lupin) |
-| §8.6 — Open, and open again | 8-11 | comprehension · lupin | run (lupin) |
+| §8.6 — Open, and open again | 8-11 | comprehension · lupin | run (wolf + lupin) |
 | §8.7 — `shared` and `handle` | 8-12 | comprehension · lupin | run (lupin) |
 | §8.7 — `shared` and `handle` | 8-13 | design | prose |
 | §8.8 — What the machine does | 8-14 | spelunking · wolf | run (wolf) |
 | Chapter batch | 8-15 | extension · wolf + lupin | run (wolf + lupin) |
-| Chapter batch | 8-16 | extension · lupin | run (lupin) |
-| Chapter batch | 8-17 | extension · lupin | run (lupin) |
-| §8.9 — The ledger, and a budget on it | 8-18 | fingers · lupin | run (lupin) |
-| §8.9 — The ledger, and a budget on it | 8-19 | extension · lupin | run (lupin) |
+| Chapter batch | 8-16 | extension · lupin | run (wolf + lupin) |
+| Chapter batch | 8-17 | extension · lupin | run (wolf + lupin) |
+| §8.9 — The ledger, and a budget on it | 8-18 | fingers · lupin | run (wolf + lupin) |
+| §8.9 — The ledger, and a budget on it | 8-19 | extension · lupin | run (wolf + lupin) |
 
 ## ch09 — 15 exercises
 
@@ -277,7 +277,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §9.4 — The one door back | 9-7 | comprehension · lupin | run (lupin) |
 | §9.5 — `#include`-grade C | 9-8 | fingers · wolf + lupin | run (wolf + lupin) |
 | §9.6 — FFI and regions | 9-9 | comprehension · lupin | run (lupin) |
-| §9.7 — Auditing: `#[trusted]` and the audit surface | 9-10 | spelunking · lupin | run (lupin) |
+| §9.7 — Auditing: `#[trusted]` and the audit surface | 9-10 | spelunking · lupin | run (wolf + lupin) |
 | §9.8 — The four-tier picture | 9-11 | comprehension · prose | prose |
 | §9.8 — The four-tier picture | 9-12 | design | prose |
 | Chapter batch | 9-13 | extension (break-it-on-purpose) · lupin | run (lupin) |
@@ -288,15 +288,15 @@ ahead of 24-7; the batch is the chapter's last two either way.
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
-| §10.1 — The task tree | 10-1 | fingers · lupin | run (lupin) |
-| §10.1 — The task tree | 10-2 | comprehension · lupin | run (lupin) |
-| §10.1 — The task tree | 10-3 | comprehension · lupin | run (lupin) |
+| §10.1 — The task tree | 10-1 | fingers · lupin | run (wolf + lupin) |
+| §10.1 — The task tree | 10-2 | comprehension · lupin | run (wolf + lupin) |
+| §10.1 — The task tree | 10-3 | comprehension · lupin | run (wolf + lupin) |
 | §10.2 — The leaked goroutine, retired | 10-4 | extension (break-it-on-purpose) · lupin | run (lupin) |
 | §10.2 — The leaked goroutine, retired | 10-5 | spelunking · lupin | run (lupin) |
-| §10.3 — The dropped error, surfaced | 10-6 | comprehension · lupin | run (lupin) |
-| §10.3 — The dropped error, surfaced | 10-7 | extension · lupin | run (lupin) |
-| §10.4 — Cancellation | 10-8 | comprehension · lupin | run (lupin) |
-| Chapter batch | 10-9 | extension · lupin | run (lupin) |
+| §10.3 — The dropped error, surfaced | 10-6 | comprehension · lupin | run (wolf + lupin) |
+| §10.3 — The dropped error, surfaced | 10-7 | extension · lupin | run (wolf + lupin) |
+| §10.4 — Cancellation | 10-8 | comprehension · lupin | run (wolf + lupin) |
+| Chapter batch | 10-9 | extension · lupin | run (wolf + lupin) |
 | Chapter batch | 10-10 | design | prose |
 
 ## ch11 — 8 exercises
@@ -306,8 +306,8 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §11.1 — The scope as a capability | 11-1 | fingers · wolf + lupin | run (wolf + lupin) |
 | §11.1 — The scope as a capability | 11-2 | comprehension · lupin | run (lupin) |
 | §11.1 — The scope as a capability | 11-3 | comprehension · lupin | run (lupin) |
-| §11.2 — The background refresher | 11-4 | extension · lupin | run (lupin) |
-| §11.2 — The background refresher | 11-5 | comprehension + schedule play · lupin | run (lupin) |
+| §11.2 — The background refresher | 11-4 | extension · lupin | run (wolf + lupin) |
+| §11.2 — The background refresher | 11-5 | comprehension + schedule play · lupin | run (wolf + lupin) |
 | §11.3 — The structured dump | 11-6 | spelunking · lupin REPL | run (lupin REPL) |
 | §11.3 — The structured dump | 11-7 | comprehension · lupin REPL | run (lupin REPL) |
 | Chapter batch | 11-8 | design | prose |
@@ -316,16 +316,16 @@ ahead of 24-7; the batch is the chapter's last two either way.
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
-| §12.1 — Typed channels | 12-1 | fingers · lupin | run (lupin) |
+| §12.1 — Typed channels | 12-1 | fingers · lupin | run (wolf + lupin) |
 | §12.1 — Typed channels | 12-2 | extension (break-it-on-purpose) · lupin | run (lupin) |
-| §12.2 — `select` with timeouts | 12-3 | comprehension · lupin | run (lupin) |
-| §12.2 — `select` with timeouts | 12-4 | comprehension + schedule play · lupin | run (lupin) |
+| §12.2 — `select` with timeouts | 12-3 | comprehension · lupin | run (wolf + lupin) |
+| §12.2 — `select` with timeouts | 12-4 | comprehension + schedule play · lupin | run (wolf + lupin) |
 | §12.2 — `select` with timeouts | 12-5 | spelunking · lupin | run (lupin) |
-| §12.3 — When channels are the wrong queue | 12-6 | extension · lupin | run (lupin) |
+| §12.3 — When channels are the wrong queue | 12-6 | extension · lupin | run (wolf + lupin) |
 | §12.3 — When channels are the wrong queue | 12-7 | design | prose |
-| §12.4 — `when (a, b)` | 12-8 | comprehension · lupin | run (lupin) |
-| §12.4 — `when (a, b)` | 12-9 | extension (break-it-on-purpose) · wolf + lupin | run (wolf + lupin) |
-| §12.3 — When channels are the wrong queue | 12-10 | extension · lupin | run (lupin) |
+| §12.4 — `when (a, b)` | 12-8 | comprehension · lupin | run (wolf + lupin) |
+| §12.4 — `when (a, b)` | 12-9 | extension (break-it-on-purpose) · wolf + lupin | run (wolf) |
+| §12.3 — When channels are the wrong queue | 12-10 | extension · lupin | run (wolf + lupin) |
 | §12.3 — When channels are the wrong queue | 12-11 | extension · wolf + lupin | run (wolf + lupin) |
 
 ## ch13 — 11 exercises
@@ -333,42 +333,42 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | section | exercise | type · checker | tier |
 |---|---|---|---|
 | §13.1 — `par` | 13-1 | comprehension · wolf + lupin | run (wolf + lupin) |
-| §13.1 — `par` | 13-2 → printed in §13.2 | fingers · lupin | run (lupin) |
-| §13.2 — The race that does not compile | 13-3 | comprehension · wolf + lupin | run (wolf + lupin) |
-| §13.2 — The race that does not compile | 13-4 | spelunking · lupin | run (lupin) |
-| Chapter batch | 13-5 | extension · lupin | run (lupin) |
+| §13.1 — `par` | 13-2 → printed in §13.2 | fingers · lupin | run (wolf + lupin) |
+| §13.2 — The race that does not compile | 13-3 | comprehension · wolf + lupin | run (wolf) |
+| §13.2 — The race that does not compile | 13-4 | spelunking · lupin | run (wolf + lupin) |
+| Chapter batch | 13-5 | extension · lupin | run (wolf + lupin) |
 | §13.1 — `par` | 13-6 | extension · wolf + lupin | run (wolf + lupin) |
-| Chapter batch | 13-7 | comprehension · lupin | run (lupin) |
+| Chapter batch | 13-7 | comprehension · lupin | run (wolf + lupin) |
 | §13.1 — `par` | 13-8 | design | prose |
-| Chapter batch | 13-9 | extension · lupin | run (lupin) |
-| Chapter batch | 13-10 | comprehension + extension · lupin | run (lupin) |
-| Chapter batch | 13-11 | extension · lupin | run (lupin) |
+| Chapter batch | 13-9 | extension · lupin | run (wolf + lupin) |
+| Chapter batch | 13-10 | comprehension + extension · lupin | run (wolf + lupin) |
+| Chapter batch | 13-11 | extension · lupin | run (wolf + lupin) |
 
 ## ch14 — 10 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
-| §14.1 — Armstrong's argument, one page | 14-1 | comprehension · lupin | run (lupin) |
+| §14.1 — Armstrong's argument, one page | 14-1 | comprehension · lupin | run (wolf + lupin) |
 | §14.1 — Armstrong's argument, one page | 14-2 | design | prose |
-| §14.2 — Crash means bulk-free | 14-3 | comprehension · lupin | run (lupin) |
-| §14.2 — Crash means bulk-free | 14-4 | comprehension · lupin | run (lupin) |
-| §14.2 — Crash means bulk-free | 14-5 | comprehension · lupin | run (lupin) |
-| §14.3 — Mailboxes | 14-6 | fingers · lupin | run (lupin) |
-| §14.3 — Mailboxes | 14-7 | extension · lupin | run (lupin) |
+| §14.2 — Crash means bulk-free | 14-3 | comprehension · lupin | run (wolf + lupin) |
+| §14.2 — Crash means bulk-free | 14-4 | comprehension · lupin | run (wolf + lupin) |
+| §14.2 — Crash means bulk-free | 14-5 | comprehension · lupin | run (wolf + lupin) |
+| §14.3 — Mailboxes | 14-6 | fingers · lupin | run (wolf + lupin) |
+| §14.3 — Mailboxes | 14-7 | extension · lupin | run (wolf + lupin) |
 | §14.3 — Mailboxes | 14-8 | design | prose |
-| Chapter batch | 14-9 | comprehension + schedule play · lupin | run (lupin) |
-| Chapter batch | 14-10 | extension · lupin | run (lupin) |
+| Chapter batch | 14-9 | comprehension + schedule play · lupin | run (wolf + lupin) |
+| Chapter batch | 14-10 | extension · lupin | run (wolf + lupin) |
 
 ## ch15 — 9 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
-| §15.1 — Two primitives | 15-1 | comprehension · lupin | run (lupin) |
-| §15.1 — Two primitives | 15-2 | comprehension · lupin | run (lupin) |
+| §15.1 — Two primitives | 15-1 | comprehension · lupin | run (wolf + lupin) |
+| §15.1 — Two primitives | 15-2 | comprehension · lupin | run (wolf + lupin) |
 | §15.1 — Two primitives | 15-3 | design | prose |
-| §15.2 — A supervisor in forty lines | 15-4 | fingers · lupin | run (lupin) |
-| §15.2 — A supervisor in forty lines | 15-5 | comprehension · lupin | run (lupin) |
-| §15.2 — A supervisor in forty lines | 15-6 | extension · lupin | run (lupin) |
+| §15.2 — A supervisor in forty lines | 15-4 | fingers · lupin | run (wolf + lupin) |
+| §15.2 — A supervisor in forty lines | 15-5 | comprehension · lupin | run (wolf + lupin) |
+| §15.2 — A supervisor in forty lines | 15-6 | extension · lupin | run (wolf + lupin) |
 | §15.3 — The root supervisor | 15-7 | design | prose |
 | §15.3 — The root supervisor | 15-8 | spelunking · corpus | prose |
 | Chapter batch | 15-9 | design | prose |
@@ -377,27 +377,27 @@ ahead of 24-7; the batch is the chapter's last two either way.
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
-| §16.1 — `ch.send(move r)` | 16-1 | comprehension · lupin | run (lupin) |
-| §16.1 — `ch.send(move r)` | 16-2 | fingers · lupin | run (lupin) |
+| §16.1 — `ch.send(move r)` | 16-1 | comprehension · lupin | run (wolf + lupin) |
+| §16.1 — `ch.send(move r)` | 16-2 | fingers · lupin | run (wolf + lupin) |
 | §16.1 — `ch.send(move r)` | 16-3 | extension (break-it-on-purpose) · lupin | run (lupin) |
-| §16.2 — Freeze, then share | 16-4 | comprehension · lupin | run (lupin) |
+| §16.2 — Freeze, then share | 16-4 | comprehension · lupin | run (wolf + lupin) |
 | §16.2 — Freeze, then share | 16-5 | design | prose |
 | §16.3 — The honest lineup | 16-6 | design | prose |
-| Chapter batch | 16-7 | extension · lupin | run (lupin) |
-| Chapter batch | 16-8 | comprehension + schedule play · lupin | run (lupin) |
-| Chapter batch | 16-9 | comprehension · wolf + lupin | run (wolf + lupin) |
-| Chapter batch | 16-10 | extension · lupin | run (lupin) |
+| Chapter batch | 16-7 | extension · lupin | run (wolf + lupin) |
+| Chapter batch | 16-8 | comprehension + schedule play · lupin | run (wolf + lupin) |
+| Chapter batch | 16-9 | comprehension · wolf + lupin | run (wolf) |
+| Chapter batch | 16-10 | extension · lupin | run (wolf + lupin) |
 
 ## ch17 — 9 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
-| §17.1 — The bug that typechecks | 17-1 | comprehension · lupin | run (lupin) |
+| §17.1 — The bug that typechecks | 17-1 | comprehension · lupin | run (wolf + lupin) |
 | §17.1 — The bug that typechecks | 17-2 | comprehension (schedule play) · lupin | run (lupin) |
-| §17.2 — The seed, the schedule, and the frontier | 17-3 | fingers · lupin | run (lupin) |
+| §17.2 — The seed, the schedule, and the frontier | 17-3 | fingers · lupin | run (wolf + lupin) |
 | §17.2 — The seed, the schedule, and the frontier | 17-4 | comprehension · lupin | run (lupin) |
 | §17.2 — The seed, the schedule, and the frontier | 17-5 | spelunking · lupin | run (lupin) |
-| §17.3 (held, not printed) — `--chaos` | 17-6 | comprehension · pending | pending |
+| §17.3 (held, not printed) — `--chaos` | 17-6 | comprehension · pending | run (wolf + lupin) |
 | §17.3 — Scope honesty (what exploration cannot see) | 17-7 | comprehension · lupin | run (lupin) |
 | §17.3 — Scope honesty (what exploration cannot see) | 17-8 | design | prose |
 | Chapter batch | 17-9 | extension (break-it-on-purpose) · lupin | run (lupin) |
@@ -430,7 +430,7 @@ binary; the tier names the directive's executor.)*
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
-| §19.1 — One program, two binaries | 19-1 | fingers · wolf + lupin | run (lupin) |
+| §19.1 — One program, two binaries | 19-1 | fingers · wolf + lupin | run (wolf + lupin) |
 | §19.2 — The compiler hands LLVM less | 19-2 | comprehension · prose | prose |
 | §19.3 — Reading a loss | 19-3 | comprehension · prose | prose |
 | §19.3 — Reading a loss | 19-4 | comprehension · prose | prose |
@@ -444,29 +444,29 @@ until the verifying compiler lands.)*
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
-| §20.1 — The promises the language keeps | 20-1 | fingers · lupin | run (lupin) |
+| §20.1 — The promises the language keeps | 20-1 | fingers · lupin | run (wolf + lupin) |
 | §20.2 — The ledger and the clock | 20-2 | comprehension · prose | prose |
 | §20.3 — The floors and the ratchets | 20-3 | comprehension · prose | prose |
 | §20.4 — Exceptions, written and capped | 20-4 | design | prose |
-| Contracts corpus (unprinted) | 20-5 | comprehension · pending | pending |
+| Contracts corpus (unprinted) | 20-5 | comprehension · pending | run (wolf) |
 | Contracts corpus (unprinted) | 20-6 | comprehension · prose | prose |
 | Contracts corpus (unprinted) | 20-7 | comprehension · prose | prose |
-| Contracts corpus (unprinted) | 20-8 | fingers · wolf + lupin | run (wolf + lupin) |
+| Contracts corpus (unprinted) | 20-8 | fingers · wolf + lupin | run (wolf) |
 | Contracts corpus (unprinted) | 20-9 | comprehension · prose | prose |
 | Contracts corpus (unprinted) | 20-10 | spelunking · wolf | run (wolf) |
 | Contracts corpus (unprinted) | 20-11 | comprehension · prose | prose |
 | Contracts corpus (unprinted) | 20-12 | design | prose |
-| Contracts corpus (unprinted) | 20-13 | extension · lupin | run (lupin) |
+| Contracts corpus (unprinted) | 20-13 | extension · lupin | run (wolf + lupin) |
 
 ## ch21 — 9 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
 | §21.1 — Aliasing | 21-1 | comprehension · prose | prose |
-| §21.1 — Aliasing | 21-2 | fingers · lupin | run (lupin) |
+| §21.1 — Aliasing | 21-2 | fingers · lupin | run (wolf + lupin) |
 | §21.2 — Arenas | 21-3 | comprehension · prose | prose |
 | §21.3 — Layout | 21-4 | comprehension · prose | prose |
-| §21.4 — Checked arithmetic's bill | 21-5 | comprehension · lupin | run (lupin) |
+| §21.4 — Checked arithmetic's bill | 21-5 | comprehension · lupin | run (wolf + lupin) |
 | §21.4 — Checked arithmetic's bill | 21-6 | spelunking · lupin | run (lupin) |
 | §21.5 — Where C wins today | 21-7 | design | prose |
 | Chapter batch | 21-8 | comprehension · pending | pending |
@@ -476,19 +476,19 @@ until the verifying compiler lands.)*
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
-| §22.1 — Directory = module | 22-1 | fingers · lupin | run (lupin) |
-| §22.1 — Directory = module | 22-2 | comprehension · lupin | run (lupin) |
-| §22.1 — Directory = module | 22-3 | comprehension · lupin | run (lupin) |
-| §22.1 — Directory = module | 22-4 | comprehension · lupin | run (lupin) |
-| §22.2 — No cycles | 22-5 | comprehension + extension · lupin | run (lupin) |
+| §22.1 — Directory = module | 22-1 | fingers · lupin | run (wolf + lupin) |
+| §22.1 — Directory = module | 22-2 | comprehension · lupin | run (wolf) |
+| §22.1 — Directory = module | 22-3 | comprehension · lupin | run (wolf) |
+| §22.1 — Directory = module | 22-4 | comprehension · lupin | run (wolf) |
+| §22.2 — No cycles | 22-5 | comprehension + extension · lupin | run (wolf + lupin) |
 | §22.2 — No cycles | 22-6 | comprehension · prose | prose |
 | §22.3 — No life before main | 22-7 | comprehension · wolf | run (wolf) |
 | Chapter batch | 22-8 | design | prose |
-| §22.1 — Directory = module | 22-11 | fingers · lupin | run (lupin) |
-| §22.1 — Directory = module | 22-12 | comprehension + extension · lupin | run (lupin) |
+| §22.1 — Directory = module | 22-11 | fingers · lupin | run (wolf + lupin) |
+| §22.1 — Directory = module | 22-12 | comprehension + extension · lupin | run (wolf + lupin) |
 | §22.2 — No cycles | 22-13 | spelunking · wolf | run (wolf) |
-| Chapter batch | 22-9 | extension · lupin | run (lupin) |
-| Chapter batch | 22-10 | extension · lupin | run (lupin) |
+| Chapter batch | 22-9 | extension · lupin | run (wolf + lupin) |
+| Chapter batch | 22-10 | extension · lupin | run (wolf + lupin) |
 | Chapter batch | 22-14 | design | prose |
 
 ## ch23 — 8 exercises
@@ -537,9 +537,9 @@ a held subject (the masters' header has the accounting).*
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
-| §26.3 — The same machine as a `match` | 26-1 | fingers · wolf | run (lupin) |
-| §26.3 — The same machine as a `match` | 26-2 | comprehension · lupin | run (lupin) |
-| §26.4 — Per file, and a total | 26-3 | extension · wolf | run (lupin) |
+| §26.3 — The same machine as a `match` | 26-1 | fingers · wolf | run (wolf + lupin) |
+| §26.3 — The same machine as a `match` | 26-2 | comprehension · lupin | run (wolf + lupin) |
+| §26.4 — Per file, and a total | 26-3 | extension · wolf | run (wolf + lupin) |
 | §26.4 — Per file, and a total | 26-4 | comprehension · wolf | run (wolf) |
 | §26.5 — Where wolf is not shorter | 26-5 | spelunking · wolf | prose |
 | §26.5 — Where wolf is not shorter | 26-6 | design | prose |
@@ -548,12 +548,12 @@ a held subject (the masters' header has the accounting).*
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
-| Chapter batch | 27-1 | fingers · lupin | run (lupin) |
-| Chapter batch | 27-2 | comprehension · lupin | run (lupin) |
+| Chapter batch | 27-1 | fingers · lupin | run (wolf + lupin) |
+| Chapter batch | 27-2 | comprehension · lupin | run (wolf + lupin) |
 | Chapter batch | 27-3 | extension · lupin | run (lupin) |
-| Chapter batch | 27-4 | comprehension · lupin | run (lupin) |
+| Chapter batch | 27-4 | comprehension · lupin | run (wolf + lupin) |
 | Chapter batch | 27-5 | spelunking · the C twin | prose |
-| Chapter batch | 27-6 | extension · lupin | run (lupin) |
+| Chapter batch | 27-6 | extension · lupin | run (wolf + lupin) |
 | Chapter batch | 27-7 | design | prose |
 | Chapter batch | 27-8 | design | prose |
 
@@ -575,9 +575,9 @@ a held subject (the masters' header has the accounting).*
 |---|---|---|---|
 | Chapter batch | 30-1 | fingers · wolf | prose |
 | Chapter batch | 30-2 | comprehension · wolf | prose |
-| Chapter batch | 30-3 | comprehension · wolf | run (wolf) |
-| Chapter batch | 30-4 | extension · wolf | run (wolf) |
-| Chapter batch | 30-5 | extension · wolf | run (wolf) |
+| Chapter batch | 30-3 | comprehension · wolf | run (wolf + lupin) |
+| Chapter batch | 30-4 | extension · wolf | run (wolf + lupin) |
+| Chapter batch | 30-5 | extension · wolf | run (wolf + lupin) |
 | Chapter batch | 30-6 | spelunking · wolf | prose |
 | Chapter batch | 30-7 | design | prose |
 
@@ -599,13 +599,13 @@ pages rather than only here.
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
-| §33.1 — A door of your own | 33-1 | fingers · lupin | run (lupin) |
-| §33.2 — Waiting on the whole set | 33-2 | comprehension · lupin | run (lupin) |
-| §33.3 — The loop | 33-3 | extension · lupin | run (lupin) |
-| §33.4 — Many hands on one door | 33-4 | comprehension · lupin | run (lupin) |
+| §33.1 — A door of your own | 33-1 | fingers · lupin | run (wolf + lupin) |
+| §33.2 — Waiting on the whole set | 33-2 | comprehension · lupin | run (wolf + lupin) |
+| §33.3 — The loop | 33-3 | extension · lupin | run (wolf + lupin) |
+| §33.4 — Many hands on one door | 33-4 | comprehension · lupin | run (wolf + lupin) |
 | Chapter batch | 33-5 | spelunking · prose | prose |
 | Chapter batch | 33-6 | design | prose |
-| Chapter batch | 33-7 | extension · lupin | run (lupin) |
+| Chapter batch | 33-7 | extension · lupin | run (wolf + lupin) |
 
 Chapter 33 took the next free number rather than renumbering thirty
 others (TOC.md §Deltas), and this section is late for the same reason it
@@ -617,17 +617,17 @@ walking the chapters in order passes it. All seven stems are printed in
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
-| Appendix B — the trap zoo | B-1 | comprehension · lupin | run (lupin) |
-| Appendix B — the trap zoo | B-2 | comprehension · lupin | run (lupin) |
-| Appendix B — the trap zoo | B-3 | comprehension · lupin | run (lupin) |
+| Appendix B — the trap zoo | B-1 | comprehension · lupin | run (wolf + lupin) |
+| Appendix B — the trap zoo | B-2 | comprehension · lupin | run (wolf + lupin) |
+| Appendix B — the trap zoo | B-3 | comprehension · lupin | run (wolf + lupin) |
 | Appendix B — the trap zoo | B-4 | comprehension · lupin | run (lupin) |
 | Appendix B — the trap zoo | B-5 | comprehension · lupin | run (lupin) |
 | Appendix B — the trap zoo | B-6 | comprehension · lupin | run (lupin) |
 | Appendix B — the trap zoo | B-7 | comprehension · lupin | run (lupin) |
-| Appendix B — the trap zoo | B-8 | comprehension · lupin | run (lupin) |
+| Appendix B — the trap zoo | B-8 | comprehension · lupin | run (wolf + lupin) |
 | Appendix B — the trap zoo | B-9 | comprehension · lupin | run (lupin) |
 | Appendix B — the trap zoo | B-10 | comprehension · pending | pending |
 | Appendix B — the trap zoo | B-11 | comprehension · lupin | run (lupin) |
 | Appendix C — the diagnostic catalog | C-1 | spelunking · wolf | run (wolf) |
-| Appendix C — the diagnostic catalog | C-2 | comprehension · wolf + lupin | run (wolf + lupin) |
+| Appendix C — the diagnostic catalog | C-2 | comprehension · wolf + lupin | run (wolf) |
 | Appendix C — the diagnostic catalog | C-3 | comprehension · prose | prose |
