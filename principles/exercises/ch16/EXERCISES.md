@@ -44,19 +44,21 @@ freight: build the two-element list in `main`, send the region to a
 receiving task, and have the receiver sum the list *it never built*.
 Print the sum from the receiver's side.
 
-Solution. `ch16/ex16-2.lu` (receiver):
+Solution. `ch16/ex16-2.lu` (excerpt — the receiver):
 
 ```wolf
-    s.spawn(fn() {
-        let r2 = ch.recv() else |_| { return }
-        let total = in r2 {
-            var t = 0
-            for x in xs { t += x }
-            t
-        }
-        print("sum={total}")
-    })
-    ch.send(move r)?
+...
+        s.spawn(fn() {
+            let r2 = ch.recv() else |_| { return }
+            let total = in r2 {
+                var t = 0
+                for x in xs { t += x }
+                t
+            }
+            print("sum={total}")
+        })
+        ch.send(move r)?
+...
 ```
 
 ```console
@@ -189,8 +191,8 @@ breadth-first-searches it in place and prints the shortest-path distance
 from corner to corner. Seed 1: run it. Before you do, answer: how many
 times is the wall table copied between carver and solver?
 
-Solution. `ch16/ex16-7.lu` (the transfer; carve and solve are in the
-file):
+Solution. `ch16/ex16-7.lu` (excerpt — the transfer; `carve` and
+`solve` are in the file):
 
 ```wolf
 fn main() -> !int {
