@@ -13,15 +13,19 @@ chapter tells you to develop in.
 predict what your arm does for `7 0 %` before you run it, and say whether
 you had to write anything the `/` arm did not already show you.
 
-Solution. `ex27-1.lu`. Two edits: `37` joins `is_operator`'s list of
-bytes, and a `37 =>` arm joins the `match` with the same zero guard the
-`47` arm has:
+Solution. `ex27-1.lu` (excerpt). Two edits: `37` joins `is_operator`'s
+list of bytes, and a `37 =>` arm joins the `match` with the same zero
+guard the `47` arm has:
 
 ```wolf
+...
+    b == 43 || b == 45 || b == 42 || b == 47 || b == 37
+...
                 37 => {
                     if b == 0 { return DivZero }
                     a % b
                 },
+...
 ```
 
 ```console
