@@ -643,7 +643,7 @@ table as a `List[List[int]]` and return its corner. For two three-line
 it. Note what the signature says about ownership: which of your
 parameters were moved, and how many annotations did it take to say so?
 
-Solution. `ch07/ex7-15.lu` (core):
+Solution. `ch07/ex7-15.lu` (excerpt — the core):
 
 ```wolf
 fn lcs_len(a: List[str], b: List[str]) -> int {
@@ -695,7 +695,7 @@ additions. Before running, predict the full output for `old` = wolf /
 moon / elk and `new` = wolf / elk / river. Then explain why the walk
 must go *backward*.
 
-Solution. `ch07/ex7-16.lu` (the walk):
+Solution. `ch07/ex7-16.lu` (excerpt — the walk):
 
 ```wolf
 fn print_diff(a: List[str], b: List[str], table: List[List[int]], i: int, j: int) {
@@ -914,11 +914,12 @@ decide whether `diff` lends its two lists or takes them, and say in one
 sentence what the lines in the result are under each choice. Run it on
 a three-line config file and a four-line successor of your own.
 
-Solution. `ch07/ex7-20.lu` (the walk and `diff`; `build_table` is
-7-16's, unchanged):
+Solution. `ch07/ex7-20.lu` (excerpt — the walk and `diff`;
+`build_table` is 7-16's, unchanged):
 
 ```wolf
 struct Edit { mark: str, line: str }
+...
 fn walk(a: List[str], b: List[str], t: List[List[int]], i: int, j: int, mut out: List[Edit]) {
     if i > 0 && j > 0 && a[i - 1] == b[j - 1] {
         walk(a, b, t, i - 1, j - 1, mut out)
@@ -1099,8 +1100,8 @@ unrepaired program under `lupin`, and say why §7.3's `longest` never
 met this, and why it would not have met it even returning a `Doc`, as
 long as that `Doc` had no `tags`.
 
-Solution. `ch07/ex7-23.lu` (the function; `main` fills a shelf of
-three and prints the longest title and the shelf's length):
+Solution. `ch07/ex7-23.lu` (excerpt — the function; `main` fills a
+shelf of three and prints the longest title and the shelf's length):
 
 ```wolf
 struct Doc { title: str, words: int, tags: List[str] }
