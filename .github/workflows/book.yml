@@ -54,6 +54,14 @@ jobs:
       - name: exercise index tiers are generated
         shell: bash
         run: cargo xtask tiers --check
+      # bs62: chapter 7's memory diagrams are generated, so they are held
+      # here without any toolchain: the text in each `memory` fence and the
+      # SVG beside it are redrawn from the traces under snapshots/traces/
+      # and must match byte for byte. (The samples lane re-takes the
+      # traces themselves with the trace lupin.)
+      - name: memory diagrams redraw from the checked-in traces
+        shell: bash
+        run: cargo xtask diagrams --check
 
   # Lane 2 — sample execution: build wolf (release, D57-stamped) and
   # lupin (release) at the wolf-toolchain.toml revs, run every sample,
