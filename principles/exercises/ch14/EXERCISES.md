@@ -210,9 +210,11 @@ prediction safe, and which chapter taught it?
 Solution. `ch14/ex14-7.lu` (excerpt):
 
 ```wolf
+...
     for c in cmds {
-        if c == 0 { replies.send(total) } else if c == 0 - 1 { total = 0 } else { total += c }
+        if c == 0 { replies.send(total) else { return total } } else if c == 0 - 1 { total = 0 } else { total += c }
     }
+...
 ```
 
 ```console
