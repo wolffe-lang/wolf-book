@@ -219,7 +219,10 @@ fn rel_path(base: &Path, path: &Path) -> String {
 fn walk(dir: &Path, out: &mut Vec<PathBuf>) -> Result<()> {
     for e in std::fs::read_dir(dir).with_context(|| format!("reading {}", dir.display()))? {
         let p = e?.path();
-        if p.is_dir() {
+        let hidden = p
+            .file_name()
+            .is_some_and(|n| n.to_string_lossy().starts_with('.'));
+        if p.is_dir() && !hidden {
             walk(&p, out)?;
         } else if p.extension().and_then(|x| x.to_str()) == Some("lu") {
             out.push(p);
@@ -253,7 +256,7 @@ fn package_owners(base: &Path) -> Result<BTreeMap<String, String>> {
         let mut pkgs: Vec<String> = std::fs::read_dir(&chapter)?
             .filter_map(|e| e.ok())
             .map(|e| e.path())
-            .filter(|p| p.is_dir())
+            .filter(|p| is_package(p))
             .map(|p| {
                 p.file_name()
                     .unwrap_or_default()
@@ -293,6 +296,22 @@ fn package_owners(base: &Path) -> Result<BTreeMap<String, String>> {
         }
     }
     Ok(out)
+}
+
+/// A package is a visible directory holding at least one `.lu`. The
+/// runner leaves a `.lu-cache/` of built binaries in every chapter it
+/// compiles, and that is not an exercise anyone answers (found at the
+/// bs61 head gate: `tiers --check` refused `appx/.lu-cache/` after
+/// `cargo xtask samples` had run in the same checkout).
+fn is_package(dir: &Path) -> bool {
+    let hidden = dir
+        .file_name()
+        .is_some_and(|n| n.to_string_lossy().starts_with('.'));
+    if hidden || !dir.is_dir() {
+        return false;
+    }
+    let mut lus = Vec::new();
+    walk(dir, &mut lus).is_ok() && !lus.is_empty()
 }
 
 /// `**Exercise N-M**` sections of one master page, in order.
@@ -632,8 +651,14 @@ Solution. `ch22/wordcount/` — the entry:\n\
         assert_eq!(sections(master).len(), 3);
         let dir = std::env::temp_dir().join(format!("bs61-pkg-{}", std::process::id()));
         let _ = std::fs::remove_dir_all(&dir);
-        std::fs::create_dir_all(dir.join("ch22/wordcount")).unwrap();
-        std::fs::create_dir_all(dir.join("ch22/leak")).unwrap();
+        for pkg in ["wordcount", "leak"] {
+            std::fs::create_dir_all(dir.join("ch22").join(pkg)).unwrap();
+            std::fs::write(
+                dir.join("ch22").join(pkg).join("main.lu"),
+                "//! check: run(exit=0)\n",
+            )
+            .unwrap();
+        }
         std::fs::write(dir.join("ch22/EXERCISES.md"), master).unwrap();
         let owners = package_owners(&dir).expect("owners");
         assert_eq!(owners.get("ch22/leak").map(String::as_str), Some("22-2"));
@@ -653,6 +678,20 @@ Solution. `ch22/wordcount/` — the entry:\n\
         let _ = std::fs::remove_dir_all(&dir);
         let e = owners.expect_err("two unlabeled owners is an error");
         assert!(format!("{e:#}").contains("ch22/leak/"), "{e:#}");
+    }
+
+    #[test]
+    fn a_build_cache_is_not_a_package() {
+        let dir = std::env::temp_dir().join(format!("bs61-cache-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&dir);
+        std::fs::create_dir_all(dir.join("appx/.lu-cache/bin")).unwrap();
+        std::fs::write(dir.join("appx/.lu-cache/bin/exB-1"), "ELF").unwrap();
+        std::fs::create_dir_all(dir.join("appx/notes")).unwrap();
+        std::fs::write(dir.join("appx/notes/readme.txt"), "no program").unwrap();
+        std::fs::write(dir.join("appx/EXERCISES.md"), "**Exercise B-1** *(x)*.\n").unwrap();
+        let owners = package_owners(&dir);
+        let _ = std::fs::remove_dir_all(&dir);
+        assert!(owners.expect("no package, no error").is_empty());
     }
 
     #[test]
