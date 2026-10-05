@@ -234,7 +234,7 @@ matching lines. Substring search is yours to write with byte slices. Why
 is the empty pattern an *error* here, when POSIX grep happily matches it
 everywhere?
 
-Solution. `ch13/ex13-5.lu`:
+Solution. `ch13/ex13-5.lu` (excerpt):
 
 ```wolf
 fn contains(hay: str, needle: str) -> bool {
@@ -299,12 +299,14 @@ f64 arithmetic?
 Solution. `ch13/ex13-7.lu` (excerpt):
 
 ```wolf
-let r = absf(x2 - x1)
-let a = g / (r * r)
-v1 += a * dt
-v2 -= a * dt
-x1 += v1 * dt
-x2 += v2 * dt
+...
+    let r = absf(x2 - x1)
+    let a = g / (r * r)
+    v1 += a * dt
+    v2 -= a * dt
+    x1 += v1 * dt
+    x2 += v2 * dt
+...
 ```
 
 ```console
