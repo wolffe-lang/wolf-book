@@ -34,10 +34,18 @@ pub fn load_grammars(root: &Path) -> Result<Grammars> {
     })
 }
 
-/// The full chapter transform: anchors, then fences.
-pub fn transform_chapter(grammars: &Grammars, content: &str) -> Result<String> {
+/// The full chapter transform, anchors then fences, for a page
+/// `to_root` below the book's root (`""` for
+/// `ch07.md`, `"../"` for `front/notation.md`): the prefix a page needs to
+/// reach `diagrams/`.
+pub fn transform_chapter_at(grammars: &Grammars, content: &str, to_root: &str) -> Result<String> {
     let anchored = rewrite_heading_anchors(content);
-    render_fences(grammars, &anchored)
+    render_fences_at(grammars, &anchored, to_root)
+}
+
+/// The relative path from a chapter's page back to the book's root.
+pub fn to_root(chapter_path: &str) -> String {
+    "../".repeat(chapter_path.matches(['/', '\\']).count())
 }
 
 /// Section-number anchors (DESIGN.md §3): a heading whose text begins
@@ -105,19 +113,26 @@ fn leading_section_number(text: &str) -> Option<String> {
 
 /// Render every recognized fence to pre-highlighted HTML. Directives
 /// are build instructions, not reader content: they never render.
+#[cfg(test)]
 pub fn render_fences(grammars: &Grammars, content: &str) -> Result<String> {
+    render_fences_at(grammars, content, "")
+}
+
+fn render_fences_at(grammars: &Grammars, content: &str, to_root: &str) -> Result<String> {
     let mut err: Option<anyhow::Error> = None;
-    let out = fence::rewrite(content, |f: &Fence| match render_one_fence(grammars, f) {
-        Ok(Some(html)) => html,
-        Ok(None) => {
-            let marker = "`".repeat(f.ticks);
-            format!("{marker}{}\n{}{marker}\n", f.info, f.content)
-        }
-        Err(e) => {
-            if err.is_none() {
-                err = Some(e);
+    let out = fence::rewrite(content, |f: &Fence| {
+        match render_one_fence(grammars, f, to_root) {
+            Ok(Some(html)) => html,
+            Ok(None) => {
+                let marker = "`".repeat(f.ticks);
+                format!("{marker}{}\n{}{marker}\n", f.info, f.content)
             }
-            String::new()
+            Err(e) => {
+                if err.is_none() {
+                    err = Some(e);
+                }
+                String::new()
+            }
         }
     });
     match err {
@@ -126,12 +141,20 @@ pub fn render_fences(grammars: &Grammars, content: &str) -> Result<String> {
     }
 }
 
-fn render_one_fence(grammars: &Grammars, f: &Fence) -> Result<Option<String>> {
+fn render_one_fence(grammars: &Grammars, f: &Fence, to_root: &str) -> Result<Option<String>> {
     let info = f.info.trim();
     if info.is_empty() {
         return Ok(None);
     }
     let fi = parse_fence_info(info).with_context(|| format!("bad fence info `{}`", info))?;
+    // A memory diagram (bs62) is a figure: the generated SVG, with the
+    // fence's text rendering as its alt. A static image, never a script
+    // (lupp.us: `script-src 'self'`).
+    if fi.lang == crate::diagrams::LANG {
+        let svg = crate::diagrams::svg_for_info(info)
+            .with_context(|| format!("a memory fence needs from(…) and line(N): `{info}`"))?;
+        return Ok(Some(memory_figure(&format!("{to_root}{svg}"), &f.content)));
+    }
     // The taxonomy is dialects.rs's (rp03): one table classes the fence,
     // names it for the reader, and styles it on both renders. A fence
     // outside the table (text, ebnf, …) is a figure, not a dialect.
@@ -161,6 +184,23 @@ fn render_one_fence(grammars: &Grammars, f: &Fence) -> Result<Option<String>> {
         dialect.key,
         crate::highlight::escape_html(&label)
     )))
+}
+
+/// The web edition's memory diagram: the SVG as an image, its text
+/// rendering as the alt, so a reader who cannot see the drawing reads the
+/// same two trees.
+pub fn memory_figure(src: &str, text: &str) -> String {
+    let alt = text.trim_end().replace('\n', " / ");
+    format!(
+        "<figure class=\"memory-diagram\"><img src=\"{}\" alt=\"{}\"></figure>\n\n",
+        attr(src),
+        attr(&alt)
+    )
+}
+
+/// An HTML attribute value: the text escapes plus the quote.
+fn attr(s: &str) -> String {
+    crate::highlight::escape_html(s).replace('"', "&quot;")
 }
 
 /// The mdBook CmdPreprocessor protocol: `supports <renderer>` exits 0;
@@ -223,7 +263,12 @@ fn transform_item(grammars: &Grammars, item: &mut serde_json::Value) -> Result<(
             .and_then(|n| n.as_str())
             .unwrap_or("<unnamed>")
             .to_string();
-        let new = transform_chapter(grammars, content)
+        let path = chapter
+            .get("path")
+            .and_then(|p| p.as_str())
+            .unwrap_or_default()
+            .to_string();
+        let new = transform_chapter_at(grammars, content, &to_root(&path))
             .with_context(|| format!("preprocessing chapter `{name}`"))?;
         chapter["content"] = serde_json::Value::String(new);
     }
@@ -371,6 +416,23 @@ mod tests {
         // Escaped verbatim, no wolf-grammar spans.
         assert!(out.contains("Vec&lt;Token&lt;'_&gt;&gt;"));
         assert!(!out.contains("hl-kw"));
+    }
+
+    #[test]
+    fn a_memory_fence_becomes_a_static_figure() {
+        let root = crate::repo_root().unwrap();
+        let grammars = load_grammars(&root).unwrap();
+        let md = "```memory,from(book/ch07/s3),line(5)\nbefore line 5: let who = move d.meta.author\nd  Doc\n   └─ title  \"regions\"\n```\n";
+        let out = render_fences_at(&grammars, md, "../").unwrap();
+        assert!(out
+            .contains("<figure class=\"memory-diagram\"><img src=\"../diagrams/ch07/s3-L5.svg\""));
+        assert!(out.contains(
+            "alt=\"before line 5: let who = move d.meta.author / d  Doc /    └─ title  &quot;regions&quot;\""
+        ));
+        assert!(!out.contains("<script"));
+        assert!(!out.contains("```"));
+        assert_eq!(to_root("ch07.md"), "");
+        assert_eq!(to_root("front/notation.md"), "../");
     }
 
     #[test]

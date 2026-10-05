@@ -165,3 +165,13 @@ hr {
 img, video {
     max-width: 100%;
 }
+
+/* A memory diagram (bs62): the SVG `cargo xtask diagrams` draws from the
+   interpreter's place trace, a static image on its own ground. */
+figure.memory-diagram {
+    margin: 1.2em 0 1.4em;
+    text-align: center;
+}
+figure.memory-diagram img {
+    height: auto;
+}
