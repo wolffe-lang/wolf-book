@@ -700,7 +700,11 @@ fn verify_solutions(root: &Path, failures: &mut Vec<String>) -> Result<()> {
 /// that opens with the word, so `(excerpt — the walk)` keeps its
 /// description — and the fence is the file's own lines, at the file's
 /// own indentation, in order, with a lone `...` standing for each run of
-/// lines it skips. Dropping `fn main` is an elision like any other.
+/// lines it skips between two it prints. Dropping `fn main` is an
+/// elision like any other. At the window's two ends a `...` is the
+/// author's choice, not the checker's: the label already says the
+/// fence stops short of the file, and the doctrine page's own 6-3 opens
+/// and closes unmarked.
 ///
 /// A label is any line that opens `Solution. ` with a backticked `.lu`
 /// name, whatever follows the name before the colon; a bare name
