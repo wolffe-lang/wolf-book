@@ -1,0 +1,19 @@
+gate-1-cargofmtcheck.log  d4e49dd8…  EXIT 0  SKIP=0
+gate-2-cargoclippyalltargetswarnings.log  ff7e1c49…  EXIT 0  SKIP=0
+gate-3-cargotestpxtasknocapture.log  0cdf161a…  EXIT 0  SKIP=0
+gate-4-cargoxtasktierscheck.log  472321c0…  EXIT 0  SKIP=0
+gate-5-cargoxtaskverifydocs.log  b8b94f10…  EXIT 0  SKIP=0
+gate-6-cargoxtaskledgercheck.log  45669c09…  EXIT 0  SKIP=0
+gate-7-cargoxtaskbackmattercheck.log  b57ad787…  EXIT 0  SKIP=0
+gate-8-cargoxtasksamples.log  45045691…  EXIT 0  SKIP=4
+gate-9-cargoxtasksamplesselftest.log  dea54351…  EXIT 0  SKIP=1
+gate-10-cargoxtaskcontrast.log  a4d8bad1…  EXIT 0  SKIP=0
+gate-11-cargoxtaskrenderweb.log  2bf5e787…  EXIT 0  SKIP=0
+gate-12-cargoxtasktierscheck.log  472321c0…  EXIT 0  SKIP=0
+gate-13-cargotestpxtasknocapture.log  f3af9154…  EXIT 0  SKIP=0
+
+6f505eb542d340d3f818e6b4de57ef13736d0186b8b4efae999aa4aa1a4e44b0  wolf-0.2.23-x86_64-unknown-linux-gnu.tar.gz
+d13a03790f35f2033570c6284795802dccdb6a0833f1ebdbd132dd4b8049be32  lupin-0.1.46-x86_64-unknown-linux-gnu.tar.gz
+wolf 0.2.23 (wolfgang, pin 8edac3e)
+paired with lupin 0.1.46 (reference interpreter), pin 8e36bc1
+lupin 0.1.46 (wolf-interp, reference interpreter at pin 8e36bc1)

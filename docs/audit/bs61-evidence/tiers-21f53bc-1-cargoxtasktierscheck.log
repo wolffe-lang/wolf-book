@@ -1,0 +1,170 @@
+tiers: FAIL `1-1`: the index says `run (lupin)`; its head(s) ch01/ex1-1.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `1-2`: the index says `run (lupin)`; its head(s) ch01/ex1-2.lu `run(exit=3)` make it `run (wolf + lupin)`
+tiers: FAIL `1-3`: the index says `run (lupin)`; its head(s) ch01/ex1-3.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `1-5`: the index says `run (lupin)`; its head(s) ch01/ex1-5.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `1-6`: the index says `run (lupin)`; its head(s) ch01/ex1-6.lu `fail(E0202)` make it `run (wolf)`
+tiers: FAIL `1-9`: the index says `run (lupin)`; its head(s) ch01/ex1-9.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `1-10`: the index says `run (lupin)`; its head(s) ch01/ex1-10.lu `run(exit=8, stdout="counted")` make it `run (wolf + lupin)`
+tiers: FAIL `1-11`: the index says `run (lupin)`; its head(s) ch01/ex1-11.lu `run(exit=0, stdout="26 the moon watches the ridge")` make it `run (wolf + lupin)`
+tiers: FAIL `2-2`: the index says `run (lupin)`; its head(s) ch02/ex2-2.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `2-3`: the index says `run (lupin)`; its head(s) ch02/ex2-3.lu `run(exit=trap(bounds))` make it `run (wolf + lupin)`
+tiers: FAIL `2-4`: the index says `run (lupin)`; its head(s) ch02/ex2-4.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `2-7`: the index says `run (lupin)`; its head(s) ch02/ex2-7.lu `run(exit=0, stdout="a3b1c2")` make it `run (wolf + lupin)`
+tiers: FAIL `2-9`: the index says `run (wolf)`; its head(s) ch02/ex2-9.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `2-12`: the index says `run (lupin)`; its head(s) ch02/ex2-12.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `2-13`: the index says `run (lupin)`; its head(s) ch02/ex2-13.lu `run(exit=0, stdout="howl<tab>at<nl>the moon")` make it `run (wolf + lupin)`
+tiers: FAIL `2-10`: the index says `run (lupin)`; its head(s) ch02/ex2-10.lu `run(exit=0, stdout="eht flow snur")` make it `run (wolf + lupin)`
+tiers: FAIL `2-11`: the index says `run (lupin)`; its head(s) ch02/ex2-11.lu `run(exit=0, stdout="hwlng t th mn")` make it `run (wolf + lupin)`
+tiers: FAIL `2-14`: the index says `run (lupin)`; its head(s) ch02/ex2-14.lu `run(exit=0, stdout="[a   bb  ccc]")` make it `run (wolf + lupin)`
+tiers: FAIL `2-15`: the index says `run (lupin)`; its head(s) ch02/ex2-15.lu `run(exit=0, stdout="[a<tab>bb<tab>ccc]")` make it `run (wolf + lupin)`
+tiers: FAIL `3-1`: the index says `run (lupin)`; its head(s) ch03/ex3-1.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `3-2`: the index says `run (wolf + lupin)`; its head(s) ch03/ex3-2.lu `fail(E1001)` make it `run (wolf)`
+tiers: FAIL `3-3`: the index says `run (lupin)`; its head(s) ch03/ex3-3.lu `run(exit=trap(overflow))` make it `run (wolf + lupin)`
+tiers: FAIL `3-4`: the index says `run (lupin)`; its head(s) ch03/ex3-4.lu `run(exit=trap(div-zero))` make it `run (wolf + lupin)`
+tiers: FAIL `3-6`: the index says `run (lupin)`; its head(s) ch03/ex3-6.lu `run(exit=trap(overflow))` make it `run (wolf + lupin)`
+tiers: FAIL `3-7`: the index says `run (lupin)`; its head(s) ch03/ex3-7.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `3-8`: the index says `run (lupin)`; its head(s) ch03/ex3-8.lu `run(exit=0)`, ch03/ex3-8b.lu `fail(E0410)` make it `run (wolf + lupin)`
+tiers: FAIL `3-9`: the index says `run (lupin)`; its head(s) ch03/ex3-9.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `3-10`: the index says `run (lupin)`; its head(s) ch03/ex3-10.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `3-11`: the index says `run (lupin)`; its head(s) ch03/ex3-11.lu `run(exit=0, stdout="low 4 high 31 mean 16")` make it `run (wolf + lupin)`
+tiers: FAIL `3-12`: the index says `run (lupin)`; its head(s) ch03/ex3-12.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `3-14`: the index says `run (lupin)`; its head(s) ch03/ex3-14.lu `run(exit=0)`, ch03/ex3-14b.lu `run(exit=0, stdout="buzz")` make it `run (wolf + lupin)`
+tiers: FAIL `3-15`: the index says `run (lupin)`; its head(s) ch03/ex3-15.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `4-1`: the index says `run (lupin)`; its head(s) ch04/ex4-1.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `4-2`: the index says `run (lupin)`; its head(s) ch04/ex4-2.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `4-5`: the index says `run (lupin)`; its head(s) ch04/ex4-5.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `4-6`: the index says `run (lupin)`; its head(s) ch04/ex4-6.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `4-7`: the index says `run (lupin)`; its head(s) ch04/ex4-7.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `4-10`: the index says `run (lupin)`; its head(s) ch04/ex4-10.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `4-9`: the index says `run (lupin)`; its head(s) ch04/ex4-9.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `4-8`: the index says `run (lupin)`; its head(s) ch04/ex4-8.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `4-11`: the index says `run (lupin)`; its head(s) ch04/ex4-11.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `5-1`: the index says `run (lupin)`; its head(s) ch05/ex5-1.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `5-2`: the index says `run (lupin)`; its head(s) ch05/ex5-2.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `5-3`: the index says `run (lupin)`; its head(s) ch05/ex5-3.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `5-4`: the index says `run (lupin)`; its head(s) ch05/ex5-4.lu `run(exit=trap(bounds))` make it `run (wolf + lupin)`
+tiers: FAIL `5-16`: the index says `run (lupin)`; its head(s) ch05/ex5-16.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `5-17`: the index says `run (lupin)`; its head(s) ch05/ex5-17.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `5-7`: the index says `run (lupin)`; its head(s) ch05/ex5-7.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `5-12`: the index says `run (lupin)`; its head(s) ch05/ex5-12.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `5-14`: the index says `run (lupin)`; its head(s) ch05/ex5-14.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `5-11`: the index says `run (lupin)`; its head(s) ch05/ex5-11.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `5-13`: the index says `run (lupin)`; its head(s) ch05/ex5-13.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `5-15`: the index says `run (lupin)`; its head(s) ch05/ex5-15.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `6-1`: the index says `run (lupin)`; its head(s) ch06/ex6-1.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `6-2`: the index says `run (lupin)`; its head(s) ch06/ex6-2.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `6-3`: the index says `run (lupin)`; its head(s) ch06/ex6-3.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `6-4`: the index says `run (lupin)`; its head(s) ch06/ex6-4.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `6-5`: the index says `run (lupin)`; its head(s) ch06/ex6-5.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `6-6`: the index says `run (lupin)`; its head(s) ch06/ex6-6.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `6-14`: the index says `run (lupin)`; its head(s) ch06/ex6-14.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `6-7`: the index says `run (lupin)`; its head(s) ch06/ex6-7.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `6-9`: the index says `run (lupin)`; its head(s) ch06/ex6-9.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `6-10`: the index says `run (lupin)`; its head(s) ch06/ex6-10.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `6-11`: the index says `run (lupin)`; its head(s) ch06/ex6-11.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `6-12`: the index says `run (lupin)`; its head(s) ch06/ex6-12.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `6-13`: the index says `run (lupin)`; its head(s) ch06/ex6-13.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `7-2`: the index says `run (lupin)`; its head(s) ch07/ex7-2.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `7-3`: the index says `run (wolf + lupin)`; its head(s) ch07/ex7-3.lu `fail(E1001)` make it `run (wolf)`
+tiers: FAIL `7-4`: the index says `run (lupin)`; its head(s) ch07/ex7-4.lu `lupin-run(exit=trap(use-after-move))`, ch07/ex7-4b.lu `run(exit=0, stdout="1 2")` make it `run (wolf + lupin)`
+tiers: FAIL `7-7`: the index says `run (lupin)`; its head(s) ch07/ex7-7.lu `run(exit=0, stdout="3 1")` make it `run (wolf + lupin)`
+tiers: FAIL `7-8`: the index says `run (wolf + lupin)`; its head(s) ch07/ex7-8.lu `fail(E1002)` make it `run (wolf)`
+tiers: FAIL `7-13`: the index says `run (lupin)`; its head(s) ch07/ex7-13.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `7-15`: the index says `run (lupin)`; its head(s) ch07/ex7-15.lu `run(exit=0, stdout="2")` make it `run (wolf + lupin)`
+tiers: FAIL `7-16`: the index says `run (lupin)`; its head(s) ch07/ex7-16.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `7-17`: the index says `run (lupin)`; its head(s) ch07/ex7-17.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `7-18`: the index says `run (lupin)`; its head(s) ch07/ex7-18.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `7-19`: the index says `run (lupin)`; its head(s) ch07/ex7-19.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `8-2`: the index says `run (lupin)`; its head(s) ch08/ex8-2.lu `run(exit=0, stdout="4950")` make it `run (wolf + lupin)`
+tiers: FAIL `8-8`: the index says `run (wolf + lupin)`; its head(s) ch08/ex8-8.lu `fail(E1006)` make it `run (wolf)`
+tiers: FAIL `8-11`: the index says `run (lupin)`; its head(s) ch08/ex8-11.lu `run(exit=0, stdout="6")` make it `run (wolf + lupin)`
+tiers: FAIL `8-16`: the index says `run (lupin)`; its head(s) ch08/ex8-16.lu `run(exit=0, stdout="3 lines, 11 words")` make it `run (wolf + lupin)`
+tiers: FAIL `8-17`: the index says `run (lupin)`; its head(s) ch08/ex8-17.lu `run(exit=0, stdout="seven eight nine")` make it `run (wolf + lupin)`
+tiers: FAIL `8-18`: the index says `run (lupin)`; its head(s) ch08/ex8-18.lu `run(exit=0, stdout="zero true | charged true | never down true | steady true")` make it `run (wolf + lupin)`
+tiers: FAIL `8-19`: the index says `run (lupin)`; its head(s) ch08/ex8-19.lu `run(exit=trap(alloc-contract))` make it `run (wolf + lupin)`
+tiers: FAIL `9-10`: the index says `run (lupin)`; its head(s) ch09/ex9-10.lu `run(exit=0, stdout="64 bytes out, declared")` make it `run (wolf + lupin)`
+tiers: FAIL `10-1`: the index says `run (lupin)`; its head(s) ch10/ex10-1.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `10-2`: the index says `run (lupin)`; its head(s) ch10/ex10-2.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `10-3`: the index says `run (lupin)`; its head(s) ch10/ex10-3.lu `run(exit=7)` make it `run (wolf + lupin)`
+tiers: FAIL `10-6`: the index says `run (lupin)`; its head(s) ch10/ex10-6.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `10-7`: the index says `run (lupin)`; its head(s) ch10/ex10-7.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `10-8`: the index says `run (lupin)`; its head(s) ch10/ex10-8.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `10-9`: the index says `run (lupin)`; its head(s) ch10/ex10-9.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `11-4`: the index says `run (lupin)`; its head(s) ch11/ex11-4.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `11-5`: the index says `run (lupin)`; its head(s) ch11/ex11-5.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `12-1`: the index says `run (lupin)`; its head(s) ch12/ex12-1.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `12-3`: the index says `run (lupin)`; its head(s) ch12/ex12-3.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `12-4`: the index says `run (lupin)`; its head(s) ch12/ex12-4.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `12-6`: the index says `run (lupin)`; its head(s) ch12/ex12-6.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `12-8`: the index says `run (lupin)`; its head(s) ch12/ex12-8.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `12-9`: the index says `run (wolf + lupin)`; its head(s) ch12/ex12-9.lu `fail(E0201)` make it `run (wolf)`
+tiers: FAIL `12-10`: the index says `run (lupin)`; its head(s) ch12/ex12-10.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `13-2`: the index says `run (lupin)`; its head(s) ch13/ex13-2.lu `run(exit=0, stdout="285")` make it `run (wolf + lupin)`
+tiers: FAIL `13-3`: the index says `run (wolf + lupin)`; its head(s) ch13/ex13-3.lu `fail(E1101)` make it `run (wolf)`
+tiers: FAIL `13-4`: the index says `run (lupin)`; its head(s) ch13/ex13-4a.lu `run(exit=0)`, ch13/ex13-4b.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `13-5`: the index says `run (lupin)`; its head(s) ch13/ex13-5.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `13-7`: the index says `run (lupin)`; its head(s) ch13/ex13-7.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `13-9`: the index says `run (lupin)`; its head(s) ch13/ex13-9.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `13-10`: the index says `run (lupin)`; its head(s) ch13/ex13-10.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `13-11`: the index says `run (lupin)`; its head(s) ch13/ex13-11.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `14-1`: the index says `run (lupin)`; its head(s) ch14/ex14-1.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `14-3`: the index says `run (lupin)`; its head(s) ch14/ex14-3.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `14-4`: the index says `run (lupin)`; its head(s) ch14/ex14-4.lu `run(exit=0, stdout="released")` make it `run (wolf + lupin)`
+tiers: FAIL `14-5`: the index says `run (lupin)`; its head(s) ch14/ex14-5.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `14-6`: the index says `run (lupin)`; its head(s) ch14/ex14-6.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `14-7`: the index says `run (lupin)`; its head(s) ch14/ex14-7.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `14-9`: the index says `run (lupin)`; its head(s) ch14/ex14-9.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `14-10`: the index says `run (lupin)`; its head(s) ch14/ex14-10.lu `run(exit=0, stdout="stockroom closed: normal(12)")` make it `run (wolf + lupin)`
+tiers: FAIL `15-1`: the index says `run (lupin)`; its head(s) ch15/ex15-1.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `15-2`: the index says `run (lupin)`; its head(s) ch15/ex15-2.lu `run(exit=nonzero)` make it `run (wolf + lupin)`
+tiers: FAIL `15-4`: the index says `run (lupin)`; its head(s) ch15/ex15-4.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `15-5`: the index says `run (lupin)`; its head(s) ch15/ex15-5.lu `run(exit=1)` make it `run (wolf + lupin)`
+tiers: FAIL `15-6`: the index says `run (lupin)`; its head(s) ch15/ex15-6.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `16-1`: the index says `run (lupin)`; its head(s) ch16/ex16-1.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `16-2`: the index says `run (lupin)`; its head(s) ch16/ex16-2.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `16-4`: the index says `run (lupin)`; its head(s) ch16/ex16-4.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `16-7`: the index says `run (lupin)`; its head(s) ch16/ex16-7.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `16-8`: the index says `run (lupin)`; its head(s) ch16/ex16-8.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `16-9`: the index says `run (wolf + lupin)`; its head(s) ch16/ex16-9.lu `fail(E1102)` make it `run (wolf)`
+tiers: FAIL `16-10`: the index says `run (lupin)`; its head(s) ch16/ex16-10.lu `run(exit=0, stdout="seat 4 survives")` make it `run (wolf + lupin)`
+tiers: FAIL `17-1`: the index says `run (lupin)`; its head(s) ch17/ex17-1.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `17-3`: the index says `run (lupin)`; its head(s) ch17/ex17-3.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `17-6`: the index says `pending`; its head(s) ch17/ex17-6.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `19-1`: the index says `run (lupin)`; its head(s) ch19/ex19-1.lu `run(exit=0, stdout="5 words")` make it `run (wolf + lupin)`
+tiers: FAIL `20-1`: the index says `run (lupin)`; its head(s) ch20/ex20-1.lu `run(exit=0, stdout="314")` make it `run (wolf + lupin)`
+tiers: FAIL `20-5`: the index says `pending`; its head(s) ch20/ex20-5.lu `fail(E0817)` make it `run (wolf)`
+tiers: FAIL `20-8`: the index says `run (wolf + lupin)`; its head(s) ch20/ex20-8.lu `fail(E0817)` make it `run (wolf)`
+tiers: FAIL `20-13`: the index says `run (lupin)`; its head(s) ch20/ex20-13.lu `run(exit=0, stdout="45")` make it `run (wolf + lupin)`
+tiers: FAIL `21-2`: the index says `run (lupin)`; its head(s) ch21/ex21-2.lu `run(exit=0, stdout="12 20")` make it `run (wolf + lupin)`
+tiers: FAIL `21-5`: the index says `run (lupin)`; its head(s) ch21/ex21-5.lu `run(exit=trap(overflow))` make it `run (wolf + lupin)`
+tiers: FAIL `22-1`: the index says `run (lupin)`; its head(s) ch22/metrics/main.lu `run(exit=0, stdout="mean 6 of 3")` make it `run (wolf + lupin)`
+tiers: FAIL `22-2`: the index says `run (lupin)`; its head(s) ch22/leak/main.lu `fail(E0304)` make it `run (wolf)`
+tiers: FAIL `22-3`: the index says `run (lupin)`; its head(s) ch22/twice/main.lu `fail(E0302)` make it `run (wolf)`
+tiers: FAIL `22-4`: the index says `run (lupin)`; its head(s) ch22/unused/main.lu `fail(E0305)` make it `run (wolf)`
+tiers: FAIL `22-5`: the index says `run (lupin)`; its head(s) ch22/tangle/main.lu `fail(E0303)`, ch22/untangled/main.lu `run(exit=0, stdout="stored 0")` make it `run (wolf + lupin)`
+tiers: FAIL `22-11`: the index says `run (lupin)`; its head(s) ch22/scratch/sum.lu `run(exit=0, stdout="sum 15")`, ch22/scratch/widest.lu `run(exit=0, stdout="widest marmot")` make it `run (wolf + lupin)`
+tiers: FAIL `22-12`: the index says `run (lupin)`; its head(s) ch22/clash/main.lu `fail(E0302)`, ch22/unclashed/main.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `22-9`: the index says `run (lupin)`; its head(s) ch22/wordcount/main.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `22-10`: the index says `run (lupin)`; its head(s) ch22/calc/main.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `26-1`: the index says `run (lupin)`; its head(s) ch26/ex26-1.lu `run(exit=0, stdout="       2       6      31 one.txt")` make it `run (wolf + lupin)`
+tiers: FAIL `26-2`: the index says `run (lupin)`; its head(s) ch26/ex26-2.lu `run(exit=0, stdout="       2       3       7 -")` make it `run (wolf + lupin)`
+tiers: FAIL `26-3`: the index says `run (lupin)`; its head(s) ch26/ex26-3.lu `run(exit=0, stdout="      31 one.txt")` make it `run (wolf + lupin)`
+tiers: FAIL `27-1`: the index says `run (lupin)`; its head(s) ch27/ex27-1.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `27-2`: the index says `run (lupin)`; its head(s) ch27/ex27-2.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `27-4`: the index says `run (lupin)`; its head(s) ch27/ex27-4.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `27-6`: the index says `run (lupin)`; its head(s) ch27/ex27-6.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `30-3`: the index says `run (wolf)`; its head(s) ch30/ex30-3.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `30-4`: the index says `run (wolf)`; its head(s) ch30/ex30-4.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `30-5`: the index says `run (wolf)`; its head(s) ch30/ex30-5.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `33-1`: the index says `run (lupin)`; its head(s) ch33/ex33-1.lu `run(exit=0, stdout="shelves: unknown")` make it `run (wolf + lupin)`
+tiers: FAIL `33-2`: the index says `run (lupin)`; its head(s) ch33/ex33-2.lu `run(exit=0)` make it `run (wolf + lupin)`
+tiers: FAIL `33-3`: the index says `run (lupin)`; its head(s) ch33/ex33-3.lu `run(exit=0, stdout="served 2, dropped 2")` make it `run (wolf + lupin)`
+tiers: FAIL `33-4`: the index says `run (lupin)`; its head(s) ch33/ex33-4.lu `run(exit=1, stdout="error: io")` make it `run (wolf + lupin)`
+tiers: FAIL `33-7`: the index says `run (lupin)`; its head(s) ch33/ex33-7.lu `run(exit=0, stdout="answered 4 questions on 2 connections")` make it `run (wolf + lupin)`
+tiers: FAIL `B-1`: the index says `run (lupin)`; its head(s) appx/exB-1.lu `run(exit=trap(overflow))` make it `run (wolf + lupin)`
+tiers: FAIL `B-2`: the index says `run (lupin)`; its head(s) appx/exB-2.lu `run(exit=trap(div-zero))` make it `run (wolf + lupin)`
+tiers: FAIL `B-3`: the index says `run (lupin)`; its head(s) appx/exB-3.lu `run(exit=trap(bounds))` make it `run (wolf + lupin)`
+tiers: FAIL `B-8`: the index says `run (lupin)`; its head(s) appx/exB-8.lu `run(exit=trap(assert))` make it `run (wolf + lupin)`
+tiers: FAIL `C-2`: the index says `run (wolf + lupin)`; its head(s) appx/exC-2.lu `fail(E1001)` make it `run (wolf)`
+error: principles/EXERCISES-INDEX.md is stale: 168 row(s) disagree with their `//! check:` heads — run `cargo xtask tiers` and commit the result
+EXIT 1

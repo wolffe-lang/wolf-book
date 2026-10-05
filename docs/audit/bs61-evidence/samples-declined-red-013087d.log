@@ -1,0 +1,12 @@
+013087d8a573e88b420054d6269a2b3a375bff46
+samples: 125 corpus file(s) held back from the export — one-machine directives the other runner cannot spell (principles/TWO-MACHINES.md)
+samples: 509 samples (250 corpus roots + 16 corpus members on disk, 259 book blocks)
+samples: 506 passed, 3 pending (report-only), 6 failed, 0 flips in 31.4s
+samples: 482 of 502 console block(s) replayed against the pinned tools
+samples: 1 warning set(s) asserted by warns(…); 30 sample(s) warn with no warns(…) directive (report-only, wolf-book#21)
+samples: FAIL samples-declined.toml names `principles/EXERCISES.md:374` but no exercise-corpus console block opens there
+samples: FAIL samples-declined.toml names `principles/exercises/ch11/EXERCISES.md:164` but no exercise-corpus console block opens there
+samples: FAIL samples-declined.toml names `principles/exercises/ch09/EXERCISES.md:240` but no exercise-corpus console block opens there
+samples: FAIL principles/exercises/ch09/EXERCISES.md:243 is a corpus console block nothing replays (`./ex9-8` runs the binary `ex9-8`, not a solution) and samples-declined.toml has no row for it — every hole in the corpus transcript lane is a sentence someone wrote, never a silence (wolf-book#29)
+samples: FAIL principles/exercises/ch11/EXERCISES.md:166 is a corpus console block nothing replays (`lupin` names no solution in this exercise directory) and samples-declined.toml has no row for it — every hole in the corpus transcript lane is a sentence someone wrote, never a silence (wolf-book#29)
+samples: FAIL principles/EXERCISES.md:376 is a corpus console block nothing replays (`lupin eval '"wolf".len'` names no solution in this exercise directory) and samples-declined.toml has no row for it — every hole in the corpus transcript lane is a sentence someone wrote, never a silence (wolf-book#29)

@@ -1,0 +1,44 @@
+9df056b205f526f0af64a1a705d62905ac913af6
+--- diff file page
+8c8
+<         if c == 0 { replies.send(total) else { return total } } else if c == 0 - 1 { total = 0 } else { total += c }
+---
+>         if c == 0 { replies.send(total) } else if c == 0 - 1 { total = 0 } else { total += c }
+a467bf9248880a50c84a62955beb7fb6ebb123067293b4577e4b81c8dfe9cfb3  /home/mfwolffe/lanes/bs61/probe147/file/ex14-7.lu
+8558f691918da90a317d1428ba43d5a42913669348473e4815966844b5b5ee74  /home/mfwolffe/lanes/bs61/probe147/page/ex14-7.lu
+=== file: lupin ex14-7.lu
+before=7 after=3
+exit 0
+=== file: wolf run ex14-7.lu
+before=7 after=3
+exit 0
+=== file: wolf conform-run ./ex14-7.lu
+{"commit":"8edac3e","diagnostics":[],"file":"./ex14-7.lu","impl":"wolfgang","impl_version":"0.2.23","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+exit 0
+=== page: lupin ex14-7.lu
+before=7 after=3
+exit 0
+=== page: wolf run ex14-7.lu
+warning[W0601]: this `() ! {cancelled, closed}` result is discarded, error row and all
+ --> ./ex14-7.lu:8:21
+  |
+8 |         if c == 0 { replies.send(total) } else if c == 0 - 1 { total = 0 } else { total += c }
+  |                     ^^^^^^^^^^^^^^^^^^^ the block's value is `()`, so a failure here vanishes silently
+  |
+  = note: propagate it with `?`, handle it with `else`, or bind it away explicitly so the discard
+    is visible.
+
+before=7 after=3
+exit 0
+=== page: wolf conform-run ./ex14-7.lu
+warning[W0601]: this `() ! {cancelled, closed}` result is discarded, error row and all
+ --> ./ex14-7.lu:8:21
+  |
+8 |         if c == 0 { replies.send(total) } else if c == 0 - 1 { total = 0 } else { total += c }
+  |                     ^^^^^^^^^^^^^^^^^^^ the block's value is `()`, so a failure here vanishes silently
+  |
+  = note: propagate it with `?`, handle it with `else`, or bind it away explicitly so the discard
+    is visible.
+
+{"commit":"8edac3e","diagnostics":[{"code":"W0601","severity":"warning","span":[272,291]}],"file":"./ex14-7.lu","impl":"wolfgang","impl_version":"0.2.23","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[{"code":"W0601","span":[272,291]}]}
+exit 0
