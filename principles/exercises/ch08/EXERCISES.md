@@ -198,20 +198,23 @@ you land?), and two steps backward. Rust folklore says this program
 requires `unsafe` or `Rc<RefCell<…>>`; say in one sentence why wolf's
 checker does not object here.
 
-Solution. `ch08/ex8-6.lu` (core):
+Solution. `ch08/ex8-6.lu` (excerpt — the core):
 
 ```wolf
 struct Node { value: int, next: handle Node, prev: handle Node }
-var pool = Pool[Node]()
-var hs = List[handle Node]()
-for _ in 0..5 { (mut hs).push((mut pool).reserve()) }
-for i in 0..5 {
-    (mut pool).init(hs[i], Node {
-        value: (i + 1) * 10,
-        next: hs[(i + 1) % 5],
-        prev: hs[(i + 4) % 5],
-    })
-}
+fn main() -> !int {
+    region r: pool(Node) {
+        var pool = Pool[Node]()
+        var hs = List[handle Node]()
+        for _ in 0..5 { (mut hs).push((mut pool).reserve()) }
+        for i in 0..5 {
+            (mut pool).init(hs[i], Node {
+                value: (i + 1) * 10,
+                next: hs[(i + 1) % 5],
+                prev: hs[(i + 4) % 5],
+            })
+        }
+...
 ```
 
 ```console
@@ -499,13 +502,16 @@ path north, east, west, south, printing the room at each step. Predict
 the four lines before running; the fourth is the one that checks your
 `south` links are real.
 
-Solution. `ch08/ex8-15.lu` (walk shown; full wiring on disk):
+Solution. `ch08/ex8-15.lu` (excerpt — the walk; the full wiring is on
+disk):
 
 ```wolf
-for step in path {
-    if step == "north" { here = pool[here].north } else if step == "south" { here = pool[here].south } else if step == "east" { here = pool[here].east } else { here = pool[here].west }
-    print("you are at the {pool[here].name}")
-}
+...
+        for step in path {
+            if step == "north" { here = pool[here].north } else if step == "south" { here = pool[here].south } else if step == "east" { here = pool[here].east } else { here = pool[here].west }
+            print("you are at the {pool[here].name}")
+        }
+...
 ```
 
 ```console
