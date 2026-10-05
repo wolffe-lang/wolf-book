@@ -1,0 +1,13 @@
+2026-10-05T19:56:13.9217805Z ##[group]Run cargo xtask diagrams --check
+2026-10-05T19:56:13.9218444Z cargo xtask diagrams --check
+2026-10-05T19:56:13.9307437Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-05T19:56:13.9307881Z env:
+2026-10-05T19:56:13.9308148Z   CARGO_TERM_COLOR: always
+2026-10-05T19:56:13.9308714Z   CACHE_ON_FAILURE: false
+2026-10-05T19:56:13.9309065Z   CARGO_INCREMENTAL: 0
+2026-10-05T19:56:13.9309351Z ##[endgroup]
+2026-10-05T19:56:14.0484639Z diagrams: SKIP the trace half — LUPIN_TRACE is unset, so the traces under snapshots/traces/ are not re-taken; the text and the SVG are still regenerated from them and checked
+2026-10-05T19:56:14.0491682Z diagrams: 6 diagram(s) from 4 trace(s), checked
+2026-10-05T19:56:14.0499120Z   book/ch07.md:425: the memory fence's text is not what the trace draws — run `cargo xtask diagrams`
+2026-10-05T19:56:14.0500516Z   book/diagrams/ch07/part-packcopy-L7.svg: stale or missing — run `cargo xtask diagrams`
+2026-10-05T19:56:14.0501440Z error: diagrams --check: 2 finding(s)
