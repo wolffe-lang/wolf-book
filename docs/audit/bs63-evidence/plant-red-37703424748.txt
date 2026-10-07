@@ -1,0 +1,83 @@
+run 37703424748 at 97f294f81f76f2c793811b9113d0e839c47bf389 conclusion=failure
+  job 113072031625 render success
+  job 113072031959 test (windows-latest) success
+  job 113072031971 samples (macos-latest) failure
+  job 113072032016 samples (ubuntu-latest) failure
+  job 113072032017 samples (windows-latest) failure
+  job 113072032036 test (ubuntu-latest) success
+  job 113072032135 test (macos-latest) success
+  job 113072571826 contents (webkit) success
+  job 113072571954 contents (chromium) success
+  job 113072572080 contents (firefox) success
+== samples (ubuntu-latest), diagrams step
+samples (ubuntu-latest)	build the trace lupin ([lupin-trace])	﻿2026-10-07T23:43:54.9241245Z ##[group]Run set -euo pipefail
+samples (ubuntu-latest)	build the trace lupin ([lupin-trace])	2026-10-07T23:43:54.9305288Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+samples (ubuntu-latest)	build the trace lupin ([lupin-trace])	2026-10-07T23:43:54.9305617Z env:
+samples (ubuntu-latest)	build the trace lupin ([lupin-trace])	2026-10-07T23:43:54.9305811Z   CARGO_TERM_COLOR: always
+samples (ubuntu-latest)	build the trace lupin ([lupin-trace])	2026-10-07T23:43:54.9306048Z   CACHE_ON_FAILURE: false
+samples (ubuntu-latest)	build the trace lupin ([lupin-trace])	2026-10-07T23:43:54.9306263Z   CARGO_INCREMENTAL: 0
+samples (ubuntu-latest)	build the trace lupin ([lupin-trace])	2026-10-07T23:43:54.9306472Z ##[endgroup]
+samples (ubuntu-latest)	build the trace lupin ([lupin-trace])	2026-10-07T23:43:54.9433354Z trace lupin = the pinned lupin (531bf0581dea6bba4b1247edb2abada5214c18ab)
+samples (ubuntu-latest)	memory diagrams re-taken from a fresh trace	﻿2026-10-07T23:43:54.9462931Z ##[group]Run cargo xtask diagrams --check
+samples (ubuntu-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:43:54.9517509Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+samples (ubuntu-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:43:54.9517852Z env:
+samples (ubuntu-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:43:54.9518045Z   CARGO_TERM_COLOR: always
+samples (ubuntu-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:43:54.9518287Z   CACHE_ON_FAILURE: false
+samples (ubuntu-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:43:54.9518515Z   CARGO_INCREMENTAL: 0
+samples (ubuntu-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:43:54.9518892Z   LUPIN_TRACE: /home/runner/work/wolf-book/wolf-book/wolf-interp/target/release/lupin
+samples (ubuntu-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:43:54.9519321Z ##[endgroup]
+samples (ubuntu-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:43:55.0753206Z diagrams: trace lupin = /home/runner/work/wolf-book/wolf-book/wolf-interp/target/release/lupin
+samples (ubuntu-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:43:55.0863119Z   snapshots/traces/ch07/part-packcopy.jsonl: the trace of `book/ch07/part-packcopy` differs from a fresh run — run `cargo xtask diagrams` with LUPIN_TRACE and comm
+samples (ubuntu-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:43:55.0864405Z   book/ch07.md:391: the memory fence's text is not what the trace draws — run `cargo xtask diagrams`
+samples (ubuntu-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:43:55.0865289Z   book/diagrams/ch07/part-packcopy-L5.svg: stale or missing — run `cargo xtask diagrams`
+samples (ubuntu-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:43:55.0865778Z diagrams: 6 diagram(s) from 4 trace(s), checked
+samples (ubuntu-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:43:55.0866235Z error: diagrams --check: 3 finding(s)
+samples (ubuntu-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:43:55.0878780Z ##[error]Process completed with exit code 1.
+== samples (macos-latest), diagrams step
+samples (macos-latest)	build the trace lupin ([lupin-trace])	﻿2026-10-07T23:46:31.3889000Z ##[group]Run set -euo pipefail
+samples (macos-latest)	build the trace lupin ([lupin-trace])	2026-10-07T23:46:31.4050720Z shell: /bin/bash --noprofile --norc -e -o pipefail {0}
+samples (macos-latest)	build the trace lupin ([lupin-trace])	2026-10-07T23:46:31.4051280Z env:
+samples (macos-latest)	build the trace lupin ([lupin-trace])	2026-10-07T23:46:31.4052180Z   CARGO_TERM_COLOR: always
+samples (macos-latest)	build the trace lupin ([lupin-trace])	2026-10-07T23:46:31.4052530Z   CACHE_ON_FAILURE: false
+samples (macos-latest)	build the trace lupin ([lupin-trace])	2026-10-07T23:46:31.4052920Z   CARGO_INCREMENTAL: 0
+samples (macos-latest)	build the trace lupin ([lupin-trace])	2026-10-07T23:46:31.4053260Z ##[endgroup]
+samples (macos-latest)	build the trace lupin ([lupin-trace])	2026-10-07T23:46:31.5035810Z trace lupin = the pinned lupin (531bf0581dea6bba4b1247edb2abada5214c18ab)
+samples (macos-latest)	memory diagrams re-taken from a fresh trace	﻿2026-10-07T23:46:31.5123140Z ##[group]Run cargo xtask diagrams --check
+samples (macos-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:46:31.5189510Z shell: /bin/bash --noprofile --norc -e -o pipefail {0}
+samples (macos-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:46:31.5190090Z env:
+samples (macos-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:46:31.5190280Z   CARGO_TERM_COLOR: always
+samples (macos-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:46:31.5190490Z   CACHE_ON_FAILURE: false
+samples (macos-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:46:31.5190710Z   CARGO_INCREMENTAL: 0
+samples (macos-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:46:31.5191030Z   LUPIN_TRACE: /Users/runner/work/wolf-book/wolf-book/wolf-interp/target/release/lupin
+samples (macos-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:46:31.5191420Z ##[endgroup]
+samples (macos-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:46:31.8925520Z diagrams: trace lupin = /Users/runner/work/wolf-book/wolf-book/wolf-interp/target/release/lupin
+samples (macos-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:46:31.9161110Z   snapshots/traces/ch07/part-packcopy.jsonl: the trace of `book/ch07/part-packcopy` differs from a fresh run — run `cargo xtask diagrams` with LUPIN_TRACE and commi
+samples (macos-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:46:31.9161940Z diagrams: 6 diagram(s) from 4 trace(s), checked
+samples (macos-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:46:31.9166210Z   book/ch07.md:391: the memory fence's text is not what the trace draws — run `cargo xtask diagrams`
+samples (macos-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:46:31.9170850Z   book/diagrams/ch07/part-packcopy-L5.svg: stale or missing — run `cargo xtask diagrams`
+samples (macos-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:46:31.9171460Z error: diagrams --check: 3 finding(s)
+samples (macos-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:46:31.9190310Z ##[error]Process completed with exit code 1.
+== samples (windows-latest), diagrams step
+samples (windows-latest)	build the trace lupin ([lupin-trace])	﻿2026-10-07T23:45:04.8453166Z ##[group]Run set -euo pipefail
+samples (windows-latest)	build the trace lupin ([lupin-trace])	2026-10-07T23:45:04.8471031Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+samples (windows-latest)	build the trace lupin ([lupin-trace])	2026-10-07T23:45:04.8471411Z env:
+samples (windows-latest)	build the trace lupin ([lupin-trace])	2026-10-07T23:45:04.8471583Z   CARGO_TERM_COLOR: always
+samples (windows-latest)	build the trace lupin ([lupin-trace])	2026-10-07T23:45:04.8471802Z   CACHE_ON_FAILURE: false
+samples (windows-latest)	build the trace lupin ([lupin-trace])	2026-10-07T23:45:04.8472001Z   CARGO_INCREMENTAL: 0
+samples (windows-latest)	build the trace lupin ([lupin-trace])	2026-10-07T23:45:04.8472384Z ##[endgroup]
+samples (windows-latest)	build the trace lupin ([lupin-trace])	2026-10-07T23:45:04.9159668Z trace lupin = the pinned lupin (531bf0581dea6bba4b1247edb2abada5214c18ab)
+samples (windows-latest)	memory diagrams re-taken from a fresh trace	﻿2026-10-07T23:45:04.9358350Z ##[group]Run cargo xtask diagrams --check
+samples (windows-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:45:04.9366441Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+samples (windows-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:45:04.9366677Z env:
+samples (windows-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:45:04.9366796Z   CARGO_TERM_COLOR: always
+samples (windows-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:45:04.9366926Z   CACHE_ON_FAILURE: false
+samples (windows-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:45:04.9367051Z   CARGO_INCREMENTAL: 0
+samples (windows-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:45:04.9367347Z   LUPIN_TRACE: D:\a\wolf-book\wolf-book/wolf-interp/target/release/lupin.exe
+samples (windows-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:45:04.9367587Z ##[endgroup]
+samples (windows-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:45:05.1934726Z diagrams: trace lupin = D:\a\wolf-book\wolf-book/wolf-interp/target/release/lupin.exe
+samples (windows-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:45:05.2340117Z   snapshots/traces\ch07\part-packcopy.jsonl: the trace of `book/ch07/part-packcopy` differs from a fresh run — run `cargo xtask diagrams` with LUPIN_TRACE and com
+samples (windows-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:45:05.2340964Z   book\ch07.md:391: the memory fence's text is not what the trace draws — run `cargo xtask diagrams`
+samples (windows-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:45:05.2341510Z   book\diagrams/ch07/part-packcopy-L5.svg: stale or missing — run `cargo xtask diagrams`
+samples (windows-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:45:05.2341832Z diagrams: 6 diagram(s) from 4 trace(s), checked
+samples (windows-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:45:05.2342105Z error: diagrams --check: 3 finding(s)
+samples (windows-latest)	memory diagrams re-taken from a fresh trace	2026-10-07T23:45:05.2452078Z ##[error]Process completed with exit code 1.
