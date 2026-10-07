@@ -137,7 +137,7 @@ outcome in prose.) Today, honestly:
 
 ```console
 $ lupin ex20-5.lu
-ex20-5.lu: E0817: `#[noalloc]` is not an attribute wolf implements: the set is closed (`trusted`, `consttime`, `allow`, `index`, `budget`, `repr(c)`, `cfg(target = "…")`), and an attribute nothing reads is refused, never ignored ([gram.item.attr.set]) [gram.item.attr.set] at 10:3
+ex20-5.lu: E0817: `#[noalloc]` is not an attribute wolf implements: the set is closed (`trusted`, `consttime`, `allow`, `index`, `budget`, `repr(c)` with `packed` or `align(N)`, `section`, `cfg(target = "…")`), and an attribute nothing reads is refused, never ignored ([gram.item.attr.set]) [gram.item.attr.set] at 10:3
 $ echo $?
 2
 ```
@@ -211,7 +211,7 @@ fn main() -> !int {
 
 ```console
 $ lupin ex20-8.lu
-ex20-8.lu: E0817: `#[noalloc]` is not an attribute wolf implements: the set is closed (`trusted`, `consttime`, `allow`, `index`, `budget`, `repr(c)`, `cfg(target = "…")`), and an attribute nothing reads is refused, never ignored ([gram.item.attr.set]) [gram.item.attr.set] at 9:3
+ex20-8.lu: E0817: `#[noalloc]` is not an attribute wolf implements: the set is closed (`trusted`, `consttime`, `allow`, `index`, `budget`, `repr(c)` with `packed` or `align(N)`, `section`, `cfg(target = "…")`), and an attribute nothing reads is refused, never ignored ([gram.item.attr.set]) [gram.item.attr.set] at 9:3
 $ echo $?
 2
 ```
