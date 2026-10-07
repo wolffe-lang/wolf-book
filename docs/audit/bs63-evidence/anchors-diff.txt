@@ -1,0 +1,13 @@
+anchors.json v0.2.23 -> v0.2.25 (wolf-lang 8edac3ee -> 6710f9e0), key sets diffed both ways
+count 586 -> 595
+added (9):
+   conc.mm.atomic.order
+   conc.mm.atomic.raw
+   conc.mm.atomic.raw.1
+   conc.mm.atomic.raw.2
+   conc.mm.atomic.raw.3
+   conc.mm.atomic.raw.4
+   conc.mm.atomic.raw.5
+   conc.mm.fence
+   mem.unsafe.raw.4
+dropped (0):

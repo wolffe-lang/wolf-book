@@ -1,0 +1,21 @@
+== control pairs (setup.log)
+2026-10-07T22:55:11Z
+wolf-0.2.23-x86_64-unknown-linux-gnu.tar.gz api=6f505eb542d340d3f818e6b4de57ef13736d0186b8b4efae999aa4aa1a4e44b0 got=6f505eb542d340d3f818e6b4de57ef13736d0186b8b4efae999aa4aa1a4e44b0 MATCH
+lupin-0.1.46-x86_64-unknown-linux-gnu.tar.gz api=d13a03790f35f2033570c6284795802dccdb6a0833f1ebdbd132dd4b8049be32 got=d13a03790f35f2033570c6284795802dccdb6a0833f1ebdbd132dd4b8049be32 MATCH
+wolf-0.2.24-x86_64-unknown-linux-gnu.tar.gz api=501d6d3f45124c84708b410dac62af5d358d24c1746323f17d42378b043519c7 got=501d6d3f45124c84708b410dac62af5d358d24c1746323f17d42378b043519c7 MATCH
+lupin-0.1.47-x86_64-unknown-linux-gnu.tar.gz api=0ddc4ff38d6178ae9f0fe0f007546f6e304216e5ad999b2509d2817a57912788 got=0ddc4ff38d6178ae9f0fe0f007546f6e304216e5ad999b2509d2817a57912788 MATCH
+/home/mfwolffe/lanes/bs63/c23/wolf-0.2.23-x86_64-unknown-linux-gnu/wolf
+wolf 0.2.23 (wolfgang, pin 8edac3e)
+paired with lupin 0.1.46 (reference interpreter), pin 8e36bc1
+/home/mfwolffe/lanes/bs63/c23/lupin-0.1.46-x86_64-unknown-linux-gnu/lupin
+lupin 0.1.46 (wolf-interp, reference interpreter at pin 8e36bc1)
+/home/mfwolffe/lanes/bs63/c24/wolf-0.2.24-x86_64-unknown-linux-gnu/wolf
+wolf 0.2.24 (wolfgang, pin 294d626)
+paired with lupin 0.1.47 (reference interpreter), pin 8e36bc1
+/home/mfwolffe/lanes/bs63/c24/lupin-0.1.47-x86_64-unknown-linux-gnu/lupin
+lupin 0.1.47 (wolf-interp, reference interpreter at pin 8e36bc1)
+
+== subject pair (subject-download.log)
+2026-10-07T23:09:56Z
+wolf-0.2.25-x86_64-unknown-linux-gnu.tar.gz api=9d91f533ba233bfa0ae5490b567c4b9e15cb77c3e7c997912828ef2b7b2183f8 got=9d91f533ba233bfa0ae5490b567c4b9e15cb77c3e7c997912828ef2b7b2183f8 MATCH
+lupin-0.1.48-x86_64-unknown-linux-gnu.tar.gz api=81cfd77af5c983830b3bc8ddab2a5ba762408ac770e3229032c36d54958d93d8 got=81cfd77af5c983830b3bc8ddab2a5ba762408ac770e3229032c36d54958d93d8 MATCH

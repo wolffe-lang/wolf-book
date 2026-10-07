@@ -1,0 +1,41 @@
+== subject run on aa1e4b58847c6e73f943b6d13780905b73b5763d, wolf 0.2.25 / lupin 0.1.48 from the release archives (~/lanes/bs63/new/)
+-- subject-samples.log (SKIP lines: 4)
+samples: SKIP extraction book/back/solutions.md — generated from the two places solutions live, and this run reaches both directly: the exercise corpus under principles/exercises/ (chapters 7+) and principles/EXERCISES.md §5, the master for the chapter 1-6 exemplar batch (wolf-book#44). Every consol
+samples: 125 corpus file(s) held back from the export — one-machine directives the other runner cannot spell (principles/TWO-MACHINES.md)
+samples: 512 samples (250 corpus roots + 16 corpus members on disk, 262 book blocks)
+samples: 507 passed, 3 pending (report-only), 11 failed, 0 flips in 34.5s
+samples: 478 of 505 console block(s) replayed against the pinned tools
+samples: SKIP console /home/mfwolffe/lanes/bs63/wolf-book/book/ch01.md:322: `(cd wolf-lang` needs a shell
+samples: SKIP console /home/mfwolffe/lanes/bs63/wolf-book/book/ch07.md:722: `grep -n '(mut ' shelf.lu` is not a pinned tool
+samples: SKIP pending(is08): 12 wolf-repl block(s) counted, not replayed — the REPL replay lane lands with wolf-interp is08
+samples: 2 warning set(s) asserted by warns(…); 30 sample(s) warn with no warns(…) directive (report-only, wolf-book#21)
+samples: FAIL book/ch18/s2: diagnostic drifted from reviewed snapshot /home/mfwolffe/lanes/bs63/wolf-book/snapshots/diagnostics/book__ch18__s2.txt — if the compiler's wording changed on purpose, re-run with --bless and review the diff
+samples: FAIL book/ch18/s10: diagnostic drifted from reviewed snapshot /home/mfwolffe/lanes/bs63/wolf-book/snapshots/diagnostics/book__ch18__s10.txt — if the compiler's wording changed on purpose, re-run with --bless and review the diff
+samples: FAIL /home/mfwolffe/lanes/bs63/wolf-book/book/ch18.md: diagnostic,from(book/ch18/s2) drifted from the captured diagnostic — update the block from the real run
+samples: FAIL /home/mfwolffe/lanes/bs63/wolf-book/book/ch18.md: diagnostic,from(book/ch18/s10) drifted from the captured diagnostic — update the block from the real run
+samples: FAIL /home/mfwolffe/lanes/bs63/wolf-book/book/back/appendix-e.md:13: console block drifted from the real run
+samples: FAIL /home/mfwolffe/lanes/bs63/wolf-book/book/back/colophon.md:7: console block drifted from the real run
+samples: FAIL /home/mfwolffe/lanes/bs63/wolf-book/book/ch01.md:153: console block drifted from the real run
+samples: FAIL /home/mfwolffe/lanes/bs63/wolf-book/book/ch22.md:288: console block drifted from the real run
+samples: FAIL /home/mfwolffe/lanes/bs63/wolf-book/principles/exercises/ch20/EXERCISES.md:138: console block drifted from the real run
+samples: FAIL /home/mfwolffe/lanes/bs63/wolf-book/principles/exercises/ch20/EXERCISES.md:212: console block drifted from the real run
+samples: FAIL /home/mfwolffe/lanes/bs63/wolf-book/principles/exercises/ch22/EXERCISES.md:218: console block drifted from the real run
+error: 11 failure(s), 0 flip(s)
+EXIT 1
+-- subject-verifydocs.log (SKIP lines: 0)
+verify-docs: 10 line-count claim(s) recomputed
+verify-docs: 6 project program(s) match the chapters that print them
+verify-docs: 114 quoted solution fences on 32 exercise pages are their files (92 whole, 22 excerpts)
+verify-docs: 30 version literal(s) in reader-facing text, each audited against wolf 0.2.23 / lupin 0.1.46
+verify-docs: 658 wolf listing(s) scanned for interpolation the vendored grammar cannot paint (wolf-book#5)
+verify-docs: EXERCISES-INDEX.md agrees with the corpus — 345 exercises (296 printed); 6 pending · 78 prose · 9 run (lupin REPL) · 38 run (lupin) · 173 run (wolf + lupin) · 41 run (wolf); fingers 61 · comprehension 154 · extension 79 · spelunking 28 · design 37
+verify-docs: ok (corpus count 266, pins well-formed, TOC/stub numbering agrees)
+EXIT 0
+-- subject-ledgercheck.log (SKIP lines: 0)
+ledger: 32 chapter ledger(s) — 128 open (121 filed, 7 waived, 0 unfiled), 107 closed
+EXIT 0
+-- subject-diagramscheck.log (SKIP lines: 0)
+diagrams: trace lupin = /home/mfwolffe/lanes/bs63/new/lupin-0.1.48-x86_64-unknown-linux-gnu/lupin
+diagrams: 6 diagram(s) from 4 trace(s), checked
+EXIT 0
+-- git status after: 0 changed paths

@@ -1,0 +1,3 @@
+diagrams: trace lupin = /home/mfwolffe/lanes/bs63/new/lupin-0.1.48-x86_64-unknown-linux-gnu/lupin
+diagrams: 6 diagram(s) from 4 trace(s), checked
+EXIT 0
