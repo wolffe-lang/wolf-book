@@ -1224,8 +1224,49 @@ repo = "wolffe-lang/wolf-lang"
 # "c" let` reach no book program (bs60-evidence/scan.py).
 # Spec: anchors 569 -> 586 (none dropped), catalogue 181 -> 185 (E0819,
 # E0820, E0821, E1307), grammar MOVES (`extern_let_item`, kw09).
-rev = "8edac3eeb48632b32f02ef41ea87d484d1423492"
-impl_version = "0.2.23"
+# ---- bs63, wave 53: wolf 0.2.25 + lupin 0.1.48 — two releases at once
+#      (the book never pinned 0.2.24); the compiler's half EXACT, the
+#      distance one release ----
+#
+# wolf-lang at the v0.2.25 release tag (`6710f9e`), TAKEN FROM THE
+# RELEASE ARCHIVE (release 406122367) and matched against the release's
+# published digest before unpacking:
+# `wolf-0.2.25-x86_64-unknown-linux-gnu.tar.gz` sha256
+# 9d91f533ba233bfa0ae5490b567c4b9e15cb77c3e7c997912828ef2b7b2183f8.
+# Every member hashed BY NAME (docs/audit/bs63-evidence/members.txt):
+#
+#   wolf                 8373b0cd...   <- the pin of record
+#   wolf-cimport-worker  9c423c74...
+#   libwolf_rt.a         6ac563e7...
+#   libwolf_rt_none.a    110f062a...   <- new member since 0.2.24 (kw12)
+#   wolf.1               2d9e4aba...   <- the version line moves
+#   _wolf                a368c8ec...   <- same as 0.2.24
+#   wolf.bash            1b1d8853...   <- same as 0.2.24
+#   wolf.fish            180de0ec...   <- same as 0.2.24
+#
+#   wolf 0.2.25 (wolfgang, pin 6710f9e)
+#   paired with lupin 0.1.48 (reference interpreter), pin 294d626
+#   lupin 0.1.48 (wolf-interp, reference interpreter at pin 294d626)
+#
+# PREDICTED TO THE CHARACTER in docs/audit/bs63-prediction.md (committed
+# at aa1e4b5, before either archive was downloaded) and measured
+# byte-identical. The interpreter's half names v0.2.24's tag:
+# `git rev-list --count 294d626..6710f9e0` = 50 commits, one release.
+#
+# What the two releases changed that the book can see: NO FLIPS and no
+# program that stopped meeting its verdict. 0.2.24 folds the doubled
+# E0710 record bs60 printed in chapter 18 back into one (wolf-lang#584),
+# and `wolf --help` grows `prelude` (s212); 0.2.25 (s214: #598, #601,
+# #600) changes no answer any book program prints, on native, checked
+# or release, measured over all 577 programs the runner executes
+# (bs63-evidence/sweep-*.jsonl; release rows that move between two
+# identical runs are the scheduler's and UB's, named in the results).
+# No program has a module `var`, `extern "c" let` storage, an atomic, a
+# declared `fence` or a wolf `>>`.
+# Spec: anchors 586 -> 595 (none dropped), catalogue 185 -> 187 (E1308,
+# E1309), grammar unchanged.
+rev = "6710f9e0cbc3a7264349093751ce7a46a407e473"
+impl_version = "0.2.25"
 
 [lupin]
 # wolf-interp at the v0.1.30 release tag (is42): the stamped line names
@@ -1844,9 +1885,23 @@ impl_version = "0.2.23"
 # binding (#180), the region-block `return` trap (#178) and the
 # provenance methods (#184) meet no sample; every other lupin transcript
 # in the book replays byte for byte.
+# ---- bs63, wave 53: 0.1.46 -> 0.1.48, the re-pin, is73 and the trace ----
+#
+# `lupin-0.1.48-x86_64-unknown-linux-gnu.tar.gz` (release 405340127)
+# sha256 81cfd77af5c983830b3bc8ddab2a5ba762408ac770e3229032c36d54958d93d8,
+# member `lupin` 734caee6.... Pin MOVES `8e36bc1` -> `294d626` (v0.2.24's
+# tag, r30's re-pin; 0.1.47 kept v0.2.22). What reaches the book: the
+# closed attribute set lupin reads grows `repr(c)` with `packed` or
+# `align(N)` and `section` (is73, #188/#190), so the ch20 `#[noalloc]`
+# refusals print the longer list, and the two machines' lists now name
+# the same set; `size_of` on a native layout is E0708 here too (ex18-4's
+# answer is the compiler's on both machines now, its fence reads only
+# the compiler). Module state (#190) meets no sample: ch06's `USAGE` has
+# no written type. The place trace (is72) is in this release, so
+# [lupin-trace] below is this rev. Row L4 (0.1.47) meets no sample.
 repo = "wolffe-lang/wolf-interp"
-rev = "f9269e3364169585fdfe92407639418220be373b"
-version = "lupin 0.1.46 (wolf-interp, reference interpreter at pin 8e36bc1)"
+rev = "531bf0581dea6bba4b1247edb2abada5214c18ab"
+version = "lupin 0.1.48 (wolf-interp, reference interpreter at pin 294d626)"
 
 [lupin-trace]
 # bs62: chapter 7's memory diagrams are drawn from lupin's place trace
@@ -1858,8 +1913,13 @@ version = "lupin 0.1.46 (wolf-interp, reference interpreter at pin 8e36bc1)"
 # b7b7ddb: wolf-interp trunk with is72 merged (2026-10-06), schema still
 # version 1; first pinned at is72's head a56f924, whose traces were
 # byte-identical to the ones under snapshots/traces/.
+# bs63: lupin 0.1.48 carries is72 (`b7b7ddb` is an ancestor of v0.1.48;
+# src/eval/placetrace.rs byte-identical between them), so this rev is
+# [lupin].rev and CI builds no second lupin. The four traces re-taken
+# with the 0.1.48 release archive are byte-identical to the ones under
+# snapshots/traces/ (docs/audit/bs63-evidence/diagrams-subject.txt).
 repo = "wolffe-lang/wolf-interp"
-rev = "b7b7ddb27f9f442086fdf1fdfc4827587c2434b9"
+rev = "531bf0581dea6bba4b1247edb2abada5214c18ab"
 [wolf-lsp]
 # Source of the vendored tmLanguage grammars under highlight/.
 # `cargo xtask grammar-sync --check` fails on drift against this pin.
