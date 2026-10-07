@@ -8,7 +8,7 @@ It is here because a book that says *the formatter* in chapter 2 and
 names `wolf fmt` in chapter 3 owes the reader somewhere to look it up.
 
 The driver describes itself, and what it prints is the whole surface —
-one binary, twenty-two subcommands, three groups:
+one binary, twenty-three subcommands, three groups:
 
 ```console
 $ wolf --help
@@ -87,7 +87,7 @@ That block is a run, not a transcription, so this page cannot fall
 behind the binary: a subcommand the driver grows appears here the day it
 appears there.
 
-Three of the twenty-two are load-bearing for a reader of this book and
+Three of the twenty-three are load-bearing for a reader of this book and
 are taught nowhere else in it, and the rest of this appendix is them.
 `wolf fmt` decides what your source looks like whether you invite it to
 or not. `wolf init` is the door between a script and a package, which is
@@ -95,10 +95,10 @@ the crossing chapters 22 and 23 assume you have already made. `wolf
 vendor` is the answer to a question chapter 24 raises and does not
 close: what happens to a build when the network is not there.
 
-The remaining four you will not meet in these pages — `profile`,
-`c-import`, `cache` and `lsp` — are reference material with no chapter
-behind them, and the driver's own `wolf <command> --help` is the whole
-of what this book would tell you about them.
+The remaining five you will not meet in these pages — `prelude`,
+`profile`, `c-import`, `cache` and `lsp` — are reference material with
+no chapter behind them, and the driver's own `wolf <command> --help` is
+the whole of what this book would tell you about them.
 
 ## `wolf fmt` — one style, and no argument about it
 
