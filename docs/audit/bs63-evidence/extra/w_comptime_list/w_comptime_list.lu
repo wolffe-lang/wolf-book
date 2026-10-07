@@ -1,0 +1,12 @@
+// bs63 witness: ch22's contract-delta row, first gap — a `comptime fn` that builds a List.
+comptime fn names() -> int {
+    var xs = List[int]()
+    (mut xs).push(3)
+    (mut xs).push(4)
+    xs.len
+}
+const N: int = names()
+fn main() -> !int {
+    print("{N}")
+    0
+}

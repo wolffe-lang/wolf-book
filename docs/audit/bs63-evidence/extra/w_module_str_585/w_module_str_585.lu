@@ -1,0 +1,8 @@
+// bs63 witness: wolf-lang#585 — a module `let` holding a """ string, typed.
+let USAGE: str = """
+    usage: wc FILE
+    """
+fn main() -> !int {
+    print("[{USAGE}]")
+    0
+}

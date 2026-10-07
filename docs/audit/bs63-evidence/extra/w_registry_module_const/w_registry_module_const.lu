@@ -1,0 +1,14 @@
+struct Ingest { rows: int }
+struct Report { rows: int }
+struct Purge  { rows: int }
+
+comptime fn handlers(a: type, b: type, c: type) -> str {
+    "{typeinfo(a).name} {typeinfo(b).name} {typeinfo(c).name}"
+}
+
+const HANDLERS: str = handlers(Ingest, Report, Purge)
+
+fn main() -> !int {
+    print("{HANDLERS}")
+    0
+}

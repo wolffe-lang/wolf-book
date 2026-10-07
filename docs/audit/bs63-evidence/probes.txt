@@ -1,0 +1,73 @@
+## pair=c23 wolf 0.2.23 (wolfgang, pin 8edac3e) / lupin 0.1.46 (wolf-interp, reference interpreter at pin 8e36bc1)
+=== w_comptime_list
+lupin exit=4
+  | w_comptime_list.lu: unsupported: `names` is a `comptime fn`; compile-time evaluation with its sandbox and budgets is the compiler's engine (s16), and nothing in `spec/` pins it — the `comptime` namespace is still a reserved forward one
+wolf run exit=4
+  | wolf run: cannot compile this yet — `List` construction at comptime (the engine's values are hash-consed and immutable — scalars, `str`, tuples and comptime slices; no container with identity yet, so a builtin whose argument is a `List` is unreachable here whatever the D33 sandbox says about it) @136..145 (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)
+conform-run : unsupported [] `List` construction at comptime (the engine's values are hash-consed and immutable — scalars, `str`, tuples and comptime slices; no container with identity yet, so a builtin whose argument is a `List` is unreachable here whatever the D33 sandbox says about it) ''
+conform-run --checked: unsupported [] `List` construction at comptime (the engine's values are hash-consed and immutable — scalars, `str`, tuples and comptime slices; no container with identity yet, so a builtin whose argument is a `List` is unreachable here whatever the D33 sandbox says about it) ''
+=== w_module_str_585
+lupin exit=0
+  | [usage: wc FILE
+  | ]
+wolf run exit=0
+  | [""
+  |     usage: wc FILE
+  |     ""]
+conform-run : pass []  ''
+conform-run --checked: exit(0) []  '[""\n    usage: wc FILE\n    ""]\n'
+=== w_registry_module_const
+lupin exit=4
+  | w_registry_module_const.lu: unsupported: `handlers` is a `comptime fn`; compile-time evaluation with its sandbox and budgets is the compiler's engine (s16), and nothing in `spec/` pins it — the `comptime` namespace is still a reserved forward one
+wolf run exit=0
+  | Ingest Report Purge
+conform-run : pass []  ''
+conform-run --checked: exit(0) []  'Ingest Report Purge\n'
+## pair=c24 wolf 0.2.24 (wolfgang, pin 294d626) / lupin 0.1.47 (wolf-interp, reference interpreter at pin 8e36bc1)
+=== w_comptime_list
+lupin exit=4
+  | w_comptime_list.lu: unsupported: `names` is a `comptime fn`; compile-time evaluation with its sandbox and budgets is the compiler's engine (s16), and nothing in `spec/` pins it — the `comptime` namespace is still a reserved forward one
+wolf run exit=4
+  | wolf run: cannot compile this yet — `List` construction at comptime (the engine's values are hash-consed and immutable — scalars, `str`, tuples and comptime slices; no container with identity yet, so a builtin whose argument is a `List` is unreachable here whatever the D33 sandbox says about it) @136..145 (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)
+conform-run : unsupported [] `List` construction at comptime (the engine's values are hash-consed and immutable — scalars, `str`, tuples and comptime slices; no container with identity yet, so a builtin whose argument is a `List` is unreachable here whatever the D33 sandbox says about it) ''
+conform-run --checked: unsupported [] `List` construction at comptime (the engine's values are hash-consed and immutable — scalars, `str`, tuples and comptime slices; no container with identity yet, so a builtin whose argument is a `List` is unreachable here whatever the D33 sandbox says about it) ''
+=== w_module_str_585
+lupin exit=0
+  | [usage: wc FILE
+  | ]
+wolf run exit=0
+  | [usage: wc FILE
+  | ]
+conform-run : pass []  ''
+conform-run --checked: exit(0) []  '[usage: wc FILE\n]\n'
+=== w_registry_module_const
+lupin exit=4
+  | w_registry_module_const.lu: unsupported: `handlers` is a `comptime fn`; compile-time evaluation with its sandbox and budgets is the compiler's engine (s16), and nothing in `spec/` pins it — the `comptime` namespace is still a reserved forward one
+wolf run exit=0
+  | Ingest Report Purge
+conform-run : pass []  ''
+conform-run --checked: exit(0) []  'Ingest Report Purge\n'
+## pair=new wolf 0.2.25 (wolfgang, pin 6710f9e) / lupin 0.1.48 (wolf-interp, reference interpreter at pin 294d626)
+=== w_comptime_list
+lupin exit=4
+  | w_comptime_list.lu: unsupported: `names` is a `comptime fn`; compile-time evaluation with its sandbox and budgets is the compiler's engine (s16), and nothing in `spec/` pins it — the `comptime` namespace is still a reserved forward one
+wolf run exit=4
+  | wolf run: cannot compile this yet — `List` construction at comptime (the engine's values are hash-consed and immutable — scalars, `str`, tuples and comptime slices; no container with identity yet, so a builtin whose argument is a `List` is unreachable here whatever the D33 sandbox says about it) @136..145 (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)
+conform-run : unsupported [] `List` construction at comptime (the engine's values are hash-consed and immutable — scalars, `str`, tuples and comptime slices; no container with identity yet, so a builtin whose argument is a `List` is unreachable here whatever the D33 sandbox says about it) ''
+conform-run --checked: unsupported [] `List` construction at comptime (the engine's values are hash-consed and immutable — scalars, `str`, tuples and comptime slices; no container with identity yet, so a builtin whose argument is a `List` is unreachable here whatever the D33 sandbox says about it) ''
+=== w_module_str_585
+lupin exit=0
+  | [usage: wc FILE
+  | ]
+wolf run exit=0
+  | [usage: wc FILE
+  | ]
+conform-run : pass []  ''
+conform-run --checked: exit(0) []  '[usage: wc FILE\n]\n'
+=== w_registry_module_const
+lupin exit=4
+  | w_registry_module_const.lu: unsupported: `handlers` is a `comptime fn`; compile-time evaluation with its sandbox and budgets is the compiler's engine (s16), and nothing in `spec/` pins it — the `comptime` namespace is still a reserved forward one
+wolf run exit=0
+  | Ingest Report Purge
+conform-run : pass []  ''
+conform-run --checked: exit(0) []  'Ingest Report Purge\n'
