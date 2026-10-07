@@ -57,6 +57,7 @@ Packages:
 Inspecting and reporting:
   interface      print every module's public interface
   audit-surface  the package's complete unsafety inventory
+  prelude        every name a program uses without an import
   profile        read and merge profile-guided-optimization data
   c-import       import C headers, and show what was refused
   conform-run    observe one program and emit a conformance record
