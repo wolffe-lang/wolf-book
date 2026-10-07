@@ -1,0 +1,34 @@
+appx_exB_11_lu [release]
+   was ('153', '')
+   now ('255', '')
+ch09_ex9_4_lu [release]
+   was ('68', '')
+   now ('245', '')
+ch11_ex11_5_lu [release]
+   was ('0', 'worker 0 took job 1\nworker 0 took job 2\nworker 0 took job 3\nworker 0 took job 4\n')
+   now ('0', 'worker 1 took job 2\nworker 1 took job 3\nworker 1 took job 4\nworker 0 took job 1\n')
+ch17_ex17_1_lu [release]
+   was ('0', 'balance=100\n')
+   now ('0', 'balance=50\n')
+ch17_md_113 [release]
+   was ('0', 'balance=50\n')
+   now ('0', 'balance=100\n')
+ch18_md_369 [native]
+   was ('fail(E0710)', None, ('E0710', 'E0710'), None)
+   now ('fail(E0710)', None, ('E0710',), None)
+ch18_md_369 [checked]
+   was ('fail(E0710)', None, ('E0710', 'E0710'), None)
+   now ('fail(E0710)', None, ('E0710',), None)
+ch18_md_64 [native]
+   was ('fail(E0710)', None, ('E0710', 'E0710'), None)
+   now ('fail(E0710)', None, ('E0710',), None)
+ch18_md_64 [checked]
+   was ('fail(E0710)', None, ('E0710', 'E0710'), None)
+   now ('fail(E0710)', None, ('E0710',), None)
+ch30_ex30_4_lu [release]
+   was ('0', 'arrive 2\narrive 7\narrive 5\narrive 0\na.log:1: 06:12 the wolf runs\na.log:3: 07:02 the wolf howls\nb.log:2: 08:52 the wolf sleeps\nb.log:4: 09:44 the wolf wakes\n')
+   now ('0', 'arrive 0\narrive 2\narrive 5\narrive 7\na.log:1: 06:12 the wolf runs\na.log:3: 07:02 the wolf howls\nb.log:2: 08:52 the wolf sleeps\nb.log:4: 09:44 the wolf wakes\n')
+ch30_ex30_5_lu [release]
+   was ('0', 'a.log:3: 07:02 the wolf howls\na.log:1: 06:12 the wolf runs\nb.log:2: 08:52 the wolf sleeps\nb.log:4: 09:44 the wolf wakes\n')
+   now ('0', 'a.log:1: 06:12 the wolf runs\na.log:3: 07:02 the wolf howls\nb.log:4: 09:44 the wolf wakes\nb.log:2: 08:52 the wolf sleeps\n')
+programs 577 release-built 368 moves 11 {'lupin': 0, 'native': 2, 'checked': 2, 'release': 7}

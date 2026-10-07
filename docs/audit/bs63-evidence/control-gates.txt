@@ -1,0 +1,83 @@
+2026-10-07T22:55:11Z
+wolf-0.2.23-x86_64-unknown-linux-gnu.tar.gz api=6f505eb542d340d3f818e6b4de57ef13736d0186b8b4efae999aa4aa1a4e44b0 got=6f505eb542d340d3f818e6b4de57ef13736d0186b8b4efae999aa4aa1a4e44b0 MATCH
+lupin-0.1.46-x86_64-unknown-linux-gnu.tar.gz api=d13a03790f35f2033570c6284795802dccdb6a0833f1ebdbd132dd4b8049be32 got=d13a03790f35f2033570c6284795802dccdb6a0833f1ebdbd132dd4b8049be32 MATCH
+wolf-0.2.24-x86_64-unknown-linux-gnu.tar.gz api=501d6d3f45124c84708b410dac62af5d358d24c1746323f17d42378b043519c7 got=501d6d3f45124c84708b410dac62af5d358d24c1746323f17d42378b043519c7 MATCH
+lupin-0.1.47-x86_64-unknown-linux-gnu.tar.gz api=0ddc4ff38d6178ae9f0fe0f007546f6e304216e5ad999b2509d2817a57912788 got=0ddc4ff38d6178ae9f0fe0f007546f6e304216e5ad999b2509d2817a57912788 MATCH
+/home/mfwolffe/lanes/bs63/c23/wolf-0.2.23-x86_64-unknown-linux-gnu/wolf
+wolf 0.2.23 (wolfgang, pin 8edac3e)
+paired with lupin 0.1.46 (reference interpreter), pin 8e36bc1
+/home/mfwolffe/lanes/bs63/c23/lupin-0.1.46-x86_64-unknown-linux-gnu/lupin
+lupin 0.1.46 (wolf-interp, reference interpreter at pin 8e36bc1)
+/home/mfwolffe/lanes/bs63/c24/wolf-0.2.24-x86_64-unknown-linux-gnu/wolf
+wolf 0.2.24 (wolfgang, pin 294d626)
+paired with lupin 0.1.47 (reference interpreter), pin 8e36bc1
+/home/mfwolffe/lanes/bs63/c24/lupin-0.1.47-x86_64-unknown-linux-gnu/lupin
+lupin 0.1.47 (wolf-interp, reference interpreter at pin 8e36bc1)
+== control c23 on beedaa8ce22494062b8f05f39aa242bab8a6efa5
+-- control-c23-samples.log (SKIP lines: 4)
+samples: SKIP extraction book/back/solutions.md — generated from the two places solutions live, and this run reaches both directly: the exercise corpus under principles/exercises/ (chapters 7+) and principles/EXERCISES.md §5, the master for the chapter 1-6 exe
+samples: 125 corpus file(s) held back from the export — one-machine directives the other runner cannot spell (principles/TWO-MACHINES.md)
+samples: 512 samples (250 corpus roots + 16 corpus members on disk, 262 book blocks)
+samples: 509 passed, 3 pending (report-only), 0 failed, 0 flips in 30.4s
+samples: 485 of 505 console block(s) replayed against the pinned tools
+samples: SKIP console /home/mfwolffe/lanes/bs63/wolf-book/book/ch01.md:322: `(cd wolf-lang` needs a shell
+samples: SKIP console /home/mfwolffe/lanes/bs63/wolf-book/book/ch07.md:722: `grep -n '(mut ' shelf.lu` is not a pinned tool
+samples: SKIP pending(is08): 12 wolf-repl block(s) counted, not replayed — the REPL replay lane lands with wolf-interp is08
+samples: 2 warning set(s) asserted by warns(…); 30 sample(s) warn with no warns(…) directive (report-only, wolf-book#21)
+EXIT 0
+-- control-c23-verifydocs.log (SKIP lines: 0)
+verify-docs: 10 line-count claim(s) recomputed
+verify-docs: 6 project program(s) match the chapters that print them
+verify-docs: 114 quoted solution fences on 32 exercise pages are their files (92 whole, 22 excerpts)
+verify-docs: 30 version literal(s) in reader-facing text, each audited against wolf 0.2.23 / lupin 0.1.46
+verify-docs: 658 wolf listing(s) scanned for interpolation the vendored grammar cannot paint (wolf-book#5)
+verify-docs: EXERCISES-INDEX.md agrees with the corpus — 345 exercises (296 printed); 6 pending · 78 prose · 9 run (lupin REPL) · 38 run (lupin) · 173 run (wolf + lupin) · 41 run (wolf); fingers 61 · comprehension 154 · extension 79 · spelunking 28 · design 37
+verify-docs: ok (corpus count 266, pins well-formed, TOC/stub numbering agrees)
+EXIT 0
+-- control-c23-ledgercheck.log (SKIP lines: 0)
+ledger: 32 chapter ledger(s) — 128 open (121 filed, 7 waived, 0 unfiled), 107 closed
+EXIT 0
+-- control-c23-diagramscheck.log (SKIP lines: 1)
+diagrams: SKIP the trace half — LUPIN_TRACE is unset, so the traces under snapshots/traces/ are not re-taken; the text and the SVG are still regenerated from them and checked
+diagrams: 6 diagram(s) from 4 trace(s), checked
+EXIT 0
+-- git status after: 0 changed paths
+== control c24 on beedaa8ce22494062b8f05f39aa242bab8a6efa5
+-- control-c24-samples.log (SKIP lines: 4)
+samples: SKIP extraction book/back/solutions.md — generated from the two places solutions live, and this run reaches both directly: the exercise corpus under principles/exercises/ (chapters 7+) and principles/EXERCISES.md §5, the master for the chapter 1-6 exe
+samples: 125 corpus file(s) held back from the export — one-machine directives the other runner cannot spell (principles/TWO-MACHINES.md)
+samples: 512 samples (250 corpus roots + 16 corpus members on disk, 262 book blocks)
+samples: 507 passed, 3 pending (report-only), 9 failed, 0 flips in 37.5s
+samples: 480 of 505 console block(s) replayed against the pinned tools
+samples: SKIP console /home/mfwolffe/lanes/bs63/wolf-book/book/ch01.md:322: `(cd wolf-lang` needs a shell
+samples: SKIP console /home/mfwolffe/lanes/bs63/wolf-book/book/ch07.md:722: `grep -n '(mut ' shelf.lu` is not a pinned tool
+samples: SKIP pending(is08): 12 wolf-repl block(s) counted, not replayed — the REPL replay lane lands with wolf-interp is08
+samples: 2 warning set(s) asserted by warns(…); 30 sample(s) warn with no warns(…) directive (report-only, wolf-book#21)
+samples: FAIL book/ch18/s2: diagnostic drifted from reviewed snapshot /home/mfwolffe/lanes/bs63/wolf-book/snapshots/diagnostics/book__ch18__s2.txt — if the compiler's wording changed on purpose, re-run with --bless and review the diff
+samples: FAIL book/ch18/s10: diagnostic drifted from reviewed snapshot /home/mfwolffe/lanes/bs63/wolf-book/snapshots/diagnostics/book__ch18__s10.txt — if the compiler's wording changed on purpose, re-run with --bless and review the diff
+samples: FAIL /home/mfwolffe/lanes/bs63/wolf-book/book/ch18.md: diagnostic,from(book/ch18/s2) drifted from the captured diagnostic — update the block from the real run
+samples: FAIL /home/mfwolffe/lanes/bs63/wolf-book/book/ch18.md: diagnostic,from(book/ch18/s10) drifted from the captured diagnostic — update the block from the real run
+samples: FAIL /home/mfwolffe/lanes/bs63/wolf-book/book/back/appendix-e.md:13: console block drifted from the real run
+samples: FAIL /home/mfwolffe/lanes/bs63/wolf-book/book/back/colophon.md:7: console block drifted from the real run
+samples: FAIL /home/mfwolffe/lanes/bs63/wolf-book/book/ch01.md:153: console block drifted from the real run
+samples: FAIL /home/mfwolffe/lanes/bs63/wolf-book/book/ch22.md:288: console block drifted from the real run
+samples: FAIL /home/mfwolffe/lanes/bs63/wolf-book/principles/exercises/ch22/EXERCISES.md:218: console block drifted from the real run
+error: 9 failure(s), 0 flip(s)
+EXIT 1
+-- control-c24-verifydocs.log (SKIP lines: 0)
+verify-docs: 10 line-count claim(s) recomputed
+verify-docs: 6 project program(s) match the chapters that print them
+verify-docs: 114 quoted solution fences on 32 exercise pages are their files (92 whole, 22 excerpts)
+verify-docs: 30 version literal(s) in reader-facing text, each audited against wolf 0.2.23 / lupin 0.1.46
+verify-docs: 658 wolf listing(s) scanned for interpolation the vendored grammar cannot paint (wolf-book#5)
+verify-docs: EXERCISES-INDEX.md agrees with the corpus — 345 exercises (296 printed); 6 pending · 78 prose · 9 run (lupin REPL) · 38 run (lupin) · 173 run (wolf + lupin) · 41 run (wolf); fingers 61 · comprehension 154 · extension 79 · spelunking 28 · design 37
+verify-docs: ok (corpus count 266, pins well-formed, TOC/stub numbering agrees)
+EXIT 0
+-- control-c24-ledgercheck.log (SKIP lines: 0)
+ledger: 32 chapter ledger(s) — 128 open (121 filed, 7 waived, 0 unfiled), 107 closed
+EXIT 0
+-- control-c24-diagramscheck.log (SKIP lines: 1)
+diagrams: SKIP the trace half — LUPIN_TRACE is unset, so the traces under snapshots/traces/ are not re-taken; the text and the SVG are still regenerated from them and checked
+diagrams: 6 diagram(s) from 4 trace(s), checked
+EXIT 0
+-- git status after: 0 changed paths
