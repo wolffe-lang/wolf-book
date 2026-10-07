@@ -1,0 +1,13 @@
+contrast: ok samples/contrast/recency_ring.rs
+contrast: ok samples/contrast/shelf_share.rs
+contrast: ok samples/contrast/zero_copy_tokens.rs
+contrast: rust — 3 file(s) compiled and asserted, 5 book block(s) matched
+contrast: c — 9 printed transcript(s) checked against their cases
+contrast: ok samples/contrast/arena_nodes.c (cc -std=c99 -Wall -Werror)
+contrast: ok samples/contrast/count.c (cc -std=c99 -Wall -Werror)
+contrast: ok samples/contrast/rpn.c (cc -std=c99 -Wall -Werror)
+contrast: ok samples/contrast/saxpy.c (cc -std=c99 -Wall -Werror)
+contrast: ok samples/contrast/saxpy_restrict.c (cc -std=c99 -Wall -Werror)
+contrast: ok samples/contrast/wordtree.c (cc -std=c99 -Wall -Werror)
+contrast: c — 6 twin(s) compiled with cc -std=c99 -Wall -Werror, 14/14 case(s) asserted, 13 book block(s) matched
+EXIT 0

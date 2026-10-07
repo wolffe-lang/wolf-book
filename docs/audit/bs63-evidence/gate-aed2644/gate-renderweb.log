@@ -1,0 +1,4 @@
+render: web edition at /home/mfwolffe/lanes/bs63/wolf-book/target/render/web
+render: CSP guard — 48 pages, no inline <script> (lupp.us serves `script-src 'self'`)
+render: link check — 1334 internal links across 48 pages, none dead
+EXIT 0

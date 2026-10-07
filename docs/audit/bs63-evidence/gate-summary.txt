@@ -1,0 +1,14 @@
+== head gate on kasumi, wolf-book aed2644dce87212249e4db398d09b44984bb4cf8, wolf 0.2.25 / lupin 0.1.48 (release archives by digest, ~/lanes/bs63/new/), WOLF_LANG_PATH = wolf-lang at v0.2.25 (6710f9e0cbc3a7264349093751ce7a46a407e473), LUPIN_TRACE = the release lupin
+== strict evidence (wolf-lang#571): full 2>&1 logs in gate-aed2644/, SKIP lines counted; xtask tests --nocapture; samples also under taskset -c 0-3
+== git status after the gate: 0 changed paths
+gate-backmattercheck.log: SKIP lines 0, EXIT 0, mtime 23:19:30Z
+gate-contrast.log: SKIP lines 0, EXIT 0, mtime 23:19:31Z
+gate-diagramscheck.log: SKIP lines 0, EXIT 0, mtime 23:19:32Z
+gate-ledgercheck.log: SKIP lines 0, EXIT 0, mtime 23:19:30Z
+gate-renderweb.log: SKIP lines 0, EXIT 0, mtime 23:19:32Z
+gate-samples.log: SKIP lines 4, EXIT 0, mtime 23:19:29Z
+gate-samplesselftest.log: SKIP lines 1, EXIT 0, mtime 23:19:30Z
+gate-samples-taskset4.log: SKIP lines 4, EXIT 0, mtime 23:20:03Z
+gate-tierscheck.log: SKIP lines 0, EXIT 0, mtime 23:19:31Z
+gate-verifydocs.log: SKIP lines 0, EXIT 0, mtime 23:19:30Z
+gate-xtasktest.log: SKIP lines 0, EXIT 0, mtime 23:20:11Z
