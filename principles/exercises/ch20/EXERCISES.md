@@ -221,11 +221,11 @@ was kept: both refuse the attribute by name, E0817, exit 2, although
 the body keeps the promise, because nothing can tell a kept promise
 from a broken one until I15's checker exists (wolf-lang#180). `wolf
 run ex20-8.lu` says "`noalloc` is not implemented yet". Read the two
-notes side by side and they still differ in one place: the
-compiler's list of the attributes it implements has grown
-`repr(c, packed)`, `repr(c, align(N))` and `section(".name")`, which
-the interpreter does not implement yet (wolf-interp#188, #190). Delete
-the attribute and both print 13. Before wolf 0.2.22 the compiler ran
+notes side by side and, since lupin 0.1.48, they name the same set in
+two spellings: the compiler lists `repr(c, packed)`, `repr(c,
+align(N))` and `section(".name")`, the interpreter `repr(c)` with
+`packed` or `align(N)` and `section` (is73 implemented them there,
+wolf-interp#188, #190). Delete the attribute and both print 13. Before wolf 0.2.22 the compiler ran
 this too and claimed nothing, and until lupin 0.1.46 the interpreter
 did, printing 13, which proved the body computes a dot product and
 nothing about `#[noalloc]`.
