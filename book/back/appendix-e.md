@@ -244,6 +244,7 @@ $ wolf audit --dir tally
 capability tree (I13)
 local/tally 0.1.0 (root) caps=[fs]
 effective: [fs]
+  fs: local/tally (root) — declared; calls `fs_write_text` at tally/main.lu:4:5 (+1 more)
 wolf audit: no wolf.sum yet — nothing to diff against (run a verb that writes it)
 ```
 
