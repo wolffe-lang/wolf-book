@@ -1,0 +1,10 @@
+fn check(n: int) -> int {
+    print("checking {n}")
+    assert(n > 0)
+    n
+}
+fn main() -> !int {
+    let v = check(0)
+    print("{v}")
+    0
+}

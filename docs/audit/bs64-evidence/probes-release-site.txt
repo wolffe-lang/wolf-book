@@ -1,0 +1,82 @@
+## pair=new wolf 0.2.26 (wolfgang, pin 89dc139) / lupin 0.1.49 (wolf-interp, reference interpreter at pin 294d626)
+### helper-assert.lu
+$ lupin helper-assert.lu
+checking 0
+helper-assert.lu: trap(assert): assertion failed [conf.trap.map] at 3:5
+[exit 3]
+$ wolf run helper-assert.lu
+checking 0
+wolf-trap: assert
+  at ./helper-assert.lu:3:5
+[exit 134]
+[exit 0]
+$ wolf build --release helper-assert.lu && ./helper-assert
+checking 0
+wolf-trap: assert
+  at ./helper-assert.lu:7:5
+[exit 134]
+### never-loop.lu
+$ lupin never-loop.lu
+too small
+never-loop.lu: trap(assert): assertion failed [conf.trap.map] at 3:5
+[exit 3]
+$ wolf run never-loop.lu
+too small
+wolf-trap: assert
+  at ./never-loop.lu:3:5
+[exit 134]
+[exit 0]
+$ wolf build --release never-loop.lu && ./never-loop
+too small
+wolf-trap: assert
+  at ./never-loop.lu:7:35
+[exit 134]
+## pair=c25 wolf 0.2.25 (wolfgang, pin 6710f9e) / lupin 0.1.48 (wolf-interp, reference interpreter at pin 294d626)
+### helper-assert.lu
+$ lupin helper-assert.lu
+checking 0
+helper-assert.lu: trap(assert): assertion failed [conf.trap.map] at 3:5
+[exit 3]
+$ wolf run helper-assert.lu
+checking 0
+wolf-trap: assert
+  at ./helper-assert.lu:3:5
+[exit 134]
+[exit 0]
+$ wolf build --release helper-assert.lu && ./helper-assert
+checking 0
+wolf-trap: assert
+  at ./helper-assert.lu:7:5
+[exit 134]
+### never-loop.lu
+$ lupin never-loop.lu
+never-loop.lu: E0301: nothing named `never` is in scope — a type annotation names a type, and resolution is the rung that answers whether a name exists ([mod]); it is neither a built-in scalar, an item this module declares, nor a generic parameter of `die` [gram.item.fn] at 1:21
+[exit 2]
+$ wolf run never-loop.lu
+error[E0301]: nothing named `never` is in scope
+ --> ./never-loop.lu:1:21
+  |
+1 | fn die(why: str) -> never {
+  |                     ^^^^^ not found
+  |
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[exit 2]
+error[E0301]: nothing named `never` is in scope
+ --> ./never-loop.lu:1:21
+  |
+1 | fn die(why: str) -> never {
+  |                     ^^^^^ not found
+  |
+
+[exit 0]
+$ wolf build --release never-loop.lu && ./never-loop
+error[E0301]: nothing named `never` is in scope
+ --> ./never-loop.lu:1:21
+  |
+1 | fn die(why: str) -> never {
+  |                     ^^^^^ not found
+  |
+
+wolf build: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[build exit 2]

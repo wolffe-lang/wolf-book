@@ -1,0 +1,10 @@
+fn die(why: str) -> never {
+    print(why)
+    assert(false)
+}
+fn main() -> !int {
+    let n = 3
+    let v = if n > 5 { n } else { die("too small") }
+    print("{v}")
+    0
+}

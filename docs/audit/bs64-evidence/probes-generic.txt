@@ -1,0 +1,380 @@
+## pair=new wolf 0.2.26 (wolfgang, pin 89dc139) / lupin 0.1.49 (wolf-interp, reference interpreter at pin 294d626)
+### addT.lu
+$ lupin addT.lu
+addT.lu: E0501: the bounds on `T` say nothing about `+` — `T` could be any type here; add `T: Add` to the bound: `+` on a type parameter dispatches through `Add.add` ([type.trait.op]) [type.trait.op] at 1:30
+[exit 2]
+$ wolf run addT.lu
+error[E0501]: the bounds on `T` say nothing about `+`
+ --> ./addT.lu:1:30
+  |
+1 | fn sum[T](x: T, y: T) -> T { x + y }
+  |        - `T` is declared here
+  |                              ^ `T` could be any type here
+  |
+  = note: add `T: Add` to the bound — `+` on a type parameter dispatches through `Add.add`
+    ([type.trait.op]), and a generic body may use only what its bounds provide.
+help: add the bound: `T: Add`
+  |
+1 | fn sum[T: Add](x: T, y: T) -> T { x + y }
+  |
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0501` explains this code, or any other, by name)
+[exit 2]
+$ wolf conform-run --json --checked addT.lu
+error[E0501]: the bounds on `T` say nothing about `+`
+ --> ./addT.lu:1:30
+  |
+1 | fn sum[T](x: T, y: T) -> T { x + y }
+  |        - `T` is declared here
+  |                              ^ `T` could be any type here
+  |
+  = note: add `T: Add` to the bound — `+` on a type parameter dispatches through `Add.add`
+    ([type.trait.op]), and a generic body may use only what its bounds provide.
+help: add the bound: `T: Add`
+  |
+1 | fn sum[T: Add](x: T, y: T) -> T { x + y }
+  |
+
+{"commit":"89dc139","diagnostics":[{"code":"E0501","severity":"error","span":[29,30]}],"file":"./addT.lu","impl":"wolfgang","impl_version":"0.2.26","phase_reached":"typecheck","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0501)","warnings":[]}
+[exit 0]
+$ wolf build --release addT.lu && ./addT
+error[E0501]: the bounds on `T` say nothing about `+`
+ --> ./addT.lu:1:30
+  |
+1 | fn sum[T](x: T, y: T) -> T { x + y }
+  |        - `T` is declared here
+  |                              ^ `T` could be any type here
+  |
+  = note: add `T: Add` to the bound — `+` on a type parameter dispatches through `Add.add`
+    ([type.trait.op]), and a generic body may use only what its bounds provide.
+help: add the bound: `T: Add`
+  |
+1 | fn sum[T: Add](x: T, y: T) -> T { x + y }
+  |
+
+wolf build: the package does not compile; fix the errors above (`wolf --explain E0501` explains this code, or any other, by name)
+[build exit 2]
+### andT.lu
+$ lupin andT.lu
+false
+[exit 0]
+$ wolf run andT.lu
+error[E0501]: the bounds on `T` say nothing about `&&`
+ --> ./andT.lu:1:31
+  |
+1 | fn both[T](x: T, y: T) -> T { x && y }
+  |                               ^ `T` could be any type here
+  |
+  = note: no trait covers this operator: `!`, `&&` and `||` are `bool`'s and the bitwise operators
+    are the integers' alone this edition ([type.trait.op]); take a concrete type here.
+
+error[E0401]: this is `bool`, but `both` must return `T`
+ --> ./andT.lu:1:31
+  |
+1 | fn both[T](x: T, y: T) -> T { x && y }
+  |                        ---- the return type is declared here
+  |                               ^^^^^^ found `bool` here
+  |
+  = note: expected `T`, found `bool`
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0501` explains this code, or any other, by name)
+[exit 2]
+$ wolf conform-run --json --checked andT.lu
+error[E0501]: the bounds on `T` say nothing about `&&`
+ --> ./andT.lu:1:31
+  |
+1 | fn both[T](x: T, y: T) -> T { x && y }
+  |                               ^ `T` could be any type here
+  |
+  = note: no trait covers this operator: `!`, `&&` and `||` are `bool`'s and the bitwise operators
+    are the integers' alone this edition ([type.trait.op]); take a concrete type here.
+
+error[E0401]: this is `bool`, but `both` must return `T`
+ --> ./andT.lu:1:31
+  |
+1 | fn both[T](x: T, y: T) -> T { x && y }
+  |                        ---- the return type is declared here
+  |                               ^^^^^^ found `bool` here
+  |
+  = note: expected `T`, found `bool`
+
+{"commit":"89dc139","diagnostics":[{"code":"E0501","severity":"error","span":[30,31]},{"code":"E0401","severity":"error","span":[30,36]}],"file":"./andT.lu","impl":"wolfgang","impl_version":"0.2.26","phase_reached":"typecheck","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0501)","warnings":[]}
+[exit 0]
+$ wolf build --release andT.lu && ./andT
+error[E0501]: the bounds on `T` say nothing about `&&`
+ --> ./andT.lu:1:31
+  |
+1 | fn both[T](x: T, y: T) -> T { x && y }
+  |                               ^ `T` could be any type here
+  |
+  = note: no trait covers this operator: `!`, `&&` and `||` are `bool`'s and the bitwise operators
+    are the integers' alone this edition ([type.trait.op]); take a concrete type here.
+
+error[E0401]: this is `bool`, but `both` must return `T`
+ --> ./andT.lu:1:31
+  |
+1 | fn both[T](x: T, y: T) -> T { x && y }
+  |                        ---- the return type is declared here
+  |                               ^^^^^^ found `bool` here
+  |
+  = note: expected `T`, found `bool`
+
+wolf build: the package does not compile; fix the errors above (`wolf --explain E0501` explains this code, or any other, by name)
+[build exit 2]
+### notT.lu
+$ lupin notT.lu
+-6
+[exit 0]
+$ wolf run notT.lu
+error[E0401]: this is `bool`, but `flip` must return `T`
+ --> ./notT.lu:1:25
+  |
+1 | fn flip[T](x: T) -> T { !x }
+  |                  ---- the return type is declared here
+  |                         ^^ found `bool` here
+  |
+  = note: expected `T`, found `bool`
+
+error[E0501]: the bounds on `T` say nothing about `!`
+ --> ./notT.lu:1:26
+  |
+1 | fn flip[T](x: T) -> T { !x }
+  |                          ^ `T` could be any type here
+  |
+  = note: no trait covers this operator: `!`, `&&` and `||` are `bool`'s and the bitwise operators
+    are the integers' alone this edition ([type.trait.op]); take a concrete type here.
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0401` explains this code, or any other, by name)
+[exit 2]
+$ wolf conform-run --json --checked notT.lu
+error[E0401]: this is `bool`, but `flip` must return `T`
+ --> ./notT.lu:1:25
+  |
+1 | fn flip[T](x: T) -> T { !x }
+  |                  ---- the return type is declared here
+  |                         ^^ found `bool` here
+  |
+  = note: expected `T`, found `bool`
+
+error[E0501]: the bounds on `T` say nothing about `!`
+ --> ./notT.lu:1:26
+  |
+1 | fn flip[T](x: T) -> T { !x }
+  |                          ^ `T` could be any type here
+  |
+  = note: no trait covers this operator: `!`, `&&` and `||` are `bool`'s and the bitwise operators
+    are the integers' alone this edition ([type.trait.op]); take a concrete type here.
+
+{"commit":"89dc139","diagnostics":[{"code":"E0401","severity":"error","span":[24,26]},{"code":"E0501","severity":"error","span":[25,26]}],"file":"./notT.lu","impl":"wolfgang","impl_version":"0.2.26","phase_reached":"typecheck","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0401)","warnings":[]}
+[exit 0]
+$ wolf build --release notT.lu && ./notT
+error[E0401]: this is `bool`, but `flip` must return `T`
+ --> ./notT.lu:1:25
+  |
+1 | fn flip[T](x: T) -> T { !x }
+  |                  ---- the return type is declared here
+  |                         ^^ found `bool` here
+  |
+  = note: expected `T`, found `bool`
+
+error[E0501]: the bounds on `T` say nothing about `!`
+ --> ./notT.lu:1:26
+  |
+1 | fn flip[T](x: T) -> T { !x }
+  |                          ^ `T` could be any type here
+  |
+  = note: no trait covers this operator: `!`, `&&` and `||` are `bool`'s and the bitwise operators
+    are the integers' alone this edition ([type.trait.op]); take a concrete type here.
+
+wolf build: the package does not compile; fix the errors above (`wolf --explain E0401` explains this code, or any other, by name)
+[build exit 2]
+## pair=c25 wolf 0.2.25 (wolfgang, pin 6710f9e) / lupin 0.1.48 (wolf-interp, reference interpreter at pin 294d626)
+### addT.lu
+$ lupin addT.lu
+addT.lu: E0501: the bounds on `T` say nothing about `+` — `T` could be any type here; add `T: Add` to the bound: `+` on a type parameter dispatches through `Add.add` ([type.trait.op]) [type.trait.op] at 1:30
+[exit 2]
+$ wolf run addT.lu
+error[E0501]: the bounds on `T` say nothing about `+`
+ --> ./addT.lu:1:30
+  |
+1 | fn sum[T](x: T, y: T) -> T { x + y }
+  |        - `T` is declared here
+  |                              ^ `T` could be any type here
+  |
+  = note: add `T: Add` to the bound — `+` on a type parameter dispatches through `Add.add`
+    ([type.trait.op]), and a generic body may use only what its bounds provide.
+help: add the bound: `T: Add`
+  |
+1 | fn sum[T: Add](x: T, y: T) -> T { x + y }
+  |
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0501` explains this code, or any other, by name)
+[exit 2]
+$ wolf conform-run --json --checked addT.lu
+error[E0501]: the bounds on `T` say nothing about `+`
+ --> ./addT.lu:1:30
+  |
+1 | fn sum[T](x: T, y: T) -> T { x + y }
+  |        - `T` is declared here
+  |                              ^ `T` could be any type here
+  |
+  = note: add `T: Add` to the bound — `+` on a type parameter dispatches through `Add.add`
+    ([type.trait.op]), and a generic body may use only what its bounds provide.
+help: add the bound: `T: Add`
+  |
+1 | fn sum[T: Add](x: T, y: T) -> T { x + y }
+  |
+
+{"commit":"6710f9e","diagnostics":[{"code":"E0501","severity":"error","span":[29,30]}],"file":"./addT.lu","impl":"wolfgang","impl_version":"0.2.25","phase_reached":"typecheck","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0501)","warnings":[]}
+[exit 0]
+$ wolf build --release addT.lu && ./addT
+error[E0501]: the bounds on `T` say nothing about `+`
+ --> ./addT.lu:1:30
+  |
+1 | fn sum[T](x: T, y: T) -> T { x + y }
+  |        - `T` is declared here
+  |                              ^ `T` could be any type here
+  |
+  = note: add `T: Add` to the bound — `+` on a type parameter dispatches through `Add.add`
+    ([type.trait.op]), and a generic body may use only what its bounds provide.
+help: add the bound: `T: Add`
+  |
+1 | fn sum[T: Add](x: T, y: T) -> T { x + y }
+  |
+
+wolf build: the package does not compile; fix the errors above (`wolf --explain E0501` explains this code, or any other, by name)
+[build exit 2]
+### andT.lu
+$ lupin andT.lu
+false
+[exit 0]
+$ wolf run andT.lu
+error[E0501]: the bounds on `T` say nothing about `&&`
+ --> ./andT.lu:1:31
+  |
+1 | fn both[T](x: T, y: T) -> T { x && y }
+  |                               ^ `T` could be any type here
+  |
+  = note: no trait covers this operator: `!`, `&&` and `||` are `bool`'s and the bitwise operators
+    are the integers' alone this edition ([type.trait.op]); take a concrete type here.
+
+error[E0401]: this is `bool`, but `both` must return `T`
+ --> ./andT.lu:1:31
+  |
+1 | fn both[T](x: T, y: T) -> T { x && y }
+  |                        ---- the return type is declared here
+  |                               ^^^^^^ found `bool` here
+  |
+  = note: expected `T`, found `bool`
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0501` explains this code, or any other, by name)
+[exit 2]
+$ wolf conform-run --json --checked andT.lu
+error[E0501]: the bounds on `T` say nothing about `&&`
+ --> ./andT.lu:1:31
+  |
+1 | fn both[T](x: T, y: T) -> T { x && y }
+  |                               ^ `T` could be any type here
+  |
+  = note: no trait covers this operator: `!`, `&&` and `||` are `bool`'s and the bitwise operators
+    are the integers' alone this edition ([type.trait.op]); take a concrete type here.
+
+error[E0401]: this is `bool`, but `both` must return `T`
+ --> ./andT.lu:1:31
+  |
+1 | fn both[T](x: T, y: T) -> T { x && y }
+  |                        ---- the return type is declared here
+  |                               ^^^^^^ found `bool` here
+  |
+  = note: expected `T`, found `bool`
+
+{"commit":"6710f9e","diagnostics":[{"code":"E0501","severity":"error","span":[30,31]},{"code":"E0401","severity":"error","span":[30,36]}],"file":"./andT.lu","impl":"wolfgang","impl_version":"0.2.25","phase_reached":"typecheck","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0501)","warnings":[]}
+[exit 0]
+$ wolf build --release andT.lu && ./andT
+error[E0501]: the bounds on `T` say nothing about `&&`
+ --> ./andT.lu:1:31
+  |
+1 | fn both[T](x: T, y: T) -> T { x && y }
+  |                               ^ `T` could be any type here
+  |
+  = note: no trait covers this operator: `!`, `&&` and `||` are `bool`'s and the bitwise operators
+    are the integers' alone this edition ([type.trait.op]); take a concrete type here.
+
+error[E0401]: this is `bool`, but `both` must return `T`
+ --> ./andT.lu:1:31
+  |
+1 | fn both[T](x: T, y: T) -> T { x && y }
+  |                        ---- the return type is declared here
+  |                               ^^^^^^ found `bool` here
+  |
+  = note: expected `T`, found `bool`
+
+wolf build: the package does not compile; fix the errors above (`wolf --explain E0501` explains this code, or any other, by name)
+[build exit 2]
+### notT.lu
+$ lupin notT.lu
+notT.lu: unsupported: `!` needs a bool, got i32
+[exit 4]
+$ wolf run notT.lu
+error[E0401]: this is `bool`, but `flip` must return `T`
+ --> ./notT.lu:1:25
+  |
+1 | fn flip[T](x: T) -> T { !x }
+  |                  ---- the return type is declared here
+  |                         ^^ found `bool` here
+  |
+  = note: expected `T`, found `bool`
+
+error[E0501]: the bounds on `T` say nothing about `!`
+ --> ./notT.lu:1:26
+  |
+1 | fn flip[T](x: T) -> T { !x }
+  |                          ^ `T` could be any type here
+  |
+  = note: no trait covers this operator: `!`, `&&` and `||` are `bool`'s and the bitwise operators
+    are the integers' alone this edition ([type.trait.op]); take a concrete type here.
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0401` explains this code, or any other, by name)
+[exit 2]
+$ wolf conform-run --json --checked notT.lu
+error[E0401]: this is `bool`, but `flip` must return `T`
+ --> ./notT.lu:1:25
+  |
+1 | fn flip[T](x: T) -> T { !x }
+  |                  ---- the return type is declared here
+  |                         ^^ found `bool` here
+  |
+  = note: expected `T`, found `bool`
+
+error[E0501]: the bounds on `T` say nothing about `!`
+ --> ./notT.lu:1:26
+  |
+1 | fn flip[T](x: T) -> T { !x }
+  |                          ^ `T` could be any type here
+  |
+  = note: no trait covers this operator: `!`, `&&` and `||` are `bool`'s and the bitwise operators
+    are the integers' alone this edition ([type.trait.op]); take a concrete type here.
+
+{"commit":"6710f9e","diagnostics":[{"code":"E0401","severity":"error","span":[24,26]},{"code":"E0501","severity":"error","span":[25,26]}],"file":"./notT.lu","impl":"wolfgang","impl_version":"0.2.25","phase_reached":"typecheck","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0401)","warnings":[]}
+[exit 0]
+$ wolf build --release notT.lu && ./notT
+error[E0401]: this is `bool`, but `flip` must return `T`
+ --> ./notT.lu:1:25
+  |
+1 | fn flip[T](x: T) -> T { !x }
+  |                  ---- the return type is declared here
+  |                         ^^ found `bool` here
+  |
+  = note: expected `T`, found `bool`
+
+error[E0501]: the bounds on `T` say nothing about `!`
+ --> ./notT.lu:1:26
+  |
+1 | fn flip[T](x: T) -> T { !x }
+  |                          ^ `T` could be any type here
+  |
+  = note: no trait covers this operator: `!`, `&&` and `||` are `bool`'s and the bitwise operators
+    are the integers' alone this edition ([type.trait.op]); take a concrete type here.
+
+wolf build: the package does not compile; fix the errors above (`wolf --explain E0401` explains this code, or any other, by name)
+[build exit 2]
