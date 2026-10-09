@@ -269,7 +269,9 @@ Three things in that transcript are the promise, and the third is the
 one worth trusting the command for. The capability the script declared
 is the capability the package declares — `wolf audit` reads the new
 manifest and answers `caps=[fs]`, so the promotion did not quietly widen
-or drop what the program may do. The doc comment that was not manifest
+or drop what the program may do, and the reason line under `effective`
+shows the code reaching it: `fs_write_text` at `main.lu`'s line 4, and
+one call more. The doc comment that was not manifest
 stayed with the code, in `main.lu`, where it still documents the module.
 And the script is untouched: the command says so in its own output, and
 a promotion that deleted its input is a promotion nobody would try
