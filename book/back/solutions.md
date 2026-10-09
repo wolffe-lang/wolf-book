@@ -4480,9 +4480,11 @@ error[E1010]: `keep` still holds a value allocated in region `tmp` when the regi
   |
   = note: to keep the value, allocate it where it must live: build it outside the region block, or
     aim the allocation at a longer-lived region explicitly (`let r = region()` … `in r { …
-    }`); widening the region block to cover every use also works. Two keep-alive
-    alternatives change the ownership instead: `freeze` the region (immutable forever) or
-    make the value a `shared` cell (reference-counted, never dangles).
+    }`); widening the region block to cover every use also works. When the block's own value
+    is what must outlive it, `copy region { … }` copies that value into the enclosing region
+    before the free ([mem.region.copyout]). Two keep-alive alternatives change the ownership
+    instead: `freeze` the region (immutable forever) or make the value a `shared` cell
+    (reference-counted, never dangles).
 ```
 
 The checker speaks in allocation, escape, and free: the word
@@ -9965,7 +9967,7 @@ Solution. Both runs, one item and one number between them:
 ```console
 $ wolf interface ./wordcount/tokens/tokens.lu
 module pkg :: (root)
-  wolfi v0 · toolchain 0.2.25 · edition v1
+  wolfi v0 · toolchain 0.2.26 · edition v1
   export_hash 05a012a2ca47c85fc47f13e7e2c80930951ae8c59a84d1631ca8844e71669f3c
   pkg_hash    05a012a2ca47c85fc47f13e7e2c80930951ae8c59a84d1631ca8844e71669f3c
   deps: (none)
@@ -10296,6 +10298,7 @@ capability tree (I13)
 den/logsearch 0.1.0 (root) caps=[]
 └── regex 2.2.0 caps=[net]
 effective: [net]
+  net: regex — declared (nothing in its code reaches it)
 wolf audit: `regex` ACQUIRES capability `net` (was not in wolf.sum)
 wolf audit: capability acquisition detected — refusing (--ci)
 $ echo $?
