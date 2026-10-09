@@ -124,9 +124,9 @@ retires = "the `--dir` widening for corpus blocks, after which `samples/pkg/shel
 [[declined]]
 block = "principles/exercises/ch24/EXERCISES.md:136"
 class = "file"
-needs = "the same `--dir` widening as ch23's, and then one more thing: the transcript runs `wolf update` BEFORE `wolf audit --ci` and still expects the ACQUIRES line, which is the opposite of what the page's own prose says refreshing first does. `samples/pkg/acquired/` is the stale-ledger package already, and book/ch24.md prints its ACQUIRES output with no `update` in front of it"
-filed = "wolf-book#29 §2 (premise corrected at bs44)"
-retires = "the `--dir` widening, plus a re-reading of the transcript's own ordering"
+needs = "the same `--dir` widening as ch23's, and then one step no command shows: the manifest edit between the two commands. The ordering is NOT a contradiction (premise corrected at bs64): the exercise records the world while `regex` declares nothing, so `wolf update` writes `caps=-`, then the dependency's manifest gains `net`, and `wolf audit --ci` prints ACQUIRES and exits 1. Measured exactly so on wolf 0.2.26 and 0.2.25 (docs/audit/bs64-evidence/pkgprobe.txt, staged from `samples/pkg/acquired/`); the block was regenerated from that run"
+filed = "wolf-book#29 §2 (premise corrected at bs44, and at bs64)"
+retires = "the `--dir` widening, plus a staging step that edits regex's manifest between the two commands"
 
 [[declined]]
 block = "principles/exercises/ch26/EXERCISES.md:127"

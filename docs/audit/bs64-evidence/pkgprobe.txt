@@ -1,0 +1,99 @@
+## pair=new wolf 0.2.26 (wolfgang, pin 89dc139)
+--- (1) 24-6
+$ wolf update --dir app
+wolf update: wolf.sum refreshed (1 entry)
+[exit 0]
+$ wolf audit --ci --dir app
+capability tree (I13)
+den/logsearch 0.1.0 (root) caps=[]
+└── regex 2.2.0 caps=[net]
+effective: [net]
+  net: regex — declared (nothing in its code reaches it)
+wolf audit: `regex` ACQUIRES capability `net` (was not in wolf.sum)
+wolf audit: capability acquisition detected — refusing (--ci)
+$ echo $?
+1
+--- (2) a dependency that calls fs_read_text and declares nothing
+$ wolf audit --dir app
+capability tree (I13)
+den/logsearch 0.1.0 (root) caps=[]
+└── rows 1.4.0 caps=[]
+effective: [fs]
+  fs: rows — UNDECLARED: calls `fs_read_text` at pkg://rows/rows.lu:14:6
+wolf audit: `rows` reaches capability `fs` without declaring it (calls `fs_read_text` at pkg://rows/rows.lu:14:6)
+[exit 0]
+$ wolf audit --ci --dir app
+capability tree (I13)
+den/logsearch 0.1.0 (root) caps=[]
+└── rows 1.4.0 caps=[]
+effective: [fs]
+  fs: rows — UNDECLARED: calls `fs_read_text` at pkg://rows/rows.lu:14:6
+wolf audit: `rows` reaches capability `fs` without declaring it (calls `fs_read_text` at pkg://rows/rows.lu:14:6)
+wolf audit: undeclared capability use — refusing (--ci)
+[exit 1]
+$ (cd app && wolf build main.lu)
+error[E1504]: dependency `rows` calls `fs_read_text` but does not declare the `fs` capability
+  --> pkg://rows/wolf.pkg:2:14
+   |
+ 2 |     name:    "den/rows",
+   |              ^^^^^^^^^^ declared capabilities: []
+   |
+  ::: pkg://rows/rows.lu:14:6
+   |
+14 |     (fs_read_text("rows.txt") else "").len
+   |      ------------ `fs_read_text` reaches the `fs` capability here
+   |
+   = note: module `rows` calls the host builtin `fs_read_text` at pkg://rows/rows.lu:14:6, which
+     reaches the `fs` capability whether or not the package imports a std module. Add `fs` to
+     this package's `capabilities: [ … ]` (making the footprint visible to every consumer
+     running `wolf audit`, I13), or stop calling it.
+
+warning[W0313]: this `pub` item has no doc comment
+  --> pkg://rows/rows.lu:13:1
+   |
+13 | pub fn peek() -> int {
+   | ^^^ exported, but undocumented
+   |
+   = note: an exported item carries a `///` contract: what it computes, what each row tag means,
+     when it traps. If it is not worth documenting, it is rarely worth exporting.
+
+wolf build: the package does not compile; fix the errors above (`wolf --explain E1504` explains this code, or any other, by name)
+[exit 2]
+## pair=c25 wolf 0.2.25 (wolfgang, pin 6710f9e)
+--- (1) 24-6
+$ wolf update --dir app
+wolf update: wolf.sum refreshed (1 entry)
+[exit 0]
+$ wolf audit --ci --dir app
+capability tree (I13)
+den/logsearch 0.1.0 (root) caps=[]
+└── regex 2.2.0 caps=[net]
+effective: [net]
+wolf audit: `regex` ACQUIRES capability `net` (was not in wolf.sum)
+wolf audit: capability acquisition detected — refusing (--ci)
+$ echo $?
+1
+--- (2) a dependency that calls fs_read_text and declares nothing
+$ wolf audit --dir app
+capability tree (I13)
+den/logsearch 0.1.0 (root) caps=[]
+└── rows 1.4.0 caps=[]
+effective: []
+[exit 0]
+$ wolf audit --ci --dir app
+capability tree (I13)
+den/logsearch 0.1.0 (root) caps=[]
+└── rows 1.4.0 caps=[]
+effective: []
+[exit 0]
+$ (cd app && wolf build main.lu)
+warning[W0313]: this `pub` item has no doc comment
+  --> pkg://rows/rows.lu:13:1
+   |
+13 | pub fn peek() -> int {
+   | ^^^ exported, but undocumented
+   |
+   = note: an exported item carries a `///` contract: what it computes, what each row tag means,
+     when it traps. If it is not worth documenting, it is rarely worth exporting.
+
+[exit 0]
