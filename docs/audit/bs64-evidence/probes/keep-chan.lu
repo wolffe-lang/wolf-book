@@ -1,0 +1,7 @@
+fn main() -> !int {
+    let ch = copy region command {
+        channel[int](1)
+    }
+    ch.send(1)?
+    0
+}

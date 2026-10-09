@@ -1,0 +1,5 @@
+fn sum[T](x: T, y: T) -> T { x + y }
+fn main() -> !int {
+    print("{sum(2, 3)}")
+    0
+}

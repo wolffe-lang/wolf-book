@@ -1,0 +1,28 @@
+appx_exB_11_lu [release]
+   was ('106', '')
+   now ('99', '')
+ch09_ex9_4_lu [release]
+   was ('233', '')
+   now ('222', '')
+ch10_md_84 [release]
+   was ('0', 'the scope is still open\nthe reader is counting\nthe scope has joined\n900 words\n')
+   now ('0', 'the reader is counting\nthe scope is still open\nthe scope has joined\n900 words\n')
+ch16_ex16_7_lu [checked]
+   was ('unsupported', None, (), 'this operator in checked execution')
+   now ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+ch16_ex16_8_lu [checked]
+   was ('unsupported', None, (), 'this operator in checked execution')
+   now ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+ch17_md_113 [release]
+   was ('0', 'balance=50\n')
+   now ('0', 'balance=100\n')
+ch17_md_29 [release]
+   was ('0', 'reindexed 1 of 2 documents, 900 words\n')
+   now ('0', 'reindexed 0 of 2 documents, 0 words\n')
+ch30_ex30_4_lu [release]
+   was ('0', 'arrive 2\narrive 0\narrive 5\narrive 7\na.log:1: 06:12 the wolf runs\na.log:3: 07:02 the wolf howls\nb.log:2: 08:52 the wolf sleeps\nb.log:4: 09:44 the wolf wakes\n')
+   now ('0', 'arrive 0\narrive 2\narrive 5\narrive 7\na.log:1: 06:12 the wolf runs\na.log:3: 07:02 the wolf howls\nb.log:2: 08:52 the wolf sleeps\nb.log:4: 09:44 the wolf wakes\n')
+ch30_ex30_5_lu [release]
+   was ('0', 'a.log:1: 06:12 the wolf runs\na.log:3: 07:02 the wolf howls\nb.log:2: 08:52 the wolf sleeps\nb.log:4: 09:44 the wolf wakes\n')
+   now ('0', 'b.log:2: 08:52 the wolf sleeps\nb.log:4: 09:44 the wolf wakes\na.log:1: 06:12 the wolf runs\na.log:3: 07:02 the wolf howls\n')
+programs 577 release-built 368 moves 9 {'lupin': 0, 'native': 0, 'checked': 2, 'release': 7}

@@ -1,0 +1,10 @@
+fn main() -> !int {
+    let n = 300
+    let b = 200 as byte
+    let low = n & 0xff
+    let high = n & !0xff
+    let flipped = (!b) as byte
+    print("{!n} {low} {high}")
+    print("{!b} {flipped}")
+    0
+}

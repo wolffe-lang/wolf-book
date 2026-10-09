@@ -1,0 +1,19 @@
+struct Doc { title: str, words: int }
+fn parse(line: str) -> Doc {
+    var parts = List[str]()
+    for w in line.words() { (mut parts).push(w) }
+    Doc { title: parts[1], words: parts.len - 2 }
+}
+fn main() -> !int {
+    let commands = ["put regions the wolf runs at dusk", "put moves and copies", "put freeze"]
+    var kept = List[str]()
+    for line in commands {
+        let summary = copy region command {
+            let d = parse(line)
+            "{d.title}: {d.words} words"
+        }
+        (mut kept).push(summary)
+    }
+    for s in kept { print(s) }
+    0
+}

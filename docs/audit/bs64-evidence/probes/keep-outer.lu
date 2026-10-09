@@ -1,0 +1,10 @@
+struct Doc { title: str, words: int }
+fn main() -> !int {
+    var newest = Doc { title: "", words: 0 }
+    let n = copy region command {
+        newest = Doc { title: "regions", words: 900 }
+        1
+    }
+    print("{newest.title} {n}")
+    0
+}

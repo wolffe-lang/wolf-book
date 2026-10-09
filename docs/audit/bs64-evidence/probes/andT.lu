@@ -1,0 +1,5 @@
+fn both[T](x: T, y: T) -> T { x && y }
+fn main() -> !int {
+    print("{both(true, false)}")
+    0
+}

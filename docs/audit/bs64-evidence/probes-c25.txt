@@ -1,0 +1,328 @@
+## pair=c25 wolf 0.2.25 (wolfgang, pin 6710f9e) / lupin 0.1.48 (wolf-interp, reference interpreter at pin 294d626)
+### die-end.lu
+$ lupin die-end.lu
+die-end.lu: E0301: nothing named `never` is in scope — a type annotation names a type, and resolution is the rung that answers whether a name exists ([mod]); it is neither a built-in scalar, an item this module declares, nor a generic parameter of `die` [gram.item.fn] at 1:21
+[exit 2]
+$ wolf run die-end.lu
+error[E0301]: nothing named `never` is in scope
+ --> ./die-end.lu:1:21
+  |
+1 | fn die(why: str) -> never {
+  |                     ^^^^^ not found
+  |
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[exit 2]
+$ wolf conform-run --json --checked die-end.lu
+error[E0301]: nothing named `never` is in scope
+ --> ./die-end.lu:1:21
+  |
+1 | fn die(why: str) -> never {
+  |                     ^^^^^ not found
+  |
+
+{"commit":"6710f9e","diagnostics":[{"code":"E0301","severity":"error","span":[20,25]}],"file":"./die-end.lu","impl":"wolfgang","impl_version":"0.2.25","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf build --release die-end.lu && ./die-end
+error[E0301]: nothing named `never` is in scope
+ --> ./die-end.lu:1:21
+  |
+1 | fn die(why: str) -> never {
+  |                     ^^^^^ not found
+  |
+
+wolf build: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[build exit 2]
+### die.lu
+$ lupin die.lu
+die.lu: E0301: nothing named `never` is in scope — a type annotation names a type, and resolution is the rung that answers whether a name exists ([mod]); it is neither a built-in scalar, an item this module declares, nor a generic parameter of `die` [gram.item.fn] at 9:21
+[exit 2]
+$ wolf run die.lu
+error[E0301]: nothing named `never` is in scope
+ --> ./die.lu:9:21
+  |
+9 | fn die(why: str) -> never {
+  |                     ^^^^^ not found
+  |
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[exit 2]
+$ wolf conform-run --json --checked die.lu
+error[E0301]: nothing named `never` is in scope
+ --> ./die.lu:9:21
+  |
+9 | fn die(why: str) -> never {
+  |                     ^^^^^ not found
+  |
+
+{"commit":"6710f9e","diagnostics":[{"code":"E0301","severity":"error","span":[180,185]}],"file":"./die.lu","impl":"wolfgang","impl_version":"0.2.25","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf build --release die.lu && ./die
+error[E0301]: nothing named `never` is in scope
+ --> ./die.lu:9:21
+  |
+9 | fn die(why: str) -> never {
+  |                     ^^^^^ not found
+  |
+
+wolf build: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[build exit 2]
+### die-trap.lu
+$ lupin die-trap.lu
+die-trap.lu: E0301: nothing named `never` is in scope — a type annotation names a type, and resolution is the rung that answers whether a name exists ([mod]); it is neither a built-in scalar, an item this module declares, nor a generic parameter of `die` [gram.item.fn] at 9:21
+[exit 2]
+$ wolf run die-trap.lu
+error[E0301]: nothing named `never` is in scope
+ --> ./die-trap.lu:9:21
+  |
+9 | fn die(why: str) -> never {
+  |                     ^^^^^ not found
+  |
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[exit 2]
+$ wolf conform-run --json --checked die-trap.lu
+error[E0301]: nothing named `never` is in scope
+ --> ./die-trap.lu:9:21
+  |
+9 | fn die(why: str) -> never {
+  |                     ^^^^^ not found
+  |
+
+{"commit":"6710f9e","diagnostics":[{"code":"E0301","severity":"error","span":[180,185]}],"file":"./die-trap.lu","impl":"wolfgang","impl_version":"0.2.25","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf build --release die-trap.lu && ./die-trap
+error[E0301]: nothing named `never` is in scope
+ --> ./die-trap.lu:9:21
+  |
+9 | fn die(why: str) -> never {
+  |                     ^^^^^ not found
+  |
+
+wolf build: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[build exit 2]
+### keep.lu
+$ lupin keep.lu
+keep.lu: trap(region-fault): the block's own value reaches into `command` (region #1), which was freed wholesale; the value died with the region [mem.region.intra.2] at 11:28; the region was created here at 11:28
+[exit 3]
+$ wolf run keep.lu
+error[E1010]: this value is allocated in region `command`, which is freed when the block ends
+  --> ./keep.lu:13:13
+   |
+11 |         let summary = copy region command {
+   |                                   ------- region `command` is created here
+12 |             let d = parse(line)
+13 |             "{d.title}: {d.words} words"
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the block's value would outlive the region
+   |             ---------------------------- allocated here, into region `command`
+14 |         }
+   |         - the region is freed here — everything in it is freed wholesale, as one unit
+   |
+   = note: to keep the value, allocate it where it must live: build it outside the region block, or
+     aim the allocation at a longer-lived region explicitly (`let r = region()` … `in r { …
+     }`); widening the region block to cover every use also works. Two keep-alive
+     alternatives change the ownership instead: `freeze` the region (immutable forever) or
+     make the value a `shared` cell (reference-counted, never dangles).
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E1010` explains this code, or any other, by name)
+[exit 2]
+$ wolf conform-run --json --checked keep.lu
+error[E1010]: this value is allocated in region `command`, which is freed when the block ends
+  --> ./keep.lu:13:13
+   |
+11 |         let summary = copy region command {
+   |                                   ------- region `command` is created here
+12 |             let d = parse(line)
+13 |             "{d.title}: {d.words} words"
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the block's value would outlive the region
+   |             ---------------------------- allocated here, into region `command`
+14 |         }
+   |         - the region is freed here — everything in it is freed wholesale, as one unit
+   |
+   = note: to keep the value, allocate it where it must live: build it outside the region block, or
+     aim the allocation at a longer-lived region explicitly (`let r = region()` … `in r { …
+     }`); widening the region block to cover every use also works. Two keep-alive
+     alternatives change the ownership instead: `freeze` the region (immutable forever) or
+     make the value a `shared` cell (reference-counted, never dangles).
+
+{"commit":"6710f9e","diagnostics":[{"code":"E1010","severity":"error","span":[454,482]}],"file":"./keep.lu","impl":"wolfgang","impl_version":"0.2.25","phase_reached":"mem","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E1010)","warnings":[]}
+[exit 0]
+$ wolf build --release keep.lu && ./keep
+error[E1010]: this value is allocated in region `command`, which is freed when the block ends
+  --> ./keep.lu:13:13
+   |
+11 |         let summary = copy region command {
+   |                                   ------- region `command` is created here
+12 |             let d = parse(line)
+13 |             "{d.title}: {d.words} words"
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the block's value would outlive the region
+   |             ---------------------------- allocated here, into region `command`
+14 |         }
+   |         - the region is freed here — everything in it is freed wholesale, as one unit
+   |
+   = note: to keep the value, allocate it where it must live: build it outside the region block, or
+     aim the allocation at a longer-lived region explicitly (`let r = region()` … `in r { …
+     }`); widening the region block to cover every use also works. Two keep-alive
+     alternatives change the ownership instead: `freeze` the region (immutable forever) or
+     make the value a `shared` cell (reference-counted, never dangles).
+
+wolf build: the package does not compile; fix the errors above (`wolf --explain E1010` explains this code, or any other, by name)
+[build exit 2]
+### mask.lu
+$ lupin mask.lu
+mask.lu: unsupported: `!` needs a bool, got i32
+[exit 4]
+$ wolf run mask.lu
+error[E0401]: this is `bool`, but the other side of `&` makes it `{integer}`
+ --> ./mask.lu:5:20
+  |
+5 |     let high = n & !0xff
+  |                - this operand fixed the type
+  |                    ^^^^^ found `bool` here
+  |
+  = note: expected `{integer}`, found `bool`
+
+error[E0409]: `!` cannot be applied to `{integer}`
+ --> ./mask.lu:5:21
+  |
+5 |     let high = n & !0xff
+  |                     ^^^^ this is `{integer}`
+  |
+  = note: `!` works on `bool`.
+  = note: wolf has no truthiness: write the comparison out, e.g. `x != 0`.
+
+error[E0805]: `bool` does not cast to `byte`
+ --> ./mask.lu:6:19
+  |
+6 |     let flipped = (!b) as byte
+  |                   ^^^^^^^^^^^^ outside the cast set
+  |
+  = note: the ruled `byte` bridges (D72, [type.byte.cast]) are exactly `byte as int` (widens) and
+    `int as byte` (keeps the low eight bits); cast through `int` for any other width or for
+    `char` — `b as int as char`, `x as int as byte`.
+
+error[E0409]: `!` cannot be applied to `byte`
+ --> ./mask.lu:6:21
+  |
+6 |     let flipped = (!b) as byte
+  |                     ^ this is `byte`
+  |
+
+error[E0409]: `!` cannot be applied to `{integer}`
+ --> ./mask.lu:7:14
+  |
+7 |     print("{!n} {low} {high}")
+  |              ^ this is `{integer}`
+  |
+
+error[E0409]: `!` cannot be applied to `byte`
+ --> ./mask.lu:8:14
+  |
+8 |     print("{!b} {flipped}")
+  |              ^ this is `byte`
+  |
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0401` explains this code, or any other, by name)
+[exit 2]
+$ wolf conform-run --json --checked mask.lu
+error[E0401]: this is `bool`, but the other side of `&` makes it `{integer}`
+ --> ./mask.lu:5:20
+  |
+5 |     let high = n & !0xff
+  |                - this operand fixed the type
+  |                    ^^^^^ found `bool` here
+  |
+  = note: expected `{integer}`, found `bool`
+
+error[E0409]: `!` cannot be applied to `{integer}`
+ --> ./mask.lu:5:21
+  |
+5 |     let high = n & !0xff
+  |                     ^^^^ this is `{integer}`
+  |
+  = note: `!` works on `bool`.
+  = note: wolf has no truthiness: write the comparison out, e.g. `x != 0`.
+
+error[E0805]: `bool` does not cast to `byte`
+ --> ./mask.lu:6:19
+  |
+6 |     let flipped = (!b) as byte
+  |                   ^^^^^^^^^^^^ outside the cast set
+  |
+  = note: the ruled `byte` bridges (D72, [type.byte.cast]) are exactly `byte as int` (widens) and
+    `int as byte` (keeps the low eight bits); cast through `int` for any other width or for
+    `char` — `b as int as char`, `x as int as byte`.
+
+error[E0409]: `!` cannot be applied to `byte`
+ --> ./mask.lu:6:21
+  |
+6 |     let flipped = (!b) as byte
+  |                     ^ this is `byte`
+  |
+
+error[E0409]: `!` cannot be applied to `{integer}`
+ --> ./mask.lu:7:14
+  |
+7 |     print("{!n} {low} {high}")
+  |              ^ this is `{integer}`
+  |
+
+error[E0409]: `!` cannot be applied to `byte`
+ --> ./mask.lu:8:14
+  |
+8 |     print("{!b} {flipped}")
+  |              ^ this is `byte`
+  |
+
+{"commit":"6710f9e","diagnostics":[{"code":"E0401","severity":"error","span":[102,107]},{"code":"E0409",[exit 0]
+$ wolf build --release mask.lu && ./mask
+error[E0401]: this is `bool`, but the other side of `&` makes it `{integer}`
+ --> ./mask.lu:5:20
+  |
+5 |     let high = n & !0xff
+  |                - this operand fixed the type
+  |                    ^^^^^ found `bool` here
+  |
+  = note: expected `{integer}`, found `bool`
+
+error[E0409]: `!` cannot be applied to `{integer}`
+ --> ./mask.lu:5:21
+  |
+5 |     let high = n & !0xff
+  |                     ^^^^ this is `{integer}`
+  |
+  = note: `!` works on `bool`.
+  = note: wolf has no truthiness: write the comparison out, e.g. `x != 0`.
+
+error[E0805]: `bool` does not cast to `byte`
+ --> ./mask.lu:6:19
+  |
+6 |     let flipped = (!b) as byte
+  |                   ^^^^^^^^^^^^ outside the cast set
+  |
+  = note: the ruled `byte` bridges (D72, [type.byte.cast]) are exactly `byte as int` (widens) and
+    `int as byte` (keeps the low eight bits); cast through `int` for any other width or for
+    `char` — `b as int as char`, `x as int as byte`.
+
+error[E0409]: `!` cannot be applied to `byte`
+ --> ./mask.lu:6:21
+  |
+6 |     let flipped = (!b) as byte
+  |                     ^ this is `byte`
+  |
+
+error[E0409]: `!` cannot be applied to `{integer}`
+ --> ./mask.lu:7:14
+  |
+7 |     print("{!n} {low} {high}")
+  |              ^ this is `{integer}`
+  |
+
+error[E0409]: `!` cannot be applied to `byte`
+ --> ./mask.lu:8:14
+  |
+8 |     print("{!b} {flipped}")
+  |              ^ this is `byte`
+  |
+
+wolf build: the package does not compile; fix the errors above (`wolf --explain E0401` explains this cod[build exit 2]

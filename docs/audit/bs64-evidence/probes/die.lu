@@ -1,0 +1,17 @@
+fn comma(row: str) -> int ! {no_comma} {
+    var i = 0
+    while i < row.len {
+        if row[i..i + 1] == "," { return i }
+        i += 1
+    }
+    no_comma
+}
+fn die(why: str) -> never {
+    print(why)
+    assert(false)
+}
+fn main() -> !int {
+    let at = comma("tip,100") else |_| die("no comma: the ledger is corrupt")
+    print("comma at {at}")
+    0
+}

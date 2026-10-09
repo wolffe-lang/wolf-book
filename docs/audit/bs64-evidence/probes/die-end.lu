@@ -1,0 +1,6 @@
+fn die(why: str) -> never {
+    print(why)
+}
+fn main() -> !int {
+    die("unreachable")
+}

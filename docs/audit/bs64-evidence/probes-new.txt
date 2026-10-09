@@ -1,0 +1,119 @@
+## pair=new wolf 0.2.26 (wolfgang, pin 89dc139) / lupin 0.1.49 (wolf-interp, reference interpreter at pin 294d626)
+### die-end.lu
+$ lupin die-end.lu
+die-end.lu: E0401: this is `()`, but `die` must return `never` — a fn declared `-> never` never returns ([type.fn.never]): its body must not reach its end and holds no `return`. End it in a call to another `never` fn, in `assert(false)`, or in a `loop` with no `break` [type.fn.never] at 2:5
+[exit 2]
+$ wolf run die-end.lu
+error[E0401]: this is `()`, but `die` must return `never`
+ --> ./die-end.lu:2:5
+  |
+1 | fn die(why: str) -> never {
+  |                  -------- the return type is declared here
+2 |     print(why)
+  |     ^^^^^^^^^^ found `()` here
+  |
+  = note: expected `never`, found `()`
+  = note: a fn declared `-> never` never returns ([type.fn.never]): its body must not reach its
+    end and holds no `return`. End it in a call to another `never` fn, in `assert(false)`,
+    or in a `loop` with no `break`.
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0401` explains this code, or any other, by name)
+[exit 2]
+$ wolf conform-run --json --checked die-end.lu
+error[E0401]: this is `()`, but `die` must return `never`
+ --> ./die-end.lu:2:5
+  |
+1 | fn die(why: str) -> never {
+  |                  -------- the return type is declared here
+2 |     print(why)
+  |     ^^^^^^^^^^ found `()` here
+  |
+  = note: expected `never`, found `()`
+  = note: a fn declared `-> never` never returns ([type.fn.never]): its body must not reach its
+    end and holds no `return`. End it in a call to another `never` fn, in `assert(false)`,
+    or in a `loop` with no `break`.
+
+{"commit":"89dc139","diagnostics":[{"code":"E0401","severity":"error","span":[32,42]}],"file":"./die-end.lu","impl":"wolfgang","impl_version":"0.2.26","phase_reached":"typecheck","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0401)","warnings":[]}
+[exit 0]
+$ wolf build --release die-end.lu && ./die-end
+error[E0401]: this is `()`, but `die` must return `never`
+ --> ./die-end.lu:2:5
+  |
+1 | fn die(why: str) -> never {
+  |                  -------- the return type is declared here
+2 |     print(why)
+  |     ^^^^^^^^^^ found `()` here
+  |
+  = note: expected `never`, found `()`
+  = note: a fn declared `-> never` never returns ([type.fn.never]): its body must not reach its
+    end and holds no `return`. End it in a call to another `never` fn, in `assert(false)`,
+    or in a `loop` with no `break`.
+
+wolf build: the package does not compile; fix the errors above (`wolf --explain E0401` explains this code, or any other, by name)
+[build exit 2]
+### die.lu
+$ lupin die.lu
+comma at 3
+[exit 0]
+$ wolf run die.lu
+comma at 3
+[exit 0]
+$ wolf conform-run --json --checked die.lu
+{"commit":"89dc139","diagnostics":[],"file":"./die.lu","impl":"wolfgang","impl_version":"0.2.26","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"comma at 3\n","stdout_sha256":"80c9721530db36ca546fd37456aafc55386485e4ec2ece964802960ded2967b7","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release die.lu && ./die
+comma at 3
+[exit 0]
+### die-trap.lu
+$ lupin die-trap.lu
+the ledger is corrupt: a row has no comma
+die-trap.lu: trap(assert): assertion failed [conf.trap.map] at 11:5
+[exit 3]
+$ wolf run die-trap.lu
+the ledger is corrupt: a row has no comma
+wolf-trap: assert
+  at ./die-trap.lu:11:5
+[exit 134]
+$ wolf conform-run --json --checked die-trap.lu
+{"commit":"89dc139","diagnostics":[],"file":"./die-trap.lu","impl":"wolfgang","impl_version":"0.2.26","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"the ledger is corrupt: a row has no comma\n","stdout_sha256":"29ad5eeb5d4bc43e5ac948cf65e63b947c7cc10c513a3e256f6e136659be21d0","verdict":"trap(assert)","warnings":[],"x-trap-clause":"mem.ub.defined","x-trap-pos":[11,5],"x-trap-span":[207,220]}
+[exit 0]
+$ wolf build --release die-trap.lu && ./die-trap
+the ledger is corrupt: a row has no comma
+wolf-trap: assert
+  at ./die-trap.lu:14:5
+[exit 134]
+### keep.lu
+$ lupin keep.lu
+regions: 5 words
+moves: 2 words
+freeze: 0 words
+[exit 0]
+$ wolf run keep.lu
+regions: 5 words
+moves: 2 words
+freeze: 0 words
+[exit 0]
+$ wolf conform-run --json --checked keep.lu
+{"commit":"89dc139","diagnostics":[],"file":"./keep.lu","impl":"wolfgang","impl_version":"0.2.26","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"regions: 5 words\nmoves: 2 words\nfreeze: 0 words\n","stdout_sha256":"d3fe2d46d016523e2283d1ba9638d4357f96981835261c3d0fe1cdcdc739dfca","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release keep.lu && ./keep
+regions: 5 words
+moves: 2 words
+freeze: 0 words
+[exit 0]
+### mask.lu
+$ lupin mask.lu
+-301 44 256
+-201 55
+[exit 0]
+$ wolf run mask.lu
+-301 44 256
+-201 55
+[exit 0]
+$ wolf conform-run --json --checked mask.lu
+{"commit":"89dc139","diagnostics":[],"file":"./mask.lu","impl":"wolfgang","impl_version":"0.2.26","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"-301 44 256\n-201 55\n","stdout_sha256":"fab3623636bd762ab66baebfb36decd1408e3ecb2a023901916be6c3ad324121","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release mask.lu && ./mask
+-301 44 256
+-201 55
+[exit 0]
