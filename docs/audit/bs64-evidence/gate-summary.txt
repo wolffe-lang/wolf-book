@@ -1,0 +1,12 @@
+== head gate on kasumi, wolf-book 1cc9c1af97f2e7883afa6668e223405d26833697, wolf 0.2.26 / lupin 0.1.49 (release archives by digest, ~/lanes/bs64/new/), WOLF_LANG_PATH = wolf-lang v0.2.26 (89dc139443da38078df6093568da87bc6d0ee6f9)
+-- gate-backmattercheck.log: EXIT 0, SKIP lines 0
+-- gate-contrast.log: EXIT 0, SKIP lines 0
+-- gate-diagramscheck.log: EXIT 0, SKIP lines 0
+-- gate-ledgercheck.log: EXIT 0, SKIP lines 0
+-- gate-renderweb.log: EXIT 0, SKIP lines 0
+-- gate-samples-taskset4.log: EXIT 0, SKIP lines 4
+-- gate-samples.log: EXIT 0, SKIP lines 4
+-- gate-samplesselftest.log: EXIT 0, SKIP lines 1
+-- gate-tierscheck.log: EXIT 0, SKIP lines 0
+-- gate-verifydocs.log: EXIT 0, SKIP lines 0
+-- gate-xtasktest.log: EXIT 0, SKIP lines 0

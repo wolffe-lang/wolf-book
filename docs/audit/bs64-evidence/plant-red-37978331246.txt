@@ -1,0 +1,26 @@
+plant cb50c3b, run 37978331246 (pull_request, PR #76)
+113982176836	render	success
+113982177123	samples (ubuntu-latest)	failure
+113982177183	samples (macos-latest)	failure
+113982177195	samples (windows-latest)	failure
+113982177207	test (ubuntu-latest)	success
+113982177312	test (windows-latest)	success
+113982177326	test (macos-latest)	
+113983049944	contents (firefox)	
+113983050027	contents (chromium)	
+113983050035	contents (webkit)	
+== job 113982177123
+2026-10-09T19:26:30.8130664Z samples: FAIL /home/runner/work/wolf-book/wolf-book/wolf-book/book/ch24.md:240: console block drifted from the real run
+2026-10-09T19:26:30.8611111Z samples: 515 samples (250 corpus roots + 16 corpus members on disk, 265 book blocks)
+2026-10-09T19:26:30.8611822Z samples: 512 passed, 3 pending (report-only), 1 failed, 0 flips in 102.9s
+2026-10-09T19:26:30.8612461Z samples: 487 of 508 console block(s) replayed against the pinned tools
+== job 113982177195
+2026-10-09T19:19:23.0413038Z samples: 515 samples (250 corpus roots + 16 corpus members on disk, 265 book blocks)
+2026-10-09T19:19:23.0413985Z samples: 511 passed, 3 pending (report-only), 1 failed, 0 flips in 77.5s
+2026-10-09T19:19:23.0414841Z samples: 424 of 508 console block(s) replayed against the pinned tools
+2026-10-09T19:19:23.0453800Z samples: FAIL D:\a\wolf-book\wolf-book\wolf-book\book\ch24.md:240: console block drifted from the real run
+== job 113982177183
+2026-10-09T19:36:17.5474220Z samples: 515 samples (250 corpus roots + 16 corpus members on disk, 265 book blocks)
+2026-10-09T19:36:17.5477110Z samples: 512 passed, 3 pending (report-only), 1 failed, 0 flips in 195.0s
+2026-10-09T19:36:17.5478680Z samples: 487 of 508 console block(s) replayed against the pinned tools
+2026-10-09T19:36:17.5838280Z samples: FAIL /Users/runner/work/wolf-book/wolf-book/wolf-book/book/ch24.md:240: console block drifted from the real run
