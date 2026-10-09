@@ -1,0 +1,8 @@
+anchors.json v0.2.25 -> v0.2.26 (wolf-lang 6710f9e0 -> 89dc1394), key sets diffed both ways
+595 -> 607
+added ['mem.list.bytes', 'mem.region.copyout', 'mem.static.4', 'mem.unsafe.raw.5', 'os.fs.chdir', 'os.fs.copy', 'os.fs.error', 'os.fs.isatty', 'os.proc.fds', 'os.proc.pipe', 'type.fn.never', 'type.int.not']
+dropped []
+vendored anchors == v0.2.26
+/dev/fd/63 /Users/mfwolffe/lanes/bs64/wb/vendor/spec/anchors.json differ: char 12398, line 302
+grammar == v0.2.26
+67816f8fcb04f09638bd98a53f4c951a1a16e30c2ddecf1a93bb0b49401948c7  -
