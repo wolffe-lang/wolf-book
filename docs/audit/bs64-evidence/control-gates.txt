@@ -1,0 +1,92 @@
+2026-10-09T18:51:11Z
+wolf-0.2.25-x86_64-unknown-linux-gnu.tar.gz api=9d91f533ba233bfa0ae5490b567c4b9e15cb77c3e7c997912828ef2b7b2183f8 got=9d91f533ba233bfa0ae5490b567c4b9e15cb77c3e7c997912828ef2b7b2183f8 MATCH
+lupin-0.1.48-x86_64-unknown-linux-gnu.tar.gz api=81cfd77af5c983830b3bc8ddab2a5ba762408ac770e3229032c36d54958d93d8 got=81cfd77af5c983830b3bc8ddab2a5ba762408ac770e3229032c36d54958d93d8 MATCH
+/home/mfwolffe/lanes/bs64/c25/wolf-0.2.25-x86_64-unknown-linux-gnu/wolf
+wolf 0.2.25 (wolfgang, pin 6710f9e)
+paired with lupin 0.1.48 (reference interpreter), pin 294d626
+/home/mfwolffe/lanes/bs64/c25/lupin-0.1.48-x86_64-unknown-linux-gnu/lupin
+lupin 0.1.48 (wolf-interp, reference interpreter at pin 294d626)
+== control c25 on 851b996966ed898f173779ab9b6be7158790697b
+-- control-c25-diagramscheck.log (SKIP lines: 0)
+diagrams: trace lupin = /home/mfwolffe/lanes/bs64/c25/lupin-0.1.48-x86_64-unknown-linux-gnu/lupin
+diagrams: 6 diagram(s) from 4 trace(s), checked
+EXIT 0
+-- control-c25-ledgercheck.log (SKIP lines: 0)
+ledger: 32 chapter ledger(s) — 127 open (120 filed, 7 waived, 0 unfiled), 108 closed
+EXIT 0
+-- control-c25-samples.log (SKIP lines: 4)
+samples: lupin = /home/mfwolffe/lanes/bs64/c25/lupin-0.1.48-x86_64-unknown-linux-gnu/lupin
+samples: wolf  = /home/mfwolffe/lanes/bs64/c25/wolf-0.2.25-x86_64-unknown-linux-gnu/wolf
+samples: SKIP extraction book/back/solutions.md — generated from the two places solutions live, and this run reaches both directly: the exercise corpus under principles/exercises/ (chapters 7+) and principles/EXERCISES.md §5, the master for the chapter 1-6 exemplar batch (wolf-book#44). Every console block on both is replayed below; cargo xtask backmatter --check holds the page to them
+samples: 125 corpus file(s) held back from the export — one-machine directives the other runner cannot spell (principles/TWO-MACHINES.md)
+
+samples: 512 samples (250 corpus roots + 16 corpus members on disk, 262 book blocks)
+samples: 509 passed, 3 pending (report-only), 0 failed, 0 flips in 29.8s
+samples: 485 of 505 console block(s) replayed against the pinned tools
+samples: of those, 230 of 232 book block(s) and 255 of 273 exercise-corpus block(s) (wolf-book#24)
+samples: SKIP console /home/mfwolffe/lanes/bs64/wolf-book/book/ch01.md:322: `(cd wolf-lang` needs a shell
+samples: SKIP console /home/mfwolffe/lanes/bs64/wolf-book/book/ch07.md:722: `grep -n '(mut ' shelf.lu` is not a pinned tool
+samples: DECLINED corpus console principles/exercises/ch01/EXERCISES.md:18 [typed]: an interactive session — the block opens on a bare `$ lupin` and the transcript is what a reader types into the prompt — wolf-book#29 §4, retires at wolf-interp is08 (the REPL replay lane)
+samples: DECLINED corpus console principles/exercises/ch01/EXERCISES.md:145 [file]: `ch01/hello.lu` — the one genuinely missing file of the eight — AND a warm cache the fixture cannot carry: the transcript is the SECOND build's (`reused object`), while a staged copy starts cold because `.lu-cache/` is gitignored, and the key the line prints is the one the page itself tells the reader will differ — wolf-book#29 §2 (premise sharpened at bs44), retires at the ch01 fixture, a transcript respelled to do both builds, and a key the comparison can hold (a `samples-os.toml`-style declared line, or a `--verbose` that prints `reused` without the digest)
+samples: DECLINED corpus console principles/exercises/ch01/EXERCISES.md:198 [binary-or-shell]: a shell — `diff <(./hello) <(lupin hello.lu)` is process substitution, which `words()` declines by design (and the `hello.lu` of ch01:145 besides) — wolf-book#29 §5, retires at nothing planned; the exercise compares the two machines by hand and that is the point of it
+samples: DECLINED corpus console principles/exercises/ch02/EXERCISES.md:81 [typed]: an expression to type — `lupin eval '"\n".len'` has no file behind it. Cheapest of the twenty: it needs no fixture and no lane, only a rule that admits an evaluated expression — wolf-book#29 §4, retires at the `eval` widening (with ch02:101), or wolf-interp is08 if the REPL lane takes both
+samples: DECLINED corpus console principles/exercises/ch02/EXERCISES.md:101 [typed]: an expression to type — `lupin eval '"wolf"[..2]'` has no file behind it — wolf-book#29 §4, retires at the `eval` widening (with ch02:81), or wolf-interp is08 if the REPL lane takes both
+samples: DECLINED corpus console principles/exercises/ch07/EXERCISES.md:553 [typed]: an interactive session — the block opens on a bare `$ lupin` — wolf-book#29 §4, retires at wolf-interp is08 (the REPL replay lane)
+samples: DECLINED corpus console principles/exercises/ch08/EXERCISES.md:134 [typed]: an interactive session — the block opens on a bare `$ lupin` — wolf-book#29 §4, retires at wolf-interp is08 (the REPL replay lane)
+samples: DECLINED corpus console principles/exercises/ch09/EXERCISES.md:17 [binary-or-shell]: a shell — `grep -rn 'unsafe {' ch01 … | wc -l` is a pipeline over the corpus tree, which `words()` declines by design — wolf-book#29 §5, retires at nothing planned; the count it prints is a fact about the corpus, not about a tool
+samples: DECLINED corpus console principles/exercises/ch09/EXERCISES.md:243 [binary-or-shell]: the corpus rule to admit a binary `wolf build` just produced — `./ex9-8` names no solution, it names a link product — wolf-book#29 §5, retires at the `Verb::Local` widening for corpus blocks (the book lane already runs it on unix)
+samples: DECLINED corpus console principles/exercises/ch11/EXERCISES.md:166 [typed]: an interactive session — the block opens on a bare `$ lupin` — wolf-book#29 §4, retires at wolf-interp is08 (the REPL replay lane)
+samples: DECLINED corpus console principles/exercises/ch19/EXERCISES.md:23 [binary-or-shell]: the corpus rule to admit a binary `wolf build` just produced — `./ex19-1` names no solution, it names a link product — wolf-book#29 §5, retires at the `Verb::Local` widening for corpus blocks (the book lane already runs it on unix)
+samples: DECLINED corpus console principles/exercises/ch22/EXERCISES.md:114 [file]: NOT a missing file. The block is exercise 22-11's D32 demonstration — an unmarked `widest.lu` joining `sum.lu`'s module, E0302 on `main`. A corpus `.lu` must carry `//! check:` and `//! phase:`, and `[conf.directive.standalone]` (D59) makes a file carrying both a standalone entry that never joins its directory's module, so the collision cannot be staged. Measured on wolf 0.2.12 and lupin 0.1.34: the pair runs clean, exit 0 both — wolf-book#29 §2 (premise corrected at bs44), retires at a corpus admission rule that can hold a non-standalone member. The `console,in(pkg/…)` escape hatch is NOT one today, and the reason is an ordering rather than a design: a corpus fence parses `in(…)` (`collect_corpus_console` carries `fi.in_fixture` through), but `console::check` runs the corpus admission gate against the real exercise directory BEFORE any staging, so the block is declined before the fixture is looked at — and if it got that far, `stage()` opens with `remove_dir_all(dir)` and would wipe the staged exercise tree the corpus lane had just put there. Two small fixes, one hole
+samples: DECLINED corpus console principles/exercises/ch23/EXERCISES.md:124 [file]: the corpus rule to admit a `--dir` package, not a fixture. None of the six commands carries a `.lu` argument, and `plain_run_of_a_solution` declines any `wolf`/`lupin` command that names no `.lu` on disk — so a checked-in `app/` changes nothing until the rule widens. The package itself already exists as `samples/pkg/shelf/`, which prints this block's tree verbatim at book/ch24.md — wolf-book#29 §2 (premise corrected at bs44), retires at the `--dir` widening for corpus blocks, after which `samples/pkg/shelf` is the fixture
+samples: DECLINED corpus console principles/exercises/ch24/EXERCISES.md:136 [file]: the same `--dir` widening as ch23's, and then one more thing: the transcript runs `wolf update` BEFORE `wolf audit --ci` and still expects the ACQUIRES line, which is the opposite of what the page's own prose says refreshing first does. `samples/pkg/acquired/` is the stale-ledger package already, and book/ch24.md prints its ACQUIRES output with no `update` in front of it — wolf-book#29 §2 (premise corrected at bs44), retires at the `--dir` widening, plus a re-reading of the transcript's own ordering
+samples: DECLINED corpus console principles/exercises/ch26/EXERCISES.md:127 [file]: two things, and the file is the second. `wolf build count.lu && ./count` ends in a `Verb::Local`, which the corpus rule refuses outright — the same widening the `binary-or-shell` rows below wait on. After that it needs `count.lu`, `one.txt` and `two.txt` with exactly the byte, word and line counts the transcript prints — wolf-book#29 §2 (premise corrected at bs44), retires at the `Verb::Local` widening for corpus blocks, then the ch26 fixture
+samples: DECLINED corpus console principles/exercises/ch30/EXERCISES.md:84 [binary-or-shell]: the corpus rule to admit a binary `wolf build` just produced — `./ex30-3` names no solution, it names a link product — wolf-book#29 §5, retires at the `Verb::Local` widening for corpus blocks (the book lane already runs it on unix)
+samples: DECLINED corpus console principles/exercises/ch30/EXERCISES.md:113 [binary-or-shell]: the corpus rule to admit a binary `wolf build` just produced — `./ex30-4` names no solution, it names a link product — wolf-book#29 §5, retires at the `Verb::Local` widening for corpus blocks (the book lane already runs it on unix)
+samples: DECLINED corpus console principles/EXERCISES.md:376 [typed]: an expression to type — exercise 2-1's three `lupin eval '…'` prompts have no file behind them, and the exemplar batch checks in no `ex2-1.lu` for them to name. The exercise declares its own machine as `lupin REPL` in its taxonomy line, so this is a REPL block written in `eval`'s spelling; it wants exactly what ch02:81 and ch02:101 want — wolf-book#44, retires at the `eval` widening (with ch02:81 and ch02:101), or wolf-interp is08 if the REPL lane takes all three
+samples: samples-declined.toml: 18 declared row(s) — 5 file, 7 typed, 6 binary-or-shell (wolf-book#29)
+samples: corpus console declines on linux: 18 DECLINED + 0 OFF-LANE = 18 raw (wolf-book#49)
+samples: SKIP pending(is08): 12 wolf-repl block(s) counted, not replayed — the REPL replay lane lands with wolf-interp is08
+samples: 2 warning set(s) asserted by warns(…); 30 sample(s) warn with no warns(…) directive (report-only, wolf-book#21)
+samples: WARNS undeclared appx/exB-11 [W1301]
+samples: WARNS undeclared appx/exB-5 [W1002]
+samples: WARNS undeclared appx/exC-2 [W1003]
+samples: WARNS undeclared ch03/ex3-14b [E0802]
+samples: WARNS undeclared ch03/ex3-2 [W1003]
+samples: WARNS undeclared ch07/ex7-1 [W1003]
+samples: WARNS undeclared ch07/ex7-3 [W1003]
+samples: WARNS undeclared ch10/ex10-6 [W0603]
+samples: WARNS undeclared ch10/ex10-7 [W0603]
+samples: WARNS undeclared ch12/ex12-11 [W0601]
+samples: WARNS undeclared ch13/ex13-3 [W1101, W1102]
+samples: WARNS undeclared ch13/ex13-5 [W0603]
+samples: WARNS undeclared ch13/ex13-7 [W0402]
+samples: WARNS undeclared ch17/ex17-6 [W0603]
+samples: WARNS undeclared ch22/calc/main [W0314, W0602, W0603]
+samples: WARNS undeclared ch22/clash/main [W0314]
+samples: WARNS undeclared ch22/wordcount/main [W0314]
+samples: WARNS undeclared ch27/ex27-1 [W0603]
+samples: WARNS undeclared ch27/ex27-2 [W0603]
+samples: WARNS undeclared ch27/ex27-3 [W0603]
+samples: WARNS undeclared ch27/ex27-4 [W0603]
+samples: WARNS undeclared ch27/ex27-6 [W0603]
+samples: WARNS undeclared book/ch02/s5 [W0309]
+samples: WARNS undeclared book/ch07/s2 [W1003]
+samples: WARNS undeclared book/ch07/s4 [W1003]
+samples: WARNS undeclared book/ch07/s5 [W1003]
+samples: WARNS undeclared book/ch12/s10 [W0601]
+samples: WARNS undeclared book/ch13/s1 [W1101]
+samples: WARNS undeclared book/ch13/s5 [W1101, W1102]
+samples: WARNS undeclared book/ch27/part-rpn [W0603]
+samples: exported 380 corpus programs to samples/export/corpus/book/
+EXIT 0
+-- control-c25-verifydocs.log (SKIP lines: 0)
+verify-docs: 10 line-count claim(s) recomputed
+verify-docs: 6 project program(s) match the chapters that print them
+verify-docs: 114 quoted solution fences on 32 exercise pages are their files (92 whole, 22 excerpts)
+verify-docs: 30 version literal(s) in reader-facing text, each audited against wolf 0.2.25 / lupin 0.1.48
+verify-docs: 658 wolf listing(s) scanned for interpolation the vendored grammar cannot paint (wolf-book#5)
+verify-docs: EXERCISES-INDEX.md agrees with the corpus — 345 exercises (296 printed); 6 pending · 78 prose · 9 run (lupin REPL) · 38 run (lupin) · 173 run (wolf + lupin) · 41 run (wolf); fingers 61 · comprehension 154 · extension 79 · spelunking 28 · design 37
+verify-docs: ok (corpus count 266, pins well-formed, TOC/stub numbering agrees)
+EXIT 0
+-- status
