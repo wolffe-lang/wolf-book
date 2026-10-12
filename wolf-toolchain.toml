@@ -1340,13 +1340,18 @@ repo = "wolffe-lang/wolf-lang"
 # THE ARCHIVE CARRIES THE STANDARD LIBRARY (s204, ruling #59, since
 # 0.2.27): `std/` beside `wolf` is the default std root, so `use std.io`
 # resolves from the archive whole and is E0301 from a `wolf` with no
-# `std/` beside it. The book's local lanes run the archive whole; its CI
-# builds `wolf` from source with plain cargo and has none. No book
-# program writes `use std.…`, so the two agree on every sample (the
-# samples gate on kasumi and hasu, both ways, 7 identical drifts), with
-# one difference the runner reports and does not score: exercise 5-8,
-# pending, reaches the type checker from the archive (E0401, E0403) and
-# stops at resolve without it (samples-pending.toml).
+# `std/` beside it. No book program writes `use std.…`, but a method
+# call reaches the std all the same: with `std/` beside `wolf`, ch22's
+# `summary.lu` answers `xs.is_empty()` from `std.range`, and `wolf
+# interface` lists that module and folds it into the root's hashes
+# (`b7a67a58…` -> `c8e04b6d…`, wolf-lang#721); exercise 5-8, pending,
+# reaches the type checker (E0401, E0403) where a bare `wolf` stops at
+# resolve. RULED (the orchestrator, bs65): the book prints what a reader
+# installs, the archive whole. The book's CI builds `wolf` from source,
+# so its samples lane now stages `std/` beside that `wolf` exactly as
+# `cargo xtask dist` does (wolf-std at wolf-lang's STD-PIN, the two
+# licences, STD-REV), held to the archive's manifest `98e9a178…`
+# (.github/workflows/book.yml).
 #
 # What the two releases changed that the book can see: NO FLIP and no
 # program that stopped meeting its verdict, measured over all 580
@@ -2199,7 +2204,7 @@ pending = "is08"
 # archive whole, is E0301 from 0.2.26 and from a `wolf` with no `std/`
 # beside it, and is `unsupported` on lupin 0.1.51 unpacked from its own
 # archive (bs65-evidence/*/probes.txt). The book still pins no std of its
-# own, its CI builds `wolf` from source with none beside it, and item 4
+# own (CI stages the compiler's, held to the archive's manifest), and item 4
 # still holds, so this stays a posture: the std a reader's archive
 # carries is the compiler's, recorded here, not a pin the book chooses.
 pending = "wolf-std publishes no release to pin (wolf-book#39)"
