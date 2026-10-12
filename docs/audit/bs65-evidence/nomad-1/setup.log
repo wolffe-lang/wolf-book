@@ -1,0 +1,9 @@
+2026-10-12T05:17:00Z
+host nomad triple aarch64-apple-darwin
+wolf-0.2.26-aarch64-apple-darwin.tar.gz api=8ea7ef3b1e6ccab2ed784ad4c52285f226434ef7bf1b22272940d01a80b7f684 got=8ea7ef3b1e6ccab2ed784ad4c52285f226434ef7bf1b22272940d01a80b7f684 MATCH
+lupin-0.1.49-aarch64-apple-darwin.tar.gz api=ad188d5872f520efed4caa1af3f6e083b90c43e1b625e734a96b64ae4bfbf8fa got=ad188d5872f520efed4caa1af3f6e083b90c43e1b625e734a96b64ae4bfbf8fa MATCH
+/Users/mfwolffe/lanes/bs65/c26/wolf-0.2.26-aarch64-apple-darwin/wolf
+wolf 0.2.26 (wolfgang, pin 89dc139)
+paired with lupin 0.1.49 (reference interpreter), pin 294d626
+/Users/mfwolffe/lanes/bs65/c26/lupin-0.1.49-aarch64-apple-darwin/lupin
+lupin 0.1.49 (wolf-interp, reference interpreter at pin 294d626)

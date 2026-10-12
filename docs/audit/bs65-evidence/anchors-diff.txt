@@ -1,0 +1,7 @@
+anchors.json v0.2.26 -> v0.2.28 (wolf-lang 89dc1394 -> f71ece8e), key sets diffed both ways
+607 -> 634
+added ['abi.target.none.ambient', 'exec.checked.race', 'exec.checked.sched', 'exec.checked.task', 'os.env.unset', 'os.fs.change.note', 'os.fs.create.mode', 'os.fs.link', 'os.fs.mode', 'os.fs.readdir', 'os.fs.readlink', 'os.fs.stat', 'os.fs.symlink', 'os.fs.times', 'os.fs.truncate', 'os.fs.umask', 'os.json', 'os.json.dup', 'os.proc.exec', 'os.proc.job', 'os.proc.status', 'os.signal.disp', 'os.signal.poll', 'os.term', 'os.term.mode', 'os.term.note', 'type.wrap.div']
+dropped []
+67816f8fcb04f09638bd98a53f4c951a1a16e30c2ddecf1a93bb0b49401948c7  -
+67816f8fcb04f09638bd98a53f4c951a1a16e30c2ddecf1a93bb0b49401948c7  book/vendor/spec/grammar.ebnf
+vendored anchors.json == v0.2.28: yes

@@ -1,0 +1,28 @@
+== wolf-0.2.28-x86_64-unknown-linux-gnu
+d856cb81f5722f4fa316a7bd2f809bff1b1a6a3164c97a6d8c79cc6d06c324ce  libwolf_rt.a
+362c112f27149ca5c75c870c4eeb0c8920b48966741c6143bf3e3e014e78a835  libwolf_rt_none.a
+3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986  LICENSE
+a0eec20d7b98b1cd0e5b4d23c3965667c97b68fb365ec95a9516b0c3cbc4fec4  LICENSE-EXCEPTION
+9731e3ada1b6b249ecf56c098b651f54eeb327b7e9c8c02f694d069b540df76f  README.md
+a368c8eccce8b1800c80aa818ae482e541aa9636b676540851e23863d333eb8b  _wolf
+39644daa46e119597e8bf991779eabaa0e16b16699db13d1d3a8f4d75512ebc8  wolf
+d8d1f28cae11578efebea17e63c6b2ad65ae873baa053c03584b67dd9ed4c13e  wolf.1
+1b1d88530b5ae44120cb7e93b80c7054e3e28c61347fe3723f2608e44ebf0550  wolf.bash
+d0e63dec0144ab79678f5764262619d0306da2a8ba8f4e8c9aae3dc3599068ae  wolf-cimport-worker
+180de0ecb67f49ff127fc84d92ad6c6182b5195db1ce2b0fc63734e7abe46407  wolf.fish
+std/: 57 files, 53 .lu, STD-REV 98e1b7bcac3a6167fba18a4d37adcf9e8a76e704, manifest fc1c2240e061ee29…
+== lupin-0.1.51-x86_64-unknown-linux-gnu
+269077b6a627ca3fa9b2154ccf16e1639f963d50a9476f631ce69e2f6aeb9a81  CHANGELOG.md
+3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986  LICENSE
+583c573b3f357a095f088a208af821d7af329f38cbb9d956bc589fa3eb3d3387  lupin
+6ef9c992e7d7e64d29633b3c35c5eb6f95aecf3d6b68f3f21276d2111aa8a0e5  README.md
+== versions
+wolf 0.2.28 (wolfgang, pin f71ece8)
+paired with lupin 0.1.51 (reference interpreter), pin 294d626
+lupin 0.1.51 (wolf-interp, reference interpreter at pin 294d626)
+== bare
+wolf 0.2.28 (wolfgang, pin f71ece8)
+paired with lupin 0.1.51 (reference interpreter), pin 294d626
+wolf highest GLIBC_2.34
+lupin highest GLIBC_2.34
+std/ manifest re-taken with LC_ALL=C sort (the line above sorted by the host's locale, so it differs between linux and macOS): 98e9a178639a6d91… on kasumi, hasu and nomad-1 (identical bytes, 57 files)

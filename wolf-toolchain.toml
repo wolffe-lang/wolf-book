@@ -1306,8 +1306,62 @@ repo = "wolffe-lang/wolf-lang"
 # integers (#51, ch02 §2.3, ch05 §5.6), `copy region` (#56, ch08 §8.2).
 # Spec: anchors 595 -> 607 (none dropped), catalogue 187 -> 187,
 # grammar unchanged.
-rev = "89dc139443da38078df6093568da87bc6d0ee6f9"
-impl_version = "0.2.26"
+# ---- bs65, wave 53: wolf 0.2.28 + lupin 0.1.51 — two releases, the
+#      archive now carries std/, the interpreter's clause FOUR back ----
+#
+# wolf-lang at the v0.2.28 release tag (`f71ece8`), TAKEN FROM THE
+# RELEASE ARCHIVE (release 410118732) and matched against the release's
+# published digest before unpacking:
+# `wolf-0.2.28-x86_64-unknown-linux-gnu.tar.gz` sha256
+# 3215f3219c5c6c3b84f0f9abf421cdaecec5b81cf42d92b6c64475f95ad199aa
+# (kasumi and hasu; nomad-1 took the macOS arm64 archive, 656ab553...).
+# Every member hashed BY NAME (docs/audit/bs65-evidence/*/subject-members.txt):
+#
+#   wolf                 39644daa...   <- the pin of record
+#   wolf-cimport-worker  d0e63dec...
+#   libwolf_rt.a         d856cb81...   <- s228's handle tables, s230's shims
+#   libwolf_rt_none.a    362c112f...   <- s223's ambient pair
+#   wolf.1               d8d1f28c...   <- the std paragraph, the version
+#   _wolf                a368c8ec...   <- same as 0.2.26
+#   wolf.bash            1b1d8853...   <- same as 0.2.26
+#   wolf.fish            180de0ec...   <- same as 0.2.26
+#   std/                 57 files, 53 .lu, STD-REV 98e1b7bc...  <- NEW at 0.2.27
+#
+#   wolf 0.2.28 (wolfgang, pin f71ece8)
+#   paired with lupin 0.1.51 (reference interpreter), pin 294d626
+#   lupin 0.1.51 (wolf-interp, reference interpreter at pin 294d626)
+#
+# PREDICTED TO THE CHARACTER in docs/audit/bs65-prediction.md (committed
+# at 94acb67, before either archive was downloaded) and measured
+# byte-identical on three hosts. The interpreter's clause still names
+# v0.2.24's tag, now FOUR releases back: `294d626..f71ece8e` = 541
+# commits, four releases (v0.2.25 .. v0.2.28).
+#
+# THE ARCHIVE CARRIES THE STANDARD LIBRARY (s204, ruling #59, since
+# 0.2.27): `std/` beside `wolf` is the default std root, so `use std.io`
+# resolves from the archive whole and is E0301 from a `wolf` with no
+# `std/` beside it. The book's local lanes run the archive whole; its CI
+# builds `wolf` from source with plain cargo and has none. No book
+# program writes `use std.…`, so the two agree on every sample (the
+# samples gate on kasumi and hasu, both ways, 7 identical drifts), with
+# one difference the runner reports and does not score: exercise 5-8,
+# pending, reaches the type checker from the archive (E0401, E0403) and
+# stops at resolve without it (samples-pending.toml).
+#
+# What the two releases changed that the book can see: NO FLIP and no
+# program that stopped meeting its verdict, measured over all 580
+# programs the runner executes on three hosts (bs65-evidence/sweep-*).
+# The stamps; the interface toolchain line (ch22, 22-13); E1504's
+# `--explain` (ch24) and `wolf --help`'s std paragraph (appendix E);
+# lupin's std-root message (exercise 5-8). The checked machine runs
+# structured concurrency (s226, ruling #63): 93 of the book's programs it
+# declined now run there, ex16-7 and ex16-8 among them, and one
+# (exercise 33-7) runs past every timeout there. E1010's new
+# rules (s227, s229) refuse no book program newly; one already refused
+# (§16.1's ring) gains a second E1010. Spec: anchors 607 -> 634 (none
+# dropped), catalogue 187 -> 187, grammar unchanged.
+rev = "f71ece8e1ad2234940040d300359888932ad67af"
+impl_version = "0.2.28"
 
 [lupin]
 # wolf-interp at the v0.1.30 release tag (is42): the stamped line names
@@ -1949,9 +2003,21 @@ impl_version = "0.2.26"
 # atomics: `-> never`, `!` on integers and `copy region` run here as on
 # the compiler (the three new fences in ch02, ch06 and ch08 run on both
 # machines). No other lupin transcript in the book moves.
+# ---- bs65, wave 53: 0.1.49 -> 0.1.51, the lupin halves of 0.2.27 and
+#      0.2.28 ----
+#
+# `lupin-0.1.51-x86_64-unknown-linux-gnu.tar.gz` (release 409991647)
+# sha256 d8f62dd1175b3171d900700ab033f07ba4987a8d545897c5e587314657c69509,
+# member `lupin` 583c573b.... Pin UNCHANGED `294d626` (v0.2.24's tag).
+# It mirrors s218, s219, s220, s224, s225 and s230; no book program
+# reaches them, and every lupin answer in the 580-program sweep is
+# 0.1.49's byte for byte. One transcript moves: s204's std-root message
+# names a `std/` beside the binary (exercise 5-8). A `lupin` unpacked
+# from its own archive has no std; one placed beside the 0.2.28 `wolf`
+# reads that archive's `std/` (bs65-evidence/*/probes.txt).
 repo = "wolffe-lang/wolf-interp"
-rev = "f516a5f4ea4341acd3a30f3e5cdd4327aede1912"
-version = "lupin 0.1.49 (wolf-interp, reference interpreter at pin 294d626)"
+rev = "f72e78d7a9d0ceb39d80380389ad6a2072991c63"
+version = "lupin 0.1.51 (wolf-interp, reference interpreter at pin 294d626)"
 
 [lupin-trace]
 # bs62: chapter 7's memory diagrams are drawn from lupin's place trace
@@ -1970,8 +2036,10 @@ version = "lupin 0.1.49 (wolf-interp, reference interpreter at pin 294d626)"
 # snapshots/traces/ (docs/audit/bs63-evidence/diagrams-subject.txt).
 # bs64: follows [lupin].rev to 0.1.49 (placetrace.rs byte-identical
 # between v0.1.48 and v0.1.49); the traces re-take byte-identical.
+# bs65: follows [lupin].rev to 0.1.51 (placetrace.rs byte-identical
+# between v0.1.49 and v0.1.51); the traces re-take byte-identical.
 repo = "wolffe-lang/wolf-interp"
-rev = "f516a5f4ea4341acd3a30f3e5cdd4327aede1912"
+rev = "f72e78d7a9d0ceb39d80380389ad6a2072991c63"
 [wolf-lsp]
 # Source of the vendored tmLanguage grammars under highlight/.
 # `cargo xtask grammar-sync --check` fails on drift against this pin.
@@ -2121,4 +2189,17 @@ pending = "is08"
 #      with WOLF_STD set answers `unsupported: `math.gcd` does not
 #      resolve`, exit 4.
 #   4. `git grep '^use std\.' -- book principles` is empty.
+#
+# bs65 (wolf 0.2.28): the first of the three changes above has arrived
+# from the other side. wolf-std still publishes no release, but the
+# compiler's release archive — which this file pins by digest — carries
+# wolf-std `98e1b7bc` as `std/` beside `wolf` and resolves `use std.…`
+# there by default (s204, ruling #59, since 0.2.27). Measured on kasumi
+# and nomad-1: `use std.io` + `io.write_line(...)` prints from the 0.2.28
+# archive whole, is E0301 from 0.2.26 and from a `wolf` with no `std/`
+# beside it, and is `unsupported` on lupin 0.1.51 unpacked from its own
+# archive (bs65-evidence/*/probes.txt). The book still pins no std of its
+# own, its CI builds `wolf` from source with none beside it, and item 4
+# still holds, so this stays a posture: the std a reader's archive
+# carries is the compiler's, recorded here, not a pin the book chooses.
 pending = "wolf-std publishes no release to pin (wolf-book#39)"

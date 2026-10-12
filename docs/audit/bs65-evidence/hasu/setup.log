@@ -1,0 +1,9 @@
+2026-10-12T05:17:16Z
+host hasu triple x86_64-unknown-linux-gnu
+wolf-0.2.26-x86_64-unknown-linux-gnu.tar.gz api=05acdc5ea2f261f67cf48f4a174cff780a8c765e5f447354e1712d488e5a8064 got=05acdc5ea2f261f67cf48f4a174cff780a8c765e5f447354e1712d488e5a8064 MATCH
+lupin-0.1.49-x86_64-unknown-linux-gnu.tar.gz api=84911a353a03878c630762896ca2a19c2e2e20bf1a774d3f13858c99c9f56d6d got=84911a353a03878c630762896ca2a19c2e2e20bf1a774d3f13858c99c9f56d6d MATCH
+/home/mfwolffe/lanes/bs65/c26/wolf-0.2.26-x86_64-unknown-linux-gnu/wolf
+wolf 0.2.26 (wolfgang, pin 89dc139)
+paired with lupin 0.1.49 (reference interpreter), pin 294d626
+/home/mfwolffe/lanes/bs65/c26/lupin-0.1.49-x86_64-unknown-linux-gnu/lupin
+lupin 0.1.49 (wolf-interp, reference interpreter at pin 294d626)
