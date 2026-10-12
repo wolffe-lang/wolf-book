@@ -77,9 +77,10 @@ Exit codes:
 
 Documentation and the specification:
   https://github.com/wolffe-lang/wolf-lang
-The standard library ships separately and no package of the compiler
-carries it; point wolf at a checkout with `--std-root <dir>` or the
-`WOLF_STD` environment variable:
+The standard library, wolf-std, ships in the release archive as `std/`
+beside the `wolf` binary, and that copy is the default; `--std-root <dir>`,
+the `WOLF_STD` environment variable or a `std` dependency in wolf.pkg
+points wolf at another:
   https://github.com/wolffe-lang/wolf-std
 ```
 
