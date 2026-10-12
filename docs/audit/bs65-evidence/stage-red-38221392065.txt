@@ -1,0 +1,20 @@
+# bs65, after the ch22 ruling: a130fd3 added the CI step that stages std/ beside the source-built wolf, with ch22's block still the bare run's. Run 38221392065 (PR #77), samples jobs; the step's own lines and the samples summary:
+== samples (ubuntu-latest) job 114718236024
+STD-PIN: 98e1b7bcac3a6167fba18a4d37adcf9e8a76e704
+staged std/: 57 files, manifest 98e9a178639a6d9124270215d9cf0304e8fc3655bb39a8165bb4d5b2d406698e
+samples: 512 passed, 3 pending (report-only), 1 failed, 0 flips in 109.3s
+samples: 487 of 508 console block(s) replayed against the pinned tools
+samples: FAIL /home/runner/work/wolf-book/wolf-book/wolf-book/book/ch22.md:288: console block drifted from the real run
+       | module pkg :: std.range
+== samples (macos-latest) job 114718235945
+STD-PIN: 98e1b7bcac3a6167fba18a4d37adcf9e8a76e704
+staged std/:       57 files, manifest 98e9a178639a6d9124270215d9cf0304e8fc3655bb39a8165bb4d5b2d406698e
+samples: 512 passed, 3 pending (report-only), 1 failed, 0 flips in 184.1s
+samples: 487 of 508 console block(s) replayed against the pinned tools
+samples: FAIL /Users/runner/work/wolf-book/wolf-book/wolf-book/book/ch22.md:288: console block drifted from the real run
+       | module pkg :: std.range
+== samples (windows-latest) job 114718235921
+STD-PIN: 98e1b7bcac3a6167fba18a4d37adcf9e8a76e704
+staged std/: 57 files, manifest ca3b6e767be51b2984a21288a9d8e4aad22000b1f6ec079483a25565d62352d7
+##[error]staged std/ manifest ca3b6e767be51b2984a21288a9d8e4aad22000b1f6ec079483a25565d62352d7 is not the 0.2.28 archive's 98e9a178639a6d9124270215d9cf0304e8fc3
+# ubuntu and macOS staged the archive's manifest and went red at exactly ch22.md:288 with the std.range listing: the staging reaches the replay. windows' manifest differed only by sha256sum's binary-mode marker (fixed at 65a2ca3; run 38222853235's windows job 114723072698 stages 98e9a178…, 511 passed, 425 of 508).

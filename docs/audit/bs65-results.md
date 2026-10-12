@@ -43,9 +43,11 @@ ex17-1, ex13-4a, ex30-4/5's arrival order, ch10's first scope program
 | control, hasu, no `ld.lld` on PATH | 515 / 512 / 3 / **20 failed** | 468 of 508 — every drift the linker note, nothing else (`hasu/control-c26-samples.log`) |
 | control, hasu, an lld already in the nix store on PATH | 515 / 512 / 3 / 0 / 0 | 488 of 508 (`hasu/control-c26-samples-lld.log`) |
 | subject (unedited `94acb67`), archive whole, kasumi and hasu | 515 / 512 / 3 / **7 failed** / 0 flips | 481 of 508 |
-| subject, bare `wolf` (CI's shape), kasumi and hasu | 515 / 512 / 3 / **7 failed** / 0 flips | 481 of 508 |
-| head `e6fc25f`, bare (CI's shape), kasumi and hasu, also under `taskset -c 0-3` | **515 / 512 / 3 / 0 / 0 flips** | **488 of 508** |
-| head `e6fc25f`, archive whole, kasumi and hasu | 515 / 512 / 3 / **1 failed** (`ch22.md:288`, the archive's interface above) | 487 of 508 |
+| subject, bare `wolf` (CI's shape before the ruling), kasumi and hasu | 515 / 512 / 3 / **7 failed** / 0 flips | 481 of 508 |
+| head `e6fc25f` (before the ruling), bare, kasumi and hasu, also under `taskset -c 0-3` | **515 / 512 / 3 / 0 / 0 flips** | **488 of 508** |
+| head `e6fc25f` (before the ruling), archive whole, kasumi and hasu | 515 / 512 / 3 / **1 failed** (`ch22.md:288`, the archive's interface above) | 487 of 508 |
+| **head `65a2ca3` (after the ruling), archive whole, kasumi and hasu, also under `taskset -c 0-3`** | **515 / 512 / 3 / 0 / 0 flips** | **488 of 508** |
+| head `65a2ca3`, bare (for the record) | 515 / 512 / 3 / 1 failed (`ch22.md:288`, the bare listing) | 487 of 508 |
 
 Head gate at `e6fc25f` on kasumi and on hasu (`<host>/gate-e6fc25f/`,
 `gate-summary.txt`): `samples`, `samples --self-test`, `verify-docs`,
@@ -69,7 +71,7 @@ and bare fail the same seven blocks, but **ch22's `wolf interface`
 answers differently**: bare prints the old hashes with `toolchain
 0.2.28`; the archive whole prints a `module pkg :: std.range` block and
 moves both of the root's hashes `b7a67a58…` → `c8e04b6d…` (`xs.is_empty()`
-resolves into the std; `probes2.txt`). The page prints CI's (bare) run;
+resolves into the std; `probes2.txt`). Before the ruling the page printed CI's (bare) run;
 the ch22 export-hash row records the archive's.
 
 ## Predicted, and what happened
@@ -109,12 +111,12 @@ the ch22 export-hash row records the archive's.
 
 ## Findings for the orchestrator to file (the lane files nothing)
 
-1. wolf-lang: `wolf interface` on an unedited file moves its
+1. FILED as wolf-lang#721 by the orchestrator: `wolf interface` on an unedited file moves its
    `export_hash` and `pkg_hash` with the presence of the archive's
    `std/` (ch22's `summary.lu`, `b7a67a58…` vs `c8e04b6d…`; one
    `xs.is_empty()` is enough, and the std module is listed as
    `module pkg :: std.range`). `probes2.txt`.
-2. wolf-lang: the checked machine does not finish ex33-7 (killed at
+2. FILED as wolf-lang#720 by the orchestrator: the checked machine does not finish ex33-7 (killed at
    120 s and 200 s on three hosts) where lupin and native answer at
    once; a `net_wait` loop in `main` with two spawned callers.
 3. wolf-lang: s229's spawn rule refuses a spawn argument whose region is
@@ -145,12 +147,54 @@ run 38209773182, samples green on all three hosts (ubuntu and macOS 512
 
 - The cause of ex33-7's hang on the checked machine (only that it does
   not finish in 120 s or 200 s, on three hosts).
-- Whether ch22's moved export hash is a compiler defect or a design the
-  book should teach: the lane prints CI's (std-less) run and records
-  the archive's; the ruling is the orchestrator's.
+- Whether ch22's moved export hash is a compiler defect or the format's design (wolf-lang#721; the book now prints the archive's listing either way).
 - linux aarch64 and windows were not measured locally (CI's windows
   samples job only); hasu needed an lld already in its nix store on
   `PATH` (no package installed), without which every linking console
   block carries the linker note (20 drifts, `hasu/control-c26-samples.log`).
 - The release machine on nomad-1 ran `wolf build --release` on book
   programs (the sweep), which is a wolf compile, not a cargo build.
+
+## The ch22 ruling (the orchestrator, after the first report)
+
+"Since 0.2.28 the archive ships std beside `wolf` and that is what a
+reader installs, so the book must print what a reader sees." Done as
+ruled:
+
+- **CI stages `std/` beside its source-built `wolf`** exactly as `cargo
+  xtask dist` stages the archive's (wolf-std at wolf-lang's
+  `crates/wolf_driver/STD-PIN`, `98e1b7bc…`; the two licences;
+  `STD-REV`), and the step fails unless the staged tree's manifest is
+  the 0.2.28 archive's, `98e9a178…`, measured on three hosts
+  (`a130fd3`, `65a2ca3`).
+- **Seen to take effect**: run 38221392065 at `a130fd3` (the step, ch22
+  still the bare listing): ubuntu (114718236024) and macOS
+  (114718235945) staged `98e9a178…` and went red at exactly
+  `ch22.md:288` with the `module pkg :: std.range` listing; windows
+  (114718235921) staged the same 57 files and computed `ca3b6e76…`,
+  because its `sha256sum` marks binary mode in each line;
+  `65a2ca3` writes each manifest line by hand and windows' job
+  114723072698 in run 38222853235 stages `98e9a178…`
+  (`stage-red-38221392065.txt`).
+- **ch22**: the interface block spliced from the archive whole
+  (`2c44d2c`, from `kasumi/restage-samples-archivewhole.log`); §22.2's
+  prose reads the listing — the first module is `std.range`, which
+  `mean`'s `xs.is_empty()` reaches; the hash covers what the file
+  exports and what it uses, a std module reached through a method call
+  included, so a `wolf` with no `std/` beside it reads another number
+  (`dbc97bb`); the export-hash ledger row records the ruling and
+  wolf-lang#721. **22-13's block was already the archive's answer**
+  (`tokens.lu` reaches no std module; identical whole and bare).
+- The records that said CI has no std now say it stages one: the pin
+  notes, ch25's HOLD note, pending 5-8, ch01 §1.2's build-from-source
+  paragraph (`ba9c312`, `0acc217`).
+- **Head gate at `65a2ca3`** on kasumi and hasu (`<host>/gate-65a2ca3/`)
+  **against the archive whole**: every gate exit 0 — samples 515 / 512
+  / 3 / 0 / 0, 488 of 508, also under `taskset -c 0-3`; self-test;
+  verify-docs; ledger 126 open (119 filed, 7 waived, 0 unfiled) / 109
+  closed; backmatter --check against v0.2.28; contrast; tiers --check;
+  render web; diagrams 6 from 4 with the release lupin; xtask tests 203
+  passed with `--nocapture`. SKIPs: samples 4, self-test 1, others 0.
+  The bare `wolf` now fails exactly `ch22.md:288`, as it should.
+  (hasu's `gate-0acc217` collided with a re-stage run in the same
+  clone and is not evidence; it is not committed.)
