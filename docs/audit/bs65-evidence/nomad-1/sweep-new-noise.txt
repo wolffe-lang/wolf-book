@@ -1,0 +1,13 @@
+ch11_ex11_5_lu [release]
+   was ('0', 'worker 1 took job 2\nworker 1 took job 3\nworker 1 took job 4\nworker 0 took job 1\n')
+   now ('0', 'worker 0 took job 1\nworker 0 took job 3\nworker 0 took job 4\nworker 1 took job 2\n')
+ch17_ex17_1_lu [release]
+   was ('0', 'balance=100\n')
+   now ('0', 'balance=50\n')
+ch30_ex30_4_lu [release]
+   was ('0', 'arrive 0\narrive 2\narrive 7\narrive 5\na.log:1: 06:12 the wolf runs\na.log:3: 07:02 the wolf howls\nb.log:2: 08:52 the wolf sleeps\nb.log:4: 09:44 the wolf wakes\n')
+   now ('0', 'arrive 0\narrive 5\narrive 7\narrive 2\na.log:1: 06:12 the wolf runs\na.log:3: 07:02 the wolf howls\nb.log:2: 08:52 the wolf sleeps\nb.log:4: 09:44 the wolf wakes\n')
+ch30_ex30_5_lu [release]
+   was ('0', 'a.log:1: 06:12 the wolf runs\nb.log:4: 09:44 the wolf wakes\nb.log:2: 08:52 the wolf sleeps\na.log:3: 07:02 the wolf howls\n')
+   now ('0', 'a.log:1: 06:12 the wolf runs\nb.log:2: 08:52 the wolf sleeps\na.log:3: 07:02 the wolf howls\nb.log:4: 09:44 the wolf wakes\n')
+programs 580 release-built 371 moves 4 {'lupin': 0, 'native': 0, 'checked': 0, 'release': 4}

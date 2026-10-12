@@ -1,0 +1,232 @@
+########## c26: wolf 0.2.26 (wolfgang, pin 89dc139) / lupin 0.1.49 (wolf-interp, reference interpreter at pin 294d626)
+--- (1) stdio.lu
+use std.io
+
+fn main() {
+    io.write_line("std answers")
+}
+$ wolf run stdio.lu
+error[E0301]: module `std` has no item named `io`
+ --> ./stdio.lu:1:9
+  |
+1 | use std.io
+  |         ^^ not found in the module
+  |
+  = note: no standard library is configured, so `std` here is a small built-in stub. The standard
+    library is a separate release (wolf-std): point wolf at a checkout with `--std-root
+    <dir>` or the `WOLF_STD` environment variable.
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[exit 2]
+$ lupin stdio.lu
+stdio.lu: unsupported: `io.write_line` does not resolve
+[exit 4]
+--- (2) ex5-8
+$ wolf conform-run --json ex5-8.lu
+wolf conform-run: unsupported — member access on a value whose type is still being inferred @300..303
+{"commit":"89dc139","diagnostics":[],"file":"./ex5-8.lu","impl":"wolfgang","impl_version":"0.2.26","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"unsupported","warnings":[],"x-unsupported-construct":"member access on a value whose type is still being inferred","x-unsupported-span":[300,303]}
+$ lupin ex5-8.lu
+ex5-8.lu: unsupported: `List.sorted_by` is no builtin, so it reaches `List`'s home module `std.list` ([type.method.resolve] step 2), and no std root is configured: pass `--std-root DIR` or set `LUPIN_STD` (the compiler reads `WOLF_STD` or a `std` path dependency in `wolf.pkg`) — the counterparty's E0301 ([type.method.root])
+[exit 4]
+--- (3) ex16-7
+$ lupin ex16-7.lu
+distance=18
+[exit 0]
+$ lupin run ex16-7.lu --seed=7
+distance=18
+[exit 0]
+$ wolf run ex16-7.lu
+distance=18
+[exit 0]
+$ wolf conform-run --json ex16-7.lu
+{"commit":"89dc139","diagnostics":[],"file":"./ex16-7.lu","impl":"wolfgang","impl_version":"0.2.26","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+$ wolf conform-run --json --checked ex16-7.lu
+wolf conform-run --checked: unsupported — structured concurrency in checked execution (C1 deferred) @2604..2812
+{"commit":"89dc139","diagnostics":[],"file":"./ex16-7.lu","impl":"wolfgang","impl_version":"0.2.26","phase_reached":"mem","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"unsupported","warnings":[],"x-unsupported-construct":"structured concurrency in checked execution (C1 deferred)","x-unsupported-span":[2604,2812]}
+$ wolf conform-run --json --checked --seed=7 ex16-7.lu
+wolf conform-run --checked: unsupported — structured concurrency in checked execution (C1 deferred) @2604..2812
+{"commit":"89dc139","diagnostics":[],"file":"./ex16-7.lu","impl":"wolfgang","impl_version":"0.2.26","phase_reached":"mem","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"unsupported","warnings":[],"x-unsupported-construct":"structured concurrency in checked execution (C1 deferred)","x-unsupported-span":[2604,2812]}
+$ wolf build --release ex16-7.lu && ./ex16-7
+distance=18
+[exit 0]
+--- (3) ex16-8
+$ lupin ex16-8.lu
+distance=10
+[exit 0]
+$ lupin run ex16-8.lu --seed=7
+distance=10
+[exit 0]
+$ wolf run ex16-8.lu
+distance=10
+[exit 0]
+$ wolf conform-run --json ex16-8.lu
+{"commit":"89dc139","diagnostics":[],"file":"./ex16-8.lu","impl":"wolfgang","impl_version":"0.2.26","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+$ wolf conform-run --json --checked ex16-8.lu
+wolf conform-run --checked: unsupported — structured concurrency in checked execution (C1 deferred) @2604..2812
+{"commit":"89dc139","diagnostics":[],"file":"./ex16-8.lu","impl":"wolfgang","impl_version":"0.2.26","phase_reached":"mem","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"unsupported","warnings":[],"x-unsupported-construct":"structured concurrency in checked execution (C1 deferred)","x-unsupported-span":[2604,2812]}
+$ wolf conform-run --json --checked --seed=7 ex16-8.lu
+wolf conform-run --checked: unsupported — structured concurrency in checked execution (C1 deferred) @2604..2812
+{"commit":"89dc139","diagnostics":[],"file":"./ex16-8.lu","impl":"wolfgang","impl_version":"0.2.26","phase_reached":"mem","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"unsupported","warnings":[],"x-unsupported-construct":"structured concurrency in checked execution (C1 deferred)","x-unsupported-span":[2604,2812]}
+$ wolf build --release ex16-8.lu && ./ex16-8
+distance=10
+[exit 0]
+--- (4) chapter 11 on the checked machine
+ex11-1.lu //! check: run(exit=0) unsupported structured concurrency in checked execution (C1 deferred) ''
+ex11-2.lu //! check: lupin-run(exit=trap(deadlock)) unsupported structured concurrency in checked execution (C1 deferred) ''
+ex11-4.lu //! check: run(exit=0) unsupported structured concurrency in checked execution (C1 deferred) ''
+ex11-5.lu //! check: run(exit=0) unsupported structured concurrency in checked execution (C1 deferred) ''
+########## new: wolf 0.2.28 (wolfgang, pin f71ece8) / lupin 0.1.51 (wolf-interp, reference interpreter at pin 294d626)
+--- (1) stdio.lu
+use std.io
+
+fn main() {
+    io.write_line("std answers")
+}
+$ wolf run stdio.lu
+std answers
+[exit 0]
+$ lupin stdio.lu
+stdio.lu: unsupported: `io.write_line` does not resolve
+[exit 4]
+--- (2) ex5-8
+$ wolf conform-run --json ex5-8.lu
+error[E0401]: this is `int`, but the closure's context needs `bool`
+ --> ./ex5-8.lu:9:47
+  |
+9 |     for (name, n) in scores.pairs().sorted_by(fn(a, b) b.1 <=> a.1).take(1) {
+  |                                               ^^^^^^^^^^^^^^^^^^^^ found `int` here
+  |                                               -------------------- the closure starts here
+  |
+  = note: expected `bool`, found `int`
+  = note: wolf has no truthiness: write the comparison out, e.g. `x != 0`.
+
+error[E0403]: `List[(str, int)]` has no method named `take`
+ --> ./ex5-8.lu:9:69
+  |
+9 |     for (name, n) in scores.pairs().sorted_by(fn(a, b) b.1 <=> a.1).take(1) {
+  |                                                                     ^^^^ `take` is the ownership verb, never a method
+  |
+  = note: the first `n` elements are the slice `xs[..n]`, which faults `bounds` past the end, and
+    `xs[..min(n, xs.len)]` stops at it; the rest after them is `xs[n..]`
+    ([type.method.take]).
+
+{"commit":"f71ece8","diagnostics":[{"code":"E0401","severity":"error","span":[291,311]},{"code":"E0403","severity":"error","span":[313,317]}],"file":"./ex5-8.lu","impl":"wolfgang","impl_version":"0.2.28","phase_reached":"typecheck","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0401)","warnings":[]}
+$ lupin ex5-8.lu
+ex5-8.lu: unsupported: `List.sorted_by` is no builtin, so it reaches `List`'s home module `std.list` ([type.method.resolve] step 2), and no std root is configured: pass `--std-root DIR`, set `LUPIN_STD`, or put a `std/` beside the `lupin` binary (the compiler reads `WOLF_STD`, a `std` path dependency in `wolf.pkg`, or the `std/` its release archive ships beside `wolf`) — the counterparty's E0301 ([type.method.root])
+[exit 4]
+--- (3) ex16-7
+$ lupin ex16-7.lu
+distance=18
+[exit 0]
+$ lupin run ex16-7.lu --seed=7
+distance=18
+[exit 0]
+$ wolf run ex16-7.lu
+distance=18
+[exit 0]
+$ wolf conform-run --json ex16-7.lu
+{"commit":"f71ece8","diagnostics":[],"file":"./ex16-7.lu","impl":"wolfgang","impl_version":"0.2.28","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+$ wolf conform-run --json --checked ex16-7.lu
+{"commit":"f71ece8","diagnostics":[],"file":"./ex16-7.lu","impl":"wolfgang","impl_version":"0.2.28","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"distance=18\n","stdout_sha256":"d94e72d556cb80e2d1e9f338bebd9506bedeb9d848fd2a6feed72aa2c00c4d2c","verdict":"exit(0)","warnings":[]}
+$ wolf conform-run --json --checked --seed=7 ex16-7.lu
+{"commit":"f71ece8","diagnostics":[],"file":"./ex16-7.lu","impl":"wolfgang","impl_version":"0.2.28","phase_reached":"run","protocol":1,"seeded":true,"stdout_inline":"distance=18\n","stdout_sha256":"d94e72d556cb80e2d1e9f338bebd9506bedeb9d848fd2a6feed72aa2c00c4d2c","verdict":"exit(0)","warnings":[]}
+$ wolf build --release ex16-7.lu && ./ex16-7
+distance=18
+[exit 0]
+--- (3) ex16-8
+$ lupin ex16-8.lu
+distance=10
+[exit 0]
+$ lupin run ex16-8.lu --seed=7
+distance=10
+[exit 0]
+$ wolf run ex16-8.lu
+distance=10
+[exit 0]
+$ wolf conform-run --json ex16-8.lu
+{"commit":"f71ece8","diagnostics":[],"file":"./ex16-8.lu","impl":"wolfgang","impl_version":"0.2.28","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+$ wolf conform-run --json --checked ex16-8.lu
+{"commit":"f71ece8","diagnostics":[],"file":"./ex16-8.lu","impl":"wolfgang","impl_version":"0.2.28","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"distance=10\n","stdout_sha256":"87a4b6787d8050b5622ebbb3a0b16f12630f94ea7714930a4f6ae9acf1492bc6","verdict":"exit(0)","warnings":[]}
+$ wolf conform-run --json --checked --seed=7 ex16-8.lu
+{"commit":"f71ece8","diagnostics":[],"file":"./ex16-8.lu","impl":"wolfgang","impl_version":"0.2.28","phase_reached":"run","protocol":1,"seeded":true,"stdout_inline":"distance=10\n","stdout_sha256":"87a4b6787d8050b5622ebbb3a0b16f12630f94ea7714930a4f6ae9acf1492bc6","verdict":"exit(0)","warnings":[]}
+$ wolf build --release ex16-8.lu && ./ex16-8
+distance=10
+[exit 0]
+--- (4) chapter 11 on the checked machine
+ex11-1.lu //! check: run(exit=0) exit(0)  '60\n'
+ex11-2.lu //! check: lupin-run(exit=trap(deadlock)) trap(deadlock)  ''
+ex11-4.lu //! check: run(exit=0) exit(0)  'total=91\n'
+ex11-5.lu //! check: run(exit=0) exit(0)  'worker 0 took job 1\nworker 0 took job 2\nworker 0 took job 3\n'
+########## bare: wolf 0.2.28 (wolfgang, pin f71ece8) / lupin 0.1.51 (wolf-interp, reference interpreter at pin 294d626)
+--- (1) stdio.lu
+use std.io
+
+fn main() {
+    io.write_line("std answers")
+}
+$ wolf run stdio.lu
+error[E0301]: module `std` has no item named `io`
+ --> ./stdio.lu:1:9
+  |
+1 | use std.io
+  |         ^^ not found in the module
+  |
+  = note: no standard library was found, so `std` here is a small built-in stub. A release archive
+    carries wolf-std as `std/` beside the `wolf` binary; otherwise point wolf at a checkout
+    with `--std-root <dir>` or the `WOLF_STD` environment variable.
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[exit 2]
+$ lupin stdio.lu
+stdio.lu: unsupported: `io.write_line` does not resolve
+[exit 4]
+--- (2) ex5-8
+$ wolf conform-run --json ex5-8.lu
+wolf conform-run: unsupported — member access on a value whose type is still being inferred @300..303
+{"commit":"f71ece8","diagnostics":[],"file":"./ex5-8.lu","impl":"wolfgang","impl_version":"0.2.28","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"unsupported","warnings":[],"x-unsupported-construct":"member access on a value whose type is still being inferred","x-unsupported-span":[300,303]}
+$ lupin ex5-8.lu
+ex5-8.lu: unsupported: `List.sorted_by` is no builtin, so it reaches `List`'s home module `std.list` ([type.method.resolve] step 2), and no std root is configured: pass `--std-root DIR`, set `LUPIN_STD`, or put a `std/` beside the `lupin` binary (the compiler reads `WOLF_STD`, a `std` path dependency in `wolf.pkg`, or the `std/` its release archive ships beside `wolf`) — the counterparty's E0301 ([type.method.root])
+[exit 4]
+--- (3) ex16-7
+$ lupin ex16-7.lu
+distance=18
+[exit 0]
+$ lupin run ex16-7.lu --seed=7
+distance=18
+[exit 0]
+$ wolf run ex16-7.lu
+distance=18
+[exit 0]
+$ wolf conform-run --json ex16-7.lu
+{"commit":"f71ece8","diagnostics":[],"file":"./ex16-7.lu","impl":"wolfgang","impl_version":"0.2.28","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+$ wolf conform-run --json --checked ex16-7.lu
+{"commit":"f71ece8","diagnostics":[],"file":"./ex16-7.lu","impl":"wolfgang","impl_version":"0.2.28","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"distance=18\n","stdout_sha256":"d94e72d556cb80e2d1e9f338bebd9506bedeb9d848fd2a6feed72aa2c00c4d2c","verdict":"exit(0)","warnings":[]}
+$ wolf conform-run --json --checked --seed=7 ex16-7.lu
+{"commit":"f71ece8","diagnostics":[],"file":"./ex16-7.lu","impl":"wolfgang","impl_version":"0.2.28","phase_reached":"run","protocol":1,"seeded":true,"stdout_inline":"distance=18\n","stdout_sha256":"d94e72d556cb80e2d1e9f338bebd9506bedeb9d848fd2a6feed72aa2c00c4d2c","verdict":"exit(0)","warnings":[]}
+$ wolf build --release ex16-7.lu && ./ex16-7
+distance=18
+[exit 0]
+--- (3) ex16-8
+$ lupin ex16-8.lu
+distance=10
+[exit 0]
+$ lupin run ex16-8.lu --seed=7
+distance=10
+[exit 0]
+$ wolf run ex16-8.lu
+distance=10
+[exit 0]
+$ wolf conform-run --json ex16-8.lu
+{"commit":"f71ece8","diagnostics":[],"file":"./ex16-8.lu","impl":"wolfgang","impl_version":"0.2.28","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+$ wolf conform-run --json --checked ex16-8.lu
+{"commit":"f71ece8","diagnostics":[],"file":"./ex16-8.lu","impl":"wolfgang","impl_version":"0.2.28","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"distance=10\n","stdout_sha256":"87a4b6787d8050b5622ebbb3a0b16f12630f94ea7714930a4f6ae9acf1492bc6","verdict":"exit(0)","warnings":[]}
+$ wolf conform-run --json --checked --seed=7 ex16-8.lu
+{"commit":"f71ece8","diagnostics":[],"file":"./ex16-8.lu","impl":"wolfgang","impl_version":"0.2.28","phase_reached":"run","protocol":1,"seeded":true,"stdout_inline":"distance=10\n","stdout_sha256":"87a4b6787d8050b5622ebbb3a0b16f12630f94ea7714930a4f6ae9acf1492bc6","verdict":"exit(0)","warnings":[]}
+$ wolf build --release ex16-8.lu && ./ex16-8
+distance=10
+[exit 0]
+--- (4) chapter 11 on the checked machine
+ex11-1.lu //! check: run(exit=0) exit(0)  '60\n'
+ex11-2.lu //! check: lupin-run(exit=trap(deadlock)) trap(deadlock)  ''
+ex11-4.lu //! check: run(exit=0) exit(0)  'total=91\n'
+ex11-5.lu //! check: run(exit=0) exit(0)  'worker 0 took job 1\nworker 0 took job 2\nworker 0 took job 3\n'

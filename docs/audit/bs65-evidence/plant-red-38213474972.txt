@@ -1,0 +1,17 @@
+# bs65 plant a283ac4 (ch01 §1.2's --version block put back to 0.2.26 / 0.1.49), run 38213474972 on PR #77; per-job logs fetched by the jobs API, the samples summary lines:
+== samples (ubuntu-latest) job 114692705686
+samples: FAIL /home/runner/work/wolf-book/wolf-book/wolf-book/book/ch01.md:153: console block drifted from the real run
+error: 1 failure(s), 0 flip(s)
+samples: 512 passed, 3 pending (report-only), 1 failed, 0 flips in 107.8s
+samples: 487 of 508 console block(s) replayed against the pinned tools
+== samples (macos-latest) job 114692705572
+samples: 512 passed, 3 pending (report-only), 1 failed, 0 flips in 166.4s
+samples: 487 of 508 console block(s) replayed against the pinned tools
+samples: FAIL /Users/runner/work/wolf-book/wolf-book/wolf-book/book/ch01.md:153: console block drifted from the real run
+error: 1 failure(s), 0 flip(s)
+== samples (windows-latest) job 114692705569
+samples: 511 passed, 3 pending (report-only), 1 failed, 0 flips in 83.1s
+samples: 424 of 508 console block(s) replayed against the pinned tools
+samples: FAIL D:\a\wolf-book\wolf-book\wolf-book\book\ch01.md:153: console block drifted from the real run
+error: 1 failure(s), 0 flip(s)
+# The rest of the run was cancelled by the lane once all three samples jobs had failed (slots); reverted at 9115f09.

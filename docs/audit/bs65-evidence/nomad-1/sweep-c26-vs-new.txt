@@ -1,0 +1,307 @@
+ch04_ex4_1_lu [checked]
+   was ('unsupported', None, (), 'closures in checked execution')
+   now ('exit(0)', '40\n', (), None)
+ch04_ex4_9_lu [checked]
+   was ('unsupported', None, (), 'closures in checked execution')
+   now ('exit(0)', '   40 -> 40\n  -12 -> 0\n  130 -> 100\n', (), None)
+ch04_md_168 [checked]
+   was ('unsupported', None, (), 'closures in checked execution')
+   now ('exit(0)', '306 357\n321\n', (), None)
+ch04_md_192 [checked]
+   was ('unsupported', None, (), 'closures in checked execution')
+   now ('exit(0)', '275 300 300\n', (), None)
+ch05_ex5_7_lu [checked]
+   was ('unsupported', None, (), 'closures in checked execution')
+   now ('exit(0)', 'top: ada 91\naverage: 81\nada       91  above\ngrace     78  below\nlinus     84  above\nmira      69  below\nno students in the block\n', (), None)
+ch05_ex5_8_lu [native]
+   was ('unsupported', None, (), 'member access on a value whose type is still being inferred')
+   now ('fail(E0401)', None, ('E0401', 'E0403'), None)
+ch05_ex5_8_lu [checked]
+   was ('unsupported', None, (), 'member access on a value whose type is still being inferred')
+   now ('fail(E0401)', None, ('E0401', 'E0403'), None)
+ch05_md_389 [checked]
+   was ('unsupported', None, (), 'closures in checked execution')
+   now ('exit(0)', '340 espresso\n', (), None)
+ch08_md_1297 [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'faulted true\nover budget true\nmemory back true\nthe server is still here\n', (), None)
+ch10_ex10_1_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'total=42\n', (), None)
+ch10_ex10_2_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'child speaks\nmain speaks\n', (), None)
+ch10_ex10_3_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(7)', None, (), None)
+ch10_ex10_6_lu [checked]
+   was ('unsupported', None, ('W0603',), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'join surfaced the error\n7\n', ('W0603',), None)
+ch10_ex10_7_lu [checked]
+   was ('unsupported', None, ('W0603',), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'total=700\n', ('W0603',), None)
+ch10_ex10_8_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'sibling cleanup ran\n42\n', (), None)
+ch10_ex10_9_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', '5 values through the pipeline\n', (), None)
+ch10_md_191 [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'child speaks\nmain speaks\n', (), None)
+ch10_md_204 [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(7)', None, (), None)
+ch10_md_29 [checked]
+   was ('unsupported', None, (), 'freeze of a non-region value')
+   now ('exit(0)', '2740 words in 3 documents, busiest channels\n', (), None)
+ch10_md_297 [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'the join raised unknown\n7\n', (), None)
+ch10_md_372 [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'the reader released its cursor\nthe scope raised Overloaded\n7\n', (), None)
+ch10_md_84 [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'the scope is still open\nthe reader is counting\nthe scope has joined\n900 words\n', (), None)
+ch10_md_84 [release]
+   was ('0', 'the reader is counting\nthe scope is still open\nthe scope has joined\n900 words\n')
+   now ('0', 'the scope is still open\nthe reader is counting\nthe scope has joined\n900 words\n')
+ch11_ex11_1_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', '60\n', (), None)
+ch11_ex11_2_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('trap(deadlock)', None, (), None)
+ch11_ex11_4_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'total=91\n', (), None)
+ch11_ex11_5_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'worker 0 took job 1\nworker 0 took job 2\nworker 0 took job 3\nworker 0 took job 4\n', (), None)
+ch11_md_115 [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'republished round 1\nrepublished round 2\nthe refresher left with 2 rounds behind it\n', (), None)
+ch11_md_20 [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', '2740 words, three readers, one scope\n', (), None)
+ch12_ex12_1_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'total=30\n', (), None)
+ch12_ex12_3_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'timed out\ngot 9\n', (), None)
+ch12_ex12_4_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', '1\n', (), None)
+ch12_ex12_6_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'evens 20, odds 16\n', (), None)
+ch12_ex12_8_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', '223\n', (), None)
+ch12_md_14 [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', '3 documents shelved, 2740 words\n', (), None)
+ch12_md_175 [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', '2 documents crossed, nothing copied\n', (), None)
+ch12_md_260 [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'idle: no query inside the deadline\nserving regions\n', (), None)
+ch12_md_297 [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'served regions\n', (), None)
+ch12_md_384 [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'timed out\ngot 9\n', (), None)
+ch12_md_404 [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', '1\n', (), None)
+ch12_md_508 [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', '2 queries, 1540 words\n', (), None)
+ch13_ex13_1_lu [checked]
+   was ('unsupported', None, (), 'this List method')
+   now ('exit(0)', '285\n', (), None)
+ch13_ex13_4a_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', '1 then 2, sum 3\n', (), None)
+ch13_ex13_4b_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'sum 3\n', (), None)
+ch13_ex13_6_lu [checked]
+   was ('unsupported', None, (), 'this List method')
+   now ('exit(0)', '2 match(es)\n', (), None)
+ch13_md_321 [checked]
+   was ('unsupported', None, (), 'freeze of a non-region value')
+   now ('exit(0)', '1540 words\n', (), None)
+ch13_md_378 [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', '1540 words in 2 documents\n', (), None)
+ch13_md_75 [checked]
+   was ('unsupported', None, (), 'this List method')
+   now ('exit(0)', 'the 7 wolf 4 moon 4\n', (), None)
+ch14_ex14_10_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'stockroom closed: normal(12)\n', (), None)
+ch14_ex14_1_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'normal=true killed=false\n', (), None)
+ch14_ex14_3_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'proc down; its regions are gone\n', (), None)
+ch14_ex14_4_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'released', (), None)
+ch14_ex14_5_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'sibling cleanup ran\ncaught\n', (), None)
+ch14_ex14_6_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'total=7\n', (), None)
+ch14_ex14_7_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'before=7 after=3\n', (), None)
+ch14_ex14_9_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'total=4\n', (), None)
+ch14_md_10 [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'the shard is down: error(Corrupt)\nthe shelf is still serving\n', (), None)
+ch14_md_143 [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', '3\n', (), None)
+ch14_md_271 [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'normal=true killed=false\n', (), None)
+ch14_md_350 [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'the shard closed its cursor\ncancelled: cancelled\nkilled: killed\n', (), None)
+ch14_md_428 [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'released', (), None)
+ch14_md_454 [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'sibling cleanup ran\ncaught\n', (), None)
+ch14_md_480 [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'the shelver finished: normal(1540)\n', (), None)
+ch14_md_518 [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'the desk handled two kinds of message: 899\n', (), None)
+ch14_md_79 [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'returned: normal(3)\nfailed: error(Corrupt)\nkilled: killed\n', (), None)
+ch15_ex15_1_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'normal=false killed=false\n', (), None)
+ch15_ex15_2_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(121)', None, (), None)
+ch15_ex15_4_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'attempt 1 failed; restarting\nattempt 2 succeeded\n', (), None)
+ch15_ex15_5_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(1)', 'attempt 1 failed\nattempt 2 failed\nattempt 3 failed\ngiving up after 3 attempts\n', (), None)
+ch15_ex15_6_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'attempt 1 failed; restarting\nattempt 2 failed; restarting\nattempt 3 succeeded\n', (), None)
+ch15_md_136 [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'normal=false killed=false\n', (), None)
+ch15_md_15 [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'the shelf heard about it: error(Corrupt)\nthe shelf is still serving\n', (), None)
+ch15_md_157 [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(121)', None, (), None)
+ch15_md_190 [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'index attempt 1 died: error(Corrupt)\nindex attempt 2 died: error(Corrupt)\nshard 3 serving\nthe shard came up on attempt 3\n', (), None)
+ch15_md_358 [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'shard restarted\nthe roster stood down\n', (), None)
+ch15_md_37 [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(121)', None, (), None)
+ch16_ex16_10_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'seat 4 survives\n', (), None)
+ch16_ex16_1_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'received\n', (), None)
+ch16_ex16_2_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'sum=42\n', (), None)
+ch16_ex16_4_lu [checked]
+   was ('unsupported', None, (), 'freeze of a non-region value')
+   now ('exit(0)', '25\n', (), None)
+ch16_ex16_7_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'distance=18\n', (), None)
+ch16_ex16_8_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'distance=10\n', (), None)
+ch16_md_154 [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'received 42\n', (), None)
+ch16_md_193 [checked]
+   was ('unsupported', None, (), 'freeze of a non-region value')
+   now ('exit(0)', 'two procs read one snapshot: 1540 and 1540\n', (), None)
+ch16_md_27 [native]
+   was ('fail(E1010)', None, ('E1010',), None)
+   now ('fail(E1010)', None, ('E1010', 'E1010'), None)
+ch16_md_27 [checked]
+   was ('fail(E1010)', None, ('E1010',), None)
+   now ('fail(E1010)', None, ('E1010', 'E1010'), None)
+ch17_ex17_1_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'balance=50\n', (), None)
+ch17_ex17_1_lu [release]
+   was ('0', 'balance=50\n')
+   now ('0', 'balance=100\n')
+ch17_ex17_3_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', '12\n', (), None)
+ch17_ex17_9_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('trap(deadlock)', None, (), None)
+ch17_md_113 [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'balance=50\n', (), None)
+ch17_md_253 [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'reindexed 2 of 2 documents, 1540 words\n', (), None)
+ch17_md_29 [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', 'reindexed 2 of 2 documents, 1540 words\n', (), None)
+ch17_md_325 [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', '12\n', (), None)
+ch30_ex30_3_lu [checked]
+   was ('unsupported', None, (), 'freeze of a non-region value')
+   now ('exit(0)', 'a.log:1: 06:12 the wolf runs\na.log:3: 07:02 the wolf howls\nb.log:2: 08:52 the wolf sleeps\nb.log:4: 09:44 the wolf wakes\n', (), None)
+ch30_ex30_4_lu [checked]
+   was ('unsupported', None, (), 'freeze of a non-region value')
+   now ('exit(0)', 'arrive 0\narrive 2\narrive 5\narrive 7\na.log:1: 06:12 the wolf runs\na.log:3: 07:02 the wolf howls\nb.log:2: 08:52 the wolf sleeps\nb.log:4: 09:44 the wolf wakes\n', (), None)
+ch30_ex30_4_lu [release]
+   was ('0', 'arrive 0\narrive 2\narrive 5\narrive 7\na.log:1: 06:12 the wolf runs\na.log:3: 07:02 the wolf howls\nb.log:2: 08:52 the wolf sleeps\nb.log:4: 09:44 the wolf wakes\n')
+   now ('0', 'arrive 0\narrive 2\narrive 7\narrive 5\na.log:1: 06:12 the wolf runs\na.log:3: 07:02 the wolf howls\nb.log:2: 08:52 the wolf sleeps\nb.log:4: 09:44 the wolf wakes\n')
+ch30_ex30_5_lu [checked]
+   was ('unsupported', None, (), 'freeze of a non-region value')
+   now ('exit(0)', 'a.log:1: 06:12 the wolf runs\na.log:3: 07:02 the wolf howls\nb.log:2: 08:52 the wolf sleeps\nb.log:4: 09:44 the wolf wakes\n', (), None)
+ch30_ex30_5_lu [release]
+   was ('0', 'a.log:1: 06:12 the wolf runs\nb.log:4: 09:44 the wolf wakes\na.log:3: 07:02 the wolf howls\nb.log:2: 08:52 the wolf sleeps\n')
+   now ('0', 'a.log:1: 06:12 the wolf runs\nb.log:4: 09:44 the wolf wakes\nb.log:2: 08:52 the wolf sleeps\na.log:3: 07:02 the wolf howls\n')
+ch30_md_260 [checked]
+   was ('unsupported', None, (), 'freeze of a non-region value')
+   now ('exit(0)', 'a.log:1: 06:12 the wolf runs\na.log:3: 07:02 the wolf howls\nb.log:2: 08:52 the wolf sleeps\nb.log:4: 09:44 the wolf wakes\n', (), None)
+ch30_md_470 [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now ('exit(0)', '1\n', (), None)
+ch33_ex33_7_lu [checked]
+   was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   now (None, None, (), None)
+programs 580 release-built 371 moves 102 {'lupin': 0, 'native': 2, 'checked': 96, 'release': 4}

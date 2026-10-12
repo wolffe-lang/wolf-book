@@ -1,0 +1,84 @@
+NATIVE MOVE ch05_ex5_8_lu [principles/exercises/ch05/ex5-8.lu | run(exit=0, stdout="marmot 5")]
+   was ('unsupported', None, (), 'member access on a value whose type is still being inferred')
+   now ('fail(E0401)', None, ('E0401', 'E0403'), None)
+UNPREDICTED ch05_ex5_8_lu [principles/exercises/ch05/ex5-8.lu | run(exit=0, stdout="marmot 5")]
+   checked was ('unsupported', None, (), 'member access on a value whose type is still being inferred')
+   checked now ('fail(E0401)', None, ('E0401', 'E0403'), None)
+   lupin exit 4 out '' err "ch05_ex5_8_lu.lu: unsupported: `List.sorted_by` is no builtin, so it reaches `List`'s home module `std.list` ([type.method.resolve] step 2), and no std root is configured: pass `--std-root DIR`, set `"
+UNPREDICTED ch10_md_29 [book/ch10.md:29 | run(exit=0, stdout="2740 words in 3 documents, busiest channels")]
+   checked was ('unsupported', None, (), 'freeze of a non-region value')
+   checked now ('exit(0)', '2740 words in 3 documents, busiest channels\n', (), None)
+   lupin exit 0 out '2740 words in 3 documents, busiest channels\n' err ''
+UNPREDICTED ch13_ex13_1_lu [principles/exercises/ch13/ex13-1.lu | run(exit=0, stdout="285")]
+   checked was ('unsupported', None, (), 'this List method')
+   checked now ('exit(0)', '285\n', (), None)
+   lupin exit 0 out '285\n' err ''
+UNPREDICTED ch13_ex13_6_lu [principles/exercises/ch13/ex13-6.lu | run(exit=0)]
+   checked was ('unsupported', None, (), 'this List method')
+   checked now ('exit(0)', '2 match(es)\n', (), None)
+   lupin exit 0 out '2 match(es)\n' err ''
+UNPREDICTED ch13_md_321 [book/ch13.md:321 | run(exit=0, stdout="1540 words")]
+   checked was ('unsupported', None, (), 'freeze of a non-region value')
+   checked now ('exit(0)', '1540 words\n', (), None)
+   lupin exit 0 out '1540 words\n' err ''
+UNPREDICTED ch13_md_75 [book/ch13.md:75 | run(exit=0, stdout="the 7 wolf 4 moon 4")]
+   checked was ('unsupported', None, (), 'this List method')
+   checked now ('exit(0)', 'the 7 wolf 4 moon 4\n', (), None)
+   lupin exit 0 out 'the 7 wolf 4 moon 4\n' err ''
+PREDICTED-OTHER ch15_ex15_2_lu [principles/exercises/ch15/ex15-2.lu | run(exit=nonzero)]
+   checked was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   checked now ('exit(121)', None, (), None)
+   lupin exit 1 out '' err ''
+PREDICTED-OTHER ch15_md_157 [book/ch15.md:157 | run(exit=nonzero)]
+   checked was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   checked now ('exit(121)', None, (), None)
+   lupin exit 1 out '' err ''
+PREDICTED-OTHER ch15_md_37 [book/ch15.md:37 | run(exit=nonzero)]
+   checked was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   checked now ('exit(121)', None, (), None)
+   lupin exit 1 out '' err ''
+UNPREDICTED ch16_ex16_4_lu [principles/exercises/ch16/ex16-4.lu | run(exit=0)]
+   checked was ('unsupported', None, (), 'freeze of a non-region value')
+   checked now ('exit(0)', '25\n', (), None)
+   lupin exit 0 out '25\n' err ''
+PREDICTED-MATCH ch16_ex16_7_lu [principles/exercises/ch16/ex16-7.lu | run(exit=0)]
+   checked was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   checked now ('exit(0)', 'distance=18\n', (), None)
+   lupin exit 0 out 'distance=18\n' err ''
+PREDICTED-MATCH ch16_ex16_8_lu [principles/exercises/ch16/ex16-8.lu | run(exit=0)]
+   checked was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   checked now ('exit(0)', 'distance=10\n', (), None)
+   lupin exit 0 out 'distance=10\n' err ''
+UNPREDICTED ch16_md_193 [book/ch16.md:193 | run(exit=0, stdout="two procs read one snapshot: 1540 and 1540")]
+   checked was ('unsupported', None, (), 'freeze of a non-region value')
+   checked now ('exit(0)', 'two procs read one snapshot: 1540 and 1540\n', (), None)
+   lupin exit 0 out 'two procs read one snapshot: 1540 and 1540\n' err ''
+NATIVE MOVE ch16_md_27 [book/ch16.md:27 | lupin-run(exit=0)]
+   was ('fail(E1010)', None, ('E1010',), None)
+   now ('fail(E1010)', None, ('E1010', 'E1010'), None)
+UNPREDICTED ch16_md_27 [book/ch16.md:27 | lupin-run(exit=0)]
+   checked was ('fail(E1010)', None, ('E1010',), None)
+   checked now ('fail(E1010)', None, ('E1010', 'E1010'), None)
+   lupin exit 0 out 'regions moves errors regions \n' err ''
+UNPREDICTED ch30_ex30_3_lu [principles/exercises/ch30/ex30-3.lu | run(exit=0)]
+   checked was ('unsupported', None, (), 'freeze of a non-region value')
+   checked now ('exit(0)', 'a.log:1: 06:12 the wolf runs\na.log:3: 07:02 the wolf howls\nb.log:2: 08:52 the wolf sleeps\nb.log:4: 09:44 the wolf wakes\n', (), None)
+   lupin exit 0 out 'a.log:1: 06:12 the wolf runs\na.log:3: 07:02 the wolf howls\nb.log:2: 08:52 the wolf sleeps\nb.log:4: 09:44 the wolf wakes\n' err ''
+UNPREDICTED ch30_ex30_4_lu [principles/exercises/ch30/ex30-4.lu | run(exit=0)]
+   checked was ('unsupported', None, (), 'freeze of a non-region value')
+   checked now ('exit(0)', 'arrive 0\narrive 2\narrive 5\narrive 7\na.log:1: 06:12 the wolf runs\na.log:3: 07:02 the wolf howls\nb.log:2: 08:52 the wolf sleeps\nb.log:4: 09:44 the wolf wakes\n', (), None)
+   lupin exit 0 out 'arrive 0\narrive 2\narrive 5\narrive 7\na.log:1: 06:12 the wolf runs\na.log:3: 07:02 the wolf howls\nb.log:2: 08:52 the wolf sleeps\nb.log:4: 09:44 the wolf wakes\n' err ''
+UNPREDICTED ch30_ex30_5_lu [principles/exercises/ch30/ex30-5.lu | run(exit=0)]
+   checked was ('unsupported', None, (), 'freeze of a non-region value')
+   checked now ('exit(0)', 'a.log:1: 06:12 the wolf runs\na.log:3: 07:02 the wolf howls\nb.log:2: 08:52 the wolf sleeps\nb.log:4: 09:44 the wolf wakes\n', (), None)
+   lupin exit 0 out 'a.log:1: 06:12 the wolf runs\na.log:3: 07:02 the wolf howls\nb.log:2: 08:52 the wolf sleeps\nb.log:4: 09:44 the wolf wakes\n' err ''
+UNPREDICTED ch30_md_260 [book/ch30.md:260 | run(exit=0)]
+   checked was ('unsupported', None, (), 'freeze of a non-region value')
+   checked now ('exit(0)', 'a.log:1: 06:12 the wolf runs\na.log:3: 07:02 the wolf howls\nb.log:2: 08:52 the wolf sleeps\nb.log:4: 09:44 the wolf wakes\n', (), None)
+   lupin exit 0 out 'a.log:1: 06:12 the wolf runs\na.log:3: 07:02 the wolf howls\nb.log:2: 08:52 the wolf sleeps\nb.log:4: 09:44 the wolf wakes\n' err ''
+PREDICTED-OTHER ch33_ex33_7_lu [principles/exercises/ch33/ex33-7.lu | run(exit=0, stdout="answered 4 questions on 2 connections")]
+   checked was ('unsupported', None, (), 'structured concurrency in checked execution (C1 deferred)')
+   checked now (None, None, (), None)
+   lupin exit 0 out 'answered 4 questions on 2 connections\n' err ''
+predicted rows that did NOT move: []
+{'PREDICTED-MATCH': 79, 'UNPREDICTED': 13, 'PREDICTED-OTHER': 4}
