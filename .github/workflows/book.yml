@@ -154,6 +154,41 @@ jobs:
           WOLF_RELEASE="$(git tag --points-at HEAD | grep -E '^v[0-9]' | head -1 || true)"
           if [ -n "$WOLF_RELEASE" ]; then export WOLF_RELEASE; fi
           cargo build --release -p wolf_driver -p wolf_rt -p wolf_cimport
+      # The release archive carries the standard library as `std/` beside
+      # `wolf` (s204, ruling #59, since 0.2.27), and the driver's default
+      # std root is that directory. A `cargo build` has nothing there, so
+      # without this step the lane measured a toolchain no reader
+      # installs: bs65 found `wolf interface` answering differently (ch22,
+      # a std module reached through a method call joins the package's
+      # interface and its hashes). Stage exactly what `cargo xtask dist`
+      # stages: wolf-std's `std/` tree at the commit wolf-lang's
+      # `crates/wolf_driver/STD-PIN` names, the two licences, and
+      # `STD-REV`. The manifest below is the archive's own, measured from
+      # the 0.2.28 release archives on three hosts (bs65,
+      # docs/audit/bs65-evidence/*/subject-members.txt); a STD-PIN bump
+      # moves it, and this step then fails until the bump re-measures it.
+      # autocrlf off: windows runners convert line endings by default,
+      # and the archive's bytes are LF.
+      - name: stage std/ beside wolf, as the release archive does
+        if: steps.acquire.outputs.toolchain == 'full'
+        shell: bash
+        run: |
+          set -euo pipefail
+          sha() { if command -v sha256sum >/dev/null; then sha256sum "$@"; else shasum -a 256 "$@"; fi; }
+          pin=$(awk -F' = ' '/^wolf-std-commit = /{print $2}' wolf-lang/crates/wolf_driver/STD-PIN)
+          echo "STD-PIN: ${pin}"
+          [ -n "${pin}" ]
+          git -c core.autocrlf=false clone --quiet https://github.com/wolffe-lang/wolf-std wolf-std
+          git -C wolf-std -c core.autocrlf=false checkout --quiet "${pin}"
+          dest=wolf-lang/target/release/std
+          rm -rf "${dest}"
+          cp -R wolf-std/std "${dest}"
+          cp wolf-std/LICENSE wolf-std/LICENSE-EXCEPTION "${dest}/"
+          printf '%s\n' "${pin}" > "${dest}/STD-REV"
+          got=$(cd wolf-lang/target/release && find std -type f | LC_ALL=C sort | while IFS= read -r f; do sha "$f"; done | sha | cut -c1-64)
+          want=98e9a178639a6d9124270215d9cf0304e8fc3655bb39a8165bb4d5b2d406698e
+          echo "staged std/: $(cd wolf-lang/target/release && find std -type f | wc -l) files, manifest ${got}"
+          if [ "${got}" != "${want}" ]; then echo "::error::staged std/ manifest ${got} is not the 0.2.28 archive's ${want}"; exit 1; fi
       - name: build pinned lupin (release)
         if: steps.acquire.outputs.toolchain == 'full'
         shell: bash
