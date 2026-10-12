@@ -2,9 +2,8 @@
 
 Commands run from this directory; outputs are pasted from real runs.
 Every checker in this chapter is lupin. The checked machine (`wolf
-conform-run --checked`) runs the concurrency surface too, one task at a
-time on lupin's schedule, and gives lupin's answer for all four programs
-here: 11-2's deadlock is `trap(deadlock)` on both.
+conform-run --checked`) runs the concurrency surface too and gives
+lupin's answer for all four programs, 11-2's `trap(deadlock)` included.
 
 ## §11.1 — The scope as a capability
 
