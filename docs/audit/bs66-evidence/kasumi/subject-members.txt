@@ -1,0 +1,27 @@
+== wolf-0.2.29-x86_64-unknown-linux-gnu
+fa0a0ae508c75d827bc15e495e7570bd82aa977f601882a1e5329fb35f4d3f98  libwolf_rt.a
+fdd229bb04a341277fd97064373393deb98619ae9ccab782139536a4fea73be4  libwolf_rt_none.a
+3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986  LICENSE
+a0eec20d7b98b1cd0e5b4d23c3965667c97b68fb365ec95a9516b0c3cbc4fec4  LICENSE-EXCEPTION
+75ea2850878ee0c0f18d0f85fc35de22a7212f42ebb328cc927de6f3d840b78c  README.md
+a368c8eccce8b1800c80aa818ae482e541aa9636b676540851e23863d333eb8b  _wolf
+07f1215832be38f619b966510eb48ee2d6c13f51343502c7cf82ab87e3901c80  wolf
+f51a5b5a10afa5da77b34fc18c01ac0be13e53f183828c5e4f53d917b3f6bd1e  wolf.1
+1b1d88530b5ae44120cb7e93b80c7054e3e28c61347fe3723f2608e44ebf0550  wolf.bash
+ebd3b809ec3b4ad6526fece3f4fd6b05d0c844e1660feaae05e9a6dbee18771d  wolf-cimport-worker
+180de0ecb67f49ff127fc84d92ad6c6182b5195db1ce2b0fc63734e7abe46407  wolf.fish
+std/: 57 files, 53 .lu, STD-REV d7c2968cbba1a855a58b4aabf3e55edcf7282992, manifest 229202f5b6477b3dfd4635996e31342ed9143c7a377ae6c3bdeb2faf5a28a830
+== lupin-0.1.52-x86_64-unknown-linux-gnu
+76f2571633a63910a8c8e1663b7d9d278b4ba0f638b9ddec3e7ea960a0d93e72  CHANGELOG.md
+3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986  LICENSE
+74043b0ac022da6cfdd97c9919901ad6c72047b1997cbc767d269059782c2664  lupin
+d6494c3bd6b92b787a77d4073dc9e029a29f50a2570cfc93ca0aa9344796057a  README.md
+== versions
+wolf 0.2.29 (wolfgang, pin 6ffe7c6)
+paired with lupin 0.1.52 (reference interpreter), pin 294d626
+lupin 0.1.52 (wolf-interp, reference interpreter at pin 294d626)
+== bare
+wolf 0.2.29 (wolfgang, pin 6ffe7c6)
+paired with lupin 0.1.52 (reference interpreter), pin 294d626
+wolf highest GLIBC_2.34
+lupin highest GLIBC_2.34

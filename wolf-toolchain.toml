@@ -1365,8 +1365,66 @@ repo = "wolffe-lang/wolf-lang"
 # rules (s227, s229) refuse no book program newly; one already refused
 # (§16.1's ring) gains a second E1010. Spec: anchors 607 -> 634 (none
 # dropped), catalogue 187 -> 187, grammar unchanged.
-rev = "f71ece8e1ad2234940040d300359888932ad67af"
-impl_version = "0.2.28"
+# ---- bs66, wave 53: wolf 0.2.29 + lupin 0.1.52 — one release, the
+#      bundled std moves to d7c2968, the interpreter's clause FIVE back ----
+#
+# wolf-lang at the v0.2.29 release tag (`6ffe7c6`), TAKEN FROM THE
+# RELEASE ARCHIVE (release 411040788) and matched against the release's
+# published digest before unpacking, then read a second time from a
+# fresh download (`sha256sum -c` OK, the unpacked tree identical):
+# `wolf-0.2.29-x86_64-unknown-linux-gnu.tar.gz` sha256
+# ae466e85418a48758460a981c9fab690462f779dae967cface86c555e649d7c1
+# (kasumi; macOS and windows are the book's CI samples lanes, built from
+# this rev). Every member hashed BY NAME
+# (docs/audit/bs66-evidence/kasumi/subject-members.txt):
+#
+#   wolf                 07f12158...   <- the pin of record
+#   wolf-cimport-worker  ebd3b809...
+#   libwolf_rt.a         fa0a0ae5...   <- s231's pool, s232's signal table
+#   libwolf_rt_none.a    fdd229bb...
+#   wolf.1               f51a5b5a...   <- `wolf lsp --std-root`, the version
+#   _wolf                a368c8ec...   <- same as 0.2.28
+#   wolf.bash            1b1d8853...   <- same as 0.2.28
+#   wolf.fish            180de0ec...   <- same as 0.2.28
+#   std/                 57 files, 53 .lu, STD-REV d7c2968c...
+#                        manifest 229202f5... (0.2.28's was 98e9a178...)
+#
+#   wolf 0.2.29 (wolfgang, pin 6ffe7c6)
+#   paired with lupin 0.1.52 (reference interpreter), pin 294d626
+#   lupin 0.1.52 (wolf-interp, reference interpreter at pin 294d626)
+#
+# PREDICTED TO THE CHARACTER in docs/audit/bs66-prediction.md (committed
+# at 38b91a3, before either archive was downloaded) and measured
+# byte-identical. The interpreter's clause still names v0.2.24's tag,
+# now FIVE releases back: `294d626..6ffe7c60` = 611 commits, five
+# releases (v0.2.25 .. v0.2.29).
+#
+# THE BUNDLED STD IS wolf-std `d7c2968` (0.2.28 shipped `98e1b7b`); the
+# tree differs in `std/env/env.lu`, `std/fs/fs.lu` and `STD-REV`. The
+# book's CI stages that tree beside its source-built `wolf` and holds it
+# to the archive's manifest, `229202f5…` now
+# (.github/workflows/book.yml). ch22's interface listing reaches
+# `std.range`, which did not move: both of its hashes hold.
+#
+# What the release changed that the book can see: NO FLIP and no
+# program that stopped meeting its verdict, measured over all 580
+# programs the runner executes (bs66-evidence/kasumi/sweep-*): lupin 0
+# rows, native 0, checked 0, release the scheduler's and UB's noise.
+# The stamps (ch01, colophon) and the interface toolchain line (ch22,
+# 22-13) are the four transcripts that move. Exercise 33-7 still runs
+# past every timeout on the checked machine (wolf-lang#720).
+#
+# What the release ADDS and the book has no page for (bs66-results.md):
+# the signal set of twenty listenable meanings and eight send-only, a
+# published bit's permanence ([os.signal.set.stable]), `os_pid`,
+# `os_ppid`, `os_signal_send`, `os_signal_number`, `os_signal_ignored`
+# (measured on the four machines, bs66-evidence/kasumi/probes.txt: lupin
+# refuses `os_signal_send` and `os_signal_ignored` by name), a worker
+# per parked task (s231), `wolf lsp --std-root` (s235). No book program
+# names any of them. Spec: anchors 634 -> 640 (none dropped), catalogue
+# 187 -> 187, grammar unchanged.
+rev = "6ffe7c6056eeb8c661b37e38d99b91166e8c1add"
+impl_version = "0.2.29"
 
 [lupin]
 # wolf-interp at the v0.1.30 release tag (is42): the stamped line names
@@ -2020,9 +2078,19 @@ impl_version = "0.2.28"
 # names a `std/` beside the binary (exercise 5-8). A `lupin` unpacked
 # from its own archive has no std; one placed beside the 0.2.28 `wolf`
 # reads that archive's `std/` (bs65-evidence/*/probes.txt).
+# ---- bs66, wave 53: 0.1.51 -> 0.1.52, the lupin half of 0.2.29 ----
+#
+# `lupin-0.1.52-x86_64-unknown-linux-gnu.tar.gz` (release 410845419)
+# sha256 f5194b74879c45ad96484566950b4ae59fe1faa7ccd86461c6656f9e662b698f
+# (read twice), member `lupin` 74043b0a.... Pin UNCHANGED `294d626`
+# (v0.2.24's tag). It mirrors s232: it serves `os_pid`, `os_ppid` and
+# `os_signal_number` and refuses `os_signal_send` and
+# `os_signal_ignored` by name. No book program reaches them, and every
+# lupin answer in the 580-program sweep is 0.1.51's byte for byte; no
+# lupin transcript in the book moves.
 repo = "wolffe-lang/wolf-interp"
-rev = "f72e78d7a9d0ceb39d80380389ad6a2072991c63"
-version = "lupin 0.1.51 (wolf-interp, reference interpreter at pin 294d626)"
+rev = "025428b725a35bfbc53745d4166817ff3053c0fd"
+version = "lupin 0.1.52 (wolf-interp, reference interpreter at pin 294d626)"
 
 [lupin-trace]
 # bs62: chapter 7's memory diagrams are drawn from lupin's place trace
@@ -2043,8 +2111,10 @@ version = "lupin 0.1.51 (wolf-interp, reference interpreter at pin 294d626)"
 # between v0.1.48 and v0.1.49); the traces re-take byte-identical.
 # bs65: follows [lupin].rev to 0.1.51 (placetrace.rs byte-identical
 # between v0.1.49 and v0.1.51); the traces re-take byte-identical.
+# bs66: follows [lupin].rev to 0.1.52 (placetrace.rs byte-identical
+# between v0.1.51 and v0.1.52); the traces re-take byte-identical.
 repo = "wolffe-lang/wolf-interp"
-rev = "f72e78d7a9d0ceb39d80380389ad6a2072991c63"
+rev = "025428b725a35bfbc53745d4166817ff3053c0fd"
 [wolf-lsp]
 # Source of the vendored tmLanguage grammars under highlight/.
 # `cargo xtask grammar-sync --check` fails on drift against this pin.
@@ -2207,4 +2277,15 @@ pending = "is08"
 # own (CI stages the compiler's, held to the archive's manifest), and item 4
 # still holds, so this stays a posture: the std a reader's archive
 # carries is the compiler's, recorded here, not a pin the book chooses.
+#
+# bs66 (wolf 0.2.29): the archive's `std/` is wolf-std `d7c2968c` now.
+# Its `std.signal` predates 0.2.29's signal set: nine meaning functions
+# (`reload()` … `child()`), no name for the eleven new listenable
+# meanings, no wrapper for `os_pid`, `os_ppid`, `os_signal_send`,
+# `os_signal_number` or `os_signal_ignored`. Measured from the archive
+# whole on kasumi: `signal.reload()` answers 1; `signal.user()`,
+# `signal.send` and `env.pid` are each E0301 (bs66-evidence/kasumi/
+# probes.txt). wolf-std trunk has since grown those names; no release
+# archive carries them, so the book shows none of them as available.
+# Item 4 still holds (no book program writes `use std.…`).
 pending = "wolf-std publishes no release to pin (wolf-book#39)"

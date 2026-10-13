@@ -1,0 +1,7 @@
+anchors.json, wolf-lang v0.2.28 (the vendored copy at wolf-book b845e07) against v0.2.29 (6ffe7c60), key sets diffed both ways:
+  v0.2.28: 634 anchors; v0.2.29: 640 anchors
+  only in v0.2.29 (6): os.proc.self os.signal.ignored os.signal.number os.signal.send os.signal.set.stable os.signal.shell.note
+  only in v0.2.28 (0): none dropped
+  retargeted (same key, another document): none
+grammar.ebnf: `git show v0.2.29:spec/grammar.ebnf | cmp - vendor/spec/grammar.ebnf` identical
+crates/wolf_diag: `git diff --stat v0.2.28 v0.2.29 -- crates/wolf_diag` empty (catalogue 187, no --explain text moves)

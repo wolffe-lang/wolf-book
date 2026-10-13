@@ -1,0 +1,9 @@
+2026-10-13T22:50:51Z
+second read: a fresh download of each subject archive, sha256sum -c against the digest the release API printed on nomad-1 (contract commit 307305d), then every unpacked member against the first unpack
+wolf-0.2.29-x86_64-unknown-linux-gnu.tar.gz: OK
+lupin-0.1.52-x86_64-unknown-linux-gnu.tar.gz: OK
+sha256sum -c exit 0
+2943200 lupin-0.1.52-x86_64-unknown-linux-gnu.tar.gz
+78902948 wolf-0.2.29-x86_64-unknown-linux-gnu.tar.gz
+wolf tree: identical to the first unpack
+lupin tree: identical to the first unpack

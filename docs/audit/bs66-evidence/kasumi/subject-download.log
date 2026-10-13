@@ -1,0 +1,6 @@
+2026-10-13T22:41:07Z
+host kasumi
+/usr/bin/ld.lld
+LLD 23.1.1 (compatible with GNU linkers)
+wolf-0.2.29-x86_64-unknown-linux-gnu.tar.gz api=ae466e85418a48758460a981c9fab690462f779dae967cface86c555e649d7c1 got=ae466e85418a48758460a981c9fab690462f779dae967cface86c555e649d7c1 MATCH
+lupin-0.1.52-x86_64-unknown-linux-gnu.tar.gz api=f5194b74879c45ad96484566950b4ae59fe1faa7ccd86461c6656f9e662b698f got=f5194b74879c45ad96484566950b4ae59fe1faa7ccd86461c6656f9e662b698f MATCH
