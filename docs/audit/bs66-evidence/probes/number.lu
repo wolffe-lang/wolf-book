@@ -1,0 +1,15 @@
+fn number_row(m: int) -> str {
+    let n = os_signal_number(m) else |e| {
+        return match e {
+            invalid => "invalid",
+            unsupported => "unsupported",
+        }
+    }
+    "{n}"
+}
+
+fn main() {
+    print("user={number_row(512)}")
+    print("two_bits={number_row(3)}")
+    print("kill={number_row(1048576)}")
+}

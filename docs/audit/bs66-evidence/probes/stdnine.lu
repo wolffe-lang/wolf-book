@@ -1,0 +1,6 @@
+use std.signal
+
+fn main() {
+    print("reload={signal.reload()}")
+    print("child={signal.child()}")
+}

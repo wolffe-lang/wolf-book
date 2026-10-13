@@ -1,0 +1,6 @@
+use std.signal
+
+fn main() -> !int {
+    signal.send(1, 0)?
+    0
+}

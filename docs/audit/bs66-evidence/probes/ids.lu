@@ -1,0 +1,7 @@
+fn main() -> !int {
+    let me = os_pid()
+    print("pid_positive={me > 0}")
+    let pp = os_ppid()?
+    print("ppid_positive={pp > 0}")
+    0
+}

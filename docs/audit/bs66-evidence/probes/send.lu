@@ -1,0 +1,18 @@
+fn send_row(pid: int, m: int) -> str {
+    os_signal_send(pid, m) else |e| {
+        return match e {
+            unsupported => "unsupported",
+            invalid => "invalid",
+            not_found => "not_found",
+            denied => "denied",
+            io => "io",
+        }
+    }
+    "ok"
+}
+
+fn main() {
+    print("self_zero={send_row(os_pid(), 0)}")
+    print("nobody={send_row(2147483647, 0)}")
+    print("two_bits={send_row(os_pid(), 3)}")
+}

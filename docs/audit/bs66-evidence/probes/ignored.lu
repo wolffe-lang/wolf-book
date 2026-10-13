@@ -1,0 +1,5 @@
+fn main() -> !int {
+    let at_start = os_signal_ignored()?
+    print("ignored_at_start={at_start}")
+    0
+}

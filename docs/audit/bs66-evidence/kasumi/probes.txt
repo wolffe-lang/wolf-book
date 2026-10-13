@@ -1,0 +1,983 @@
+########## c28: wolf 0.2.28 (wolfgang, pin f71ece8) / lupin 0.1.51 (wolf-interp, reference interpreter at pin 294d626)
+=== ids.lu (c28)
+fn main() -> !int {
+    let me = os_pid()
+    print("pid_positive={me > 0}")
+    let pp = os_ppid()?
+    print("ppid_positive={pp > 0}")
+    0
+}
+$ lupin ids.lu
+ids.lu: unsupported: `os_pid` does not resolve
+[exit 4]
+$ lupin conform-run --json ids.lu
+{"protocol":1,"impl":"lupin","impl_version":"0.1.51","commit":"f72e78d","file":"ids.lu","phase_reached":"resolve","seeded":false,"diagnostics":[],"warnings":[],"verdict":"unsupported","stdout_sha256":null,"stdout_inline":null,"x-unsupported":"`os_pid` does not resolve"}
+[exit 0]
+$ wolf run ids.lu
+error[E0301]: nothing named `os_pid` is in scope
+ --> ./ids.lu:2:14
+  |
+2 |     let me = os_pid()
+  |              ^^^^^^ not found
+  |
+help: did you mean `os_pgid`?
+  |
+2 |     let me = os_pgid()
+  |
+
+error[E0301]: nothing named `os_ppid` is in scope
+ --> ./ids.lu:4:14
+  |
+4 |     let pp = os_ppid()?
+  |              ^^^^^^^ not found
+  |
+help: did you mean `os_pgid`?
+  |
+4 |     let pp = os_pgid()?
+  |
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[exit 2]
+$ wolf conform-run --json ids.lu
+error[E0301]: nothing named `os_pid` is in scope
+ --> ./ids.lu:2:14
+  |
+2 |     let me = os_pid()
+  |              ^^^^^^ not found
+  |
+help: did you mean `os_pgid`?
+  |
+2 |     let me = os_pgid()
+  |
+
+error[E0301]: nothing named `os_ppid` is in scope
+ --> ./ids.lu:4:14
+  |
+4 |     let pp = os_ppid()?
+  |              ^^^^^^^ not found
+  |
+help: did you mean `os_pgid`?
+  |
+4 |     let pp = os_pgid()?
+  |
+
+{"commit":"f71ece8","diagnostics":[{"code":"E0301","severity":"error","span":[33,39]},{"code":"E0301","severity":"error","span":[90,97]}],"file":"./ids.lu","impl":"wolfgang","impl_version":"0.2.28","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked ids.lu
+error[E0301]: nothing named `os_pid` is in scope
+ --> ./ids.lu:2:14
+  |
+2 |     let me = os_pid()
+  |              ^^^^^^ not found
+  |
+help: did you mean `os_pgid`?
+  |
+2 |     let me = os_pgid()
+  |
+
+error[E0301]: nothing named `os_ppid` is in scope
+ --> ./ids.lu:4:14
+  |
+4 |     let pp = os_ppid()?
+  |              ^^^^^^^ not found
+  |
+help: did you mean `os_pgid`?
+  |
+4 |     let pp = os_pgid()?
+  |
+
+{"commit":"f71ece8","diagnostics":[{"code":"E0301","severity":"error","span":[33,39]},{"code":"E0301","severity":"error","span":[90,97]}],"file":"./ids.lu","impl":"wolfgang","impl_version":"0.2.28","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf build --release ids.lu && ./ids
+error[E0301]: nothing named `os_pid` is in scope
+ --> ./ids.lu:2:14
+  |
+2 |     let me = os_pid()
+  |              ^^^^^^ not found
+  |
+help: did you mean `os_pgid`?
+  |
+2 |     let me = os_pgid()
+  |
+
+error[E0301]: nothing named `os_ppid` is in scope
+ --> ./ids.lu:4:14
+  |
+4 |     let pp = os_ppid()?
+  |              ^^^^^^^ not found
+  |
+help: did you mean `os_pgid`?
+  |
+4 |     let pp = os_pgid()?
+  |
+
+wolf build: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[build exit 2]
+=== number.lu (c28)
+fn number_row(m: int) -> str {
+    let n = os_signal_number(m) else |e| {
+        return match e {
+            invalid => "invalid",
+            unsupported => "unsupported",
+        }
+    }
+    "{n}"
+}
+
+fn main() {
+    print("user={number_row(512)}")
+    print("two_bits={number_row(3)}")
+    print("kill={number_row(1048576)}")
+}
+$ lupin number.lu
+number.lu: unsupported: `os_signal_number` does not resolve
+[exit 4]
+$ lupin conform-run --json number.lu
+{"protocol":1,"impl":"lupin","impl_version":"0.1.51","commit":"f72e78d","file":"number.lu","phase_reached":"resolve","seeded":false,"diagnostics":[],"warnings":[],"verdict":"unsupported","stdout_sha256":null,"stdout_inline":null,"x-unsupported":"`os_signal_number` does not resolve"}
+[exit 0]
+$ wolf run number.lu
+error[E0301]: nothing named `os_signal_number` is in scope
+ --> ./number.lu:2:13
+  |
+2 |     let n = os_signal_number(m) else |e| {
+  |             ^^^^^^^^^^^^^^^^ not found
+  |
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[exit 2]
+$ wolf conform-run --json number.lu
+error[E0301]: nothing named `os_signal_number` is in scope
+ --> ./number.lu:2:13
+  |
+2 |     let n = os_signal_number(m) else |e| {
+  |             ^^^^^^^^^^^^^^^^ not found
+  |
+
+{"commit":"f71ece8","diagnostics":[{"code":"E0301","severity":"error","span":[43,59]}],"file":"./number.lu","impl":"wolfgang","impl_version":"0.2.28","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked number.lu
+error[E0301]: nothing named `os_signal_number` is in scope
+ --> ./number.lu:2:13
+  |
+2 |     let n = os_signal_number(m) else |e| {
+  |             ^^^^^^^^^^^^^^^^ not found
+  |
+
+{"commit":"f71ece8","diagnostics":[{"code":"E0301","severity":"error","span":[43,59]}],"file":"./number.lu","impl":"wolfgang","impl_version":"0.2.28","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf build --release number.lu && ./number
+error[E0301]: nothing named `os_signal_number` is in scope
+ --> ./number.lu:2:13
+  |
+2 |     let n = os_signal_number(m) else |e| {
+  |             ^^^^^^^^^^^^^^^^ not found
+  |
+
+wolf build: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[build exit 2]
+=== send.lu (c28)
+fn send_row(pid: int, m: int) -> str {
+    os_signal_send(pid, m) else |e| {
+        return match e {
+            unsupported => "unsupported",
+            invalid => "invalid",
+            not_found => "not_found",
+            denied => "denied",
+            io => "io",
+        }
+    }
+    "ok"
+}
+
+fn main() {
+    print("self_zero={send_row(os_pid(), 0)}")
+    print("nobody={send_row(2147483647, 0)}")
+    print("two_bits={send_row(os_pid(), 3)}")
+}
+$ lupin send.lu
+send.lu: unsupported: `os_pid` does not resolve
+[exit 4]
+$ lupin conform-run --json send.lu
+{"protocol":1,"impl":"lupin","impl_version":"0.1.51","commit":"f72e78d","file":"send.lu","phase_reached":"resolve","seeded":false,"diagnostics":[],"warnings":[],"verdict":"unsupported","stdout_sha256":null,"stdout_inline":null,"x-unsupported":"`os_pid` does not resolve"}
+[exit 0]
+$ wolf run send.lu
+error[E0301]: nothing named `os_signal_send` is in scope
+ --> ./send.lu:2:5
+  |
+2 |     os_signal_send(pid, m) else |e| {
+  |     ^^^^^^^^^^^^^^ not found
+  |
+
+error[E0301]: nothing named `os_pid` is in scope
+  --> ./send.lu:15:32
+   |
+15 |     print("self_zero={send_row(os_pid(), 0)}")
+   |                                ^^^^^^ not found
+   |
+help: did you mean `os_pgid`?
+   |
+15 |     print("self_zero={send_row(os_pgid(), 0)}")
+   |
+
+error[E0301]: nothing named `os_pid` is in scope
+  --> ./send.lu:17:31
+   |
+17 |     print("two_bits={send_row(os_pid(), 3)}")
+   |                               ^^^^^^ not found
+   |
+help: did you mean `os_pgid`?
+   |
+17 |     print("two_bits={send_row(os_pgid(), 3)}")
+   |
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[exit 2]
+$ wolf conform-run --json send.lu
+error[E0301]: nothing named `os_signal_send` is in scope
+ --> ./send.lu:2:5
+  |
+2 |     os_signal_send(pid, m) else |e| {
+  |     ^^^^^^^^^^^^^^ not found
+  |
+
+error[E0301]: nothing named `os_pid` is in scope
+  --> ./send.lu:15:32
+   |
+15 |     print("self_zero={send_row(os_pid(), 0)}")
+   |                                ^^^^^^ not found
+   |
+help: did you mean `os_pgid`?
+   |
+15 |     print("self_zero={send_row(os_pgid(), 0)}")
+   |
+
+error[E0301]: nothing named `os_pid` is in scope
+  --> ./send.lu:17:31
+   |
+17 |     print("two_bits={send_row(os_pid(), 3)}")
+   |                               ^^^^^^ not found
+   |
+help: did you mean `os_pgid`?
+   |
+17 |     print("two_bits={send_row(os_pgid(), 3)}")
+   |
+
+{"commit":"f71ece8","diagnostics":[{"code":"E0301","severity":"error","span":[43,57]},{"code":"E0301","severity":"error","span":[343,349]},{"code":"E0301","severity":"error","span":[435,441]}],"file":"./send.lu","impl":"wolfgang","impl_version":"0.2.28","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked send.lu
+error[E0301]: nothing named `os_signal_send` is in scope
+ --> ./send.lu:2:5
+  |
+2 |     os_signal_send(pid, m) else |e| {
+  |     ^^^^^^^^^^^^^^ not found
+  |
+
+error[E0301]: nothing named `os_pid` is in scope
+  --> ./send.lu:15:32
+   |
+15 |     print("self_zero={send_row(os_pid(), 0)}")
+   |                                ^^^^^^ not found
+   |
+help: did you mean `os_pgid`?
+   |
+15 |     print("self_zero={send_row(os_pgid(), 0)}")
+   |
+
+error[E0301]: nothing named `os_pid` is in scope
+  --> ./send.lu:17:31
+   |
+17 |     print("two_bits={send_row(os_pid(), 3)}")
+   |                               ^^^^^^ not found
+   |
+help: did you mean `os_pgid`?
+   |
+17 |     print("two_bits={send_row(os_pgid(), 3)}")
+   |
+
+{"commit":"f71ece8","diagnostics":[{"code":"E0301","severity":"error","span":[43,57]},{"code":"E0301","severity":"error","span":[343,349]},{"code":"E0301","severity":"error","span":[435,441]}],"file":"./send.lu","impl":"wolfgang","impl_version":"0.2.28","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf build --release send.lu && ./send
+error[E0301]: nothing named `os_signal_send` is in scope
+ --> ./send.lu:2:5
+  |
+2 |     os_signal_send(pid, m) else |e| {
+  |     ^^^^^^^^^^^^^^ not found
+  |
+
+error[E0301]: nothing named `os_pid` is in scope
+  --> ./send.lu:15:32
+   |
+15 |     print("self_zero={send_row(os_pid(), 0)}")
+   |                                ^^^^^^ not found
+   |
+help: did you mean `os_pgid`?
+   |
+15 |     print("self_zero={send_row(os_pgid(), 0)}")
+   |
+
+error[E0301]: nothing named `os_pid` is in scope
+  --> ./send.lu:17:31
+   |
+17 |     print("two_bits={send_row(os_pid(), 3)}")
+   |                               ^^^^^^ not found
+   |
+help: did you mean `os_pgid`?
+   |
+17 |     print("two_bits={send_row(os_pgid(), 3)}")
+   |
+
+wolf build: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[build exit 2]
+=== ignored.lu (c28)
+fn main() -> !int {
+    let at_start = os_signal_ignored()?
+    print("ignored_at_start={at_start}")
+    0
+}
+$ lupin ignored.lu
+ignored.lu: unsupported: `os_signal_ignored` does not resolve
+[exit 4]
+$ lupin conform-run --json ignored.lu
+{"protocol":1,"impl":"lupin","impl_version":"0.1.51","commit":"f72e78d","file":"ignored.lu","phase_reached":"resolve","seeded":false,"diagnostics":[],"warnings":[],"verdict":"unsupported","stdout_sha256":null,"stdout_inline":null,"x-unsupported":"`os_signal_ignored` does not resolve"}
+[exit 0]
+$ wolf run ignored.lu
+error[E0301]: nothing named `os_signal_ignored` is in scope
+ --> ./ignored.lu:2:20
+  |
+2 |     let at_start = os_signal_ignored()?
+  |                    ^^^^^^^^^^^^^^^^^ not found
+  |
+help: did you mean `os_signal_ignore`?
+  |
+2 |     let at_start = os_signal_ignore()?
+  |
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[exit 2]
+$ wolf conform-run --json ignored.lu
+error[E0301]: nothing named `os_signal_ignored` is in scope
+ --> ./ignored.lu:2:20
+  |
+2 |     let at_start = os_signal_ignored()?
+  |                    ^^^^^^^^^^^^^^^^^ not found
+  |
+help: did you mean `os_signal_ignore`?
+  |
+2 |     let at_start = os_signal_ignore()?
+  |
+
+{"commit":"f71ece8","diagnostics":[{"code":"E0301","severity":"error","span":[39,56]}],"file":"./ignored.lu","impl":"wolfgang","impl_version":"0.2.28","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked ignored.lu
+error[E0301]: nothing named `os_signal_ignored` is in scope
+ --> ./ignored.lu:2:20
+  |
+2 |     let at_start = os_signal_ignored()?
+  |                    ^^^^^^^^^^^^^^^^^ not found
+  |
+help: did you mean `os_signal_ignore`?
+  |
+2 |     let at_start = os_signal_ignore()?
+  |
+
+{"commit":"f71ece8","diagnostics":[{"code":"E0301","severity":"error","span":[39,56]}],"file":"./ignored.lu","impl":"wolfgang","impl_version":"0.2.28","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf build --release ignored.lu && ./ignored
+error[E0301]: nothing named `os_signal_ignored` is in scope
+ --> ./ignored.lu:2:20
+  |
+2 |     let at_start = os_signal_ignored()?
+  |                    ^^^^^^^^^^^^^^^^^ not found
+  |
+help: did you mean `os_signal_ignore`?
+  |
+2 |     let at_start = os_signal_ignore()?
+  |
+
+wolf build: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[build exit 2]
+=== listen.lu (c28)
+fn listen_row(set: int) -> str {
+    os_signal_listen(set) else |e| {
+        return match e {
+            io => "io",
+        }
+    }
+    "ok"
+}
+
+fn main() {
+    print("kill={listen_row(1048576)}")
+    print("empty={listen_row(0)}")
+    print("user={listen_row(512)}")
+}
+$ lupin listen.lu
+listen.lu: unsupported: `os_signal_listen` does not resolve
+[exit 4]
+$ lupin conform-run --json listen.lu
+{"protocol":1,"impl":"lupin","impl_version":"0.1.51","commit":"f72e78d","file":"listen.lu","phase_reached":"resolve","seeded":false,"diagnostics":[],"warnings":[],"verdict":"unsupported","stdout_sha256":null,"stdout_inline":null,"x-unsupported":"`os_signal_listen` does not resolve"}
+[exit 0]
+$ wolf run listen.lu
+kill=ok
+empty=ok
+user=ok
+[exit 0]
+$ wolf conform-run --json listen.lu
+{"commit":"f71ece8","diagnostics":[],"file":"./listen.lu","impl":"wolfgang","impl_version":"0.2.28","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked listen.lu
+{"commit":"f71ece8","diagnostics":[],"file":"./listen.lu","impl":"wolfgang","impl_version":"0.2.28","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"kill=ok\nempty=ok\nuser=ok\n","stdout_sha256":"cf0d6247035aa25ab173dc8016865ac50767dbe97407c4a4b6a5e99eedf84e2e","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release listen.lu && ./listen
+[build exit 0]
+kill=ok
+empty=ok
+user=ok
+[exit 0]
+=== stdnine.lu (c28)
+use std.signal
+
+fn main() {
+    print("reload={signal.reload()}")
+    print("child={signal.child()}")
+}
+$ lupin stdnine.lu
+stdnine.lu: unsupported: `signal.reload` does not resolve
+[exit 4]
+$ lupin conform-run --json stdnine.lu
+{"protocol":1,"impl":"lupin","impl_version":"0.1.51","commit":"f72e78d","file":"stdnine.lu","phase_reached":"resolve","seeded":false,"diagnostics":[],"warnings":[],"verdict":"unsupported","stdout_sha256":null,"stdout_inline":null,"x-unsupported":"`signal.reload` does not resolve"}
+[exit 0]
+$ wolf run stdnine.lu
+reload=1
+child=256
+[exit 0]
+$ wolf conform-run --json stdnine.lu
+{"commit":"f71ece8","diagnostics":[],"file":"./stdnine.lu","impl":"wolfgang","impl_version":"0.2.28","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked stdnine.lu
+{"commit":"f71ece8","diagnostics":[],"file":"./stdnine.lu","impl":"wolfgang","impl_version":"0.2.28","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"reload=1\nchild=256\n","stdout_sha256":"bf6de0624c39a42755aeb1c377e675774717c7839a149224e0f61435d3e002a8","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release stdnine.lu && ./stdnine
+[build exit 0]
+reload=1
+child=256
+[exit 0]
+=== stduser.lu (c28)
+use std.signal
+
+fn main() {
+    print("user={signal.user()}")
+}
+$ lupin stduser.lu
+stduser.lu: unsupported: `signal.user` does not resolve
+[exit 4]
+$ lupin conform-run --json stduser.lu
+{"protocol":1,"impl":"lupin","impl_version":"0.1.51","commit":"f72e78d","file":"stduser.lu","phase_reached":"resolve","seeded":false,"diagnostics":[],"warnings":[],"verdict":"unsupported","stdout_sha256":null,"stdout_inline":null,"x-unsupported":"`signal.user` does not resolve"}
+[exit 0]
+$ wolf run stduser.lu
+error[E0301]: module `signal` has no item named `user`
+ --> ./stduser.lu:4:25
+  |
+4 |     print("user={signal.user()}")
+  |                         ^^^^ not found in the module
+  |
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[exit 2]
+$ wolf conform-run --json stduser.lu
+error[E0301]: module `signal` has no item named `user`
+ --> ./stduser.lu:4:25
+  |
+4 |     print("user={signal.user()}")
+  |                         ^^^^ not found in the module
+  |
+
+{"commit":"f71ece8","diagnostics":[{"code":"E0301","severity":"error","span":[52,56]}],"file":"./stduser.lu","impl":"wolfgang","impl_version":"0.2.28","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked stduser.lu
+error[E0301]: module `signal` has no item named `user`
+ --> ./stduser.lu:4:25
+  |
+4 |     print("user={signal.user()}")
+  |                         ^^^^ not found in the module
+  |
+
+{"commit":"f71ece8","diagnostics":[{"code":"E0301","severity":"error","span":[52,56]}],"file":"./stduser.lu","impl":"wolfgang","impl_version":"0.2.28","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf build --release stduser.lu && ./stduser
+error[E0301]: module `signal` has no item named `user`
+ --> ./stduser.lu:4:25
+  |
+4 |     print("user={signal.user()}")
+  |                         ^^^^ not found in the module
+  |
+
+wolf build: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[build exit 2]
+=== stdsend.lu (c28)
+use std.signal
+
+fn main() -> !int {
+    signal.send(1, 0)?
+    0
+}
+$ lupin stdsend.lu
+stdsend.lu: unsupported: `signal.send` does not resolve
+[exit 4]
+$ lupin conform-run --json stdsend.lu
+{"protocol":1,"impl":"lupin","impl_version":"0.1.51","commit":"f72e78d","file":"stdsend.lu","phase_reached":"resolve","seeded":false,"diagnostics":[],"warnings":[],"verdict":"unsupported","stdout_sha256":null,"stdout_inline":null,"x-unsupported":"`signal.send` does not resolve"}
+[exit 0]
+$ wolf run stdsend.lu
+error[E0301]: module `signal` has no item named `send`
+ --> ./stdsend.lu:4:12
+  |
+4 |     signal.send(1, 0)?
+  |            ^^^^ not found in the module
+  |
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[exit 2]
+$ wolf conform-run --json stdsend.lu
+error[E0301]: module `signal` has no item named `send`
+ --> ./stdsend.lu:4:12
+  |
+4 |     signal.send(1, 0)?
+  |            ^^^^ not found in the module
+  |
+
+{"commit":"f71ece8","diagnostics":[{"code":"E0301","severity":"error","span":[47,51]}],"file":"./stdsend.lu","impl":"wolfgang","impl_version":"0.2.28","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked stdsend.lu
+error[E0301]: module `signal` has no item named `send`
+ --> ./stdsend.lu:4:12
+  |
+4 |     signal.send(1, 0)?
+  |            ^^^^ not found in the module
+  |
+
+{"commit":"f71ece8","diagnostics":[{"code":"E0301","severity":"error","span":[47,51]}],"file":"./stdsend.lu","impl":"wolfgang","impl_version":"0.2.28","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf build --release stdsend.lu && ./stdsend
+error[E0301]: module `signal` has no item named `send`
+ --> ./stdsend.lu:4:12
+  |
+4 |     signal.send(1, 0)?
+  |            ^^^^ not found in the module
+  |
+
+wolf build: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[build exit 2]
+=== stdpid.lu (c28)
+use std.env
+
+fn main() {
+    print("pid={env.pid()}")
+}
+$ lupin stdpid.lu
+stdpid.lu: unsupported: `env.pid` does not resolve
+[exit 4]
+$ lupin conform-run --json stdpid.lu
+{"protocol":1,"impl":"lupin","impl_version":"0.1.51","commit":"f72e78d","file":"stdpid.lu","phase_reached":"resolve","seeded":false,"diagnostics":[],"warnings":[],"verdict":"unsupported","stdout_sha256":null,"stdout_inline":null,"x-unsupported":"`env.pid` does not resolve"}
+[exit 0]
+$ wolf run stdpid.lu
+error[E0301]: module `env` has no item named `pid`
+ --> ./stdpid.lu:4:21
+  |
+4 |     print("pid={env.pid()}")
+  |                     ^^^ not found in the module
+  |
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[exit 2]
+$ wolf conform-run --json stdpid.lu
+error[E0301]: module `env` has no item named `pid`
+ --> ./stdpid.lu:4:21
+  |
+4 |     print("pid={env.pid()}")
+  |                     ^^^ not found in the module
+  |
+
+{"commit":"f71ece8","diagnostics":[{"code":"E0301","severity":"error","span":[45,48]}],"file":"./stdpid.lu","impl":"wolfgang","impl_version":"0.2.28","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked stdpid.lu
+error[E0301]: module `env` has no item named `pid`
+ --> ./stdpid.lu:4:21
+  |
+4 |     print("pid={env.pid()}")
+  |                     ^^^ not found in the module
+  |
+
+{"commit":"f71ece8","diagnostics":[{"code":"E0301","severity":"error","span":[45,48]}],"file":"./stdpid.lu","impl":"wolfgang","impl_version":"0.2.28","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf build --release stdpid.lu && ./stdpid
+error[E0301]: module `env` has no item named `pid`
+ --> ./stdpid.lu:4:21
+  |
+4 |     print("pid={env.pid()}")
+  |                     ^^^ not found in the module
+  |
+
+wolf build: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[build exit 2]
+########## new: wolf 0.2.29 (wolfgang, pin 6ffe7c6) / lupin 0.1.52 (wolf-interp, reference interpreter at pin 294d626)
+=== ids.lu (new)
+fn main() -> !int {
+    let me = os_pid()
+    print("pid_positive={me > 0}")
+    let pp = os_ppid()?
+    print("ppid_positive={pp > 0}")
+    0
+}
+$ lupin ids.lu
+pid_positive=true
+ppid_positive=true
+[exit 0]
+$ lupin conform-run --json ids.lu
+{"protocol":1,"impl":"lupin","impl_version":"0.1.52","commit":"025428b","file":"ids.lu","phase_reached":"run","seeded":false,"diagnostics":[],"warnings":[],"verdict":"exit(0)","stdout_sha256":"e93a9273e50053f9c6f7a37e584468205b8c08463394519228130cae4dd56df3","stdout_inline":"pid_positive=true\nppid_positive=true\n"}
+[exit 0]
+$ wolf run ids.lu
+pid_positive=true
+ppid_positive=true
+[exit 0]
+$ wolf conform-run --json ids.lu
+{"commit":"6ffe7c6","diagnostics":[],"file":"./ids.lu","impl":"wolfgang","impl_version":"0.2.29","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked ids.lu
+{"commit":"6ffe7c6","diagnostics":[],"file":"./ids.lu","impl":"wolfgang","impl_version":"0.2.29","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"pid_positive=true\nppid_positive=true\n","stdout_sha256":"e93a9273e50053f9c6f7a37e584468205b8c08463394519228130cae4dd56df3","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release ids.lu && ./ids
+[build exit 0]
+pid_positive=true
+ppid_positive=true
+[exit 0]
+=== number.lu (new)
+fn number_row(m: int) -> str {
+    let n = os_signal_number(m) else |e| {
+        return match e {
+            invalid => "invalid",
+            unsupported => "unsupported",
+        }
+    }
+    "{n}"
+}
+
+fn main() {
+    print("user={number_row(512)}")
+    print("two_bits={number_row(3)}")
+    print("kill={number_row(1048576)}")
+}
+$ lupin number.lu
+user=10
+two_bits=invalid
+kill=9
+[exit 0]
+$ lupin conform-run --json number.lu
+{"protocol":1,"impl":"lupin","impl_version":"0.1.52","commit":"025428b","file":"number.lu","phase_reached":"run","seeded":false,"diagnostics":[],"warnings":[],"verdict":"exit(0)","stdout_sha256":"520991fcb3aab9dfacde6de6a1ba3e97430589746feae68c46019c535605b0b1","stdout_inline":"user=10\ntwo_bits=invalid\nkill=9\n"}
+[exit 0]
+$ wolf run number.lu
+user=10
+two_bits=invalid
+kill=9
+[exit 0]
+$ wolf conform-run --json number.lu
+{"commit":"6ffe7c6","diagnostics":[],"file":"./number.lu","impl":"wolfgang","impl_version":"0.2.29","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked number.lu
+{"commit":"6ffe7c6","diagnostics":[],"file":"./number.lu","impl":"wolfgang","impl_version":"0.2.29","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"user=10\ntwo_bits=invalid\nkill=9\n","stdout_sha256":"520991fcb3aab9dfacde6de6a1ba3e97430589746feae68c46019c535605b0b1","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release number.lu && ./number
+[build exit 0]
+user=10
+two_bits=invalid
+kill=9
+[exit 0]
+=== send.lu (new)
+fn send_row(pid: int, m: int) -> str {
+    os_signal_send(pid, m) else |e| {
+        return match e {
+            unsupported => "unsupported",
+            invalid => "invalid",
+            not_found => "not_found",
+            denied => "denied",
+            io => "io",
+        }
+    }
+    "ok"
+}
+
+fn main() {
+    print("self_zero={send_row(os_pid(), 0)}")
+    print("nobody={send_row(2147483647, 0)}")
+    print("two_bits={send_row(os_pid(), 3)}")
+}
+$ lupin send.lu
+send.lu: unsupported: `os_signal_send` signals a process by id: this machine admits no `unsafe` and std has no `kill(pid, sig)` ([os.signal.send], [os.term.note] R8)
+[exit 4]
+$ lupin conform-run --json send.lu
+{"protocol":1,"impl":"lupin","impl_version":"0.1.52","commit":"025428b","file":"send.lu","phase_reached":"resolve","seeded":false,"diagnostics":[],"warnings":[],"verdict":"unsupported","stdout_sha256":null,"stdout_inline":null,"x-unsupported":"`os_signal_send` signals a process by id: this machine admits no `unsafe` and std has no `kill(pid, sig)` ([os.signal.send], [os.term.note] R8)"}
+[exit 0]
+$ wolf run send.lu
+self_zero=ok
+nobody=not_found
+two_bits=invalid
+[exit 0]
+$ wolf conform-run --json send.lu
+{"commit":"6ffe7c6","diagnostics":[],"file":"./send.lu","impl":"wolfgang","impl_version":"0.2.29","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked send.lu
+{"commit":"6ffe7c6","diagnostics":[],"file":"./send.lu","impl":"wolfgang","impl_version":"0.2.29","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"self_zero=ok\nnobody=not_found\ntwo_bits=invalid\n","stdout_sha256":"0f635d0286390c6b33e349f2f93e7d38a0f8e83cd63a93ce555b07f342a4d8d9","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release send.lu && ./send
+[build exit 0]
+self_zero=ok
+nobody=not_found
+two_bits=invalid
+[exit 0]
+=== ignored.lu (new)
+fn main() -> !int {
+    let at_start = os_signal_ignored()?
+    print("ignored_at_start={at_start}")
+    0
+}
+$ lupin ignored.lu
+ignored.lu: unsupported: `os_signal_ignored` reads a signal's disposition: this machine admits no `unsafe` and std has no `sigaction` ([os.signal.ignored], [os.term.note] R8)
+[exit 4]
+$ lupin conform-run --json ignored.lu
+{"protocol":1,"impl":"lupin","impl_version":"0.1.52","commit":"025428b","file":"ignored.lu","phase_reached":"resolve","seeded":false,"diagnostics":[],"warnings":[],"verdict":"unsupported","stdout_sha256":null,"stdout_inline":null,"x-unsupported":"`os_signal_ignored` reads a signal's disposition: this machine admits no `unsafe` and std has no `sigaction` ([os.signal.ignored], [os.term.note] R8)"}
+[exit 0]
+$ wolf run ignored.lu
+ignored_at_start=0
+[exit 0]
+$ wolf conform-run --json ignored.lu
+{"commit":"6ffe7c6","diagnostics":[],"file":"./ignored.lu","impl":"wolfgang","impl_version":"0.2.29","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked ignored.lu
+{"commit":"6ffe7c6","diagnostics":[],"file":"./ignored.lu","impl":"wolfgang","impl_version":"0.2.29","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"ignored_at_start=0\n","stdout_sha256":"5e4833a41286def818959405674e373e0d681ff51abf902e6bda78c276b77bcd","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release ignored.lu && ./ignored
+[build exit 0]
+ignored_at_start=0
+[exit 0]
+=== listen.lu (new)
+fn listen_row(set: int) -> str {
+    os_signal_listen(set) else |e| {
+        return match e {
+            io => "io",
+        }
+    }
+    "ok"
+}
+
+fn main() {
+    print("kill={listen_row(1048576)}")
+    print("empty={listen_row(0)}")
+    print("user={listen_row(512)}")
+}
+$ lupin listen.lu
+listen.lu: unsupported: `os_signal_listen` does not resolve
+[exit 4]
+$ lupin conform-run --json listen.lu
+{"protocol":1,"impl":"lupin","impl_version":"0.1.52","commit":"025428b","file":"listen.lu","phase_reached":"resolve","seeded":false,"diagnostics":[],"warnings":[],"verdict":"unsupported","stdout_sha256":null,"stdout_inline":null,"x-unsupported":"`os_signal_listen` does not resolve"}
+[exit 0]
+$ wolf run listen.lu
+kill=io
+empty=io
+user=ok
+[exit 0]
+$ wolf conform-run --json listen.lu
+{"commit":"6ffe7c6","diagnostics":[],"file":"./listen.lu","impl":"wolfgang","impl_version":"0.2.29","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked listen.lu
+{"commit":"6ffe7c6","diagnostics":[],"file":"./listen.lu","impl":"wolfgang","impl_version":"0.2.29","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"kill=io\nempty=io\nuser=ok\n","stdout_sha256":"912d5040f19665c0b5468fc73ca85042f940e248ed31c3a0796b7c1a0c27e38a","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release listen.lu && ./listen
+[build exit 0]
+kill=io
+empty=io
+user=ok
+[exit 0]
+=== stdnine.lu (new)
+use std.signal
+
+fn main() {
+    print("reload={signal.reload()}")
+    print("child={signal.child()}")
+}
+$ lupin stdnine.lu
+stdnine.lu: unsupported: `signal.reload` does not resolve
+[exit 4]
+$ lupin conform-run --json stdnine.lu
+{"protocol":1,"impl":"lupin","impl_version":"0.1.52","commit":"025428b","file":"stdnine.lu","phase_reached":"resolve","seeded":false,"diagnostics":[],"warnings":[],"verdict":"unsupported","stdout_sha256":null,"stdout_inline":null,"x-unsupported":"`signal.reload` does not resolve"}
+[exit 0]
+$ wolf run stdnine.lu
+reload=1
+child=256
+[exit 0]
+$ wolf conform-run --json stdnine.lu
+{"commit":"6ffe7c6","diagnostics":[],"file":"./stdnine.lu","impl":"wolfgang","impl_version":"0.2.29","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked stdnine.lu
+{"commit":"6ffe7c6","diagnostics":[],"file":"./stdnine.lu","impl":"wolfgang","impl_version":"0.2.29","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"reload=1\nchild=256\n","stdout_sha256":"bf6de0624c39a42755aeb1c377e675774717c7839a149224e0f61435d3e002a8","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release stdnine.lu && ./stdnine
+[build exit 0]
+reload=1
+child=256
+[exit 0]
+=== stduser.lu (new)
+use std.signal
+
+fn main() {
+    print("user={signal.user()}")
+}
+$ lupin stduser.lu
+stduser.lu: unsupported: `signal.user` does not resolve
+[exit 4]
+$ lupin conform-run --json stduser.lu
+{"protocol":1,"impl":"lupin","impl_version":"0.1.52","commit":"025428b","file":"stduser.lu","phase_reached":"resolve","seeded":false,"diagnostics":[],"warnings":[],"verdict":"unsupported","stdout_sha256":null,"stdout_inline":null,"x-unsupported":"`signal.user` does not resolve"}
+[exit 0]
+$ wolf run stduser.lu
+error[E0301]: module `signal` has no item named `user`
+ --> ./stduser.lu:4:25
+  |
+4 |     print("user={signal.user()}")
+  |                         ^^^^ not found in the module
+  |
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[exit 2]
+$ wolf conform-run --json stduser.lu
+error[E0301]: module `signal` has no item named `user`
+ --> ./stduser.lu:4:25
+  |
+4 |     print("user={signal.user()}")
+  |                         ^^^^ not found in the module
+  |
+
+{"commit":"6ffe7c6","diagnostics":[{"code":"E0301","severity":"error","span":[52,56]}],"file":"./stduser.lu","impl":"wolfgang","impl_version":"0.2.29","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked stduser.lu
+error[E0301]: module `signal` has no item named `user`
+ --> ./stduser.lu:4:25
+  |
+4 |     print("user={signal.user()}")
+  |                         ^^^^ not found in the module
+  |
+
+{"commit":"6ffe7c6","diagnostics":[{"code":"E0301","severity":"error","span":[52,56]}],"file":"./stduser.lu","impl":"wolfgang","impl_version":"0.2.29","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf build --release stduser.lu && ./stduser
+error[E0301]: module `signal` has no item named `user`
+ --> ./stduser.lu:4:25
+  |
+4 |     print("user={signal.user()}")
+  |                         ^^^^ not found in the module
+  |
+
+wolf build: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[build exit 2]
+=== stdsend.lu (new)
+use std.signal
+
+fn main() -> !int {
+    signal.send(1, 0)?
+    0
+}
+$ lupin stdsend.lu
+stdsend.lu: unsupported: `signal.send` does not resolve
+[exit 4]
+$ lupin conform-run --json stdsend.lu
+{"protocol":1,"impl":"lupin","impl_version":"0.1.52","commit":"025428b","file":"stdsend.lu","phase_reached":"resolve","seeded":false,"diagnostics":[],"warnings":[],"verdict":"unsupported","stdout_sha256":null,"stdout_inline":null,"x-unsupported":"`signal.send` does not resolve"}
+[exit 0]
+$ wolf run stdsend.lu
+error[E0301]: module `signal` has no item named `send`
+ --> ./stdsend.lu:4:12
+  |
+4 |     signal.send(1, 0)?
+  |            ^^^^ not found in the module
+  |
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[exit 2]
+$ wolf conform-run --json stdsend.lu
+error[E0301]: module `signal` has no item named `send`
+ --> ./stdsend.lu:4:12
+  |
+4 |     signal.send(1, 0)?
+  |            ^^^^ not found in the module
+  |
+
+{"commit":"6ffe7c6","diagnostics":[{"code":"E0301","severity":"error","span":[47,51]}],"file":"./stdsend.lu","impl":"wolfgang","impl_version":"0.2.29","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked stdsend.lu
+error[E0301]: module `signal` has no item named `send`
+ --> ./stdsend.lu:4:12
+  |
+4 |     signal.send(1, 0)?
+  |            ^^^^ not found in the module
+  |
+
+{"commit":"6ffe7c6","diagnostics":[{"code":"E0301","severity":"error","span":[47,51]}],"file":"./stdsend.lu","impl":"wolfgang","impl_version":"0.2.29","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf build --release stdsend.lu && ./stdsend
+error[E0301]: module `signal` has no item named `send`
+ --> ./stdsend.lu:4:12
+  |
+4 |     signal.send(1, 0)?
+  |            ^^^^ not found in the module
+  |
+
+wolf build: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[build exit 2]
+=== stdpid.lu (new)
+use std.env
+
+fn main() {
+    print("pid={env.pid()}")
+}
+$ lupin stdpid.lu
+stdpid.lu: unsupported: `env.pid` does not resolve
+[exit 4]
+$ lupin conform-run --json stdpid.lu
+{"protocol":1,"impl":"lupin","impl_version":"0.1.52","commit":"025428b","file":"stdpid.lu","phase_reached":"resolve","seeded":false,"diagnostics":[],"warnings":[],"verdict":"unsupported","stdout_sha256":null,"stdout_inline":null,"x-unsupported":"`env.pid` does not resolve"}
+[exit 0]
+$ wolf run stdpid.lu
+error[E0301]: module `env` has no item named `pid`
+ --> ./stdpid.lu:4:21
+  |
+4 |     print("pid={env.pid()}")
+  |                     ^^^ not found in the module
+  |
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[exit 2]
+$ wolf conform-run --json stdpid.lu
+error[E0301]: module `env` has no item named `pid`
+ --> ./stdpid.lu:4:21
+  |
+4 |     print("pid={env.pid()}")
+  |                     ^^^ not found in the module
+  |
+
+{"commit":"6ffe7c6","diagnostics":[{"code":"E0301","severity":"error","span":[45,48]}],"file":"./stdpid.lu","impl":"wolfgang","impl_version":"0.2.29","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked stdpid.lu
+error[E0301]: module `env` has no item named `pid`
+ --> ./stdpid.lu:4:21
+  |
+4 |     print("pid={env.pid()}")
+  |                     ^^^ not found in the module
+  |
+
+{"commit":"6ffe7c6","diagnostics":[{"code":"E0301","severity":"error","span":[45,48]}],"file":"./stdpid.lu","impl":"wolfgang","impl_version":"0.2.29","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf build --release stdpid.lu && ./stdpid
+error[E0301]: module `env` has no item named `pid`
+ --> ./stdpid.lu:4:21
+  |
+4 |     print("pid={env.pid()}")
+  |                     ^^^ not found in the module
+  |
+
+wolf build: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[build exit 2]

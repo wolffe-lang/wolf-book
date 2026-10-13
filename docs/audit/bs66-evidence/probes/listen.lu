@@ -1,0 +1,14 @@
+fn listen_row(set: int) -> str {
+    os_signal_listen(set) else |e| {
+        return match e {
+            io => "io",
+        }
+    }
+    "ok"
+}
+
+fn main() {
+    print("kill={listen_row(1048576)}")
+    print("empty={listen_row(0)}")
+    print("user={listen_row(512)}")
+}
