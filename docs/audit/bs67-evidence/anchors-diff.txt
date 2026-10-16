@@ -1,0 +1,4 @@
+spec/anchors.json, wolf-lang v0.2.29 (6ffe7c60) -> v0.2.30 (1b37f368): 640 -> 648 anchors, key sets diffed both ways
+added: os.fs.owner os.proc.ids os.proc.ids.note os.proc.ids.set os.signal.wait.fd os.term.chars os.term.editor.note os.term.size
+dropped: none
+retargeted: none

@@ -1,0 +1,19 @@
+2026-10-16T18:53:33Z
+host kasumi
+wolf-0.2.29-x86_64-unknown-linux-gnu.tar.gz api=ae466e85418a48758460a981c9fab690462f779dae967cface86c555e649d7c1 got=ae466e85418a48758460a981c9fab690462f779dae967cface86c555e649d7c1 MATCH
+wolf-0.2.29-x86_64-unknown-linux-gnu.tar.gz: OK
+wolf-0.2.29-x86_64-unknown-linux-gnu.tar.gz second read: tree wolf-0.2.29-x86_64-unknown-linux-gnu IDENTICAL
+lupin-0.1.52-x86_64-unknown-linux-gnu.tar.gz api=f5194b74879c45ad96484566950b4ae59fe1faa7ccd86461c6656f9e662b698f got=f5194b74879c45ad96484566950b4ae59fe1faa7ccd86461c6656f9e662b698f MATCH
+lupin-0.1.52-x86_64-unknown-linux-gnu.tar.gz: OK
+lupin-0.1.52-x86_64-unknown-linux-gnu.tar.gz second read: tree lupin-0.1.52-x86_64-unknown-linux-gnu IDENTICAL
+wolf-0.2.15-x86_64-unknown-linux-gnu.tar.gz api=dd28150cc4a87966ef545f6f1875f04767657a6194f2d1908e6e250bac2ab89d got=dd28150cc4a87966ef545f6f1875f04767657a6194f2d1908e6e250bac2ab89d MATCH
+wolf-0.2.15-x86_64-unknown-linux-gnu.tar.gz: OK
+wolf-0.2.15-x86_64-unknown-linux-gnu.tar.gz second read: tree wolf-0.2.15-x86_64-unknown-linux-gnu IDENTICAL
+/home/mfwolffe/lanes/bs67/c29/wolf-0.2.29-x86_64-unknown-linux-gnu/wolf
+wolf 0.2.29 (wolfgang, pin 6ffe7c6)
+paired with lupin 0.1.52 (reference interpreter), pin 294d626
+/home/mfwolffe/lanes/bs67/c29/lupin-0.1.52-x86_64-unknown-linux-gnu/lupin
+lupin 0.1.52 (wolf-interp, reference interpreter at pin 294d626)
+/home/mfwolffe/lanes/bs67/c15/wolf-0.2.15-x86_64-unknown-linux-gnu/wolf
+wolf 0.2.15 (wolfgang, pin 2e4ca76)
+paired with lupin 0.1.37 (reference interpreter), pin 41695e7

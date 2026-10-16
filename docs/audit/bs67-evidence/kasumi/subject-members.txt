@@ -1,0 +1,45 @@
+== wolf-0.2.30-x86_64-unknown-linux-gnu
+b0fb9bce2fd27d1896efec590118c349ee4a6016d3f29f7c8b11fae2d70d68c1  libwolf_rt.a
+4c9650a1d7088b4f41aebcde6f0276695028ff0d14309a448724b56592c49b10  libwolf_rt_none.a
+3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986  LICENSE
+a0eec20d7b98b1cd0e5b4d23c3965667c97b68fb365ec95a9516b0c3cbc4fec4  LICENSE-EXCEPTION
+e41735904a7bd7a39768bbfac32d31c9c35e129f92f66cf872c3cbc2345b19f5  README.md
+a368c8eccce8b1800c80aa818ae482e541aa9636b676540851e23863d333eb8b  _wolf
+061641568eabc2fb552d7ee4fce6e7fd0503d47b64cf6e1744b981e96d8781a2  wolf
+d3687313ef52fd231629c8860caab6964237f795dd6f49d866f636e1a46e714d  wolf.1
+1b1d88530b5ae44120cb7e93b80c7054e3e28c61347fe3723f2608e44ebf0550  wolf.bash
+c12dd092aa8dcf9715108efd825b5b04d9728b8b6e2ad5c28576887142e8b496  wolf-cimport-worker
+180de0ecb67f49ff127fc84d92ad6c6182b5195db1ce2b0fc63734e7abe46407  wolf.fish
+std/: 57 files, 53 .lu, STD-REV fd6bcdcb1dfe03ea5092f10316b7abe81f2df41e, manifest ab2576df6580d2935eee453cec5b7383d26e3242fe4a1da40132f5582ee8bbfa
+== lupin-0.1.53-x86_64-unknown-linux-gnu
+481dab03802aa86da0fec2ba52978d79fae4b44791b522d3b363350353d059ac  CHANGELOG.md
+3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986  LICENSE
+c373156b39dfc8e287a6173331697f7b4f7bdacf2921c74daa2eb74a1c768bf2  lupin
+ed8de3a7e576c465a6011f75e118bb31ee8de059597c146e8cb3e85632e61b32  README.md
+== wolf-0.2.29-x86_64-unknown-linux-gnu
+fa0a0ae508c75d827bc15e495e7570bd82aa977f601882a1e5329fb35f4d3f98  libwolf_rt.a
+fdd229bb04a341277fd97064373393deb98619ae9ccab782139536a4fea73be4  libwolf_rt_none.a
+3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986  LICENSE
+a0eec20d7b98b1cd0e5b4d23c3965667c97b68fb365ec95a9516b0c3cbc4fec4  LICENSE-EXCEPTION
+75ea2850878ee0c0f18d0f85fc35de22a7212f42ebb328cc927de6f3d840b78c  README.md
+a368c8eccce8b1800c80aa818ae482e541aa9636b676540851e23863d333eb8b  _wolf
+07f1215832be38f619b966510eb48ee2d6c13f51343502c7cf82ab87e3901c80  wolf
+f51a5b5a10afa5da77b34fc18c01ac0be13e53f183828c5e4f53d917b3f6bd1e  wolf.1
+1b1d88530b5ae44120cb7e93b80c7054e3e28c61347fe3723f2608e44ebf0550  wolf.bash
+ebd3b809ec3b4ad6526fece3f4fd6b05d0c844e1660feaae05e9a6dbee18771d  wolf-cimport-worker
+180de0ecb67f49ff127fc84d92ad6c6182b5195db1ce2b0fc63734e7abe46407  wolf.fish
+std/: 57 files, 53 .lu, STD-REV d7c2968cbba1a855a58b4aabf3e55edcf7282992, manifest 229202f5b6477b3dfd4635996e31342ed9143c7a377ae6c3bdeb2faf5a28a830
+== std/ files that differ, 0.2.29 -> 0.2.30
+Files /home/mfwolffe/lanes/bs67/c29/wolf-0.2.29-x86_64-unknown-linux-gnu/std/env/env.lu and /home/mfwolffe/lanes/bs67/new/wolf-0.2.30-x86_64-unknown-linux-gnu//std/env/env.lu differ
+Files /home/mfwolffe/lanes/bs67/c29/wolf-0.2.29-x86_64-unknown-linux-gnu/std/signal/signal.lu and /home/mfwolffe/lanes/bs67/new/wolf-0.2.30-x86_64-unknown-linux-gnu//std/signal/signal.lu differ
+Files /home/mfwolffe/lanes/bs67/c29/wolf-0.2.29-x86_64-unknown-linux-gnu/std/STD-REV and /home/mfwolffe/lanes/bs67/new/wolf-0.2.30-x86_64-unknown-linux-gnu//std/STD-REV differ
+Files /home/mfwolffe/lanes/bs67/c29/wolf-0.2.29-x86_64-unknown-linux-gnu/std/term/term.lu and /home/mfwolffe/lanes/bs67/new/wolf-0.2.30-x86_64-unknown-linux-gnu//std/term/term.lu differ
+== versions
+wolf 0.2.30 (wolfgang, pin 1b37f36)
+paired with lupin 0.1.53 (reference interpreter), pin 294d626
+lupin 0.1.53 (wolf-interp, reference interpreter at pin 294d626)
+== bare
+wolf 0.2.30 (wolfgang, pin 1b37f36)
+paired with lupin 0.1.53 (reference interpreter), pin 294d626
+wolf highest GLIBC_2.34
+lupin highest GLIBC_2.34
