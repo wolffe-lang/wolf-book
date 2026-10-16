@@ -1,0 +1,27 @@
+Run 38959606063 (PR #81) at 6772d7e, samples (windows-latest), job 117171053049: the windows rows held. Extracted from the job's log:
+samples: REFUSED(windows) ch34/ex34-7 [wolf-run(exit=0)] — declared: exit 1, stdout "error: unsupported", retires at a windows `os_signal_number` ([os.signal.platform]) (bs67, 2026-10-16: exercise 34-7. `signal.number` is `unsupported` on this host after its shape, so the first meaning's number ends the program.)
+samples: REFUSED(windows) book/ch33/part-prefork [wolf-run(exit=0, stdout="a hand answered regions, and it exited 0")] — declared: exit 1, stdout "error: unsupported", retires at the windows descriptor crossing (wolf-lang#235) (bs30, 2026-09-07: `os_spawn_with` with a non-empty inherit set is the `unsupported` row on this host — a socket there is not a descriptor a parent can hand over by position — so §33.4's prefork block runs on linux and macOS and is refused here, by name.)
+samples: REFUSED(windows) book/ch34/s3 [wolf-run(exit=0)] — declared: exit 1, stdout "this process, nothing sent: unsupported\ntwo meanings at once: invalid\nan id nobody holds: unsupported\nerror: unsupported", retires at a windows `os_signal_send` / `os_signal_number` ([os.signal.platform]) (bs67, 2026-10-16: §34.2's `rows.lu`. The send's shape row answers first (`invalid` for two meanings at once), then the host (`unsupported`); `signal.number` is `unsupported` there too, and `?` makes it the documented process outcome.)
+samples: REFUSED(windows) book/ch34/s4 [wolf-run(exit=0, stdout="this process may be signalled")] — declared: exit 1, stdout "error: unsupported", retires at a windows `os_signal_send` ([os.signal.platform]) (bs67, 2026-10-16: §34.2's `alive.lu`. `os_signal_send` is `unsupported` on this host after its shape, by name.)
+samples: REFUSED(windows) book/ch34/s5 [wolf-run(exit=0)] — declared: exit 1, stdout "error: unsupported", retires at a windows `os_ppid` and id reads ([os.proc.self], [os.proc.ids]) (bs67, 2026-10-16: §34.3's `who.lu`. `env.ppid` is `unsupported` on this host, so the first line never prints.)
+samples: REFUSED(windows) book/ch34/s7 [wolf-run(exit=0, stdout="size: io, keys: io")] — declared: exit 0, stdout "size: unsupported, keys: unsupported", retires at a windows `os_term_size` / `os_term_chars` ([os.term]) (bs67, 2026-10-16: §34.3's `window.lu`. Every `[os.term]` call is `unsupported` on this host; the program handles the row and exits 0, and prints it.)
+samples: 515 passed, 3 pending (report-only), 0 failed, 0 flips in 91.9s
+samples: 426 of 515 console block(s) replayed against the pinned tools
+samples: samples-os.toml: 7 row(s) apply to windows — 6 declared refusal(s) and 1 declared transcript(s) held
+samples: DECLARED console D:\a\wolf-book\wolf-book\wolf-book\book\ch34.md:254 (windows): §34.2, the interpreter on `alive.lu` — on Windows `lupin` answers the program's `unsupported` row itself (the host has no such call, before its own limit is asked), so the page's by-name refusal is linux's and macOS's — [os.signal.platform], retires at a windows `os_signal_send` ([os.signal.platform])
+
+Run 38956581744 at 8e4a444, samples (windows-latest), job 117160860322: before the rows. Extracted:
+samples: 516 passed, 3 pending (report-only), 5 failed, 1 flips in 82.9s
+samples: 425 of 516 console block(s) replayed against the pinned tools
+samples: FAIL ch34/ex34-7: wolf run: exited Some(1), expected 0
+samples: FAIL book/ch34/s3: wolf run: exited Some(1), expected 0
+samples: FAIL book/ch34/s4: wolf run: exited Some(1), expected 0
+samples: FAIL book/ch34/s5: wolf run: exited Some(1), expected 0
+samples: FAIL D:\a\wolf-book\wolf-book\wolf-book\book\ch34.md:254: console block drifted from the real run
+     expected:
+       | $ lupin alive.lu
+       | alive.lu: unsupported: `os_signal_send` signals a process by id: this machine admits no `unsafe` and std has no `kill(pid, sig)` ([os.signal.send], [os.term.note] R8)
+     actual:
+       | $ lupin alive.lu
+       | error: unsupported
+samples: FLIP book/ch34/s7: directive `wolf-run(exit=0)` holds, but `lupin` now meets `run(exit=0…)` too — both machines serve this program now; graduate the fence to `run(…)`, retire the page's per-machine note, and close the ledger row in the pin-bump commit
