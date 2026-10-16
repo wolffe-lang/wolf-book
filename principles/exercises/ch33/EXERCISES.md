@@ -202,6 +202,7 @@ assumed one question.
 
 The callers are tasks here so that one process can hold both ends of two
 conversations at once. That is a page-fitting convenience and not part of
-the lesson: `net_wait` neither parks a task nor disturbs the scheduler, so
-the loop is unchanged whether the callers are tasks beside it or machines
-somewhere else.
+the lesson: `net_wait` parks no task, and while its poll blocks the
+loop's worker thread the pool is told so and keeps the callers running,
+so the loop is unchanged whether the callers are tasks beside it or
+machines somewhere else.
