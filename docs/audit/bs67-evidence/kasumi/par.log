@@ -1,0 +1,191 @@
+== start 2026-10-16T19:09:55Z; load 7.26 9.41 9.95; nproc 16
+== c15: wolf 0.2.15 (wolfgang, pin 2e4ca76)
+build c15/alloc_serial exit 0 size 10827704
+build c15/alloc_par exit 0 size 10954952
+build c15/view_serial exit 0 size 10810856
+build c15/view_par exit 0 size 10938136
+build c15/spin_serial exit 0 size 10805104
+build c15/spin_par exit 0 size 10932616
+== new: wolf 0.2.30 (wolfgang, pin 1b37f36)
+build new/alloc_serial exit 0 size 13051296
+build new/alloc_par exit 0 size 13187976
+build new/view_serial exit 0 size 13034536
+build new/view_par exit 0 size 13171272
+build new/spin_serial exit 0 size 13028408
+build new/spin_par exit 0 size 13165336
+c15/alloc_serial run1 real 0.26 user 0.24 sys 0.01
+   out the 1461600 wolf 835200 moon 835200 The 0
+c15/alloc_par run1 real 0.88 user 2.25 sys 8.41
+   out the 1461600 wolf 835200 moon 835200 The 0
+c15/view_serial run1 real 0.14 user 0.14 sys 0.00
+   out the 1044000 wolf 835200 moon 835200 The 417600
+c15/view_par run1 real 0.02 user 0.21 sys 0.00
+   out the 1044000 wolf 835200 moon 835200 The 417600
+c15/spin_serial run1 real 1.52 user 1.52 sys 0.00
+   out 355979388
+c15/spin_par run1 real 0.13 user 1.55 sys 0.00
+   out 355979388
+new/alloc_serial run1 real 0.26 user 0.24 sys 0.02
+   out the 1461600 wolf 835200 moon 835200 The 0
+new/alloc_par run1 real 0.04 user 0.35 sys 0.02
+   out the 1461600 wolf 835200 moon 835200 The 0
+new/view_serial run1 real 0.14 user 0.14 sys 0.00
+   out the 1044000 wolf 835200 moon 835200 The 417600
+new/view_par run1 real 0.02 user 0.21 sys 0.00
+   out the 1044000 wolf 835200 moon 835200 The 417600
+new/spin_serial run1 real 1.52 user 1.52 sys 0.00
+   out 355979388
+new/spin_par run1 real 0.15 user 1.56 sys 0.00
+   out 355979388
+-- round 1 done, load 6.92 9.30 9.91
+c15/alloc_serial run2 real 0.27 user 0.25 sys 0.01
+   out the 1461600 wolf 835200 moon 835200 The 0
+c15/alloc_par run2 real 0.91 user 2.27 sys 8.25
+   out the 1461600 wolf 835200 moon 835200 The 0
+c15/view_serial run2 real 0.14 user 0.14 sys 0.00
+   out the 1044000 wolf 835200 moon 835200 The 417600
+c15/view_par run2 real 0.02 user 0.21 sys 0.00
+   out the 1044000 wolf 835200 moon 835200 The 417600
+c15/spin_serial run2 real 1.53 user 1.52 sys 0.00
+   out 355979388
+c15/spin_par run2 real 0.15 user 1.56 sys 0.00
+   out 355979388
+new/alloc_serial run2 real 0.26 user 0.23 sys 0.02
+   out the 1461600 wolf 835200 moon 835200 The 0
+new/alloc_par run2 real 0.03 user 0.35 sys 0.03
+   out the 1461600 wolf 835200 moon 835200 The 0
+new/view_serial run2 real 0.14 user 0.14 sys 0.00
+   out the 1044000 wolf 835200 moon 835200 The 417600
+new/view_par run2 real 0.02 user 0.21 sys 0.00
+   out the 1044000 wolf 835200 moon 835200 The 417600
+new/spin_serial run2 real 1.52 user 1.51 sys 0.00
+   out 355979388
+new/spin_par run2 real 0.15 user 1.56 sys 0.00
+   out 355979388
+-- round 2 done, load 7.08 9.29 9.91
+c15/alloc_serial run3 real 0.27 user 0.25 sys 0.02
+   out the 1461600 wolf 835200 moon 835200 The 0
+c15/alloc_par run3 real 0.91 user 2.18 sys 8.64
+   out the 1461600 wolf 835200 moon 835200 The 0
+c15/view_serial run3 real 0.15 user 0.14 sys 0.00
+   out the 1044000 wolf 835200 moon 835200 The 417600
+c15/view_par run3 real 0.02 user 0.21 sys 0.00
+   out the 1044000 wolf 835200 moon 835200 The 417600
+c15/spin_serial run3 real 1.53 user 1.52 sys 0.00
+   out 355979388
+c15/spin_par run3 real 0.15 user 1.56 sys 0.00
+   out 355979388
+new/alloc_serial run3 real 0.26 user 0.22 sys 0.03
+   out the 1461600 wolf 835200 moon 835200 The 0
+new/alloc_par run3 real 0.04 user 0.35 sys 0.02
+   out the 1461600 wolf 835200 moon 835200 The 0
+new/view_serial run3 real 0.14 user 0.14 sys 0.00
+   out the 1044000 wolf 835200 moon 835200 The 417600
+new/view_par run3 real 0.02 user 0.21 sys 0.00
+   out the 1044000 wolf 835200 moon 835200 The 417600
+new/spin_serial run3 real 1.52 user 1.51 sys 0.00
+   out 355979388
+new/spin_par run3 real 0.15 user 1.56 sys 0.00
+   out 355979388
+-- round 3 done, load 7.16 9.27 9.90
+c15/alloc_serial run4 real 0.27 user 0.25 sys 0.02
+   out the 1461600 wolf 835200 moon 835200 The 0
+c15/alloc_par run4 real 0.90 user 2.29 sys 8.41
+   out the 1461600 wolf 835200 moon 835200 The 0
+c15/view_serial run4 real 0.14 user 0.14 sys 0.00
+   out the 1044000 wolf 835200 moon 835200 The 417600
+c15/view_par run4 real 0.02 user 0.21 sys 0.00
+   out the 1044000 wolf 835200 moon 835200 The 417600
+c15/spin_serial run4 real 1.52 user 1.52 sys 0.00
+   out 355979388
+c15/spin_par run4 real 0.13 user 1.54 sys 0.00
+   out 355979388
+new/alloc_serial run4 real 0.26 user 0.23 sys 0.02
+   out the 1461600 wolf 835200 moon 835200 The 0
+new/alloc_par run4 real 0.03 user 0.36 sys 0.02
+   out the 1461600 wolf 835200 moon 835200 The 0
+new/view_serial run4 real 0.14 user 0.14 sys 0.00
+   out the 1044000 wolf 835200 moon 835200 The 417600
+new/view_par run4 real 0.02 user 0.21 sys 0.00
+   out the 1044000 wolf 835200 moon 835200 The 417600
+new/spin_serial run4 real 1.52 user 1.51 sys 0.00
+   out 355979388
+new/spin_par run4 real 0.15 user 1.56 sys 0.00
+   out 355979388
+-- round 4 done, load 6.83 9.17 9.86
+c15/alloc_serial run5 real 0.27 user 0.24 sys 0.02
+   out the 1461600 wolf 835200 moon 835200 The 0
+c15/alloc_par run5 real 0.90 user 2.36 sys 8.36
+   out the 1461600 wolf 835200 moon 835200 The 0
+c15/view_serial run5 real 0.14 user 0.14 sys 0.00
+   out the 1044000 wolf 835200 moon 835200 The 417600
+c15/view_par run5 real 0.02 user 0.21 sys 0.00
+   out the 1044000 wolf 835200 moon 835200 The 417600
+c15/spin_serial run5 real 1.53 user 1.52 sys 0.00
+   out 355979388
+c15/spin_par run5 real 0.13 user 1.56 sys 0.00
+   out 355979388
+new/alloc_serial run5 real 0.26 user 0.24 sys 0.01
+   out the 1461600 wolf 835200 moon 835200 The 0
+new/alloc_par run5 real 0.03 user 0.35 sys 0.03
+   out the 1461600 wolf 835200 moon 835200 The 0
+new/view_serial run5 real 0.14 user 0.14 sys 0.00
+   out the 1044000 wolf 835200 moon 835200 The 417600
+new/view_par run5 real 0.02 user 0.22 sys 0.00
+   out the 1044000 wolf 835200 moon 835200 The 417600
+new/spin_serial run5 real 1.53 user 1.52 sys 0.00
+   out 355979388
+new/spin_par run5 real 0.14 user 1.56 sys 0.00
+   out 355979388
+-- round 5 done, load 6.52 9.06 9.82
+c15/alloc_serial run6 real 0.26 user 0.24 sys 0.02
+   out the 1461600 wolf 835200 moon 835200 The 0
+c15/alloc_par run6 real 0.89 user 2.19 sys 8.58
+   out the 1461600 wolf 835200 moon 835200 The 0
+c15/view_serial run6 real 0.14 user 0.14 sys 0.00
+   out the 1044000 wolf 835200 moon 835200 The 417600
+c15/view_par run6 real 0.02 user 0.21 sys 0.00
+   out the 1044000 wolf 835200 moon 835200 The 417600
+c15/spin_serial run6 real 1.53 user 1.53 sys 0.00
+   out 355979388
+c15/spin_par run6 real 0.15 user 1.57 sys 0.00
+   out 355979388
+new/alloc_serial run6 real 0.26 user 0.23 sys 0.02
+   out the 1461600 wolf 835200 moon 835200 The 0
+new/alloc_par run6 real 0.03 user 0.36 sys 0.02
+   out the 1461600 wolf 835200 moon 835200 The 0
+new/view_serial run6 real 0.14 user 0.14 sys 0.00
+   out the 1044000 wolf 835200 moon 835200 The 417600
+new/view_par run6 real 0.02 user 0.21 sys 0.00
+   out the 1044000 wolf 835200 moon 835200 The 417600
+new/spin_serial run6 real 1.52 user 1.51 sys 0.00
+   out 355979388
+new/spin_par run6 real 0.15 user 1.56 sys 0.00
+   out 355979388
+-- round 6 done, load 6.24 8.96 9.79
+c15/alloc_serial run7 real 0.27 user 0.25 sys 0.01
+   out the 1461600 wolf 835200 moon 835200 The 0
+c15/alloc_par run7 real 0.90 user 2.36 sys 8.44
+   out the 1461600 wolf 835200 moon 835200 The 0
+c15/view_serial run7 real 0.14 user 0.14 sys 0.00
+   out the 1044000 wolf 835200 moon 835200 The 417600
+c15/view_par run7 real 0.02 user 0.21 sys 0.00
+   out the 1044000 wolf 835200 moon 835200 The 417600
+c15/spin_serial run7 real 1.53 user 1.52 sys 0.00
+   out 355979388
+c15/spin_par run7 real 0.16 user 1.56 sys 0.00
+   out 355979388
+new/alloc_serial run7 real 0.25 user 0.23 sys 0.02
+   out the 1461600 wolf 835200 moon 835200 The 0
+new/alloc_par run7 real 0.04 user 0.36 sys 0.02
+   out the 1461600 wolf 835200 moon 835200 The 0
+new/view_serial run7 real 0.14 user 0.13 sys 0.00
+   out the 1044000 wolf 835200 moon 835200 The 417600
+new/view_par run7 real 0.02 user 0.20 sys 0.01
+   out the 1044000 wolf 835200 moon 835200 The 417600
+new/spin_serial run7 real 1.53 user 1.52 sys 0.00
+   out 355979388
+new/spin_par run7 real 0.15 user 1.54 sys 0.00
+   out 355979388
+-- round 7 done, load 5.98 8.86 9.75
+== end 2026-10-16T19:10:32Z; load 5.98 8.86 9.75

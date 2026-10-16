@@ -1,0 +1,12 @@
+c15/alloc_serial   n=7 real median 0.27 (min 0.26 max 0.27) user 0.25 sys 0.02
+c15/alloc_par      n=7 real median 0.90 (min 0.88 max 0.91) user 2.27 sys 8.41
+c15/view_serial    n=7 real median 0.14 (min 0.14 max 0.15) user 0.14 sys 0.00
+c15/view_par       n=7 real median 0.02 (min 0.02 max 0.02) user 0.21 sys 0.00
+c15/spin_serial    n=7 real median 1.53 (min 1.52 max 1.53) user 1.52 sys 0.00
+c15/spin_par       n=7 real median 0.15 (min 0.13 max 0.16) user 1.56 sys 0.00
+new/alloc_serial   n=7 real median 0.26 (min 0.25 max 0.26) user 0.23 sys 0.02
+new/alloc_par      n=7 real median 0.03 (min 0.03 max 0.04) user 0.35 sys 0.02
+new/view_serial    n=7 real median 0.14 (min 0.14 max 0.14) user 0.14 sys 0.00
+new/view_par       n=7 real median 0.02 (min 0.02 max 0.02) user 0.21 sys 0.00
+new/spin_serial    n=7 real median 1.52 (min 1.52 max 1.53) user 1.51 sys 0.00
+new/spin_par       n=7 real median 0.15 (min 0.14 max 0.15) user 1.56 sys 0.00
