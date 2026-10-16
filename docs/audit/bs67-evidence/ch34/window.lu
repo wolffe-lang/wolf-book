@@ -19,6 +19,5 @@ fn keys_row(fd: int) -> str {
 }
 
 fn main() {
-    print("size: {size_row(1)}")
-    print("keys: {keys_row(1)}")
+    print("size: {size_row(1)}, keys: {keys_row(1)}")
 }

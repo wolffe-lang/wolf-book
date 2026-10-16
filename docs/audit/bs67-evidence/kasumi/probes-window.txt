@@ -1,0 +1,50 @@
+container: 830bbb562d49 pid 1 procs 4 uid 1000
+SigBlk:	0000000000000000
+SigIgn:	0000000000000000
+########## wolf 0.2.30 (wolfgang, pin 1b37f36) / lupin 0.1.53 (wolf-interp, reference interpreter at pin 294d626)
+SigBlk:	0000000000000000
+SigIgn:	0000000000000000
+
+=== window.lu
+fn size_row(fd: int) -> str {
+    let (rows, cols) = os_term_size(fd) else |e| {
+        return match e {
+            io => "io",
+            unsupported => "unsupported",
+        }
+    }
+    "{rows} rows, {cols} columns"
+}
+
+fn keys_row(fd: int) -> str {
+    let keys = os_term_chars(fd) else |e| {
+        return match e {
+            io => "io",
+            unsupported => "unsupported",
+        }
+    }
+    "interrupt is byte {keys[2]}"
+}
+
+fn main() {
+    print("size: {size_row(1)}, keys: {keys_row(1)}")
+}
+$ lupin window.lu
+window.lu: unsupported: `os_term_size` reads the terminal's settings (`ioctl`, `tcgetattr`): this machine admits no `unsafe` and std has no call for it ([os.term.size], [os.term.chars], [os.term.editor.note] R6)
+[exit 4]
+$ wolf run window.lu
+size: io, keys: io
+[exit 0]
+$ wolf conform-run --json window.lu
+{"commit":"1b37f36","diagnostics":[],"file":"./window.lu","impl":"wolfgang","impl_version":"0.2.30","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked window.lu
+{"commit":"1b37f36","diagnostics":[],"file":"./window.lu","impl":"wolfgang","impl_version":"0.2.30","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"size: io, keys: io\n","stdout_sha256":"c01a42a7e137d044210b53babc30910707105439d04191fcb3392814a6118d07","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release window.lu && ./window
+[build exit 0]
+size: io, keys: io
+[exit 0]
+$ taskset -c 0-3 wolf run window.lu
+size: io, keys: io
+[exit 0]
