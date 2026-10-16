@@ -1,0 +1,4 @@
+render: web edition at target/render/web
+render: CSP guard — 49 pages, no inline <script> (lupp.us serves `script-src 'self'`)
+render: link check — 1363 internal links across 49 pages, none dead
+EXIT 0
