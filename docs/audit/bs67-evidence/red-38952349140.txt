@@ -1,0 +1,98 @@
+Run 38952349140 (PR #81) at 80e48eb: the pin and the staged std's manifest, the book's text unedited.
+Extracted from each samples job's log (gh api .../actions/jobs/<id>/logs), the workflow's echoed script lines dropped:
+
+== samples (ubuntu-latest), job 117146592917
+STD-PIN: fd6bcdcb1dfe03ea5092f10316b7abe81f2df41e
+staged std/: 57 files, manifest ab2576df6580d2935eee453cec5b7383d26e3242fe4a1da40132f5582ee8bbfa
+samples: FAIL /home/runner/work/wolf-book/wolf-book/wolf-book/book/back/colophon.md:7: console block drifted from the real run
+       | wolf 0.2.29 (wolfgang, pin 6ffe7c6)
+       | paired with lupin 0.1.52 (reference interpreter), pin 294d626
+       | lupin 0.1.52 (wolf-interp, reference interpreter at pin 294d626)
+     actual:
+       | wolf 0.2.30 (wolfgang, pin 1b37f36)
+       | paired with lupin 0.1.53 (reference interpreter), pin 294d626
+       | lupin 0.1.53 (wolf-interp, reference interpreter at pin 294d626)
+samples: FAIL /home/runner/work/wolf-book/wolf-book/wolf-book/book/ch01.md:153: console block drifted from the real run
+       | wolf 0.2.29 (wolfgang, pin 6ffe7c6)
+       | paired with lupin 0.1.52 (reference interpreter), pin 294d626
+       | lupin 0.1.52 (wolf-interp, reference interpreter at pin 294d626)
+     actual:
+       | wolf 0.2.30 (wolfgang, pin 1b37f36)
+       | paired with lupin 0.1.53 (reference interpreter), pin 294d626
+       | lupin 0.1.53 (wolf-interp, reference interpreter at pin 294d626)
+samples: FAIL /home/runner/work/wolf-book/wolf-book/wolf-book/book/ch22.md:288: console block drifted from the real run
+       |   wolfi v0 · toolchain 0.2.29 · edition v1
+       |   wolfi v0 · toolchain 0.2.29 · edition v1
+     actual:
+       |   wolfi v0 · toolchain 0.2.30 · edition v1
+       |   wolfi v0 · toolchain 0.2.30 · edition v1
+samples: FAIL /home/runner/work/wolf-book/wolf-book/wolf-book/principles/exercises/ch22/EXERCISES.md:218: console block drifted from the real run
+       |   wolfi v0 · toolchain 0.2.29 · edition v1
+     actual:
+       |   wolfi v0 · toolchain 0.2.30 · edition v1
+samples: 512 passed, 3 pending (report-only), 4 failed, 0 flips in 117.2s
+samples: 484 of 508 console block(s) replayed against the pinned tools
+
+== samples (macos-latest), job 117146592589
+STD-PIN: fd6bcdcb1dfe03ea5092f10316b7abe81f2df41e
+staged std/:       57 files, manifest ab2576df6580d2935eee453cec5b7383d26e3242fe4a1da40132f5582ee8bbfa
+samples: 512 passed, 3 pending (report-only), 4 failed, 0 flips in 167.5s
+samples: FAIL /Users/runner/work/wolf-book/wolf-book/wolf-book/book/back/colophon.md:7: console block drifted from the real run
+       | wolf 0.2.29 (wolfgang, pin 6ffe7c6)
+       | paired with lupin 0.1.52 (reference interpreter), pin 294d626
+       | lupin 0.1.52 (wolf-interp, reference interpreter at pin 294d626)
+     actual:
+       | wolf 0.2.30 (wolfgang, pin 1b37f36)
+       | paired with lupin 0.1.53 (reference interpreter), pin 294d626
+       | lupin 0.1.53 (wolf-interp, reference interpreter at pin 294d626)
+samples: 484 of 508 console block(s) replayed against the pinned tools
+samples: FAIL /Users/runner/work/wolf-book/wolf-book/wolf-book/book/ch01.md:153: console block drifted from the real run
+       | wolf 0.2.29 (wolfgang, pin 6ffe7c6)
+       | paired with lupin 0.1.52 (reference interpreter), pin 294d626
+       | lupin 0.1.52 (wolf-interp, reference interpreter at pin 294d626)
+     actual:
+       | wolf 0.2.30 (wolfgang, pin 1b37f36)
+       | paired with lupin 0.1.53 (reference interpreter), pin 294d626
+       | lupin 0.1.53 (wolf-interp, reference interpreter at pin 294d626)
+samples: FAIL /Users/runner/work/wolf-book/wolf-book/wolf-book/book/ch22.md:288: console block drifted from the real run
+       |   wolfi v0 · toolchain 0.2.29 · edition v1
+       |   wolfi v0 · toolchain 0.2.29 · edition v1
+     actual:
+       |   wolfi v0 · toolchain 0.2.30 · edition v1
+       |   wolfi v0 · toolchain 0.2.30 · edition v1
+samples: FAIL /Users/runner/work/wolf-book/wolf-book/wolf-book/principles/exercises/ch22/EXERCISES.md:218: console block drifted from the real run
+       |   wolfi v0 · toolchain 0.2.29 · edition v1
+     actual:
+       |   wolfi v0 · toolchain 0.2.30 · edition v1
+
+== samples (windows-latest), job 117146592674
+STD-PIN: fd6bcdcb1dfe03ea5092f10316b7abe81f2df41e
+staged std/: 57 files, manifest ab2576df6580d2935eee453cec5b7383d26e3242fe4a1da40132f5582ee8bbfa
+samples: 511 passed, 3 pending (report-only), 4 failed, 0 flips in 65.4s
+samples: 421 of 508 console block(s) replayed against the pinned tools
+samples: FAIL D:\a\wolf-book\wolf-book\wolf-book\book\back\colophon.md:7: console block drifted from the real run
+       | wolf 0.2.29 (wolfgang, pin 6ffe7c6)
+       | paired with lupin 0.1.52 (reference interpreter), pin 294d626
+       | lupin 0.1.52 (wolf-interp, reference interpreter at pin 294d626)
+     actual:
+       | wolf 0.2.30 (wolfgang, pin 1b37f36)
+       | paired with lupin 0.1.53 (reference interpreter), pin 294d626
+       | lupin 0.1.53 (wolf-interp, reference interpreter at pin 294d626)
+samples: FAIL D:\a\wolf-book\wolf-book\wolf-book\book\ch01.md:153: console block drifted from the real run
+       | wolf 0.2.29 (wolfgang, pin 6ffe7c6)
+       | paired with lupin 0.1.52 (reference interpreter), pin 294d626
+       | lupin 0.1.52 (wolf-interp, reference interpreter at pin 294d626)
+     actual:
+       | wolf 0.2.30 (wolfgang, pin 1b37f36)
+       | paired with lupin 0.1.53 (reference interpreter), pin 294d626
+       | lupin 0.1.53 (wolf-interp, reference interpreter at pin 294d626)
+samples: FAIL D:\a\wolf-book\wolf-book\wolf-book\book\ch22.md:288: console block drifted from the real run
+       |   wolfi v0 · toolchain 0.2.29 · edition v1
+       |   wolfi v0 · toolchain 0.2.29 · edition v1
+     actual:
+       |   wolfi v0 · toolchain 0.2.30 · edition v1
+       |   wolfi v0 · toolchain 0.2.30 · edition v1
+samples: FAIL D:\a\wolf-book\wolf-book\wolf-book\principles/exercises\ch22\EXERCISES.md:218: console block drifted from the real run
+       |   wolfi v0 · toolchain 0.2.29 · edition v1
+     actual:
+       |   wolfi v0 · toolchain 0.2.30 · edition v1
