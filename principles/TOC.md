@@ -6,10 +6,10 @@ this document disagree, this document wins and the delta is recorded in
 §Deltas for that sprint's future author. Each section carries a one-line
 promise: what the reader can *do* after it that they could not before.
 
-Numbering: parts are numbered 1–5; chapters run 1–33, continuously
-except for chapter 33, which arrived after the other thirty-two were
-numbered and took the next free number rather than moving any of them
-(§Deltas, bs30); sections are `N.M` and their numbers are the stable
+Numbering: parts are numbered 1–5; chapters run 1–34, continuously
+except for chapters 33 and 34, which arrived after the other thirty-two
+were numbered and took the next free numbers rather than moving any of
+them (§Deltas, bs30, bs67); sections are `N.M` and their numbers are the stable
 anchors of the web edition (see DESIGN.md §Navigation).
 
 ---
@@ -378,6 +378,22 @@ than inserted — see §Deltas, bs30 · the book's first transport*
 - 33.4 Many hands on one door — size the hands with `os_cpus`, hand a
   listener to a child, and read what a lost accept race costs.
 - Exercises 33-1 … 33-7.
+
+### Chapter 34 — Signals and the process
+*shipped (bs67) · numbered at the end of Part 4 by chapter 33's rule —
+see §Deltas, bs67 · the book's first `use std.…` programs*
+- 34.1 A signal is an event — listen, raise and wait by name, read the
+  twenty-eight meanings, and see a set the shape rule refuses whole.
+- 34.2 Sending, numbering, and what was ignored — probe a process with
+  a send of nothing, reach a host's number only where a number is the
+  interface, and read what a process was started ignoring.
+- 34.3 Who this process is, and its terminal — read the ids it runs as
+  and its parent, and build a terminal mode that says what it wants of
+  all five switches.
+- 34.4 What a call charges, and where it is refused — name the
+  capability each call needs, and what the interpreter and Windows
+  decline.
+- Exercises 34-1 … 34-7.
 
 ## Part 5 — Projects
 
@@ -1445,3 +1461,26 @@ sprint files remain the implementation contracts for everything else.
     prints the shape that does NOT scale first.
   - **`(held)` comes off the row and the ch13 HOLD comment is deleted**
     with nothing in its place: the section's existence is the record.
+- **bs67 (signals get a chapter, and it is numbered 34, 2026-10-16):**
+  wolf-book#79 asked for a page on signals and process ids and left one
+  question open: how a reader spells a meaning, when the prelude has no
+  constant and the bundled std named nine of twenty. wolf 0.2.30 answers
+  it: its archive bundles wolf-std `fd6bcdc`, whose `std.signal` names all
+  twenty-eight meanings (ruling #74), so the chapter teaches by name and
+  prints no bit and no host number. Three decisions:
+  - **The number is 34 and the position is the end of Part 4**, by
+    chapter 33's rule (bs30, above): a systems subject, and section
+    numbers are permanent anchors. `front/how-to-read.md`'s one sentence
+    names both late chapters.
+  - **Every executed block is a `wolf-run(…)` block.** These are the
+    book's first `use std.…` programs (wolf-book#45's third way out: a
+    chapter grows a compiler sample needing a module the compiler
+    serves), and the interpreter unpacked from its own archive has no
+    std; the two programs that call builtins directly reach calls it
+    declines by name, and §34.2 prints one refusal, replayed. Windows
+    declines most of the chapter by the specification, declared row by
+    row in `samples-os.toml`.
+  - **The calls this release's std does not wrap are taught as
+    builtins**, and the page says the wrappers ship with the next
+    release: s236's ids and owners, s234's size, characters and wait.
+    The chapter's ledger records that sentence's tension with TONE.md.

@@ -5,13 +5,13 @@ is canonical and is set to look like a printed page. The single-file
 markdown and the PDF are rendered from the same source.
 `principles/DESIGN.md` is the binding design document.
 
-29 of the 33 chapters are written. Chapter 29 is reserved whole,
+30 of the 34 chapters are written. Chapter 29 is reserved whole,
 because it needs `Pool` and `handle` to execute on one lane, and says
 so on its own page. Chapters 13, 21, 23 and 25 each reserve sections
-for the same kind of reason. Chapter 33 is the newest and sits at the
-end of part 4 with a number out of order: section numbers are permanent
-anchors, so a late chapter takes the next free number instead of
-renumbering thirty others (`principles/TOC.md` §Deltas).
+for the same kind of reason. Chapters 33 and 34 are the newest and sit
+at the end of part 4 with numbers out of order: section numbers are
+permanent anchors, so a late chapter takes the next free number instead
+of renumbering thirty others (`principles/TOC.md` §Deltas).
 
 Code samples are [GPL-3.0-or-later](LICENSE) with the [wolf Runtime
 Library Exception](LICENSE-EXCEPTION), matching the runtime, so code

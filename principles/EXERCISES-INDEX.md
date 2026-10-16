@@ -1,6 +1,6 @@
 # EXERCISES-INDEX.md — the corpus ledger
 
-Ledger of every exercise in the corpus: 345 total. The rows, the
+Ledger of every exercise in the corpus: 352 total. The rows, the
 type · checker column and the notes are hand-kept; the **tier column
 and the totals line are generated** by `cargo xtask tiers` from each
 exercise's `//! check:` head (ruling #40, wolf-book#43), and CI runs
@@ -52,7 +52,7 @@ are met by CI today, so the column says so; what keeps each unprinted
 is its stem's subject, and EXERCISES-PENDING.md carries it. Two more are master-only by curation
 rather than blockage, from the bs21 ladder: 2-15 (entab — the printed
 page carries detab, the master holds the mirror) and 3-13 (a
-`loop`/`break`-value drill beside §3.2's own example). **296 of the 345
+`loop`/`break`-value drill beside §3.2's own example). **303 of the 352
 are printed**, and
 `cargo xtask verify-docs` fails the build if a printed stem has no
 published solution.
@@ -86,7 +86,7 @@ filesystem until lupin 0.1.36; since bs49 a choice the chapter makes),
 so several of its stems are tagged `· wolf` while the distilled
 solution program on disk is a `run(…)` file both machines execute.
 
-Tier totals: 38 run (lupin) · 9 run (lupin REPL) · 41 run (wolf) · 173 run (wolf + lupin) · 78 prose · 6 pending. That is 345.
+Tier totals: 38 run (lupin) · 9 run (lupin REPL) · 43 run (wolf) · 173 run (wolf + lupin) · 83 prose · 6 pending. That is 352.
 (The totals and the tables were recounted mechanically against the
 masters at bs21 — the previous header said 276/231 while the tables
 had drifted from the marker count, ch05's 5-9 and 5-10 among the
@@ -111,7 +111,7 @@ let chapter 1 teach a call the compiler does not carry: a `run(…)`
 directive is a claim about both machines, and a sample only one machine
 serves says which one (`principles/TWO-MACHINES.md`).
 Taxonomy spread (tags, hybrids counted once per kind): fingers 61 ·
-comprehension 154 · extension 79 · spelunking 28 · design 37.
+comprehension 157 · extension 81 · spelunking 29 · design 38.
 
 Four stems are printed under a section other than the one this index
 assigns them, each deliberately: 13-2 (printed in §13.2, where the race
@@ -635,6 +635,24 @@ others (TOC.md §Deltas), and this section is late for the same reason it
 was missed: it sorts after ch30 and before the appendix, where nothing
 walking the chapters in order passes it. All seven stems are printed in
 `book/ch33.md` and five carry programs; 33-5 and 33-6 are prose.
+
+## ch34 — 7 exercises
+
+| section | exercise | type · checker | tier |
+|---|---|---|---|
+| §34.1 — A signal is an event | 34-1 | extension · wolf | run (wolf) |
+| §34.2 — Sending, numbering, and what was ignored | 34-2 | comprehension · prose | prose |
+| §34.3 — Who this process is, and its terminal | 34-3 | comprehension · prose | prose |
+| §34.4 — What a call charges, and where it is refused | 34-4 | comprehension · prose | prose |
+| Chapter batch | 34-5 | spelunking · prose | prose |
+| Chapter batch | 34-6 | design | prose |
+| Chapter batch | 34-7 | extension · wolf | run (wolf) |
+
+Chapter 34 took the next free number after chapter 33, by the same rule
+(TOC.md §Deltas, bs67). All seven stems are printed in `book/ch34.md`;
+34-1 and 34-7 carry programs, and both are `wolf-run(…)`: they import
+`std.signal`, which the interpreter unpacked from its own archive does
+not have.
 
 ## appx — 14 exercises
 

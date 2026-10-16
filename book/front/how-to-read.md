@@ -4,12 +4,12 @@ Read it in order, with a terminal open. The chapters are cumulative:
 each one is written assuming you typed the last one's programs, and the
 exercises are where the material stops being something you read.
 
-One number will look wrong, and it is not. Chapter 33 sits at the end of
-part 4, between chapters 25 and 26, because it was written after the
-other thirty-two were numbered. Every section number in this book is a
-permanent link — `#8.4` is section 8.4 for good — so a chapter that
-arrives late takes the next free number rather than moving everyone
-else's. Read it where it sits.
+Two numbers will look wrong, and they are not. Chapters 33 and 34 sit at
+the end of part 4, between chapters 25 and 26, because they were written
+after the other thirty-two were numbered. Every section number in this
+book is a permanent link — `#8.4` is section 8.4 for good — so a chapter
+that arrives late takes the next free number rather than moving everyone
+else's. Read them where they sit.
 
 Every program in this book was executed by CI against the toolchain
 version printed in the [colophon](../back/colophon.md): the greetings,
