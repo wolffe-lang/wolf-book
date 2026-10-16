@@ -1,0 +1,28 @@
+fn count(text: str) -> Map[str, int] {
+    var tally = Map[str, int]()
+    for word in text.words() {
+        let w = word.lower()
+        tally[w] = (tally[w] else 0) + 1
+    }
+    tally
+}
+
+fn pieces() -> List[str] {
+    let one = "The wolf runs and the moon watches over the wolf The pack answers and the moon does not A wolf is a wolf and the moon is the moon "
+    let piece = one.repeat(2900)
+    var ps = List[str]()
+    for i in 0..72 { (mut ps).push(piece) }
+    ps
+}
+
+fn main() -> !int {
+    let pieces = pieces()
+    var parts = List[Map[str, int]]()
+    for p in pieces { (mut parts).push(take count(p)) }
+    var total = Map[str, int]()
+    for part in parts {
+        for (w, n) in part.pairs() { total[w] = (total[w] else 0) + n }
+    }
+    print("the {total["the"] else 0} wolf {total["wolf"] else 0} moon {total["moon"] else 0} The {total["The"] else 0}")
+    0
+}

@@ -1,0 +1,21 @@
+fn spin(text: str) -> int {
+    var acc = text.len
+    for i in 0..4000000 { acc = (acc * 1103515245 + 12345) % 2147483647 }
+    acc
+}
+
+fn pieces() -> List[str] {
+    let one = "The wolf runs and the moon watches over the wolf The pack answers and the moon does not A wolf is a wolf and the moon is the moon "
+    let piece = one.repeat(2900)
+    var ps = List[str]()
+    for i in 0..72 { (mut ps).push(piece) }
+    ps
+}
+
+fn main() -> !int {
+    let pieces = pieces()
+    var total = 0
+    for p in pieces { total = (total + spin(p)) % 2147483647 }
+    print("{total}")
+    0
+}
