@@ -142,3 +142,76 @@ stderr = ""
 stdout = "error: unsupported"
 retires = "the windows descriptor crossing (wolf-lang#235)"
 note = "bs30, 2026-09-07: `os_spawn_with` with a non-empty inherit set is the `unsupported` row on this host — a socket there is not a descriptor a parent can hand over by position — so §33.4's prefork block runs on linux and macOS and is refused here, by name."
+
+# CHAPTER 34'S WINDOWS ROWS (bs67, 2026-10-16). Signals, ids and the
+# terminal are the surface Windows has least of, by the specification:
+# `[os.signal.platform]` makes `os_signal_send`, `os_signal_number`,
+# `os_signal_ignored` and `os_ppid` `unsupported` there after their shape
+# rows, `[os.proc.ids]` the four id reads, and `[os.term]` every terminal
+# call. So four of chapter 34's blocks and exercise 34-7 answer an
+# `unsupported` row on this host, and the interpreter's refusal that
+# §34.2 prints is, on Windows, the row itself. Each row below was found
+# by the windows samples lane of PR #81 (run 38956581744, job
+# 117160860322: `exited Some(1), expected 0` for four programs, the
+# console's actual text, a FLIP for `window.lu` while it claimed no
+# stdout) and its words are held by that lane on every run after. They
+# retire only if Windows grows the call, which no ruling plans: they
+# name the clause, not a release.
+
+[[refusal]]
+id = "book/ch34/s3"
+os = "windows"
+exit = 1
+stderr = ""
+stdout = """this process, nothing sent: unsupported
+two meanings at once: invalid
+an id nobody holds: unsupported
+error: unsupported"""
+retires = "a windows `os_signal_send` / `os_signal_number` ([os.signal.platform])"
+note = "bs67, 2026-10-16: §34.2's `rows.lu`. The send's shape row answers first (`invalid` for two meanings at once), then the host (`unsupported`); `signal.number` is `unsupported` there too, and `?` makes it the documented process outcome."
+
+[[refusal]]
+id = "book/ch34/s4"
+os = "windows"
+exit = 1
+stderr = ""
+stdout = "error: unsupported"
+retires = "a windows `os_signal_send` ([os.signal.platform])"
+note = "bs67, 2026-10-16: §34.2's `alive.lu`. `os_signal_send` is `unsupported` on this host after its shape, by name."
+
+[[refusal]]
+id = "book/ch34/s5"
+os = "windows"
+exit = 1
+stderr = ""
+stdout = "error: unsupported"
+retires = "a windows `os_ppid` and id reads ([os.proc.self], [os.proc.ids])"
+note = "bs67, 2026-10-16: §34.3's `who.lu`. `env.ppid` is `unsupported` on this host, so the first line never prints."
+
+[[refusal]]
+id = "book/ch34/s7"
+os = "windows"
+exit = 0
+stderr = ""
+stdout = "size: unsupported, keys: unsupported"
+retires = "a windows `os_term_size` / `os_term_chars` ([os.term])"
+note = "bs67, 2026-10-16: §34.3's `window.lu`. Every `[os.term]` call is `unsupported` on this host; the program handles the row and exits 0, and prints it."
+
+[[refusal]]
+id = "ch34/ex34-7"
+os = "windows"
+exit = 1
+stderr = ""
+stdout = "error: unsupported"
+retires = "a windows `os_signal_number` ([os.signal.platform])"
+note = "bs67, 2026-10-16: exercise 34-7. `signal.number` is `unsupported` on this host after its shape, so the first meaning's number ends the program."
+
+[[transcript]]
+block = "book/ch34.md:254"
+os = "windows"
+filed = "[os.signal.platform]"
+retires = "a windows `os_signal_send` ([os.signal.platform])"
+note = '''§34.2, the interpreter on `alive.lu` — on Windows `lupin` answers the program's `unsupported` row itself (the host has no such call, before its own limit is asked), so the page's by-name refusal is linux's and macOS's'''
+expect = '''
+$ lupin alive.lu
+error: unsupported'''
