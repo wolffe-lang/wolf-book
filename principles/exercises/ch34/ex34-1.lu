@@ -1,0 +1,21 @@
+//! check: wolf-run(exit=0)
+//! phase: run
+// Exercise 34-1: listen for two meanings, raise one, wait on both. The
+// wait answers the meaning that arrived; a poll after it finds the queue
+// empty, because the wait took the one delivery there was.
+use std.signal
+
+fn name(m: int) -> str {
+    if m == signal.terminate() { return "terminate" }
+    if m == signal.quit() { return "quit" }
+    "something else"
+}
+
+fn main() -> !int {
+    let either = signal.terminate() | signal.quit()
+    signal.listen(either)?
+    signal.raise(signal.quit())?
+    print("arrived: {name(signal.wait(either)?)}")
+    print("still queued: {signal.poll(either)?}")
+    0
+}

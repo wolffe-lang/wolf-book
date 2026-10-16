@@ -1,0 +1,47 @@
+//! check: wolf-run(exit=0)
+//! phase: run
+// Exercise 34-7: every name std.signal has, asked for its number on this
+// host and for whether a listen takes it. The program prints counts, never
+// a number: the numbers are this host's, and the names are the program's.
+use std.signal
+
+fn all() -> List[int] {
+    [signal.reload(), signal.terminate(), signal.quit(), signal.upgrade(),
+     signal.interrupt(), signal.suspend(), signal.bg_read(), signal.bg_write(),
+     signal.child(), signal.user(), signal.alarm(), signal.broken_pipe(),
+     signal.abort(), signal.continued(), signal.resize(), signal.urgent(),
+     signal.virtual_alarm(), signal.profile_alarm(), signal.cpu_limit(),
+     signal.file_limit(), signal.kill(), signal.stop(), signal.segment_fault(),
+     signal.bus_error(), signal.arithmetic(), signal.illegal(),
+     signal.breakpoint(), signal.bad_syscall()]
+}
+
+fn heard(m: int) -> bool {
+    signal.listen(m) else |_| { return false }
+    signal.reset(m) else |_| { return false }
+    true
+}
+
+fn number_row(m: int) -> str {
+    let n = signal.number(m) else |e| {
+        return match e {
+            invalid => "invalid",
+            unsupported => "unsupported",
+        }
+    }
+    "{n > 0}"
+}
+
+fn main() -> !int {
+    let ms = all()
+    var numbered = 0
+    var listenable = 0
+    for m in ms {
+        if signal.number(m)? > 0 { numbered += 1 }
+        if heard(m) { listenable += 1 }
+    }
+    print("{ms.len} meanings, {numbered} numbered here")
+    print("{listenable} can be heard")
+    print("two at once: {number_row(signal.user() | signal.alarm())}")
+    0
+}
