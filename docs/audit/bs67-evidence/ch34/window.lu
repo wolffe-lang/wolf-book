@@ -1,0 +1,24 @@
+fn size_row(fd: int) -> str {
+    let (rows, cols) = os_term_size(fd) else |e| {
+        return match e {
+            io => "io",
+            unsupported => "unsupported",
+        }
+    }
+    "{rows} rows, {cols} columns"
+}
+
+fn keys_row(fd: int) -> str {
+    let keys = os_term_chars(fd) else |e| {
+        return match e {
+            io => "io",
+            unsupported => "unsupported",
+        }
+    }
+    "interrupt is byte {keys[2]}"
+}
+
+fn main() {
+    print("size: {size_row(1)}")
+    print("keys: {keys_row(1)}")
+}

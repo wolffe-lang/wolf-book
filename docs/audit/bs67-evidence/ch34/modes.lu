@@ -1,0 +1,12 @@
+use std.term
+
+fn main() {
+    let cooked = term.Mode {
+        canonical: true, echo: true, signals: true,
+        flow: true, extended: true, min: 1, time: 0,
+    }
+    let raw = term.raw(cooked)
+    print("canonical {raw.canonical}, echo {raw.echo}, signals {raw.signals}")
+    print("flow {raw.flow}, extended {raw.extended}, min {raw.min}")
+    print("round trip: {term.pack(term.unpack(term.pack(raw))) == term.pack(raw)}")
+}

@@ -1,0 +1,414 @@
+container: 56a483c0e640 pid 1 procs 4 uid 1000
+SigBlk:	0000000000000000
+SigIgn:	0000000000000000
+########## wolf 0.2.30 (wolfgang, pin 1b37f36) / lupin 0.1.53 (wolf-interp, reference interpreter at pin 294d626)
+SigBlk:	0000000000000000
+SigIgn:	0000000000000000
+
+=== alive.lu
+fn main() -> !int {
+    os_signal_send(os_pid(), 0)?
+    print("this process may be signalled")
+    0
+}
+$ lupin alive.lu
+alive.lu: unsupported: `os_signal_send` signals a process by id: this machine admits no `unsafe` and std has no `kill(pid, sig)` ([os.signal.send], [os.term.note] R8)
+[exit 4]
+$ wolf run alive.lu
+this process may be signalled
+[exit 0]
+$ wolf conform-run --json alive.lu
+{"commit":"1b37f36","diagnostics":[],"file":"./alive.lu","impl":"wolfgang","impl_version":"0.2.30","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked alive.lu
+{"commit":"1b37f36","diagnostics":[],"file":"./alive.lu","impl":"wolfgang","impl_version":"0.2.30","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"this process may be signalled\n","stdout_sha256":"43fb90cebea62a72c4a0dddce3b064518ab7ca771ca9365e56f0730e3f74b66a","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release alive.lu && ./alive
+[build exit 0]
+this process may be signalled
+[exit 0]
+$ taskset -c 0-3 wolf run alive.lu
+this process may be signalled
+[exit 0]
+
+=== ex34-1.lu
+//! check: wolf-run(exit=0, stdout="arrived: terminate\nstill queued: 0")
+//! phase: run
+// Exercise 34-1: listen for two meanings, raise one, wait on both. The
+// wait answers the meaning that arrived; a poll after it finds the queue
+// empty, because the wait took the one delivery there was.
+use std.signal
+
+fn name(m: int) -> str {
+    if m == signal.interrupt() { return "interrupt" }
+    if m == signal.terminate() { return "terminate" }
+    "something else"
+}
+
+fn main() -> !int {
+    let either = signal.interrupt() | signal.terminate()
+    signal.listen(either)?
+    signal.raise(signal.terminate())?
+    print("arrived: {name(signal.wait(either)?)}")
+    print("still queued: {signal.poll(either)?}")
+    0
+}
+$ lupin ex34-1.lu
+ex34-1.lu: unsupported: `signal.interrupt` does not resolve
+[exit 4]
+$ wolf run ex34-1.lu
+arrived: terminate
+still queued: 0
+[exit 0]
+$ wolf conform-run --json ex34-1.lu
+{"commit":"1b37f36","diagnostics":[],"file":"./ex34-1.lu","impl":"wolfgang","impl_version":"0.2.30","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked ex34-1.lu
+{"commit":"1b37f36","diagnostics":[],"file":"./ex34-1.lu","impl":"wolfgang","impl_version":"0.2.30","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"arrived: terminate\nstill queued: 0\n","stdout_sha256":"e7a8c824d7ffba47bca3787c195f117732ea9730b48a55f87b35e46805a550cc","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release ex34-1.lu && ./ex34-1
+[build exit 0]
+arrived: terminate
+still queued: 0
+[exit 0]
+$ taskset -c 0-3 wolf run ex34-1.lu
+arrived: terminate
+still queued: 0
+[exit 0]
+
+=== ex34-7.lu
+//! check: wolf-run(exit=0, stdout="28 meanings, 28 numbered here\n20 can be heard\ntwo at once: invalid")
+//! phase: run
+// Exercise 34-7: every name std.signal has, asked for its number on this
+// host and for whether a listen takes it. The program prints counts, never
+// a number: the numbers are this host's, and the names are the program's.
+use std.signal
+
+fn all() -> List[int] {
+    [signal.reload(), signal.terminate(), signal.quit(), signal.upgrade(),
+     signal.interrupt(), signal.suspend(), signal.bg_read(), signal.bg_write(),
+     signal.child(), signal.user(), signal.alarm(), signal.broken_pipe(),
+     signal.abort(), signal.continued(), signal.resize(), signal.urgent(),
+     signal.virtual_alarm(), signal.profile_alarm(), signal.cpu_limit(),
+     signal.file_limit(), signal.kill(), signal.stop(), signal.segment_fault(),
+     signal.bus_error(), signal.arithmetic(), signal.illegal(),
+     signal.breakpoint(), signal.bad_syscall()]
+}
+
+fn heard(m: int) -> bool {
+    signal.listen(m) else |_| { return false }
+    signal.reset(m) else |_| { return false }
+    true
+}
+
+fn number_row(m: int) -> str {
+    let n = signal.number(m) else |e| {
+        return match e {
+            invalid => "invalid",
+            unsupported => "unsupported",
+        }
+    }
+    "{n > 0}"
+}
+
+fn main() -> !int {
+    let ms = all()
+    var numbered = 0
+    var listenable = 0
+    for m in ms {
+        if signal.number(m)? > 0 { numbered += 1 }
+        if heard(m) { listenable += 1 }
+    }
+    print("{ms.len} meanings, {numbered} numbered here")
+    print("{listenable} can be heard")
+    print("two at once: {number_row(signal.user() | signal.alarm())}")
+    0
+}
+$ lupin ex34-7.lu
+ex34-7.lu: unsupported: `signal.reload` does not resolve
+[exit 4]
+$ wolf run ex34-7.lu
+28 meanings, 28 numbered here
+20 can be heard
+two at once: invalid
+[exit 0]
+$ wolf conform-run --json ex34-7.lu
+{"commit":"1b37f36","diagnostics":[],"file":"./ex34-7.lu","impl":"wolfgang","impl_version":"0.2.30","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked ex34-7.lu
+{"commit":"1b37f36","diagnostics":[],"file":"./ex34-7.lu","impl":"wolfgang","impl_version":"0.2.30","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"28 meanings, 28 numbered here\n20 can be heard\ntwo at once: invalid\n","stdout_sha256":"dab1139453ec40e8e9b3ff2e46460b70125a23429db6ad30d208fdf6baea0f5d","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release ex34-7.lu && ./ex34-7
+[build exit 0]
+28 meanings, 28 numbered here
+20 can be heard
+two at once: invalid
+[exit 0]
+$ taskset -c 0-3 wolf run ex34-7.lu
+28 meanings, 28 numbered here
+20 can be heard
+two at once: invalid
+[exit 0]
+
+=== modes.lu
+use std.term
+
+fn main() {
+    let cooked = term.Mode {
+        canonical: true, echo: true, signals: true,
+        flow: true, extended: true, min: 1, time: 0,
+    }
+    let raw = term.raw(cooked)
+    print("canonical {raw.canonical}, echo {raw.echo}, signals {raw.signals}")
+    print("flow {raw.flow}, extended {raw.extended}, min {raw.min}")
+    print("round trip: {term.pack(term.unpack(term.pack(raw))) == term.pack(raw)}")
+}
+$ lupin modes.lu
+modes.lu: unsupported: `term.raw` does not resolve
+[exit 4]
+$ wolf run modes.lu
+canonical false, echo false, signals true
+flow false, extended false, min 1
+round trip: true
+[exit 0]
+$ wolf conform-run --json modes.lu
+{"commit":"1b37f36","diagnostics":[],"file":"./modes.lu","impl":"wolfgang","impl_version":"0.2.30","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked modes.lu
+{"commit":"1b37f36","diagnostics":[],"file":"./modes.lu","impl":"wolfgang","impl_version":"0.2.30","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"canonical false, echo false, signals true\nflow false, extended false, min 1\nround trip: true\n","stdout_sha256":"565af740c45999fcfc074fd9defa599dbcfe2e30f7c26ccd67e5dd302ae9ec32","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release modes.lu && ./modes
+[build exit 0]
+canonical false, echo false, signals true
+flow false, extended false, min 1
+round trip: true
+[exit 0]
+$ taskset -c 0-3 wolf run modes.lu
+canonical false, echo false, signals true
+flow false, extended false, min 1
+round trip: true
+[exit 0]
+
+=== reload.lu
+use std.signal
+
+fn main() -> !int {
+    signal.listen(signal.reload())?
+    signal.raise(signal.reload())?
+    let heard = signal.wait(signal.reload() | signal.terminate())?
+    print("heard reload: {heard == signal.reload()}")
+    0
+}
+$ lupin reload.lu
+reload.lu: unsupported: `signal.listen` does not resolve
+[exit 4]
+$ wolf run reload.lu
+heard reload: true
+[exit 0]
+$ wolf conform-run --json reload.lu
+{"commit":"1b37f36","diagnostics":[],"file":"./reload.lu","impl":"wolfgang","impl_version":"0.2.30","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked reload.lu
+{"commit":"1b37f36","diagnostics":[],"file":"./reload.lu","impl":"wolfgang","impl_version":"0.2.30","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"heard reload: true\n","stdout_sha256":"a12d19e4155b2aef48250bc40cad2dbc6afa7bad006c823fe85160b09395b4f6","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release reload.lu && ./reload
+[build exit 0]
+heard reload: true
+[exit 0]
+$ taskset -c 0-3 wolf run reload.lu
+heard reload: true
+[exit 0]
+
+=== rows.lu
+use std.signal
+use std.env
+
+fn send_row(pid: int, meaning: int) -> str {
+    signal.send(pid, meaning) else |e| {
+        return match e {
+            unsupported => "unsupported",
+            invalid => "invalid",
+            not_found => "not_found",
+            denied => "denied",
+            io => "io",
+        }
+    }
+    "ok"
+}
+
+fn main() -> !int {
+    print("this process, nothing sent: {send_row(env.pid(), 0)}")
+    print("two meanings at once: {send_row(env.pid(), signal.user() | signal.alarm())}")
+    print("an id nobody holds: {send_row(2147483647, 0)}")
+    print("user has a number here: {signal.number(signal.user())? > 0}")
+    signal.ignore(signal.user())?
+    print("user ignored: {(signal.ignored()? & signal.user()) != 0}")
+    signal.reset(signal.user())?
+    print("after reset: {(signal.ignored()? & signal.user()) != 0}")
+    0
+}
+$ lupin rows.lu
+rows.lu: unsupported: `env.pid` does not resolve
+[exit 4]
+$ wolf run rows.lu
+this process, nothing sent: ok
+two meanings at once: invalid
+an id nobody holds: not_found
+user has a number here: true
+user ignored: true
+after reset: false
+[exit 0]
+$ wolf conform-run --json rows.lu
+{"commit":"1b37f36","diagnostics":[],"file":"./rows.lu","impl":"wolfgang","impl_version":"0.2.30","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked rows.lu
+{"commit":"1b37f36","diagnostics":[],"file":"./rows.lu","impl":"wolfgang","impl_version":"0.2.30","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"this process, nothing sent: ok\ntwo meanings at once: invalid\nan id nobody holds: not_found\nuser has a number here: true\nuser ignored: true\nafter reset: false\n","stdout_sha256":"bb5a2be23226655eba01f31f5e953ea0f56083a5a5d6e473ae62daece1e96f77","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release rows.lu && ./rows
+[build exit 0]
+this process, nothing sent: ok
+two meanings at once: invalid
+an id nobody holds: not_found
+user has a number here: true
+user ignored: true
+after reset: false
+[exit 0]
+$ taskset -c 0-3 wolf run rows.lu
+this process, nothing sent: ok
+two meanings at once: invalid
+an id nobody holds: not_found
+user has a number here: true
+user ignored: true
+after reset: false
+[exit 0]
+
+=== sets.lu
+use std.signal
+
+fn listen_row(set: int) -> str {
+    signal.listen(set) else |e| {
+        return match e {
+            io => "io",
+        }
+    }
+    "ok"
+}
+
+fn main() {
+    let stop = signal.interrupt() | signal.terminate() | signal.quit()
+    print("quit is in the set: {(stop & signal.quit()) != 0}")
+    print("reload is not: {(stop & signal.reload()) == 0}")
+    print("a set with kill in it: {listen_row(stop | signal.kill())}")
+    print("an empty set: {listen_row(0)}")
+}
+$ lupin sets.lu
+sets.lu: unsupported: `signal.interrupt` does not resolve
+[exit 4]
+$ wolf run sets.lu
+quit is in the set: true
+reload is not: true
+a set with kill in it: io
+an empty set: io
+[exit 0]
+$ wolf conform-run --json sets.lu
+{"commit":"1b37f36","diagnostics":[],"file":"./sets.lu","impl":"wolfgang","impl_version":"0.2.30","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked sets.lu
+{"commit":"1b37f36","diagnostics":[],"file":"./sets.lu","impl":"wolfgang","impl_version":"0.2.30","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"quit is in the set: true\nreload is not: true\na set with kill in it: io\nan empty set: io\n","stdout_sha256":"6c7d18805f7ff81eeae86f882249fd66e4c2dd54431f3b22909c05cca2801973","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release sets.lu && ./sets
+[build exit 0]
+quit is in the set: true
+reload is not: true
+a set with kill in it: io
+an empty set: io
+[exit 0]
+$ taskset -c 0-3 wolf run sets.lu
+quit is in the set: true
+reload is not: true
+a set with kill in it: io
+an empty set: io
+[exit 0]
+
+=== who.lu
+use std.env
+
+fn main() -> !int {
+    print("an id: {env.pid() > 0}, a parent: {env.ppid()? > 0}")
+    print("started set-user-id: {os_uid()? != os_euid()?}")
+    print("started set-group-id: {os_gid()? != os_egid()?}")
+    0
+}
+$ lupin who.lu
+who.lu: unsupported: `env.pid` does not resolve
+[exit 4]
+$ wolf run who.lu
+an id: true, a parent: true
+started set-user-id: false
+started set-group-id: false
+[exit 0]
+$ wolf conform-run --json who.lu
+{"commit":"1b37f36","diagnostics":[],"file":"./who.lu","impl":"wolfgang","impl_version":"0.2.30","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked who.lu
+{"commit":"1b37f36","diagnostics":[],"file":"./who.lu","impl":"wolfgang","impl_version":"0.2.30","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"an id: true, a parent: true\nstarted set-user-id: false\nstarted set-group-id: false\n","stdout_sha256":"b93a31109717f3e3a5a1d910c4585cece5fea4b4a00418921f5f223ed5d03dd4","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release who.lu && ./who
+[build exit 0]
+an id: true, a parent: true
+started set-user-id: false
+started set-group-id: false
+[exit 0]
+$ taskset -c 0-3 wolf run who.lu
+an id: true, a parent: true
+started set-user-id: false
+started set-group-id: false
+[exit 0]
+
+=== window.lu
+fn size_row(fd: int) -> str {
+    let (rows, cols) = os_term_size(fd) else |e| {
+        return match e {
+            io => "io",
+            unsupported => "unsupported",
+        }
+    }
+    "{rows} rows, {cols} columns"
+}
+
+fn keys_row(fd: int) -> str {
+    let keys = os_term_chars(fd) else |e| {
+        return match e {
+            io => "io",
+            unsupported => "unsupported",
+        }
+    }
+    "interrupt is byte {keys[2]}"
+}
+
+fn main() {
+    print("size: {size_row(1)}")
+    print("keys: {keys_row(1)}")
+}
+$ lupin window.lu
+window.lu: unsupported: `os_term_size` reads the terminal's settings (`ioctl`, `tcgetattr`): this machine admits no `unsafe` and std has no call for it ([os.term.size], [os.term.chars], [os.term.editor.note] R6)
+[exit 4]
+$ wolf run window.lu
+size: io
+keys: io
+[exit 0]
+$ wolf conform-run --json window.lu
+{"commit":"1b37f36","diagnostics":[],"file":"./window.lu","impl":"wolfgang","impl_version":"0.2.30","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked window.lu
+{"commit":"1b37f36","diagnostics":[],"file":"./window.lu","impl":"wolfgang","impl_version":"0.2.30","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"size: io\nkeys: io\n","stdout_sha256":"b656636f6414b46cd22ff2505abc24f7e5be2e4c9495ef4dcb54077dbc79ea0d","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release window.lu && ./window
+[build exit 0]
+size: io
+keys: io
+[exit 0]
+$ taskset -c 0-3 wolf run window.lu
+size: io
+keys: io
+[exit 0]

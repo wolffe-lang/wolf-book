@@ -1,0 +1,27 @@
+use std.signal
+use std.env
+
+fn send_row(pid: int, meaning: int) -> str {
+    signal.send(pid, meaning) else |e| {
+        return match e {
+            unsupported => "unsupported",
+            invalid => "invalid",
+            not_found => "not_found",
+            denied => "denied",
+            io => "io",
+        }
+    }
+    "ok"
+}
+
+fn main() -> !int {
+    print("this process, nothing sent: {send_row(env.pid(), 0)}")
+    print("two meanings at once: {send_row(env.pid(), signal.user() | signal.alarm())}")
+    print("an id nobody holds: {send_row(2147483647, 0)}")
+    print("user has a number here: {signal.number(signal.user())? > 0}")
+    signal.ignore(signal.user())?
+    print("user ignored: {(signal.ignored()? & signal.user()) != 0}")
+    signal.reset(signal.user())?
+    print("after reset: {(signal.ignored()? & signal.user()) != 0}")
+    0
+}

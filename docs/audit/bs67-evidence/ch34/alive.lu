@@ -1,0 +1,5 @@
+fn main() -> !int {
+    os_signal_send(os_pid(), 0)?
+    print("this process may be signalled")
+    0
+}

@@ -1,0 +1,8 @@
+use std.env
+
+fn main() -> !int {
+    print("an id: {env.pid() > 0}, a parent: {env.ppid()? > 0}")
+    print("started set-user-id: {os_uid()? != os_euid()?}")
+    print("started set-group-id: {os_gid()? != os_egid()?}")
+    0
+}

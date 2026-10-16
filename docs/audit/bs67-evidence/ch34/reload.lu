@@ -1,0 +1,9 @@
+use std.signal
+
+fn main() -> !int {
+    signal.listen(signal.reload())?
+    signal.raise(signal.reload())?
+    let heard = signal.wait(signal.reload() | signal.terminate())?
+    print("heard reload: {heard == signal.reload()}")
+    0
+}

@@ -1,0 +1,18 @@
+use std.signal
+
+fn listen_row(set: int) -> str {
+    signal.listen(set) else |e| {
+        return match e {
+            io => "io",
+        }
+    }
+    "ok"
+}
+
+fn main() {
+    let stop = signal.interrupt() | signal.terminate() | signal.quit()
+    print("quit is in the set: {(stop & signal.quit()) != 0}")
+    print("reload is not: {(stop & signal.reload()) == 0}")
+    print("a set with kill in it: {listen_row(stop | signal.kill())}")
+    print("an empty set: {listen_row(0)}")
+}
