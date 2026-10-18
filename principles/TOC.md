@@ -63,8 +63,9 @@ wolf, without hearing the word "lifetime."*
 - 3.2 Everything is an expression — get values out of `if`, `match`, and
   blocks; live without a ternary; write a one-expression `if` bare, `if
   c then a else b`.
-- 3.3 Arithmetic that traps — predict overflow and division by zero in
-  every build profile, and spell intentional wrapping.
+- 3.3 Arithmetic that traps — predict overflow (a shift's included) and
+  division by zero in every build profile, and spell intentional
+  wrapping.
 - 3.4 `match`, exhaustively — write a match the compiler proves total.
 - Exercises 3-1 … 3-5.
 
@@ -393,6 +394,9 @@ see §Deltas, bs67 · the book's first `use std.…` programs*
 - 34.4 What a call charges, and where it is refused — name the
   capability each call needs, and what the interpreter and Windows
   decline.
+- 34.5 Groups, and what the children did — ask a process group with a
+  send of nothing, lead a group of your own, and poll the children for
+  an end or a stop without blocking.
 - Exercises 34-1 … 34-7.
 
 ## Part 5 — Projects
@@ -1484,3 +1488,19 @@ sprint files remain the implementation contracts for everything else.
     builtins**, and the page says the wrappers ship with the next
     release: s236's ids and owners, s234's size, characters and wait.
     The chapter's ledger records that sentence's tension with TONE.md.
+- **bs68 (the book at wolf 0.2.32, 2026-10-18):** two compiler releases
+  land on pages that exist, and one section is added.
+  - **§3.3 gains the shift rule** (wolf 0.2.31, the maintainer's ruling
+    of 2026-10-14): a plain shift is arithmetic on its value and traps
+    `overflow` like `*`; `wrapping[T]` is the machine's shift. Two
+    `run(…)` programs, because lupin 0.1.54 mirrors the rule.
+  - **Exit 71** is taught where the runtime's two start-up costs live:
+    the readiness set in §33.3 (whose "the reactor is lazy" sentence the
+    release made false, now in the past) and the signal hub in §34.1.
+  - **§34.5 is new, not an insertion**: the group calls and the poll of
+    the children are a section of their own at the end of the chapter,
+    so §34.1–§34.4 keep their anchors. They are taught as builtins: the
+    std this toolchain ships (wolf-std `d37c911`) does not wrap them.
+    The same std DOES wrap the ids and the terminal calls that bs67's
+    "ship with the next release" sentences named, so those sentences now
+    name the wrappers; the waiver row moves to §34.5's one sentence.
