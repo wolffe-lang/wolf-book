@@ -1,0 +1,16 @@
+appx_exB_11_lu [release]
+   was ('85', '')
+   now ('243', '')
+ch09_ex9_4_lu [release]
+   was ('107', '')
+   now ('187', '')
+ch10_md_84 [release]
+   was ('0', 'the reader is counting\nthe scope is still open\nthe scope has joined\n900 words\n')
+   now ('0', 'the scope is still open\nthe reader is counting\nthe scope has joined\n900 words\n')
+ch11_ex11_5_lu [release]
+   was ('0', 'worker 1 took job 1\nworker 1 took job 3\nworker 1 took job 4\nworker 0 took job 2\n')
+   now ('0', 'worker 0 took job 1\nworker 0 took job 3\nworker 0 took job 4\nworker 1 took job 2\n')
+ch17_md_29 [release]
+   was ('0', 'reindexed 2 of 2 documents, 1540 words\n')
+   now ('0', 'reindexed 0 of 2 documents, 0 words\n')
+programs 589 release-built 380 moves 5 {'lupin': 0, 'native': 0, 'checked': 0, 'release': 5}

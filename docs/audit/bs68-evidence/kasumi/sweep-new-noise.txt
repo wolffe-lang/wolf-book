@@ -1,0 +1,19 @@
+appx_exB_11_lu [release]
+   was ('208', '')
+   now ('106', '')
+ch09_ex9_4_lu [release]
+   was ('2', '')
+   now ('167', '')
+ch17_ex17_1_lu [release]
+   was ('0', 'balance=50\n')
+   now ('0', 'balance=100\n')
+ch17_ex17_3_lu [release]
+   was ('0', '21\n')
+   now ('0', '12\n')
+ch17_md_29 [release]
+   was ('0', 'reindexed 2 of 2 documents, 1540 words\n')
+   now ('0', 'reindexed 0 of 2 documents, 0 words\n')
+ch30_ex30_5_lu [release]
+   was ('0', 'b.log:4: 09:44 the wolf wakes\nb.log:2: 08:52 the wolf sleeps\na.log:3: 07:02 the wolf howls\na.log:1: 06:12 the wolf runs\n')
+   now ('0', 'a.log:3: 07:02 the wolf howls\na.log:1: 06:12 the wolf runs\nb.log:2: 08:52 the wolf sleeps\nb.log:4: 09:44 the wolf wakes\n')
+programs 589 release-built 380 moves 6 {'lupin': 0, 'native': 0, 'checked': 0, 'release': 6}

@@ -1,0 +1,17 @@
+Run 39175460332 (PR #82) at a23aa07, samples (windows-latest), job 117817084098: before §34.5's rows. Extracted from the job's log:
+samples: 529 samples (252 corpus roots + 16 corpus members on disk, 277 book blocks)
+samples: 518 passed, 3 pending (report-only), 2 failed, 0 flips in 103.4s
+samples: 427 of 518 console block(s) replayed against the pinned tools
+samples: samples-os.toml: 7 row(s) apply to windows — 6 declared refusal(s) and 1 declared transcript(s) held
+samples: FAIL book/ch34/s8: wolf run: exited Some(1), expected 0
+samples: FAIL book/ch34/s10: wolf run: exited Some(1), expected 0
+error: 2 failure(s), 0 flip(s)
+
+Run 39176210454 at 3b40fde, samples (windows-latest), job 117819301817: the rows held. Extracted:
+samples: REFUSED(windows) book/ch34/s8 [wolf-run(exit=0)] — declared: exit 1, stdout "error: unsupported", retires at a windows `os_set_pgid` / `os_signal_send_group` ([os.term.group], [os.signal.send.group]) (bs68, 2026-10-18: §34.5's `groups.lu`. `os_set_pgid(0)` passes its shape and is `unsupported` on this host, and `?` makes it the documented process outcome before any line prints.)
+samples: REFUSED(windows) book/ch34/s10 [wolf-run(exit=0)] — declared: exit 1, stdout "error: io", retires at a windows `child()` ([os.signal.platform]); windows has no stops ([os.proc.poll]) (bs68, 2026-10-18: §34.5's `jobs.lu`. A listen for `child()` is `io` on this host (a console delivers only its own meanings), so the program ends at its first line, before it starts the child.)
+samples: 529 samples (252 corpus roots + 16 corpus members on disk, 277 book blocks)
+samples: 518 passed, 3 pending (report-only), 0 failed, 0 flips in 73.4s
+samples: 427 of 518 console block(s) replayed against the pinned tools
+samples: samples-os.toml: 9 row(s) apply to windows — 8 declared refusal(s) and 1 declared transcript(s) held
+samples: DECLARED console book\ch34.md:263 (windows): §34.2, the interpreter on `alive.lu` — on Windows `lupin` answers the program's `unsupported` row itself (the host has no such call, before its own limit is asked), so the page's by-name refusal is linux's and macOS's — [os.signal.platform], retires at a windows `os_signal_send` ([os.signal.platform])
