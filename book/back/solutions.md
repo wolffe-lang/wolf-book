@@ -9967,7 +9967,7 @@ Solution. Both runs, one item and one number between them:
 ```console
 $ wolf interface ./wordcount/tokens/tokens.lu
 module pkg :: (root)
-  wolfi v0 · toolchain 0.2.30 · edition v1
+  wolfi v0 · toolchain 0.2.32 · edition v1
   export_hash 05a012a2ca47c85fc47f13e7e2c80930951ae8c59a84d1631ca8844e71669f3c
   pkg_hash    05a012a2ca47c85fc47f13e7e2c80930951ae8c59a84d1631ca8844e71669f3c
   deps: (none)
@@ -11562,7 +11562,7 @@ that only reads who it is should not also be able to stop someone else.
 </details>
 
 <details>
-<summary>Exercise 34-5. <a href="../ch34.md#34.4">§34.4</a></summary>
+<summary>Exercise 34-5. <a href="../ch34.md#34.5">§34.5</a></summary>
 
 **Exercise 34-5** *(spelunking · prose)*. Read `[os.signal.set.stable]`
 in the specification. Say what it promises a program that stores a set
@@ -11583,7 +11583,7 @@ signal number.
 </details>
 
 <details>
-<summary>Exercise 34-6. <a href="../ch34.md#34.4">§34.4</a></summary>
+<summary>Exercise 34-6. <a href="../ch34.md#34.5">§34.5</a></summary>
 
 **Exercise 34-6** *(design)*. A long-running program is started by a
 user who means it to survive the terminal closing. Write down the first
@@ -11604,7 +11604,7 @@ choice rather than how it was started.
 </details>
 
 <details>
-<summary>Exercise 34-7. <a href="../ch34.md#34.4">§34.4</a></summary>
+<summary>Exercise 34-7. <a href="../ch34.md#34.5">§34.5</a></summary>
 
 **Exercise 34-7** *(extension · wolf)*. Put all twenty-eight names in a
 list. For each, ask the host for its number and try a listen (then reset
