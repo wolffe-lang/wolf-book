@@ -6,10 +6,10 @@ against:
 
 ```console
 $ wolf --version
-wolf 0.2.30 (wolfgang, pin 1b37f36)
-paired with lupin 0.1.53 (reference interpreter), pin 294d626
+wolf 0.2.32 (wolfgang, pin 72de141)
+paired with lupin 0.1.54 (reference interpreter), pin 294d626
 $ lupin --version
-lupin 0.1.53 (wolf-interp, reference interpreter at pin 294d626)
+lupin 0.1.54 (wolf-interp, reference interpreter at pin 294d626)
 ```
 
 The two lines name each other, and this printing both names are
