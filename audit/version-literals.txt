@@ -54,17 +54,17 @@
 # names live in one and nothing executes them.
 
 # --- the compiler's clock ---
-book/ch01.md 0.2.30+dev.unknown 1 audited-at-wolf=0.2.30
-book/ch01.md 0.2.30 3 audited-at-wolf=0.2.30
-book/ch22.md 0.2.30 1 audited-at-wolf=0.2.30
+book/ch01.md 0.2.32+dev.unknown 1 audited-at-wolf=0.2.32
+book/ch01.md 0.2.32 3 audited-at-wolf=0.2.32
+book/ch22.md 0.2.32 1 audited-at-wolf=0.2.32
 # §5.6's `copy zero` paragraph and §13.1 both name the release that
 # started enforcing what they teach; §13.1 also names the rig its
 # timings were measured on. All three are claims about 0.2.15 itself,
 # so they ride the compiler's clock and want re-reading at the next
 # bump — the numbers in §13.1's table were measured on this pair and a
 # new compiler can move them.
-book/ch05.md 0.2.15 1 audited-at-wolf=0.2.30
-book/ch13.md 0.2.15 5 audited-at-wolf=0.2.30
+book/ch05.md 0.2.15 1 audited-at-wolf=0.2.32
+book/ch13.md 0.2.15 5 audited-at-wolf=0.2.32
 # bs67 (wolf-book#80): §13.1 dates its table (wolf 0.2.15, on the book's
 # own machine), puts the root arena's lock in the past at 0.2.15, names
 # 0.2.27 as the release that took the lock off the per-allocation path
@@ -73,18 +73,24 @@ book/ch13.md 0.2.15 5 audited-at-wolf=0.2.30
 # changes and stay true; 0.2.30 names the compiler measured, a historical
 # measurement too, but it is the pin this book prints at, so it rides
 # the compiler's clock like everything else here.
-book/ch13.md 0.2.27 1 audited-at-wolf=0.2.30
-book/ch13.md 0.2.30 1 audited-at-wolf=0.2.30
-book/ch33.md 0.2.6 1 audited-at-wolf=0.2.30
-book/ch33.md 0.2.8 1 audited-at-wolf=0.2.30
+book/ch13.md 0.2.27 1 audited-at-wolf=0.2.32
+book/ch13.md 0.2.30 1 audited-at-wolf=0.2.32
+book/ch33.md 0.2.6 1 audited-at-wolf=0.2.32
+book/ch33.md 0.2.8 1 audited-at-wolf=0.2.32
+# bs68 (wolf-book, the reactor made before `main`): §33.3's reactor
+# sentence was present tense about a lazy reactor, false since 0.2.31;
+# it is in the past now, and the paragraph after it opens "Since wolf
+# 0.2.31 it is made sooner". That literal dates the change and stays
+# true; it rides the compiler's clock with the rest of the section.
+book/ch33.md 0.2.31 1 audited-at-wolf=0.2.32
 # Appendix E's formatter section names TWO releases on purpose from bs44
 # on: the braced-chain rule changed between them, and a page that shows
 # a canonical layout owes the reader the release it is canonical for.
 # `0.2.11` here is a historical claim about a formatter that no longer
 # exists and can never come back true; `0.2.12` is the live one and is
 # the same claim the fixture beside it is checked against every run.
-book/back/appendix-e.md 0.2.11 1 audited-at-wolf=0.2.30
-book/back/appendix-e.md 0.2.12 1 audited-at-wolf=0.2.30
+book/back/appendix-e.md 0.2.11 1 audited-at-wolf=0.2.32
+book/back/appendix-e.md 0.2.12 1 audited-at-wolf=0.2.32
 
 # --- both clocks ---
 # `0.1.31` is ONE literal on each of these two pages at bs40 (it was two
@@ -244,19 +250,36 @@ book/back/appendix-e.md 0.2.12 1 audited-at-wolf=0.2.30
 # and the colophon's pair sentences keep their shape with new numbers:
 # the compiler names 0.1.53, and the interpreter's half is v0.2.24's
 # tag, now six releases and 717 commits behind.
-book/ch01.md 0.1.53 1 audited-at-wolf=0.2.30 audited-at-lupin=0.1.53
-book/back/colophon.md 0.1.53 1 audited-at-wolf=0.2.30 audited-at-lupin=0.1.53
-book/ch09.md 0.2.22 1 audited-at-wolf=0.2.30
-book/ch09.md 0.1.46 1 audited-at-lupin=0.1.53
-book/ch32.md 0.2.22 1 audited-at-wolf=0.2.30
-book/ch04.md 0.1.36 1 audited-at-lupin=0.1.53
-book/ch06.md 0.1.36 1 audited-at-lupin=0.1.53
-book/ch27.md 0.1.36 1 audited-at-lupin=0.1.53
-book/ch30.md 0.1.36 1 audited-at-lupin=0.1.53
+# bs68 (wolf 0.2.32 / lupin 0.1.54) re-read every entry stamped at
+# 0.2.30 / 0.1.53, sentence by sentence, against two compiler releases
+# (0.2.31: the shift rule, the readiness set and the signal hub made
+# before `main`, the group sends, the poll of the children, home-module
+# methods on the checked machine; 0.2.32: the runtime's descriptors off
+# 0-2, the checked machine's net_wait and writes handing over) and
+# lupin 0.1.54 (the shift rule, net `os_error()`, a refused run's
+# children, the group and poll mirrors). The dated sentences (appendix
+# E's 0.2.11/0.2.12, §5.6's 0.2.15 and 0.1.37, §9's 0.2.22 and 0.1.46,
+# §32.2's 0.2.22, §33's 0.2.6 and 0.2.8, and the four 0.1.36 sentences)
+# each date a change neither release touches and stay true. §33.3's
+# sentence after its 0.2.8 history WAS made false (the lazy reactor) and
+# is fixed, with a new 0.2.31 literal (above). §13.1's 0.2.30 names the
+# compiler its kasumi table measured: a measurement, dated, and true.
+# §1.2's and the colophon's pair sentences keep their shape with new
+# numbers: the compiler names 0.1.54, and the interpreter's half is
+# v0.2.24's tag, now eight releases and 913 commits behind.
+book/ch01.md 0.1.54 1 audited-at-wolf=0.2.32 audited-at-lupin=0.1.54
+book/back/colophon.md 0.1.54 1 audited-at-wolf=0.2.32 audited-at-lupin=0.1.54
+book/ch09.md 0.2.22 1 audited-at-wolf=0.2.32
+book/ch09.md 0.1.46 1 audited-at-lupin=0.1.54
+book/ch32.md 0.2.22 1 audited-at-wolf=0.2.32
+book/ch04.md 0.1.36 1 audited-at-lupin=0.1.54
+book/ch06.md 0.1.36 1 audited-at-lupin=0.1.54
+book/ch27.md 0.1.36 1 audited-at-lupin=0.1.54
+book/ch30.md 0.1.36 1 audited-at-lupin=0.1.54
 # §5.6's paragraph names both tools in one sentence (the lend rule
 # arrived in the compiler at 0.2.15; the list literals its blocks use
 # arrived in the interpreter at 0.1.37), so it rides both clocks.
-book/ch05.md 0.1.37 1 audited-at-wolf=0.2.30 audited-at-lupin=0.1.53
+book/ch05.md 0.1.37 1 audited-at-wolf=0.2.32 audited-at-lupin=0.1.54
 
 # --- version-shaped, and about neither tool ---
 book/ch23.md 1.4.0 1 not-a-toolchain-version
