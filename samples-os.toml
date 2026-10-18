@@ -207,7 +207,7 @@ retires = "a windows `os_signal_number` ([os.signal.platform])"
 note = "bs67, 2026-10-16: exercise 34-7. `signal.number` is `unsupported` on this host after its shape, so the first meaning's number ends the program."
 
 [[transcript]]
-block = "book/ch34.md:254"
+block = "book/ch34.md:263"
 os = "windows"
 filed = "[os.signal.platform]"
 retires = "a windows `os_signal_send` ([os.signal.platform])"
