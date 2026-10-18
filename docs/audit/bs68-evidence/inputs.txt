@@ -1,0 +1,53 @@
+date 2026-10-18T22:35:46Z
+== tags
+wolf-lang v0.2.30 -> 1b37f368228db92eca505c8c4cd3c531ea60be48 (tag object ffb7c5b3, tag)
+wolf-lang v0.2.31 -> f4faf59d5572cb8026493829a8a1791b5e917914 (tag object a48bc21a, tag)
+wolf-lang v0.2.32 -> 72de141f624662fdff522e8beba459fab7c5cf66 (tag object d21c4b28, tag)
+wolf-interp v0.1.53 -> 7896eddc17fd9e3e015b025b354ccf62a766734b (tag)
+wolf-interp v0.1.54 -> 0e536e8fb4518eaa798ac426901ab81275db5c9f (tag)
+== PAIRING / STD-PIN
+v0.2.30: lupin-version = 0.1.53 lupin-pin = 294d626  wolf-std-commit = fd6bcdcb1dfe03ea5092f10316b7abe81f2df41e
+v0.2.31: lupin-version = 0.1.54 lupin-pin = 294d626  wolf-std-commit = d37c911f12206c4bf5c8d3281a649bf31da3beef
+v0.2.32: lupin-version = 0.1.54 lupin-pin = 294d626  wolf-std-commit = d37c911f12206c4bf5c8d3281a649bf31da3beef
+== counts
+v0.2.30..v0.2.32 196; v0.2.30..v0.2.31 170; v0.2.31..v0.2.32 26
+294d626..v0.2.32 913; 294d626..v0.2.30 717
+releases after 294d626 (v0.2.24): v0.2.25 v0.2.26 v0.2.27 v0.2.28 v0.2.29 v0.2.30 v0.2.31 v0.2.32 
+v0.1.53..v0.1.54 43
+placetrace.rs v0.1.53..v0.1.54: (empty = byte-identical)
+lupin vendor/upstream/PIN at v0.1.54: 294d626dd596122285d5df954762e3aee3e5db71
+== spec
+anchors v0.2.30      648 v0.2.32      661
+> os.net.error
+> os.net.reactor
+> os.net.reactor.note
+> os.proc.poll
+> os.proc.wait.note
+> os.signal.group.note
+> os.signal.host
+> os.signal.hub
+> os.signal.send.all
+> os.signal.send.group
+> os.signal.text
+> os.term.group
+> type.int.shift
+spec/grammar.ebnf v0.2.30..v0.2.32: 
+crates/wolf_driver/src/help.rs v0.2.30..v0.2.32: 
+== std
+wolf-std fd6bcdc -> fd6bcdcb1dfe03ea5092f10316b7abe81f2df41e (commit)
+wolf-std d37c911 -> d37c911f12206c4bf5c8d3281a649bf31da3beef (commit)
+wolf-std dcf3e89 -> dcf3e89a4b1b7bd441b12254f263c87cc5b28f3e (commit)
+std/ fd6bcdc..d37c911:
+ std/env/env.lu         |  83 ++++++++++++
+ std/fs/fs.lu           | 101 +++++++++++++++
+ std/os/users/users.lu  | 345 +++++++++++++++++++++++++++++++++++++++++++++++++
+ std/process/process.lu |  40 ++++++
+ std/signal/signal.lu   |  60 +++++++--
+ std/term/term.lu       | 147 +++++++++++++++++++--
+ 6 files changed, 754 insertions(+), 22 deletions(-)
+std/ d37c911..dcf3e89 (trunk, NOT in any release):
+ std/process/process.lu | 313 +++++++++++++++++++++++++++++++++++++++++++++++--
+ std/signal/signal.lu   | 181 ++++++++++++++++++++++++++--
+ 2 files changed, 473 insertions(+), 21 deletions(-)
+== wolf-book
+95d68ad0e4f77ad714abb165915c29d6ac90a892

@@ -1,0 +1,28 @@
+use std.signal
+
+fn changed(kid: int) -> int ! {io} {
+    while true {
+        let (h, status) = os_wait_poll()?
+        if h == kid { return status }
+        signal.wait(signal.child())?
+    }
+    0
+}
+
+fn main() -> !int {
+    signal.listen(signal.child())?
+    var argv = List[str]()
+    (mut argv).push("/bin/sleep")
+    (mut argv).push("10")
+    let kid = os_spawn(argv)?
+    let pid = os_proc_pid(kid)?
+    signal.send(pid, signal.stop())?
+    let stopped = changed(kid)?
+    print("a stop: {stopped >= 256}, by stop(): {stopped - 256 == signal.number(signal.stop())?}")
+    signal.send(pid, signal.kill())?
+    let ended = changed(kid)?
+    print("an end: {ended < 0}, by kill(): {-ended == signal.number(signal.kill())?}")
+    let (h, live) = os_wait_poll()?
+    print("then: {h}, {live} live")
+    0
+}

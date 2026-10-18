@@ -1,0 +1,25 @@
+use std.signal
+use std.term
+
+fn group_row(g: int, meaning: int) -> str {
+    os_signal_send_group(g, meaning) else |e| {
+        return match e {
+            unsupported => "unsupported",
+            invalid => "invalid",
+            not_found => "not_found",
+            denied => "denied",
+            io => "io",
+        }
+    }
+    "ok"
+}
+
+fn main() -> !int {
+    let mine = term.group()?
+    print("my own group, nothing sent: {group_row(mine, 0)}")
+    print("group 1: {group_row(1, 0)}")
+    print("a group nobody leads: {group_row(2147483647, 0)}")
+    print("two meanings at once: {group_row(mine, signal.user() | signal.alarm())}")
+    print("host numbers past the table's: {os_signal_last()? > 28}")
+    0
+}

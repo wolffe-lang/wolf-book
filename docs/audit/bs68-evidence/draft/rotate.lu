@@ -1,0 +1,5 @@
+fn main() -> !int {
+    let flags: wrapping[u8] = 200
+    print("{flags << 1} {flags >> 7} {flags << 9}")
+    0
+}

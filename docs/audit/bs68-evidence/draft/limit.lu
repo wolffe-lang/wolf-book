@@ -1,0 +1,7 @@
+fn main() -> !int {
+    print("started")
+    let door = net_listen("127.0.0.1:0")?
+    let conn = net_accept(door)?
+    net_close(conn)?
+    0
+}

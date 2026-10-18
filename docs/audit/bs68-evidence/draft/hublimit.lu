@@ -1,0 +1,9 @@
+use std.signal
+
+fn main() -> !int {
+    print("started")
+    signal.listen(signal.reload())?
+    signal.raise(signal.reload())?
+    print("heard: {signal.wait(signal.reload())? == signal.reload()}")
+    0
+}

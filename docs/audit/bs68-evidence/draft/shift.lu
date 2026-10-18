@@ -1,0 +1,6 @@
+fn main() -> !int {
+    let flags: u8 = 200
+    print("{flags >> 1} {flags >> 8}")
+    print("{flags << 1}")
+    0
+}

@@ -1,0 +1,5 @@
+fn main() -> !int {
+    let (h, live) = os_wait_poll()?
+    print("nothing to report: {h}, {live} live")
+    0
+}
