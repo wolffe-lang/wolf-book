@@ -1,0 +1,36 @@
+Run 39174239570 (wolf-book PR #82) at 9e04c5f: the pin and the CI std manifest, the book's text unedited (the planted break: the pin itself).
+
+== samples (ubuntu-latest), job 117813497590
+staged std/: 58 files, manifest 1f7389b7a666f9915df3e8ba68881437cf2b81ebc81184c043e5155dd1bba4a8
+samples: FAIL book/back/colophon.md:7: console block drifted from the real run
+samples: FAIL book/ch01.md:153: console block drifted from the real run
+samples: FAIL book/ch22.md:288: console block drifted from the real run
+samples: 524 samples (252 corpus roots + 16 corpus members on disk, 272 book blocks)
+samples: 521 passed, 3 pending (report-only), 4 failed, 0 flips in 118.3s
+samples: 491 of 515 console block(s) replayed against the pinned tools
+samples: FAIL principles/exercises/ch22/EXERCISES.md:218: console block drifted from the real run
+error: 4 failure(s), 0 flip(s)
+
+== samples (macos-latest), job 117813497762
+staged std/:       58 files, manifest 1f7389b7a666f9915df3e8ba68881437cf2b81ebc81184c043e5155dd1bba4a8
+samples: 524 samples (252 corpus roots + 16 corpus members on disk, 272 book blocks)
+samples: 521 passed, 3 pending (report-only), 4 failed, 0 flips in 213.2s
+samples: 491 of 515 console block(s) replayed against the pinned tools
+samples: FAIL book/back/colophon.md:7: console block drifted from the real run
+samples: FAIL book/ch01.md:153: console block drifted from the real run
+samples: FAIL book/ch22.md:288: console block drifted from the real run
+samples: FAIL principles/exercises/ch22/EXERCISES.md:218: console block drifted from the real run
+error: 4 failure(s), 0 flip(s)
+
+== samples (windows-latest), job 117813497682
+staged std/: 58 files, manifest 1f7389b7a666f9915df3e8ba68881437cf2b81ebc81184c043e5155dd1bba4a8
+samples: 524 samples (252 corpus roots + 16 corpus members on disk, 272 book blocks)
+samples: 515 passed, 3 pending (report-only), 4 failed, 0 flips in 58.6s
+samples: 422 of 515 console block(s) replayed against the pinned tools
+samples: FAIL book\back\colophon.md:7: console block drifted from the real run
+samples: FAIL book\ch01.md:153: console block drifted from the real run
+samples: FAIL book\ch22.md:288: console block drifted from the real run
+samples: FAIL principles/exercises\ch22\EXERCISES.md:218: console block drifted from the real run
+error: 4 failure(s), 0 flip(s)
+
+Every other job of the run: test (windows-latest) success; test (macos-latest) success; render success; test (ubuntu-latest) success; contents (webkit) success; contents (chromium) success; contents (firefox) success

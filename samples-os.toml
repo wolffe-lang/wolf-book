@@ -206,6 +206,33 @@ stdout = "error: unsupported"
 retires = "a windows `os_signal_number` ([os.signal.platform])"
 note = "bs67, 2026-10-16: exercise 34-7. `signal.number` is `unsupported` on this host after its shape, so the first meaning's number ends the program."
 
+# bs68, 2026-10-18: §34.5's two compiler-only programs, found by the
+# windows samples lane of PR #82 (run 39175460332, job 117817084098:
+# `book/ch34/s8: wolf run: exited Some(1), expected 0` and the same for
+# `book/ch34/s10`). The group calls and `os_set_pgid` are `unsupported`
+# on windows after their shape (`[os.term.group]`, `[os.signal.send.group]`),
+# and a listen for `child()` is `io` there (`[os.signal.platform]`: a
+# console hears only its own meanings). §34.5's `run(…)` poll with no
+# child (`book/ch34/s9`) passes on this host.
+
+[[refusal]]
+id = "book/ch34/s8"
+os = "windows"
+exit = 1
+stderr = ""
+stdout = "error: unsupported"
+retires = "a windows `os_set_pgid` / `os_signal_send_group` ([os.term.group], [os.signal.send.group])"
+note = "bs68, 2026-10-18: §34.5's `groups.lu`. `os_set_pgid(0)` passes its shape and is `unsupported` on this host, and `?` makes it the documented process outcome before any line prints."
+
+[[refusal]]
+id = "book/ch34/s10"
+os = "windows"
+exit = 1
+stderr = ""
+stdout = "error: io"
+retires = "a windows `child()` ([os.signal.platform]); windows has no stops ([os.proc.poll])"
+note = "bs68, 2026-10-18: §34.5's `jobs.lu`. A listen for `child()` is `io` on this host (a console delivers only its own meanings), so the program ends at its first line, before it starts the child."
+
 [[transcript]]
 block = "book/ch34.md:263"
 os = "windows"
