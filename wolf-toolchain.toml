@@ -1528,7 +1528,7 @@ repo = "wolffe-lang/wolf-lang"
 # earlier pin ran it past the timeout (s244, wolf-lang#720, closed).
 # What they ADD and the book now teaches: the shift rule (§3.3,
 # `[type.int.shift]`, ruling #77 A); exit 71 when the runtime cannot make
-# its readiness set or signal hub before `main` (§33.4, §34.1, ruling
+# its readiness set or signal hub before `main` (§33.3, §34.1, ruling
 # #80); the poll of the children (`os_wait_poll`, a stop as `256 + N`,
 # ruling #84) and the group calls (ruling #79) as builtins (§34.5). Spec:
 # anchors 648 -> 661 (none dropped), catalogue 187 -> 187, grammar
