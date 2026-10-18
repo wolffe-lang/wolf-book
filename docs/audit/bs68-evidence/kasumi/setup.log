@@ -1,0 +1,13 @@
+2026-10-18T22:41:04Z
+host kasumi
+wolf-0.2.30-x86_64-unknown-linux-gnu.tar.gz api=4e55b39ed243d3e8ed3be24f716186529e1942935464476d47c4bc983329fe89 got=4e55b39ed243d3e8ed3be24f716186529e1942935464476d47c4bc983329fe89 MATCH
+wolf-0.2.30-x86_64-unknown-linux-gnu.tar.gz: OK
+wolf-0.2.30-x86_64-unknown-linux-gnu.tar.gz second read: tree wolf-0.2.30-x86_64-unknown-linux-gnu IDENTICAL
+lupin-0.1.53-x86_64-unknown-linux-gnu.tar.gz api=5db5533236578008625885c7e3ed0a21084b8fa064219808ae668dedb0edccaa got=5db5533236578008625885c7e3ed0a21084b8fa064219808ae668dedb0edccaa MATCH
+lupin-0.1.53-x86_64-unknown-linux-gnu.tar.gz: OK
+lupin-0.1.53-x86_64-unknown-linux-gnu.tar.gz second read: tree lupin-0.1.53-x86_64-unknown-linux-gnu IDENTICAL
+~/lanes/bs68/c30/wolf-0.2.30-x86_64-unknown-linux-gnu/wolf
+wolf 0.2.30 (wolfgang, pin 1b37f36)
+paired with lupin 0.1.53 (reference interpreter), pin 294d626
+~/lanes/bs68/c30/lupin-0.1.53-x86_64-unknown-linux-gnu/lupin
+lupin 0.1.53 (wolf-interp, reference interpreter at pin 294d626)

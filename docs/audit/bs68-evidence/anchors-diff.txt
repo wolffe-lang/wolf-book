@@ -1,0 +1,4 @@
+spec/anchors.json, wolf-lang v0.2.30 (1b37f368) -> v0.2.32 (72de141f): 648 -> 661 anchors, key sets diffed both ways
+added: os.net.error os.net.reactor os.net.reactor.note os.proc.poll os.proc.wait.note os.signal.group.note os.signal.host os.signal.hub os.signal.send.all os.signal.send.group os.signal.text os.term.group type.int.shift
+dropped: none
+retargeted: none
