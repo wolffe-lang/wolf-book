@@ -1,0 +1,16 @@
+container: 2cf6f215a4e2 pid 1 procs 4 uid 1000
+SigBlk:	0000000000000000
+SigIgn:	0000000000000000
+shell: pid 1 pgid       1
+$ wolf run pg.lu
+pid 49 ppid 12 pgid 1
+$ timeout 60 wolf run pg.lu
+pid 89 ppid 51 pgid 50
+$ (runner's shape) wolf run pg.lu
+pid 129 ppid 91 pgid 91
+  exit 0
+$ (runner's shape) wolf build pg.lu && ./pg
+pid 168 ppid 167 pgid 168
+  exit 0
+$ wolf conform-run --json --checked pg.lu
+"stdout_inline":"pid 169 ppid 1 pgid 1\n"

@@ -1,0 +1,4 @@
+fn main() -> !int {
+    print("pid {os_pid()} ppid {os_ppid()?} pgid {os_pgid()?}")
+    0
+}

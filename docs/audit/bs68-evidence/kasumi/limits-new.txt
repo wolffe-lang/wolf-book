@@ -1,0 +1,72 @@
+########## wolf 0.2.32 (wolfgang, pin 72de141)
+SigBlk:	0000000000000000
+SigIgn:	0000000000000000
+descriptor limit here: 1048576
+
+=== hublimit.lu
+use std.signal
+
+fn main() -> !int {
+    print("started")
+    signal.listen(signal.reload())?
+    signal.raise(signal.reload())?
+    print("heard: {signal.wait(signal.reload())? == signal.reload()}")
+    0
+}
+$ wolf build hublimit.lu  [exit 0]
+$ ./hublimit
+started
+heard: true
+[exit 0]
+$ prlimit --nofile=4:4 ./hublimit
+wolf: the runtime could not make its signal hub (Too many open files (os error 24)); the program did not start
+[exit 71]
+$ taskset -c 0-3 prlimit --nofile=4:4 ./hublimit
+wolf: the runtime could not make its signal hub (Too many open files (os error 24)); the program did not start
+[exit 71]
+$ wolf build --release hublimit.lu  [exit 0]
+$ ./hublimit
+started
+heard: true
+[exit 0]
+$ prlimit --nofile=4:4 ./hublimit
+wolf: the runtime could not make its signal hub (Too many open files (os error 24)); the program did not start
+[exit 71]
+$ taskset -c 0-3 prlimit --nofile=4:4 ./hublimit
+wolf: the runtime could not make its signal hub (Too many open files (os error 24)); the program did not start
+[exit 71]
+
+=== limit.lu
+fn main() -> !int {
+    print("started")
+    let door = net_listen("127.0.0.1:0")?
+    let caller = net_connect("127.0.0.1:{net_port(door)?}")?
+    let conn = net_accept(door)?
+    print("accepted")
+    net_close(conn)?
+    net_close(caller)?
+    net_close(door)?
+    0
+}
+$ wolf build limit.lu  [exit 0]
+$ ./limit
+started
+accepted
+[exit 0]
+$ prlimit --nofile=4:4 ./limit
+wolf: the runtime could not make its readiness set (Too many open files (os error 24)); the program did not start
+[exit 71]
+$ taskset -c 0-3 prlimit --nofile=4:4 ./limit
+wolf: the runtime could not make its readiness set (Too many open files (os error 24)); the program did not start
+[exit 71]
+$ wolf build --release limit.lu  [exit 0]
+$ ./limit
+started
+accepted
+[exit 0]
+$ prlimit --nofile=4:4 ./limit
+wolf: the runtime could not make its readiness set (Too many open files (os error 24)); the program did not start
+[exit 71]
+$ taskset -c 0-3 prlimit --nofile=4:4 ./limit
+wolf: the runtime could not make its readiness set (Too many open files (os error 24)); the program did not start
+[exit 71]

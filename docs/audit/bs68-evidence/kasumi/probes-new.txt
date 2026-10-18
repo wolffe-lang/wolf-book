@@ -1,0 +1,208 @@
+########## wolf 0.2.32 (wolfgang, pin 72de141) / lupin 0.1.54 (wolf-interp, reference interpreter at pin 294d626)
+SigBlk:	0000000000000000
+SigIgn:	0000000000000000
+
+=== groups.lu
+use std.signal
+use std.term
+use std.env
+
+fn group_row(g: int, meaning: int) -> str {
+    os_signal_send_group(g, meaning) else |e| {
+        return match e {
+            unsupported => "unsupported",
+            invalid => "invalid",
+            not_found => "not_found",
+            denied => "denied",
+            io => "io",
+        }
+    }
+    "ok"
+}
+
+fn main() -> !int {
+    os_set_pgid(0)?
+    let mine = term.group()?
+    print("leads a group of its own: {mine == env.pid()}")
+    print("its own group, nothing sent: {group_row(mine, 0)}")
+    print("group 1: {group_row(1, 0)}")
+    print("a group nobody leads: {group_row(2147483647, 0)}")
+    print("two meanings at once: {group_row(mine, signal.user() | signal.alarm())}")
+    print("host numbers past the table's: {os_signal_last()? > 28}")
+    0
+}
+$ lupin groups.lu
+groups.lu: unsupported: `os_set_pgid` moves this process into a group: std has no `setpgid` on itself, and this machine admits no `unsafe` ([os.term.group], [os.signal.group.note] R8)
+[exit 4]
+$ wolf run groups.lu
+leads a group of its own: true
+its own group, nothing sent: ok
+group 1: invalid
+a group nobody leads: not_found
+two meanings at once: invalid
+host numbers past the table's: true
+[exit 0]
+$ wolf conform-run --json groups.lu
+{"commit":"72de141","diagnostics":[],"file":"./groups.lu","impl":"wolfgang","impl_version":"0.2.32","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked groups.lu
+{"commit":"72de141","diagnostics":[],"file":"./groups.lu","impl":"wolfgang","impl_version":"0.2.32","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"leads a group of its own: true\nits own group, nothing sent: ok\ngroup 1: invalid\na group nobody leads: not_found\ntwo meanings at once: invalid\nhost numbers past the table's: true\n","stdout_sha256":"0bc3c3a57ba974df3c9224cdc6a32f79c28820f0c49ab23977fa1da2ee61488b","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release groups.lu && ./groups
+[build exit 0]
+leads a group of its own: true
+its own group, nothing sent: ok
+group 1: invalid
+a group nobody leads: not_found
+two meanings at once: invalid
+host numbers past the table's: true
+[exit 0]
+$ taskset -c 0-3 wolf run groups.lu
+leads a group of its own: true
+its own group, nothing sent: ok
+group 1: invalid
+a group nobody leads: not_found
+two meanings at once: invalid
+host numbers past the table's: true
+[exit 0]
+
+=== jobs.lu
+use std.signal
+
+fn changed(kid: int) -> int ! {io} {
+    while true {
+        let (h, status) = os_wait_poll()?
+        if h == kid { return status }
+        let _ = signal.wait(signal.child())?
+    }
+    0
+}
+
+fn main() -> !int {
+    signal.listen(signal.child())?
+    var argv = List[str]()
+    (mut argv).push("/bin/sleep")
+    (mut argv).push("10")
+    let kid = os_spawn(argv)?
+    let pid = os_proc_pid(kid)?
+    signal.send(pid, signal.stop())?
+    let stopped = changed(kid)?
+    print("a stop: {stopped >= 256}, by stop(): {stopped - 256 == signal.number(signal.stop())?}")
+    signal.send(pid, signal.kill())?
+    let ended = changed(kid)?
+    print("an end: {ended < 0}, by kill(): {-ended == signal.number(signal.kill())?}")
+    let (h, live) = os_wait_poll()?
+    print("then: {h}, {live} live")
+    0
+}
+$ lupin jobs.lu
+jobs.lu: unsupported: `signal.listen` does not resolve
+[exit 4]
+$ wolf run jobs.lu
+a stop: true, by stop(): true
+an end: true, by kill(): true
+then: -1, 0 live
+[exit 0]
+$ wolf conform-run --json jobs.lu
+{"commit":"72de141","diagnostics":[],"file":"./jobs.lu","impl":"wolfgang","impl_version":"0.2.32","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked jobs.lu
+{"commit":"72de141","diagnostics":[],"file":"./jobs.lu","impl":"wolfgang","impl_version":"0.2.32","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"a stop: true, by stop(): true\nan end: true, by kill(): true\nthen: -1, 0 live\n","stdout_sha256":"d3a1210811a28d86705ae79aad48ca281e87c3c9cae43e5269a423b45459b049","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release jobs.lu && ./jobs
+[build exit 0]
+a stop: true, by stop(): true
+an end: true, by kill(): true
+then: -1, 0 live
+[exit 0]
+$ taskset -c 0-3 wolf run jobs.lu
+a stop: true, by stop(): true
+an end: true, by kill(): true
+then: -1, 0 live
+[exit 0]
+
+=== nochild.lu
+fn main() -> !int {
+    let (h, live) = os_wait_poll()?
+    print("nothing to report: {h}, {live} live")
+    0
+}
+$ lupin nochild.lu
+nothing to report: -1, 0 live
+[exit 0]
+$ wolf run nochild.lu
+nothing to report: -1, 0 live
+[exit 0]
+$ wolf conform-run --json nochild.lu
+{"commit":"72de141","diagnostics":[],"file":"./nochild.lu","impl":"wolfgang","impl_version":"0.2.32","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked nochild.lu
+{"commit":"72de141","diagnostics":[],"file":"./nochild.lu","impl":"wolfgang","impl_version":"0.2.32","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"nothing to report: -1, 0 live\n","stdout_sha256":"1f87a8b5279f28dcc19045c29bcd8e89336f57713d81175505b21de7353d17cc","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release nochild.lu && ./nochild
+[build exit 0]
+nothing to report: -1, 0 live
+[exit 0]
+$ taskset -c 0-3 wolf run nochild.lu
+nothing to report: -1, 0 live
+[exit 0]
+
+=== rotate.lu
+fn main() -> !int {
+    let flags: wrapping[u8] = 200
+    print("{flags << 1} {flags >> 7} {flags << 8}")
+    0
+}
+$ lupin rotate.lu
+144 1 200
+[exit 0]
+$ wolf run rotate.lu
+144 1 200
+[exit 0]
+$ wolf conform-run --json rotate.lu
+{"commit":"72de141","diagnostics":[],"file":"./rotate.lu","impl":"wolfgang","impl_version":"0.2.32","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked rotate.lu
+{"commit":"72de141","diagnostics":[],"file":"./rotate.lu","impl":"wolfgang","impl_version":"0.2.32","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"144 1 200\n","stdout_sha256":"172b198a8cc601a2160410b5b213e2b980ba0c2d6874ee9393a3815d185248be","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release rotate.lu && ./rotate
+[build exit 0]
+144 1 200
+[exit 0]
+$ taskset -c 0-3 wolf run rotate.lu
+144 1 200
+[exit 0]
+
+=== shift.lu
+fn main() -> !int {
+    let flags: u8 = 200
+    print("{flags >> 1} {flags >> 8}")
+    print("{flags << 1}")
+    0
+}
+$ lupin shift.lu
+100 0
+shift.lu: trap(overflow): `<<` produced 400, outside `u8` — checked arithmetic traps in every profile (X3); spell intended overflow `wrapping[u8]` [arith.checked] at 4:13
+[exit 3]
+$ wolf run shift.lu
+100 0
+wolf-trap: overflow
+  at ./shift.lu:4:5
+[exit 134]
+$ wolf conform-run --json shift.lu
+{"commit":"72de141","diagnostics":[],"file":"./shift.lu","impl":"wolfgang","impl_version":"0.2.32","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked shift.lu
+{"commit":"72de141","diagnostics":[],"file":"./shift.lu","impl":"wolfgang","impl_version":"0.2.32","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"100 0\n","stdout_sha256":"b3a97b9b2de557418241966da11c89311222d12247168dbfe06bd21d3feae501","verdict":"trap(overflow)","warnings":[],"x-trap-clause":"mem.ub.defined","x-trap-pos":[4,13],"x-trap-span":[95,105]}
+[exit 0]
+$ wolf build --release shift.lu && ./shift
+[build exit 0]
+100 0
+wolf-trap: overflow
+  at ./shift.lu:4:5
+[exit 134]
+$ taskset -c 0-3 wolf run shift.lu
+100 0
+wolf-trap: overflow
+  at ./shift.lu:4:5
+[exit 134]
