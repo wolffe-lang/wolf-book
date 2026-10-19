@@ -15,7 +15,8 @@ use std::collections::BTreeMap;
 use std::path::{Path, PathBuf};
 
 /// One printed exercise: the chapter file that prints it and the section
-/// heading it sits under.
+/// heading it sits under (the bare chapter number for a chapter's batch
+/// under `## Exercises`, wolf-book#84).
 pub struct Printed {
     pub chapter: u32,
     pub section: String,
@@ -113,6 +114,14 @@ pub fn printed_exercises(root: &Path) -> Result<BTreeMap<(u32, u32), Printed>> {
                         section = num.to_string();
                     }
                 }
+                // A batch of exercises at a chapter's end (`## Exercises`,
+                // chapters 33 and 34) is set by the chapter as a whole, not
+                // by the numbered section above it (wolf-book#84): it links
+                // the chapter's own anchor. Any other unnumbered heading (a
+                // chapter's closing pages) keeps the section before it.
+                if rest.trim() == "Exercises" {
+                    section = ch.to_string();
+                }
             }
             if let Some(key) = exercise_marker(line) {
                 found.insert(
@@ -182,9 +191,17 @@ fn solutions(root: &Path) -> Result<String> {
         // typst cross-reference to the section's label
         // (`render::typst_inline`), which is the half the site lane
         // declined to guess at.
+        // A section is `§N.M`; a chapter's batch (`section` is the bare
+        // chapter number, wolf-book#84) is `Chapter N`, at the chapter
+        // heading's anchor, whose typst label `sec-N` exists too.
+        let label = if where_printed.section.contains('.') {
+            format!("§{}", where_printed.section)
+        } else {
+            format!("Chapter {}", where_printed.section)
+        };
         let link = format!(
-            "<a href=\"../ch{:02}.md#{}\">§{}</a>",
-            where_printed.chapter, where_printed.section, where_printed.section
+            "<a href=\"../ch{:02}.md#{}\">{label}</a>",
+            where_printed.chapter, where_printed.section
         );
         out.push_str(&format!(
             "\n<details>\n<summary>Exercise {ch}-{num}. {link}</summary>\n\n{}\n</details>\n",
