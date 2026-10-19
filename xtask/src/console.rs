@@ -906,4 +906,28 @@ mod tests {
         ));
         assert!(classify(&["cargo".into(), "build".into()]).is_none());
     }
+
+    // wolf-book#83: a console block's program must run in the process
+    // group the samples lane gives the same program (`run_within`'s
+    // `process_group(0)`), or a program that asks about its own group
+    // answers for whoever started the runner: §34.5's `groups.lu`, drafted
+    // without leading a group, answered `invalid` in the replay inside the
+    // CI container (group 1) and `ok` under the sample run (bs68). The
+    // replayed shell prints its pid and its process group; they must be
+    // the same number, which is what leading a group of its own means.
+    #[cfg(unix)]
+    #[test]
+    fn a_replayed_command_leads_its_own_process_group() {
+        let mut cmd = Command::new("sh");
+        cmd.arg("-c").arg("echo $$ $(ps -o pgid= -p $$)");
+        let (code, out, err) = run_capture(cmd).expect("sh runs");
+        assert_eq!(code, 0, "stderr: {err}");
+        let words: Vec<&str> = out.split_whitespace().collect();
+        assert_eq!(words.len(), 2, "pid and pgid, got {out:?}");
+        assert_eq!(
+            words[0], words[1],
+            "the replayed command is in its starter's process group (pid {}, pgid {})",
+            words[0], words[1]
+        );
+    }
 }
