@@ -268,6 +268,16 @@ fn plain_run_of_a_solution(dir: &Path, steps: &[Step]) -> std::result::Result<()
 /// together in the order a terminal would show them; the one that does
 /// not is `wolf conform-run`, whose stdout is addressed to a machine.
 fn run_capture(mut cmd: Command) -> Result<(i32, String, String)> {
+    // The program leads a process group of its own, as it does when the
+    // samples lane runs it (`samples::run_within`'s `process_group(0)`):
+    // a replay that ran it in the runner's group would answer a program
+    // that asks about its own group for whoever started the runner
+    // (wolf-book#83; group 1 inside a container).
+    #[cfg(unix)]
+    {
+        use std::os::unix::process::CommandExt as _;
+        cmd.process_group(0);
+    }
     let out = cmd.output().with_context(|| format!("spawning {cmd:?}"))?;
     Ok((
         out.status.code().unwrap_or(-1),
