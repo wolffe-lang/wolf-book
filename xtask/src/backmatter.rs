@@ -473,4 +473,32 @@ Prose.
         let msg = catalog_drift("E0005\nE0001\nW0603\n", DOC).expect("reorder must drift");
         assert!(msg.contains("different order"), "{msg}");
     }
+
+    // wolf-book#84: a chapter that ends with a batch of exercises under
+    // an unnumbered `## Exercises` heading sets them for the chapter, not
+    // for the last numbered section above the heading (34-5 … 34-7 linked
+    // §34.5, and 33-5 … 33-7 §33.4). An exercise inside a numbered
+    // section, and one under any other unnumbered heading (a chapter's
+    // closing pages, `The shelf, and what it cannot do`), keeps the
+    // section before it.
+    #[test]
+    fn a_batch_of_exercises_belongs_to_its_chapter() {
+        let root = tempfile::tempdir().expect("temp dir");
+        std::fs::create_dir_all(root.path().join("book")).unwrap();
+        std::fs::write(
+            root.path().join("book/ch05.md"),
+            "# 5. A chapter\n\n## 5.1 The first section\n\n**Exercise 5-1** *(fingers)*. One.\n\n\
+             ## 5.2 The second section\n\n**Exercise 5-2** *(fingers)*. Two.\n\n\
+             ## The shelf, and what it cannot do\n\n**Exercise 5-3** *(design)*. Three.\n\n\
+             ## Exercises\n\n**Exercise 5-4** *(design)*. Four.\n\n**Exercise 5-5** *(design)*. Five.\n",
+        )
+        .unwrap();
+        let found = printed_exercises(root.path()).unwrap();
+        let section = |n: u32| found.get(&(5, n)).map(|p| p.section.clone());
+        assert_eq!(section(1).as_deref(), Some("5.1"));
+        assert_eq!(section(2).as_deref(), Some("5.2"));
+        assert_eq!(section(3).as_deref(), Some("5.2"), "a closing page");
+        assert_eq!(section(4).as_deref(), Some("5"), "the batch's first");
+        assert_eq!(section(5).as_deref(), Some("5"), "the batch's last");
+    }
 }
