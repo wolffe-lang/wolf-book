@@ -1,0 +1,29 @@
+use std.signal
+use std.process
+
+fn changed(kid: process.Child) -> process.Status ! {io} {
+    var c = process.poll()?
+    while !c.changed || c.child.slot != kid.slot {
+        let _ = signal.wait(signal.child())?
+        c = process.poll()?
+    }
+    c.status
+}
+
+fn main() -> !int {
+    signal.listen(signal.child())?
+    var cmd = process.command("sleep")
+    process.push_arg(mut cmd, "10")
+    var kid = process.start(cmd)?
+    signal.send(process.pid(kid)?, signal.stop())?
+    let stopped = changed(kid)?
+    let stop_n = process.stopped_by(stopped) else 0
+    print("a stop: {process.is_stopped(stopped)}, by stop(): {stop_n == signal.number(signal.stop())?}")
+    process.kill(mut kid)?
+    let ended = changed(kid)?
+    let end_n = process.signal_of(ended) else 0
+    print("an end: {process.is_signalled(ended)}, by kill(): {end_n == signal.number(signal.kill())?}")
+    let after = process.poll()?
+    print("then: changed {after.changed}, {after.live} live")
+    0
+}

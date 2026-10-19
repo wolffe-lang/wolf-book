@@ -1,0 +1,9 @@
+use std.signal
+
+fn main() -> !int {
+    print("words for 0: {signal.text(0)?}")
+    print("words for terminate(): {signal.text(signal.terminate())?}")
+    let (h, live) = os_wait_poll_core()?
+    print("nothing to report, core sibling: {h}, {live} live")
+    0
+}

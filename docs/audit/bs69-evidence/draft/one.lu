@@ -1,0 +1,23 @@
+use std.signal
+use std.env
+
+fn one_row(meaning: int) -> str {
+    os_signal_ignore_one(meaning) else |e| {
+        return match e {
+            invalid => "invalid",
+            io => "io",
+            unsupported => "unsupported",
+        }
+    }
+    "ok"
+}
+
+fn main() -> !int {
+    print("kill: {one_row(signal.kill())}, stop: {one_row(signal.stop())}")
+    print("nothing: {one_row(0)}, two at once: {one_row(signal.user() | signal.alarm())}")
+    print("a fault meaning: {one_row(signal.segment_fault())}")
+    signal.send(env.pid(), signal.segment_fault())?
+    print("lived through the segment_fault() it sent itself")
+    os_signal_default_one(signal.segment_fault())?
+    0
+}

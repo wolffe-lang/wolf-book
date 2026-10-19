@@ -1,0 +1,26 @@
+use std.term
+use std.fs
+
+fn size_row(tty: fs.File) -> str {
+    let size = term.size(tty) else |e| {
+        return match e {
+            io => "io",
+            unsupported => "unsupported",
+        }
+    }
+    "{size.rows} rows, {size.columns} columns"
+}
+
+fn keys_row(tty: fs.File) -> str {
+    let keys = term.chars(tty) else |e| {
+        return match e {
+            io => "io",
+            unsupported => "unsupported",
+        }
+    }
+    "interrupt is byte {keys.interrupt}"
+}
+
+fn main() {
+    print("size: {size_row(fs.stdout())}, keys: {keys_row(fs.stdout())}")
+}

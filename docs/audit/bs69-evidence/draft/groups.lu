@@ -1,0 +1,30 @@
+use std.signal
+use std.process
+use std.env
+
+fn group_row(g: process.Group, meaning: int) -> str {
+    signal.send_group(g, meaning) else |e| {
+        return match e {
+            unsupported => "unsupported",
+            invalid => "invalid",
+            not_found => "not_found",
+            denied => "denied",
+            io => "io",
+        }
+    }
+    "ok"
+}
+
+fn main() -> !int {
+    process.lead_group()?
+    let mine = process.own_group()?
+    let one = process.Group { id: 1 }
+    let nobody = process.Group { id: 2147483647 }
+    print("leads a group of its own: {mine.id == env.pid()}")
+    print("its own group, nothing sent: {group_row(mine, 0)}")
+    print("group 1: {group_row(one, 0)}")
+    print("a group nobody leads: {group_row(nobody, 0)}")
+    print("two meanings at once: {group_row(mine, signal.user() | signal.alarm())}")
+    print("host numbers past the table's: {signal.last()? > 28}")
+    0
+}

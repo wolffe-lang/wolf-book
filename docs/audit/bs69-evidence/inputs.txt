@@ -1,0 +1,56 @@
+date 2026-10-19T19:29:16Z
+== tags
+wolf-lang v0.2.32 -> 72de141f624662fdff522e8beba459fab7c5cf66 (tag object d21c4b28, tag)
+wolf-lang v0.2.33 -> 85dab5d7e597680d6fd7034f1d7ed2acb9a92f97 (tag object 56110e4f, tag)
+wolf-interp v0.1.54 -> 0e536e8fb4518eaa798ac426901ab81275db5c9f (tag)
+== releases (API)
+v0.2.33 release 417610226 draft=false published 2026-10-19T18:37:53Z
+  wolf-0.2.33-aarch64-apple-darwin.tar.gz 18780248 sha256:9152dbd136d858539100088394cbaa97cf23f7ddd2816512cd9b48c70a9f40eb
+  wolf-0.2.33-aarch64-unknown-linux-gnu.tar.gz 75894894 sha256:24cde9e4668d17448527f774db602d93a348d285c2219a1edff791519530a2ac
+  wolf-0.2.33-x86_64-pc-windows-msvc.tar.gz 15837258 sha256:967748011252defeb7b4b8d7e1ab2a61bb2971f183e3e2aa3834821391b90398
+  wolf-0.2.33-x86_64-unknown-linux-gnu.tar.gz 80128936 sha256:4f955e8dfe6eaafa441903eeba43c009c4ec2b45a8da09fe13431e8b12340af8
+v0.2.32 release 416327027 draft=false published 2026-10-18T08:38:14Z
+  wolf-0.2.32-aarch64-apple-darwin.tar.gz 18744597 sha256:061ea7e5ca63449d5d933cdba2f4e3a717e3f8570455a0c31233e31da08cfec6
+  wolf-0.2.32-aarch64-unknown-linux-gnu.tar.gz 75859791 sha256:af27d4260e4e991dc0e44dc29b0e802c468c07da62db7adc17a551e0ffa9f017
+  wolf-0.2.32-x86_64-pc-windows-msvc.tar.gz 15834784 sha256:40eb42af49e4c0ab33a18b568b6bd7a69d33ff263438dda8405f2e41699fb4c3
+  wolf-0.2.32-x86_64-unknown-linux-gnu.tar.gz 80092071 sha256:4c37f9c5dc3d8830c06810948027d38bdbc375dc5524ab23127b0ada0907d851
+v0.1.54 release 415937354 draft=false published 2026-10-17T16:48:34Z
+  lupin-0.1.54-aarch64-apple-darwin.tar.gz 2654405 sha256:9cd14db71e32c277829b5e05cdae27bf60cd6f269a9a24f97a7dba67e28a4093
+  lupin-0.1.54-aarch64-unknown-linux-gnu.tar.gz 2809793 sha256:5fb15e31289d810129b40a9a0af07417d85d5090e74045f66b1f7f4016d166e7
+  lupin-0.1.54-x86_64-pc-windows-msvc.zip 2592214 sha256:cc0b7b242b8546634b4b6ae64bdea2626b2640152d8fca48dac531276a4c7b90
+  lupin-0.1.54-x86_64-unknown-linux-gnu.tar.gz 2971403 sha256:175df23880cd5bb993b778e5c8fdd7d0d96c176696802e640f6fc87d3dab40dd
+  lupin.exe 6749184 sha256:4ed2487b2492a5073d14252c4fe6383331a87ce312aaa7715fa42737057d7957
+== PAIRING / STD-PIN
+v0.2.32: lupin-version = 0.1.54 lupin-pin = 294d626  wolf-std-commit = d37c911f12206c4bf5c8d3281a649bf31da3beef
+v0.2.33: lupin-version = 0.1.54 lupin-pin = 294d626  wolf-std-commit = cceda63151430eac07df895fdfffddfa4a0b92c1
+== counts
+v0.2.32..v0.2.33 42
+294d626..v0.2.33 955; 294d626..v0.2.32 913
+releases after 294d626 (v0.2.24): v0.2.25 v0.2.26 v0.2.27 v0.2.28 v0.2.29 v0.2.30 v0.2.31 v0.2.32 v0.2.33 
+lupin vendor/upstream/PIN at v0.1.54: 294d626dd596122285d5df954762e3aee3e5db71
+== spec
+anchors v0.2.32      661 v0.2.33      664
+> os.signal.disp.one
+> os.signal.exit
+> os.signal.gaps.note
+spec/grammar.ebnf v0.2.32..v0.2.33: 
+crates/wolf_driver/src/help.rs v0.2.32..v0.2.33: 
+docs/diagnostics.md v0.2.32..v0.2.33: 
+== prelude names v0.2.32..v0.2.33
+> os_exit_signal
+> os_signal_default_one
+> os_signal_ignore_one
+> os_wait_poll_core
+> os_wait_status_core
+== std
+wolf-std d37c911 -> d37c911f12206c4bf5c8d3281a649bf31da3beef (commit)
+wolf-std cceda63 -> cceda63151430eac07df895fdfffddfa4a0b92c1 (commit)
+std/ d37c911..cceda63:
+ std/process/process.lu | 313 +++++++++++++++++++++++++++++++++++++++++++++++--
+ std/signal/signal.lu   | 186 +++++++++++++++++++++++++++--
+ 2 files changed, 478 insertions(+), 21 deletions(-)
+wolf-std origin/trunk: cceda63151430eac07df895fdfffddfa4a0b92c1
+== planning
+wolf origin/trunk 434ebd8422fbbeb1e5d39d78a26692ce1c9f0671
+== wolf-book
+e9862f6abe6374a759645aa53b52bc7e38603ebd
