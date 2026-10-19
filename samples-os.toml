@@ -233,6 +233,36 @@ stdout = "error: io"
 retires = "a windows `child()` ([os.signal.platform]); windows has no stops ([os.proc.poll])"
 note = "bs68, 2026-10-18: §34.5's `jobs.lu`. A listen for `child()` is `io` on this host (a console delivers only its own meanings), so the program ends at its first line, before it starts the child."
 
+# bs69, 2026-10-19: §34.6's two programs, found by the windows samples lane
+# of PR #85 (run 39317769517, job 118283595542: `book/ch34/s11: wolf run:
+# exited Some(1), expected 0` and the same for `book/ch34/s12`). The
+# one-meaning dispositions and the end by a signal are `unsupported` on
+# windows after their shape (`[os.signal.disp.one]`, `[os.signal.exit]`), and
+# so is `signal.number` (`[os.signal.platform]`). §34.3's and §34.5's std
+# moves (s5, s7, s8, s10) answer the rows above unchanged.
+
+[[refusal]]
+id = "book/ch34/s11"
+os = "windows"
+exit = 1
+stderr = ""
+stdout = """kill: invalid, stop: invalid
+nothing: invalid, two at once: invalid
+a fault meaning: unsupported
+error: unsupported"""
+retires = "a windows `os_signal_ignore_one` / `os_signal_send` ([os.signal.disp.one], [os.signal.platform])"
+note = "bs69, 2026-10-19: §34.6's `one.lu`. The shape rows answer first (`kill()`, `stop()`, 0 and two meanings are `invalid` on every host), then `os_signal_ignore_one` of a fault meaning is `unsupported` on this host, and the send to itself ends the program at its `?`."
+
+[[refusal]]
+id = "book/ch34/s12"
+os = "windows"
+exit = 1
+stderr = ""
+stdout = """error: unsupported
+error: unsupported"""
+retires = "a windows `os_exit_signal` / `os_signal_number` ([os.signal.exit], [os.signal.platform])"
+note = "bs69, 2026-10-19: §34.6's `again.lu`. The child (the same program, re-executed) answers `os_exit_signal` `unsupported` and exits 1, its line on the stdout it shares with its parent; the parent reads that exit and ends at `signal.number`, `unsupported` on this host."
+
 [[transcript]]
 block = "book/ch34.md:263"
 os = "windows"
