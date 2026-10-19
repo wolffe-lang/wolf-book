@@ -1,0 +1,13 @@
+2026-10-19T19:40:41Z
+host hasu Linux x86_64
+wolf-0.2.32-x86_64-unknown-linux-gnu.tar.gz api=4c37f9c5dc3d8830c06810948027d38bdbc375dc5524ab23127b0ada0907d851 got=4c37f9c5dc3d8830c06810948027d38bdbc375dc5524ab23127b0ada0907d851 MATCH
+wolf-0.2.32-x86_64-unknown-linux-gnu.tar.gz: OK
+wolf-0.2.32-x86_64-unknown-linux-gnu.tar.gz second read: tree wolf-0.2.32-x86_64-unknown-linux-gnu IDENTICAL
+lupin-0.1.54-x86_64-unknown-linux-gnu.tar.gz api=175df23880cd5bb993b778e5c8fdd7d0d96c176696802e640f6fc87d3dab40dd got=175df23880cd5bb993b778e5c8fdd7d0d96c176696802e640f6fc87d3dab40dd MATCH
+lupin-0.1.54-x86_64-unknown-linux-gnu.tar.gz: OK
+lupin-0.1.54-x86_64-unknown-linux-gnu.tar.gz second read: tree lupin-0.1.54-x86_64-unknown-linux-gnu IDENTICAL
+/home/mfwolffe/lanes/bs69/c32/wolf-0.2.32-x86_64-unknown-linux-gnu/wolf
+wolf 0.2.32 (wolfgang, pin 72de141)
+paired with lupin 0.1.54 (reference interpreter), pin 294d626
+/home/mfwolffe/lanes/bs69/c32/lupin-0.1.54-x86_64-unknown-linux-gnu/lupin
+lupin 0.1.54 (wolf-interp, reference interpreter at pin 294d626)

@@ -1533,8 +1533,67 @@ repo = "wolffe-lang/wolf-lang"
 # ruling #84) and the group calls (ruling #79) as builtins (§34.5). Spec:
 # anchors 648 -> 661 (none dropped), catalogue 187 -> 187, grammar
 # unchanged.
-rev = "72de141f624662fdff522e8beba459fab7c5cf66"
-impl_version = "0.2.32"
+# ---- bs69, crawl 54: wolf 0.2.33 + lupin 0.1.54 — one release, the five
+#      calls (s246, ruling #88), the bundled std moves to cceda63; the
+#      interpreter's clause NINE back ----
+#
+# wolf-lang at the v0.2.33 release tag (`85dab5d`), TAKEN FROM THE
+# RELEASE ARCHIVE (release 417610226) and matched against the release's
+# published digest before unpacking, then read a second time from a
+# fresh download (`sha256sum -c` OK, the unpacked tree identical), on
+# kasumi (gh) and on hasu (curl against the public API):
+# `wolf-0.2.33-x86_64-unknown-linux-gnu.tar.gz` sha256
+# 4f955e8dfe6eaafa441903eeba43c009c4ec2b45a8da09fe13431e8b12340af8
+# (macOS and windows are the book's CI samples lanes, built from this
+# rev). Every member hashed BY NAME
+# (docs/audit/bs69-evidence/kasumi/subject-members.txt, and hasu's,
+# identical):
+#
+#   wolf                 58e4ade4...   <- the pin of record
+#   wolf-cimport-worker  57c41e39...
+#   libwolf_rt.a         5321ce86...   <- the five calls, the sent-fault
+#                                         guard, the shared wake pipe
+#   libwolf_rt_none.a    2a3444bd...
+#   wolf.1               ed60f97b...   <- the version
+#   README.md            d8dfea53...
+#   _wolf                a368c8ec...   <- same as 0.2.32
+#   wolf.bash            1b1d8853...   <- same as 0.2.32
+#   wolf.fish            180de0ec...   <- same as 0.2.32
+#   std/                 58 files, 54 .lu, STD-REV cceda631...
+#                        manifest 4382865a... (0.2.32's was 1f7389b7...)
+#
+#   wolf 0.2.33 (wolfgang, pin 85dab5d)
+#   paired with lupin 0.1.54 (reference interpreter), pin 294d626
+#   lupin 0.1.54 (wolf-interp, reference interpreter at pin 294d626)
+#
+# PREDICTED TO THE CHARACTER in docs/audit/bs69-prediction.md (committed
+# at d9b804b, before the archive was downloaded) and measured
+# byte-identical. The interpreter's clause still names v0.2.24's tag,
+# now NINE releases back: `294d626..85dab5d7` = 955 commits, nine
+# releases (v0.2.25 .. v0.2.33).
+#
+# THE BUNDLED STD IS wolf-std `cceda63` (0.2.31 and 0.2.32 shipped
+# `d37c911`); the tree differs in `std/process/process.lu`,
+# `std/signal/signal.lu` and `STD-REV` only: ruling #85's
+# `process.Status`, `process.poll`, `Group` and its four calls, and
+# `signal.send_group`, `send_all`, `last`, `realtime`, `text`, `host`.
+# The book's CI stages that tree beside its source-built `wolf` and holds
+# it to the archive's manifest, `4382865a…` now (.github/workflows/book.yml).
+# ch22's interface listing reaches `std.range`, which did not move.
+#
+# What the release changed that the book can see, measured in
+# docs/audit/bs69-results.md (the sweep of every program the runner
+# executes, bs69-evidence/kasumi/sweep-*): at the unedited head, the
+# stamps (ch01, colophon) and the interface toolchain line (ch22, 22-13)
+# in the samples gate, and nothing else on any machine. What it ADDS and
+# the book now teaches: chapter 34 on the std this archive bundles (the
+# waiver sentence out, §34.3 and §34.5), and the five calls as builtins
+# (§34.6: `os_signal_ignore_one`, `os_signal_default_one`,
+# `os_exit_signal`, `os_wait_status_core`, `os_wait_poll_core`). Spec:
+# anchors 661 -> 664 (none dropped), catalogue 187 -> 187, grammar
+# unchanged.
+rev = "85dab5d7e597680d6fd7034f1d7ed2acb9a92f97"
+impl_version = "0.2.33"
 
 [lupin]
 # wolf-interp at the v0.1.30 release tag (is42): the stamped line names
@@ -2221,6 +2280,14 @@ impl_version = "0.2.32"
 # calls' shape rows and refuses each well-formed call by name, and
 # answers `os_wait_poll` with `(-1, 0)` while it holds no live child (the
 # §34.5 program that runs on both machines).
+# ---- bs69, crawl 54: 0.1.54 stays (wolf 0.2.33 pairs it; s246 has no
+#      lupin half) ----
+#
+# The same archive, read twice again on kasumi and hasu (`175df238…`,
+# the unpacked tree identical to the control's). It does not resolve the
+# five new names (wolf-interp#261, #263) and still answers
+# `os_signal_text(0)` with `invalid` (#262); chapter 34 shows none of
+# those on lupin.
 repo = "wolffe-lang/wolf-interp"
 rev = "0e536e8fb4518eaa798ac426901ab81275db5c9f"
 version = "lupin 0.1.54 (wolf-interp, reference interpreter at pin 294d626)"
@@ -2250,6 +2317,7 @@ version = "lupin 0.1.54 (wolf-interp, reference interpreter at pin 294d626)"
 # between v0.1.52 and v0.1.53).
 # bs68: follows [lupin].rev to 0.1.54 (placetrace.rs byte-identical
 # between v0.1.53 and v0.1.54).
+# bs69: unchanged ([lupin] did not move; the traces re-take byte-identical).
 repo = "wolffe-lang/wolf-interp"
 rev = "0e536e8fb4518eaa798ac426901ab81275db5c9f"
 [wolf-lsp]
@@ -2448,4 +2516,15 @@ pending = "is08"
 # wolf-std trunk `dcf3e89` does (sc64, ruling #85), and no release
 # archive carries it, so §34.5 shows those as builtins and names nothing
 # from that trunk.
+#
+# bs69 (wolf 0.2.33): the archive's `std/` is wolf-std `cceda63` (sc64,
+# ruling #85, and sc65). It wraps what `d37c911` did not: `process.Status`
+# (`status_from`, `is_exited`, `is_signalled`, `is_stopped`, `exit_code`,
+# `signal_of`, `stopped_by`, `shell_code`), `process.poll` and `Change`,
+# `process.Group`, `group_of`, `own_group`, `lead_group`, `join_group`;
+# `signal.send_group`, `send_all`, `last`, `Realtime`/`realtime`, `text`,
+# `host`. So §34.5's waiver sentence comes out and chapter 34's programs
+# take the std spellings (all but the two that show a builtin on both
+# machines). It wraps none of 0.2.33's five calls (wolf-std#74, sc66), so
+# §34.6 shows those as builtins.
 pending = "wolf-std publishes no release to pin (wolf-book#39)"

@@ -1,0 +1,4 @@
+spec/anchors.json, wolf-lang v0.2.32 (72de141f) -> v0.2.33 (85dab5d7): 661 -> 664 anchors, key sets diffed both ways
+added: os.signal.disp.one os.signal.exit os.signal.gaps.note
+dropped: none
+retargeted: none
