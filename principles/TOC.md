@@ -397,6 +397,9 @@ see §Deltas, bs67 · the book's first `use std.…` programs*
 - 34.5 Groups, and what the children did — ask a process group with a
   send of nothing, lead a group of your own, and poll the children for
   an end or a stop without blocking.
+- 34.6 One signal at a time, and an end by one — ignore a fault meaning
+  and live through the one a program sends itself, end a process by a
+  signal its parent can read, and ask whether a child left a core.
 - Exercises 34-1 … 34-7.
 
 ## Part 5 — Projects
@@ -1504,3 +1507,21 @@ sprint files remain the implementation contracts for everything else.
     The same std DOES wrap the ids and the terminal calls that bs67's
     "ship with the next release" sentences named, so those sentences now
     name the wrappers; the waiver row moves to §34.5's one sentence.
+- **bs69 (the book at wolf 0.2.33, 2026-10-19):** one compiler release,
+  the std it bundles, and one section added.
+  - **Chapter 34 moves to the std** wolf 0.2.33 bundles (wolf-std
+    `cceda63`, ruling #85): §34.5's group calls, numbering and poll, and
+    §34.3's ids and terminal calls, are taught through `std.process`,
+    `std.signal`, `std.env` and `std.term`, with the builtins named
+    underneath. The waiver sentence that said the std had no wrappers is
+    out, and its ledger row closed. Two programs keep the builtin on
+    purpose: §34.2's `alive.lu` (the interpreter's refusal by name) and
+    §34.5's `nochild.lu` (the one program both machines run).
+  - **§34.6 is new, not an insertion**: 0.2.33's five calls (one
+    meaning's disposition, the end by a signal, the core siblings) are a
+    section of their own at the chapter's end, so §34.1–§34.5 keep their
+    anchors and their programs keep their sample ids. They are taught as
+    builtins; the chapter's ledger dates the note.
+  - **Exercises 33-5 … 33-7 and 34-5 … 34-7 link their chapter** in the
+    solutions page (wolf-book#84): a batch under `## Exercises` is the
+    chapter's, not the last numbered section's.
