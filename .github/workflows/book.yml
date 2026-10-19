@@ -164,9 +164,9 @@ jobs:
       # stages: wolf-std's `std/` tree at the commit wolf-lang's
       # `crates/wolf_driver/STD-PIN` names, the two licences, and
       # `STD-REV`. The manifest below is the archive's own, measured from
-      # the 0.2.32 release archive (bs68,
-      # docs/audit/bs68-evidence/kasumi/subject-members.txt; wolf-std
-      # `d37c911`, where 0.2.30's `fd6bcdc` read `ab2576df…`); a STD-PIN
+      # the 0.2.33 release archive (bs69,
+      # docs/audit/bs69-evidence/kasumi/subject-members.txt; wolf-std
+      # `cceda63`, where 0.2.32's `d37c911` read `1f7389b7…`); a STD-PIN
       # bump moves it, and this step then fails until the bump re-measures it.
       # autocrlf off: windows runners convert line endings by default,
       # and the archive's bytes are LF.
@@ -190,9 +190,9 @@ jobs:
           # marks binary mode (`*path`), which would move the manifest and
           # nothing else.
           got=$(cd wolf-lang/target/release && find std -type f | LC_ALL=C sort | while IFS= read -r f; do printf '%s  %s\n' "$(sha "$f" | cut -c1-64)" "$f"; done | sha | cut -c1-64)
-          want=1f7389b7a666f9915df3e8ba68881437cf2b81ebc81184c043e5155dd1bba4a8
+          want=4382865a5166fbde9b496a2f76b4a9cda3fbddc8f8e917e1d4f4d4aa9257bbc0
           echo "staged std/: $(cd wolf-lang/target/release && find std -type f | wc -l) files, manifest ${got}"
-          if [ "${got}" != "${want}" ]; then echo "::error::staged std/ manifest ${got} is not the 0.2.32 archive's ${want}"; exit 1; fi
+          if [ "${got}" != "${want}" ]; then echo "::error::staged std/ manifest ${got} is not the 0.2.33 archive's ${want}"; exit 1; fi
       - name: build pinned lupin (release)
         if: steps.acquire.outputs.toolchain == 'full'
         shell: bash
