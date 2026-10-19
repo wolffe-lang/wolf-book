@@ -1,0 +1,5 @@
+2026-10-19T19:48:09Z
+leader 1020019: bash /home/mfwolffe/lanes/bs69/ev/control-hasu.sh
+child 1161215: /home/mfwolffe/lanes/bs69/target/debug/xtask samples
+gone 1020019
+gone 1161215

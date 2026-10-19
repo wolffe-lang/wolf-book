@@ -1,0 +1,6 @@
+2026-10-19T19:49:31Z
+leader 1211100: unshare --user --map-current-user --pid --fork --mount-proc env PATH=/nix/store/2c5r0kpn5yb8qsvfw77j8h63pklij8rq-lld-21.1.8/bin:/home/mfwolffe/.local/bin:/run/wrappers/bin:/home/mfwolffe/.local/share/flatpak/exports/bin:/var/lib/flatpak/exports/bin:/home/mfwolffe/.nix-profile/bin:/nix/profile/bin:/home/mfwolffe/.local/state/nix/profile/bin:/etc/profiles/per-user/mfwolffe/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin SUBJECT_HEAD= bash -c ulimit -c 0; echo "namespace: pid $$ procs $(ls -d /proc/[0-9]* | wc -l) uid $(id -u) core $(ulimit -c)/$(ulimit -Hc) ld.lld $(command -v ld.lld)"; grep -E "^Sig(Blk|Ign)" /proc/self/status; exec bash "$@" ns /home/mfwolffe/lanes/bs69/ev/control-hasu.sh
+child 1211102: bash /home/mfwolffe/lanes/bs69/ev/control-hasu.sh
+still alive 1211100
+still alive 1211102
+2026-10-19T19:49:54Z SIGKILL 1211102 (the first ns run's init, SIGTERM ignored as a namespace init); 1211100 its unshare parent

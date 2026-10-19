@@ -1,0 +1,26 @@
+Diff in /home/mfwolffe/lanes/bs69/wb-work/xtask/src/backmatter.rs:497:
+         let section = |n: u32| found.get(&(5, n)).map(|p| p.section.clone());
+         assert_eq!(section(1).as_deref(), Some("5.1"));
+         assert_eq!(section(2).as_deref(), Some("5.2"));
+-        assert_eq!(section(3).as_deref(), Some("5.2"), "a closing page keeps its section");
+-        assert_eq!(section(4).as_deref(), Some("5"), "the batch is the chapter's");
+-        assert_eq!(section(5).as_deref(), Some("5"), "the batch is the chapter's");
++        assert_eq!(
++            section(3).as_deref(),
++            Some("5.2"),
++            "a closing page keeps its section"
++        );
++        assert_eq!(
++            section(4).as_deref(),
++            Some("5"),
++            "the batch is the chapter's"
++        );
++        assert_eq!(
++            section(5).as_deref(),
++            Some("5"),
++            "the batch is the chapter's"
++        );
+     }
+ }
+ 
+EXIT 1

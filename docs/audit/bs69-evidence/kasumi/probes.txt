@@ -1,0 +1,369 @@
+container: 3a3f42e592f2 pid 1 procs 4 uid 1000 core 0/0
+SigBlk:	0000000000000000
+SigIgn:	0000000000000000
+########## wolf 0.2.33 (wolfgang, pin 85dab5d) / lupin 0.1.54 (wolf-interp, reference interpreter at pin 294d626)
+SigBlk:	0000000000000000
+SigIgn:	0000000000000000
+
+=== again.lu
+use std.signal
+use std.process
+use std.env
+
+fn main() -> !int {
+    for a in env.args() {
+        if a == "again" { os_exit_signal(signal.terminate())? }
+    }
+    var again = process.command(os_exe()?)
+    process.push_arg(mut again, "again")
+    let kid = process.start(again)?
+    let status = os_wait_status_core(kid.slot)?
+    let n = signal.number(signal.terminate())?
+    print("ended by terminate(): {status == 0 - n}")
+    print("and with a core: {status == 0 - (256 + n)}")
+    0
+}
+$ lupin again.lu
+again.lu: unsupported: `env.args` does not resolve
+[exit 4]
+$ wolf run again.lu
+ended by terminate(): true
+and with a core: false
+[exit 0]
+$ wolf conform-run --json again.lu
+{"commit":"85dab5d","diagnostics":[],"file":"./again.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked again.lu
+wolf: `again` is not a wolf command.
+(`wolf --help` lists every command and shows a first program)
+{"commit":"85dab5d","diagnostics":[],"file":"./again.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"ended by terminate(): false\nand with a core: false\n","stdout_sha256":"4e514b24468c774a14cf5d1f2ce8db760e31aa9f73e977795410217501f96911","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release again.lu && ./again
+[build exit 0]
+ended by terminate(): true
+and with a core: false
+[exit 0]
+$ taskset -c 0-3 wolf run again.lu
+ended by terminate(): true
+and with a core: false
+[exit 0]
+
+=== groups.lu
+use std.signal
+use std.process
+use std.env
+
+fn group_row(g: process.Group, meaning: int) -> str {
+    signal.send_group(g, meaning) else |e| {
+        return match e {
+            unsupported => "unsupported",
+            invalid => "invalid",
+            not_found => "not_found",
+            denied => "denied",
+            io => "io",
+        }
+    }
+    "ok"
+}
+
+fn main() -> !int {
+    process.lead_group()?
+    let mine = process.own_group()?
+    let one = process.Group { id: 1 }
+    let nobody = process.Group { id: 2147483647 }
+    print("leads a group of its own: {mine.id == env.pid()}")
+    print("its own group, nothing sent: {group_row(mine, 0)}")
+    print("group 1: {group_row(one, 0)}")
+    print("a group nobody leads: {group_row(nobody, 0)}")
+    print("two meanings at once: {group_row(mine, signal.user() | signal.alarm())}")
+    print("host numbers past the table's: {signal.last()? > 28}")
+    0
+}
+$ lupin groups.lu
+groups.lu: unsupported: `process.lead_group` does not resolve
+[exit 4]
+$ wolf run groups.lu
+leads a group of its own: true
+its own group, nothing sent: ok
+group 1: invalid
+a group nobody leads: not_found
+two meanings at once: invalid
+host numbers past the table's: true
+[exit 0]
+$ wolf conform-run --json groups.lu
+{"commit":"85dab5d","diagnostics":[],"file":"./groups.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked groups.lu
+{"commit":"85dab5d","diagnostics":[],"file":"./groups.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"leads a group of its own: true\nits own group, nothing sent: ok\ngroup 1: invalid\na group nobody leads: not_found\ntwo meanings at once: invalid\nhost numbers past the table's: true\n","stdout_sha256":"0bc3c3a57ba974df3c9224cdc6a32f79c28820f0c49ab23977fa1da2ee61488b","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release groups.lu && ./groups
+[build exit 0]
+leads a group of its own: true
+its own group, nothing sent: ok
+group 1: invalid
+a group nobody leads: not_found
+two meanings at once: invalid
+host numbers past the table's: true
+[exit 0]
+$ taskset -c 0-3 wolf run groups.lu
+leads a group of its own: true
+its own group, nothing sent: ok
+group 1: invalid
+a group nobody leads: not_found
+two meanings at once: invalid
+host numbers past the table's: true
+[exit 0]
+
+=== jobs.lu
+use std.signal
+use std.process
+
+fn changed(kid: process.Child) -> process.Status ! {io} {
+    var c = process.poll()?
+    while !c.changed || c.child.slot != kid.slot {
+        let _ = signal.wait(signal.child())?
+        c = process.poll()?
+    }
+    c.status
+}
+
+fn main() -> !int {
+    signal.listen(signal.child())?
+    var cmd = process.command("sleep")
+    process.push_arg(mut cmd, "10")
+    var kid = process.start(cmd)?
+    signal.send(process.pid(kid)?, signal.stop())?
+    let stopped = changed(kid)?
+    let stop_n = process.stopped_by(stopped) else 0
+    print("a stop: {process.is_stopped(stopped)}, by stop(): {stop_n == signal.number(signal.stop())?}")
+    process.kill(mut kid)?
+    let ended = changed(kid)?
+    let end_n = process.signal_of(ended) else 0
+    print("an end: {process.is_signalled(ended)}, by kill(): {end_n == signal.number(signal.kill())?}")
+    let after = process.poll()?
+    print("then: changed {after.changed}, {after.live} live")
+    0
+}
+$ lupin jobs.lu
+jobs.lu: unsupported: `signal.listen` does not resolve
+[exit 4]
+$ wolf run jobs.lu
+a stop: true, by stop(): true
+an end: true, by kill(): true
+then: changed false, 0 live
+[exit 0]
+$ wolf conform-run --json jobs.lu
+{"commit":"85dab5d","diagnostics":[],"file":"./jobs.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked jobs.lu
+{"commit":"85dab5d","diagnostics":[],"file":"./jobs.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"a stop: true, by stop(): true\nan end: true, by kill(): true\nthen: changed false, 0 live\n","stdout_sha256":"44f6058c94e443f49c3853285cab8fdc3aacc81b7d9ee24f0abe56210b2f5d66","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release jobs.lu && ./jobs
+[build exit 0]
+a stop: true, by stop(): true
+an end: true, by kill(): true
+then: changed false, 0 live
+[exit 0]
+$ taskset -c 0-3 wolf run jobs.lu
+a stop: true, by stop(): true
+an end: true, by kill(): true
+then: changed false, 0 live
+[exit 0]
+
+=== nochild.lu
+fn main() -> !int {
+    let (h, live) = os_wait_poll()?
+    print("nothing to report: {h}, {live} live")
+    0
+}
+$ lupin nochild.lu
+nothing to report: -1, 0 live
+[exit 0]
+$ wolf run nochild.lu
+nothing to report: -1, 0 live
+[exit 0]
+$ wolf conform-run --json nochild.lu
+{"commit":"85dab5d","diagnostics":[],"file":"./nochild.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked nochild.lu
+{"commit":"85dab5d","diagnostics":[],"file":"./nochild.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"nothing to report: -1, 0 live\n","stdout_sha256":"1f87a8b5279f28dcc19045c29bcd8e89336f57713d81175505b21de7353d17cc","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release nochild.lu && ./nochild
+[build exit 0]
+nothing to report: -1, 0 live
+[exit 0]
+$ taskset -c 0-3 wolf run nochild.lu
+nothing to report: -1, 0 live
+[exit 0]
+
+=== one.lu
+use std.signal
+use std.env
+
+fn one_row(meaning: int) -> str {
+    os_signal_ignore_one(meaning) else |e| {
+        return match e {
+            invalid => "invalid",
+            io => "io",
+            unsupported => "unsupported",
+        }
+    }
+    "ok"
+}
+
+fn main() -> !int {
+    print("kill: {one_row(signal.kill())}, stop: {one_row(signal.stop())}")
+    print("nothing: {one_row(0)}, two at once: {one_row(signal.user() | signal.alarm())}")
+    print("a fault meaning: {one_row(signal.segment_fault())}")
+    signal.send(env.pid(), signal.segment_fault())?
+    print("lived through the segment_fault() it sent itself")
+    os_signal_default_one(signal.segment_fault())?
+    0
+}
+$ lupin one.lu
+one.lu: unsupported: `signal.kill` does not resolve
+[exit 4]
+$ wolf run one.lu
+kill: invalid, stop: invalid
+nothing: invalid, two at once: invalid
+a fault meaning: ok
+lived through the segment_fault() it sent itself
+[exit 0]
+$ wolf conform-run --json one.lu
+{"commit":"85dab5d","diagnostics":[],"file":"./one.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked one.lu
+wolf conform-run --checked: unsupported — `os_signal_ignore_one`/`os_signal_default_one` of a fault meaning (SEGMENT_FAULT, BUS_ERROR: the `wolf` process's own stack guard holds them; [os.signal.disp.one]) @66..95
+{"commit":"85dab5d","diagnostics":[],"file":"./one.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"mem","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"unsupported","warnings":[],"x-unsupported-construct":"`os_signal_ignore_one`/`os_signal_default_one` of a fault meaning (SEGMENT_FAULT, BUS_ERROR: the `wolf` process's own stack guard holds them; [os.signal.disp.one])","x-unsupported-span":[66,95]}
+[exit 0]
+$ wolf build --release one.lu && ./one
+[build exit 0]
+kill: invalid, stop: invalid
+nothing: invalid, two at once: invalid
+a fault meaning: ok
+lived through the segment_fault() it sent itself
+[exit 0]
+$ taskset -c 0-3 wolf run one.lu
+kill: invalid, stop: invalid
+nothing: invalid, two at once: invalid
+a fault meaning: ok
+lived through the segment_fault() it sent itself
+[exit 0]
+
+=== text0.lu
+use std.signal
+
+fn main() -> !int {
+    print("words for 0: {signal.text(0)?}")
+    print("words for terminate(): {signal.text(signal.terminate())?}")
+    let (h, live) = os_wait_poll_core()?
+    print("nothing to report, core sibling: {h}, {live} live")
+    0
+}
+$ lupin text0.lu
+text0.lu: unsupported: `signal.text` does not resolve
+[exit 4]
+$ wolf run text0.lu
+words for 0: Unknown signal 0
+words for terminate(): Terminated
+nothing to report, core sibling: -1, 0 live
+[exit 0]
+$ wolf conform-run --json text0.lu
+{"commit":"85dab5d","diagnostics":[],"file":"./text0.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked text0.lu
+{"commit":"85dab5d","diagnostics":[],"file":"./text0.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"words for 0: Unknown signal 0\nwords for terminate(): Terminated\nnothing to report, core sibling: -1, 0 live\n","stdout_sha256":"97d6aef140211e1090c3e25139e31876333b45dbe4268fb9a57d93bc579f1ef3","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release text0.lu && ./text0
+[build exit 0]
+words for 0: Unknown signal 0
+words for terminate(): Terminated
+nothing to report, core sibling: -1, 0 live
+[exit 0]
+$ taskset -c 0-3 wolf run text0.lu
+words for 0: Unknown signal 0
+words for terminate(): Terminated
+nothing to report, core sibling: -1, 0 live
+[exit 0]
+
+=== who.lu
+use std.env
+
+fn main() -> !int {
+    print("an id: {env.pid() > 0}, a parent: {env.ppid()? > 0}")
+    print("started set-user-id: {env.uid()? != env.euid()?}")
+    print("started set-group-id: {env.gid()? != env.egid()?}")
+    0
+}
+$ lupin who.lu
+who.lu: unsupported: `env.pid` does not resolve
+[exit 4]
+$ wolf run who.lu
+an id: true, a parent: true
+started set-user-id: false
+started set-group-id: false
+[exit 0]
+$ wolf conform-run --json who.lu
+{"commit":"85dab5d","diagnostics":[],"file":"./who.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked who.lu
+{"commit":"85dab5d","diagnostics":[],"file":"./who.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"an id: true, a parent: true\nstarted set-user-id: false\nstarted set-group-id: false\n","stdout_sha256":"b93a31109717f3e3a5a1d910c4585cece5fea4b4a00418921f5f223ed5d03dd4","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release who.lu && ./who
+[build exit 0]
+an id: true, a parent: true
+started set-user-id: false
+started set-group-id: false
+[exit 0]
+$ taskset -c 0-3 wolf run who.lu
+an id: true, a parent: true
+started set-user-id: false
+started set-group-id: false
+[exit 0]
+
+=== window.lu
+use std.term
+use std.fs
+
+fn size_row(tty: fs.File) -> str {
+    let size = term.size(tty) else |e| {
+        return match e {
+            io => "io",
+            unsupported => "unsupported",
+        }
+    }
+    "{size.rows} rows, {size.columns} columns"
+}
+
+fn keys_row(tty: fs.File) -> str {
+    let keys = term.chars(tty) else |e| {
+        return match e {
+            io => "io",
+            unsupported => "unsupported",
+        }
+    }
+    "interrupt is byte {keys.interrupt}"
+}
+
+fn main() {
+    print("size: {size_row(fs.stdout())}, keys: {keys_row(fs.stdout())}")
+}
+$ lupin window.lu
+window.lu: unsupported: `fs.stdout` does not resolve
+[exit 4]
+$ wolf run window.lu
+size: io, keys: io
+[exit 0]
+$ wolf conform-run --json window.lu
+{"commit":"85dab5d","diagnostics":[],"file":"./window.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked window.lu
+{"commit":"85dab5d","diagnostics":[],"file":"./window.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"size: io, keys: io\n","stdout_sha256":"c01a42a7e137d044210b53babc30910707105439d04191fcb3392814a6118d07","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release window.lu && ./window
+[build exit 0]
+size: io, keys: io
+[exit 0]
+$ taskset -c 0-3 wolf run window.lu
+size: io, keys: io
+[exit 0]

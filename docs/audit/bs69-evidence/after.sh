@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# bs69: wait for a done-file, then exec a command (both this lane's). Args: donefile command...
+d=$1; shift; while [ ! -f "$d" ]; do sleep 10; done; exec "$@"

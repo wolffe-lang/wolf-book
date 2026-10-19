@@ -1,0 +1,22 @@
+appx_exB_11_lu [release]
+   was ('225', '')
+   now ('115', '')
+ch09_ex9_4_lu [release]
+   was ('45', '')
+   now ('88', '')
+ch10_md_84 [release]
+   was ('0', 'the scope is still open\nthe reader is counting\nthe scope has joined\n900 words\n')
+   now ('0', 'the reader is counting\nthe scope is still open\nthe scope has joined\n900 words\n')
+ch11_ex11_5_lu [release]
+   was ('0', 'worker 0 took job 1\nworker 0 took job 2\nworker 0 took job 3\nworker 0 took job 4\n')
+   now ('0', 'worker 0 took job 1\nworker 0 took job 3\nworker 0 took job 4\nworker 1 took job 2\n')
+ch17_md_113 [release]
+   was ('0', 'balance=100\n')
+   now ('0', 'balance=50\n')
+ch17_md_29 [release]
+   was ('0', 'reindexed 2 of 2 documents, 1540 words\n')
+   now ('0', 'reindexed 1 of 2 documents, 640 words\n')
+ch30_ex30_5_lu [release]
+   was ('0', 'b.log:4: 09:44 the wolf wakes\na.log:3: 07:02 the wolf howls\nb.log:2: 08:52 the wolf sleeps\na.log:1: 06:12 the wolf runs\n')
+   now ('0', 'a.log:1: 06:12 the wolf runs\na.log:3: 07:02 the wolf howls\nb.log:2: 08:52 the wolf sleeps\nb.log:4: 09:44 the wolf wakes\n')
+programs 594 release-built 385 moves 7 {'lupin': 0, 'native': 0, 'checked': 0, 'release': 7}

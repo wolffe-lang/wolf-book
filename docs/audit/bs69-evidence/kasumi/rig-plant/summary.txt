@@ -1,0 +1,3 @@
+clippy.log: EXIT 0
+fmt.log: EXIT 1
+xtasktest.log: EXIT 101

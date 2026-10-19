@@ -1,0 +1,5 @@
+gate-diagramscheck.log: EXIT 0 SKIP=0
+gate-ledgercheck.log: EXIT 0 SKIP=0
+gate-samples.log: EXIT 0 SKIP=4
+gate-samples-taskset4.log: EXIT 0 SKIP=4
+gate-verifydocs.log: EXIT 0 SKIP=0

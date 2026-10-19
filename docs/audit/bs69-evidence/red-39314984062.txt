@@ -1,0 +1,55 @@
+Run 39314984062 (PR #85) at 422c175: the pin, the CI manifest, and #83's and #84's tests before their fixes; the book's text unedited. Extracted from each job's log.
+
+== job 118273988350 (test-ubuntu)
+test backmatter::tests::a_batch_of_exercises_belongs_to_its_chapter ... FAILED
+test console::tests::a_replayed_command_leads_its_own_process_group ... FAILED
+test result: FAILED. 203 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.02s
+##[error]Process completed with exit code 101.
+
+== job 118273988206 (test-macos)
+test backmatter::tests::a_batch_of_exercises_belongs_to_its_chapter ... FAILED
+test console::tests::a_replayed_command_leads_its_own_process_group ... FAILED
+test result: FAILED. 203 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.06s
+##[error]Process completed with exit code 101.
+
+== job 118273988428 (test-windows)
+test backmatter::tests::a_batch_of_exercises_belongs_to_its_chapter ... FAILED
+test result: FAILED. 202 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.62s
+##[error]Process completed with exit code 101.
+
+== job 118273988594 (samples-ubuntu)
+echo "staged std/: $(cd wolf-lang/target/release && find std -type f | wc -l) files, manifest ${got}"
+if [ "${got}" != "${want}" ]; then echo "::error::staged std/ manifest ${got} is not the 0.2.33 archive's ${want}"; exit 1; fi
+staged std/: 58 files, manifest 4382865a5166fbde9b496a2f76b4a9cda3fbddc8f8e917e1d4f4d4aa9257bbc0
+samples: 529 samples (252 corpus roots + 16 corpus members on disk, 277 book blocks)
+samples: 526 passed, 3 pending (report-only), 4 failed, 0 flips in 174.4s
+samples: 494 of 518 console block(s) replayed against the pinned tools
+samples: FAIL /home/runner/work/wolf-book/wolf-book/wolf-book/book/back/colophon.md:7: console block drifted from the real run
+samples: FAIL /home/runner/work/wolf-book/wolf-book/wolf-book/book/ch01.md:153: console block drifted from the real run
+samples: FAIL /home/runner/work/wolf-book/wolf-book/wolf-book/book/ch22.md:288: console block drifted from the real run
+samples: FAIL /home/runner/work/wolf-book/wolf-book/wolf-book/principles/exercises/ch22/EXERCISES.md:218: console block drifted from the real run
+error: 4 failure(s), 0 flip(s)
+##[error]Process completed with exit code 1.
+
+== job 118273988563 (samples-windows)
+echo "staged std/: $(cd wolf-lang/target/release && find std -type f | wc -l) files, manifest ${got}"
+if [ "${got}" != "${want}" ]; then echo "::error::staged std/ manifest ${got} is not the 0.2.33 archive's ${want}"; exit 1; fi
+staged std/: 58 files, manifest 4382865a5166fbde9b496a2f76b4a9cda3fbddc8f8e917e1d4f4d4aa9257bbc0
+samples: 529 samples (252 corpus roots + 16 corpus members on disk, 277 book blocks)
+samples: 518 passed, 3 pending (report-only), 4 failed, 0 flips in 89.0s
+samples: 423 of 518 console block(s) replayed against the pinned tools
+samples: FAIL D:\a\wolf-book\wolf-book\wolf-book\book\back\colophon.md:7: console block drifted from the real run
+samples: FAIL D:\a\wolf-book\wolf-book\wolf-book\book\ch01.md:153: console block drifted from the real run
+samples: FAIL D:\a\wolf-book\wolf-book\wolf-book\book\ch22.md:288: console block drifted from the real run
+samples: FAIL D:\a\wolf-book\wolf-book\wolf-book\principles/exercises\ch22\EXERCISES.md:218: console block drifted from the real run
+error: 4 failure(s), 0 flip(s)
+##[error]Process completed with exit code 1.
+
+Run 39317769517 (PR #85) at a99aa37, samples (windows-latest), job 118283595542: before §34.6's rows. Extracted:
+samples: 531 samples (252 corpus roots + 16 corpus members on disk, 279 book blocks)
+samples: 518 passed, 3 pending (report-only), 2 failed, 0 flips in 93.4s
+samples: 427 of 520 console block(s) replayed against the pinned tools
+samples: samples-os.toml: 9 row(s) apply to windows — 8 declared refusal(s) and 1 declared transcript(s) held
+samples: FAIL book/ch34/s11: wolf run: exited Some(1), expected 0
+samples: FAIL book/ch34/s12: wolf run: exited Some(1), expected 0
+error: 2 failure(s), 0 flip(s)

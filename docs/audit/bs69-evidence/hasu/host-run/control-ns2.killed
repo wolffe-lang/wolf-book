@@ -1,0 +1,5 @@
+2026-10-19T19:50:10Z
+leader 1239905: unshare --user --map-current-user --pid --fork --mount-proc env PATH=/nix/store/2c5r0kpn5yb8qsvfw77j8h63pklij8rq-lld-21.
+child 1239926: bash /home/mfwolffe/lanes/bs69/ev/control-hasu.sh
+gone 1239905
+gone 1239926
