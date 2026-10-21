@@ -280,10 +280,32 @@ fn run_capture(mut cmd: Command) -> Result<(i32, String, String)> {
     }
     let out = cmd.output().with_context(|| format!("spawning {cmd:?}"))?;
     Ok((
-        out.status.code().unwrap_or(-1),
+        shell_status(out.status),
         String::from_utf8_lossy(&out.stdout).into_owned(),
         String::from_utf8_lossy(&out.stderr).into_owned(),
     ))
+}
+
+/// The status a shell's `$?` reads for a command that ended (wolf-book#87).
+/// A console block is a shell transcript, so a command a signal ended is
+/// `128 + N`, as POSIX shells report it (XCU 2.8.2: greater than 128) and as
+/// bash, sh, dash and zsh print it (measured by bs70: 143 for an end by
+/// TERM). What a shell says besides, such as bash's and dash's
+/// `Terminated` notice, is the shell's own and differs between shells, so
+/// the replay prints none, as it prints no prompt. A status with neither a
+/// code nor a signal (none on the hosts the book runs on) stays `-1`.
+fn shell_status(status: std::process::ExitStatus) -> i32 {
+    if let Some(code) = status.code() {
+        return code;
+    }
+    #[cfg(unix)]
+    {
+        use std::os::unix::process::ExitStatusExt as _;
+        if let Some(n) = status.signal() {
+            return 128 + n;
+        }
+    }
+    -1
 }
 
 /// What a reader sees on stdout from a `wolf` invocation.
