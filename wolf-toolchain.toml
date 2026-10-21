@@ -1592,8 +1592,67 @@ repo = "wolffe-lang/wolf-lang"
 # `os_exit_signal`, `os_wait_status_core`, `os_wait_poll_core`). Spec:
 # anchors 661 -> 664 (none dropped), catalogue 187 -> 187, grammar
 # unchanged.
-rev = "85dab5d7e597680d6fd7034f1d7ed2acb9a92f97"
-impl_version = "0.2.33"
+# ---- bs70, crawl 54: wolf 0.2.34 + lupin 0.1.55 — one release each, the
+#      fork (s247, rulings #90, #95) and the editor's calls (s248, ruling
+#      #97), the bundled std moves to e036bec; the interpreter's clause
+#      TEN back ----
+#
+# wolf-lang at the v0.2.34 release tag (`9da7bdc`), TAKEN FROM THE
+# RELEASE ARCHIVE (release 419552903) and matched against the release's
+# published digest before unpacking, then read a second time from a
+# fresh download (`sha256sum -c` OK, the unpacked tree identical), on
+# kasumi (gh): `wolf-0.2.34-x86_64-unknown-linux-gnu.tar.gz` sha256
+# 88a9dd3da1c9a0e38c08eb6e2de9c1ef04d1ed93dcf51024d8dbbb76890c1821
+# (macOS `29c8331f…`, aarch64 `ca5cadf9…` and windows `77bb8403…` are the
+# release's; the book's CI samples lanes build from this rev). Every
+# member hashed BY NAME (docs/audit/bs70-evidence/kasumi/subject-members.txt):
+#
+#   wolf                 2bfaf7b8...   <- the pin of record
+#   wolf-cimport-worker  2e37607a...
+#   libwolf_rt.a         cc058247...   <- the fork, the six calls, the
+#                                         mode's bits 5-7
+#   libwolf_rt_none.a    73e53a44...
+#   wolf.1               e874c703...   <- the version
+#   README.md            8cdb6711...
+#   _wolf                a368c8ec...   <- same as 0.2.33
+#   wolf.bash            1b1d8853...   <- same as 0.2.33
+#   wolf.fish            180de0ec...   <- same as 0.2.33
+#   std/                 58 files, 54 .lu, STD-REV e036bec3...
+#                        manifest 5d6253b6... (0.2.33's was 4382865a...)
+#
+#   wolf 0.2.34 (wolfgang, pin 9da7bdc)
+#   paired with lupin 0.1.55 (reference interpreter), pin 294d626
+#   lupin 0.1.55 (wolf-interp, reference interpreter at pin 294d626)
+#
+# PREDICTED TO THE CHARACTER in docs/audit/bs70-prediction.md (committed
+# at 0166b29, before the archives were downloaded) and measured
+# byte-identical, the std manifest too (computed beforehand from
+# wolf-std's objects with CI's recipe). The interpreter's clause still
+# names v0.2.24's tag, now TEN releases back: `294d626..9da7bdcf` = 1067
+# commits, ten releases (v0.2.25 .. v0.2.34).
+#
+# THE BUNDLED STD IS wolf-std `e036bec` (0.2.33 shipped `cceda63`); the
+# tree differs in `std/net/net.lu`, `std/os/users/users.lu`,
+# `std/process/process.lu`, `std/signal/signal.lu` and `STD-REV` only,
+# and every change to a public item is an addition (sc66's wrappers for
+# 0.2.33's five calls, sc67's `net.Addr`). The book's CI stages that tree
+# beside its source-built `wolf` and holds it to the archive's manifest,
+# `5d6253b6…` now (.github/workflows/book.yml). ch22's interface listing
+# reaches `std.range`, which did not move.
+#
+# What the release changed that the book can see, measured in
+# docs/audit/bs70-results.md (the sweep of every program the runner
+# executes, bs70-evidence/kasumi/sweep-*): at the unedited head, the
+# stamps (ch01, colophon) and the interface toolchain line (ch22, 22-13)
+# in the samples gate, and nothing else on any machine. What it ADDS and
+# the book now teaches: the fork as a builtin (§34.7, `os_fork`, the
+# `busy` rule, what the child keeps, the checked machine's `unsupported`),
+# and the editor's calls as builtins (§34.3: the mode's bits 5-7 and
+# `os_term_restore_at_exit`; §34.8: `os_signal_wait_fds`, `os_clock_ns`,
+# `fs_sync`, `fs_sync_dir`, `fs_realpath`). Spec: anchors 664 -> 672
+# (none dropped), catalogue unchanged, grammar unchanged.
+rev = "9da7bdcf2aea9adf48df6570bedc58e16e9ef853"
+impl_version = "0.2.34"
 
 [lupin]
 # wolf-interp at the v0.1.30 release tag (is42): the stamped line names
@@ -2288,9 +2347,25 @@ impl_version = "0.2.33"
 # five new names (wolf-interp#261, #263) and still answers
 # `os_signal_text(0)` with `invalid` (#262); chapter 34 shows none of
 # those on lupin.
+# ---- bs70, crawl 54: 0.1.54 -> 0.1.55, the lupin half of 0.2.33 (is77);
+#      0.2.34's names have none yet ----
+#
+# `lupin-0.1.55-x86_64-unknown-linux-gnu.tar.gz` (release 418932753)
+# sha256 1152abc0bef65d334b94bc881a26463fac345919cc2ca07a291796e6048a8a38
+# (read twice), member `lupin` ad52ee96.... Pin UNCHANGED `294d626`
+# (v0.2.24's tag). It mirrors s246: 0.2.33's five calls resolve (the
+# shape rows answered, the core siblings answered, a well-formed
+# disposition or end refused by name), the listen, wait and raise
+# resolve with their shape rows and refuse a well-formed call by name,
+# and `os_signal_text(0)` is refused by name where 0.1.54 answered
+# `invalid` (wolf-interp#259, #261, #262, #263). It does not resolve
+# 0.2.34's seven names (wolf-interp#268, #269). Every book program that
+# reaches those calls imports std, which this archive does not carry,
+# so no lupin answer in the sweep moves and no lupin transcript in the
+# book moves; §34.4 says what it now answers.
 repo = "wolffe-lang/wolf-interp"
-rev = "0e536e8fb4518eaa798ac426901ab81275db5c9f"
-version = "lupin 0.1.54 (wolf-interp, reference interpreter at pin 294d626)"
+rev = "e642f2630ad4c7f53740428d5cca705f2e0d295b"
+version = "lupin 0.1.55 (wolf-interp, reference interpreter at pin 294d626)"
 
 [lupin-trace]
 # bs62: chapter 7's memory diagrams are drawn from lupin's place trace
@@ -2318,8 +2393,10 @@ version = "lupin 0.1.54 (wolf-interp, reference interpreter at pin 294d626)"
 # bs68: follows [lupin].rev to 0.1.54 (placetrace.rs byte-identical
 # between v0.1.53 and v0.1.54).
 # bs69: unchanged ([lupin] did not move; the traces re-take byte-identical).
+# bs70: follows [lupin].rev to 0.1.55 (placetrace.rs byte-identical
+# between v0.1.54 and v0.1.55); the traces re-take byte-identical.
 repo = "wolffe-lang/wolf-interp"
-rev = "0e536e8fb4518eaa798ac426901ab81275db5c9f"
+rev = "e642f2630ad4c7f53740428d5cca705f2e0d295b"
 [wolf-lsp]
 # Source of the vendored tmLanguage grammars under highlight/.
 # `cargo xtask grammar-sync --check` fails on drift against this pin.
@@ -2527,4 +2604,16 @@ pending = "is08"
 # take the std spellings (all but the two that show a builtin on both
 # machines). It wraps none of 0.2.33's five calls (wolf-std#74, sc66), so
 # §34.6 shows those as builtins.
+#
+# bs70 (wolf 0.2.34): the archive's `std/` is wolf-std `e036bec` (sc66,
+# ruling #94; sc67; sc68). It wraps 0.2.33's five calls
+# (`signal.ignore_one`, `reset_one`; `process.exit_signal`,
+# `wait_status_core`, `status_from_core`, `dumped_core`, `poll_core`) and
+# adds `net.Addr`; §34.4's std column names them, and §34.6 keeps its
+# builtins (moving its programs to the wrappers is not bs70's contract).
+# It wraps none of 0.2.34's seven names, nor the mode's three new bits
+# (its `term.Mode` has the five switches, so a mode it sets writes the
+# usual setting in bits 5-7): wolf-std `3bacc5f` (sc69) does, and no
+# release archive carries it, so §34.3, §34.7 and §34.8 show builtins and
+# name nothing from it.
 pending = "wolf-std publishes no release to pin (wolf-book#39)"

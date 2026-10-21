@@ -1,0 +1,69 @@
+== wolf-0.2.34-x86_64-unknown-linux-gnu
+cc0582474d73e0baddf633587f8e4d8de59b3934d0f2ff0d2a632023567c64a6  libwolf_rt.a
+73e53a4485e8ecd2d33bfb871cf8cffbef3fa813c6728139a283e99692fa88e2  libwolf_rt_none.a
+3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986  LICENSE
+a0eec20d7b98b1cd0e5b4d23c3965667c97b68fb365ec95a9516b0c3cbc4fec4  LICENSE-EXCEPTION
+8cdb6711636ba726db12bb270315eb00df3f24ea8a23bf05e06ca93154c41e9d  README.md
+a368c8eccce8b1800c80aa818ae482e541aa9636b676540851e23863d333eb8b  _wolf
+2bfaf7b8d73b3a6047462ff1b5ad54b3200dfb769aea7b316efd0ff28eabd913  wolf
+e874c703a2fe1bd0e32fda6e35a409eeef43d1ce53ab17902c18e48f8bff1046  wolf.1
+1b1d88530b5ae44120cb7e93b80c7054e3e28c61347fe3723f2608e44ebf0550  wolf.bash
+2e37607aa37158f9468d1f43d8fc34423f3e5e54a4ba17fd9602628fd6cf1a37  wolf-cimport-worker
+180de0ecb67f49ff127fc84d92ad6c6182b5195db1ce2b0fc63734e7abe46407  wolf.fish
+std/: 58 files, 54 .lu, STD-REV e036bec318ad81ecd5a025612bc2c2adb17527f3, manifest 5d6253b63c97c050e3bf068cfb15c8515453b7ec5b98cd62a91a955bd2a9fc9a
+== lupin-0.1.55-x86_64-unknown-linux-gnu
+a77c744e20a6ca728c6ca7e949a5e67cb73fa23ed7253789f6bb534c9fd25c04  CHANGELOG.md
+3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986  LICENSE
+ad52ee9688fc77ea16833b7e7885ce0c18adadc2c13d5c868ceadd8307e37c9c  lupin
+a056e1e6069270d9d4316b7e82ed2dbd1545c9f955c732b3c8c930bee52d350d  README.md
+== wolf-0.2.33-x86_64-unknown-linux-gnu
+5321ce868ae38673a88fc92f119a586b39ff29c70cf7c384de8e6aca050d482c  libwolf_rt.a
+2a3444bd1fb297858bafd5de5c578650081d3b5cf40b454ee1b44a1156932694  libwolf_rt_none.a
+3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986  LICENSE
+a0eec20d7b98b1cd0e5b4d23c3965667c97b68fb365ec95a9516b0c3cbc4fec4  LICENSE-EXCEPTION
+d8dfea537f48226a1e0b20ad9f166f7a389ac43c95a14f98b3ddaf2d12fa3e96  README.md
+a368c8eccce8b1800c80aa818ae482e541aa9636b676540851e23863d333eb8b  _wolf
+58e4ade4837db845b39b1f692c2d6ba42982674245bae1edf93bd4fcd50cbb71  wolf
+ed60f97b7ee9e197655dee6af3a671555280ab0c202b7b762d414d1840d7bc5c  wolf.1
+1b1d88530b5ae44120cb7e93b80c7054e3e28c61347fe3723f2608e44ebf0550  wolf.bash
+57c41e398deadc78dc7360717e79ad6c75c399ae13314047da0c35b2cb2c8cba  wolf-cimport-worker
+180de0ecb67f49ff127fc84d92ad6c6182b5195db1ce2b0fc63734e7abe46407  wolf.fish
+std/: 58 files, 54 .lu, STD-REV cceda63151430eac07df895fdfffddfa4a0b92c1, manifest 4382865a5166fbde9b496a2f76b4a9cda3fbddc8f8e917e1d4f4d4aa9257bbc0
+== lupin-0.1.54-x86_64-unknown-linux-gnu
+b158a460c441ceaeea7bf15742aa270759821db0e22b575fc02682a525b72fd5  CHANGELOG.md
+3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986  LICENSE
+a9856dd4905cc0e8dcbf9d5bd71230b3e7ea6d2c428cc0d511b6103f4965591f  lupin
+f9b58ad8232f4d948e2ba4f32f13d636bfcda38a0420a2b4df98376dfdc4e31b  README.md
+== std/ files that differ, 0.2.33 -> 0.2.34
+Files ~/lanes/bs70/c33/wolf-0.2.33-x86_64-unknown-linux-gnu/std/net/net.lu and ~/lanes/bs70/new/wolf-0.2.34-x86_64-unknown-linux-gnu//std/net/net.lu differ
+Files ~/lanes/bs70/c33/wolf-0.2.33-x86_64-unknown-linux-gnu/std/os/users/users.lu and ~/lanes/bs70/new/wolf-0.2.34-x86_64-unknown-linux-gnu//std/os/users/users.lu differ
+Files ~/lanes/bs70/c33/wolf-0.2.33-x86_64-unknown-linux-gnu/std/process/process.lu and ~/lanes/bs70/new/wolf-0.2.34-x86_64-unknown-linux-gnu//std/process/process.lu differ
+Files ~/lanes/bs70/c33/wolf-0.2.33-x86_64-unknown-linux-gnu/std/signal/signal.lu and ~/lanes/bs70/new/wolf-0.2.34-x86_64-unknown-linux-gnu//std/signal/signal.lu differ
+Files ~/lanes/bs70/c33/wolf-0.2.33-x86_64-unknown-linux-gnu/std/STD-REV and ~/lanes/bs70/new/wolf-0.2.34-x86_64-unknown-linux-gnu//std/STD-REV differ
+== members that differ, 0.2.33 -> 0.2.34 (top level)
+moved libwolf_rt.a
+moved libwolf_rt_none.a
+same  LICENSE
+same  LICENSE-EXCEPTION
+moved README.md
+same  _wolf
+moved wolf
+moved wolf.1
+same  wolf.bash
+moved wolf-cimport-worker
+same  wolf.fish
+== lupin members that differ, 0.1.54 -> 0.1.55
+moved CHANGELOG.md
+same  LICENSE
+moved lupin
+moved README.md
+== versions
+wolf 0.2.34 (wolfgang, pin 9da7bdc)
+paired with lupin 0.1.55 (reference interpreter), pin 294d626
+lupin 0.1.55 (wolf-interp, reference interpreter at pin 294d626)
+== bare
+wolf 0.2.34 (wolfgang, pin 9da7bdc)
+paired with lupin 0.1.55 (reference interpreter), pin 294d626
+wolf highest GLIBC_2.34
+lupin highest GLIBC_2.34
+wolf-lang-0234 at 9da7bdcf2aea9adf48df6570bedc58e16e9ef853
