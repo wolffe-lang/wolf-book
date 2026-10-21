@@ -1,0 +1,4 @@
+## dash -c: stdout [status 143] stderr [Terminated]
+## bash -c: stdout [status 143] stderr [Terminated]
+## dash -ic: stdout [status 143] stderr [dash: 0: can't access tty; job control turned off
+Terminated]

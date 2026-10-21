@@ -1,0 +1,8 @@
+$ wolf build again.lu && ./again again
+Terminated                 ./again again
+$ echo $?
+143
+## bash -c: stdout [status 143] stderr [Terminated                 ./again again]
+## sh -c: stdout [status 143] stderr []
+## dash -c: stdout [status 143] stderr [Terminated]
+## zsh -c: stdout [status 143] stderr []
