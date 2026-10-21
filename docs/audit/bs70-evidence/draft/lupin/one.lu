@@ -1,0 +1,8 @@
+fn main() -> !int {
+    os_signal_ignore_one(0) else |e| {
+        print("nothing: {e}")
+    }
+    os_signal_ignore_one(512)?
+    print("ignored")
+    0
+}

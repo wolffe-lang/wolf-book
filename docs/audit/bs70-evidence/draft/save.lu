@@ -1,0 +1,31 @@
+fn exclusive(path: str) -> str {
+    let f = fs_open_perm(path, 4, 420) else |e| {
+        return "{e}"
+    }
+    fs_close(f) else |_| {}
+    "made"
+}
+
+fn main() -> !int {
+    let tmp = "notes.txt.new"
+    if fs_exists(tmp) {
+        fs_remove(tmp)?
+    }
+    fs_write_text("notes.txt", "old")?
+    let t = fs_open_perm(tmp, 4, 420)?
+    fs_write(t, "new")?
+    fs_sync(t)?
+    fs_close(t)?
+    print("the temporary name, made again: {exclusive(tmp)}")
+    fs_rename(tmp, "notes.txt")?
+    fs_sync_dir(".")?
+    let saved = fs_read_text("notes.txt")?
+    print("saved: {saved}")
+    fs_create_dir_all("drafts")?
+    let here = fs_realpath(".")?
+    let up = fs_realpath("drafts/..")?
+    print("drafts/.. is this directory: {up == here}")
+    let gone = fs_realpath("nowhere") else |e| "{e}"
+    print("a name nothing holds: {gone}")
+    0
+}

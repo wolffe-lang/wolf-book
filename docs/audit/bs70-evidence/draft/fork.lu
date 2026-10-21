@@ -1,0 +1,17 @@
+fn main() -> !int {
+    var count = 1
+    let (r, w) = os_pipe()?
+    let (pid, h) = os_fork()?
+    if pid == 0 {
+        count += 1
+        fs_write(w, "answered ({pid}, {h}), its count {count}") else |_| {}
+        os_exit(3)
+    }
+    fs_close(w)?
+    let said = fs_read(r, 64)?
+    let status = os_wait_status(h)?
+    print("the child: {said}")
+    print("the parent: its count {count}, the child's status {status}")
+    print("the parent was answered a pid and a handle: {pid > 0 && h >= 0}")
+    0
+}

@@ -1,0 +1,5 @@
+fn main() -> !int {
+    let words = os_signal_text(0)?
+    print("signal 0: {words}")
+    0
+}

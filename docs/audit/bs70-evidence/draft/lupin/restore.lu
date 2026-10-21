@@ -1,0 +1,10 @@
+fn row(fd: int, mode: int) -> str {
+    os_term_restore_at_exit(fd, mode, "bye".bytes()) else |e| {
+        return "{e}"
+    }
+    "ok"
+}
+
+fn main() {
+    print("a mode past the bits: {row(1, 16777216)}, a pipe: {row(1, 0)}, a closed handle: {row(99, 0)}")
+}

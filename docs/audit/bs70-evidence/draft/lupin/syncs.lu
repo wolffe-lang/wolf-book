@@ -1,0 +1,15 @@
+fn main() -> !int {
+    fs_write_text("s.txt", "x")?
+    let f = fs_open("s.txt")?
+    fs_sync(f)?
+    fs_close(f)?
+    fs_sync_dir(".")?
+    fs_sync_dir("nowhere") else |e| {
+        print("a missing directory: {e}")
+    }
+    fs_sync_dir("s.txt") else |e| {
+        print("a file: {e}")
+    }
+    print("synced")
+    0
+}

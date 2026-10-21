@@ -1,0 +1,17 @@
+use std.signal
+
+fn main() -> !int {
+    signal.listen(signal.resize())?
+    let (r, w) = os_pipe()?
+    let start = os_clock_ns()
+    let (i, m) = os_signal_wait_fds([r], signal.resize(), 25)?
+    let waited = os_clock_ns() - start
+    print("nothing came: ({i}, {m}), and 25 ms passed: {waited >= 25000000}")
+    fs_write(w, "k")?
+    let (j, n) = os_signal_wait_fds([r], signal.resize(), 0)?
+    print("a byte waits in the pipe: ({j}, {n})")
+    signal.raise(signal.resize())?
+    let (k, p) = os_signal_wait_fds([r], signal.resize(), -1)?
+    print("a resize beside it comes first: {k == -1 && p == signal.resize()}")
+    0
+}

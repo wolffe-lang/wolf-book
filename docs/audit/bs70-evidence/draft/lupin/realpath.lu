@@ -1,0 +1,5 @@
+fn main() -> !int {
+    let here = fs_realpath(".")?
+    print("an absolute name: {here.starts_with("/")}")
+    0
+}

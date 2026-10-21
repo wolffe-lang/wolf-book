@@ -1,0 +1,5 @@
+fn main() {
+    let ms = time_now_ms()
+    let ns = os_clock_ns()
+    print("the same clock: {ns / 1000000 >= ms}")
+}

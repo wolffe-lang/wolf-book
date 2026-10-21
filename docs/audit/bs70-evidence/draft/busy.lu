@@ -1,0 +1,23 @@
+fn fork_row() -> str {
+    let (pid, h) = os_fork() else |e| {
+        return "{e}"
+    }
+    if pid == 0 {
+        os_exit(0)
+    }
+    let status = os_wait_status(h) else 1
+    "a child, its status {status}"
+}
+
+fn main() -> !int {
+    let go = channel[int](0)
+    scope s {
+        s.spawn(fn() {
+            let _ = go.recv() else |_| 0
+        })
+        print("a task live: {fork_row()}")
+        go.send(1)?
+    }
+    print("every task joined: {fork_row()}")
+    0
+}
