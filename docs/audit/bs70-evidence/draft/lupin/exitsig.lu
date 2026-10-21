@@ -1,0 +1,8 @@
+fn main() -> !int {
+    os_exit_signal(0) else |e| {
+        print("end by nothing: {e}")
+    }
+    os_exit_signal(512)?
+    print("still here")
+    0
+}

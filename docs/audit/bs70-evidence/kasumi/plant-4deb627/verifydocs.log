@@ -1,0 +1,32 @@
+verify-docs: 10 line-count claim(s) recomputed
+verify-docs: 6 project program(s) match the chapters that print them
+verify-docs: 114 quoted solution fences on 33 exercise pages are their files (92 whole, 22 excerpts)
+verify-docs: 675 wolf listing(s) scanned for interpolation the vendored grammar cannot paint (wolf-book#5)
+verify-docs: EXERCISES-INDEX.md agrees with the corpus — 352 exercises (303 printed); 6 pending · 83 prose · 9 run (lupin REPL) · 38 run (lupin) · 173 run (wolf + lupin) · 43 run (wolf); fingers 61 · comprehension 157 · extension 81 · spelunking 29 · design 38
+verify-docs: FAIL book/back/appendix-e.md: `0.2.11` was audited at wolf 0.2.33, the wolf pin is now 0.2.34 — re-read the sentence, then re-stamp its audited-at-wolf
+verify-docs: FAIL book/back/appendix-e.md: `0.2.12` was audited at wolf 0.2.33, the wolf pin is now 0.2.34 — re-read the sentence, then re-stamp its audited-at-wolf
+verify-docs: FAIL book/back/colophon.md: `0.1.54` was audited at wolf 0.2.33, the wolf pin is now 0.2.34 — re-read the sentence, then re-stamp its audited-at-wolf
+verify-docs: FAIL book/back/colophon.md: `0.1.54` was audited at lupin 0.1.54, the lupin pin is now 0.1.55 — re-read the sentence, then re-stamp its audited-at-lupin
+verify-docs: FAIL book/ch01.md: `0.1.54` was audited at wolf 0.2.33, the wolf pin is now 0.2.34 — re-read the sentence, then re-stamp its audited-at-wolf
+verify-docs: FAIL book/ch01.md: `0.1.54` was audited at lupin 0.1.54, the lupin pin is now 0.1.55 — re-read the sentence, then re-stamp its audited-at-lupin
+verify-docs: FAIL book/ch01.md: `0.2.33` was audited at wolf 0.2.33, the wolf pin is now 0.2.34 — re-read the sentence, then re-stamp its audited-at-wolf
+verify-docs: FAIL book/ch01.md: `0.2.33+dev.unknown` was audited at wolf 0.2.33, the wolf pin is now 0.2.34 — re-read the sentence, then re-stamp its audited-at-wolf
+verify-docs: FAIL book/ch04.md: `0.1.36` was audited at lupin 0.1.54, the lupin pin is now 0.1.55 — re-read the sentence, then re-stamp its audited-at-lupin
+verify-docs: FAIL book/ch05.md: `0.1.37` was audited at wolf 0.2.33, the wolf pin is now 0.2.34 — re-read the sentence, then re-stamp its audited-at-wolf
+verify-docs: FAIL book/ch05.md: `0.1.37` was audited at lupin 0.1.54, the lupin pin is now 0.1.55 — re-read the sentence, then re-stamp its audited-at-lupin
+verify-docs: FAIL book/ch05.md: `0.2.15` was audited at wolf 0.2.33, the wolf pin is now 0.2.34 — re-read the sentence, then re-stamp its audited-at-wolf
+verify-docs: FAIL book/ch06.md: `0.1.36` was audited at lupin 0.1.54, the lupin pin is now 0.1.55 — re-read the sentence, then re-stamp its audited-at-lupin
+verify-docs: FAIL book/ch09.md: `0.1.46` was audited at lupin 0.1.54, the lupin pin is now 0.1.55 — re-read the sentence, then re-stamp its audited-at-lupin
+verify-docs: FAIL book/ch09.md: `0.2.22` was audited at wolf 0.2.33, the wolf pin is now 0.2.34 — re-read the sentence, then re-stamp its audited-at-wolf
+verify-docs: FAIL book/ch13.md: `0.2.15` was audited at wolf 0.2.33, the wolf pin is now 0.2.34 — re-read the sentence, then re-stamp its audited-at-wolf
+verify-docs: FAIL book/ch13.md: `0.2.27` was audited at wolf 0.2.33, the wolf pin is now 0.2.34 — re-read the sentence, then re-stamp its audited-at-wolf
+verify-docs: FAIL book/ch13.md: `0.2.30` was audited at wolf 0.2.33, the wolf pin is now 0.2.34 — re-read the sentence, then re-stamp its audited-at-wolf
+verify-docs: FAIL book/ch22.md: `0.2.33` was audited at wolf 0.2.33, the wolf pin is now 0.2.34 — re-read the sentence, then re-stamp its audited-at-wolf
+verify-docs: FAIL book/ch27.md: `0.1.36` was audited at lupin 0.1.54, the lupin pin is now 0.1.55 — re-read the sentence, then re-stamp its audited-at-lupin
+verify-docs: FAIL book/ch30.md: `0.1.36` was audited at lupin 0.1.54, the lupin pin is now 0.1.55 — re-read the sentence, then re-stamp its audited-at-lupin
+verify-docs: FAIL book/ch32.md: `0.2.22` was audited at wolf 0.2.33, the wolf pin is now 0.2.34 — re-read the sentence, then re-stamp its audited-at-wolf
+verify-docs: FAIL book/ch33.md: `0.2.31` was audited at wolf 0.2.33, the wolf pin is now 0.2.34 — re-read the sentence, then re-stamp its audited-at-wolf
+verify-docs: FAIL book/ch33.md: `0.2.6` was audited at wolf 0.2.33, the wolf pin is now 0.2.34 — re-read the sentence, then re-stamp its audited-at-wolf
+verify-docs: FAIL book/ch33.md: `0.2.8` was audited at wolf 0.2.33, the wolf pin is now 0.2.34 — re-read the sentence, then re-stamp its audited-at-wolf
+error: 25 doc-truth failure(s)
+EXIT 1

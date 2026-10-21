@@ -1,0 +1,711 @@
+########## wolf 0.2.33 (wolfgang, pin 85dab5d) / lupin 0.1.54 (wolf-interp, reference interpreter at pin 294d626)
+SigBlk:	0000000000000000
+SigIgn:	0000000000000000
+
+=== busy.lu
+fn fork_row() -> str {
+    let (pid, h) = os_fork() else |e| {
+        return "{e}"
+    }
+    if pid == 0 {
+        os_exit(0)
+    }
+    let status = os_wait_status(h) else 1
+    "a child, its status {status}"
+}
+
+fn main() -> !int {
+    let go = channel[int](0)
+    scope s {
+        s.spawn(fn() {
+            let _ = go.recv() else |_| 0
+        })
+        print("a task live: {fork_row()}")
+        go.send(1)?
+    }
+    print("every task joined: {fork_row()}")
+    0
+}
+$ lupin busy.lu
+busy.lu: unsupported: `os_fork` does not resolve
+[exit 4]
+$ wolf run busy.lu
+error[E0301]: nothing named `os_fork` is in scope
+ --> ./busy.lu:2:20
+  |
+2 |     let (pid, h) = os_fork() else |e| {
+  |                    ^^^^^^^ not found
+  |
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[exit 2]
+$ wolf conform-run --json busy.lu
+error[E0301]: nothing named `os_fork` is in scope
+ --> ./busy.lu:2:20
+  |
+2 |     let (pid, h) = os_fork() else |e| {
+  |                    ^^^^^^^ not found
+  |
+
+{"commit":"85dab5d","diagnostics":[{"code":"E0301","severity":"error","span":[42,49]}],"file":"./busy.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked busy.lu
+error[E0301]: nothing named `os_fork` is in scope
+ --> ./busy.lu:2:20
+  |
+2 |     let (pid, h) = os_fork() else |e| {
+  |                    ^^^^^^^ not found
+  |
+
+{"commit":"85dab5d","diagnostics":[{"code":"E0301","severity":"error","span":[42,49]}],"file":"./busy.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf build --release busy.lu && ./busy
+error[E0301]: nothing named `os_fork` is in scope
+ --> ./busy.lu:2:20
+  |
+2 |     let (pid, h) = os_fork() else |e| {
+  |                    ^^^^^^^ not found
+  |
+
+wolf build: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[build exit 2]
+$ taskset -c 0-3 wolf run busy.lu
+error[E0301]: nothing named `os_fork` is in scope
+ --> ./busy.lu:2:20
+  |
+2 |     let (pid, h) = os_fork() else |e| {
+  |                    ^^^^^^^ not found
+  |
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[exit 2]
+
+=== fork.lu
+fn main() -> !int {
+    var count = 1
+    let (r, w) = os_pipe()?
+    let (pid, h) = os_fork()?
+    if pid == 0 {
+        count += 1
+        fs_write(w, "answered ({pid}, {h}), its count {count}") else |_| {}
+        os_exit(3)
+    }
+    fs_close(w)?
+    let said = fs_read(r, 64)?
+    let status = os_wait_status(h)?
+    print("the child: {said}")
+    print("the parent: its count {count}, the child's status {status}")
+    print("the parent was answered a pid and a handle: {pid > 0 && h >= 0}")
+    0
+}
+$ lupin fork.lu
+fork.lu: unsupported: `os_fork` does not resolve
+[exit 4]
+$ wolf run fork.lu
+error[E0301]: nothing named `os_fork` is in scope
+ --> ./fork.lu:4:20
+  |
+4 |     let (pid, h) = os_fork()?
+  |                    ^^^^^^^ not found
+  |
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[exit 2]
+$ wolf conform-run --json fork.lu
+error[E0301]: nothing named `os_fork` is in scope
+ --> ./fork.lu:4:20
+  |
+4 |     let (pid, h) = os_fork()?
+  |                    ^^^^^^^ not found
+  |
+
+{"commit":"85dab5d","diagnostics":[{"code":"E0301","severity":"error","span":[85,92]}],"file":"./fork.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked fork.lu
+error[E0301]: nothing named `os_fork` is in scope
+ --> ./fork.lu:4:20
+  |
+4 |     let (pid, h) = os_fork()?
+  |                    ^^^^^^^ not found
+  |
+
+{"commit":"85dab5d","diagnostics":[{"code":"E0301","severity":"error","span":[85,92]}],"file":"./fork.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf build --release fork.lu && ./fork
+error[E0301]: nothing named `os_fork` is in scope
+ --> ./fork.lu:4:20
+  |
+4 |     let (pid, h) = os_fork()?
+  |                    ^^^^^^^ not found
+  |
+
+wolf build: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[build exit 2]
+$ taskset -c 0-3 wolf run fork.lu
+error[E0301]: nothing named `os_fork` is in scope
+ --> ./fork.lu:4:20
+  |
+4 |     let (pid, h) = os_fork()?
+  |                    ^^^^^^^ not found
+  |
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[exit 2]
+
+=== save.lu
+fn exclusive(path: str) -> str {
+    let f = fs_open_perm(path, 4, 420) else |e| {
+        return "{e}"
+    }
+    fs_close(f) else |_| {}
+    "made"
+}
+
+fn main() -> !int {
+    let tmp = "notes.txt.new"
+    if fs_exists(tmp) {
+        fs_remove(tmp)?
+    }
+    fs_write_text("notes.txt", "old")?
+    let t = fs_open_perm(tmp, 4, 420)?
+    fs_write(t, "new")?
+    fs_sync(t)?
+    fs_close(t)?
+    print("the temporary name, made again: {exclusive(tmp)}")
+    fs_rename(tmp, "notes.txt")?
+    fs_sync_dir(".")?
+    let saved = fs_read_text("notes.txt")?
+    print("saved: {saved}")
+    fs_create_dir_all("drafts")?
+    let here = fs_realpath(".")?
+    let up = fs_realpath("drafts/..")?
+    print("drafts/.. is this directory: {up == here}")
+    let gone = fs_realpath("nowhere") else |e| "{e}"
+    print("a name nothing holds: {gone}")
+    0
+}
+$ lupin save.lu
+save.lu: unsupported: `fs_sync` does not resolve
+[exit 4]
+$ wolf run save.lu
+error[E0301]: nothing named `fs_sync` is in scope
+  --> ./save.lu:17:5
+   |
+17 |     fs_sync(t)?
+   |     ^^^^^^^ not found
+   |
+
+error[E0301]: nothing named `fs_sync_dir` is in scope
+  --> ./save.lu:21:5
+   |
+21 |     fs_sync_dir(".")?
+   |     ^^^^^^^^^^^ not found
+   |
+
+error[E0301]: nothing named `fs_realpath` is in scope
+  --> ./save.lu:25:16
+   |
+25 |     let here = fs_realpath(".")?
+   |                ^^^^^^^^^^^ not found
+   |
+help: did you mean `fs_read_at`?
+   |
+25 |     let here = fs_read_at(".")?
+   |
+
+error[E0301]: nothing named `fs_realpath` is in scope
+  --> ./save.lu:26:14
+   |
+26 |     let up = fs_realpath("drafts/..")?
+   |              ^^^^^^^^^^^ not found
+   |
+help: did you mean `fs_read_at`?
+   |
+26 |     let up = fs_read_at("drafts/..")?
+   |
+
+error[E0301]: nothing named `fs_realpath` is in scope
+  --> ./save.lu:28:16
+   |
+28 |     let gone = fs_realpath("nowhere") else |e| "{e}"
+   |                ^^^^^^^^^^^ not found
+   |
+help: did you mean `fs_read_at`?
+   |
+28 |     let gone = fs_read_at("nowhere") else |e| "{e}"
+   |
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[exit 2]
+$ wolf conform-run --json save.lu
+error[E0301]: nothing named `fs_sync` is in scope
+  --> ./save.lu:17:5
+   |
+17 |     fs_sync(t)?
+   |     ^^^^^^^ not found
+   |
+
+error[E0301]: nothing named `fs_sync_dir` is in scope
+  --> ./save.lu:21:5
+   |
+21 |     fs_sync_dir(".")?
+   |     ^^^^^^^^^^^ not found
+   |
+
+error[E0301]: nothing named `fs_realpath` is in scope
+  --> ./save.lu:25:16
+   |
+25 |     let here = fs_realpath(".")?
+   |                ^^^^^^^^^^^ not found
+   |
+help: did you mean `fs_read_at`?
+   |
+25 |     let here = fs_read_at(".")?
+   |
+
+error[E0301]: nothing named `fs_realpath` is in scope
+  --> ./save.lu:26:14
+   |
+26 |     let up = fs_realpath("drafts/..")?
+   |              ^^^^^^^^^^^ not found
+   |
+help: did you mean `fs_read_at`?
+   |
+26 |     let up = fs_read_at("drafts/..")?
+   |
+
+error[E0301]: nothing named `fs_realpath` is in scope
+  --> ./save.lu:28:16
+   |
+28 |     let gone = fs_realpath("nowhere") else |e| "{e}"
+   |                ^^^^^^^^^^^ not found
+   |
+help: did you mean `fs_read_at`?
+   |
+28 |     let gone = fs_read_at("nowhere") else |e| "{e}"
+   |
+
+{"commit":"85dab5d","diagnostics":[{"code":"E0301","severity":"error","span":[362,369]},{"code":"E0301","severity":"error","span":[490,501]},{"code":"E0301","severity":"error","span":[627,638]},{"code":"E0301","severity":"error","span":[658,669]},{"code":"E0301","severity":"error","span":[754,765]}],"file":"./save.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked save.lu
+error[E0301]: nothing named `fs_sync` is in scope
+  --> ./save.lu:17:5
+   |
+17 |     fs_sync(t)?
+   |     ^^^^^^^ not found
+   |
+
+error[E0301]: nothing named `fs_sync_dir` is in scope
+  --> ./save.lu:21:5
+   |
+21 |     fs_sync_dir(".")?
+   |     ^^^^^^^^^^^ not found
+   |
+
+error[E0301]: nothing named `fs_realpath` is in scope
+  --> ./save.lu:25:16
+   |
+25 |     let here = fs_realpath(".")?
+   |                ^^^^^^^^^^^ not found
+   |
+help: did you mean `fs_read_at`?
+   |
+25 |     let here = fs_read_at(".")?
+   |
+
+error[E0301]: nothing named `fs_realpath` is in scope
+  --> ./save.lu:26:14
+   |
+26 |     let up = fs_realpath("drafts/..")?
+   |              ^^^^^^^^^^^ not found
+   |
+help: did you mean `fs_read_at`?
+   |
+26 |     let up = fs_read_at("drafts/..")?
+   |
+
+error[E0301]: nothing named `fs_realpath` is in scope
+  --> ./save.lu:28:16
+   |
+28 |     let gone = fs_realpath("nowhere") else |e| "{e}"
+   |                ^^^^^^^^^^^ not found
+   |
+help: did you mean `fs_read_at`?
+   |
+28 |     let gone = fs_read_at("nowhere") else |e| "{e}"
+   |
+
+{"commit":"85dab5d","diagnostics":[{"code":"E0301","severity":"error","span":[362,369]},{"code":"E0301","severity":"error","span":[490,501]},{"code":"E0301","severity":"error","span":[627,638]},{"code":"E0301","severity":"error","span":[658,669]},{"code":"E0301","severity":"error","span":[754,765]}],"file":"./save.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf build --release save.lu && ./save
+error[E0301]: nothing named `fs_sync` is in scope
+  --> ./save.lu:17:5
+   |
+17 |     fs_sync(t)?
+   |     ^^^^^^^ not found
+   |
+
+error[E0301]: nothing named `fs_sync_dir` is in scope
+  --> ./save.lu:21:5
+   |
+21 |     fs_sync_dir(".")?
+   |     ^^^^^^^^^^^ not found
+   |
+
+error[E0301]: nothing named `fs_realpath` is in scope
+  --> ./save.lu:25:16
+   |
+25 |     let here = fs_realpath(".")?
+   |                ^^^^^^^^^^^ not found
+   |
+help: did you mean `fs_read_at`?
+   |
+25 |     let here = fs_read_at(".")?
+   |
+
+error[E0301]: nothing named `fs_realpath` is in scope
+  --> ./save.lu:26:14
+   |
+26 |     let up = fs_realpath("drafts/..")?
+   |              ^^^^^^^^^^^ not found
+   |
+help: did you mean `fs_read_at`?
+   |
+26 |     let up = fs_read_at("drafts/..")?
+   |
+
+error[E0301]: nothing named `fs_realpath` is in scope
+  --> ./save.lu:28:16
+   |
+28 |     let gone = fs_realpath("nowhere") else |e| "{e}"
+   |                ^^^^^^^^^^^ not found
+   |
+help: did you mean `fs_read_at`?
+   |
+28 |     let gone = fs_read_at("nowhere") else |e| "{e}"
+   |
+
+wolf build: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[build exit 2]
+$ taskset -c 0-3 wolf run save.lu
+error[E0301]: nothing named `fs_sync` is in scope
+  --> ./save.lu:17:5
+   |
+17 |     fs_sync(t)?
+   |     ^^^^^^^ not found
+   |
+
+error[E0301]: nothing named `fs_sync_dir` is in scope
+  --> ./save.lu:21:5
+   |
+21 |     fs_sync_dir(".")?
+   |     ^^^^^^^^^^^ not found
+   |
+
+error[E0301]: nothing named `fs_realpath` is in scope
+  --> ./save.lu:25:16
+   |
+25 |     let here = fs_realpath(".")?
+   |                ^^^^^^^^^^^ not found
+   |
+help: did you mean `fs_read_at`?
+   |
+25 |     let here = fs_read_at(".")?
+   |
+
+error[E0301]: nothing named `fs_realpath` is in scope
+  --> ./save.lu:26:14
+   |
+26 |     let up = fs_realpath("drafts/..")?
+   |              ^^^^^^^^^^^ not found
+   |
+help: did you mean `fs_read_at`?
+   |
+26 |     let up = fs_read_at("drafts/..")?
+   |
+
+error[E0301]: nothing named `fs_realpath` is in scope
+  --> ./save.lu:28:16
+   |
+28 |     let gone = fs_realpath("nowhere") else |e| "{e}"
+   |                ^^^^^^^^^^^ not found
+   |
+help: did you mean `fs_read_at`?
+   |
+28 |     let gone = fs_read_at("nowhere") else |e| "{e}"
+   |
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[exit 2]
+
+=== wait.lu
+use std.signal
+
+fn main() -> !int {
+    signal.listen(signal.resize())?
+    let (r, w) = os_pipe()?
+    let start = os_clock_ns()
+    let (i, m) = os_signal_wait_fds([r], signal.resize(), 25)?
+    let waited = os_clock_ns() - start
+    print("nothing came: ({i}, {m}), and 25 ms passed: {waited >= 25000000}")
+    fs_write(w, "k")?
+    let (j, n) = os_signal_wait_fds([r], signal.resize(), 0)?
+    print("a byte waits in the pipe: ({j}, {n})")
+    signal.raise(signal.resize())?
+    let (k, p) = os_signal_wait_fds([r], signal.resize(), -1)?
+    print("a resize beside it comes first: {k == -1 && p == signal.resize()}")
+    0
+}
+$ lupin wait.lu
+wait.lu: unsupported: `signal.listen` does not resolve
+[exit 4]
+$ wolf run wait.lu
+error[E0301]: nothing named `os_clock_ns` is in scope
+ --> ./wait.lu:6:17
+  |
+6 |     let start = os_clock_ns()
+  |                 ^^^^^^^^^^^ not found
+  |
+
+error[E0301]: nothing named `os_signal_wait_fds` is in scope
+ --> ./wait.lu:7:18
+  |
+7 |     let (i, m) = os_signal_wait_fds([r], signal.resize(), 25)?
+  |                  ^^^^^^^^^^^^^^^^^^ not found
+  |
+help: did you mean `os_signal_wait_fd`?
+  |
+7 |     let (i, m) = os_signal_wait_fd([r], signal.resize(), 25)?
+  |
+
+error[E0301]: nothing named `os_clock_ns` is in scope
+ --> ./wait.lu:8:18
+  |
+8 |     let waited = os_clock_ns() - start
+  |                  ^^^^^^^^^^^ not found
+  |
+
+error[E0301]: nothing named `os_signal_wait_fds` is in scope
+  --> ./wait.lu:11:18
+   |
+11 |     let (j, n) = os_signal_wait_fds([r], signal.resize(), 0)?
+   |                  ^^^^^^^^^^^^^^^^^^ not found
+   |
+help: did you mean `os_signal_wait_fd`?
+   |
+11 |     let (j, n) = os_signal_wait_fd([r], signal.resize(), 0)?
+   |
+
+error[E0301]: nothing named `os_signal_wait_fds` is in scope
+  --> ./wait.lu:14:18
+   |
+14 |     let (k, p) = os_signal_wait_fds([r], signal.resize(), -1)?
+   |                  ^^^^^^^^^^^^^^^^^^ not found
+   |
+help: did you mean `os_signal_wait_fd`?
+   |
+14 |     let (k, p) = os_signal_wait_fd([r], signal.resize(), -1)?
+   |
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[exit 2]
+$ wolf conform-run --json wait.lu
+error[E0301]: nothing named `os_clock_ns` is in scope
+ --> ./wait.lu:6:17
+  |
+6 |     let start = os_clock_ns()
+  |                 ^^^^^^^^^^^ not found
+  |
+
+error[E0301]: nothing named `os_signal_wait_fds` is in scope
+ --> ./wait.lu:7:18
+  |
+7 |     let (i, m) = os_signal_wait_fds([r], signal.resize(), 25)?
+  |                  ^^^^^^^^^^^^^^^^^^ not found
+  |
+help: did you mean `os_signal_wait_fd`?
+  |
+7 |     let (i, m) = os_signal_wait_fd([r], signal.resize(), 25)?
+  |
+
+error[E0301]: nothing named `os_clock_ns` is in scope
+ --> ./wait.lu:8:18
+  |
+8 |     let waited = os_clock_ns() - start
+  |                  ^^^^^^^^^^^ not found
+  |
+
+error[E0301]: nothing named `os_signal_wait_fds` is in scope
+  --> ./wait.lu:11:18
+   |
+11 |     let (j, n) = os_signal_wait_fds([r], signal.resize(), 0)?
+   |                  ^^^^^^^^^^^^^^^^^^ not found
+   |
+help: did you mean `os_signal_wait_fd`?
+   |
+11 |     let (j, n) = os_signal_wait_fd([r], signal.resize(), 0)?
+   |
+
+error[E0301]: nothing named `os_signal_wait_fds` is in scope
+  --> ./wait.lu:14:18
+   |
+14 |     let (k, p) = os_signal_wait_fds([r], signal.resize(), -1)?
+   |                  ^^^^^^^^^^^^^^^^^^ not found
+   |
+help: did you mean `os_signal_wait_fd`?
+   |
+14 |     let (k, p) = os_signal_wait_fd([r], signal.resize(), -1)?
+   |
+
+{"commit":"85dab5d","diagnostics":[{"code":"E0301","severity":"error","span":[116,127]},{"code":"E0301","severity":"error","span":[147,165]},{"code":"E0301","severity":"error","span":[210,221]},{"code":"E0301","severity":"error","span":[349,367]},{"code":"E0301","severity":"error","span":[496,514]}],"file":"./wait.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked wait.lu
+error[E0301]: nothing named `os_clock_ns` is in scope
+ --> ./wait.lu:6:17
+  |
+6 |     let start = os_clock_ns()
+  |                 ^^^^^^^^^^^ not found
+  |
+
+error[E0301]: nothing named `os_signal_wait_fds` is in scope
+ --> ./wait.lu:7:18
+  |
+7 |     let (i, m) = os_signal_wait_fds([r], signal.resize(), 25)?
+  |                  ^^^^^^^^^^^^^^^^^^ not found
+  |
+help: did you mean `os_signal_wait_fd`?
+  |
+7 |     let (i, m) = os_signal_wait_fd([r], signal.resize(), 25)?
+  |
+
+error[E0301]: nothing named `os_clock_ns` is in scope
+ --> ./wait.lu:8:18
+  |
+8 |     let waited = os_clock_ns() - start
+  |                  ^^^^^^^^^^^ not found
+  |
+
+error[E0301]: nothing named `os_signal_wait_fds` is in scope
+  --> ./wait.lu:11:18
+   |
+11 |     let (j, n) = os_signal_wait_fds([r], signal.resize(), 0)?
+   |                  ^^^^^^^^^^^^^^^^^^ not found
+   |
+help: did you mean `os_signal_wait_fd`?
+   |
+11 |     let (j, n) = os_signal_wait_fd([r], signal.resize(), 0)?
+   |
+
+error[E0301]: nothing named `os_signal_wait_fds` is in scope
+  --> ./wait.lu:14:18
+   |
+14 |     let (k, p) = os_signal_wait_fds([r], signal.resize(), -1)?
+   |                  ^^^^^^^^^^^^^^^^^^ not found
+   |
+help: did you mean `os_signal_wait_fd`?
+   |
+14 |     let (k, p) = os_signal_wait_fd([r], signal.resize(), -1)?
+   |
+
+{"commit":"85dab5d","diagnostics":[{"code":"E0301","severity":"error","span":[116,127]},{"code":"E0301","severity":"error","span":[147,165]},{"code":"E0301","severity":"error","span":[210,221]},{"code":"E0301","severity":"error","span":[349,367]},{"code":"E0301","severity":"error","span":[496,514]}],"file":"./wait.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf build --release wait.lu && ./wait
+error[E0301]: nothing named `os_clock_ns` is in scope
+ --> ./wait.lu:6:17
+  |
+6 |     let start = os_clock_ns()
+  |                 ^^^^^^^^^^^ not found
+  |
+
+error[E0301]: nothing named `os_signal_wait_fds` is in scope
+ --> ./wait.lu:7:18
+  |
+7 |     let (i, m) = os_signal_wait_fds([r], signal.resize(), 25)?
+  |                  ^^^^^^^^^^^^^^^^^^ not found
+  |
+help: did you mean `os_signal_wait_fd`?
+  |
+7 |     let (i, m) = os_signal_wait_fd([r], signal.resize(), 25)?
+  |
+
+error[E0301]: nothing named `os_clock_ns` is in scope
+ --> ./wait.lu:8:18
+  |
+8 |     let waited = os_clock_ns() - start
+  |                  ^^^^^^^^^^^ not found
+  |
+
+error[E0301]: nothing named `os_signal_wait_fds` is in scope
+  --> ./wait.lu:11:18
+   |
+11 |     let (j, n) = os_signal_wait_fds([r], signal.resize(), 0)?
+   |                  ^^^^^^^^^^^^^^^^^^ not found
+   |
+help: did you mean `os_signal_wait_fd`?
+   |
+11 |     let (j, n) = os_signal_wait_fd([r], signal.resize(), 0)?
+   |
+
+error[E0301]: nothing named `os_signal_wait_fds` is in scope
+  --> ./wait.lu:14:18
+   |
+14 |     let (k, p) = os_signal_wait_fds([r], signal.resize(), -1)?
+   |                  ^^^^^^^^^^^^^^^^^^ not found
+   |
+help: did you mean `os_signal_wait_fd`?
+   |
+14 |     let (k, p) = os_signal_wait_fd([r], signal.resize(), -1)?
+   |
+
+wolf build: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[build exit 2]
+$ taskset -c 0-3 wolf run wait.lu
+error[E0301]: nothing named `os_clock_ns` is in scope
+ --> ./wait.lu:6:17
+  |
+6 |     let start = os_clock_ns()
+  |                 ^^^^^^^^^^^ not found
+  |
+
+error[E0301]: nothing named `os_signal_wait_fds` is in scope
+ --> ./wait.lu:7:18
+  |
+7 |     let (i, m) = os_signal_wait_fds([r], signal.resize(), 25)?
+  |                  ^^^^^^^^^^^^^^^^^^ not found
+  |
+help: did you mean `os_signal_wait_fd`?
+  |
+7 |     let (i, m) = os_signal_wait_fd([r], signal.resize(), 25)?
+  |
+
+error[E0301]: nothing named `os_clock_ns` is in scope
+ --> ./wait.lu:8:18
+  |
+8 |     let waited = os_clock_ns() - start
+  |                  ^^^^^^^^^^^ not found
+  |
+
+error[E0301]: nothing named `os_signal_wait_fds` is in scope
+  --> ./wait.lu:11:18
+   |
+11 |     let (j, n) = os_signal_wait_fds([r], signal.resize(), 0)?
+   |                  ^^^^^^^^^^^^^^^^^^ not found
+   |
+help: did you mean `os_signal_wait_fd`?
+   |
+11 |     let (j, n) = os_signal_wait_fd([r], signal.resize(), 0)?
+   |
+
+error[E0301]: nothing named `os_signal_wait_fds` is in scope
+  --> ./wait.lu:14:18
+   |
+14 |     let (k, p) = os_signal_wait_fds([r], signal.resize(), -1)?
+   |                  ^^^^^^^^^^^^^^^^^^ not found
+   |
+help: did you mean `os_signal_wait_fd`?
+   |
+14 |     let (k, p) = os_signal_wait_fd([r], signal.resize(), -1)?
+   |
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[exit 2]

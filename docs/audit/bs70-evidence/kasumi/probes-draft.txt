@@ -1,0 +1,199 @@
+########## wolf 0.2.34 (wolfgang, pin 9da7bdc) / lupin 0.1.55 (wolf-interp, reference interpreter at pin 294d626)
+SigBlk:	0000000000000000
+SigIgn:	0000000000000000
+
+=== busy.lu
+fn fork_row() -> str {
+    let (pid, h) = os_fork() else |e| {
+        return "{e}"
+    }
+    if pid == 0 {
+        os_exit(0)
+    }
+    let status = os_wait_status(h) else 1
+    "a child, its status {status}"
+}
+
+fn main() -> !int {
+    let go = channel[int](0)
+    scope s {
+        s.spawn(fn() {
+            let _ = go.recv() else |_| 0
+        })
+        print("a task live: {fork_row()}")
+        go.send(1)?
+    }
+    print("every task joined: {fork_row()}")
+    0
+}
+$ lupin busy.lu
+busy.lu: unsupported: `os_fork` does not resolve
+[exit 4]
+$ wolf run busy.lu
+a task live: busy
+every task joined: a child, its status 0
+[exit 0]
+$ wolf conform-run --json busy.lu
+{"commit":"9da7bdc","diagnostics":[],"file":"./busy.lu","impl":"wolfgang","impl_version":"0.2.34","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked busy.lu
+{"commit":"9da7bdc","diagnostics":[],"file":"./busy.lu","impl":"wolfgang","impl_version":"0.2.34","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"a task live: unsupported\nevery task joined: unsupported\n","stdout_sha256":"9d68e8cc173c041e58fd1a7c2b68a4d13173fde1b99316577585f8d80593b2ce","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release busy.lu && ./busy
+[build exit 0]
+a task live: busy
+every task joined: a child, its status 0
+[exit 0]
+$ taskset -c 0-3 wolf run busy.lu
+a task live: busy
+every task joined: a child, its status 0
+[exit 0]
+
+=== fork.lu
+fn main() -> !int {
+    var count = 1
+    let (r, w) = os_pipe()?
+    let (pid, h) = os_fork()?
+    if pid == 0 {
+        count += 1
+        fs_write(w, "answered ({pid}, {h}), its count {count}") else |_| {}
+        os_exit(3)
+    }
+    fs_close(w)?
+    let said = fs_read(r, 64)?
+    let status = os_wait_status(h)?
+    print("the child: {said}")
+    print("the parent: its count {count}, the child's status {status}")
+    print("the parent was answered a pid and a handle: {pid > 0 && h >= 0}")
+    0
+}
+$ lupin fork.lu
+fork.lu: unsupported: `os_fork` does not resolve
+[exit 4]
+$ wolf run fork.lu
+the child: answered (0, -1), its count 2
+the parent: its count 1, the child's status 3
+the parent was answered a pid and a handle: true
+[exit 0]
+$ wolf conform-run --json fork.lu
+{"commit":"9da7bdc","diagnostics":[],"file":"./fork.lu","impl":"wolfgang","impl_version":"0.2.34","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked fork.lu
+{"commit":"9da7bdc","diagnostics":[],"file":"./fork.lu","impl":"wolfgang","impl_version":"0.2.34","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"error: unsupported\n","stdout_sha256":"34038536601139bf19f064fa1dfaa1f9fb5f3bb51b84d540f67673949d737543","verdict":"exit(1)","warnings":[]}
+[exit 0]
+$ wolf build --release fork.lu && ./fork
+[build exit 0]
+the child: answered (0, -1), its count 2
+the parent: its count 1, the child's status 3
+the parent was answered a pid and a handle: true
+[exit 0]
+$ taskset -c 0-3 wolf run fork.lu
+the child: answered (0, -1), its count 2
+the parent: its count 1, the child's status 3
+the parent was answered a pid and a handle: true
+[exit 0]
+
+=== save.lu
+fn exclusive(path: str) -> str {
+    let f = fs_open_perm(path, 4, 420) else |e| {
+        return "{e}"
+    }
+    fs_close(f) else |_| {}
+    "made"
+}
+
+fn main() -> !int {
+    let tmp = "notes.txt.new"
+    if fs_exists(tmp) {
+        fs_remove(tmp)?
+    }
+    fs_write_text("notes.txt", "old")?
+    let t = fs_open_perm(tmp, 4, 420)?
+    fs_write(t, "new")?
+    fs_sync(t)?
+    fs_close(t)?
+    print("the temporary name, made again: {exclusive(tmp)}")
+    fs_rename(tmp, "notes.txt")?
+    fs_sync_dir(".")?
+    let saved = fs_read_text("notes.txt")?
+    print("saved: {saved}")
+    fs_create_dir_all("drafts")?
+    let here = fs_realpath(".")?
+    let up = fs_realpath("drafts/..")?
+    print("drafts/.. is this directory: {up == here}")
+    let gone = fs_realpath("nowhere") else |e| "{e}"
+    print("a name nothing holds: {gone}")
+    0
+}
+$ lupin save.lu
+save.lu: unsupported: `fs_sync` does not resolve
+[exit 4]
+$ wolf run save.lu
+the temporary name, made again: exists
+saved: new
+drafts/.. is this directory: true
+a name nothing holds: not_found
+[exit 0]
+$ wolf conform-run --json save.lu
+{"commit":"9da7bdc","diagnostics":[],"file":"./save.lu","impl":"wolfgang","impl_version":"0.2.34","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked save.lu
+{"commit":"9da7bdc","diagnostics":[],"file":"./save.lu","impl":"wolfgang","impl_version":"0.2.34","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"the temporary name, made again: exists\nsaved: new\ndrafts/.. is this directory: true\na name nothing holds: not_found\n","stdout_sha256":"14d73e13d5f7752870a8f74402b3c1a1f129d49e1ef5c58d57a6d36d39cfb7fd","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release save.lu && ./save
+[build exit 0]
+the temporary name, made again: exists
+saved: new
+drafts/.. is this directory: true
+a name nothing holds: not_found
+[exit 0]
+$ taskset -c 0-3 wolf run save.lu
+the temporary name, made again: exists
+saved: new
+drafts/.. is this directory: true
+a name nothing holds: not_found
+[exit 0]
+
+=== wait.lu
+use std.signal
+
+fn main() -> !int {
+    signal.listen(signal.resize())?
+    let (r, w) = os_pipe()?
+    let start = os_clock_ns()
+    let (i, m) = os_signal_wait_fds([r], signal.resize(), 25)?
+    let waited = os_clock_ns() - start
+    print("nothing came: ({i}, {m}), and 25 ms passed: {waited >= 25000000}")
+    fs_write(w, "k")?
+    let (j, n) = os_signal_wait_fds([r], signal.resize(), 0)?
+    print("a byte waits in the pipe: ({j}, {n})")
+    signal.raise(signal.resize())?
+    let (k, p) = os_signal_wait_fds([r], signal.resize(), -1)?
+    print("a resize beside it comes first: {k == -1 && p == signal.resize()}")
+    0
+}
+$ lupin wait.lu
+wait.lu: unsupported: `signal.listen` does not resolve
+[exit 4]
+$ wolf run wait.lu
+nothing came: (-1, 0), and 25 ms passed: true
+a byte waits in the pipe: (0, 0)
+a resize beside it comes first: true
+[exit 0]
+$ wolf conform-run --json wait.lu
+{"commit":"9da7bdc","diagnostics":[],"file":"./wait.lu","impl":"wolfgang","impl_version":"0.2.34","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked wait.lu
+{"commit":"9da7bdc","diagnostics":[],"file":"./wait.lu","impl":"wolfgang","impl_version":"0.2.34","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"nothing came: (-1, 0), and 25 ms passed: true\na byte waits in the pipe: (0, 0)\na resize beside it comes first: true\n","stdout_sha256":"b0fca7a261f5a97f3b7c4f770564a562f776184cf56b4eb72e9377a83826d1dc","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release wait.lu && ./wait
+[build exit 0]
+nothing came: (-1, 0), and 25 ms passed: true
+a byte waits in the pipe: (0, 0)
+a resize beside it comes first: true
+[exit 0]
+$ taskset -c 0-3 wolf run wait.lu
+nothing came: (-1, 0), and 25 ms passed: true
+a byte waits in the pipe: (0, 0)
+a resize beside it comes first: true
+[exit 0]

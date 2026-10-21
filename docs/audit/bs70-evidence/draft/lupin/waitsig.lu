@@ -1,0 +1,9 @@
+fn main() -> !int {
+    let none = os_signal_wait(0) else |e| {
+        print("wait on an empty set: {e}")
+        0
+    }
+    let m = os_signal_wait(1)?
+    print("waited: {m}")
+    0
+}

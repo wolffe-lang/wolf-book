@@ -1,0 +1,8 @@
+container: d6e278cfadac pid 1 procs 4 uid 1000 core 0/0
+SigBlk:	0000000000000000
+SigIgn:	0000000000000000
+$ wolf conform-run --checked busy.lu
+[exit 0]
+--- stdout
+{"commit":"9da7bdc","diagnostics":[],"file":"./busy.lu","impl":"wolfgang","impl_version":"0.2.34","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"a task live: unsupported\nevery task joined: unsupported\n","stdout_sha256":"9d68e8cc173c041e58fd1a7c2b68a4d13173fde1b99316577585f8d80593b2ce","verdict":"exit(0)","warnings":[]}
+--- stderr

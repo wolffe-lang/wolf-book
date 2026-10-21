@@ -1,0 +1,5 @@
+backmatter: 303 solution(s) published, 338 on file
+backmatter: book/back/appendix-a.md up to date
+backmatter: book/back/solutions.md up to date
+error: backmatter: vendor/spec/anchors.json differs from the sibling wolf-lang checkout — re-vendor deliberately, at a pin bump
+EXIT 1

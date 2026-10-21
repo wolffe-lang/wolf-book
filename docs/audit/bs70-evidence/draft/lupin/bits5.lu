@@ -1,0 +1,10 @@
+fn row(mode: int) -> str {
+    os_term_set_mode(0, mode) else |e| {
+        return "{e}"
+    }
+    "ok"
+}
+
+fn main() {
+    print("bit 5: {row(32)}")
+}

@@ -1,0 +1,685 @@
+########## wolf 0.2.33 (wolfgang, pin 85dab5d) / lupin 0.1.54 (wolf-interp, reference interpreter at pin 294d626)
+SigBlk:	0000000000000000
+SigIgn:	0000000000000000
+
+=== bits.lu
+fn row(mode: int) -> str {
+    os_term_set_mode(0, mode) else |e| {
+        return "{e}"
+    }
+    "ok"
+}
+
+fn main() {
+    print("bits 0-4: {row(31)}, bit 5: {row(32)}, bit 7: {row(128)}, bit 24: {row(16777216)}")
+}
+$ lupin bits.lu
+bits.lu: unsupported: `os_term_set_mode` asks the terminal or the process group: this machine admits no `unsafe` and std has no call for it ([os.term], [os.term.note] R8)
+[exit 4]
+$ wolf run bits.lu
+bits 0-4: io, bit 5: invalid, bit 7: invalid, bit 24: invalid
+[exit 0]
+$ wolf conform-run --json bits.lu
+{"commit":"85dab5d","diagnostics":[],"file":"./bits.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked bits.lu
+{"commit":"85dab5d","diagnostics":[],"file":"./bits.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"bits 0-4: io, bit 5: invalid, bit 7: invalid, bit 24: invalid\n","stdout_sha256":"b1ed5b6cca3c7da67e9176ddd709e02b2e9302d9e958e389f90c3f1eb9a4f371","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release bits.lu && ./bits
+[build exit 0]
+bits 0-4: io, bit 5: invalid, bit 7: invalid, bit 24: invalid
+[exit 0]
+$ taskset -c 0-3 wolf run bits.lu
+bits 0-4: io, bit 5: invalid, bit 7: invalid, bit 24: invalid
+[exit 0]
+
+=== bits5.lu
+fn row(mode: int) -> str {
+    os_term_set_mode(0, mode) else |e| {
+        return "{e}"
+    }
+    "ok"
+}
+
+fn main() {
+    print("bit 5: {row(32)}")
+}
+$ lupin bits5.lu
+bit 5: invalid
+[exit 0]
+$ wolf run bits5.lu
+bit 5: invalid
+[exit 0]
+$ wolf conform-run --json bits5.lu
+{"commit":"85dab5d","diagnostics":[],"file":"./bits5.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked bits5.lu
+{"commit":"85dab5d","diagnostics":[],"file":"./bits5.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"bit 5: invalid\n","stdout_sha256":"9cb638e4c424a7f6e929e8e8f460cb7a69c8c53051d22c39016468c1cb9d6c70","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release bits5.lu && ./bits5
+[build exit 0]
+bit 5: invalid
+[exit 0]
+$ taskset -c 0-3 wolf run bits5.lu
+bit 5: invalid
+[exit 0]
+
+=== clock.lu
+fn main() {
+    let ms = time_now_ms()
+    let ns = os_clock_ns()
+    print("the same clock: {ns / 1000000 >= ms}")
+}
+$ lupin clock.lu
+clock.lu: unsupported: `os_clock_ns` does not resolve
+[exit 4]
+$ wolf run clock.lu
+error[E0301]: nothing named `os_clock_ns` is in scope
+ --> ./clock.lu:3:14
+  |
+3 |     let ns = os_clock_ns()
+  |              ^^^^^^^^^^^ not found
+  |
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[exit 2]
+$ wolf conform-run --json clock.lu
+error[E0301]: nothing named `os_clock_ns` is in scope
+ --> ./clock.lu:3:14
+  |
+3 |     let ns = os_clock_ns()
+  |              ^^^^^^^^^^^ not found
+  |
+
+{"commit":"85dab5d","diagnostics":[{"code":"E0301","severity":"error","span":[52,63]}],"file":"./clock.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked clock.lu
+error[E0301]: nothing named `os_clock_ns` is in scope
+ --> ./clock.lu:3:14
+  |
+3 |     let ns = os_clock_ns()
+  |              ^^^^^^^^^^^ not found
+  |
+
+{"commit":"85dab5d","diagnostics":[{"code":"E0301","severity":"error","span":[52,63]}],"file":"./clock.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf build --release clock.lu && ./clock
+error[E0301]: nothing named `os_clock_ns` is in scope
+ --> ./clock.lu:3:14
+  |
+3 |     let ns = os_clock_ns()
+  |              ^^^^^^^^^^^ not found
+  |
+
+wolf build: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[build exit 2]
+$ taskset -c 0-3 wolf run clock.lu
+error[E0301]: nothing named `os_clock_ns` is in scope
+ --> ./clock.lu:3:14
+  |
+3 |     let ns = os_clock_ns()
+  |              ^^^^^^^^^^^ not found
+  |
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[exit 2]
+
+=== core.lu
+fn main() -> !int {
+    let (h, live) = os_wait_poll_core()?
+    print("nothing to report: {h}, {live} live")
+    0
+}
+$ lupin core.lu
+core.lu: unsupported: `os_wait_poll_core` does not resolve
+[exit 4]
+$ wolf run core.lu
+nothing to report: -1, 0 live
+[exit 0]
+$ wolf conform-run --json core.lu
+{"commit":"85dab5d","diagnostics":[],"file":"./core.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked core.lu
+{"commit":"85dab5d","diagnostics":[],"file":"./core.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"nothing to report: -1, 0 live\n","stdout_sha256":"1f87a8b5279f28dcc19045c29bcd8e89336f57713d81175505b21de7353d17cc","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release core.lu && ./core
+[build exit 0]
+nothing to report: -1, 0 live
+[exit 0]
+$ taskset -c 0-3 wolf run core.lu
+nothing to report: -1, 0 live
+[exit 0]
+
+=== exitsig.lu
+fn main() -> !int {
+    os_exit_signal(0) else |e| {
+        print("end by nothing: {e}")
+    }
+    os_exit_signal(512)?
+    print("still here")
+    0
+}
+$ lupin exitsig.lu
+exitsig.lu: unsupported: `os_exit_signal` does not resolve
+[exit 4]
+$ wolf run exitsig.lu
+end by nothing: invalid
+wolf run: program terminated by a signal
+[exit 2]
+$ wolf conform-run --json exitsig.lu
+{"commit":"85dab5d","diagnostics":[],"file":"./exitsig.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked exitsig.lu
+wolf conform-run --checked: unsupported — `os_exit_signal` (the checked machine does not end the process it runs in by a signal; [os.signal.exit]) @100..119
+{"commit":"85dab5d","diagnostics":[],"file":"./exitsig.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"mem","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"unsupported","warnings":[],"x-unsupported-construct":"`os_exit_signal` (the checked machine does not end the process it runs in by a signal; [os.signal.exit])","x-unsupported-span":[100,119]}
+[exit 0]
+$ wolf build --release exitsig.lu && ./exitsig
+[build exit 0]
+end by nothing: invalid
+~/lanes/bs70/ev/probes.sh: line 13:  3405 User defined signal 1      timeout 60 ./$p 2>&1 < /dev/null
+[exit 138]
+$ taskset -c 0-3 wolf run exitsig.lu
+end by nothing: invalid
+wolf run: program terminated by a signal
+[exit 2]
+
+=== listen.lu
+fn main() -> !int {
+    os_signal_listen(0) else |e| {
+        print("an empty set: {e}")
+    }
+    os_signal_listen(1)?
+    print("listened")
+    0
+}
+$ lupin listen.lu
+listen.lu: unsupported: `os_signal_listen` does not resolve
+[exit 4]
+$ wolf run listen.lu
+an empty set: io
+listened
+[exit 0]
+$ wolf conform-run --json listen.lu
+{"commit":"85dab5d","diagnostics":[],"file":"./listen.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked listen.lu
+{"commit":"85dab5d","diagnostics":[],"file":"./listen.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"an empty set: io\nlistened\n","stdout_sha256":"9ee2efbdfdefd0b4267a5773a388e09fcfefeb285f7d792c1e6db37a3c8bc82f","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release listen.lu && ./listen
+[build exit 0]
+an empty set: io
+listened
+[exit 0]
+$ taskset -c 0-3 wolf run listen.lu
+an empty set: io
+listened
+[exit 0]
+
+=== one.lu
+fn main() -> !int {
+    os_signal_ignore_one(0) else |e| {
+        print("nothing: {e}")
+    }
+    os_signal_ignore_one(512)?
+    print("ignored")
+    0
+}
+$ lupin one.lu
+one.lu: unsupported: `os_signal_ignore_one` does not resolve
+[exit 4]
+$ wolf run one.lu
+nothing: invalid
+ignored
+[exit 0]
+$ wolf conform-run --json one.lu
+{"commit":"85dab5d","diagnostics":[],"file":"./one.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked one.lu
+{"commit":"85dab5d","diagnostics":[],"file":"./one.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"nothing: invalid\nignored\n","stdout_sha256":"9d37c60e3e8f5b7d1af127d4edb37c41d896efbc674e5e1b63eb81a8aa49fb90","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release one.lu && ./one
+[build exit 0]
+nothing: invalid
+ignored
+[exit 0]
+$ taskset -c 0-3 wolf run one.lu
+nothing: invalid
+ignored
+[exit 0]
+
+=== raise.lu
+fn main() -> !int {
+    os_signal_raise(0) else |e| {
+        print("raise of nothing: {e}")
+    }
+    os_signal_raise(512)?
+    print("raised")
+    0
+}
+$ lupin raise.lu
+raise.lu: unsupported: `os_signal_raise` does not resolve
+[exit 4]
+$ wolf run raise.lu
+raise of nothing: io
+wolf run: program terminated by a signal
+[exit 2]
+$ wolf conform-run --json raise.lu
+{"commit":"85dab5d","diagnostics":[],"file":"./raise.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked raise.lu
+{"commit":"85dab5d","diagnostics":[],"file":"./raise.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"raise of nothing: io\nraised\n","stdout_sha256":"ea8b72a1266210186770e2958ad51afef65df67cef702d1905ccab8b7f01b3a6","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release raise.lu && ./raise
+[build exit 0]
+raise of nothing: io
+~/lanes/bs70/ev/probes.sh: line 13:  3849 User defined signal 1      timeout 60 ./$p 2>&1 < /dev/null
+[exit 138]
+$ taskset -c 0-3 wolf run raise.lu
+raise of nothing: io
+wolf run: program terminated by a signal
+[exit 2]
+
+=== realpath.lu
+fn main() -> !int {
+    let here = fs_realpath(".")?
+    print("an absolute name: {here.starts_with("/")}")
+    0
+}
+$ lupin realpath.lu
+realpath.lu: unsupported: `fs_realpath` does not resolve
+[exit 4]
+$ wolf run realpath.lu
+error[E0301]: nothing named `fs_realpath` is in scope
+ --> ./realpath.lu:2:16
+  |
+2 |     let here = fs_realpath(".")?
+  |                ^^^^^^^^^^^ not found
+  |
+help: did you mean `fs_read_at`?
+  |
+2 |     let here = fs_read_at(".")?
+  |
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[exit 2]
+$ wolf conform-run --json realpath.lu
+error[E0301]: nothing named `fs_realpath` is in scope
+ --> ./realpath.lu:2:16
+  |
+2 |     let here = fs_realpath(".")?
+  |                ^^^^^^^^^^^ not found
+  |
+help: did you mean `fs_read_at`?
+  |
+2 |     let here = fs_read_at(".")?
+  |
+
+{"commit":"85dab5d","diagnostics":[{"code":"E0301","severity":"error","span":[35,46]}],"file":"./realpath.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked realpath.lu
+error[E0301]: nothing named `fs_realpath` is in scope
+ --> ./realpath.lu:2:16
+  |
+2 |     let here = fs_realpath(".")?
+  |                ^^^^^^^^^^^ not found
+  |
+help: did you mean `fs_read_at`?
+  |
+2 |     let here = fs_read_at(".")?
+  |
+
+{"commit":"85dab5d","diagnostics":[{"code":"E0301","severity":"error","span":[35,46]}],"file":"./realpath.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf build --release realpath.lu && ./realpath
+error[E0301]: nothing named `fs_realpath` is in scope
+ --> ./realpath.lu:2:16
+  |
+2 |     let here = fs_realpath(".")?
+  |                ^^^^^^^^^^^ not found
+  |
+help: did you mean `fs_read_at`?
+  |
+2 |     let here = fs_read_at(".")?
+  |
+
+wolf build: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[build exit 2]
+$ taskset -c 0-3 wolf run realpath.lu
+error[E0301]: nothing named `fs_realpath` is in scope
+ --> ./realpath.lu:2:16
+  |
+2 |     let here = fs_realpath(".")?
+  |                ^^^^^^^^^^^ not found
+  |
+help: did you mean `fs_read_at`?
+  |
+2 |     let here = fs_read_at(".")?
+  |
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[exit 2]
+
+=== restore.lu
+fn row(fd: int, mode: int) -> str {
+    os_term_restore_at_exit(fd, mode, "bye".bytes()) else |e| {
+        return "{e}"
+    }
+    "ok"
+}
+
+fn main() {
+    print("a mode past the bits: {row(1, 16777216)}, a pipe: {row(1, 0)}, a closed handle: {row(99, 0)}")
+}
+$ lupin restore.lu
+restore.lu: unsupported: `os_term_restore_at_exit` does not resolve
+[exit 4]
+$ wolf run restore.lu
+error[E0301]: nothing named `os_term_restore_at_exit` is in scope
+ --> ./restore.lu:2:5
+  |
+2 |     os_term_restore_at_exit(fd, mode, "bye".bytes()) else |e| {
+  |     ^^^^^^^^^^^^^^^^^^^^^^^ not found
+  |
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[exit 2]
+$ wolf conform-run --json restore.lu
+error[E0301]: nothing named `os_term_restore_at_exit` is in scope
+ --> ./restore.lu:2:5
+  |
+2 |     os_term_restore_at_exit(fd, mode, "bye".bytes()) else |e| {
+  |     ^^^^^^^^^^^^^^^^^^^^^^^ not found
+  |
+
+{"commit":"85dab5d","diagnostics":[{"code":"E0301","severity":"error","span":[40,63]}],"file":"./restore.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked restore.lu
+error[E0301]: nothing named `os_term_restore_at_exit` is in scope
+ --> ./restore.lu:2:5
+  |
+2 |     os_term_restore_at_exit(fd, mode, "bye".bytes()) else |e| {
+  |     ^^^^^^^^^^^^^^^^^^^^^^^ not found
+  |
+
+{"commit":"85dab5d","diagnostics":[{"code":"E0301","severity":"error","span":[40,63]}],"file":"./restore.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf build --release restore.lu && ./restore
+error[E0301]: nothing named `os_term_restore_at_exit` is in scope
+ --> ./restore.lu:2:5
+  |
+2 |     os_term_restore_at_exit(fd, mode, "bye".bytes()) else |e| {
+  |     ^^^^^^^^^^^^^^^^^^^^^^^ not found
+  |
+
+wolf build: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[build exit 2]
+$ taskset -c 0-3 wolf run restore.lu
+error[E0301]: nothing named `os_term_restore_at_exit` is in scope
+ --> ./restore.lu:2:5
+  |
+2 |     os_term_restore_at_exit(fd, mode, "bye".bytes()) else |e| {
+  |     ^^^^^^^^^^^^^^^^^^^^^^^ not found
+  |
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[exit 2]
+
+=== syncs.lu
+fn main() -> !int {
+    fs_write_text("s.txt", "x")?
+    let f = fs_open("s.txt")?
+    fs_sync(f)?
+    fs_close(f)?
+    fs_sync_dir(".")?
+    fs_sync_dir("nowhere") else |e| {
+        print("a missing directory: {e}")
+    }
+    fs_sync_dir("s.txt") else |e| {
+        print("a file: {e}")
+    }
+    print("synced")
+    0
+}
+$ lupin syncs.lu
+syncs.lu: unsupported: `fs_sync` does not resolve
+[exit 4]
+$ wolf run syncs.lu
+error[E0301]: nothing named `fs_sync` is in scope
+ --> ./syncs.lu:4:5
+  |
+4 |     fs_sync(f)?
+  |     ^^^^^^^ not found
+  |
+
+error[E0301]: nothing named `fs_sync_dir` is in scope
+ --> ./syncs.lu:6:5
+  |
+6 |     fs_sync_dir(".")?
+  |     ^^^^^^^^^^^ not found
+  |
+
+error[E0301]: nothing named `fs_sync_dir` is in scope
+ --> ./syncs.lu:7:5
+  |
+7 |     fs_sync_dir("nowhere") else |e| {
+  |     ^^^^^^^^^^^ not found
+  |
+
+error[E0301]: nothing named `fs_sync_dir` is in scope
+  --> ./syncs.lu:10:5
+   |
+10 |     fs_sync_dir("s.txt") else |e| {
+   |     ^^^^^^^^^^^ not found
+   |
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[exit 2]
+$ wolf conform-run --json syncs.lu
+error[E0301]: nothing named `fs_sync` is in scope
+ --> ./syncs.lu:4:5
+  |
+4 |     fs_sync(f)?
+  |     ^^^^^^^ not found
+  |
+
+error[E0301]: nothing named `fs_sync_dir` is in scope
+ --> ./syncs.lu:6:5
+  |
+6 |     fs_sync_dir(".")?
+  |     ^^^^^^^^^^^ not found
+  |
+
+error[E0301]: nothing named `fs_sync_dir` is in scope
+ --> ./syncs.lu:7:5
+  |
+7 |     fs_sync_dir("nowhere") else |e| {
+  |     ^^^^^^^^^^^ not found
+  |
+
+error[E0301]: nothing named `fs_sync_dir` is in scope
+  --> ./syncs.lu:10:5
+   |
+10 |     fs_sync_dir("s.txt") else |e| {
+   |     ^^^^^^^^^^^ not found
+   |
+
+{"commit":"85dab5d","diagnostics":[{"code":"E0301","severity":"error","span":[87,94]},{"code":"E0301","severity":"error","span":[120,131]},{"code":"E0301","severity":"error","span":[142,153]},{"code":"E0301","severity":"error","span":[228,239]}],"file":"./syncs.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked syncs.lu
+error[E0301]: nothing named `fs_sync` is in scope
+ --> ./syncs.lu:4:5
+  |
+4 |     fs_sync(f)?
+  |     ^^^^^^^ not found
+  |
+
+error[E0301]: nothing named `fs_sync_dir` is in scope
+ --> ./syncs.lu:6:5
+  |
+6 |     fs_sync_dir(".")?
+  |     ^^^^^^^^^^^ not found
+  |
+
+error[E0301]: nothing named `fs_sync_dir` is in scope
+ --> ./syncs.lu:7:5
+  |
+7 |     fs_sync_dir("nowhere") else |e| {
+  |     ^^^^^^^^^^^ not found
+  |
+
+error[E0301]: nothing named `fs_sync_dir` is in scope
+  --> ./syncs.lu:10:5
+   |
+10 |     fs_sync_dir("s.txt") else |e| {
+   |     ^^^^^^^^^^^ not found
+   |
+
+{"commit":"85dab5d","diagnostics":[{"code":"E0301","severity":"error","span":[87,94]},{"code":"E0301","severity":"error","span":[120,131]},{"code":"E0301","severity":"error","span":[142,153]},{"code":"E0301","severity":"error","span":[228,239]}],"file":"./syncs.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[exit 0]
+$ wolf build --release syncs.lu && ./syncs
+error[E0301]: nothing named `fs_sync` is in scope
+ --> ./syncs.lu:4:5
+  |
+4 |     fs_sync(f)?
+  |     ^^^^^^^ not found
+  |
+
+error[E0301]: nothing named `fs_sync_dir` is in scope
+ --> ./syncs.lu:6:5
+  |
+6 |     fs_sync_dir(".")?
+  |     ^^^^^^^^^^^ not found
+  |
+
+error[E0301]: nothing named `fs_sync_dir` is in scope
+ --> ./syncs.lu:7:5
+  |
+7 |     fs_sync_dir("nowhere") else |e| {
+  |     ^^^^^^^^^^^ not found
+  |
+
+error[E0301]: nothing named `fs_sync_dir` is in scope
+  --> ./syncs.lu:10:5
+   |
+10 |     fs_sync_dir("s.txt") else |e| {
+   |     ^^^^^^^^^^^ not found
+   |
+
+wolf build: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[build exit 2]
+$ taskset -c 0-3 wolf run syncs.lu
+error[E0301]: nothing named `fs_sync` is in scope
+ --> ./syncs.lu:4:5
+  |
+4 |     fs_sync(f)?
+  |     ^^^^^^^ not found
+  |
+
+error[E0301]: nothing named `fs_sync_dir` is in scope
+ --> ./syncs.lu:6:5
+  |
+6 |     fs_sync_dir(".")?
+  |     ^^^^^^^^^^^ not found
+  |
+
+error[E0301]: nothing named `fs_sync_dir` is in scope
+ --> ./syncs.lu:7:5
+  |
+7 |     fs_sync_dir("nowhere") else |e| {
+  |     ^^^^^^^^^^^ not found
+  |
+
+error[E0301]: nothing named `fs_sync_dir` is in scope
+  --> ./syncs.lu:10:5
+   |
+10 |     fs_sync_dir("s.txt") else |e| {
+   |     ^^^^^^^^^^^ not found
+   |
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[exit 2]
+
+=== text0.lu
+fn main() -> !int {
+    let words = os_signal_text(0)?
+    print("signal 0: {words}")
+    0
+}
+$ lupin text0.lu
+error: invalid
+[exit 1]
+$ wolf run text0.lu
+signal 0: Unknown signal 0
+[exit 0]
+$ wolf conform-run --json text0.lu
+{"commit":"85dab5d","diagnostics":[],"file":"./text0.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked text0.lu
+{"commit":"85dab5d","diagnostics":[],"file":"./text0.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"signal 0: Unknown signal 0\n","stdout_sha256":"6ba1d31202b76184e99afdb87fa868434a2172d528a89f71d7b2a163b695587d","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release text0.lu && ./text0
+[build exit 0]
+signal 0: Unknown signal 0
+[exit 0]
+$ taskset -c 0-3 wolf run text0.lu
+signal 0: Unknown signal 0
+[exit 0]
+
+=== waitcore.lu
+fn main() -> !int {
+    let h = os_spawn_fds("/bin/sh", ["-c", "exit 3"], List[int]())?
+    let st = os_wait_status_core(h)?
+    print("a child's exit through the core sibling: {st}")
+    0
+}
+$ lupin waitcore.lu
+waitcore.lu: unsupported: `os_wait_status_core` does not resolve
+waitcore.lu: ended the processes this run started: [4301]
+[exit 4]
+$ wolf run waitcore.lu
+a child's exit through the core sibling: 3
+[exit 0]
+$ wolf conform-run --json waitcore.lu
+{"commit":"85dab5d","diagnostics":[],"file":"./waitcore.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked waitcore.lu
+{"commit":"85dab5d","diagnostics":[],"file":"./waitcore.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"a child's exit through the core sibling: 3\n","stdout_sha256":"5e69aaa6b59bc7bcb3c8fd4482a991b79cc01388a9fdf91060f768b2b21990ff","verdict":"exit(0)","warnings":[]}
+[exit 0]
+$ wolf build --release waitcore.lu && ./waitcore
+[build exit 0]
+a child's exit through the core sibling: 3
+[exit 0]
+$ taskset -c 0-3 wolf run waitcore.lu
+a child's exit through the core sibling: 3
+[exit 0]
+
+=== waitsig.lu
+fn main() -> !int {
+    let none = os_signal_wait(0) else |e| {
+        print("wait on an empty set: {e}")
+        0
+    }
+    let m = os_signal_wait(1)?
+    print("waited: {m}")
+    0
+}
+$ lupin waitsig.lu
+waitsig.lu: unsupported: `os_signal_wait` does not resolve
+[exit 4]
+$ wolf run waitsig.lu
+wait on an empty set: io
+[exit 124]
+$ wolf conform-run --json waitsig.lu
+{"commit":"85dab5d","diagnostics":[],"file":"./waitsig.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[exit 0]
+$ wolf conform-run --json --checked waitsig.lu
+wolf conform-run --checked: unsupported — a blocking signal wait with no pending delivery in checked execution @135..152
+{"commit":"85dab5d","diagnostics":[],"file":"./waitsig.lu","impl":"wolfgang","impl_version":"0.2.33","phase_reached":"mem","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"unsupported","warnings":[],"x-unsupported-construct":"a blocking signal wait with no pending delivery in checked execution","x-unsupported-span":[135,152]}
+[exit 0]
+$ wolf build --release waitsig.lu && ./waitsig
+[build exit 0]
+wait on an empty set: io
+[exit 124]
+$ taskset -c 0-3 wolf run waitsig.lu
+wait on an empty set: io
+[exit 124]

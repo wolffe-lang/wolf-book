@@ -1,0 +1,10 @@
+ch09_ex9_4_lu [release]
+   was ('104', '')
+   now ('189', '')
+ch10_md_84 [release]
+   was ('0', 'the scope is still open\nthe reader is counting\nthe scope has joined\n900 words\n')
+   now ('0', 'the reader is counting\nthe scope is still open\nthe scope has joined\n900 words\n')
+ch30_ex30_5_lu [release]
+   was ('0', 'a.log:1: 06:12 the wolf runs\nb.log:2: 08:52 the wolf sleeps\na.log:3: 07:02 the wolf howls\nb.log:4: 09:44 the wolf wakes\n')
+   now ('0', 'b.log:2: 08:52 the wolf sleeps\na.log:1: 06:12 the wolf runs\na.log:3: 07:02 the wolf howls\nb.log:4: 09:44 the wolf wakes\n')
+programs 596 release-built 387 moves 3 {'lupin': 0, 'native': 0, 'checked': 0, 'release': 3}

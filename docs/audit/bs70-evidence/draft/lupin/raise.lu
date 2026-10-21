@@ -1,0 +1,8 @@
+fn main() -> !int {
+    os_signal_raise(0) else |e| {
+        print("raise of nothing: {e}")
+    }
+    os_signal_raise(512)?
+    print("raised")
+    0
+}

@@ -1,0 +1,6 @@
+MOVED ch09_ex9_4_lu
+MOVED appx_exB_11_lu
+MOVED ch30_ex30_5_lu
+MOVED ch17_ex17_1_lu
+MOVED ch11_ex11_5_lu
+by text: 586 identical records, 5 moved; only at the head: ['ch34_md_1051', 'ch34_md_864', 'ch34_md_927', 'ch34_md_996']; only before: []

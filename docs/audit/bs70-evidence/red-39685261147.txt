@@ -1,0 +1,31 @@
+Plant run 39685261147 (pull_request, tier pr) at 4deb627: the pin, the CI manifest, #87's test and #87's console row, the text otherwise unedited.
+
+== test (ubuntu-latest), job 119517678473
+2026-10-21T22:16:53.5943198Z test console::tests::a_replayed_command_a_signal_ended_reports_128_plus_n ... FAILED
+2026-10-21T22:16:59.6136460Z thread 'console::tests::a_replayed_command_a_signal_ended_reports_128_plus_n' (2254) panicked at xtask/src/console.rs:955:9:
+2026-10-21T22:16:59.6137114Z assertion `left == right` failed: an end by TERM replays as -1, where a shell's `$?` reads 143 (stderr: )
+2026-10-21T22:16:59.6137509Z   left: -1
+2026-10-21T22:16:59.6137672Z  right: 143
+2026-10-21T22:16:59.6139125Z test result: FAILED. 205 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.02s
+
+== samples (ubuntu-latest), job 119517678415
+2026-10-21T22:18:14.1479407Z staged std/: 58 files, manifest 5d6253b63c97c050e3bf068cfb15c8515453b7ec5b98cd62a91a955bd2a9fc9a
+2026-10-21T22:22:06.4858485Z samples: 531 samples (252 corpus roots + 16 corpus members on disk, 279 book blocks)
+2026-10-21T22:22:06.4858856Z samples: 528 passed, 3 pending (report-only), 5 failed, 0 flips in 186.4s
+2026-10-21T22:22:06.4859283Z samples: 496 of 521 console block(s) replayed against the pinned tools
+2026-10-21T22:22:06.5049816Z samples: FAIL book/back/colophon.md:7: console block drifted from the real run
+2026-10-21T22:22:06.5052298Z samples: FAIL book/ch01.md:153: console block drifted from the real run
+2026-10-21T22:22:06.5054709Z samples: FAIL book/ch22.md:288: console block drifted from the real run
+2026-10-21T22:22:06.5069893Z samples: FAIL book/ch34.md:812: console block drifted from the real run
+2026-10-21T22:22:06.5071506Z samples: FAIL principles/exercises/ch22/EXERCISES.md:218: console block drifted from the real run
+2026-10-21T22:22:06.5075382Z error: 5 failure(s), 0 flip(s)
+
+2026-10-21T22:22:06.5069893Z samples: FAIL book/ch34.md:812: console block drifted from the real run
+2026-10-21T22:22:06.5070260Z      expected:
+2026-10-21T22:22:06.5070391Z        | $ wolf build again.lu && ./again again
+2026-10-21T22:22:06.5070542Z        | $ echo $?
+2026-10-21T22:22:06.5070651Z        | 143
+2026-10-21T22:22:06.5070759Z      actual:
+2026-10-21T22:22:06.5070875Z        | $ wolf build again.lu && ./again again
+2026-10-21T22:22:06.5071103Z        | $ echo $?
+2026-10-21T22:22:06.5071213Z        | -1

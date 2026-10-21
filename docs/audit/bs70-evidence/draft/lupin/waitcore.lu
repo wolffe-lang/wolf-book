@@ -1,0 +1,6 @@
+fn main() -> !int {
+    let h = os_spawn_fds("/bin/sh", ["-c", "exit 3"], List[int]())?
+    let st = os_wait_status_core(h)?
+    print("a child's exit through the core sibling: {st}")
+    0
+}

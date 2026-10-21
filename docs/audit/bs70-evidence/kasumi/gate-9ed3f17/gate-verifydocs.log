@@ -1,0 +1,8 @@
+verify-docs: 10 line-count claim(s) recomputed
+verify-docs: 6 project program(s) match the chapters that print them
+verify-docs: 114 quoted solution fences on 33 exercise pages are their files (92 whole, 22 excerpts)
+verify-docs: 36 version literal(s) in reader-facing text, each audited against wolf 0.2.34 / lupin 0.1.55
+verify-docs: 679 wolf listing(s) scanned for interpolation the vendored grammar cannot paint (wolf-book#5)
+verify-docs: EXERCISES-INDEX.md agrees with the corpus — 352 exercises (303 printed); 6 pending · 83 prose · 9 run (lupin REPL) · 38 run (lupin) · 173 run (wolf + lupin) · 43 run (wolf); fingers 61 · comprehension 157 · extension 81 · spelunking 29 · design 38
+verify-docs: ok (corpus count 268, pins well-formed, TOC/stub numbering agrees)
+EXIT 0
