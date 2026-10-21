@@ -940,4 +940,21 @@ mod tests {
             words[0], words[1]
         );
     }
+
+    // wolf-book#87: a command a signal ended is replayed with the status a
+    // shell gives it, 128 + N, so the `echo $?` after it prints what a
+    // reader's shell prints (every shell measured, bash, sh, dash and zsh,
+    // answers 143 for an end by TERM, 15 on linux and macOS). The replayed
+    // shell sends TERM to itself and to nothing else.
+    #[cfg(unix)]
+    #[test]
+    fn a_replayed_command_a_signal_ended_reports_128_plus_n() {
+        let mut cmd = Command::new("sh");
+        cmd.arg("-c").arg("kill -TERM $$");
+        let (code, _out, err) = run_capture(cmd).expect("sh runs");
+        assert_eq!(
+            code, 143,
+            "an end by TERM replays as {code}, where a shell's `$?` reads 143 (stderr: {err})"
+        );
+    }
 }
