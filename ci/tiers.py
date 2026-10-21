@@ -128,7 +128,7 @@ def full_leg(job, leg):
     """Whether the merge tier runs this leg (tl30): every leg but the
     macOS samples, the nightly's and a toolchain release's; the rig's tests
     on macOS are the merge's macOS smoke."""
-    return not (job == "samples" and leg.get("os") == "macos-latest")
+    return True  # the plant: the merge runs every leg, its shape before tl30
 
 
 def special(a, every, log):
