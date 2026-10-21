@@ -389,8 +389,8 @@ see §Deltas, bs67 · the book's first `use std.…` programs*
   a send of nothing, reach a host's number only where a number is the
   interface, and read what a process was started ignoring.
 - 34.3 Who this process is, and its terminal — read the ids it runs as
-  and its parent, and build a terminal mode that says what it wants of
-  all five switches.
+  and its parent, build a terminal mode that says what it wants of all
+  five switches, and hand the runtime the restore at exit.
 - 34.4 What a call charges, and where it is refused — name the
   capability each call needs, and what the interpreter and Windows
   decline.
@@ -400,6 +400,13 @@ see §Deltas, bs67 · the book's first `use std.…` programs*
 - 34.6 One signal at a time, and an end by one — ignore a fault meaning
   and live through the one a program sends itself, end a process by a
   signal its parent can read, and ask whether a child left a core.
+- 34.7 A child that keeps running — fork a child that runs on from the
+  call, read the parent's `(pid, h)` and the child's `(0, -1)`, and meet
+  the `busy` rule while a task is live.
+- 34.8 What an editor asks of the host — wait on descriptors, signals and
+  a deadline at once, time it in nanoseconds, save a file so that a crash
+  leaves the old one or the new one, and resolve a path to its canonical
+  name.
 - Exercises 34-1 … 34-7.
 
 ## Part 5 — Projects
@@ -1525,3 +1532,26 @@ sprint files remain the implementation contracts for everything else.
   - **Exercises 33-5 … 33-7 and 34-5 … 34-7 link their chapter** in the
     solutions page (wolf-book#84): a batch under `## Exercises` is the
     chapter's, not the last numbered section's.
+- **bs70 (the book at wolf 0.2.34, 2026-10-21):** one compiler release
+  and one interpreter release, the std the compiler bundles, and two
+  sections added.
+  - **§34.7 is the fork's note, a section of its own at the chapter's
+    end** (the book has no subshell chapter, and processes live here):
+    `os_fork`, the parent's `(pid, h)` and the child's `(0, -1)`, what the
+    child keeps (ruling #95), the `busy` rule, and the checked machine's
+    `unsupported` as its own recorded `conform-run --json --checked`
+    block. §34.1–§34.6 keep their anchors and their programs keep their
+    sample ids.
+  - **The editor's calls go where the terminal is, and the rest to a
+    section of their own**: the mode's bits 5–7 and the restore at exit
+    in §34.3 (two of its sentences were false at 0.2.34 as written), and
+    the wait over several descriptors, the nanosecond clock, the save's
+    syncs and the canonical path in §34.8, at the chapter's end (the book
+    has no page on the file tree's durability or on a clock). All are
+    builtins; the chapter's ledger dates the note that their wrappers are
+    a later std's.
+  - **§34.4 at v0.2.34 and lupin 0.1.55**: the table's new rows and the
+    std column at `e036bec`; the interpreter's sentences that 0.1.55 made
+    false (the listen, wait and raise, signal 0's words, §34.6's five).
+  - **A console replay reads a signal's end as `128 + N`** (wolf-book#87),
+    as a shell's `$?` does; §34.6 gains the row that shows it.
