@@ -93,12 +93,17 @@ error[E1010]: `keep` still holds a value allocated in region `tmp` when the regi
   |
 7 |     region tmp {
   |            --- region `tmp` is created here
-8 |         keep = Node { value: 7 }
+8 |         keep = Node { value: 7, text: "scratch" }
   |         ^^^^ the value flows out of the region here
-  |                ----------------- allocated here, into region `tmp`
+  |                ---------------------------------- allocated here, into region `tmp`
 9 |     }
   |     - the region is freed here — everything in it is freed wholesale, as one unit
   |
+  = note: a store into a value declared outside the block keeps nothing of the block when the
+    stored value names no region (a scalar, a literal) or is written `copy e` at the store:
+    that `copy` is a deep copy made in the outer value's region — the container's own for a
+    `push`, an index or `Map` store or a `List`/`Map` replaced, the region ambient where the
+    binding was declared for any other field [mem.region.outer-write].
   = note: to keep the value, allocate it where it must live: build it outside the region block, or
     aim the allocation at a longer-lived region explicitly (`let r = region()` … `in r { …
     }`); widening the region block to cover every use also works. When the block's own value
@@ -319,8 +324,8 @@ $ wolf conform-run ./ex8-9.lu
 error[E1012]: `cfg.limit` is frozen, so it cannot be assigned through
  --> ./ex8-9.lu:7:5
   |
-6 |     var cfg = freeze region { Config { limit: 42 } }
-  |               -------------------------------------- the freeze happens here — the promotion to `imm` is deep and permanent
+6 |     var cfg = freeze region { Config { limit: 42, name: "shelf" } }
+  |               ----------------------------------------------------- the freeze happens here — the promotion to `imm` is deep and permanent
 7 |     cfg.limit = 7
   |     ^^^^^^^^^ this needs the data to be mutable
   |

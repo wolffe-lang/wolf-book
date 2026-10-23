@@ -1,8 +1,8 @@
 error[E1012]: `cfg.limit` is frozen, so it cannot be assigned through
  --> ./ex8-9.lu:7:5
   |
-6 |     var cfg = freeze region { Config { limit: 42 } }
-  |               -------------------------------------- the freeze happens here — the promotion to `imm` is deep and permanent
+6 |     var cfg = freeze region { Config { limit: 42, name: "shelf" } }
+  |               ----------------------------------------------------- the freeze happens here — the promotion to `imm` is deep and permanent
 7 |     cfg.limit = 7
   |     ^^^^^^^^^ this needs the data to be mutable
   |
