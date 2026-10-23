@@ -298,7 +298,7 @@ exit = 1
 stderr = ""
 stdout = "error: unsupported"
 retires = "windows permission bits ([os.fs.create.mode]) and a directory's sync ([os.fs.sync])"
-note = "bs70, 2026-10-21: §34.8's `save.lu`. `fs_open_perm` is `unsupported` on this host by name (no permission bits) and creates nothing, so the program ends there, before `fs_sync_dir` (also `unsupported` there)."
+note = "bs72, 2026-10-23: §34.8's `save.lu` runs on both machines on unix. On windows both wolf 0.2.35 and lupin 0.1.56 end at `fs_open_perm`, `unsupported` by name (no permission bits), creating nothing and never reaching `fs_sync_dir` (also `unsupported` there). Spec [os.fs.create.mode], [os.fs.sync]; lupin v0.1.56 tests/editor_calls_is79.rs::the_atomic_save_runs_whole."
 
 [[transcript]]
 block = "book/ch34.md:263"
