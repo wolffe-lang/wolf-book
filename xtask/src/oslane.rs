@@ -20,7 +20,10 @@
 //!   * the moment the sample starts passing (or the transcript starts
 //!     matching the book), the row is a FLIP — a hard error naming the
 //!     row to delete, exactly as `samples-pending.toml` behaves when a
-//!     feature lands.
+//!     feature lands. One compiler-only graduation exception is host-bound:
+//!     when BOTH observed machines exactly match an explicit exit/stdout/stderr
+//!     row, they handled that host's refusal, rather than demonstrating the
+//!     construct. Plain passing rows and changed bytes still fail as stale.
 //!
 //! Rows carry `retires`: the release that is expected to end them. They
 //! are removed in the pin-bump commit that makes them false, never

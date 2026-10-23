@@ -282,6 +282,17 @@ stdout = "error: unsupported"
 retires = "a windows `os_fork` ([os.proc.fork])"
 note = "bs70, 2026-10-21: §34.7's `fork.lu`. The pipe is made (`os_pipe` serves every host); `os_fork` is `unsupported` on this host by name, and `?` makes it the documented process outcome before any line prints."
 
+# R-bs72-7: both machines handle a host row; this is not fork support.
+# The terminal LF is explicit because the graduation exception compares bytes.
+[[refusal]]
+id = "book/ch34/s14"
+os = "windows"
+exit = 0
+stderr = ""
+stdout = "a task live: unsupported\nevery task joined: unsupported\n"
+retires = "a Windows fork ([os.proc.fork], [os.proc.fork.note])"
+note = "bs72: busy.lu catches both Windows unsupported rows and exits 0, unlike lupin's Unix refusal by name (v0.1.56 src/eval/builtin.rs:1676-1683, tests/fork_is79.rs), so neither machine forks on this host."
+
 [[refusal]]
 id = "book/ch34/s15"
 os = "windows"

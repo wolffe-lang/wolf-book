@@ -82,7 +82,39 @@ struct Outcome {
     /// spelling. The runner reports it as a FLIP, which is how a
     /// per-machine note gets retired in the pin-bump commit instead of
     /// remembered (`principles/TWO-MACHINES.md`).
-    graduates: Option<String>,
+    graduates: Option<Graduation>,
+}
+
+#[derive(Debug)]
+struct Graduation {
+    detail: String,
+    /// A wolf-run graduation observes lupin, rather than only a compiler verdict.
+    observed: Option<MachineRun>,
+}
+
+/// A handled host refusal is not evidence that the demonstrated construct works.
+/// The exception is compiler-only, host-named, and exact on BOTH machines.
+fn declared_host_graduation(
+    check: &Check,
+    host: &str,
+    outcome: &Outcome,
+    row: &crate::oslane::Refusal,
+) -> bool {
+    if !matches!(check, Check::WolfRun { .. }) || row.os != host || !outcome.passed {
+        return false;
+    }
+    let Some(observed) = outcome.graduates.as_ref().and_then(|g| g.observed.as_ref()) else {
+        return false;
+    };
+    let Some(stdout) = row.stdout.as_deref() else {
+        return false;
+    };
+    outcome.exit == Some(row.exit)
+        && outcome.stdout == stdout
+        && outcome.stderr == row.stderr
+        && observed.code == Some(row.exit)
+        && observed.stdout == stdout
+        && observed.stderr == row.stderr
 }
 
 pub struct Tools {
@@ -219,25 +251,28 @@ pub fn run(root: &Path, args: &[String]) -> Result<()> {
         // sample is expected to be refused, by name, in exactly these
         // words. Enforced both ways — wrong words fail, a pass flips.
         if let Some(row) = os_ledger.refusal(&s.id) {
+            let host_graduation =
+                declared_host_graduation(&s.check, crate::oslane::host_os(), &outcome, row);
             if is_pending {
                 failures.push(format!(
                     "{}: named by both samples-pending.toml and samples-os.toml — \
                      a sample is pending everywhere or refused on one host, not both",
                     s.id
                 ));
-            } else if outcome.passed {
+            } else if outcome.passed && !host_graduation {
                 flips.push(format!(
                     "{}: samples-os.toml declares `{}` refused on {} at this pin, and it \
                      now PASSES — the host grew the feature; remove the row in the \
                      pin-bump commit (it was retiring at {})",
                     s.id, s.check, row.os, row.retires
                 ));
-            } else if outcome.exit == Some(row.exit)
-                && outcome.stderr.trim_end() == row.stderr
-                && row
-                    .stdout
-                    .as_ref()
-                    .is_none_or(|want| outcome.stdout.trim_end() == want)
+            } else if host_graduation
+                || (outcome.exit == Some(row.exit)
+                    && outcome.stderr.trim_end() == row.stderr
+                    && row
+                        .stdout
+                        .as_ref()
+                        .is_none_or(|want| outcome.stdout.trim_end() == want))
             {
                 refused_seen += 1;
                 println!(
@@ -283,6 +318,7 @@ pub fn run(root: &Path, args: &[String]) -> Result<()> {
         // handling as a pending row that starts passing, and for the
         // same reason — a feature landing is noticed, never absorbed.
         if let (Some(g), false) = (&outcome.graduates, is_pending) {
+            let g = &g.detail;
             flips.push(format!(
                 "{}: directive `{}` holds, but {g} — both machines serve this program \
                  now; graduate the fence to `run(…)`, retire the page's per-machine \
@@ -1240,6 +1276,7 @@ impl Machine {
 }
 
 /// What one machine did with one program.
+#[derive(Debug)]
 struct MachineRun {
     code: Option<i32>,
     stdout: String,
@@ -1657,8 +1694,10 @@ fn execute(tools: &Tools, s: &Sample) -> Result<Outcome> {
         Check::LupinRun { exit, stdout } => {
             let lupin = machine_gate(Machine::Lupin, tools, s);
             let passed = meets(&lupin, *exit, stdout.as_deref());
-            let graduates = (!compiler_still_declines(tools, s))
-                .then(|| "the compiler no longer declines this program".to_string());
+            let graduates = (!compiler_still_declines(tools, s)).then(|| Graduation {
+                detail: "the compiler no longer declines this program".to_string(),
+                observed: None,
+            });
             Ok(Outcome {
                 passed: passed.is_ok(),
                 detail: match passed {
@@ -1719,7 +1758,7 @@ fn execute(tools: &Tools, s: &Sample) -> Result<Outcome> {
         Check::LupinTrap { kind } => {
             let lupin = machine_gate(Machine::Lupin, tools, s);
             let passed = traps(Machine::Lupin, &lupin, kind);
-            let graduates: Option<String> = None;
+            let graduates: Option<Graduation> = None;
             Ok(Outcome {
                 passed: passed.is_ok(),
                 detail: match passed {
@@ -1821,7 +1860,10 @@ fn execute(tools: &Tools, s: &Sample) -> Result<Outcome> {
             // so rather than the day someone re-probes by hand.
             let graduates = machine_probe(Machine::Lupin, tools, s)
                 .filter(|l| refusal(l).is_none() && meets(l, *exit, stdout.as_deref()).is_ok())
-                .map(|_| format!("`lupin` now meets `run(exit={exit}…)` too"));
+                .map(|observed| Graduation {
+                    detail: format!("`lupin` now meets `run(exit={exit}…)` too"),
+                    observed: Some(observed),
+                });
             Ok(Outcome {
                 passed: passed.is_ok(),
                 detail: match passed {
@@ -2631,6 +2673,128 @@ fn raw_decline_line(host: &str, declined: usize, off_lane: usize) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn host_graduation_fixture() -> (Check, Outcome, crate::oslane::Refusal) {
+        let text = "a task live: unsupported\nevery task joined: unsupported\n";
+        let row = crate::oslane::Refusal {
+            id: "book/ch34/s14".into(),
+            os: "windows".into(),
+            exit: 0,
+            stdout: Some(text.into()),
+            stderr: String::new(),
+            retires: "a Windows fork".into(),
+            note: "The program handles both unsupported rows.".into(),
+        };
+        let outcome = Outcome {
+            passed: true,
+            detail: String::new(),
+            exit: Some(0),
+            stdout: text.into(),
+            stderr: String::new(),
+            diagnostic: None,
+            phase_reached: None,
+            graduates: Some(Graduation {
+                detail: "lupin exits 0 on the handled Windows row".into(),
+                observed: Some(MachineRun {
+                    code: Some(0),
+                    stdout: text.into(),
+                    stderr: String::new(),
+                }),
+            }),
+        };
+        (
+            Check::WolfRun {
+                exit: 0,
+                stdout: None,
+            },
+            outcome,
+            row,
+        )
+    }
+
+    #[test]
+    fn exact_declared_host_graduation_holds() {
+        let (check, outcome, row) = host_graduation_fixture();
+        assert!(declared_host_graduation(&check, "windows", &outcome, &row));
+        // A two-machine fence and a declaration without stdout get no exception.
+        assert!(!declared_host_graduation(
+            &Check::Run {
+                exit: 0,
+                stdout: None
+            },
+            "windows",
+            &outcome,
+            &row
+        ));
+        let mut row = row;
+        row.stdout = None;
+        assert!(!declared_host_graduation(&check, "windows", &outcome, &row));
+    }
+
+    #[test]
+    fn host_graduation_rejects_one_byte_drift() {
+        let (check, outcome, mut row) = host_graduation_fixture();
+        row.stdout.as_mut().unwrap().push('x');
+        assert!(!declared_host_graduation(&check, "windows", &outcome, &row));
+    }
+
+    #[test]
+    fn host_graduation_is_scoped_to_named_host() {
+        let (check, outcome, row) = host_graduation_fixture();
+        assert!(!declared_host_graduation(&check, "linux", &outcome, &row));
+        assert!(!declared_host_graduation(&check, "macos", &outcome, &row));
+    }
+
+    #[test]
+    fn plain_passing_refusal_without_probe_still_flips() {
+        let (check, mut outcome, row) = host_graduation_fixture();
+        outcome.graduates = None;
+        assert!(outcome.passed && !declared_host_graduation(&check, "windows", &outcome, &row));
+    }
+
+    #[test]
+    fn host_graduation_requires_both_exact_statuses_and_streams() {
+        for field in 0..6 {
+            let (check, mut outcome, row) = host_graduation_fixture();
+            match field {
+                0 => outcome.exit = Some(1),
+                1 => outcome.stdout.push('x'),
+                2 => outcome.stderr.push('x'),
+                3 => {
+                    outcome
+                        .graduates
+                        .as_mut()
+                        .unwrap()
+                        .observed
+                        .as_mut()
+                        .unwrap()
+                        .code = Some(1)
+                }
+                4 => outcome
+                    .graduates
+                    .as_mut()
+                    .unwrap()
+                    .observed
+                    .as_mut()
+                    .unwrap()
+                    .stdout
+                    .push('x'),
+                _ => outcome
+                    .graduates
+                    .as_mut()
+                    .unwrap()
+                    .observed
+                    .as_mut()
+                    .unwrap()
+                    .stderr
+                    .push('x'),
+            }
+            assert!(
+                !declared_host_graduation(&check, "windows", &outcome, &row),
+                "field {field}"
+            );
+        }
+    }
 
     // --- diagnostic,from(…) beside a pending row (bs57) -----------------
 

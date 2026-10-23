@@ -1,0 +1,562 @@
+﻿2026-10-23T16:02:30.7722656Z Current runner version: '2.338.0'
+2026-10-23T16:02:30.7755901Z ##[group]Runner Image Provisioner
+2026-10-23T16:02:30.7756925Z Hosted Compute Agent
+2026-10-23T16:02:30.7757565Z Version: 20261021.618
+2026-10-23T16:02:30.7758282Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-23T16:02:30.7759123Z Build Date: 2026-10-21T00:45:21Z
+2026-10-23T16:02:30.7759903Z Worker ID: {a400ffeb-d5ad-4943-ad08-2423fc91a888}
+2026-10-23T16:02:30.7760784Z Region: westus3
+2026-10-23T16:02:30.7761415Z Cloud: Azure
+2026-10-23T16:02:30.7762037Z ##[endgroup]
+2026-10-23T16:02:30.7764225Z ##[group]Operating System
+2026-10-23T16:02:30.7764965Z Microsoft Windows Server 2025
+2026-10-23T16:02:30.7766062Z 10.0.26100
+2026-10-23T16:02:30.7766720Z Datacenter
+2026-10-23T16:02:30.7767532Z ##[endgroup]
+2026-10-23T16:02:30.7768179Z ##[group]Runner Image
+2026-10-23T16:02:30.7768877Z Image: windows-2025-vs2026
+2026-10-23T16:02:30.7769561Z Version: 20261021.278.1
+2026-10-23T16:02:30.7771661Z Included Software: https://github.com/actions/runner-images/blob/win25-vs2026/20261021.278/images/windows/Windows2025-VS2026-Readme.md
+2026-10-23T16:02:30.7773846Z Image Release: https://github.com/actions/runner-images/releases/tag/win25-vs2026%2F20261021.278
+2026-10-23T16:02:30.7775070Z ##[endgroup]
+2026-10-23T16:02:30.7776405Z ##[group]GITHUB_TOKEN Permissions
+2026-10-23T16:02:30.7778674Z Contents: read
+2026-10-23T16:02:30.7779316Z Metadata: read
+2026-10-23T16:02:30.7779930Z ##[endgroup]
+2026-10-23T16:02:30.7782562Z Secret source: Actions
+2026-10-23T16:02:30.7783617Z Cache mode: write
+2026-10-23T16:02:30.7784445Z Prepare workflow directory
+2026-10-23T16:02:30.8240583Z Prepare all required actions
+2026-10-23T16:02:30.8288543Z Getting action download info
+2026-10-23T16:02:31.1459284Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-23T16:02:31.2585374Z Download action repository 'Swatinem/rust-cache@v2' (SHA:d1527c8f67ef9af357290475d4af4b0fab8f12e0)
+2026-10-23T16:02:31.9900828Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-23T16:02:32.5895640Z Complete job name: samples (windows-latest)
+2026-10-23T16:02:32.8398000Z ##[group]Run actions/checkout@v4
+2026-10-23T16:02:32.8399311Z with:
+2026-10-23T16:02:32.8399860Z   path: wolf-book
+2026-10-23T16:02:32.8400491Z   repository: wolffe-lang/wolf-book
+2026-10-23T16:02:32.8406491Z   token: ***
+2026-10-23T16:02:32.8407057Z   ssh-strict: true
+2026-10-23T16:02:32.8407626Z   ssh-user: git
+2026-10-23T16:02:32.8408238Z   persist-credentials: true
+2026-10-23T16:02:32.8408872Z   clean: true
+2026-10-23T16:02:32.8409445Z   sparse-checkout-cone-mode: true
+2026-10-23T16:02:32.8410127Z   fetch-depth: 1
+2026-10-23T16:02:32.8410677Z   fetch-tags: false
+2026-10-23T16:02:32.8411251Z   show-progress: true
+2026-10-23T16:02:32.8411850Z   lfs: false
+2026-10-23T16:02:32.8412394Z   submodules: false
+2026-10-23T16:02:32.8412972Z   set-safe-directory: true
+2026-10-23T16:02:32.8413953Z   allow-unsafe-pr-checkout: false
+2026-10-23T16:02:32.8414884Z env:
+2026-10-23T16:02:32.8415409Z   CARGO_TERM_COLOR: always
+2026-10-23T16:02:32.8416028Z ##[endgroup]
+2026-10-23T16:02:33.0268033Z Syncing repository: wolffe-lang/wolf-book
+2026-10-23T16:02:33.0270663Z ##[group]Getting Git version info
+2026-10-23T16:02:33.0271616Z Working directory is 'D:\a\wolf-book\wolf-book\wolf-book'
+2026-10-23T16:02:33.1318533Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-23T16:02:33.6810427Z git version 2.56.0.windows.2
+2026-10-23T16:02:33.6858244Z ##[endgroup]
+2026-10-23T16:02:33.6875506Z Temporarily overriding HOME='D:\a\_temp\275b5c59-ef9d-4861-b95f-681713e3cd2a' before making global git config changes
+2026-10-23T16:02:33.6876252Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-23T16:02:33.6884649Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\wolf-book\wolf-book\wolf-book
+2026-10-23T16:02:33.7544680Z ##[group]Initializing the repository
+2026-10-23T16:02:33.7553030Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\wolf-book\wolf-book\wolf-book
+2026-10-23T16:02:33.9220164Z Initialized empty Git repository in D:/a/wolf-book/wolf-book/wolf-book/.git/
+2026-10-23T16:02:33.9278105Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/wolffe-lang/wolf-book
+2026-10-23T16:02:33.9969868Z ##[endgroup]
+2026-10-23T16:02:33.9970343Z ##[group]Disabling automatic garbage collection
+2026-10-23T16:02:33.9978709Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+2026-10-23T16:02:34.0292950Z ##[endgroup]
+2026-10-23T16:02:34.0293605Z ##[group]Setting up auth
+2026-10-23T16:02:34.0303900Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-23T16:02:34.0620173Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-23T16:02:36.4527167Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-23T16:02:36.4853814Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-23T16:02:37.0217830Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-23T16:02:37.0572597Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-23T16:02:37.5614854Z [command]"C:\Program Files\Git\bin\git.exe" config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+2026-10-23T16:02:37.5968116Z ##[endgroup]
+2026-10-23T16:02:37.5968756Z ##[group]Fetching the repository
+2026-10-23T16:02:37.5982561Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +d6c67bf48ff34a9c99b28204d4e87e1fb810d1e4:refs/remotes/pull/93/merge
+2026-10-23T16:02:39.4015123Z From https://github.com/wolffe-lang/wolf-book
+2026-10-23T16:02:39.4017931Z  * [new ref]         d6c67bf48ff34a9c99b28204d4e87e1fb810d1e4 -> pull/93/merge
+2026-10-23T16:02:39.4055591Z ##[endgroup]
+2026-10-23T16:02:39.4058034Z ##[group]Determining the checkout info
+2026-10-23T16:02:39.4058781Z ##[endgroup]
+2026-10-23T16:02:39.4067367Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+2026-10-23T16:02:39.4526356Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+2026-10-23T16:02:39.4862863Z ##[group]Checking out the ref
+2026-10-23T16:02:39.4872360Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force refs/remotes/pull/93/merge
+2026-10-23T16:02:40.0196490Z Note: switching to 'refs/remotes/pull/93/merge'.
+2026-10-23T16:02:40.0196845Z 
+2026-10-23T16:02:40.0197094Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-23T16:02:40.0197662Z changes and commit them, and you can discard any commits you make in this
+2026-10-23T16:02:40.0198135Z state without impacting any branches by switching back to a branch.
+2026-10-23T16:02:40.0198429Z 
+2026-10-23T16:02:40.0198608Z If you want to create a new branch to retain commits you create, you may
+2026-10-23T16:02:40.0199044Z do so (now or later) by using -c with the switch command. Example:
+2026-10-23T16:02:40.0199377Z 
+2026-10-23T16:02:40.0199485Z   git switch -c <new-branch-name>
+2026-10-23T16:02:40.0199658Z 
+2026-10-23T16:02:40.0199764Z Or undo this operation with:
+2026-10-23T16:02:40.0199959Z 
+2026-10-23T16:02:40.0200054Z   git switch -
+2026-10-23T16:02:40.0200196Z 
+2026-10-23T16:02:40.0200426Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-23T16:02:40.0201907Z 
+2026-10-23T16:02:40.0202431Z HEAD is now at d6c67bf Merge 1c359ef38ab509f7665cd6b5d6f10913e2ee2883 into f1fd824711b8949d6d4400c5ce5e8d61b328fe0f
+2026-10-23T16:02:40.0277296Z ##[endgroup]
+2026-10-23T16:02:40.2068777Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+2026-10-23T16:02:40.2362996Z d6c67bf48ff34a9c99b28204d4e87e1fb810d1e4
+2026-10-23T16:02:40.2738486Z ##[group]Run rev() { awk -v s="[$1]" '$0==s{f=1} f&&/^rev = /{gsub(/"/,"",$3); print $3; exit}' wolf-toolchain.toml; }
+2026-10-23T16:02:40.2739129Z rev() { awk -v s="[$1]" '$0==s{f=1} f&&/^rev = /{gsub(/"/,"",$3); print $3; exit}' wolf-toolchain.toml; }
+2026-10-23T16:02:40.2739508Z echo "wolf=$(rev wolf)" >> "$GITHUB_OUTPUT"
+2026-10-23T16:02:40.2739766Z echo "lupin=$(rev lupin)" >> "$GITHUB_OUTPUT"
+2026-10-23T16:02:40.2754676Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+2026-10-23T16:02:40.2754989Z env:
+2026-10-23T16:02:40.2755175Z   CARGO_TERM_COLOR: always
+2026-10-23T16:02:40.2755347Z ##[endgroup]
+2026-10-23T16:02:41.0171917Z ##[group]Run set -uo pipefail
+2026-10-23T16:02:41.0172284Z set -uo pipefail
+2026-10-23T16:02:41.0172484Z if [ -z "${TOKEN:-}" ]; then
+2026-10-23T16:02:41.0172908Z   echo "::notice::WOLF_CI_TOKEN absent — sibling repos unreachable; samples lane skips (local runs remain the gate)"
+2026-10-23T16:02:41.0173377Z   echo "toolchain=none" >> "$GITHUB_OUTPUT"; exit 0
+2026-10-23T16:02:41.0173604Z fi
+2026-10-23T16:02:41.0173739Z ok=1
+2026-10-23T16:02:41.0174094Z git clone --quiet "https://x-access-token:${TOKEN}@github.com/wolffe-lang/wolf-lang" wolf-lang \
+2026-10-23T16:02:41.0174594Z   && git -C wolf-lang checkout --quiet "cf0c13d38479f444b69bb8356ad5709d07eff323" || ok=0
+2026-10-23T16:02:41.0175112Z git clone --quiet "https://x-access-token:${TOKEN}@github.com/wolffe-lang/wolf-interp" wolf-interp \
+2026-10-23T16:02:41.0175664Z   && git -C wolf-interp checkout --quiet "28547b4324524d5477a6e54e4f6888462461a21f" || ok=0
+2026-10-23T16:02:41.0176040Z if [ "$ok" = 1 ]; then echo "toolchain=full" >> "$GITHUB_OUTPUT"
+2026-10-23T16:02:41.0176679Z else echo "::error::token present but sibling acquisition failed"; exit 1; fi
+2026-10-23T16:02:41.0187762Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+2026-10-23T16:02:41.0188063Z env:
+2026-10-23T16:02:41.0188211Z   CARGO_TERM_COLOR: always
+2026-10-23T16:02:41.0188843Z   TOKEN: ***
+2026-10-23T16:02:41.0188994Z ##[endgroup]
+2026-10-23T16:02:51.9665010Z ##[group]Run Swatinem/rust-cache@v2
+2026-10-23T16:02:51.9665271Z with:
+2026-10-23T16:02:51.9665481Z   workspaces: wolf-book
+wolf-lang
+wolf-interp
+
+2026-10-23T16:02:51.9665713Z   prefix-key: v0-rust
+2026-10-23T16:02:51.9665878Z   add-job-id-key: true
+2026-10-23T16:02:51.9666053Z   add-rust-environment-hash-key: true
+2026-10-23T16:02:51.9666276Z   cache-targets: true
+2026-10-23T16:02:51.9666430Z   cache-all-crates: false
+2026-10-23T16:02:51.9666604Z   cache-workspace-crates: false
+2026-10-23T16:02:51.9666779Z   save-if: true
+2026-10-23T16:02:51.9666924Z   cache-provider: github
+2026-10-23T16:02:51.9667083Z   cache-bin: true
+2026-10-23T16:02:51.9667232Z   lookup-only: false
+2026-10-23T16:02:51.9667374Z   cmd-format: {0}
+2026-10-23T16:02:51.9667506Z env:
+2026-10-23T16:02:51.9667643Z   CARGO_TERM_COLOR: always
+2026-10-23T16:02:51.9667801Z ##[endgroup]
+2026-10-23T16:03:15.2783734Z ##[group]Cache Configuration
+2026-10-23T16:03:15.2784077Z Cache Provider:
+2026-10-23T16:03:15.2784413Z     github
+2026-10-23T16:03:15.2784590Z Workspaces:
+2026-10-23T16:03:15.2784815Z     D:\a\wolf-book\wolf-book\wolf-book
+2026-10-23T16:03:15.2785128Z     D:\a\wolf-book\wolf-book\wolf-lang
+2026-10-23T16:03:15.2785446Z     D:\a\wolf-book\wolf-book\wolf-interp
+2026-10-23T16:03:15.2785769Z Cache Paths:
+2026-10-23T16:03:15.2786005Z     C:\Users\runneradmin\.cargo\bin
+2026-10-23T16:03:15.2789137Z     C:\Users\runneradmin\.cargo\.crates.toml
+2026-10-23T16:03:15.2789743Z     C:\Users\runneradmin\.cargo\.crates2.json
+2026-10-23T16:03:15.2790074Z     C:\Users\runneradmin\.cargo\registry
+2026-10-23T16:03:15.2790577Z     C:\Users\runneradmin\.cargo\git
+2026-10-23T16:03:15.2791116Z     D:\a\wolf-book\wolf-book\wolf-book\target
+2026-10-23T16:03:15.2791529Z     D:\a\wolf-book\wolf-book\wolf-lang\target
+2026-10-23T16:03:15.2792618Z     D:\a\wolf-book\wolf-book\wolf-interp\target
+2026-10-23T16:03:15.2792931Z Restore Key:
+2026-10-23T16:03:15.2793146Z     v0-rust-samples-Windows_NT-x64-bc559819
+2026-10-23T16:03:15.2793428Z Cache Key:
+2026-10-23T16:03:15.2793667Z     v0-rust-samples-Windows_NT-x64-bc559819-1907e28d
+2026-10-23T16:03:15.2794636Z .. Prefix:
+2026-10-23T16:03:15.2794956Z   - v0-rust-samples-Windows_NT-x64
+2026-10-23T16:03:15.2795270Z .. Environment considered:
+2026-10-23T16:03:15.2795533Z   - Rust Versions:
+2026-10-23T16:03:15.2795887Z     - 1.99.1 x86_64-pc-windows-msvc 58cf8f9c35b355199727627d07ae34a4e2846d67
+2026-10-23T16:03:15.2796365Z   - CARGO_INCREMENTAL
+2026-10-23T16:03:15.2797334Z   - CARGO_TERM_COLOR
+2026-10-23T16:03:15.2797633Z .. Lockfiles considered:
+2026-10-23T16:03:15.2798134Z   - D:\a\wolf-book\wolf-book\wolf-book\.cargo\config.toml
+2026-10-23T16:03:15.2798524Z   - D:\a\wolf-book\wolf-book\wolf-book\Cargo.lock
+2026-10-23T16:03:15.2798927Z   - D:\a\wolf-book\wolf-book\wolf-book\xtask\Cargo.toml
+2026-10-23T16:03:15.2799342Z   - D:\a\wolf-book\wolf-book\wolf-interp\Cargo.lock
+2026-10-23T16:03:15.2799727Z   - D:\a\wolf-book\wolf-book\wolf-interp\Cargo.toml
+2026-10-23T16:03:15.2800244Z   - D:\a\wolf-book\wolf-book\wolf-interp\rust-toolchain.toml
+2026-10-23T16:03:15.2800685Z   - D:\a\wolf-book\wolf-book\wolf-lang\.cargo\config.toml
+2026-10-23T16:03:15.2801070Z   - D:\a\wolf-book\wolf-book\wolf-lang\Cargo.lock
+2026-10-23T16:03:15.2801485Z   - D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_ast\Cargo.toml
+2026-10-23T16:03:15.2801986Z   - D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_backend\Cargo.toml
+2026-10-23T16:03:15.2802479Z   - D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_cimport\Cargo.toml
+2026-10-23T16:03:15.2802982Z   - D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_codegen_clif\Cargo.toml
+2026-10-23T16:03:15.2836762Z   - D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_codegen_llvm\Cargo.toml
+2026-10-23T16:03:15.2837842Z   - D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_diag\Cargo.toml
+2026-10-23T16:03:15.2838769Z   - D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_doc\Cargo.toml
+2026-10-23T16:03:15.2843872Z   - D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_driver\Cargo.toml
+2026-10-23T16:03:15.2844892Z   - D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_fmt\Cargo.toml
+2026-10-23T16:03:15.2845667Z   - D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_lex\Cargo.toml
+2026-10-23T16:03:15.2846804Z   - D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_lsp\Cargo.toml
+2026-10-23T16:03:15.2847734Z   - D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_mem\Cargo.toml
+2026-10-23T16:03:15.2848500Z   - D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_parse\Cargo.toml
+2026-10-23T16:03:15.2849248Z   - D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_pkg\Cargo.toml
+2026-10-23T16:03:15.2849988Z   - D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_query\Cargo.toml
+2026-10-23T16:03:15.2851089Z   - D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_rt_none\Cargo.toml
+2026-10-23T16:03:15.2851876Z   - D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_rt\Cargo.toml
+2026-10-23T16:03:15.2852655Z   - D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_sema\Cargo.toml
+2026-10-23T16:03:15.2853612Z   - D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_span\Cargo.toml
+2026-10-23T16:03:15.2854343Z   - D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_wir\Cargo.toml
+2026-10-23T16:03:15.2855200Z   - D:\a\wolf-book\wolf-book\wolf-lang\rust-toolchain.toml
+2026-10-23T16:03:15.2856017Z   - D:\a\wolf-book\wolf-book\wolf-lang\xtask\Cargo.toml
+2026-10-23T16:03:15.2857649Z ##[endgroup]
+2026-10-23T16:03:15.2858401Z 
+2026-10-23T16:03:15.2858506Z ... Restoring cache ...
+2026-10-23T16:03:15.6517441Z Cache hit for restore-key: v0-rust-samples-Windows_NT-x64-bc559819-0b7967c7
+2026-10-23T16:03:16.8916493Z Received 58720256 of 303370128 (19.4%), 55.3 MBs/sec
+2026-10-23T16:03:17.9044679Z Received 134217728 of 303370128 (44.2%), 63.2 MBs/sec
+2026-10-23T16:03:19.2737632Z Received 268435456 of 303370128 (88.5%), 75.4 MBs/sec
+2026-10-23T16:03:19.7918903Z Received 303370128 of 303370128 (100.0%), 74.0 MBs/sec
+2026-10-23T16:03:19.7919332Z Cache Size: ~289 MB (303370128 B)
+2026-10-23T16:03:19.7955924Z [command]"C:\Program Files\Git\usr\bin\tar.exe" -xf D:/a/_temp/c289ec48-6c53-4db2-b403-56b1c6a112d0/cache.tzst -P -C D:/a/wolf-book/wolf-book --force-local --use-compress-program "zstd -d"
+2026-10-23T16:03:25.0215399Z Cache restored successfully
+2026-10-23T16:03:25.0362323Z Restored from cache key "v0-rust-samples-Windows_NT-x64-bc559819-0b7967c7" full match: false.
+2026-10-23T16:03:25.1702779Z ##[group]Run WOLF_COMMIT="$(git rev-parse --short=7 HEAD)"
+2026-10-23T16:03:25.1703211Z WOLF_COMMIT="$(git rev-parse --short=7 HEAD)"
+2026-10-23T16:03:25.1703471Z export WOLF_COMMIT
+2026-10-23T16:03:25.1703774Z WOLF_RELEASE="$(git tag --points-at HEAD | grep -E '^v[0-9]' | head -1 || true)"
+2026-10-23T16:03:25.1704151Z if [ -n "$WOLF_RELEASE" ]; then export WOLF_RELEASE; fi
+2026-10-23T16:03:25.1704486Z cargo build --release -p wolf_driver -p wolf_rt -p wolf_cimport
+2026-10-23T16:03:25.1715024Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+2026-10-23T16:03:25.1715340Z env:
+2026-10-23T16:03:25.1715493Z   CARGO_TERM_COLOR: always
+2026-10-23T16:03:25.1715687Z   CACHE_ON_FAILURE: false
+2026-10-23T16:03:25.1715863Z   CARGO_INCREMENTAL: 0
+2026-10-23T16:03:25.1716028Z ##[endgroup]
+2026-10-23T16:03:25.5577476Z     Updating crates.io index
+2026-10-23T16:03:38.8372979Z    Compiling wolf_span v0.2.35 (D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_span)
+2026-10-23T16:03:38.8463804Z    Compiling wolf_rt v0.2.35 (D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_rt)
+2026-10-23T16:03:38.9475325Z    Compiling wolf_diag v0.2.35 (D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_diag)
+2026-10-23T16:03:38.9476205Z    Compiling wolf_ast v0.2.35 (D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_ast)
+2026-10-23T16:03:39.6920165Z    Compiling wolf_lex v0.2.35 (D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_lex)
+2026-10-23T16:03:42.7950250Z    Compiling wolf_parse v0.2.35 (D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_parse)
+2026-10-23T16:03:42.8632940Z    Compiling wolf_cimport v0.2.35 (D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_cimport)
+2026-10-23T16:03:46.5745390Z    Compiling wolf_sema v0.2.35 (D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_sema)
+2026-10-23T16:03:52.2293695Z    Compiling wolf_fmt v0.2.35 (D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_fmt)
+2026-10-23T16:04:00.6460118Z    Compiling wolf_mem v0.2.35 (D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_mem)
+2026-10-23T16:04:04.0420267Z    Compiling wolf_query v0.2.35 (D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_query)
+2026-10-23T16:04:04.2098043Z warning: unused variable: `core_asked`
+2026-10-23T16:04:04.2099647Z     --> crates\wolf_mem\src\ubcheck.rs:9667:21
+2026-10-23T16:04:04.2100561Z      |
+2026-10-23T16:04:04.2206806Z 9667 |                 let core_asked = name == "os_wait_status_core";
+2026-10-23T16:04:04.2346344Z      |                     ^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_core_asked`
+2026-10-23T16:04:04.2350057Z      |
+2026-10-23T16:04:04.2426534Z      = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+2026-10-23T16:04:04.2532010Z 
+2026-10-23T16:04:04.5238630Z warning: variable does not need to be mutable
+2026-10-23T16:04:04.5278941Z      --> crates\wolf_mem\src\ubcheck.rs:15197:13
+2026-10-23T16:04:04.5362442Z       |
+2026-10-23T16:04:04.5456221Z 15197 |         let mut out = [0i32; 20];
+2026-10-23T16:04:04.5557240Z       |             ----^^^
+2026-10-23T16:04:04.5599694Z       |             |
+2026-10-23T16:04:04.5696109Z       |             help: remove this `mut`
+2026-10-23T16:04:04.5784873Z       |
+2026-10-23T16:04:04.5885928Z       = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+2026-10-23T16:04:04.5917974Z 
+2026-10-23T16:04:04.6224763Z warning: fields `group`, `tty`, and `defaults` are never read
+2026-10-23T16:04:04.6240090Z      --> crates\wolf_mem\src\ubcheck.rs:14524:5
+2026-10-23T16:04:04.6360618Z       |
+2026-10-23T16:04:04.6439124Z 14523 | struct CheckedJob {
+2026-10-23T16:04:04.6557903Z       |        ---------- fields in this struct
+2026-10-23T16:04:04.6772114Z 14524 |     group: i64,
+2026-10-23T16:04:04.6895842Z       |     ^^^^^
+2026-10-23T16:04:04.7080769Z 14525 |     tty: Option<std::fs::File>,
+2026-10-23T16:04:04.7101378Z       |     ^^^
+2026-10-23T16:04:04.7195324Z 14526 |     defaults: i64,
+2026-10-23T16:04:04.7230521Z       |     ^^^^^^^^
+2026-10-23T16:04:04.7411110Z       |
+2026-10-23T16:04:04.7430979Z       = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+2026-10-23T16:04:04.7527855Z 
+2026-10-23T16:04:04.7553896Z warning: variants `Ready`, `Signal`, and `Timeout` are never constructed
+2026-10-23T16:04:04.7729764Z      --> crates\wolf_mem\src\ubcheck.rs:14898:9
+2026-10-23T16:04:04.7749444Z       |
+2026-10-23T16:04:04.7866290Z 14896 |     pub(super) enum Woke {
+2026-10-23T16:04:04.7887152Z       |                     ---- variants in this enum
+2026-10-23T16:04:04.8064912Z 14897 |         /// The descriptor has something to read (or hung up).
+2026-10-23T16:04:04.8065653Z 14898 |         Ready,
+2026-10-23T16:04:04.8185172Z       |         ^^^^^
+2026-10-23T16:04:04.8205263Z 14899 |         /// A listened meaning's handler ran (or one was pending).
+2026-10-23T16:04:04.8383697Z 14900 |         Signal,
+2026-10-23T16:04:04.8503351Z       |         ^^^^^^
+2026-10-23T16:04:04.8522297Z 14901 |         /// The timeout passed.
+2026-10-23T16:04:04.8702858Z 14902 |         Timeout,
+2026-10-23T16:04:04.8706788Z       |         ^^^^^^^
+2026-10-23T16:04:04.8838007Z 
+2026-10-23T16:04:04.8864208Z warning: function `signals_of` is never used
+2026-10-23T16:04:04.9038835Z      --> crates\wolf_mem\src\ubcheck.rs:15196:19
+2026-10-23T16:04:04.9039453Z       |
+2026-10-23T16:04:04.9042136Z 15196 |     pub(super) fn signals_of(set: i64) -> [i32; 20] {
+2026-10-23T16:04:04.9043253Z       |                   ^^^^^^^^^^
+2026-10-23T16:04:04.9159557Z 
+2026-10-23T16:04:04.9194741Z warning: variants `Meaning`, `Signal`, and `Fault` are never constructed
+2026-10-23T16:04:04.9370422Z      --> crates\wolf_mem\src\ubcheck.rs:15305:9
+2026-10-23T16:04:04.9376891Z       |
+2026-10-23T16:04:04.9488864Z 15303 |     pub(super) enum DispOne {
+2026-10-23T16:04:04.9527605Z       |                     ------- variants in this enum
+2026-10-23T16:04:04.9704421Z 15304 |         /// A listenable meaning's signal: this bit's disposition is set.
+2026-10-23T16:04:04.9824285Z 15305 |         Meaning(i64),
+2026-10-23T16:04:04.9851381Z       |         ^^^^^^^
+2026-10-23T16:04:05.0025346Z 15306 |         /// Another signal of the host's: its disposition is set.
+2026-10-23T16:04:05.0161068Z 15307 |         Signal,
+2026-10-23T16:04:05.0180192Z       |         ^^^^^^
+2026-10-23T16:04:05.0359455Z 15308 |         /// `SIGSEGV` or `SIGBUS`: nothing set (the caller refuses).
+2026-10-23T16:04:05.0360370Z 15309 |         Fault,
+2026-10-23T16:04:05.0488475Z       |         ^^^^^
+2026-10-23T16:04:05.0498144Z 
+2026-10-23T16:04:06.7240177Z    Compiling wolf_lsp v0.2.35 (D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_lsp)
+2026-10-23T16:04:24.8026851Z    Compiling wolf_wir v0.2.35 (D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_wir)
+2026-10-23T16:04:41.7414457Z    Compiling wolf_backend v0.2.35 (D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_backend)
+2026-10-23T16:04:47.9866751Z    Compiling wolf_codegen_clif v0.2.35 (D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_codegen_clif)
+2026-10-23T16:05:03.7528423Z    Compiling wolf_codegen_llvm v0.2.35 (D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_codegen_llvm)
+2026-10-23T16:05:26.9984672Z    Compiling wolf_doc v0.2.35 (D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_doc)
+2026-10-23T16:05:30.8650696Z    Compiling wolf_pkg v0.2.35 (D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_pkg)
+2026-10-23T16:05:40.4430939Z warning: `wolf_mem` (lib) generated 6 warnings (run `cargo fix --lib -p wolf_mem` to apply 2 suggestions)
+2026-10-23T16:06:01.9311469Z    Compiling wolf_driver v0.2.35 (D:\a\wolf-book\wolf-book\wolf-lang\crates\wolf_driver)
+2026-10-23T16:06:16.1586075Z     Finished `release` profile [optimized + debuginfo] target(s) in 2m 50s
+2026-10-23T16:06:16.1932582Z ##[group]Run set -euo pipefail
+2026-10-23T16:06:16.1933017Z set -euo pipefail
+2026-10-23T16:06:16.1933456Z sha() { if command -v sha256sum >/dev/null; then sha256sum "$@"; else shasum -a 256 "$@"; fi; }
+2026-10-23T16:06:16.1934005Z pin=$(awk -F' = ' '/^wolf-std-commit = /{print $2}' wolf-lang/crates/wolf_driver/STD-PIN)
+2026-10-23T16:06:16.1934392Z echo "STD-PIN: ${pin}"
+2026-10-23T16:06:16.1934678Z [ -n "${pin}" ]
+2026-10-23T16:06:16.1935066Z git -c core.autocrlf=false clone --quiet https://github.com/wolffe-lang/wolf-std wolf-std
+2026-10-23T16:06:16.1935568Z git -C wolf-std -c core.autocrlf=false checkout --quiet "${pin}"
+2026-10-23T16:06:16.1935947Z dest=wolf-lang/target/release/std
+2026-10-23T16:06:16.1936218Z rm -rf "${dest}"
+2026-10-23T16:06:16.1936463Z cp -R wolf-std/std "${dest}"
+2026-10-23T16:06:16.1936880Z cp wolf-std/LICENSE wolf-std/LICENSE-EXCEPTION "${dest}/"
+2026-10-23T16:06:16.1937225Z printf '%s\n' "${pin}" > "${dest}/STD-REV"
+2026-10-23T16:06:16.1937612Z # Each line written as `<hash>  <path>` by hand: windows' sha256sum
+2026-10-23T16:06:16.1938011Z # marks binary mode (`*path`), which would move the manifest and
+2026-10-23T16:06:16.1938339Z # nothing else.
+2026-10-23T16:06:16.1938891Z got=$(cd wolf-lang/target/release && find std -type f | LC_ALL=C sort | while IFS= read -r f; do printf '%s  %s\n' "$(sha "$f" | cut -c1-64)" "$f"; done | sha | cut -c1-64)
+2026-10-23T16:06:16.1939711Z want=fa26d724f7b680ec241d0609b6678a6c1a2c6f6b642e46bac528cbfdcf318d7c
+2026-10-23T16:06:16.1940219Z echo "staged std/: $(cd wolf-lang/target/release && find std -type f | wc -l) files, manifest ${got}"
+2026-10-23T16:06:16.1940830Z if [ "${got}" != "${want}" ]; then echo "::error::staged std/ manifest ${got} is not the 0.2.35 archive's ${want}"; exit 1; fi
+2026-10-23T16:06:16.1950639Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+2026-10-23T16:06:16.1951010Z env:
+2026-10-23T16:06:16.1951220Z   CARGO_TERM_COLOR: always
+2026-10-23T16:06:16.1951490Z   CACHE_ON_FAILURE: false
+2026-10-23T16:06:16.1952013Z   CARGO_INCREMENTAL: 0
+2026-10-23T16:06:16.1952288Z ##[endgroup]
+2026-10-23T16:06:16.2403227Z STD-PIN: 2386522eb059cca5a84108562c2c0a0e72345d34
+2026-10-23T16:06:20.1991078Z staged std/: 59 files, manifest fa26d724f7b680ec241d0609b6678a6c1a2c6f6b642e46bac528cbfdcf318d7c
+2026-10-23T16:06:20.2142847Z ##[group]Run cargo build --release --bin lupin
+2026-10-23T16:06:20.2143272Z cargo build --release --bin lupin
+2026-10-23T16:06:20.2153065Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+2026-10-23T16:06:20.2153462Z env:
+2026-10-23T16:06:20.2153672Z   CARGO_TERM_COLOR: always
+2026-10-23T16:06:20.2153953Z   CACHE_ON_FAILURE: false
+2026-10-23T16:06:20.2154218Z   CARGO_INCREMENTAL: 0
+2026-10-23T16:06:20.2154446Z ##[endgroup]
+2026-10-23T16:06:20.3412688Z     Updating crates.io index
+2026-10-23T16:06:20.6977454Z  Downloading crates ...
+2026-10-23T16:06:21.2774657Z   Downloaded getrandom v0.2.16
+2026-10-23T16:06:21.5155491Z    Compiling wolf-interp v0.1.56 (D:\a\wolf-book\wolf-book\wolf-interp)
+2026-10-23T16:06:21.5161350Z    Compiling getrandom v0.2.16
+2026-10-23T16:07:13.6575990Z     Finished `release` profile [optimized] target(s) in 53.36s
+2026-10-23T16:07:13.6870516Z ##[group]Run cargo xtask samples
+2026-10-23T16:07:13.6870796Z cargo xtask samples
+2026-10-23T16:07:13.6880179Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+2026-10-23T16:07:13.6880493Z env:
+2026-10-23T16:07:13.6880659Z   CARGO_TERM_COLOR: always
+2026-10-23T16:07:13.6880841Z   CACHE_ON_FAILURE: false
+2026-10-23T16:07:13.6881012Z   CARGO_INCREMENTAL: 0
+2026-10-23T16:07:13.6881258Z   WOLF: D:\a\wolf-book\wolf-book/wolf-lang/target/release/wolf.exe
+2026-10-23T16:07:13.6881612Z   LUPIN: D:\a\wolf-book\wolf-book/wolf-interp/target/release/lupin.exe
+2026-10-23T16:07:13.6881952Z ##[endgroup]
+2026-10-23T16:08:01.0272407Z samples: lupin = D:\a\wolf-book\wolf-book/wolf-interp/target/release/lupin.exe
+2026-10-23T16:08:01.0272850Z samples: wolf  = D:\a\wolf-book\wolf-book/wolf-lang/target/release/wolf.exe
+2026-10-23T16:08:01.0275920Z samples: SKIP extraction book/back/solutions.md — generated from the two places solutions live, and this run reaches both directly: the exercise corpus under principles/exercises/ (chapters 7+) and principles/EXERCISES.md §5, the master for the chapter 1-6 exemplar batch (wolf-book#44). Every console block on both is replayed below; cargo xtask backmatter --check holds the page to them
+2026-10-23T16:08:11.1932376Z samples: PENDING ch05/ex5-8 [run(exit=0, stdout="marmot 5")] — blocker: TWO blockers, re-measured at bs50 against wolf 0.2.15 / lupin 0.1.37, and NEITHER is the one this row used to name. (1) `sorted_by` exists now — it is one of `[type.comb.set]`'s ten — but it is a `std.list` function that must reach its home module, and this repository configures no std root for either tool, so both machines decline at `[type.method.root]`: lupin `unsupported`, wolf E0301. That half is wolf-book#39, not a std-surface debt. (2) `.take(1)` can never arrive: `take` is a keyword, so `fn take` is E0008 on both machines and no std function may carry the name. This row is waiting on a spelling that cannot exist and the exercise wants rewriting (wolf-book#58). Re-measured at bs53 against wolf 0.2.17 / lupin 0.1.40, and identically against 0.2.16 / 0.1.38: lupin `unsupported` (`List.sorted_by` reaches `std.list` and no std root is configured), exit 4; wolf no longer says E0301 — it answers `cannot compile this yet — member access on a value whose type is still being inferred` at `resolve`, exit 4. wolf-book#39 closed on 2026-09-12 with the std posture recorded in `wolf-toolchain.toml`; its open successor is wolf-book#45. Re-measured at bs54 against wolf 0.2.18 / lupin 0.1.41, and identically against 0.2.17 / 0.1.40 the same hour: both answers unchanged, word for word, at the same span (@300..303). Re-measured at bs55 against wolf 0.2.19 / lupin 0.1.42 and 0.2.18 / 0.1.41 the same hour: identical on both pairs, word for word, same span. Re-measured at bs58 against wolf 0.2.21 / lupin 0.1.44 and 0.2.19 / 0.1.42 the same hour (release archives by digest, docs/audit/bs58-evidence/probes-control.txt and probes-subject.txt): identical on both pairs, word for word, same span. Re-measured at bs65 against wolf 0.2.28 / lupin 0.1.51 and 0.2.26 / 0.1.49 (release archives by digest on kasumi, hasu and nomad-1, docs/audit/bs65-evidence/*/probes.txt), and the two answers now depend on what sits beside `wolf`. With no `std/` beside it (0.2.26's archive; a bare `cargo build`) the compiler's answer is unchanged, `member access on a value whose type is still being inferred` at resolve, @300..303. From 0.2.28's archive whole, whose `std/` is the default std root (s204, ruling #59), `sorted_by` resolves and the compiler reaches the type checker with two errors: E0401 at the comparator (`fn(a, b) b.1 <=> a.1` answers `int` where `sorted_by`'s comparator must answer `bool`, a THIRD blocker, the exercise's own) and E0403 at `.take(1)` («`take` is the ownership verb, never a method», naming `xs[..n]`, which is #58's half). The book prints the archive whole and CI stages its `std/` (the bs65 ruling), so the compiler's answer of record is the second. lupin 0.1.51 still has no std root (its own archive carries none) and answers `unsupported` in s204's longer words, exit 4; exercise 5-8's console block is spliced from that run. (owner: wolf-book#45 (the std root; successor of the closed #39) + wolf-book#58 (the unspellable `take`))
+2026-10-23T16:08:14.7472669Z samples: PENDING ch07/ex7-5 [fail(E1003)] — blocker: borrow-escape checking reaches no static verdict. Re-measured at bs53 against wolf 0.2.17 / lupin 0.1.40, and identically against 0.2.16 / 0.1.38: wolf answers `cannot compile this yet — borrow expressions` at `resolve` (exit 4; `channel` resolves now, so the old second clause is gone), and lupin runs the program to exit 0 with no static rung. Re-measured at bs54 against wolf 0.2.18 / lupin 0.1.41: unchanged on both (`borrow expressions` @365..367, lupin exit 0). Re-measured at bs55 against wolf 0.2.19 / lupin 0.1.42: unchanged on both, same span. Re-measured at bs58 against wolf 0.2.21 / lupin 0.1.44 and 0.2.19 / 0.1.42 the same hour (release archives by digest, docs/audit/bs58-evidence/probes-control.txt and probes-subject.txt): identical on both pairs, word for word, same span. (owner: s33-channels-select, then s18-tier0-exclusivity)
+2026-10-23T16:08:16.3925638Z samples: PENDING ch08/ex8-7 [run(exit=0, stdout="c a")] — blocker: TWO blockers, bisected at bs51 against wolf 0.2.16 / lupin 0.1.38 with two minimal programs rather than inferred from the exercise, and EACH MACHINE NOW SERVES THE HALF THE OTHER REFUSES. (1) The place write this row has always named — `pool[h].next = k` — LANDED ON THE COMPILER (s173: the pool is the base and the handle the index) and is still the interpreter's wall, in new words: lupin answers `unsupported: handle is not a `Map` key — a key is `str`, `int`, `char` or `bool` [type.map.key]` and exits 4, where wolf 0.2.16 runs the same program to exit 0. (2) A blocker that is NEW and is the COMPILER's: the LRU walk's `while cur != tail` compares two handles, and wolf answers `cannot compile this yet — `==` on a container, tuple or handle (no `Eq` for these this edition)` and exits 4, where lupin runs it. A conservatism line, not a rejection. bs51 predicted this row would flip on s173 and was wrong: s173 moved the half the row named and a second wall was behind it. Re-measured at bs53 (0.2.17 / 0.1.40) and at bs54 (0.2.18 / 0.1.41): both halves hold in the same words, the compiler's at the same span (@1926..1929); 0.2.18's pool-handle revival (eg01b) is about moves, not `Eq`. Re-measured at bs55 (0.2.19 / 0.1.42, and 0.2.18 / 0.1.41 the same hour): both halves identical, same span; 0.2.19's element claims (EG2) and header reads touch neither `Eq` nor map keys. Re-measured at bs58 against wolf 0.2.21 / lupin 0.1.44 and 0.2.19 / 0.1.42 the same hour (release archives by digest, docs/audit/bs58-evidence/probes-control.txt and probes-subject.txt): identical on both pairs, word for word, same span. (owner: wolf-book#60 (both halves, with the measurement))
+2026-10-23T16:08:30.3774030Z samples: REFUSED(windows) ch34/ex34-7 [wolf-run(exit=0)] — declared: exit 1, stdout "error: unsupported", retires at a windows `os_signal_number` ([os.signal.platform]) (bs67, 2026-10-16: exercise 34-7. `signal.number` is `unsupported` on this host after its shape, so the first meaning's number ends the program.)
+2026-10-23T16:08:57.5699100Z samples: REFUSED(windows) book/ch33/part-prefork [wolf-run(exit=0, stdout="a hand answered regions, and it exited 0")] — declared: exit 1, stdout "error: unsupported", retires at the windows descriptor crossing (wolf-lang#235) (bs30, 2026-09-07: `os_spawn_with` with a non-empty inherit set is the `unsupported` row on this host — a socket there is not a descriptor a parent can hand over by position — so §33.4's prefork block runs on linux and macOS and is refused here, by name.)
+2026-10-23T16:08:58.3783634Z samples: REFUSED(windows) book/ch34/s3 [wolf-run(exit=0)] — declared: exit 1, stdout "this process, nothing sent: unsupported\ntwo meanings at once: invalid\nan id nobody holds: unsupported\nerror: unsupported", retires at a windows `os_signal_send` / `os_signal_number` ([os.signal.platform]) (bs67, 2026-10-16: §34.2's `rows.lu`. The send's shape row answers first (`invalid` for two meanings at once), then the host (`unsupported`); `signal.number` is `unsupported` there too, and `?` makes it the documented process outcome.)
+2026-10-23T16:08:58.4731409Z samples: REFUSED(windows) book/ch34/s4 [wolf-run(exit=0, stdout="this process may be signalled")] — declared: exit 1, stdout "error: unsupported", retires at a windows `os_signal_send` ([os.signal.platform]) (bs67, 2026-10-16: §34.2's `alive.lu`. `os_signal_send` is `unsupported` on this host after its shape, by name.)
+2026-10-23T16:08:58.5782872Z samples: REFUSED(windows) book/ch34/s5 [wolf-run(exit=0)] — declared: exit 1, stdout "error: unsupported", retires at a windows `os_ppid` and id reads ([os.proc.self], [os.proc.ids]) (bs67, 2026-10-16: §34.3's `who.lu`. `env.ppid` is `unsupported` on this host, so the first line never prints.)
+2026-10-23T16:08:59.0068473Z samples: REFUSED(windows) book/ch34/s7 [wolf-run(exit=0, stdout="size: io, keys: io")] — declared: exit 0, stdout "size: unsupported, keys: unsupported", retires at a windows `os_term_size` / `os_term_chars` ([os.term]) (bs67, 2026-10-16: §34.3's `window.lu`. Every `[os.term]` call is `unsupported` on this host; the program handles the row and exits 0, and prints it.)
+2026-10-23T16:08:59.2247932Z samples: REFUSED(windows) book/ch34/s8 [wolf-run(exit=0)] — declared: exit 1, stdout "error: unsupported", retires at a windows `os_set_pgid` / `os_signal_send_group` ([os.term.group], [os.signal.send.group]) (bs68, 2026-10-18: §34.5's `groups.lu`. `os_set_pgid(0)` passes its shape and is `unsupported` on this host, and `?` makes it the documented process outcome before any line prints.)
+2026-10-23T16:08:59.5408097Z samples: REFUSED(windows) book/ch34/s10 [wolf-run(exit=0)] — declared: exit 1, stdout "error: io", retires at a windows `child()` ([os.signal.platform]); windows has no stops ([os.proc.poll]) (bs68, 2026-10-18: §34.5's `jobs.lu`. A listen for `child()` is `io` on this host (a console delivers only its own meanings), so the program ends at its first line, before it starts the child.)
+2026-10-23T16:08:59.7610455Z samples: REFUSED(windows) book/ch34/s11 [wolf-run(exit=0)] — declared: exit 1, stdout "kill: invalid, stop: invalid\nnothing: invalid, two at once: invalid\na fault meaning: unsupported\nerror: unsupported", retires at a windows `os_signal_ignore_one` / `os_signal_send` ([os.signal.disp.one], [os.signal.platform]) (bs69, 2026-10-19: §34.6's `one.lu`. The shape rows answer first (`kill()`, `stop()`, 0 and two meanings are `invalid` on every host), then `os_signal_ignore_one` of a fault meaning is `unsupported` on this host, and the send to itself ends the program at its `?`.)
+2026-10-23T16:08:59.9890730Z samples: REFUSED(windows) book/ch34/s12 [wolf-run(exit=0)] — declared: exit 1, stdout "error: unsupported\nerror: unsupported", retires at a windows `os_exit_signal` / `os_signal_number` ([os.signal.exit], [os.signal.platform]) (bs69, 2026-10-19: §34.6's `again.lu`. The child (the same program, re-executed) answers `os_exit_signal` `unsupported` and exits 1, its line on the stdout it shares with its parent; the parent reads that exit and ends at `signal.number`, `unsupported` on this host.)
+2026-10-23T16:09:00.0948753Z samples: REFUSED(windows) book/ch34/s13 [wolf-run(exit=0)] — declared: exit 1, stdout "error: unsupported", retires at a windows `os_fork` ([os.proc.fork]) (bs70, 2026-10-21: §34.7's `fork.lu`. The pipe is made (`os_pipe` serves every host); `os_fork` is `unsupported` on this host by name, and `?` makes it the documented process outcome before any line prints.)
+2026-10-23T16:09:00.4294520Z samples: REFUSED(windows) book/ch34/s15 [wolf-run(exit=0)] — declared: exit 1, stdout "error: io", retires at a windows `resize()` listen and `os_signal_wait_fds` ([os.signal.platform], [os.signal.wait.fds]) (bs70, 2026-10-21: §34.8's `wait.lu`. A listen for `resize()` is `io` on this host (a console delivers only its own meanings), so the program ends at its first line, before the wait (which is `unsupported` there).)
+2026-10-23T16:09:00.5354280Z samples: REFUSED(windows) book/ch34/s16 [run(exit=0)] — declared: exit 1, stdout "error: unsupported", retires at windows permission bits ([os.fs.create.mode]) and a directory's sync ([os.fs.sync]) (bs72, 2026-10-23: §34.8's `save.lu` runs on both machines on unix. On windows both wolf 0.2.35 and lupin 0.1.56 end at `fs_open_perm`, `unsupported` by name (no permission bits), creating nothing and never reaching `fs_sync_dir` (also `unsupported` there). Spec [os.fs.create.mode], [os.fs.sync]; lupin v0.1.56 tests/editor_calls_is79.rs::the_atomic_save_runs_whole.)
+2026-10-23T16:09:09.4033915Z samples: 120 corpus file(s) held back from the export — one-machine directives the other runner cannot spell (principles/TWO-MACHINES.md)
+2026-10-23T16:09:09.4515456Z 
+2026-10-23T16:09:09.4516230Z samples: 537 samples (252 corpus roots + 16 corpus members on disk, 285 book blocks)
+2026-10-23T16:09:09.4516916Z samples: 521 passed, 3 pending (report-only), 0 failed, 1 flips in 68.3s
+2026-10-23T16:09:09.4517728Z samples: 428 of 526 console block(s) replayed against the pinned tools
+2026-10-23T16:09:09.4518183Z samples: of those, 187 of 251 book block(s) and 241 of 275 exercise-corpus block(s) (wolf-book#24)
+2026-10-23T16:09:09.4519128Z samples: samples-os.toml: 14 row(s) apply to windows — 13 declared refusal(s) and 1 declared transcript(s) held
+2026-10-23T16:09:09.4521411Z samples: DECLARED console D:\a\wolf-book\wolf-book\wolf-book\book\ch34.md:263 (windows): §34.2, the interpreter on `alive.lu` — on Windows `lupin` answers the program's `unsupported` row itself (the host has no such call, before its own limit is asked), so the page's by-name refusal is linux's and macOS's — [os.signal.platform], retires at a windows `os_signal_send` ([os.signal.platform])
+2026-10-23T16:09:09.4524471Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch01.md:102: `wolf build hello.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4525766Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch01.md:116: `wolf run hello.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4526702Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch01.md:323: `(cd wolf-lang` needs a shell
+2026-10-23T16:09:09.4527600Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch01.md:372: `wolf run hello.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4528581Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch01.md:397: `wolf run hello.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4529207Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch01.md:523: `wolf build almost.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4529789Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch01.md:604: `wolf build hello.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4530367Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch02.md:335: `wolf run byte.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4530975Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch02.md:383: `wolf run mask.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4531577Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch02.md:490: `wolf run chars.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4532170Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch03.md:276: `wolf run bands.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4533027Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch03.md:456: `wolf run span.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4533778Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch04.md:392: `wolf run closing.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4534690Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch05.md:43: `wolf run totals.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4535387Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch05.md:119: `wolf run names.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4536230Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch05.md:368: `wolf run top2.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4537031Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch05.md:407: `wolf run best.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4537969Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch05.md:590: `wolf run absent.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4538627Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch05.md:776: `wolf run total.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4539285Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch05.md:894: `wolf run eq.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4539917Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch05.md:948: `wolf run best.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4540570Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch05.md:1027: `wolf run capped.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4541185Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch05.md:1082: `wolf run num.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4541788Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch06.md:149: `wolf run readerrors.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4542444Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch06.md:298: `wolf run die.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4543065Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch07.md:722: `grep -n '(mut ' shelf.lu` is not a pinned tool
+2026-10-23T16:09:09.4543695Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch08.md:228: `wolf run keep.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4544488Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch08.md:1248: `wolf run octets.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4545329Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch09.md:46: `wolf build snapshot.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4546342Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch09.md:677: `wolf build pack.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4547377Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch12.md:58: `wolf run bare.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4548093Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch13.md:56: `wolf run wordcount.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4548768Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch13.md:101: `wolf run wordcount.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4549399Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch14.md:154: `wolf run watch.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4550036Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch19.md:35: `wolf build --release scan.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4550736Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch19.md:56: `wolf build --release oops.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4551393Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch20.md:43: `wolf build --release tag.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4552067Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch21.md:68: `wolf build --release saxpy.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4552777Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch21.md:175: `wolf build --release pass.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4554049Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch21.md:266: `wolf build --release bill.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4554738Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch22.md:398: `wolf run registry.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4555408Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch23.md:50: `wolf run app/main.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4556037Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch23.md:143: `wolf run app/main.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4556693Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch26.md:267: `wolf build tally.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4557304Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch26.md:303: `wolf build read.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4558212Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch26.md:368: `wolf build wide.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4558877Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch26.md:460: `wolf build count.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4559500Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch27.md:439: `wolf build rpn.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4560126Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch30.md:82: `wolf build seqgrep.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4560795Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch30.md:319: `wolf build pargrep.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4561424Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch30.md:418: `wolf build pargrep.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4562064Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch34.md:146: `wolf run sets.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4562679Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch34.md:217: `wolf run rows.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4563394Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch34.md:312: `wolf run who.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4564029Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch34.md:377: `wolf run modes.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4564680Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch34.md:611: `wolf run groups.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4565304Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch34.md:704: `wolf run jobs.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4565933Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch34.md:773: `wolf run one.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4566540Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch34.md:839: `wolf run again.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4567212Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch34.md:851: `wolf build again.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4567835Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch34.md:890: `wolf run fork.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4568442Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch34.md:959: `wolf run busy.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4569075Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch34.md:1022: `wolf run wait.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4569684Z samples: SKIP console D:\a\wolf-book\wolf-book\wolf-book\book\ch34.md:1091: `wolf run save.lu` links a binary (unix lane only)
+2026-10-23T16:09:09.4570973Z samples: DECLINED corpus console principles/exercises/ch01/EXERCISES.md:18 [typed]: an interactive session — the block opens on a bare `$ lupin` and the transcript is what a reader types into the prompt — wolf-book#29 §4, retires at wolf-interp is08 (the REPL replay lane)
+2026-10-23T16:09:09.4572728Z samples: DECLINED corpus console principles/exercises/ch02/EXERCISES.md:81 [typed]: an expression to type — `lupin eval '"\n".len'` has no file behind it. Cheapest of the twenty: it needs no fixture and no lane, only a rule that admits an evaluated expression — wolf-book#29 §4, retires at the `eval` widening (with ch02:101), or wolf-interp is08 if the REPL lane takes both
+2026-10-23T16:09:09.4574569Z samples: DECLINED corpus console principles/exercises/ch02/EXERCISES.md:101 [typed]: an expression to type — `lupin eval '"wolf"[..2]'` has no file behind it — wolf-book#29 §4, retires at the `eval` widening (with ch02:81), or wolf-interp is08 if the REPL lane takes both
+2026-10-23T16:09:09.4575861Z samples: DECLINED corpus console principles/exercises/ch07/EXERCISES.md:562 [typed]: an interactive session — the block opens on a bare `$ lupin` — wolf-book#29 §4, retires at wolf-interp is08 (the REPL replay lane)
+2026-10-23T16:09:09.4577023Z samples: DECLINED corpus console principles/exercises/ch08/EXERCISES.md:143 [typed]: an interactive session — the block opens on a bare `$ lupin` — wolf-book#29 §4, retires at wolf-interp is08 (the REPL replay lane)
+2026-10-23T16:09:09.4578761Z samples: DECLINED corpus console principles/exercises/ch09/EXERCISES.md:17 [binary-or-shell]: a shell — `grep -rn 'unsafe {' ch01 … | wc -l` is a pipeline over the corpus tree, which `words()` declines by design — wolf-book#29 §5, retires at nothing planned; the count it prints is a fact about the corpus, not about a tool
+2026-10-23T16:09:09.4580166Z samples: DECLINED corpus console principles/exercises/ch11/EXERCISES.md:166 [typed]: an interactive session — the block opens on a bare `$ lupin` — wolf-book#29 §4, retires at wolf-interp is08 (the REPL replay lane)
+2026-10-23T16:09:09.4584244Z samples: DECLINED corpus console principles/exercises/ch22/EXERCISES.md:114 [file]: NOT a missing file. The block is exercise 22-11's D32 demonstration — an unmarked `widest.lu` joining `sum.lu`'s module, E0302 on `main`. A corpus `.lu` must carry `//! check:` and `//! phase:`, and `[conf.directive.standalone]` (D59) makes a file carrying both a standalone entry that never joins its directory's module, so the collision cannot be staged. Measured on wolf 0.2.12 and lupin 0.1.34: the pair runs clean, exit 0 both — wolf-book#29 §2 (premise corrected at bs44), retires at a corpus admission rule that can hold a non-standalone member. The `console,in(pkg/…)` escape hatch is NOT one today, and the reason is an ordering rather than a design: a corpus fence parses `in(…)` (`collect_corpus_console` carries `fi.in_fixture` through), but `console::check` runs the corpus admission gate against the real exercise directory BEFORE any staging, so the block is declined before the fixture is looked at — and if it got that far, `stage()` opens with `remove_dir_all(dir)` and would wipe the staged exercise tree the corpus lane had just put there. Two small fixes, one hole
+2026-10-23T16:09:09.4589035Z samples: DECLINED corpus console principles/exercises/ch23/EXERCISES.md:124 [file]: the corpus rule to admit a `--dir` package, not a fixture. None of the six commands carries a `.lu` argument, and `plain_run_of_a_solution` declines any `wolf`/`lupin` command that names no `.lu` on disk — so a checked-in `app/` changes nothing until the rule widens. The package itself already exists as `samples/pkg/shelf/`, which prints this block's tree verbatim at book/ch24.md — wolf-book#29 §2 (premise corrected at bs44), retires at the `--dir` widening for corpus blocks, after which `samples/pkg/shelf` is the fixture
+2026-10-23T16:09:09.4592798Z samples: DECLINED corpus console principles/exercises/ch24/EXERCISES.md:136 [file]: the same `--dir` widening as ch23's, and then one step no command shows: the manifest edit between the two commands. The ordering is NOT a contradiction (premise corrected at bs64): the exercise records the world while `regex` declares nothing, so `wolf update` writes `caps=-`, then the dependency's manifest gains `net`, and `wolf audit --ci` prints ACQUIRES and exits 1. Measured exactly so on wolf 0.2.26 and 0.2.25 (docs/audit/bs64-evidence/pkgprobe.txt, staged from `samples/pkg/acquired/`); the block was regenerated from that run — wolf-book#29 §2 (premise corrected at bs44, and at bs64), retires at the `--dir` widening, plus a staging step that edits regex's manifest between the two commands
+2026-10-23T16:09:09.4596143Z samples: DECLINED corpus console principles/EXERCISES.md:376 [typed]: an expression to type — exercise 2-1's three `lupin eval '…'` prompts have no file behind them, and the exemplar batch checks in no `ex2-1.lu` for them to name. The exercise declares its own machine as `lupin REPL` in its taxonomy line, so this is a REPL block written in `eval`'s spelling; it wants exactly what ch02:81 and ch02:101 want — wolf-book#44, retires at the `eval` widening (with ch02:81 and ch02:101), or wolf-interp is08 if the REPL lane takes all three
+2026-10-23T16:09:09.4598232Z samples: OFF-LANE corpus console principles/exercises/ch01/EXERCISES.md:145: `wolf build hello.lu --verbose` links a binary (unix lane only) — replayed on the unix lane, no declared row wanted
+2026-10-23T16:09:09.4599326Z samples: OFF-LANE corpus console principles/exercises/ch01/EXERCISES.md:198: `wolf build hello.lu` links a binary (unix lane only) — replayed on the unix lane, no declared row wanted
+2026-10-23T16:09:09.4600314Z samples: OFF-LANE corpus console principles/exercises/ch02/EXERCISES.md:241: `wolf run ex2-9.lu` links a binary (unix lane only) — replayed on the unix lane, no declared row wanted
+2026-10-23T16:09:09.4601336Z samples: OFF-LANE corpus console principles/exercises/ch03/EXERCISES.md:391: `wolf build ./ex3-14b.lu` links a binary (unix lane only) — replayed on the unix lane, no declared row wanted
+2026-10-23T16:09:09.4602322Z samples: OFF-LANE corpus console principles/exercises/ch05/EXERCISES.md:47: `wolf run ex5-6.lu` links a binary (unix lane only) — replayed on the unix lane, no declared row wanted
+2026-10-23T16:09:09.4603374Z samples: OFF-LANE corpus console principles/exercises/ch07/EXERCISES.md:285: `wolf run ex7-6.lu` links a binary (unix lane only) — replayed on the unix lane, no declared row wanted
+2026-10-23T16:09:09.4604367Z samples: OFF-LANE corpus console principles/exercises/ch07/EXERCISES.md:428: `wolf run ex7-9.lu` links a binary (unix lane only) — replayed on the unix lane, no declared row wanted
+2026-10-23T16:09:09.4605336Z samples: OFF-LANE corpus console principles/exercises/ch07/EXERCISES.md:955: `wolf run ex7-20.lu` links a binary (unix lane only) — replayed on the unix lane, no declared row wanted
+2026-10-23T16:09:09.4606333Z samples: OFF-LANE corpus console principles/exercises/ch07/EXERCISES.md:1029: `wolf run ex7-21.lu` links a binary (unix lane only) — replayed on the unix lane, no declared row wanted
+2026-10-23T16:09:09.4607307Z samples: OFF-LANE corpus console principles/exercises/ch07/EXERCISES.md:1081: `wolf run ex7-22.lu` links a binary (unix lane only) — replayed on the unix lane, no declared row wanted
+2026-10-23T16:09:09.4608312Z samples: OFF-LANE corpus console principles/exercises/ch07/EXERCISES.md:1172: `wolf run ex7-23b.lu` links a binary (unix lane only) — replayed on the unix lane, no declared row wanted
+2026-10-23T16:09:09.4609292Z samples: OFF-LANE corpus console principles/exercises/ch09/EXERCISES.md:243: `wolf build ex9-8.lu` links a binary (unix lane only) — replayed on the unix lane, no declared row wanted
+2026-10-23T16:09:09.4610258Z samples: OFF-LANE corpus console principles/exercises/ch18/EXERCISES.md:93: `wolf run ex18-3.lu` links a binary (unix lane only) — replayed on the unix lane, no declared row wanted
+2026-10-23T16:09:09.4611248Z samples: OFF-LANE corpus console principles/exercises/ch18/EXERCISES.md:140: `wolf run ex18-5.lu` links a binary (unix lane only) — replayed on the unix lane, no declared row wanted
+2026-10-23T16:09:09.4612296Z samples: OFF-LANE corpus console principles/exercises/ch18/EXERCISES.md:461: `wolf run ex18-11.lu` links a binary (unix lane only) — replayed on the unix lane, no declared row wanted
+2026-10-23T16:09:09.4613276Z samples: OFF-LANE corpus console principles/exercises/ch18/EXERCISES.md:517: `wolf run ex18-15.lu` links a binary (unix lane only) — replayed on the unix lane, no declared row wanted
+2026-10-23T16:09:09.4614315Z samples: OFF-LANE corpus console principles/exercises/ch19/EXERCISES.md:23: `wolf build --release ex19-1.lu` links a binary (unix lane only) — replayed on the unix lane, no declared row wanted
+2026-10-23T16:09:09.4615309Z samples: OFF-LANE corpus console principles/exercises/ch22/EXERCISES.md:281: `wolf run ex22-7.lu` links a binary (unix lane only) — replayed on the unix lane, no declared row wanted
+2026-10-23T16:09:09.4616311Z samples: OFF-LANE corpus console principles/exercises/ch26/EXERCISES.md:127: `wolf build count.lu` links a binary (unix lane only) — replayed on the unix lane, no declared row wanted
+2026-10-23T16:09:09.4617293Z samples: OFF-LANE corpus console principles/exercises/ch30/EXERCISES.md:84: `wolf build ex30-3.lu` links a binary (unix lane only) — replayed on the unix lane, no declared row wanted
+2026-10-23T16:09:09.4618537Z samples: OFF-LANE corpus console principles/exercises/ch30/EXERCISES.md:113: `wolf build ex30-4.lu` links a binary (unix lane only) — replayed on the unix lane, no declared row wanted
+2026-10-23T16:09:09.4619541Z samples: OFF-LANE corpus console principles/exercises/ch34/EXERCISES.md:21: `wolf run ex34-1.lu` links a binary (unix lane only) — replayed on the unix lane, no declared row wanted
+2026-10-23T16:09:09.4620481Z samples: OFF-LANE corpus console principles/exercises/ch34/EXERCISES.md:132: `wolf run ex34-7.lu` links a binary (unix lane only) — replayed on the unix lane, no declared row wanted
+2026-10-23T16:09:09.4621295Z samples: samples-declined.toml: 18 declared row(s) — 5 file, 7 typed, 6 binary-or-shell (wolf-book#29)
+2026-10-23T16:09:09.4621837Z samples: corpus console declines on windows: 11 DECLINED + 23 OFF-LANE = 34 raw (wolf-book#49)
+2026-10-23T16:09:09.4622582Z samples: SKIP pending(is08): 12 wolf-repl block(s) counted, not replayed — the REPL replay lane lands with wolf-interp is08
+2026-10-23T16:09:09.4623291Z samples: 2 warning set(s) asserted by warns(…); 30 sample(s) warn with no warns(…) directive (report-only, wolf-book#21)
+2026-10-23T16:09:09.4623745Z samples: WARNS undeclared appx/exB-11 [W1301]
+2026-10-23T16:09:09.4624041Z samples: WARNS undeclared appx/exB-5 [W1002]
+2026-10-23T16:09:09.4624350Z samples: WARNS undeclared appx/exC-2 [W1003]
+2026-10-23T16:09:09.4624642Z samples: WARNS undeclared ch03/ex3-14b [E0802]
+2026-10-23T16:09:09.4624930Z samples: WARNS undeclared ch03/ex3-2 [W1003]
+2026-10-23T16:09:09.4625203Z samples: WARNS undeclared ch07/ex7-1 [W1003]
+2026-10-23T16:09:09.4625495Z samples: WARNS undeclared ch07/ex7-3 [W1003]
+2026-10-23T16:09:09.4625765Z samples: WARNS undeclared ch10/ex10-6 [W0603]
+2026-10-23T16:09:09.4626049Z samples: WARNS undeclared ch10/ex10-7 [W0603]
+2026-10-23T16:09:09.4626369Z samples: WARNS undeclared ch12/ex12-11 [W0601]
+2026-10-23T16:09:09.4626657Z samples: WARNS undeclared ch13/ex13-3 [W1101, W1102]
+2026-10-23T16:09:09.4626955Z samples: WARNS undeclared ch13/ex13-5 [W0603]
+2026-10-23T16:09:09.4627249Z samples: WARNS undeclared ch13/ex13-7 [W0402]
+2026-10-23T16:09:09.4627520Z samples: WARNS undeclared ch17/ex17-6 [W0603]
+2026-10-23T16:09:09.4627837Z samples: WARNS undeclared ch22/calc/main [W0314, W0602, W0603]
+2026-10-23T16:09:09.4628196Z samples: WARNS undeclared ch22/clash/main [W0314]
+2026-10-23T16:09:09.4628513Z samples: WARNS undeclared ch22/wordcount/main [W0314]
+2026-10-23T16:09:09.4628799Z samples: WARNS undeclared ch27/ex27-1 [W0603]
+2026-10-23T16:09:09.4629079Z samples: WARNS undeclared ch27/ex27-2 [W0603]
+2026-10-23T16:09:09.4629371Z samples: WARNS undeclared ch27/ex27-3 [W0603]
+2026-10-23T16:09:09.4629730Z samples: WARNS undeclared ch27/ex27-4 [W0603]
+2026-10-23T16:09:09.4630068Z samples: WARNS undeclared ch27/ex27-6 [W0603]
+2026-10-23T16:09:09.4630830Z samples: WARNS undeclared book/ch02/s5 [W0309]
+2026-10-23T16:09:09.4631135Z samples: WARNS undeclared book/ch07/s2 [W1003]
+2026-10-23T16:09:09.4631418Z samples: WARNS undeclared book/ch07/s4 [W1003]
+2026-10-23T16:09:09.4631722Z samples: WARNS undeclared book/ch07/s5 [W1003]
+2026-10-23T16:09:09.4632004Z samples: WARNS undeclared book/ch12/s10 [W0601]
+2026-10-23T16:09:09.4632293Z samples: WARNS undeclared book/ch13/s1 [W1101]
+2026-10-23T16:09:09.4632603Z samples: WARNS undeclared book/ch13/s5 [W1101, W1102]
+2026-10-23T16:09:09.4632922Z samples: WARNS undeclared book/ch27/part-rpn [W0603]
+2026-10-23T16:09:09.4633537Z samples: exported 410 corpus programs to samples/export/corpus/book/
+2026-10-23T16:09:09.4635548Z samples: FLIP book/ch34/s14: directive `wolf-run(exit=0)` holds, but `lupin` now meets `run(exit=0…)` too — both machines serve this program now; graduate the fence to `run(…)`, retire the page's per-machine note, and close the ledger row in the pin-bump commit
+2026-10-23T16:09:09.4636654Z error: 0 failure(s), 1 flip(s)
+2026-10-23T16:09:09.4729448Z ##[error]Process completed with exit code 1.
+2026-10-23T16:09:09.4969106Z Post job cleanup.
+2026-10-23T16:09:09.6262213Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-23T16:09:09.6535831Z git version 2.56.0.windows.2
+2026-10-23T16:09:09.6585305Z Temporarily overriding HOME='D:\a\_temp\91af86b5-b822-4822-a77e-4f49a14045f8' before making global git config changes
+2026-10-23T16:09:09.6586076Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-23T16:09:09.6593763Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\wolf-book\wolf-book\wolf-book
+2026-10-23T16:09:09.6887954Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-23T16:09:09.7191067Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-23T16:09:10.1740990Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-23T16:09:10.2007652Z http.https://github.com/.extraheader
+2026-10-23T16:09:10.2041883Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all http.https://github.com/.extraheader
+2026-10-23T16:09:10.2327031Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-23T16:09:10.6611124Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-23T16:09:10.6894703Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-23T16:09:11.1804319Z Cleaning up orphan processes
+2026-10-23T16:09:11.1947583Z Terminate orphan process: pid (4704) (vctip)
+2026-10-23T16:09:11.2080512Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

@@ -1,0 +1,19 @@
+   Compiling xtask v0.1.0 (/home/mfwolffe/lanes/bs72/wolf-book/xtask)
+    Finished `test` profile [optimized + debuginfo] target(s) in 8.67s
+     Running unittests src/main.rs (target/debug/deps/xtask-edfbbe110e834bfc)
+
+running 1 test
+
+thread 'samples::tests::plain_passing_refusal_without_probe_still_flips' (200) panicked at xtask/src/samples.rs:2753:9:
+assertion failed: outcome.passed && !declared_host_graduation(&check, "windows", &outcome, &row)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test samples::tests::plain_passing_refusal_without_probe_still_flips ... FAILED
+
+failures:
+
+failures:
+    samples::tests::plain_passing_refusal_without_probe_still_flips
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 210 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p xtask --bin xtask`
