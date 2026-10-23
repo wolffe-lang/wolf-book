@@ -3651,6 +3651,15 @@ field, an element, a map value — is fine as long as a value is stored
 back on every path before the function returns, the `?` error edge and
 an early `return` included. The refusal points at the move that is not
 put back on some path.
+
+A plain (`read`) parameter is the caller's value lent for the call:
+binding a piece of it — `let tb = run.ec.tb` — moves that piece out in
+this frame (a lend; the caller keeps its value), so reading
+`run.ec.tb` again afterwards is this error ([mem.tier0.mode.read]). To
+read it twice, read through the path each time without binding it, or
+keep using the binding from the move on; `copy` at the move works and
+is a deep copy. A value of a scalar type, or an adapter of one
+(`type ByteOff = distinct int`), is copied, never moved.
 ```
 
 The license is the last clause: "assigning to a moved-from place makes
@@ -4448,22 +4457,24 @@ an allocation in the region.
 smuggle a region value past the brace:
 
 ```wolf
-struct Node { value: int }
+struct Node { value: int, text: str }
 fn main() -> !int {
-    var keep = Node { value: 0 }
+    var keep = Node { value: 0, text: "" }
     region tmp {
-        keep = Node { value: 7 }
+        keep = Node { value: 7, text: "scratch" }
     }
     if keep.value == 7 { 0 } else { 1 }
 }
 ```
 
 Predict the compiler's verdict, and, before reading the diagnostic,
-list the three code locations you expect it to point at.
+list the three code locations you expect it to point at. Then remove
+`text` from the type and both literals. Does the verdict change?
 
 Solution: rejected, E1010, and the diagnostic points at exactly the
 three moments of the story: the region's creation, the escape, and the
-free.
+free. Removing `text` leaves a scalar-only struct: it names no region,
+so the assignment is legal and `keep.value` is 7 after the brace.
 
 ```console
 $ wolf conform-run ./ex8-3.lu
@@ -4472,12 +4483,17 @@ error[E1010]: `keep` still holds a value allocated in region `tmp` when the regi
   |
 7 |     region tmp {
   |            --- region `tmp` is created here
-8 |         keep = Node { value: 7 }
+8 |         keep = Node { value: 7, text: "scratch" }
   |         ^^^^ the value flows out of the region here
-  |                ----------------- allocated here, into region `tmp`
+  |                ---------------------------------- allocated here, into region `tmp`
 9 |     }
   |     - the region is freed here — everything in it is freed wholesale, as one unit
   |
+  = note: a store into a value declared outside the block keeps nothing of the block when the
+    stored value names no region (a scalar, a literal) or is written `copy e` at the store:
+    that `copy` is a deep copy made in the outer value's region — the container's own for a
+    `push`, an index or `Map` store or a `List`/`Map` replaced, the region ambient where the
+    binding was declared for any other field [mem.region.outer-write].
   = note: to keep the value, allocate it where it must live: build it outside the region block, or
     aim the allocation at a longer-lived region explicitly (`let r = region()` … `in r { …
     }`); widening the region block to cover every use also works. When the block's own value
@@ -4694,26 +4710,30 @@ chapter in miniature: `weak`, `handle`, or put the cycle in a region.
 a freeze:
 
 ```wolf
-struct Config { limit: int }
+struct Config { limit: int, name: str }
 fn main() -> !int {
-    var cfg = freeze region { Config { limit: 42 } }
+    var cfg = freeze region { Config { limit: 42, name: "shelf" } }
     cfg.limit = 7
     cfg.limit
 }
 ```
 
 Predict the verdict and, from `--explain`-level knowledge, the two
-repairs the note will offer.
+repairs the note will offer. Then remove `name` from the type and the
+literal. Explain why the remaining assignment is legal.
 
-Solution:
+Solution: `Config` reaches storage through `name`, so the frozen struct
+cannot be written through, even at its integer field. Removing `name`
+leaves only inline words. They name no region and remain mutable in
+the outer binding (`[mem.region.scalar]`).
 
 ```console
 $ wolf conform-run ./ex8-9.lu
 error[E1012]: `cfg.limit` is frozen, so it cannot be assigned through
  --> ./ex8-9.lu:7:5
   |
-6 |     var cfg = freeze region { Config { limit: 42 } }
-  |               -------------------------------------- the freeze happens here — the promotion to `imm` is deep and permanent
+6 |     var cfg = freeze region { Config { limit: 42, name: "shelf" } }
+  |               ----------------------------------------------------- the freeze happens here — the promotion to `imm` is deep and permanent
 7 |     cfg.limit = 7
   |     ^^^^^^^^^ this needs the data to be mutable
   |
@@ -4746,7 +4766,7 @@ same contract: create a pool region, freeze the region value, then call
 Solution. `ch08/ex8-10.lu`:
 
 ```wolf
-struct Node { value: int }
+struct Node { value: int, text: str }
 fn main() -> !int {
     let r = region(pool(Node))
     let p = in r { Pool[Node]() }
@@ -9967,7 +9987,7 @@ Solution. Both runs, one item and one number between them:
 ```console
 $ wolf interface ./wordcount/tokens/tokens.lu
 module pkg :: (root)
-  wolfi v0 · toolchain 0.2.34 · edition v1
+  wolfi v0 · toolchain 0.2.35 · edition v1
   export_hash 05a012a2ca47c85fc47f13e7e2c80930951ae8c59a84d1631ca8844e71669f3c
   pkg_hash    05a012a2ca47c85fc47f13e7e2c80930951ae8c59a84d1631ca8844e71669f3c
   deps: (none)

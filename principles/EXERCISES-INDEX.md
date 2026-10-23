@@ -86,7 +86,7 @@ filesystem until lupin 0.1.36; since bs49 a choice the chapter makes),
 so several of its stems are tagged `· wolf` while the distilled
 solution program on disk is a `run(…)` file both machines execute.
 
-Tier totals: 38 run (lupin) · 9 run (lupin REPL) · 43 run (wolf) · 173 run (wolf + lupin) · 83 prose · 6 pending. That is 352.
+Tier totals: 37 run (lupin) · 9 run (lupin REPL) · 43 run (wolf) · 174 run (wolf + lupin) · 83 prose · 6 pending. That is 352.
 (The totals and the tables were recounted mechanically against the
 masters at bs21 — the previous header said 276/231 while the tables
 had drifted from the marker count, ch05's 5-9 and 5-10 among the
@@ -573,7 +573,7 @@ a held subject (the masters' header has the accounting).*
 |---|---|---|---|
 | Chapter batch | 27-1 | fingers · lupin | run (wolf + lupin) |
 | Chapter batch | 27-2 | comprehension · lupin | run (wolf + lupin) |
-| Chapter batch | 27-3 | extension · lupin | run (lupin) |
+| Chapter batch | 27-3 | extension · lupin | run (wolf + lupin) |
 | Chapter batch | 27-4 | comprehension · lupin | run (wolf + lupin) |
 | Chapter batch | 27-5 | spelunking · the C twin | prose |
 | Chapter batch | 27-6 | extension · lupin | run (wolf + lupin) |
