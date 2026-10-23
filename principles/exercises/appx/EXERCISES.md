@@ -196,6 +196,15 @@ field, an element, a map value — is fine as long as a value is stored
 back on every path before the function returns, the `?` error edge and
 an early `return` included. The refusal points at the move that is not
 put back on some path.
+
+A plain (`read`) parameter is the caller's value lent for the call:
+binding a piece of it — `let tb = run.ec.tb` — moves that piece out in
+this frame (a lend; the caller keeps its value), so reading
+`run.ec.tb` again afterwards is this error ([mem.tier0.mode.read]). To
+read it twice, read through the path each time without binding it, or
+keep using the binding from the move on; `copy` at the move works and
+is a deep copy. A value of a scalar type, or an adapter of one
+(`type ByteOff = distinct int`), is copied, never moved.
 ```
 
 Two catalog-only facts: the code also covers *never-initialized*
