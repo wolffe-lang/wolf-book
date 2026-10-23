@@ -1,0 +1,463 @@
+﻿2026-10-23T14:51:52.0932553Z Current runner version: '2.338.0'
+2026-10-23T14:51:52.0953072Z ##[group]Runner Image Provisioner
+2026-10-23T14:51:52.0953894Z Hosted Compute Agent
+2026-10-23T14:51:52.0954369Z Version: 20261012.601
+2026-10-23T14:51:52.0955152Z Commit: f3dc54e1fb89da6852db922499a0233137369e1d
+2026-10-23T14:51:52.0955735Z Build Date: 2026-10-12T17:48:21Z
+2026-10-23T14:51:52.0956300Z Worker ID: {570a3371-0571-4ea8-b598-4355938affdc}
+2026-10-23T14:51:52.0956917Z Region: westus3
+2026-10-23T14:51:52.0957364Z Cloud: Azure
+2026-10-23T14:51:52.0957833Z ##[endgroup]
+2026-10-23T14:51:52.0958954Z ##[group]Operating System
+2026-10-23T14:51:52.0959480Z Ubuntu
+2026-10-23T14:51:52.0960005Z 24.04.5
+2026-10-23T14:51:52.0960421Z LTS
+2026-10-23T14:51:52.0960861Z ##[endgroup]
+2026-10-23T14:51:52.0961360Z ##[group]Runner Image
+2026-10-23T14:51:52.0961878Z Image: ubuntu-24.04
+2026-10-23T14:51:52.0962377Z Version: 20261012.334.1
+2026-10-23T14:51:52.0963390Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-23T14:51:52.0964628Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+2026-10-23T14:51:52.0965568Z ##[endgroup]
+2026-10-23T14:51:52.0966510Z ##[group]GITHUB_TOKEN Permissions
+2026-10-23T14:51:52.0968008Z Contents: read
+2026-10-23T14:51:52.0968554Z Metadata: read
+2026-10-23T14:51:52.0969035Z ##[endgroup]
+2026-10-23T14:51:52.0970675Z Secret source: Actions
+2026-10-23T14:51:52.0971622Z Cache mode: write
+2026-10-23T14:51:52.0972176Z Prepare workflow directory
+2026-10-23T14:51:52.1289680Z Prepare all required actions
+2026-10-23T14:51:52.1344201Z Getting action download info
+2026-10-23T14:51:52.4491344Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-23T14:51:52.5298211Z Download action repository 'Swatinem/rust-cache@v2' (SHA:d1527c8f67ef9af357290475d4af4b0fab8f12e0)
+2026-10-23T14:51:53.4826779Z Complete job name: test (ubuntu-latest)
+2026-10-23T14:51:53.5453391Z ##[group]Run actions/checkout@v4
+2026-10-23T14:51:53.5454116Z with:
+2026-10-23T14:51:53.5454501Z   repository: wolffe-lang/wolf-book
+2026-10-23T14:51:53.5458168Z   token: ***
+2026-10-23T14:51:53.5458545Z   ssh-strict: true
+2026-10-23T14:51:53.5458932Z   ssh-user: git
+2026-10-23T14:51:53.5459319Z   persist-credentials: true
+2026-10-23T14:51:53.5459740Z   clean: true
+2026-10-23T14:51:53.5460123Z   sparse-checkout-cone-mode: true
+2026-10-23T14:51:53.5460566Z   fetch-depth: 1
+2026-10-23T14:51:53.5460936Z   fetch-tags: false
+2026-10-23T14:51:53.5461330Z   show-progress: true
+2026-10-23T14:51:53.5461716Z   lfs: false
+2026-10-23T14:51:53.5462073Z   submodules: false
+2026-10-23T14:51:53.5462462Z   set-safe-directory: true
+2026-10-23T14:51:53.5462899Z   allow-unsafe-pr-checkout: false
+2026-10-23T14:51:53.5463555Z env:
+2026-10-23T14:51:53.5463913Z   CARGO_TERM_COLOR: always
+2026-10-23T14:51:53.5464317Z ##[endgroup]
+2026-10-23T14:51:53.6271485Z Syncing repository: wolffe-lang/wolf-book
+2026-10-23T14:51:53.6273671Z ##[group]Getting Git version info
+2026-10-23T14:51:53.6274841Z Working directory is '/home/runner/work/wolf-book/wolf-book'
+2026-10-23T14:51:53.6276335Z [command]/usr/bin/git version
+2026-10-23T14:51:53.6723263Z git version 2.55.0
+2026-10-23T14:51:53.6732826Z ##[endgroup]
+2026-10-23T14:51:53.6746733Z Temporarily overriding HOME='/home/runner/work/_temp/1b637e05-a054-4493-ad11-a239401c4a22' before making global git config changes
+2026-10-23T14:51:53.6749227Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-23T14:51:53.6751672Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/wolf-book/wolf-book
+2026-10-23T14:51:53.6794925Z Deleting the contents of '/home/runner/work/wolf-book/wolf-book'
+2026-10-23T14:51:53.6798375Z ##[group]Initializing the repository
+2026-10-23T14:51:53.6800995Z [command]/usr/bin/git init /home/runner/work/wolf-book/wolf-book
+2026-10-23T14:51:53.6871448Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-23T14:51:53.6873238Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-23T14:51:53.6874929Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-23T14:51:53.6875997Z hint: call:
+2026-10-23T14:51:53.6876545Z hint:
+2026-10-23T14:51:53.6877232Z hint: 	git config --global init.defaultBranch <name>
+2026-10-23T14:51:53.6878078Z hint:
+2026-10-23T14:51:53.6878865Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-23T14:51:53.6880168Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-23T14:51:53.6881207Z hint:
+2026-10-23T14:51:53.6881786Z hint: 	git branch -m <name>
+2026-10-23T14:51:53.6882434Z hint:
+2026-10-23T14:51:53.6883305Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-23T14:51:53.6884838Z Initialized empty Git repository in /home/runner/work/wolf-book/wolf-book/.git/
+2026-10-23T14:51:53.6887175Z [command]/usr/bin/git remote add origin https://github.com/wolffe-lang/wolf-book
+2026-10-23T14:51:53.6931910Z ##[endgroup]
+2026-10-23T14:51:53.6933122Z ##[group]Disabling automatic garbage collection
+2026-10-23T14:51:53.6934281Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-23T14:51:53.6966136Z ##[endgroup]
+2026-10-23T14:51:53.6966966Z ##[group]Setting up auth
+2026-10-23T14:51:53.6970593Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-23T14:51:53.6998900Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-23T14:51:53.7263229Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-23T14:51:53.7294528Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-23T14:51:53.7511635Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-23T14:51:53.7541877Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-23T14:51:53.7726250Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-23T14:51:53.7762360Z ##[endgroup]
+2026-10-23T14:51:53.7770826Z ##[group]Fetching the repository
+2026-10-23T14:51:53.7773034Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +d8a5412b5c4ab4931c3d721cc823b267abd79c42:refs/remotes/pull/93/merge
+2026-10-23T14:51:55.3145667Z From https://github.com/wolffe-lang/wolf-book
+2026-10-23T14:51:55.3147171Z  * [new ref]         d8a5412b5c4ab4931c3d721cc823b267abd79c42 -> pull/93/merge
+2026-10-23T14:51:55.3155753Z ##[endgroup]
+2026-10-23T14:51:55.3156869Z ##[group]Determining the checkout info
+2026-10-23T14:51:55.3164970Z ##[endgroup]
+2026-10-23T14:51:55.3165435Z [command]/usr/bin/git sparse-checkout disable
+2026-10-23T14:51:55.3200647Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-23T14:51:55.3228329Z ##[group]Checking out the ref
+2026-10-23T14:51:55.3230813Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/93/merge
+2026-10-23T14:51:55.4094508Z Note: switching to 'refs/remotes/pull/93/merge'.
+2026-10-23T14:51:55.4095244Z 
+2026-10-23T14:51:55.4095610Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-23T14:51:55.4096536Z changes and commit them, and you can discard any commits you make in this
+2026-10-23T14:51:55.4097349Z state without impacting any branches by switching back to a branch.
+2026-10-23T14:51:55.4097833Z 
+2026-10-23T14:51:55.4098229Z If you want to create a new branch to retain commits you create, you may
+2026-10-23T14:51:55.4099050Z do so (now or later) by using -c with the switch command. Example:
+2026-10-23T14:51:55.4099754Z 
+2026-10-23T14:51:55.4100052Z   git switch -c <new-branch-name>
+2026-10-23T14:51:55.4100410Z 
+2026-10-23T14:51:55.4100677Z Or undo this operation with:
+2026-10-23T14:51:55.4100957Z 
+2026-10-23T14:51:55.4101171Z   git switch -
+2026-10-23T14:51:55.4101419Z 
+2026-10-23T14:51:55.4101850Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-23T14:51:55.4102535Z 
+2026-10-23T14:51:55.4103055Z HEAD is now at d8a5412 Merge fd3e688b7c9b157b9e8101e9ae4dce4e2227c0fe into f1fd824711b8949d6d4400c5ce5e8d61b328fe0f
+2026-10-23T14:51:55.4108527Z ##[endgroup]
+2026-10-23T14:51:55.4148402Z [command]/usr/bin/git log -1 --format=%H
+2026-10-23T14:51:55.4170740Z d8a5412b5c4ab4931c3d721cc823b267abd79c42
+2026-10-23T14:51:55.4458419Z ##[group]Run Swatinem/rust-cache@v2
+2026-10-23T14:51:55.4458732Z with:
+2026-10-23T14:51:55.4458956Z   prefix-key: v0-rust
+2026-10-23T14:51:55.4459194Z   add-job-id-key: true
+2026-10-23T14:51:55.4459442Z   add-rust-environment-hash-key: true
+2026-10-23T14:51:55.4459729Z   cache-targets: true
+2026-10-23T14:51:55.4459959Z   cache-all-crates: false
+2026-10-23T14:51:55.4460245Z   cache-workspace-crates: false
+2026-10-23T14:51:55.4460502Z   save-if: true
+2026-10-23T14:51:55.4460718Z   cache-provider: github
+2026-10-23T14:51:55.4460946Z   cache-bin: true
+2026-10-23T14:51:55.4461159Z   lookup-only: false
+2026-10-23T14:51:55.4461378Z   cmd-format: {0}
+2026-10-23T14:51:55.4461584Z env:
+2026-10-23T14:51:55.4461784Z   CARGO_TERM_COLOR: always
+2026-10-23T14:51:55.4462018Z ##[endgroup]
+2026-10-23T14:51:57.1407763Z ##[group]Cache Configuration
+2026-10-23T14:51:57.1408189Z Cache Provider:
+2026-10-23T14:51:57.1408461Z     github
+2026-10-23T14:51:57.1408731Z Workspaces:
+2026-10-23T14:51:57.1409117Z     /home/runner/work/wolf-book/wolf-book
+2026-10-23T14:51:57.1409482Z Cache Paths:
+2026-10-23T14:51:57.1409773Z     /home/runner/.cargo/bin
+2026-10-23T14:51:57.1410083Z     /home/runner/.cargo/.crates.toml
+2026-10-23T14:51:57.1410437Z     /home/runner/.cargo/.crates2.json
+2026-10-23T14:51:57.1410809Z     /home/runner/.cargo/registry
+2026-10-23T14:51:57.1411140Z     /home/runner/.cargo/git
+2026-10-23T14:51:57.1411491Z     /home/runner/work/wolf-book/wolf-book/target
+2026-10-23T14:51:57.1411856Z Restore Key:
+2026-10-23T14:51:57.1412151Z     v0-rust-test-Linux-x64-b771e0df
+2026-10-23T14:51:57.1412492Z Cache Key:
+2026-10-23T14:51:57.1412783Z     v0-rust-test-Linux-x64-b771e0df-eb35900c
+2026-10-23T14:51:57.1413156Z .. Prefix:
+2026-10-23T14:51:57.1413464Z   - v0-rust-test-Linux-x64
+2026-10-23T14:51:57.1413745Z .. Environment considered:
+2026-10-23T14:51:57.1414032Z   - Rust Versions:
+2026-10-23T14:51:57.1414448Z     - 1.99.0 x86_64-unknown-linux-gnu b940084d7eb6a299eb4bfeb8e34901bc051e7ac4
+2026-10-23T14:51:57.1415116Z   - CARGO_INCREMENTAL
+2026-10-23T14:51:57.1415401Z   - CARGO_TERM_COLOR
+2026-10-23T14:51:57.1415691Z .. Lockfiles considered:
+2026-10-23T14:51:57.1416066Z   - /home/runner/work/wolf-book/wolf-book/.cargo/config.toml
+2026-10-23T14:51:57.1416527Z   - /home/runner/work/wolf-book/wolf-book/Cargo.lock
+2026-10-23T14:51:57.1416982Z   - /home/runner/work/wolf-book/wolf-book/xtask/Cargo.toml
+2026-10-23T14:51:57.1417622Z ##[endgroup]
+2026-10-23T14:51:57.1417776Z 
+2026-10-23T14:51:57.1417886Z ... Restoring cache ...
+2026-10-23T14:51:57.4651444Z Cache hit for: v0-rust-test-Linux-x64-b771e0df-eb35900c
+2026-10-23T14:51:58.6674486Z Received 33554432 of 210694006 (15.9%), 32.0 MBs/sec
+2026-10-23T14:51:59.6670617Z Received 184549376 of 210694006 (87.6%), 88.0 MBs/sec
+2026-10-23T14:52:00.0327733Z Received 210694006 of 210694006 (100.0%), 84.9 MBs/sec
+2026-10-23T14:52:00.0328075Z Cache Size: ~201 MB (210694006 B)
+2026-10-23T14:52:00.0354157Z [command]/usr/bin/tar -xf /home/runner/work/_temp/e2eba393-71ea-41b1-bcd5-333140354aae/cache.tzst -P -C /home/runner/work/wolf-book/wolf-book --use-compress-program unzstd
+2026-10-23T14:52:01.0907704Z Cache restored successfully
+2026-10-23T14:52:01.3013951Z Restored from cache key "v0-rust-test-Linux-x64-b771e0df-eb35900c" full match: true.
+2026-10-23T14:52:01.3479851Z ##[group]Run cargo fmt --check
+2026-10-23T14:52:01.3480303Z cargo fmt --check
+2026-10-23T14:52:01.3725123Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-23T14:52:01.3725442Z env:
+2026-10-23T14:52:01.3725629Z   CARGO_TERM_COLOR: always
+2026-10-23T14:52:01.3725846Z   CACHE_ON_FAILURE: false
+2026-10-23T14:52:01.3726057Z   CARGO_INCREMENTAL: 0
+2026-10-23T14:52:01.3726252Z ##[endgroup]
+2026-10-23T14:52:03.4429891Z ##[group]Run cargo clippy --all-targets -- -D warnings
+2026-10-23T14:52:03.4430260Z cargo clippy --all-targets -- -D warnings
+2026-10-23T14:52:03.4488637Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-23T14:52:03.4489058Z env:
+2026-10-23T14:52:03.4489328Z   CARGO_TERM_COLOR: always
+2026-10-23T14:52:03.4489539Z   CACHE_ON_FAILURE: false
+2026-10-23T14:52:03.4489731Z   CARGO_INCREMENTAL: 0
+2026-10-23T14:52:03.4489910Z ##[endgroup]
+2026-10-23T14:52:04.1677388Z     Updating crates.io index
+2026-10-23T14:52:05.2858986Z     Checking xtask v0.1.0 (/home/runner/work/wolf-book/wolf-book/xtask)
+2026-10-23T14:52:16.4800763Z     Finished `dev` profile [optimized + debuginfo] target(s) in 12.94s
+2026-10-23T14:52:16.5225497Z ##[group]Run cargo test
+2026-10-23T14:52:16.5225746Z cargo test
+2026-10-23T14:52:16.5279932Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-23T14:52:16.5280223Z env:
+2026-10-23T14:52:16.5280397Z   CARGO_TERM_COLOR: always
+2026-10-23T14:52:16.5280597Z   CACHE_ON_FAILURE: false
+2026-10-23T14:52:16.5280792Z   CARGO_INCREMENTAL: 0
+2026-10-23T14:52:16.5280981Z ##[endgroup]
+2026-10-23T14:52:16.6326740Z    Compiling xtask v0.1.0 (/home/runner/work/wolf-book/wolf-book/xtask)
+2026-10-23T14:52:30.2706153Z     Finished `test` profile [optimized + debuginfo] target(s) in 13.72s
+2026-10-23T14:52:30.2792115Z      Running unittests src/main.rs (target/debug/deps/xtask-c23ce9e312e39658)
+2026-10-23T14:52:30.2805170Z 
+2026-10-23T14:52:30.2805344Z running 206 tests
+2026-10-23T14:52:30.2815112Z test backmatter::tests::a_catalog_missing_a_new_code_drifts ... ok
+2026-10-23T14:52:30.2815844Z test backmatter::tests::a_heading_that_is_not_a_code_is_not_a_code ... ok
+2026-10-23T14:52:30.2816443Z test backmatter::tests::an_unmoved_catalog_does_not_drift ... ok
+2026-10-23T14:52:30.2816955Z test backmatter::tests::a_reordered_catalog_drifts_too ... ok
+2026-10-23T14:52:30.2817355Z test backmatter::tests::a_stale_catalog_naming_a_retired_code_drifts ... ok
+2026-10-23T14:52:30.2817732Z test backmatter::tests::derives_the_codes_in_document_order ... ok
+2026-10-23T14:52:30.2818073Z test console::tests::a_block_without_a_prompt_is_an_error ... ok
+2026-10-23T14:52:30.2818436Z test console::tests::a_block_key_is_repo_relative_with_forward_slashes ... ok
+2026-10-23T14:52:30.2818830Z test backmatter::tests::a_batch_of_exercises_belongs_to_its_chapter ... ok
+2026-10-23T14:52:30.2819204Z test console::tests::a_conform_run_naming_a_solution_is_admitted ... ok
+2026-10-23T14:52:30.2819597Z test console::tests::a_declared_transcript_holds_when_the_host_says_it ... ok
+2026-10-23T14:52:30.2820032Z test console::tests::a_declared_transcript_is_stale_once_the_host_agrees_with_the_page ... ok
+2026-10-23T14:52:30.2820445Z test console::tests::a_third_answer_is_drift_not_a_shrug ... ok
+2026-10-23T14:52:30.2824013Z test console::tests::an_off_lane_decline_is_marked_as_one ... ok
+2026-10-23T14:52:30.2824531Z test console::tests::classify_reads_each_verb ... ok
+2026-10-23T14:52:30.2825594Z test console::tests::steps_split_on_prompts ... ok
+2026-10-23T14:52:30.2834000Z test console::tests::the_catalog_read_is_admitted_and_eval_is_not ... ok
+2026-10-23T14:52:30.2834414Z test console::tests::the_corpus_rule_declines_what_it_cannot_conjure ... ok
+2026-10-23T14:52:30.2834958Z test console::tests::the_pinned_tools_are_replayable ... ok
+2026-10-23T14:52:30.2835328Z test console::tests::trailing_blanks_are_not_compared_but_inner_ones_are ... ok
+2026-10-23T14:52:30.2835708Z test console::tests::the_verdict_json_is_dropped_and_only_it ... ok
+2026-10-23T14:52:30.2836338Z test console::tests::unknown_commands_are_skipped_not_failed ... ok
+2026-10-23T14:52:30.2836668Z test console::tests::words_declines_shell_syntax ... ok
+2026-10-23T14:52:30.2836951Z test console::tests::words_honors_quotes ... ok
+2026-10-23T14:52:30.2837270Z test contrast::tests::a_c_fence_is_read_as_the_c_lane_and_rust_is_not ... ok
+2026-10-23T14:52:30.2837866Z test contrast::tests::a_case_declares_argv_files_and_both_streams ... ok
+2026-10-23T14:52:30.2838531Z test contrast::tests::a_failing_case_carries_its_exit_status_into_the_transcript ... ok
+2026-10-23T14:52:30.2839136Z test console::tests::a_replayed_command_a_signal_ended_reports_128_plus_n ... ok
+2026-10-23T14:52:30.2839656Z test contrast::tests::a_stdin_case_prints_a_bare_prompt ... ok
+2026-10-23T14:52:30.2840240Z test contrast::tests::comparison_ignores_trailing_whitespace_only ... ok
+2026-10-23T14:52:30.2840850Z test contrast::tests::a_transcript_is_derived_from_its_case_and_nothing_else ... ok
+2026-10-23T14:52:30.2841394Z test contrast::tests::the_default_case_asserts_silence_and_success ... ok
+2026-10-23T14:52:30.2847403Z test declined::tests::a_declared_block_that_is_still_declined_is_quiet ... ok
+2026-10-23T14:52:30.2851965Z test declined::tests::a_declared_block_that_replays_is_stale ... ok
+2026-10-23T14:52:30.2852743Z test declined::tests::a_declined_block_with_no_row_is_a_failure ... ok
+2026-10-23T14:52:30.2853589Z test declined::tests::an_unknown_class_is_a_typo ... ok
+2026-10-23T14:52:30.2854288Z test declined::tests::the_classes_are_counted ... ok
+2026-10-23T14:52:30.2855084Z test diagrams::tests::a_copy_read_draws_the_source_still_live ... ok
+2026-10-23T14:52:30.2855704Z test diagrams::tests::ids_name_a_page_and_a_sample ... ok
+2026-10-23T14:52:30.2856217Z test diagrams::tests::page_programs_number_like_the_samples_runner ... ok
+2026-10-23T14:52:30.2857034Z test diagrams::tests::a_take_marks_the_field_moved_and_the_new_binding ... ok
+2026-10-23T14:52:30.2858126Z test diagrams::tests::paths_split_on_fields_and_elements ... ok
+2026-10-23T14:52:30.2859002Z test diagrams::tests::the_record_before_is_the_same_functions ... ok
+2026-10-23T14:52:30.2859758Z test diagrams::tests::the_svg_is_static_and_carries_its_text ... ok
+2026-10-23T14:52:30.2860473Z test dialects::tests::css_and_typst_carry_every_dialect ... ok
+2026-10-23T14:52:30.2861136Z test dialects::tests::fences_classify_and_label ... ok
+2026-10-23T14:52:30.2861809Z test dialects::tests::the_seven_dialects_have_distinct_frames ... ok
+2026-10-23T14:52:30.2862443Z test directives::tests::check_fail ... ok
+2026-10-23T14:52:30.2862997Z test directives::tests::check_audit_code ... ok
+2026-10-23T14:52:30.2863577Z test directives::tests::check_lupin_run_roundtrips ... ok
+2026-10-23T14:52:30.2864166Z test directives::tests::check_run_plain ... ok
+2026-10-23T14:52:30.2864849Z test directives::tests::check_run_stdout_with_comma ... ok
+2026-10-23T14:52:30.2865425Z test directives::tests::fence_carries_lupin_run ... ok
+2026-10-23T14:52:30.2866001Z test directives::tests::check_trap ... ok
+2026-10-23T14:52:30.2866545Z test directives::tests::check_ub_row ... ok
+2026-10-23T14:52:30.2867144Z test directives::tests::fence_carries_ub_and_audit ... ok
+2026-10-23T14:52:30.2867755Z test directives::tests::fence_carries_warns ... ok
+2026-10-23T14:52:30.2868347Z test directives::tests::fence_diagnostic_from ... ok
+2026-10-23T14:52:30.2868971Z test directives::tests::fence_memory_from_and_line ... ok
+2026-10-23T14:52:30.2869631Z test directives::tests::fence_part_cont_with_run ... ok
+2026-10-23T14:52:30.2870242Z test directives::tests::lu_header_carries_warns ... ok
+2026-10-23T14:52:30.2870834Z test directives::tests::lu_header_roundtrip ... ok
+2026-10-23T14:52:30.2871580Z test directives::tests::lupin_only_samples_stay_home ... ok
+2026-10-23T14:52:30.2872269Z test directives::tests::nonzero_parses_and_round_trips ... ok
+2026-10-23T14:52:30.2873011Z test directives::tests::nonzero_refuses_to_share_a_fence_with_a_number ... ok
+2026-10-23T14:52:30.2873947Z test directives::tests::warns_wants_catalog_shaped_codes ... ok
+2026-10-23T14:52:30.2874589Z test fence::tests::preserves_content_bytes ... ok
+2026-10-23T14:52:30.2875299Z test fence::tests::walks_fences_and_text ... ok
+2026-10-23T14:52:30.2875927Z test fence::tests::rewrite_roundtrips_text ... ok
+2026-10-23T14:52:30.2876643Z test highlight::tests::char_literal_is_string_green_but_escapes_stay_bronze ... ok
+2026-10-23T14:52:30.2877390Z test highlight::tests::css_has_every_class ... ok
+2026-10-23T14:52:30.2878005Z test highlight::tests::console_prompt_decoration ... ok
+2026-10-23T14:52:30.2882767Z test highlight::tests::char_type_and_char_literal_paint ... ok
+2026-10-23T14:52:30.2883270Z test highlight::tests::diagnostic_decoration ... ok
+2026-10-23T14:52:30.2885077Z test highlight::tests::scope_mapping_is_restrained ... ok
+2026-10-23T14:52:30.2885621Z test ledger::tests::counts_filed_waived_unfiled_closed ... ok
+2026-10-23T14:52:30.2886194Z test ledger::tests::filed_requires_a_number ... ok
+2026-10-23T14:52:30.2893744Z test ledger::tests::chapter_without_ledger_is_none ... ok
+2026-10-23T14:52:30.2899235Z test oslane::tests::a_refusal_row_round_trips ... ok
+2026-10-23T14:52:30.2900150Z test ledger::tests::last_row_before_close_is_counted ... ok
+2026-10-23T14:52:30.2900953Z test oslane::tests::a_transcript_row_keeps_its_backslashes ... ok
+2026-10-23T14:52:30.2901993Z test oslane::tests::an_unknown_os_is_refused ... ok
+2026-10-23T14:52:30.2902697Z test oslane::tests::rows_for_another_host_are_inert_but_still_named ... ok
+2026-10-23T14:52:30.2903764Z test highlight::tests::wolf_hello_renders_spans ... ok
+2026-10-23T14:52:30.2907153Z test preprocess::tests::a_memory_fence_becomes_a_static_figure ... ok
+2026-10-23T14:52:30.2908758Z test preprocess::tests::a_twin_run_renders_as_its_own_dialect_and_keeps_its_case_name_off_the_page ... ok
+2026-10-23T14:52:30.2909611Z test preprocess::tests::chapter_heading_anchor ... ok
+2026-10-23T14:52:30.2912595Z test preprocess::tests::console_fence_renders ... ok
+2026-10-23T14:52:30.2913289Z test preprocess::tests::chapter_takes_its_own_number_not_its_position ... ok
+2026-10-23T14:52:30.2914336Z test preprocess::tests::explicit_id_wins ... ok
+2026-10-23T14:52:30.2914968Z test oslane::tests::the_host_name_is_one_of_the_three ... ok
+2026-10-23T14:52:30.2917930Z test preprocess::tests::headings_inside_fences_untouched ... ok
+2026-10-23T14:52:30.2918597Z test preprocess::tests::own_number_is_the_first_heading ... ok
+2026-10-23T14:52:30.2919329Z test preprocess::tests::contrast_code_renders_labeled_and_escaped ... ok
+2026-10-23T14:52:30.2920076Z test preprocess::tests::section_heading_anchor ... ok
+2026-10-23T14:52:30.2920739Z test preprocess::tests::unnumbered_heading_untouched ... ok
+2026-10-23T14:52:30.2921428Z test render::tests::a_markdown_table_becomes_a_typst_table ... ok
+2026-10-23T14:52:30.2922271Z test render::tests::a_numbered_heading_carries_the_label_the_backlink_names ... ok
+2026-10-23T14:52:30.2925946Z test render::tests::a_section_backlink_becomes_a_typst_cross_reference ... ok
+2026-10-23T14:52:30.2935674Z test console::tests::a_replayed_command_leads_its_own_process_group ... ok
+2026-10-23T14:52:30.2936564Z test render::tests::a_semicolon_after_inline_code_survives_into_typst ... ok
+2026-10-23T14:52:30.2937427Z test render::tests::absolutize_roots_relative_links_only ... ok
+2026-10-23T14:52:30.2938145Z test render::tests::an_offsite_anchor_stays_a_url ... ok
+2026-10-23T14:52:30.2945720Z test render::tests::details_wrappers_expand_for_print ... ok
+2026-10-23T14:52:30.2946460Z test preprocess::tests::part_fences_carry_their_name_in_the_label ... ok
+2026-10-23T14:52:30.2947109Z test preprocess::tests::fences_render_to_pre_spans ... ok
+2026-10-23T14:52:30.2947715Z test render::tests::inline_scripts_are_counted_outside_comments ... ok
+2026-10-23T14:52:30.2948355Z test render::tests::pages_redirect_to_the_same_path_home ... ok
+2026-10-23T14:52:30.2948925Z test render::tests::strip_directives_leaves_lang ... ok
+2026-10-23T14:52:30.2955837Z test render::tests::summary_parses_in_order ... ok
+2026-10-23T14:52:30.2956802Z test render::tests::the_summary_line_carries_its_backlink_into_print ... ok
+2026-10-23T14:52:30.2957704Z test render::tests::typst_epigraph_sets_italic_and_flush_right_attribution ... ok
+2026-10-23T14:52:30.2958521Z test render::tests::typst_epigraph_without_attribution ... ok
+2026-10-23T14:52:30.2959186Z test render::tests::typst_escapes_specials ... ok
+2026-10-23T14:52:30.2959914Z test samples::tests::a_live_sample_s_diagnostic_block_is_held_to_the_run ... ok
+2026-10-23T14:52:30.2961850Z test samples::tests::a_pending_sample_s_diagnostic_block_is_reported_not_compared ... ok
+2026-10-23T14:52:30.2970325Z test render::tests::every_dialect_sets_its_own_typst_frame ... ok
+2026-10-23T14:52:30.2973572Z test samples::tests::ownership_lint_allows_the_take_combinator ... ok
+2026-10-23T14:52:30.2976206Z test samples::tests::ownership_lint_catches_each_annotation ... ok
+2026-10-23T14:52:30.2977016Z test render::tests::typst_code_lines_color_keywords ... ok
+2026-10-23T14:52:30.2977804Z test samples::tests::ownership_lint_ignores_lookalike_identifiers ... ok
+2026-10-23T14:52:30.2978633Z test samples::tests::ownership_lint_allows_the_write_marked_receiver ... ok
+2026-10-23T14:52:30.2979590Z test samples::tests::ownership_lint_reports_every_token_present ... ok
+2026-10-23T14:52:30.2980455Z test samples::tests::raw_decline_line_sums_both_kinds_and_names_the_host ... ok
+2026-10-23T14:52:30.2981248Z test tiers::tests::a_directory_mention_is_a_path_segment ... ok
+2026-10-23T14:52:30.2981949Z test tiers::tests::a_hand_edited_row_is_named_by_its_head ... ok
+2026-10-23T14:52:30.2982746Z test tiers::tests::a_build_cache_is_not_a_package ... ok
+2026-10-23T14:52:30.2983347Z test tiers::tests::a_numbered_sibling_is_not_a_pair ... ok
+2026-10-23T14:52:30.2983817Z test tiers::tests::a_program_no_row_claims_is_an_error ... ok
+2026-10-23T14:52:30.2984411Z test tiers::tests::each_head_names_the_machines_the_runner_asks ... ok
+2026-10-23T14:52:30.2986480Z test tiers::tests::a_package_belongs_to_its_label_then_its_one_mention ... ok
+2026-10-23T14:52:30.2997256Z test tiers::tests::rows_are_read_off_their_heads_and_hand_rows_are_kept ... ok
+2026-10-23T14:52:30.3005975Z test tm::tests::comment_swallows_line ... ok
+2026-10-23T14:52:30.3007891Z test tm::tests::block_string_spans_lines ... ok
+2026-10-23T14:52:30.3026547Z test tm::tests::raw_string_backref_end ... ok
+2026-10-23T14:52:30.3035699Z test tm::tests::keywords_and_numbers ... ok
+2026-10-23T14:52:30.3050392Z test tm::tests::string_with_interpolation ... ok
+2026-10-23T14:52:30.3055608Z test verify::tests::a_bare_name_is_the_page_directorys_file ... ok
+2026-10-23T14:52:30.3063526Z test tm::tests::tokens_cover_every_byte ... ok
+2026-10-23T14:52:30.3064142Z test verify::tests::a_brace_in_a_nested_literal_is_caught ... ok
+2026-10-23T14:52:30.3064958Z test verify::tests::a_catalog_that_shrank_under_the_sentence_is_caught ... ok
+2026-10-23T14:52:30.3065733Z test verify::tests::a_chapter_heading_that_did_not_move_with_its_rows_is_caught ... ok
+2026-10-23T14:52:30.3067029Z test verify::tests::a_corpus_exercise_with_no_row_is_caught ... ok
+2026-10-23T14:52:30.3070487Z test tiers::tests::the_real_index_is_generated ... ok
+2026-10-23T14:52:30.3071397Z test verify::tests::a_count_that_drifted_and_a_literal_that_left_are_both_caught ... ok
+2026-10-23T14:52:30.3072036Z test verify::tests::a_dedented_window_is_not_an_excerpt ... ok
+2026-10-23T14:52:30.3072574Z test verify::tests::a_document_the_page_forgot_is_caught ... ok
+2026-10-23T14:52:30.3074265Z test verify::tests::a_header_total_that_drifted_from_the_table_is_caught ... ok
+2026-10-23T14:52:30.3075307Z test verify::tests::a_hybrid_counts_once_per_kind_and_a_vein_is_not_a_kind ... ok
+2026-10-23T14:52:30.3075963Z test verify::tests::a_label_pairs_with_the_fence_that_follows_it ... ok
+2026-10-23T14:52:30.3076609Z test verify::tests::a_label_whose_page_prints_only_output_pairs_with_nothing ... ok
+2026-10-23T14:52:30.3077253Z test verify::tests::a_new_literal_no_one_classified_is_caught ... ok
+2026-10-23T14:52:30.3077918Z test verify::tests::a_not_a_toolchain_entry_rides_no_clock ... ok
+2026-10-23T14:52:30.3078656Z test verify::tests::a_pin_that_moved_past_an_audit_is_caught ... ok
+2026-10-23T14:52:30.3079253Z test verify::tests::a_plain_escape_in_a_nested_literal_is_not_caught ... ok
+2026-10-23T14:52:30.3079921Z test verify::tests::a_quoted_solution_label_names_its_program_whatever_follows ... ok
+2026-10-23T14:52:30.3080582Z test verify::tests::a_raw_string_is_not_scanned ... ok
+2026-10-23T14:52:30.3081304Z test verify::tests::a_row_for_a_document_the_spec_does_not_publish_is_caught ... ok
+2026-10-23T14:52:30.3082236Z test verify::tests::a_row_naming_an_exercise_no_master_defines_is_caught ... ok
+2026-10-23T14:52:30.3082896Z test verify::tests::a_section_cell_carrying_its_own_pipe_is_still_one_row ... ok
+2026-10-23T14:52:30.3083594Z test verify::tests::a_solution_body_drops_the_rig_header_and_the_author_comment ... ok
+2026-10-23T14:52:30.3084564Z test verify::tests::a_stale_cited_count_is_caught ... ok
+2026-10-23T14:52:30.3085539Z test verify::tests::a_stale_printed_count_is_caught ... ok
+2026-10-23T14:52:30.3086556Z test verify::tests::a_table_row_added_without_recounting_is_caught ... ok
+2026-10-23T14:52:30.3087322Z test verify::tests::a_taxonomy_token_that_is_neither_kind_nor_vein_is_caught ... ok
+2026-10-23T14:52:30.3087967Z test verify::tests::a_two_clock_entry_holds_when_neither_pin_moved ... ok
+2026-10-23T14:52:30.3088586Z test verify::tests::a_two_clock_entry_is_re_read_when_either_pin_moves ... ok
+2026-10-23T14:52:30.3089174Z test verify::tests::a_wrapped_label_is_read_to_its_fence ... ok
+2026-10-23T14:52:30.3089701Z test verify::tests::a_wrapped_prose_claim_is_still_found ... ok
+2026-10-23T14:52:30.3090584Z test verify::tests::a_wrapped_tally_is_read_past_its_first_figure ... ok
+2026-10-23T14:52:30.3091249Z test verify::tests::a_wrong_document_count_in_prose_is_caught ... ok
+2026-10-23T14:52:30.3092275Z test verify::tests::a_wrong_namespace_count_in_prose_is_caught ... ok
+2026-10-23T14:52:30.3092871Z test verify::tests::an_annotated_id_cell_still_names_its_exercise ... ok
+2026-10-23T14:52:30.3093710Z test verify::tests::an_escaped_quote_in_a_nested_literal_is_caught ... ok
+2026-10-23T14:52:30.3094528Z test verify::tests::an_excerpt_is_a_window_and_not_a_different_program ... ok
+2026-10-23T14:52:30.3095453Z test verify::tests::an_excerpt_run_may_span_a_blank_line_of_the_file ... ok
+2026-10-23T14:52:30.3096023Z test verify::tests::an_exercise_id_names_its_lu_file ... ok
+2026-10-23T14:52:30.3096773Z test verify::tests::an_in_chapter_id_names_its_chapter_file ... ok
+2026-10-23T14:52:30.3097449Z test verify::tests::an_interpreter_only_bump_re_reads_the_interpreter_sentences ... ok
+2026-10-23T14:52:30.3098230Z test verify::tests::an_unparsable_entry_says_the_shape ... ok
+2026-10-23T14:52:30.3098829Z test verify::tests::appendix_c_control_passes ... ok
+2026-10-23T14:52:30.3099488Z test verify::tests::cited_documents_come_from_the_section_table_only ... ok
+2026-10-23T14:52:30.3123957Z test verify::tests::every_real_solution_fence_is_the_file_ci_runs ... FAILED
+2026-10-23T14:52:30.3125191Z test verify::tests::interpolation_control_passes ... ok
+2026-10-23T14:52:30.3144497Z test verify::tests::namespace_table_ignores_the_other_tables_on_the_page ... ok
+2026-10-23T14:52:30.3148564Z test verify::tests::namespace_table_reads_two_namespaces_in_one_row ... ok
+2026-10-23T14:52:30.3148973Z test verify::tests::not_a_toolchain_version_stands_alone ... ok
+2026-10-23T14:52:30.3149330Z test verify::tests::number_words_cover_the_counts_the_page_uses ... ok
+2026-10-23T14:52:30.3149693Z test verify::tests::one_clock_named_twice_is_a_parse_failure ... ok
+2026-10-23T14:52:30.3151302Z test verify::tests::one_drifted_tier_figure_is_named_and_the_sum_is_caught_separately ... ok
+2026-10-23T14:52:30.3152609Z test verify::tests::only_a_parenthetical_that_opens_with_excerpt_says_excerpt ... ok
+2026-10-23T14:52:30.3154196Z test verify::tests::the_audited_text_keeps_a_text_fence_and_drops_the_replayed_ones ... ok
+2026-10-23T14:52:30.3155874Z test verify::tests::the_control_passes ... ok
+2026-10-23T14:52:30.3156900Z test verify::tests::the_count_sentence_survives_the_page_wrap ... ok
+2026-10-23T14:52:30.3157807Z test verify::tests::the_index_control_passes ... ok
+2026-10-23T14:52:30.3171121Z test verify::tests::the_missing_diag_row_is_caught ... ok
+2026-10-23T14:52:30.3255460Z test verify::tests::the_real_appendix_c_agrees_with_the_vendored_catalog ... ok
+2026-10-23T14:52:30.3298548Z test verify::tests::a_body_that_drifts_from_its_file_is_caught ... ok
+2026-10-23T14:52:30.3315761Z test verify::tests::a_corpus_page_fence_that_drifts_from_its_file_is_caught ... FAILED
+2026-10-23T14:52:30.3321438Z test verify::tests::the_real_page_agrees_with_the_vendored_anchors ... ok
+2026-10-23T14:52:30.3323466Z test verify::tests::the_scanner_reads_the_shapes_the_book_carries_and_not_the_ones_it_does_not ... ok
+2026-10-23T14:52:30.3324871Z test verify::tests::the_table_reader_takes_the_first_cell_only ... ok
+2026-10-23T14:52:30.3326106Z test verify::tests::the_version_literal_control_passes ... ok
+2026-10-23T14:52:30.3347528Z test verify::tests::the_real_index_agrees_with_the_real_corpus ... ok
+2026-10-23T14:52:30.3366333Z test verify::tests::the_real_book_paints_every_nested_literal ... ok
+2026-10-23T14:52:36.3788690Z test samples::tests::a_surviving_grandchild_does_not_hang_the_runner ... ok
+2026-10-23T14:52:36.3789073Z 
+2026-10-23T14:52:36.3789145Z failures:
+2026-10-23T14:52:36.3789253Z 
+2026-10-23T14:52:36.3789446Z ---- verify::tests::every_real_solution_fence_is_the_file_ci_runs stdout ----
+2026-10-23T14:52:36.3789767Z 
+2026-10-23T14:52:36.3790175Z thread 'verify::tests::every_real_solution_fence_is_the_file_ci_runs' (2431) panicked at xtask/src/verify.rs:2630:9:
+2026-10-23T14:52:36.3790813Z [
+2026-10-23T14:52:36.3791663Z     "principles/exercises/ch08/EXERCISES.md:354: the fence quoting `ch08/ex8-10.lu` is not what the file says, so the Solutions page prints a program CI never ran (a fence that is not the whole file says `(excerpt)` and marks each elision with `...`, ruling #41)",
+2026-10-23T14:52:36.3792460Z ]
+2026-10-23T14:52:36.3792724Z note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+2026-10-23T14:52:36.3793034Z 
+2026-10-23T14:52:36.3793325Z ---- verify::tests::a_corpus_page_fence_that_drifts_from_its_file_is_caught stdout ----
+2026-10-23T14:52:36.3793697Z 
+2026-10-23T14:52:36.3794072Z thread 'verify::tests::a_corpus_page_fence_that_drifts_from_its_file_is_caught' (2392) panicked at xtask/src/verify.rs:2699:9:
+2026-10-23T14:52:36.3794523Z assertion `left == right` failed: [
+2026-10-23T14:52:36.3795659Z     "principles/exercises/ch08/EXERCISES.md:354: the fence quoting `ch08/ex8-10.lu` is not what the file says, so the Solutions page prints a program CI never ran (a fence that is not the whole file says `(excerpt)` and marks each elision with `...`, ruling #41)",
+2026-10-23T14:52:36.3797652Z     "principles/exercises/ch14/EXERCISES.md:171: the fence quoting `ch14/ex14-6.lu` is not what the file says, so the Solutions page prints a program CI never ran (a fence that is not the whole file says `(excerpt)` and marks each elision with `...`, ruling #41)",
+2026-10-23T14:52:36.3798723Z ]
+2026-10-23T14:52:36.3798929Z   left: 2
+2026-10-23T14:52:36.3799158Z  right: 1
+2026-10-23T14:52:36.3799273Z 
+2026-10-23T14:52:36.3799277Z 
+2026-10-23T14:52:36.3799372Z failures:
+2026-10-23T14:52:36.3799710Z     verify::tests::a_corpus_page_fence_that_drifts_from_its_file_is_caught
+2026-10-23T14:52:36.3800232Z     verify::tests::every_real_solution_fence_is_the_file_ci_runs
+2026-10-23T14:52:36.3800535Z 
+2026-10-23T14:52:36.3800847Z test result: FAILED. 204 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.10s
+2026-10-23T14:52:36.3801272Z 
+2026-10-23T14:52:36.3801754Z error: test failed, to rerun pass `--bin xtask`
+2026-10-23T14:52:36.3841304Z ##[error]Process completed with exit code 101.
+2026-10-23T14:52:36.3975208Z Post job cleanup.
+2026-10-23T14:52:36.4635400Z [command]/usr/bin/git version
+2026-10-23T14:52:36.4671270Z git version 2.55.0
+2026-10-23T14:52:36.4703338Z Temporarily overriding HOME='/home/runner/work/_temp/898df2e9-4a8e-4585-92bb-f93a0e8765bd' before making global git config changes
+2026-10-23T14:52:36.4704311Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-23T14:52:36.4707752Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/wolf-book/wolf-book
+2026-10-23T14:52:36.4738891Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-23T14:52:36.4767117Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-23T14:52:36.4977729Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-23T14:52:36.5000816Z http.https://github.com/.extraheader
+2026-10-23T14:52:36.5009344Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-23T14:52:36.5044553Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-23T14:52:36.5307093Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-23T14:52:36.5346228Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-23T14:52:36.5672629Z Cleaning up orphan processes
+2026-10-23T14:52:36.5933731Z Terminate orphan process: pid (2366) (sleep)
+2026-10-23T14:52:36.5941065Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
