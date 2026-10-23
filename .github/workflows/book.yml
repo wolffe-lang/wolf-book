@@ -285,9 +285,9 @@ jobs:
       # stages: wolf-std's `std/` tree at the commit wolf-lang's
       # `crates/wolf_driver/STD-PIN` names, the two licences, and
       # `STD-REV`. The manifest below is the archive's own, measured from
-      # the 0.2.34 release archive (bs70,
-      # docs/audit/bs70-evidence/kasumi/subject-members.txt; wolf-std
-      # `e036bec`, where 0.2.33's `cceda63` read `4382865a…`); a STD-PIN
+      # the 0.2.35 release archive (bs72,
+      # docs/audit/bs72-evidence/; wolf-std `2386522e`, 59 files,
+      # manifest `fa26d724…`); a STD-PIN
       # bump moves it, and this step then fails until the bump re-measures it.
       # autocrlf off: windows runners convert line endings by default,
       # and the archive's bytes are LF.
@@ -352,9 +352,7 @@ jobs:
         env:
           WOLF: ${{ github.workspace }}/wolf-lang/target/release/wolf${{ runner.os == 'Windows' && '.exe' || '' }}
           LUPIN: ${{ github.workspace }}/wolf-interp/target/release/lupin${{ runner.os == 'Windows' && '.exe' || '' }}
-        run: |
-          echo "::warning::continue-on-error: bs72 deliberate pin-only plant; old ch08 verdicts and consoles must fail"
-          cargo xtask samples
+        run: cargo xtask samples
       - name: self-test (a deliberately-broken sample must fail)
         if: steps.acquire.outputs.toolchain == 'full'
         shell: bash
