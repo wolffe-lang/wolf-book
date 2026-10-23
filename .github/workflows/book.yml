@@ -311,9 +311,9 @@ jobs:
           # marks binary mode (`*path`), which would move the manifest and
           # nothing else.
           got=$(cd wolf-lang/target/release && find std -type f | LC_ALL=C sort | while IFS= read -r f; do printf '%s  %s\n' "$(sha "$f" | cut -c1-64)" "$f"; done | sha | cut -c1-64)
-          want=5d6253b63c97c050e3bf068cfb15c8515453b7ec5b98cd62a91a955bd2a9fc9a
+          want=fa26d724f7b680ec241d0609b6678a6c1a2c6f6b642e46bac528cbfdcf318d7c
           echo "staged std/: $(cd wolf-lang/target/release && find std -type f | wc -l) files, manifest ${got}"
-          if [ "${got}" != "${want}" ]; then echo "::error::staged std/ manifest ${got} is not the 0.2.34 archive's ${want}"; exit 1; fi
+          if [ "${got}" != "${want}" ]; then echo "::error::staged std/ manifest ${got} is not the 0.2.35 archive's ${want}"; exit 1; fi
       - name: build pinned lupin (release)
         if: steps.acquire.outputs.toolchain == 'full'
         shell: bash
@@ -352,7 +352,9 @@ jobs:
         env:
           WOLF: ${{ github.workspace }}/wolf-lang/target/release/wolf${{ runner.os == 'Windows' && '.exe' || '' }}
           LUPIN: ${{ github.workspace }}/wolf-interp/target/release/lupin${{ runner.os == 'Windows' && '.exe' || '' }}
-        run: cargo xtask samples
+        run: |
+          echo "::warning::continue-on-error: bs72 deliberate pin-only plant; old ch08 verdicts and consoles must fail"
+          cargo xtask samples
       - name: self-test (a deliberately-broken sample must fail)
         if: steps.acquire.outputs.toolchain == 'full'
         shell: bash

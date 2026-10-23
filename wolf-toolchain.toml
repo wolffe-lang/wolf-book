@@ -1651,8 +1651,11 @@ repo = "wolffe-lang/wolf-lang"
 # `os_term_restore_at_exit`; §34.8: `os_signal_wait_fds`, `os_clock_ns`,
 # `fs_sync`, `fs_sync_dir`, `fs_realpath`). Spec: anchors 664 -> 672
 # (none dropped), catalogue unchanged, grammar unchanged.
-rev = "9da7bdcf2aea9adf48df6570bedc58e16e9ef853"
-impl_version = "0.2.34"
+# bs72: wolf 0.2.35, published archive SHA-256 read twice and compared
+# with wolf/sprints/release/r40-evidence.md:
+# linux x86-64 4cc4045bbbb605c07835bc4f32685953c784eeef4cd3139a48b457dfc90dad1a
+rev = "cf0c13d38479f444b69bb8356ad5709d07eff323"
+impl_version = "0.2.35"
 
 [lupin]
 # wolf-interp at the v0.1.30 release tag (is42): the stamped line names
@@ -2364,8 +2367,10 @@ impl_version = "0.2.34"
 # so no lupin answer in the sweep moves and no lupin transcript in the
 # book moves; §34.4 says what it now answers.
 repo = "wolffe-lang/wolf-interp"
-rev = "e642f2630ad4c7f53740428d5cca705f2e0d295b"
-version = "lupin 0.1.55 (wolf-interp, reference interpreter at pin 294d626)"
+rev = "28547b4324524d5477a6e54e4f6888462461a21f"
+# bs72: lupin 0.1.56 linux x86-64 archive, read twice against r40:
+# ad703550ac4787e8e4bb26989d591a731410274d7332f2b4e8b9a64c878822cc
+version = "lupin 0.1.56 (wolf-interp, reference interpreter at pin 294d626)"
 
 [lupin-trace]
 # bs62: chapter 7's memory diagrams are drawn from lupin's place trace
@@ -2396,7 +2401,7 @@ version = "lupin 0.1.55 (wolf-interp, reference interpreter at pin 294d626)"
 # bs70: follows [lupin].rev to 0.1.55 (placetrace.rs byte-identical
 # between v0.1.54 and v0.1.55); the traces re-take byte-identical.
 repo = "wolffe-lang/wolf-interp"
-rev = "e642f2630ad4c7f53740428d5cca705f2e0d295b"
+rev = "28547b4324524d5477a6e54e4f6888462461a21f"
 [wolf-lsp]
 # Source of the vendored tmLanguage grammars under highlight/.
 # `cargo xtask grammar-sync --check` fails on drift against this pin.
