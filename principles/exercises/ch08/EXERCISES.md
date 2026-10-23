@@ -354,7 +354,7 @@ same contract: create a pool region, freeze the region value, then call
 Solution. `ch08/ex8-10.lu`:
 
 ```wolf
-struct Node { value: int, text: str }
+struct Node { value: int }
 fn main() -> !int {
     let r = region(pool(Node))
     let p = in r { Pool[Node]() }
