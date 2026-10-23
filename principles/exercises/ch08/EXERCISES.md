@@ -67,22 +67,24 @@ an allocation in the region.
 smuggle a region value past the brace:
 
 ```wolf
-struct Node { value: int }
+struct Node { value: int, text: str }
 fn main() -> !int {
-    var keep = Node { value: 0 }
+    var keep = Node { value: 0, text: "" }
     region tmp {
-        keep = Node { value: 7 }
+        keep = Node { value: 7, text: "scratch" }
     }
     if keep.value == 7 { 0 } else { 1 }
 }
 ```
 
 Predict the compiler's verdict, and, before reading the diagnostic,
-list the three code locations you expect it to point at.
+list the three code locations you expect it to point at. Then remove
+`text` from the type and both literals. Does the verdict change?
 
 Solution: rejected, E1010, and the diagnostic points at exactly the
 three moments of the story: the region's creation, the escape, and the
-free.
+free. Removing `text` leaves a scalar-only struct: it names no region,
+so the assignment is legal and `keep.value` is 7 after the brace.
 
 ```console
 $ wolf conform-run ./ex8-3.lu
@@ -295,18 +297,22 @@ chapter in miniature: `weak`, `handle`, or put the cycle in a region.
 a freeze:
 
 ```wolf
-struct Config { limit: int }
+struct Config { limit: int, name: str }
 fn main() -> !int {
-    var cfg = freeze region { Config { limit: 42 } }
+    var cfg = freeze region { Config { limit: 42, name: "shelf" } }
     cfg.limit = 7
     cfg.limit
 }
 ```
 
 Predict the verdict and, from `--explain`-level knowledge, the two
-repairs the note will offer.
+repairs the note will offer. Then remove `name` from the type and the
+literal. Explain why the remaining assignment is legal.
 
-Solution:
+Solution: `Config` reaches storage through `name`, so the frozen struct
+cannot be written through, even at its integer field. Removing `name`
+leaves only inline words. They name no region and remain mutable in
+the outer binding (`[mem.region.scalar]`).
 
 ```console
 $ wolf conform-run ./ex8-9.lu
@@ -343,7 +349,7 @@ same contract: create a pool region, freeze the region value, then call
 Solution. `ch08/ex8-10.lu`:
 
 ```wolf
-struct Node { value: int }
+struct Node { value: int, text: str }
 fn main() -> !int {
     let r = region(pool(Node))
     let p = in r { Pool[Node]() }
