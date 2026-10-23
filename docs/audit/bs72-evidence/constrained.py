@@ -3,12 +3,17 @@ import json
 import os
 from pathlib import Path
 import shutil
+import signal
 import subprocess
 import sys
 
 root, work, wolf = map(Path, sys.argv[1:4])
 print('affinity', sorted(os.sched_getaffinity(0)), flush=True)
 assert os.sched_getaffinity(0) <= {0, 1, 2, 3}
+# Python ignores these two for its own I/O. The programs under test must
+# start with defaults; reset only this harness process before spawning them.
+for sig in (signal.SIGPIPE, signal.SIGXFSZ):
+    signal.signal(sig, signal.SIG_DFL)
 status = Path('/proc/self/status').read_text().splitlines()
 for line in status:
     if line.startswith(('SigBlk:', 'SigIgn:')):
