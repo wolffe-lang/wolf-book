@@ -1,0 +1,8 @@
+affinity [0, 1, 2, 3]
+SigBlk:	0000000000000000
+SigIgn:	0000000001001000
+Traceback (most recent call last):
+  File "/home/mfwolffe/lanes/bs72/wolf-book/docs/audit/bs72-evidence/constrained.py", line 16, in <module>
+    assert int(line.split()[1], 16) == 0
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

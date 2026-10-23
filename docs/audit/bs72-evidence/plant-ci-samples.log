@@ -1,0 +1,916 @@
+samples (ubuntu-latest)	Set up job	﻿2026-10-23T14:03:27.0677444Z Current runner version: '2.338.0'
+samples (ubuntu-latest)	Set up job	2026-10-23T14:03:27.0704939Z ##[group]Runner Image Provisioner
+samples (ubuntu-latest)	Set up job	2026-10-23T14:03:27.0706013Z Hosted Compute Agent
+samples (ubuntu-latest)	Set up job	2026-10-23T14:03:27.0706661Z Version: 20261012.601
+samples (ubuntu-latest)	Set up job	2026-10-23T14:03:27.0707363Z Commit: f3dc54e1fb89da6852db922499a0233137369e1d
+samples (ubuntu-latest)	Set up job	2026-10-23T14:03:27.0708203Z Build Date: 2026-10-12T17:48:21Z
+samples (ubuntu-latest)	Set up job	2026-10-23T14:03:27.0709098Z Worker ID: {94f8c77d-f15a-49f0-a77d-dfea1421c87f}
+samples (ubuntu-latest)	Set up job	2026-10-23T14:03:27.0709985Z Region: northcentralus
+samples (ubuntu-latest)	Set up job	2026-10-23T14:03:27.0710603Z Cloud: Azure
+samples (ubuntu-latest)	Set up job	2026-10-23T14:03:27.0711453Z ##[endgroup]
+samples (ubuntu-latest)	Set up job	2026-10-23T14:03:27.0713001Z ##[group]Operating System
+samples (ubuntu-latest)	Set up job	2026-10-23T14:03:27.0713664Z Ubuntu
+samples (ubuntu-latest)	Set up job	2026-10-23T14:03:27.0714278Z 24.04.5
+samples (ubuntu-latest)	Set up job	2026-10-23T14:03:27.0714848Z LTS
+samples (ubuntu-latest)	Set up job	2026-10-23T14:03:27.0715500Z ##[endgroup]
+samples (ubuntu-latest)	Set up job	2026-10-23T14:03:27.0716167Z ##[group]Runner Image
+samples (ubuntu-latest)	Set up job	2026-10-23T14:03:27.0716795Z Image: ubuntu-24.04
+samples (ubuntu-latest)	Set up job	2026-10-23T14:03:27.0717427Z Version: 20261012.334.1
+samples (ubuntu-latest)	Set up job	2026-10-23T14:03:27.0718551Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+samples (ubuntu-latest)	Set up job	2026-10-23T14:03:27.0720453Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+samples (ubuntu-latest)	Set up job	2026-10-23T14:03:27.0721626Z ##[endgroup]
+samples (ubuntu-latest)	Set up job	2026-10-23T14:03:27.0722868Z ##[group]GITHUB_TOKEN Permissions
+samples (ubuntu-latest)	Set up job	2026-10-23T14:03:27.0725163Z Contents: read
+samples (ubuntu-latest)	Set up job	2026-10-23T14:03:27.0725904Z Metadata: read
+samples (ubuntu-latest)	Set up job	2026-10-23T14:03:27.0726513Z ##[endgroup]
+samples (ubuntu-latest)	Set up job	2026-10-23T14:03:27.0728635Z Secret source: Actions
+samples (ubuntu-latest)	Set up job	2026-10-23T14:03:27.0729783Z Cache mode: write
+samples (ubuntu-latest)	Set up job	2026-10-23T14:03:27.0730710Z Prepare workflow directory
+samples (ubuntu-latest)	Set up job	2026-10-23T14:03:27.1147570Z Prepare all required actions
+samples (ubuntu-latest)	Set up job	2026-10-23T14:03:27.1198621Z Getting action download info
+samples (ubuntu-latest)	Set up job	2026-10-23T14:03:27.4076572Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+samples (ubuntu-latest)	Set up job	2026-10-23T14:03:27.4996467Z Download action repository 'Swatinem/rust-cache@v2' (SHA:d1527c8f67ef9af357290475d4af4b0fab8f12e0)
+samples (ubuntu-latest)	Set up job	2026-10-23T14:03:27.9123972Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+samples (ubuntu-latest)	Set up job	2026-10-23T14:03:28.1192607Z Complete job name: samples (ubuntu-latest)
+samples (ubuntu-latest)	Run actions/checkout@v4	﻿2026-10-23T14:03:28.2044883Z ##[group]Run actions/checkout@v4
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.2045816Z with:
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.2046285Z   path: wolf-book
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.2046803Z   repository: wolffe-lang/wolf-book
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.2051075Z   token: ***
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.2052058Z   ssh-strict: true
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.2052566Z   ssh-user: git
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.2053056Z   persist-credentials: true
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.2053589Z   clean: true
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.2054079Z   sparse-checkout-cone-mode: true
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.2054651Z   fetch-depth: 1
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.2055141Z   fetch-tags: false
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.2055624Z   show-progress: true
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.2056122Z   lfs: false
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.2056577Z   submodules: false
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.2057065Z   set-safe-directory: true
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.2057617Z   allow-unsafe-pr-checkout: false
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.2058461Z env:
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.2058925Z   CARGO_TERM_COLOR: always
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.2059468Z ##[endgroup]
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.3165161Z Syncing repository: wolffe-lang/wolf-book
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.3168888Z ##[group]Getting Git version info
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.3170305Z Working directory is '/home/runner/work/wolf-book/wolf-book/wolf-book'
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.3172591Z [command]/usr/bin/git version
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.3173595Z git version 2.55.0
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.3176613Z ##[endgroup]
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.3184913Z Temporarily overriding HOME='/home/runner/work/_temp/dfa79ffc-86c8-46b0-a965-6e76399922a0' before making global git config changes
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.3187555Z Adding repository directory to the temporary git global config as a safe directory
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.3189794Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/wolf-book/wolf-book/wolf-book
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.3253022Z ##[group]Initializing the repository
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.3254531Z [command]/usr/bin/git init /home/runner/work/wolf-book/wolf-book/wolf-book
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.3327657Z hint: Using 'master' as the name for the initial branch. This default branch name
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.3329627Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.3331736Z hint: to use in all of your new repositories, which will suppress this warning,
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.3332617Z hint: call:
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.3333264Z hint:
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.3334225Z hint: 	git config --global init.defaultBranch <name>
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.3335290Z hint:
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.3336051Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.3337077Z hint: 'development'. The just-created branch can be renamed via this command:
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.3337883Z hint:
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.3338567Z hint: 	git branch -m <name>
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.3339133Z hint:
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.3340157Z hint: Disable this message with "git config set advice.defaultBranchName false"
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.3341986Z Initialized empty Git repository in /home/runner/work/wolf-book/wolf-book/wolf-book/.git/
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.3344269Z [command]/usr/bin/git remote add origin https://github.com/wolffe-lang/wolf-book
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.3392866Z ##[endgroup]
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.3393768Z ##[group]Disabling automatic garbage collection
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.3397702Z [command]/usr/bin/git config --local gc.auto 0
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.3433389Z ##[endgroup]
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.3434471Z ##[group]Setting up auth
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.3440438Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.3476314Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.3829126Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.3870048Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.4136887Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.4175439Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.4417061Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.4460116Z ##[endgroup]
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.4461021Z ##[group]Fetching the repository
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:28.4470267Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +de4597dfa7709e32e935d59af5be11243cb039af:refs/remotes/pull/93/merge
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:29.2610906Z From https://github.com/wolffe-lang/wolf-book
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:29.2613852Z  * [new ref]         de4597dfa7709e32e935d59af5be11243cb039af -> pull/93/merge
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:29.2619118Z ##[endgroup]
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:29.2621618Z ##[group]Determining the checkout info
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:29.2624328Z ##[endgroup]
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:29.2629283Z [command]/usr/bin/git sparse-checkout disable
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:29.2687974Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:29.2727904Z ##[group]Checking out the ref
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:29.2731491Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/93/merge
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:29.3825331Z Note: switching to 'refs/remotes/pull/93/merge'.
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:29.3826342Z 
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:29.3827136Z You are in 'detached HEAD' state. You can look around, make experimental
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:29.3829329Z changes and commit them, and you can discard any commits you make in this
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:29.3832192Z state without impacting any branches by switching back to a branch.
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:29.3833793Z 
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:29.3834738Z If you want to create a new branch to retain commits you create, you may
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:29.3837378Z do so (now or later) by using -c with the switch command. Example:
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:29.3838884Z 
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:29.3839653Z   git switch -c <new-branch-name>
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:29.3840647Z 
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:29.3841403Z Or undo this operation with:
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:29.3842246Z 
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:29.3842770Z   git switch -
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:29.3843459Z 
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:29.3844512Z Turn off this advice by setting config variable advice.detachedHead to false
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:29.3846176Z 
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:29.3847911Z HEAD is now at de4597d Merge 3be98712ba2881416cb267dd85ecdf33536ccf8f into f1fd824711b8949d6d4400c5ce5e8d61b328fe0f
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:29.3853311Z ##[endgroup]
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:29.3892070Z [command]/usr/bin/git log -1 --format=%H
+samples (ubuntu-latest)	Run actions/checkout@v4	2026-10-23T14:03:29.3922377Z de4597dfa7709e32e935d59af5be11243cb039af
+samples (ubuntu-latest)	read pins	﻿2026-10-23T14:03:29.4190489Z ##[group]Run rev() { awk -v s="[$1]" '$0==s{f=1} f&&/^rev = /{gsub(/"/,"",$3); print $3; exit}' wolf-toolchain.toml; }
+samples (ubuntu-latest)	read pins	2026-10-23T14:03:29.4193668Z ^[[36;1mrev() { awk -v s="[$1]" '$0==s{f=1} f&&/^rev = /{gsub(/"/,"",$3); print $3; exit}' wolf-toolchain.toml; }^[[0m
+samples (ubuntu-latest)	read pins	2026-10-23T14:03:29.4195826Z ^[[36;1mecho "wolf=$(rev wolf)" >> "$GITHUB_OUTPUT"^[[0m
+samples (ubuntu-latest)	read pins	2026-10-23T14:03:29.4197481Z ^[[36;1mecho "lupin=$(rev lupin)" >> "$GITHUB_OUTPUT"^[[0m
+samples (ubuntu-latest)	read pins	2026-10-23T14:03:29.4458787Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+samples (ubuntu-latest)	read pins	2026-10-23T14:03:29.4460401Z env:
+samples (ubuntu-latest)	read pins	2026-10-23T14:03:29.4461549Z   CARGO_TERM_COLOR: always
+samples (ubuntu-latest)	read pins	2026-10-23T14:03:29.4462691Z ##[endgroup]
+samples (ubuntu-latest)	acquire pinned siblings	﻿2026-10-23T14:03:29.4781953Z ##[group]Run set -uo pipefail
+samples (ubuntu-latest)	acquire pinned siblings	2026-10-23T14:03:29.4783242Z ^[[36;1mset -uo pipefail^[[0m
+samples (ubuntu-latest)	acquire pinned siblings	2026-10-23T14:03:29.4784345Z ^[[36;1mif [ -z "${TOKEN:-}" ]; then^[[0m
+samples (ubuntu-latest)	acquire pinned siblings	2026-10-23T14:03:29.4786668Z ^[[36;1m  echo "::notice::WOLF_CI_TOKEN absent — sibling repos unreachable; samples lane skips (local runs remain the gate)"^[[0m
+samples (ubuntu-latest)	acquire pinned siblings	2026-10-23T14:03:29.4789299Z ^[[36;1m  echo "toolchain=none" >> "$GITHUB_OUTPUT"; exit 0^[[0m
+samples (ubuntu-latest)	acquire pinned siblings	2026-10-23T14:03:29.4790731Z ^[[36;1mfi^[[0m
+samples (ubuntu-latest)	acquire pinned siblings	2026-10-23T14:03:29.4791999Z ^[[36;1mok=1^[[0m
+samples (ubuntu-latest)	acquire pinned siblings	2026-10-23T14:03:29.4793837Z ^[[36;1mgit clone --quiet "https://x-access-token:${TOKEN}@github.com/wolffe-lang/wolf-lang" wolf-lang \^[[0m
+samples (ubuntu-latest)	acquire pinned siblings	2026-10-23T14:03:29.4796664Z ^[[36;1m  && git -C wolf-lang checkout --quiet "cf0c13d38479f444b69bb8356ad5709d07eff323" || ok=0^[[0m
+samples (ubuntu-latest)	acquire pinned siblings	2026-10-23T14:03:29.4799522Z ^[[36;1mgit clone --quiet "https://x-access-token:${TOKEN}@github.com/wolffe-lang/wolf-interp" wolf-interp \^[[0m
+samples (ubuntu-latest)	acquire pinned siblings	2026-10-23T14:03:29.4803181Z ^[[36;1m  && git -C wolf-interp checkout --quiet "28547b4324524d5477a6e54e4f6888462461a21f" || ok=0^[[0m
+samples (ubuntu-latest)	acquire pinned siblings	2026-10-23T14:03:29.4805501Z ^[[36;1mif [ "$ok" = 1 ]; then echo "toolchain=full" >> "$GITHUB_OUTPUT"^[[0m
+samples (ubuntu-latest)	acquire pinned siblings	2026-10-23T14:03:29.4807621Z ^[[36;1melse echo "::error::token present but sibling acquisition failed"; exit 1; fi^[[0m
+samples (ubuntu-latest)	acquire pinned siblings	2026-10-23T14:03:29.4884075Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+samples (ubuntu-latest)	acquire pinned siblings	2026-10-23T14:03:29.4885554Z env:
+samples (ubuntu-latest)	acquire pinned siblings	2026-10-23T14:03:29.4886439Z   CARGO_TERM_COLOR: always
+samples (ubuntu-latest)	acquire pinned siblings	2026-10-23T14:03:29.4888907Z   TOKEN: ***
+samples (ubuntu-latest)	acquire pinned siblings	2026-10-23T14:03:29.4889827Z ##[endgroup]
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	﻿2026-10-23T14:03:36.0827107Z ##[group]Run Swatinem/rust-cache@v2
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:36.0827466Z with:
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:36.0827734Z   workspaces: wolf-book
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	wolf-lang
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	wolf-interp
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:36.0828062Z   prefix-key: v0-rust
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:36.0828312Z   add-job-id-key: true
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:36.0828576Z   add-rust-environment-hash-key: true
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:36.0828862Z   cache-targets: true
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:36.0829099Z   cache-all-crates: false
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:36.0829360Z   cache-workspace-crates: false
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:36.0829619Z   save-if: true
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:36.0829842Z   cache-provider: github
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:36.0830081Z   cache-bin: true
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:36.0830312Z   lookup-only: false
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:36.0830533Z   cmd-format: {0}
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:36.0830763Z env:
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:36.0830990Z   CARGO_TERM_COLOR: always
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:36.0831519Z ##[endgroup]
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4120936Z ##[group]Cache Configuration
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4121958Z Cache Provider:
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4122883Z     github
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4123358Z Workspaces:
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4123781Z     /home/runner/work/wolf-book/wolf-book/wolf-book
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4124354Z     /home/runner/work/wolf-book/wolf-book/wolf-lang
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4125046Z     /home/runner/work/wolf-book/wolf-book/wolf-interp
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4125628Z Cache Paths:
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4126007Z     /home/runner/.cargo/bin
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4126412Z     /home/runner/.cargo/.crates.toml
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4126872Z     /home/runner/.cargo/.crates2.json
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4127415Z     /home/runner/.cargo/registry
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4127897Z     /home/runner/.cargo/git
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4128494Z     /home/runner/work/wolf-book/wolf-book/wolf-book/target
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4129185Z     /home/runner/work/wolf-book/wolf-book/wolf-lang/target
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4129895Z     /home/runner/work/wolf-book/wolf-book/wolf-interp/target
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4130485Z Restore Key:
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4130878Z     v0-rust-samples-Linux-x64-b771e0df
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4131624Z Cache Key:
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4132251Z     v0-rust-samples-Linux-x64-b771e0df-1907e28d
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4133203Z .. Prefix:
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4133854Z   - v0-rust-samples-Linux-x64
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4134303Z .. Environment considered:
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4134685Z   - Rust Versions:
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4135213Z     - 1.99.0 x86_64-unknown-linux-gnu b940084d7eb6a299eb4bfeb8e34901bc051e7ac4
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4135852Z   - CARGO_INCREMENTAL
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4136196Z   - CARGO_TERM_COLOR
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4136541Z .. Lockfiles considered:
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4137072Z   - /home/runner/work/wolf-book/wolf-book/wolf-book/.cargo/config.toml
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4137789Z   - /home/runner/work/wolf-book/wolf-book/wolf-book/Cargo.lock
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4138467Z   - /home/runner/work/wolf-book/wolf-book/wolf-book/xtask/Cargo.toml
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4139139Z   - /home/runner/work/wolf-book/wolf-book/wolf-interp/Cargo.lock
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4139780Z   - /home/runner/work/wolf-book/wolf-book/wolf-interp/Cargo.toml
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4140580Z   - /home/runner/work/wolf-book/wolf-book/wolf-interp/rust-toolchain.toml
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4141109Z   - /home/runner/work/wolf-book/wolf-book/wolf-lang/.cargo/config.toml
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4141979Z   - /home/runner/work/wolf-book/wolf-book/wolf-lang/Cargo.lock
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4142688Z   - /home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_ast/Cargo.toml
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4143534Z   - /home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_backend/Cargo.toml
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4144395Z   - /home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_cimport/Cargo.toml
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4145379Z   - /home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_codegen_clif/Cargo.toml
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4146313Z   - /home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_codegen_llvm/Cargo.toml
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4147217Z   - /home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_diag/Cargo.toml
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4148101Z   - /home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_doc/Cargo.toml
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4149510Z   - /home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_driver/Cargo.toml
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4150368Z   - /home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_fmt/Cargo.toml
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4151144Z   - /home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_lex/Cargo.toml
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4152169Z   - /home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_lsp/Cargo.toml
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4153013Z   - /home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_mem/Cargo.toml
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4153804Z   - /home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_parse/Cargo.toml
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4154618Z   - /home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_pkg/Cargo.toml
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4155432Z   - /home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_query/Cargo.toml
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4156275Z   - /home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_rt_none/Cargo.toml
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4157400Z   - /home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_rt/Cargo.toml
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4158202Z   - /home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_sema/Cargo.toml
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4158991Z   - /home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_span/Cargo.toml
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4159724Z   - /home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_wir/Cargo.toml
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4160422Z   - /home/runner/work/wolf-book/wolf-book/wolf-lang/rust-toolchain.toml
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4161104Z   - /home/runner/work/wolf-book/wolf-book/wolf-lang/xtask/Cargo.toml
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4162212Z ##[endgroup]
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4162401Z 
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.4162546Z ... Restoring cache ...
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:47.5357659Z Cache hit for restore-key: v0-rust-samples-Linux-x64-b771e0df-0b7967c7
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:48.6458646Z Received 92274688 of 383573586 (24.1%), 88.0 MBs/sec
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:49.6459030Z Received 264241152 of 383573586 (68.9%), 126.0 MBs/sec
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:50.4673386Z Received 383573586 of 383573586 (100.0%), 129.6 MBs/sec
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:50.4674067Z Cache Size: ~366 MB (383573586 B)
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:50.4707847Z [command]/usr/bin/tar -xf /home/runner/work/_temp/6d5c4a63-8ca2-422d-b59b-b0a76617d0d6/cache.tzst -P -C /home/runner/work/wolf-book/wolf-book --use-compress-program unzstd
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:53.1032286Z Cache restored successfully
+samples (ubuntu-latest)	Run Swatinem/rust-cache@v2	2026-10-23T14:03:53.2921011Z Restored from cache key "v0-rust-samples-Linux-x64-b771e0df-0b7967c7" full match: false.
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	﻿2026-10-23T14:03:54.1880320Z ##[group]Run WOLF_COMMIT="$(git rev-parse --short=7 HEAD)"
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:54.1880847Z ^[[36;1mWOLF_COMMIT="$(git rev-parse --short=7 HEAD)"^[[0m
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:54.1881517Z ^[[36;1mexport WOLF_COMMIT^[[0m
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:54.1882068Z ^[[36;1mWOLF_RELEASE="$(git tag --points-at HEAD | grep -E '^v[0-9]' | head -1 || true)"^[[0m
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:54.1882652Z ^[[36;1mif [ -n "$WOLF_RELEASE" ]; then export WOLF_RELEASE; fi^[[0m
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:54.1883184Z ^[[36;1mcargo build --release -p wolf_driver -p wolf_rt -p wolf_cimport^[[0m
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:54.1959036Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:54.1959463Z env:
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:54.1959710Z   CARGO_TERM_COLOR: always
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:54.1959997Z   CACHE_ON_FAILURE: false
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:54.1960292Z   CARGO_INCREMENTAL: 0
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:54.1960547Z ##[endgroup]
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:54.2789473Z ^[[1m^[[92m    Updating^[[0m crates.io index
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:54.7689698Z ^[[1m^[[92m   Compiling^[[0m proc-macro2 v1.0.107
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:54.7690776Z ^[[1m^[[92m   Compiling^[[0m unicode-ident v1.0.24
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:54.7700103Z ^[[1m^[[92m   Compiling^[[0m quote v1.0.47
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:54.7722352Z ^[[1m^[[92m   Compiling^[[0m crossbeam-utils v0.8.22
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:54.8340284Z ^[[1m^[[92m   Compiling^[[0m wolf_span v0.2.35 (/home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_span)
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:54.9353135Z ^[[1m^[[92m   Compiling^[[0m foldhash v0.2.0
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:54.9412844Z ^[[1m^[[92m   Compiling^[[0m find-msvc-tools v0.1.10
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:55.0944147Z ^[[1m^[[92m   Compiling^[[0m shlex v2.0.1
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:55.1312836Z ^[[1m^[[92m   Compiling^[[0m cfg-if v1.0.4
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:55.1578300Z ^[[1m^[[92m   Compiling^[[0m hashbrown v0.17.1
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:55.2019741Z ^[[1m^[[92m   Compiling^[[0m cc v1.4.2
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:55.8293359Z ^[[1m^[[92m   Compiling^[[0m syn v2.0.119
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:55.9602697Z ^[[1m^[[92m   Compiling^[[0m syn v3.0.3
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:56.0863319Z ^[[1m^[[92m   Compiling^[[0m wolf_diag v0.2.35 (/home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_diag)
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:56.5282681Z ^[[1m^[[92m   Compiling^[[0m stable_deref_trait v1.2.1
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:56.5606584Z ^[[1m^[[92m   Compiling^[[0m blake3 v1.8.6
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:56.7422579Z ^[[1m^[[92m   Compiling^[[0m crossbeam-epoch v0.9.20
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:57.9922897Z ^[[1m^[[92m   Compiling^[[0m synstructure v0.13.2
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:58.2092727Z ^[[1m^[[92m   Compiling^[[0m crossbeam-deque v0.8.7
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:58.3433107Z ^[[1m^[[92m   Compiling^[[0m cpufeatures v0.3.0
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:58.4152975Z ^[[1m^[[92m   Compiling^[[0m arrayref v0.3.9
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:58.4363722Z ^[[1m^[[92m   Compiling^[[0m arrayvec v0.7.8
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:58.4440487Z ^[[1m^[[92m   Compiling^[[0m constant_time_eq v0.4.2
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:58.6185202Z ^[[1m^[[92m   Compiling^[[0m wolf_lex v0.2.35 (/home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_lex)
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:58.7263085Z ^[[1m^[[92m   Compiling^[[0m zerofrom-derive v0.1.7
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:59.4372892Z ^[[1m^[[92m   Compiling^[[0m zerofrom v0.1.8
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:59.5153068Z ^[[1m^[[92m   Compiling^[[0m yoke-derive v0.8.2
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:03:59.8293406Z ^[[1m^[[92m   Compiling^[[0m zerovec-derive v0.11.3
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:00.1563379Z ^[[1m^[[92m   Compiling^[[0m yoke v0.8.3
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:00.3002765Z ^[[1m^[[92m   Compiling^[[0m displaydoc v0.2.7
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:00.8447238Z ^[[1m^[[92m   Compiling^[[0m cranelift-srcgen v0.134.3
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:00.8484458Z ^[[1m^[[92m   Compiling^[[0m zerovec v0.11.6
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:01.0763560Z ^[[1m^[[92m   Compiling^[[0m rayon-core v1.13.0
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:01.1682798Z ^[[1m^[[92m   Compiling^[[0m smallvec v1.15.2
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:01.2192924Z ^[[1m^[[92m   Compiling^[[0m cranelift-assembler-x64-meta v0.134.3
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:01.4515105Z ^[[1m^[[92m   Compiling^[[0m wolf_ast v0.2.35 (/home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_ast)
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:01.5153053Z ^[[1m^[[92m   Compiling^[[0m libm v0.2.16
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:01.6882942Z ^[[1m^[[92m   Compiling^[[0m either v1.17.0
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:01.8515285Z ^[[1m^[[92m   Compiling^[[0m equivalent v1.0.2
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:01.8802945Z ^[[1m^[[92m   Compiling^[[0m wasmtime-internal-core v47.0.3
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:01.9705714Z ^[[1m^[[92m   Compiling^[[0m indexmap v2.14.0
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:02.8543323Z ^[[1m^[[92m   Compiling^[[0m wolf_parse v0.2.35 (/home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_parse)
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:03.3563879Z ^[[1m^[[92m   Compiling^[[0m rayon v1.12.0
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:04.0252997Z ^[[1m^[[92m   Compiling^[[0m tinystr v0.8.3
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:04.1802900Z ^[[1m^[[92m   Compiling^[[0m cranelift-isle v0.134.3
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:04.3192902Z ^[[1m^[[92m   Compiling^[[0m writeable v0.6.3
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:04.5112684Z ^[[1m^[[92m   Compiling^[[0m litemap v0.8.2
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:04.6682882Z ^[[1m^[[92m   Compiling^[[0m icu_locale_core v2.2.0
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:06.0333861Z ^[[1m^[[92m   Compiling^[[0m wolf_sema v0.2.35 (/home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_sema)
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:07.2702604Z ^[[1m^[[92m   Compiling^[[0m potential_utf v0.1.5
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:07.3933107Z ^[[1m^[[92m   Compiling^[[0m zerotrie v0.2.4
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:07.8292604Z ^[[1m^[[92m   Compiling^[[0m fnv v1.0.7
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:07.8622843Z ^[[1m^[[92m   Compiling^[[0m utf8_iter v1.0.4
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:07.9562866Z ^[[1m^[[92m   Compiling^[[0m hashbrown v0.16.1
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:08.6415999Z ^[[1m^[[92m   Compiling^[[0m cranelift-codegen-shared v0.134.3
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:08.6742602Z ^[[1m^[[92m   Compiling^[[0m libc v0.2.189
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:08.8185522Z ^[[1m^[[92m   Compiling^[[0m serde_core v1.0.229
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:08.8885398Z ^[[1m^[[92m   Compiling^[[0m icu_normalizer_data v2.2.0
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:08.9756714Z ^[[1m^[[92m   Compiling^[[0m log v0.4.33
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:08.9803133Z ^[[1m^[[92m   Compiling^[[0m icu_properties_data v2.2.0
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:09.0733916Z ^[[1m^[[92m   Compiling^[[0m heck v0.5.0
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:09.1533414Z ^[[1m^[[92m   Compiling^[[0m cranelift-codegen-meta v0.134.3
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:09.2276041Z ^[[1m^[[92m   Compiling^[[0m gimli v0.33.0
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:09.2382786Z ^[[1m^[[92m   Compiling^[[0m icu_collections v2.2.0
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:10.0874375Z ^[[1m^[[92m   Compiling^[[0m icu_provider v2.2.0
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:11.8813186Z ^[[1m^[[92m   Compiling^[[0m cranelift-bitset v0.134.3
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:12.0222898Z ^[[1m^[[92m   Compiling^[[0m cranelift-assembler-x64 v0.134.3
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:12.1357806Z ^[[1m^[[92m   Compiling^[[0m target-lexicon v0.13.5
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:12.4533266Z ^[[1m^[[92m   Compiling^[[0m allocator-api2 v0.2.21
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:12.8212577Z ^[[1m^[[92m   Compiling^[[0m memchr v2.8.3
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:13.2652747Z ^[[1m^[[92m   Compiling^[[0m cranelift-codegen v0.134.3
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:13.5292783Z ^[[1m^[[92m   Compiling^[[0m bumpalo v3.20.3
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:14.0793120Z ^[[1m^[[92m   Compiling^[[0m cranelift-entity v0.134.3
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:15.3790682Z ^[[1m^[[92m   Compiling^[[0m serde v1.0.229
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:15.5432813Z ^[[1m^[[92m   Compiling^[[0m arbitrary v1.4.2
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:16.8732869Z ^[[1m^[[92m   Compiling^[[0m rustc-hash v2.1.3
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:16.8943158Z ^[[1m^[[92m   Compiling^[[0m zmij v1.0.23
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:16.9493127Z ^[[1m^[[92m   Compiling^[[0m regalloc2 v0.15.2
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:17.0462814Z ^[[1m^[[92m   Compiling^[[0m cranelift-control v0.134.3
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:17.0992802Z ^[[1m^[[92m   Compiling^[[0m icu_properties v2.2.0
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:17.8755931Z ^[[1m^[[92m   Compiling^[[0m icu_normalizer v2.2.0
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:19.1172903Z ^[[1m^[[92m   Compiling^[[0m cranelift-bforest v0.134.3
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:21.3763044Z ^[[1m^[[92m   Compiling^[[0m serde_derive v1.0.229
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:24.2532994Z ^[[1m^[[92m   Compiling^[[0m crc32fast v1.5.0
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:24.3983079Z ^[[1m^[[92m   Compiling^[[0m anyhow v1.0.104
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:24.5719614Z ^[[1m^[[92m   Compiling^[[0m serde_json v1.0.151
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:25.4902671Z ^[[1m^[[92m   Compiling^[[0m idna_adapter v1.2.2
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:25.9876192Z ^[[1m^[[92m   Compiling^[[0m wolf_mem v0.2.35 (/home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_mem)
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:27.6622831Z ^[[1m^[[92m   Compiling^[[0m percent-encoding v2.3.2
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:27.9313315Z ^[[1m^[[92m   Compiling^[[0m object v0.39.1
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:28.0692731Z ^[[1m^[[92m   Compiling^[[0m itoa v1.0.18
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:04:32.1733520Z ^[[1m^[[92m   Compiling^[[0m wolf_wir v0.2.35 (/home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_wir)
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:05:26.5760358Z ^[[1m^[[92m   Compiling^[[0m form_urlencoded v1.2.2
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:05:26.8372639Z ^[[1m^[[92m   Compiling^[[0m idna v1.1.0
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:05:31.2861940Z ^[[1m^[[92m   Compiling^[[0m wolf_fmt v0.2.35 (/home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_fmt)
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:05:38.4433720Z ^[[1m^[[92m   Compiling^[[0m wolf_query v0.2.35 (/home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_query)
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:05:39.2952910Z ^[[1m^[[92m   Compiling^[[0m cranelift-module v0.134.3
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:05:50.9272999Z ^[[1m^[[92m   Compiling^[[0m url v2.5.8
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:05:52.2413269Z ^[[1m^[[92m   Compiling^[[0m wolf_backend v0.2.35 (/home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_backend)
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:05:54.7633148Z ^[[1m^[[92m   Compiling^[[0m wolf_rt v0.2.35 (/home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_rt)
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:05:56.5599645Z ^[[1m^[[92m   Compiling^[[0m wolf_cimport v0.2.35 (/home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_cimport)
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:06:08.7403416Z ^[[1m^[[92m   Compiling^[[0m serde_repr v0.1.21
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:06:09.0496241Z ^[[1m^[[92m   Compiling^[[0m crossbeam-channel v0.5.16
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:06:09.8500781Z ^[[1m^[[92m   Compiling^[[0m bitflags v1.3.2
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:06:09.8824572Z ^[[1m^[[92m   Compiling^[[0m lsp-types v0.95.1
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:06:16.5063578Z ^[[1m^[[92m   Compiling^[[0m lsp-server v0.10.0
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:06:16.7124973Z ^[[1m^[[92m   Compiling^[[0m cranelift-object v0.134.3
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:06:19.6472912Z ^[[1m^[[92m   Compiling^[[0m cranelift-frontend v0.134.3
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:06:20.7943371Z ^[[1m^[[92m   Compiling^[[0m wolf_codegen_clif v0.2.35 (/home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_codegen_clif)
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:06:23.0114404Z ^[[1m^[[92m   Compiling^[[0m wolf_lsp v0.2.35 (/home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_lsp)
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:06:25.3334068Z ^[[1m^[[92m   Compiling^[[0m wolf_codegen_llvm v0.2.35 (/home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_codegen_llvm)
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:06:31.8813794Z ^[[1m^[[92m   Compiling^[[0m wolf_pkg v0.2.35 (/home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_pkg)
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:06:41.9081001Z ^[[1m^[[92m   Compiling^[[0m wolf_doc v0.2.35 (/home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_doc)
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:07:21.7111139Z ^[[1m^[[92m   Compiling^[[0m wolf_driver v0.2.35 (/home/runner/work/wolf-book/wolf-book/wolf-lang/crates/wolf_driver)
+samples (ubuntu-latest)	build pinned wolf (release, D57-stamped) + the runtime staticlib	2026-10-23T14:07:31.1998342Z ^[[1m^[[92m    Finished^[[0m `release` profile [optimized + debuginfo] target(s) in 3m 36s
+samples (ubuntu-latest)	stage std/ beside wolf, as the release archive does	﻿2026-10-23T14:07:31.2200196Z ##[group]Run set -euo pipefail
+samples (ubuntu-latest)	stage std/ beside wolf, as the release archive does	2026-10-23T14:07:31.2200591Z ^[[36;1mset -euo pipefail^[[0m
+samples (ubuntu-latest)	stage std/ beside wolf, as the release archive does	2026-10-23T14:07:31.2201141Z ^[[36;1msha() { if command -v sha256sum >/dev/null; then sha256sum "$@"; else shasum -a 256 "$@"; fi; }^[[0m
+samples (ubuntu-latest)	stage std/ beside wolf, as the release archive does	2026-10-23T14:07:31.2202191Z ^[[36;1mpin=$(awk -F' = ' '/^wolf-std-commit = /{print $2}' wolf-lang/crates/wolf_driver/STD-PIN)^[[0m
+samples (ubuntu-latest)	stage std/ beside wolf, as the release archive does	2026-10-23T14:07:31.2202737Z ^[[36;1mecho "STD-PIN: ${pin}"^[[0m
+samples (ubuntu-latest)	stage std/ beside wolf, as the release archive does	2026-10-23T14:07:31.2203064Z ^[[36;1m[ -n "${pin}" ]^[[0m
+samples (ubuntu-latest)	stage std/ beside wolf, as the release archive does	2026-10-23T14:07:31.2203596Z ^[[36;1mgit -c core.autocrlf=false clone --quiet https://github.com/wolffe-lang/wolf-std wolf-std^[[0m
+samples (ubuntu-latest)	stage std/ beside wolf, as the release archive does	2026-10-23T14:07:31.2204214Z ^[[36;1mgit -C wolf-std -c core.autocrlf=false checkout --quiet "${pin}"^[[0m
+samples (ubuntu-latest)	stage std/ beside wolf, as the release archive does	2026-10-23T14:07:31.2204654Z ^[[36;1mdest=wolf-lang/target/release/std^[[0m
+samples (ubuntu-latest)	stage std/ beside wolf, as the release archive does	2026-10-23T14:07:31.2205003Z ^[[36;1mrm -rf "${dest}"^[[0m
+samples (ubuntu-latest)	stage std/ beside wolf, as the release archive does	2026-10-23T14:07:31.2205286Z ^[[36;1mcp -R wolf-std/std "${dest}"^[[0m
+samples (ubuntu-latest)	stage std/ beside wolf, as the release archive does	2026-10-23T14:07:31.2205683Z ^[[36;1mcp wolf-std/LICENSE wolf-std/LICENSE-EXCEPTION "${dest}/"^[[0m
+samples (ubuntu-latest)	stage std/ beside wolf, as the release archive does	2026-10-23T14:07:31.2206153Z ^[[36;1mprintf '%s\n' "${pin}" > "${dest}/STD-REV"^[[0m
+samples (ubuntu-latest)	stage std/ beside wolf, as the release archive does	2026-10-23T14:07:31.2206620Z ^[[36;1m# Each line written as `<hash>  <path>` by hand: windows' sha256sum^[[0m
+samples (ubuntu-latest)	stage std/ beside wolf, as the release archive does	2026-10-23T14:07:31.2207138Z ^[[36;1m# marks binary mode (`*path`), which would move the manifest and^[[0m
+samples (ubuntu-latest)	stage std/ beside wolf, as the release archive does	2026-10-23T14:07:31.2207558Z ^[[36;1m# nothing else.^[[0m
+samples (ubuntu-latest)	stage std/ beside wolf, as the release archive does	2026-10-23T14:07:31.2208246Z ^[[36;1mgot=$(cd wolf-lang/target/release && find std -type f | LC_ALL=C sort | while IFS= read -r f; do printf '%s  %s\n' "$(sha "$f" | cut -c1-64)" "$f"; done | sha | cut -c1-64)^[[0m
+samples (ubuntu-latest)	stage std/ beside wolf, as the release archive does	2026-10-23T14:07:31.2209092Z ^[[36;1mwant=fa26d724f7b680ec241d0609b6678a6c1a2c6f6b642e46bac528cbfdcf318d7c^[[0m
+samples (ubuntu-latest)	stage std/ beside wolf, as the release archive does	2026-10-23T14:07:31.2209744Z ^[[36;1mecho "staged std/: $(cd wolf-lang/target/release && find std -type f | wc -l) files, manifest ${got}"^[[0m
+samples (ubuntu-latest)	stage std/ beside wolf, as the release archive does	2026-10-23T14:07:31.2210539Z ^[[36;1mif [ "${got}" != "${want}" ]; then echo "::error::staged std/ manifest ${got} is not the 0.2.35 archive's ${want}"; exit 1; fi^[[0m
+samples (ubuntu-latest)	stage std/ beside wolf, as the release archive does	2026-10-23T14:07:31.2285046Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+samples (ubuntu-latest)	stage std/ beside wolf, as the release archive does	2026-10-23T14:07:31.2285476Z env:
+samples (ubuntu-latest)	stage std/ beside wolf, as the release archive does	2026-10-23T14:07:31.2285718Z   CARGO_TERM_COLOR: always
+samples (ubuntu-latest)	stage std/ beside wolf, as the release archive does	2026-10-23T14:07:31.2285996Z   CACHE_ON_FAILURE: false
+samples (ubuntu-latest)	stage std/ beside wolf, as the release archive does	2026-10-23T14:07:31.2286267Z   CARGO_INCREMENTAL: 0
+samples (ubuntu-latest)	stage std/ beside wolf, as the release archive does	2026-10-23T14:07:31.2286517Z ##[endgroup]
+samples (ubuntu-latest)	stage std/ beside wolf, as the release archive does	2026-10-23T14:07:31.2413799Z STD-PIN: 2386522eb059cca5a84108562c2c0a0e72345d34
+samples (ubuntu-latest)	stage std/ beside wolf, as the release archive does	2026-10-23T14:07:32.7471078Z staged std/: 59 files, manifest fa26d724f7b680ec241d0609b6678a6c1a2c6f6b642e46bac528cbfdcf318d7c
+samples (ubuntu-latest)	build pinned lupin (release)	﻿2026-10-23T14:07:32.7507586Z ##[group]Run cargo build --release --bin lupin
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:32.7507974Z ^[[36;1mcargo build --release --bin lupin^[[0m
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:32.7577549Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:32.7577919Z env:
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:32.7578134Z   CARGO_TERM_COLOR: always
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:32.7578407Z   CACHE_ON_FAILURE: false
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:32.7578645Z   CARGO_INCREMENTAL: 0
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:32.7578867Z ##[endgroup]
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:32.8234216Z ^[[1m^[[92m    Updating^[[0m crates.io index
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:32.8896084Z ^[[1m^[[92m Downloading^[[0m crates ...
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:32.9406379Z ^[[1m^[[92m  Downloaded^[[0m getrandom v0.2.16
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:32.9961162Z ^[[1m^[[92m   Compiling^[[0m proc-macro2 v1.0.107
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:32.9962063Z ^[[1m^[[92m   Compiling^[[0m quote v1.0.47
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:32.9962671Z ^[[1m^[[92m   Compiling^[[0m unicode-ident v1.0.24
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:32.9963266Z ^[[1m^[[92m   Compiling^[[0m libc v0.2.189
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:33.0479977Z ^[[1m^[[92m   Compiling^[[0m utf8parse v0.2.2
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:33.0942743Z ^[[1m^[[92m   Compiling^[[0m serde_core v1.0.229
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:33.1319700Z ^[[1m^[[92m   Compiling^[[0m cfg_aliases v0.2.2
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:33.1563310Z ^[[1m^[[92m   Compiling^[[0m nix v0.31.3
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:33.2581008Z ^[[1m^[[92m   Compiling^[[0m anstyle-parse v1.0.0
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:33.3742854Z ^[[1m^[[92m   Compiling^[[0m smallvec v1.15.2
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:33.4014818Z ^[[1m^[[92m   Compiling^[[0m anstyle v1.0.14
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:33.5652811Z ^[[1m^[[92m   Compiling^[[0m zmij v1.0.23
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:33.6964054Z ^[[1m^[[92m   Compiling^[[0m cfg-if v1.0.4
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:33.7312755Z ^[[1m^[[92m   Compiling^[[0m anstyle-query v1.1.5
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:33.7694240Z ^[[1m^[[92m   Compiling^[[0m syn v3.0.3
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:33.7943333Z ^[[1m^[[92m   Compiling^[[0m is_terminal_polyfill v1.70.2
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:33.8012405Z ^[[1m^[[92m   Compiling^[[0m colorchoice v1.0.5
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:33.8551491Z ^[[1m^[[92m   Compiling^[[0m anstream v1.0.0
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:33.8581727Z ^[[1m^[[92m   Compiling^[[0m nibble_vec v0.1.0
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:34.3442666Z ^[[1m^[[92m   Compiling^[[0m serde v1.0.229
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:34.4952237Z ^[[1m^[[92m   Compiling^[[0m serde_json v1.0.151
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:34.5793657Z ^[[1m^[[92m   Compiling^[[0m clap_lex v1.1.0
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:34.8622710Z ^[[1m^[[92m   Compiling^[[0m strsim v0.11.1
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:34.8982757Z ^[[1m^[[92m   Compiling^[[0m memchr v2.8.3
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:35.7092800Z ^[[1m^[[92m   Compiling^[[0m heck v0.5.0
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:35.8465350Z ^[[1m^[[92m   Compiling^[[0m bitflags v2.13.1
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:36.1532827Z ^[[1m^[[92m   Compiling^[[0m radix_trie v0.3.0
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:36.5346198Z ^[[1m^[[92m   Compiling^[[0m clap_builder v4.6.6
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:36.8692895Z ^[[1m^[[92m   Compiling^[[0m wolf-interp v0.1.56 (/home/runner/work/wolf-book/wolf-book/wolf-interp)
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:37.0202774Z ^[[1m^[[92m   Compiling^[[0m itoa v1.0.18
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:37.1982869Z ^[[1m^[[92m   Compiling^[[0m unicode-width v0.2.2
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:37.4013432Z ^[[1m^[[92m   Compiling^[[0m log v0.4.34
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:37.4882792Z ^[[1m^[[92m   Compiling^[[0m serde_derive v1.0.229
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:37.5712909Z ^[[1m^[[92m   Compiling^[[0m clap_derive v4.6.4
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:39.3053359Z ^[[1m^[[92m   Compiling^[[0m unicode-segmentation v1.13.3
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:39.7952780Z ^[[1m^[[92m   Compiling^[[0m rustyline v18.0.1
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:39.9080998Z ^[[1m^[[92m   Compiling^[[0m clap v4.6.6
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:07:41.2455268Z ^[[1m^[[92m   Compiling^[[0m getrandom v0.2.16
+samples (ubuntu-latest)	build pinned lupin (release)	2026-10-23T14:08:17.5186117Z ^[[1m^[[92m    Finished^[[0m `release` profile [optimized] target(s) in 44.72s
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	﻿2026-10-23T14:08:17.5321901Z ##[group]Run set -euo pipefail
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:17.5322290Z ^[[36;1mset -euo pipefail^[[0m
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:17.5322596Z ^[[36;1msudo apt-get update -qq^[[0m
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:17.5322916Z ^[[36;1msudo apt-get install -y -qq lld^[[0m
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:17.5323320Z ^[[36;1m# Loud, and fatal when absent: an lld that quietly failed to^[[0m
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:17.5323829Z ^[[36;1m# install would put the driver's note back into 19 transcripts^[[0m
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:17.5324286Z ^[[36;1m# and the lane would report it as book drift.^[[0m
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:17.5324639Z ^[[36;1mcommand -v ld.lld^[[0m
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:17.5324927Z ^[[36;1mld.lld --version^[[0m
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:17.5398774Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:17.5399178Z env:
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:17.5399428Z   CARGO_TERM_COLOR: always
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:17.5399732Z   CACHE_ON_FAILURE: false
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:17.5399998Z   CARGO_INCREMENTAL: 0
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:17.5400249Z ##[endgroup]
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:23.5367331Z Selecting previously unselected package lld:amd64.
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:23.5597517Z (Reading database ... 
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:23.5598205Z (Reading database ... 5%
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:23.5598627Z (Reading database ... 10%
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:23.5598905Z (Reading database ... 15%
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:23.5599161Z (Reading database ... 20%
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:23.5599543Z (Reading database ... 25%
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:23.5599817Z (Reading database ... 30%
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:23.5600297Z (Reading database ... 35%
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:23.5600791Z (Reading database ... 40%
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:23.5601149Z (Reading database ... 45%
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:23.5601718Z (Reading database ... 50%
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:23.5653392Z (Reading database ... 55%
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:23.6439103Z (Reading database ... 60%
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:23.7903623Z (Reading database ... 65%
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:23.9925146Z (Reading database ... 70%
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:24.1794925Z (Reading database ... 75%
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:24.2944296Z (Reading database ... 80%
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:24.3939333Z (Reading database ... 85%
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:24.5415086Z (Reading database ... 90%
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:24.6933261Z (Reading database ... 95%
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:24.6933669Z (Reading database ... 100%
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:24.6934037Z (Reading database ... 203540 files and directories currently installed.)
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:24.6982567Z Preparing to unpack .../lld_1%3a18.0-59~exp2_amd64.deb ...
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:24.7009525Z Unpacking lld:amd64 (1:18.0-59~exp2) ...
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:24.7416602Z Setting up lld:amd64 (1:18.0-59~exp2) ...
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:24.7438269Z Processing triggers for man-db (2.12.0-4build2) ...
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:24.7456257Z Not building database; man-db/auto-update is not 'true'.
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:25.3785041Z 
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:25.3785687Z Running kernel seems to be up-to-date.
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:25.3786017Z 
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:25.3786144Z No services need to be restarted.
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:25.3786367Z 
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:25.3786482Z No containers need to be restarted.
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:25.3786670Z 
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:25.3786798Z No user sessions are running outdated binaries.
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:25.3787029Z 
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:25.3787234Z No VM guests are running outdated hypervisor (qemu) binaries on this host.
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:26.5565544Z /usr/bin/ld.lld
+samples (ubuntu-latest)	lld, the linker the toolchain expects (linux)	2026-10-23T14:08:26.5738146Z Ubuntu LLD 18.1.3 (compatible with GNU linkers)
+samples (ubuntu-latest)	run every sample	﻿2026-10-23T14:08:26.5904155Z ##[group]Run echo "::warning::continue-on-error: bs72 deliberate pin-only plant; old ch08 verdicts and consoles must fail"
+samples (ubuntu-latest)	run every sample	2026-10-23T14:08:26.5905015Z ^[[36;1mecho "::warning::continue-on-error: bs72 deliberate pin-only plant; old ch08 verdicts and consoles must fail"^[[0m
+samples (ubuntu-latest)	run every sample	2026-10-23T14:08:26.5905546Z ^[[36;1mcargo xtask samples^[[0m
+samples (ubuntu-latest)	run every sample	2026-10-23T14:08:26.5976325Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+samples (ubuntu-latest)	run every sample	2026-10-23T14:08:26.5976708Z env:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:08:26.5976921Z   CARGO_TERM_COLOR: always
+samples (ubuntu-latest)	run every sample	2026-10-23T14:08:26.5977211Z   CACHE_ON_FAILURE: false
+samples (ubuntu-latest)	run every sample	2026-10-23T14:08:26.5977456Z   CARGO_INCREMENTAL: 0
+samples (ubuntu-latest)	run every sample	2026-10-23T14:08:26.5977808Z   WOLF: /home/runner/work/wolf-book/wolf-book/wolf-lang/target/release/wolf
+samples (ubuntu-latest)	run every sample	2026-10-23T14:08:26.5978328Z   LUPIN: /home/runner/work/wolf-book/wolf-book/wolf-interp/target/release/lupin
+samples (ubuntu-latest)	run every sample	2026-10-23T14:08:26.5978727Z ##[endgroup]
+samples (ubuntu-latest)	run every sample	2026-10-23T14:08:26.6084157Z ##[warning]continue-on-error: bs72 deliberate pin-only plant; old ch08 verdicts and consoles must fail
+samples (ubuntu-latest)	run every sample	2026-10-23T14:09:48.5759894Z samples: lupin = /home/runner/work/wolf-book/wolf-book/wolf-interp/target/release/lupin
+samples (ubuntu-latest)	run every sample	2026-10-23T14:09:48.5760599Z samples: wolf  = /home/runner/work/wolf-book/wolf-book/wolf-lang/target/release/wolf
+samples (ubuntu-latest)	run every sample	2026-10-23T14:09:48.5764934Z samples: SKIP extraction book/back/solutions.md — generated from the two places solutions live, and this run reaches both directly: the exercise corpus under principles/exercises/ (chapters 7+) and principles/EXERCISES.md §5, the master for the chapter 1-6 exemplar batch (wolf-book#44). Every console block on both is replayed below; cargo xtask backmatter --check holds the page to them
+samples (ubuntu-latest)	run every sample	2026-10-23T14:09:55.5088774Z samples: PENDING ch05/ex5-8 [run(exit=0, stdout="marmot 5")] — blocker: TWO blockers, re-measured at bs50 against wolf 0.2.15 / lupin 0.1.37, and NEITHER is the one this row used to name. (1) `sorted_by` exists now — it is one of `[type.comb.set]`'s ten — but it is a `std.list` function that must reach its home module, and this repository configures no std root for either tool, so both machines decline at `[type.method.root]`: lupin `unsupported`, wolf E0301. That half is wolf-book#39, not a std-surface debt. (2) `.take(1)` can never arrive: `take` is a keyword, so `fn take` is E0008 on both machines and no std function may carry the name. This row is waiting on a spelling that cannot exist and the exercise wants rewriting (wolf-book#58). Re-measured at bs53 against wolf 0.2.17 / lupin 0.1.40, and identically against 0.2.16 / 0.1.38: lupin `unsupported` (`List.sorted_by` reaches `std.list` and no std root is configured), exit 4; wolf no longer says E0301 — it answers `cannot compile this yet — member access on a value whose type is still being inferred` at `resolve`, exit 4. wolf-book#39 closed on 2026-09-12 with the std posture recorded in `wolf-toolchain.toml`; its open successor is wolf-book#45. Re-measured at bs54 against wolf 0.2.18 / lupin 0.1.41, and identically against 0.2.17 / 0.1.40 the same hour: both answers unchanged, word for word, at the same span (@300..303). Re-measured at bs55 against wolf 0.2.19 / lupin 0.1.42 and 0.2.18 / 0.1.41 the same hour: identical on both pairs, word for word, same span. Re-measured at bs58 against wolf 0.2.21 / lupin 0.1.44 and 0.2.19 / 0.1.42 the same hour (release archives by digest, docs/audit/bs58-evidence/probes-control.txt and probes-subject.txt): identical on both pairs, word for word, same span. Re-measured at bs65 against wolf 0.2.28 / lupin 0.1.51 and 0.2.26 / 0.1.49 (release archives by digest on kasumi, hasu and nomad-1, docs/audit/bs65-evidence/*/probes.txt), and the two answers now depend on what sits beside `wolf`. With no `std/` beside it (0.2.26's archive; a bare `cargo build`) the compiler's answer is unchanged, `member access on a value whose type is still being inferred` at resolve, @300..303. From 0.2.28's archive whole, whose `std/` is the default std root (s204, ruling #59), `sorted_by` resolves and the compiler reaches the type checker with two errors: E0401 at the comparator (`fn(a, b) b.1 <=> a.1` answers `int` where `sorted_by`'s comparator must answer `bool`, a THIRD blocker, the exercise's own) and E0403 at `.take(1)` («`take` is the ownership verb, never a method», naming `xs[..n]`, which is #58's half). The book prints the archive whole and CI stages its `std/` (the bs65 ruling), so the compiler's answer of record is the second. lupin 0.1.51 still has no std root (its own archive carries none) and answers `unsupported` in s204's longer words, exit 4; exercise 5-8's console block is spliced from that run. (owner: wolf-book#45 (the std root; successor of the closed #39) + wolf-book#58 (the unspellable `take`))
+samples (ubuntu-latest)	run every sample	2026-10-23T14:09:58.7205028Z samples: PENDING ch07/ex7-5 [fail(E1003)] — blocker: borrow-escape checking reaches no static verdict. Re-measured at bs53 against wolf 0.2.17 / lupin 0.1.40, and identically against 0.2.16 / 0.1.38: wolf answers `cannot compile this yet — borrow expressions` at `resolve` (exit 4; `channel` resolves now, so the old second clause is gone), and lupin runs the program to exit 0 with no static rung. Re-measured at bs54 against wolf 0.2.18 / lupin 0.1.41: unchanged on both (`borrow expressions` @365..367, lupin exit 0). Re-measured at bs55 against wolf 0.2.19 / lupin 0.1.42: unchanged on both, same span. Re-measured at bs58 against wolf 0.2.21 / lupin 0.1.44 and 0.2.19 / 0.1.42 the same hour (release archives by digest, docs/audit/bs58-evidence/probes-control.txt and probes-subject.txt): identical on both pairs, word for word, same span. (owner: s33-channels-select, then s18-tier0-exclusivity)
+samples (ubuntu-latest)	run every sample	2026-10-23T14:10:00.1361059Z samples: PENDING ch08/ex8-7 [run(exit=0, stdout="c a")] — blocker: TWO blockers, bisected at bs51 against wolf 0.2.16 / lupin 0.1.38 with two minimal programs rather than inferred from the exercise, and EACH MACHINE NOW SERVES THE HALF THE OTHER REFUSES. (1) The place write this row has always named — `pool[h].next = k` — LANDED ON THE COMPILER (s173: the pool is the base and the handle the index) and is still the interpreter's wall, in new words: lupin answers `unsupported: handle is not a `Map` key — a key is `str`, `int`, `char` or `bool` [type.map.key]` and exits 4, where wolf 0.2.16 runs the same program to exit 0. (2) A blocker that is NEW and is the COMPILER's: the LRU walk's `while cur != tail` compares two handles, and wolf answers `cannot compile this yet — `==` on a container, tuple or handle (no `Eq` for these this edition)` and exits 4, where lupin runs it. A conservatism line, not a rejection. bs51 predicted this row would flip on s173 and was wrong: s173 moved the half the row named and a second wall was behind it. Re-measured at bs53 (0.2.17 / 0.1.40) and at bs54 (0.2.18 / 0.1.41): both halves hold in the same words, the compiler's at the same span (@1926..1929); 0.2.18's pool-handle revival (eg01b) is about moves, not `Eq`. Re-measured at bs55 (0.2.19 / 0.1.42, and 0.2.18 / 0.1.41 the same hour): both halves identical, same span; 0.2.19's element claims (EG2) and header reads touch neither `Eq` nor map keys. Re-measured at bs58 against wolf 0.2.21 / lupin 0.1.44 and 0.2.19 / 0.1.42 the same hour (release archives by digest, docs/audit/bs58-evidence/probes-control.txt and probes-subject.txt): identical on both pairs, word for word, same span. (owner: wolf-book#60 (both halves, with the measurement))
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:55.6392927Z samples: 125 corpus file(s) held back from the export — one-machine directives the other runner cannot spell (principles/TWO-MACHINES.md)
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.7400959Z 
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.7401924Z samples: 535 samples (252 corpus roots + 16 corpus members on disk, 283 book blocks)
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.7402882Z samples: 526 passed, 3 pending (report-only), 19 failed, 2 flips in 128.1s
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.7403484Z samples: 494 of 526 console block(s) replayed against the pinned tools
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.7404218Z samples: of those, 244 of 251 book block(s) and 250 of 275 exercise-corpus block(s) (wolf-book#24)
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.7405344Z samples: SKIP console /home/runner/work/wolf-book/wolf-book/wolf-book/book/ch01.md:323: `(cd wolf-lang` needs a shell
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.7407056Z samples: SKIP console /home/runner/work/wolf-book/wolf-book/wolf-book/book/ch07.md:722: `grep -n '(mut ' shelf.lu` is not a pinned tool
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.7409361Z samples: DECLINED corpus console principles/exercises/ch01/EXERCISES.md:18 [typed]: an interactive session — the block opens on a bare `$ lupin` and the transcript is what a reader types into the prompt — wolf-book#29 §4, retires at wolf-interp is08 (the REPL replay lane)
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.7413110Z samples: DECLINED corpus console principles/exercises/ch01/EXERCISES.md:145 [file]: `ch01/hello.lu` — the one genuinely missing file of the eight — AND a warm cache the fixture cannot carry: the transcript is the SECOND build's (`reused object`), while a staged copy starts cold because `.lu-cache/` is gitignored, and the key the line prints is the one the page itself tells the reader will differ — wolf-book#29 §2 (premise sharpened at bs44), retires at the ch01 fixture, a transcript respelled to do both builds, and a key the comparison can hold (a `samples-os.toml`-style declared line, or a `--verbose` that prints `reused` without the digest)
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.7418763Z samples: DECLINED corpus console principles/exercises/ch01/EXERCISES.md:198 [binary-or-shell]: a shell — `diff <(./hello) <(lupin hello.lu)` is process substitution, which `words()` declines by design (and the `hello.lu` of ch01:145 besides) — wolf-book#29 §5, retires at nothing planned; the exercise compares the two machines by hand and that is the point of it
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.7422583Z samples: DECLINED corpus console principles/exercises/ch02/EXERCISES.md:81 [typed]: an expression to type — `lupin eval '"\n".len'` has no file behind it. Cheapest of the twenty: it needs no fixture and no lane, only a rule that admits an evaluated expression — wolf-book#29 §4, retires at the `eval` widening (with ch02:101), or wolf-interp is08 if the REPL lane takes both
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.7424719Z samples: DECLINED corpus console principles/exercises/ch02/EXERCISES.md:101 [typed]: an expression to type — `lupin eval '"wolf"[..2]'` has no file behind it — wolf-book#29 §4, retires at the `eval` widening (with ch02:81), or wolf-interp is08 if the REPL lane takes both
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.7426324Z samples: DECLINED corpus console principles/exercises/ch07/EXERCISES.md:553 [typed]: an interactive session — the block opens on a bare `$ lupin` — wolf-book#29 §4, retires at wolf-interp is08 (the REPL replay lane)
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.7427778Z samples: DECLINED corpus console principles/exercises/ch08/EXERCISES.md:136 [typed]: an interactive session — the block opens on a bare `$ lupin` — wolf-book#29 §4, retires at wolf-interp is08 (the REPL replay lane)
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.7430000Z samples: DECLINED corpus console principles/exercises/ch09/EXERCISES.md:17 [binary-or-shell]: a shell — `grep -rn 'unsafe {' ch01 … | wc -l` is a pipeline over the corpus tree, which `words()` declines by design — wolf-book#29 §5, retires at nothing planned; the count it prints is a fact about the corpus, not about a tool
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8462018Z samples: DECLINED corpus console principles/exercises/ch09/EXERCISES.md:243 [binary-or-shell]: the corpus rule to admit a binary `wolf build` just produced — `./ex9-8` names no solution, it names a link product — wolf-book#29 §5, retires at the `Verb::Local` widening for corpus blocks (the book lane already runs it on unix)
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8464032Z samples: DECLINED corpus console principles/exercises/ch11/EXERCISES.md:166 [typed]: an interactive session — the block opens on a bare `$ lupin` — wolf-book#29 §4, retires at wolf-interp is08 (the REPL replay lane)
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8465117Z samples: FAIL ch08/ex8-3: wolf verdict `pass`, expected `fail(E1010)`
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8465576Z samples: FAIL ch08/ex8-9: wolf verdict `pass`, expected `fail(E1012)`
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8466765Z samples: FAIL book/ch08/s3: diagnostic drifted from reviewed snapshot /home/runner/work/wolf-book/wolf-book/wolf-book/snapshots/diagnostics/book__ch08__s3.txt — if the compiler's wording changed on purpose, re-run with --bless and review the diff
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8468257Z samples: FAIL book/ch08/s4: wolf verdict `pass`, expected `fail(E1010)`
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8468718Z samples: FAIL book/ch08/s12: wolf verdict `pass`, expected `fail(E1012)`
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8470120Z samples: FAIL book/ch34/s6: wolf run: exited Some(2), expected 0 — and 2 is one of `[conf.exit]`'s two reserved statuses (2 a rejection, 4 a refusal), so the program never ran and the status is the tool's rather than the program's (stderr: error[E0408]: this `Mode` literal is missing the fields `raw_cr`, `raw_output`, `strip8`
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8471358Z   --> ./s6.lu:7:18
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8471571Z    |
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8471784Z  7 |     let cooked = term.Mode {
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8472044Z    |                  ^^^^^^^^^^^
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8472328Z  8 |         canonical: true, echo: true, signals: true,
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8472671Z  9 |         flow: true, extended: true, min: 1, time: 0,
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8472979Z 10 |     }
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8473185Z    | ^^^^^ missing fields
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8473406Z    |
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8473661Z   ::: std://term/term.lu:85:12
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8473911Z    |
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8474103Z 85 | pub struct Mode {
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8474378Z    |            ---- `Mode` is defined here
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8474654Z    |
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8475015Z    = note: every field is written explicitly — wolf has no defaults yet.
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8475308Z 
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8475675Z wolf run: the package does not compile; fix the errors above (`wolf --explain E0408` explains this code, or any other, by name))
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8476796Z samples: FAIL /home/runner/work/wolf-book/wolf-book/wolf-book/book/ch08.md: diagnostic,from(book/ch08/s3) drifted from the captured diagnostic — update the block from the real run
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8477777Z samples: FAIL /home/runner/work/wolf-book/wolf-book/wolf-book/book/back/colophon.md:7: console block drifted from the real run
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8478327Z      expected:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8478547Z        | $ wolf --version
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8478801Z        | wolf 0.2.34 (wolfgang, pin 9da7bdc)
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8479184Z        | paired with lupin 0.1.55 (reference interpreter), pin 294d626
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8479546Z        | $ lupin --version
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8479872Z        | lupin 0.1.55 (wolf-interp, reference interpreter at pin 294d626)
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8480214Z      actual:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8480597Z        | $ wolf --version
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8480837Z        | wolf 0.2.35 (wolfgang, pin cf0c13d)
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8481285Z        | paired with lupin 0.1.56 (reference interpreter), pin 294d626
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8481632Z        | $ lupin --version
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8481927Z        | lupin 0.1.56 (wolf-interp, reference interpreter at pin 294d626)
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8482523Z samples: FAIL /home/runner/work/wolf-book/wolf-book/wolf-book/book/ch01.md:153: console block drifted from the real run
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8483052Z      expected:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8483252Z        | $ wolf --version
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8483493Z        | wolf 0.2.34 (wolfgang, pin 9da7bdc)
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8483840Z        | paired with lupin 0.1.55 (reference interpreter), pin 294d626
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8484187Z        | $ lupin --version
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8484491Z        | lupin 0.1.55 (wolf-interp, reference interpreter at pin 294d626)
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8484819Z      actual:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8485027Z        | $ wolf --version
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8485261Z        | wolf 0.2.35 (wolfgang, pin cf0c13d)
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8485593Z        | paired with lupin 0.1.56 (reference interpreter), pin 294d626
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8485927Z        | $ lupin --version
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8486219Z        | lupin 0.1.56 (wolf-interp, reference interpreter at pin 294d626)
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8486899Z samples: FAIL /home/runner/work/wolf-book/wolf-book/wolf-book/book/ch22.md:288: console block drifted from the real run
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8487586Z      expected:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8487808Z        | $ wolf interface ./summary.lu
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8488091Z        | module pkg :: std.range
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8488457Z        |   wolfi v0 · toolchain 0.2.34 · edition v1
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8488897Z        |   export_hash d7c8e2cafbb418b680a777f06602e91128373f7ed3b341a20edccaa108e513bf
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8489418Z        |   pkg_hash    d7c8e2cafbb418b680a777f06602e91128373f7ed3b341a20edccaa108e513bf
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8489822Z        |   deps: (none)
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8490044Z        |   items:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8490543Z        |     [0] pub clamp_to — fn clamp_to(r: prelude.range[int], x: int) -> int ! {none} · regions (ρ1, -) -> -
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8491392Z        |     [1] pub collect — fn collect[T](r: prelude.range[T]) -> prelude.List[T] · regions (ρ1) -> ρ_caller
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8492081Z        |     [2] pub contains — fn contains(r: prelude.range[int], x: int) -> bool · regions (ρ1, -) -> -
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8492729Z        |     [3] pub is_empty — fn is_empty(r: prelude.range[int]) -> bool · regions (ρ1) -> -
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8493296Z        |     [4] pub len — fn len(r: prelude.range[int]) -> int · regions (ρ1) -> -
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8493656Z        | 
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8493888Z        | module pkg :: (root)
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8494210Z        |   wolfi v0 · toolchain 0.2.34 · edition v1
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8494647Z        |   export_hash c8e04b6da198d815eeb6be3fabd7eb6e3ca36b0cb85d505e4f29e9c33f0b78a6
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8495195Z        |   pkg_hash    c8e04b6da198d815eeb6be3fabd7eb6e3ca36b0cb85d505e4f29e9c33f0b78a6
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8495577Z        |   deps:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8495916Z        |     std.range  d7c8e2cafbb418b680a777f06602e91128373f7ed3b341a20edccaa108e513bf
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8496314Z        |   items:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8496689Z        |     [0] pub count — fn count(xs: prelude.List[int]) -> int · regions (ρ1) -> -
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8497205Z        |     [1] pub mean — fn mean(xs: prelude.List[int]) -> int · regions (ρ1) -> -
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8497574Z      actual:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8497790Z        | $ wolf interface ./summary.lu
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8498065Z        | module pkg :: std.range
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8498393Z        |   wolfi v0 · toolchain 0.2.35 · edition v1
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8498796Z        |   export_hash d7c8e2cafbb418b680a777f06602e91128373f7ed3b341a20edccaa108e513bf
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8499297Z        |   pkg_hash    d7c8e2cafbb418b680a777f06602e91128373f7ed3b341a20edccaa108e513bf
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8499963Z        |   deps: (none)
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8500181Z        |   items:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8500653Z        |     [0] pub clamp_to — fn clamp_to(r: prelude.range[int], x: int) -> int ! {none} · regions (ρ1, -) -> -
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8501472Z        |     [1] pub collect — fn collect[T](r: prelude.range[T]) -> prelude.List[T] · regions (ρ1) -> ρ_caller
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8502156Z        |     [2] pub contains — fn contains(r: prelude.range[int], x: int) -> bool · regions (ρ1, -) -> -
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8502787Z        |     [3] pub is_empty — fn is_empty(r: prelude.range[int]) -> bool · regions (ρ1) -> -
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8503327Z        |     [4] pub len — fn len(r: prelude.range[int]) -> int · regions (ρ1) -> -
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8503671Z        | 
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8503872Z        | module pkg :: (root)
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8504192Z        |   wolfi v0 · toolchain 0.2.35 · edition v1
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8504602Z        |   export_hash c8e04b6da198d815eeb6be3fabd7eb6e3ca36b0cb85d505e4f29e9c33f0b78a6
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8505133Z        |   pkg_hash    c8e04b6da198d815eeb6be3fabd7eb6e3ca36b0cb85d505e4f29e9c33f0b78a6
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8505515Z        |   deps:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8505853Z        |     std.range  d7c8e2cafbb418b680a777f06602e91128373f7ed3b341a20edccaa108e513bf
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8506239Z        |   items:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8506602Z        |     [0] pub count — fn count(xs: prelude.List[int]) -> int · regions (ρ1) -> -
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8507278Z        |     [1] pub mean — fn mean(xs: prelude.List[int]) -> int · regions (ρ1) -> -
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8507880Z samples: FAIL /home/runner/work/wolf-book/wolf-book/wolf-book/book/ch34.md:376: console block drifted from the real run
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8508393Z      expected:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8508616Z        | $ wolf run modes.lu
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8508893Z        | canonical false, echo false, signals true
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8509207Z        | flow false, extended false, min 1
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8509504Z        | round trip: true
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8509731Z      actual:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8509930Z        | $ wolf run modes.lu
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8510323Z        | error[E0408]: this `Mode` literal is missing the fields `raw_cr`, `raw_output`, `strip8`
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8510751Z        |   --> ./modes.lu:4:18
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8510989Z        |    |
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8511310Z        |  4 |     let cooked = term.Mode {
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8511594Z        |    |                  ^^^^^^^^^^^
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8511909Z        |  5 |         canonical: true, echo: true, signals: true,
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8512281Z        |  6 |         flow: true, extended: true, min: 1, time: 0,
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8512585Z        |  7 |     }
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8512798Z        |    | ^^^^^ missing fields
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8513035Z        |    |
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8513265Z        |   ::: std://term/term.lu:85:12
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8513523Z        |    |
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8513726Z        | 85 | pub struct Mode {
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8514003Z        |    |            ---- `Mode` is defined here
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8514288Z        |    |
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8514702Z        |    = note: every field is written explicitly — wolf has no defaults yet.
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8515071Z        | 
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8515540Z        | wolf run: the package does not compile; fix the errors above (`wolf --explain E0408` explains this code, or any other, by name)
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8516320Z samples: FAIL /home/runner/work/wolf-book/wolf-book/wolf-book/book/ch34.md:980: console block drifted from the real run
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8516842Z      expected:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8517094Z        | $ wolf conform-run --json --checked busy.lu
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8518328Z        | {"commit":"9da7bdc","diagnostics":[],"file":"./busy.lu","impl":"wolfgang","impl_version":"0.2.34","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"a task live: unsupported\nevery task joined: unsupported\n","stdout_sha256":"9d68e8cc173c041e58fd1a7c2b68a4d13173fde1b99316577585f8d80593b2ce","verdict":"exit(0)","warnings":[]}
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8519665Z      actual:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8519908Z        | $ wolf conform-run --json --checked busy.lu
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8521072Z        | {"commit":"cf0c13d","diagnostics":[],"file":"./busy.lu","impl":"wolfgang","impl_version":"0.2.35","phase_reached":"run","protocol":1,"seeded":false,"stdout_inline":"a task live: unsupported\nevery task joined: unsupported\n","stdout_sha256":"9d68e8cc173c041e58fd1a7c2b68a4d13173fde1b99316577585f8d80593b2ce","verdict":"exit(0)","warnings":[]}
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8522824Z samples: FAIL /home/runner/work/wolf-book/wolf-book/wolf-book/principles/exercises/appx/EXERCISES.md:177: console block drifted from the real run
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8523454Z      expected:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8523670Z        | $ wolf --explain E1001
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8524024Z        | E1001: this value was moved away (or never given one) before this use
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8524382Z        | 
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8524678Z        | In wolf, assignment and argument passing *move* a value: after
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8525161Z        | `let b = a` or `f(take a)`, the name `a` no longer holds anything —
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8525597Z        | its value went to the new place, whole. Reading a moved-from (or
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8526047Z        | never-initialized) name would read nothing, so the checker stops it
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8526503Z        | here and points at the move it happened in. Moves are field-granular:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8527089Z        | moving `s.a` away leaves `s.b` usable, and only the moved path is
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8527550Z        | off-limits. To keep using the original, make the duplication explicit
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8528089Z        | where the move happens — `copy a` produces an independent value of
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8528586Z        | any type — or give the name a new value first: assigning to a
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8528952Z        | moved-from place makes it live again.
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8529242Z        | 
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8529548Z        | A `mut` parameter is the caller's place, and the caller reads it again
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8530013Z        | after the call, so it must hold a value at every return of the function
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8530532Z        | ([mem.tier0.mode.mut]). Moving out of it — the whole parameter, a
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8531036Z        | field, an element, a map value — is fine as long as a value is stored
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8531602Z        | back on every path before the function returns, the `?` error edge and
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8532070Z        | an early `return` included. The refusal points at the move that is not
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8532438Z        | put back on some path.
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8532683Z      actual:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8532890Z        | $ wolf --explain E1001
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8533225Z        | E1001: this value was moved away (or never given one) before this use
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8533566Z        | 
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8533850Z        | In wolf, assignment and argument passing *move* a value: after
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8534309Z        | `let b = a` or `f(take a)`, the name `a` no longer holds anything —
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8534739Z        | its value went to the new place, whole. Reading a moved-from (or
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8535187Z        | never-initialized) name would read nothing, so the checker stops it
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8535639Z        | here and points at the move it happened in. Moves are field-granular:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8536088Z        | moving `s.a` away leaves `s.b` usable, and only the moved path is
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8536521Z        | off-limits. To keep using the original, make the duplication explicit
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8537027Z        | where the move happens — `copy a` produces an independent value of
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8537513Z        | any type — or give the name a new value first: assigning to a
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8537871Z        | moved-from place makes it live again.
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8538135Z        | 
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8538582Z        | A `mut` parameter is the caller's place, and the caller reads it again
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8539038Z        | after the call, so it must hold a value at every return of the function
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8539539Z        | ([mem.tier0.mode.mut]). Moving out of it — the whole parameter, a
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8540033Z        | field, an element, a map value — is fine as long as a value is stored
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8540469Z        | back on every path before the function returns, the `?` error edge and
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8540922Z        | an early `return` included. The refusal points at the move that is not
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8541395Z        | put back on some path.
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8541628Z        | 
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8541906Z        | A plain (`read`) parameter is the caller's value lent for the call:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8542410Z        | binding a piece of it — `let tb = run.ec.tb` — moves that piece out in
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8542852Z        | this frame (a lend; the caller keeps its value), so reading
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8543299Z        | `run.ec.tb` again afterwards is this error ([mem.tier0.mode.read]). To
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8543752Z        | read it twice, read through the path each time without binding it, or
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8544204Z        | keep using the binding from the move on; `copy` at the move works and
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8544642Z        | is a deep copy. A value of a scalar type, or an adapter of one
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8545047Z        | (`type ByteOff = distinct int`), is copied, never moved.
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8545883Z samples: FAIL /home/runner/work/wolf-book/wolf-book/wolf-book/principles/exercises/ch07/EXERCISES.md:488: console block drifted from the real run
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8546502Z      expected:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8546726Z        | $ wolf --explain E1001
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8547083Z        | E1001: this value was moved away (or never given one) before this use
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8547450Z        | 
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8547736Z        | In wolf, assignment and argument passing *move* a value: after
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8548207Z        | `let b = a` or `f(take a)`, the name `a` no longer holds anything —
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8548639Z        | its value went to the new place, whole. Reading a moved-from (or
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8549090Z        | never-initialized) name would read nothing, so the checker stops it
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8549545Z        | here and points at the move it happened in. Moves are field-granular:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8549988Z        | moving `s.a` away leaves `s.b` usable, and only the moved path is
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8550444Z        | off-limits. To keep using the original, make the duplication explicit
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8550956Z        | where the move happens — `copy a` produces an independent value of
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8551553Z        | any type — or give the name a new value first: assigning to a
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8551921Z        | moved-from place makes it live again.
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8552189Z        | 
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8552496Z        | A `mut` parameter is the caller's place, and the caller reads it again
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8552964Z        | after the call, so it must hold a value at every return of the function
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8553469Z        | ([mem.tier0.mode.mut]). Moving out of it — the whole parameter, a
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8553967Z        | field, an element, a map value — is fine as long as a value is stored
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8554436Z        | back on every path before the function returns, the `?` error edge and
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8554902Z        | an early `return` included. The refusal points at the move that is not
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8555265Z        | put back on some path.
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8555514Z      actual:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8555721Z        | $ wolf --explain E1001
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8556047Z        | E1001: this value was moved away (or never given one) before this use
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8556395Z        | 
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8556668Z        | In wolf, assignment and argument passing *move* a value: after
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8557301Z        | `let b = a` or `f(take a)`, the name `a` no longer holds anything —
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8557739Z        | its value went to the new place, whole. Reading a moved-from (or
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8558204Z        | never-initialized) name would read nothing, so the checker stops it
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8558665Z        | here and points at the move it happened in. Moves are field-granular:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8559106Z        | moving `s.a` away leaves `s.b` usable, and only the moved path is
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8559556Z        | off-limits. To keep using the original, make the duplication explicit
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8560068Z        | where the move happens — `copy a` produces an independent value of
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8560550Z        | any type — or give the name a new value first: assigning to a
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8560914Z        | moved-from place makes it live again.
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8561296Z        | 
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8561601Z        | A `mut` parameter is the caller's place, and the caller reads it again
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8562095Z        | after the call, so it must hold a value at every return of the function
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8562608Z        | ([mem.tier0.mode.mut]). Moving out of it — the whole parameter, a
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8563115Z        | field, an element, a map value — is fine as long as a value is stored
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8563575Z        | back on every path before the function returns, the `?` error edge and
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8564186Z        | an early `return` included. The refusal points at the move that is not
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8564564Z        | put back on some path.
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8564821Z        | 
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8565105Z        | A plain (`read`) parameter is the caller's value lent for the call:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8565621Z        | binding a piece of it — `let tb = run.ec.tb` — moves that piece out in
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8934134Z        | this frame (a lend; the caller keeps its value), so reading
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8935007Z        | `run.ec.tb` again afterwards is this error ([mem.tier0.mode.read]). To
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8935632Z        | read it twice, read through the path each time without binding it, or
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8936145Z        | keep using the binding from the move on; `copy` at the move works and
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8936623Z        | is a deep copy. A value of a scalar type, or an adapter of one
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8937055Z        | (`type ByteOff = distinct int`), is copied, never moved.
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8937775Z samples: FAIL /home/runner/work/wolf-book/wolf-book/wolf-book/principles/exercises/ch08/EXERCISES.md:87: console block drifted from the real run
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8938394Z      expected:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8938633Z        | $ wolf conform-run ./ex8-3.lu
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8939106Z        | error[E1010]: `keep` still holds a value allocated in region `tmp` when the region is freed
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8939614Z        |  --> ./ex8-3.lu:8:9
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8939876Z        |   |
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8940095Z        | 7 |     region tmp {
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8940378Z        |   |            --- region `tmp` is created here
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8940706Z        | 8 |         keep = Node { value: 7 }
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8941046Z        |   |         ^^^^ the value flows out of the region here
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8941553Z        |   |                ----------------- allocated here, into region `tmp`
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8941896Z        | 9 |     }
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8942511Z        |   |     - the region is freed here — everything in it is freed wholesale, as one unit
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8942957Z        |   |
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8943357Z        |   = note: to keep the value, allocate it where it must live: build it outside the region block, or
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8944070Z        |     aim the allocation at a longer-lived region explicitly (`let r = region()` … `in r { …
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8944666Z        |     }`); widening the region block to cover every use also works. When the block's own value
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8945592Z        |     is what must outlive it, `copy region { … }` copies that value into the enclosing region
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8946166Z        |     before the free ([mem.region.copyout]). Two keep-alive alternatives change the ownership
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8946726Z        |     instead: `freeze` the region (immutable forever) or make the value a `shared` cell
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8947175Z        |     (reference-counted, never dangles).
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8947473Z      actual:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8947698Z        | $ wolf conform-run ./ex8-3.lu
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8948332Z samples: FAIL /home/runner/work/wolf-book/wolf-book/wolf-book/principles/exercises/ch08/EXERCISES.md:115: console block drifted from the real run
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8948950Z      expected:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8949164Z        | $ lupin ex8-3.lu
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8949884Z        | ex8-3.lu: trap(region-fault): `keep.value` reaches into `tmp` (region #1), which was freed wholesale; the value died with the region [mem.region.intra.2] at 10:8; the region was created here at 7:5
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8950619Z        | $ echo $?
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8950826Z        | 3
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8951016Z      actual:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8951330Z        | $ lupin ex8-3.lu
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8951556Z        | $ echo $?
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8951751Z        | 0
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8952288Z samples: FAIL /home/runner/work/wolf-book/wolf-book/wolf-book/principles/exercises/ch08/EXERCISES.md:311: console block drifted from the real run
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8953056Z      expected:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8953271Z        | $ wolf conform-run ./ex8-9.lu
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8953638Z        | error[E1012]: `cfg.limit` is frozen, so it cannot be assigned through
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8954021Z        |  --> ./ex8-9.lu:7:5
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8954256Z        |   |
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8954504Z        | 6 |     var cfg = freeze region { Config { limit: 42 } }
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8955175Z        |   |               -------------------------------------- the freeze happens here — the promotion to `imm` is deep and permanent
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8955672Z        | 7 |     cfg.limit = 7
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8955945Z        |   |     ^^^^^^^^^ this needs the data to be mutable
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8956260Z        |   |
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8956644Z        |   = note: `freeze` promotes the whole graph to `imm`: shareable from anywhere, forever, and never
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8957245Z        |     writable again. Build the value completely before freezing it, or keep a mutable copy
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8957717Z        |     (`copy`) alongside the frozen one.
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8957998Z      actual:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8958214Z        | $ wolf conform-run ./ex8-9.lu
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8958851Z samples: FAIL /home/runner/work/wolf-book/wolf-book/wolf-book/principles/exercises/ch08/EXERCISES.md:332: console block drifted from the real run
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8959455Z      expected:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8959661Z        | $ lupin ex8-9.lu
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8960131Z        | ex8-9.lu: trap(region-fault): region #1 is frozen: `imm` data is immutable forever [mem.region.freeze.1] at 7:5
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8960616Z        | $ echo $?
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8960819Z        | 3
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8961007Z      actual:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8961320Z        | $ lupin ex8-9.lu
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8961543Z        | $ echo $?
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8961737Z        | 7
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8962270Z samples: FAIL /home/runner/work/wolf-book/wolf-book/wolf-book/principles/exercises/ch22/EXERCISES.md:218: console block drifted from the real run
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8962872Z      expected:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8963114Z        | $ wolf interface ./wordcount/tokens/tokens.lu
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8963462Z        | module pkg :: (root)
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8963824Z        |   wolfi v0 · toolchain 0.2.34 · edition v1
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8964290Z        |   export_hash 05a012a2ca47c85fc47f13e7e2c80930951ae8c59a84d1631ca8844e71669f3c
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8964833Z        |   pkg_hash    05a012a2ca47c85fc47f13e7e2c80930951ae8c59a84d1631ca8844e71669f3c
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8965386Z        |   deps: (none)
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8965611Z        |   items:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8966135Z        |     [0] pub split_words — fn split_words(text: str) -> prelude.List[str] · regions (-) -> ρ_caller
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8966577Z      actual:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8966823Z        | $ wolf interface ./wordcount/tokens/tokens.lu
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8967140Z        | module pkg :: (root)
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8967474Z        |   wolfi v0 · toolchain 0.2.35 · edition v1
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8967908Z        |   export_hash 05a012a2ca47c85fc47f13e7e2c80930951ae8c59a84d1631ca8844e71669f3c
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8968425Z        |   pkg_hash    05a012a2ca47c85fc47f13e7e2c80930951ae8c59a84d1631ca8844e71669f3c
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8968811Z        |   deps: (none)
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8969027Z        |   items:
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8969485Z        |     [0] pub split_words — fn split_words(text: str) -> prelude.List[str] · regions (-) -> ρ_caller
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8970821Z samples: FLIP ch27/ex27-3: directive `lupin-run(exit=0)` holds, but the compiler no longer declines this program — both machines serve this program now; graduate the fence to `run(…)`, retire the page's per-machine note, and close the ledger row in the pin-bump commit
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8972726Z samples: FLIP book/ch34/s16: directive `wolf-run(exit=0)` holds, but `lupin` now meets `run(exit=0…)` too — both machines serve this program now; graduate the fence to `run(…)`, retire the page's per-machine note, and close the ledger row in the pin-bump commit
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8973837Z error: 19 failure(s), 2 flip(s)
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8975382Z samples: DECLINED corpus console principles/exercises/ch19/EXERCISES.md:23 [binary-or-shell]: the corpus rule to admit a binary `wolf build` just produced — `./ex19-1` names no solution, it names a link product — wolf-book#29 §5, retires at the `Verb::Local` widening for corpus blocks (the book lane already runs it on unix)
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8980939Z samples: DECLINED corpus console principles/exercises/ch22/EXERCISES.md:114 [file]: NOT a missing file. The block is exercise 22-11's D32 demonstration — an unmarked `widest.lu` joining `sum.lu`'s module, E0302 on `main`. A corpus `.lu` must carry `//! check:` and `//! phase:`, and `[conf.directive.standalone]` (D59) makes a file carrying both a standalone entry that never joins its directory's module, so the collision cannot be staged. Measured on wolf 0.2.12 and lupin 0.1.34: the pair runs clean, exit 0 both — wolf-book#29 §2 (premise corrected at bs44), retires at a corpus admission rule that can hold a non-standalone member. The `console,in(pkg/…)` escape hatch is NOT one today, and the reason is an ordering rather than a design: a corpus fence parses `in(…)` (`collect_corpus_console` carries `fi.in_fixture` through), but `console::check` runs the corpus admission gate against the real exercise directory BEFORE any staging, so the block is declined before the fixture is looked at — and if it got that far, `stage()` opens with `remove_dir_all(dir)` and would wipe the staged exercise tree the corpus lane had just put there. Two small fixes, one hole
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8986926Z samples: DECLINED corpus console principles/exercises/ch23/EXERCISES.md:124 [file]: the corpus rule to admit a `--dir` package, not a fixture. None of the six commands carries a `.lu` argument, and `plain_run_of_a_solution` declines any `wolf`/`lupin` command that names no `.lu` on disk — so a checked-in `app/` changes nothing until the rule widens. The package itself already exists as `samples/pkg/shelf/`, which prints this block's tree verbatim at book/ch24.md — wolf-book#29 §2 (premise corrected at bs44), retires at the `--dir` widening for corpus blocks, after which `samples/pkg/shelf` is the fixture
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8991779Z samples: DECLINED corpus console principles/exercises/ch24/EXERCISES.md:136 [file]: the same `--dir` widening as ch23's, and then one step no command shows: the manifest edit between the two commands. The ordering is NOT a contradiction (premise corrected at bs64): the exercise records the world while `regex` declares nothing, so `wolf update` writes `caps=-`, then the dependency's manifest gains `net`, and `wolf audit --ci` prints ACQUIRES and exits 1. Measured exactly so on wolf 0.2.26 and 0.2.25 (docs/audit/bs64-evidence/pkgprobe.txt, staged from `samples/pkg/acquired/`); the block was regenerated from that run — wolf-book#29 §2 (premise corrected at bs44, and at bs64), retires at the `--dir` widening, plus a staging step that edits regex's manifest between the two commands
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8996191Z samples: DECLINED corpus console principles/exercises/ch26/EXERCISES.md:127 [file]: two things, and the file is the second. `wolf build count.lu && ./count` ends in a `Verb::Local`, which the corpus rule refuses outright — the same widening the `binary-or-shell` rows below wait on. After that it needs `count.lu`, `one.txt` and `two.txt` with exactly the byte, word and line counts the transcript prints — wolf-book#29 §2 (premise corrected at bs44), retires at the `Verb::Local` widening for corpus blocks, then the ch26 fixture
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.8999022Z samples: DECLINED corpus console principles/exercises/ch30/EXERCISES.md:84 [binary-or-shell]: the corpus rule to admit a binary `wolf build` just produced — `./ex30-3` names no solution, it names a link product — wolf-book#29 §5, retires at the `Verb::Local` widening for corpus blocks (the book lane already runs it on unix)
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9001482Z samples: DECLINED corpus console principles/exercises/ch30/EXERCISES.md:113 [binary-or-shell]: the corpus rule to admit a binary `wolf build` just produced — `./ex30-4` names no solution, it names a link product — wolf-book#29 §5, retires at the `Verb::Local` widening for corpus blocks (the book lane already runs it on unix)
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9004363Z samples: DECLINED corpus console principles/EXERCISES.md:376 [typed]: an expression to type — exercise 2-1's three `lupin eval '…'` prompts have no file behind them, and the exemplar batch checks in no `ex2-1.lu` for them to name. The exercise declares its own machine as `lupin REPL` in its taxonomy line, so this is a REPL block written in `eval`'s spelling; it wants exactly what ch02:81 and ch02:101 want — wolf-book#44, retires at the `eval` widening (with ch02:81 and ch02:101), or wolf-interp is08 if the REPL lane takes all three
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9006338Z samples: samples-declined.toml: 18 declared row(s) — 5 file, 7 typed, 6 binary-or-shell (wolf-book#29)
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9007000Z samples: corpus console declines on linux: 18 DECLINED + 0 OFF-LANE = 18 raw (wolf-book#49)
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9007766Z samples: SKIP pending(is08): 12 wolf-repl block(s) counted, not replayed — the REPL replay lane lands with wolf-interp is08
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9008606Z samples: 2 warning set(s) asserted by warns(…); 30 sample(s) warn with no warns(…) directive (report-only, wolf-book#21)
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9009143Z samples: WARNS undeclared appx/exB-11 [W1301]
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9009476Z samples: WARNS undeclared appx/exB-5 [W1002]
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9009783Z samples: WARNS undeclared appx/exC-2 [W1003]
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9010092Z samples: WARNS undeclared ch03/ex3-14b [E0802]
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9010401Z samples: WARNS undeclared ch03/ex3-2 [W1003]
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9010700Z samples: WARNS undeclared ch07/ex7-1 [W1003]
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9011003Z samples: WARNS undeclared ch07/ex7-3 [W1003]
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9011399Z samples: WARNS undeclared ch10/ex10-6 [W0603]
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9011718Z samples: WARNS undeclared ch10/ex10-7 [W0603]
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9012026Z samples: WARNS undeclared ch12/ex12-11 [W0601]
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9012354Z samples: WARNS undeclared ch13/ex13-3 [W1101, W1102]
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9012675Z samples: WARNS undeclared ch13/ex13-5 [W0603]
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9012969Z samples: WARNS undeclared ch13/ex13-7 [W0402]
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9013267Z samples: WARNS undeclared ch17/ex17-6 [W0603]
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9013615Z samples: WARNS undeclared ch22/calc/main [W0314, W0602, W0603]
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9014146Z samples: WARNS undeclared ch22/clash/main [W0314]
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9014504Z samples: WARNS undeclared ch22/wordcount/main [W0314]
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9014832Z samples: WARNS undeclared ch27/ex27-1 [W0603]
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9015123Z samples: WARNS undeclared ch27/ex27-2 [W0603]
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9015422Z samples: WARNS undeclared ch27/ex27-3 [W0603]
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9015714Z samples: WARNS undeclared ch27/ex27-4 [W0603]
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9016010Z samples: WARNS undeclared ch27/ex27-6 [W0603]
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9016319Z samples: WARNS undeclared book/ch02/s5 [W0309]
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9016624Z samples: WARNS undeclared book/ch07/s2 [W1003]
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9016924Z samples: WARNS undeclared book/ch07/s4 [W1003]
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9017222Z samples: WARNS undeclared book/ch07/s5 [W1003]
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9017550Z samples: WARNS undeclared book/ch12/s10 [W0601]
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9017866Z samples: WARNS undeclared book/ch13/s1 [W1101]
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9018194Z samples: WARNS undeclared book/ch13/s5 [W1101, W1102]
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9018531Z samples: WARNS undeclared book/ch27/part-rpn [W0603]
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9018930Z samples: exported 403 corpus programs to samples/export/corpus/book/
+samples (ubuntu-latest)	run every sample	2026-10-23T14:11:56.9863529Z ##[error]Process completed with exit code 1.
+samples (ubuntu-latest)	Post Run actions/checkout@v4	﻿2026-10-23T14:11:57.5380624Z Post job cleanup.
+samples (ubuntu-latest)	Post Run actions/checkout@v4	2026-10-23T14:11:59.8014519Z [command]/usr/bin/git version
+samples (ubuntu-latest)	Post Run actions/checkout@v4	2026-10-23T14:11:59.8068968Z git version 2.55.0
+samples (ubuntu-latest)	Post Run actions/checkout@v4	2026-10-23T14:11:59.8110342Z Temporarily overriding HOME='/home/runner/work/_temp/52725979-f447-4659-9782-7a6752867243' before making global git config changes
+samples (ubuntu-latest)	Post Run actions/checkout@v4	2026-10-23T14:11:59.8111880Z Adding repository directory to the temporary git global config as a safe directory
+samples (ubuntu-latest)	Post Run actions/checkout@v4	2026-10-23T14:11:59.8116567Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/wolf-book/wolf-book/wolf-book
+samples (ubuntu-latest)	Post Run actions/checkout@v4	2026-10-23T14:11:59.8163187Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+samples (ubuntu-latest)	Post Run actions/checkout@v4	2026-10-23T14:11:59.8204111Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+samples (ubuntu-latest)	Post Run actions/checkout@v4	2026-10-23T14:11:59.8521538Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+samples (ubuntu-latest)	Post Run actions/checkout@v4	2026-10-23T14:11:59.8552905Z http.https://github.com/.extraheader
+samples (ubuntu-latest)	Post Run actions/checkout@v4	2026-10-23T14:11:59.8565342Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+samples (ubuntu-latest)	Post Run actions/checkout@v4	2026-10-23T14:11:59.8606839Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+samples (ubuntu-latest)	Post Run actions/checkout@v4	2026-10-23T14:11:59.8902188Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+samples (ubuntu-latest)	Post Run actions/checkout@v4	2026-10-23T14:11:59.8936319Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+samples (ubuntu-latest)	Complete job	﻿2026-10-23T14:11:59.9378855Z Cleaning up orphan processes
+samples (ubuntu-latest)	Complete job	2026-10-23T14:11:59.9784311Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

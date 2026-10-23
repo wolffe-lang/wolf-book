@@ -1,0 +1,12 @@
+affinity [0, 1, 2, 3]
+SigBlk:	0000000000000000
+SigIgn:	0000000000000000
+{"sample": "s13", "release": false, "exit": 0, "stdout": "the child: answered (0, -1), its count 2\nthe parent: its count 1, the child's status 3\nthe parent was answered a pid and a handle: true\n", "stderr": ""}
+{"sample": "s13", "release": true, "exit": 0, "stdout": "the child: answered (0, -1), its count 2\nthe parent: its count 1, the child's status 3\nthe parent was answered a pid and a handle: true\n", "stderr": ""}
+{"sample": "s14", "release": false, "exit": 0, "stdout": "a task live: busy\nevery task joined: a child, its status 0\n", "stderr": ""}
+{"sample": "s14", "release": true, "exit": 0, "stdout": "a task live: busy\nevery task joined: a child, its status 0\n", "stderr": ""}
+{"sample": "s15", "release": false, "exit": 0, "stdout": "nothing came: (-1, 0), and 25 ms passed: true\na byte waits in the pipe: (0, 0)\na resize beside it comes first: true\n", "stderr": ""}
+{"sample": "s15", "release": true, "exit": 0, "stdout": "nothing came: (-1, 0), and 25 ms passed: true\na byte waits in the pipe: (0, 0)\na resize beside it comes first: true\n", "stderr": ""}
+{"sample": "s16", "release": false, "exit": 0, "stdout": "the temporary name, made again: exists\nsaved: new\ndrafts/.. is this directory: true\na name nothing holds: not_found\n", "stderr": ""}
+{"sample": "s16", "release": true, "exit": 0, "stdout": "the temporary name, made again: exists\nsaved: new\ndrafts/.. is this directory: true\na name nothing holds: not_found\n", "stderr": ""}
+ALL EIGHT CONSTRAINED PROCESS/SIGNAL RUNS PASS
