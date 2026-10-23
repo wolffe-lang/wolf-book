@@ -1,0 +1,26 @@
+before 672
+after 693
+removed: none
+retargeted: none
+added:
+abi.native.closure.object
+abi.native.enum
+conf.trap.stack
+mem.region.outer-write
+mem.region.scalar
+os.fs.access
+os.fs.fstat.record
+os.fs.gaps.note
+os.fs.lock
+os.fs.mkfifo
+os.fs.nonblock
+os.fs.open.nofollow
+os.proc.adopt
+os.proc.core
+os.process.calls.note
+os.signal.host.reserved
+os.signal.wait.write
+os.uname
+type.list.reserve
+type.list.reset
+type.list.storage
