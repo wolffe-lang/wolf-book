@@ -305,7 +305,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §9.8 — The four-tier picture | 9-12 | design | prose |
 | Chapter batch | 9-13 | extension (break-it-on-purpose) · lupin | run (lupin) |
 | Chapter batch | 9-14 | comprehension · lupin | run (lupin) |
-| Chapter batch | 9-15 | fingers · lupin | run (lupin) |
+| Chapter batch | 9-15 | fingers · lupin | run (wolf + lupin) |
 
 ## ch10 — 10 exercises
 
