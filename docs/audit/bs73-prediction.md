@@ -39,15 +39,27 @@ Neither named lane checkout was pre-staged; create both at origin/trunk.
 
 ## Evidence index
 
-- Initial inventory and reproduction: pending first measurement.
-- Exercise-by-exercise errors and outcomes: pending first measurement.
+- Initial inventory: `bs73-evidence/measurement-summary.txt`, `census.json`,
+  `wl70-comparison.json`; exact commands in `ctr.sh` and `census.py`.
+  Control 591cd5d0779764b7bf043ebe712ec52e1e356aa5.
+  Baseline: `baseline-samples.log`, 537 samples, 534 pass, 3 existing pending,
+  0 failures, 0 flips; 506/526 console blocks replayed.
+- All 33 wl70 anomalies: `bs73-evidence/exercise-table.tsv`. The eighteen
+  `fail` rows split into eleven native rejections and seven UB-oracle
+  mismatches; ten additional native refusals are explicit one-machine or
+  existing pending samples. No exercise repair is owed by the book rig.
+  The orchestrator explicitly confirmed that intentional trap demonstrations
+  must remain unchanged. wollf#43 already owns `run(exit=nonzero)` parsing.
+- #89 is already satisfied by bs72 commit 3e51c7e: the Mode literal names
+  all ten fields and passes untouched. Verify again at the final head.
 - Final samples, tiers, generated index, anchor/catalogue counts: pending.
 - CI plant, final run id and lane-audit: pending.
 
 ## Done-when
 
-- [ ] Initial census committed before exercise changes.
-- [ ] Each measured exercise addressed in its own commit, error quoted.
+- [x] Initial census committed before exercise changes.
+- [x] No exercise edits: all eleven rejections and ten refusals are declared
+  one-machine/pending samples; the table quotes their native diagnostics.
 - [ ] Five std wrappers and term.Mode fields built at the pin.
 - [ ] Samples and tiers checked; generated index current; no unrelated flips.
 - [ ] README read; counts and anchor/catalogue key sets verified.

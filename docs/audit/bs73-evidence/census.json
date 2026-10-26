@@ -1,0 +1,2270 @@
+[
+  {
+    "file": "principles/exercises/appx/exB-1.lu",
+    "claim": "run(exit=trap(overflow))",
+    "status": "ran",
+    "exit": 134,
+    "seconds": 0.06,
+    "stdout": "",
+    "stderr": "wolf-trap: overflow\n  at ./principles/exercises/appx/exB-1.lu:6:5\n"
+  },
+  {
+    "file": "principles/exercises/appx/exB-11.lu",
+    "claim": "lupin-run(exit=trap(ub))",
+    "status": "ran",
+    "exit": 70,
+    "seconds": 0.056,
+    "stdout": "",
+    "stderr": "warning[W1301]: this `unsafe` block does not state its invariant\n --> ./principles/exercises/appx/exB-11.lu:8:5\n  |\n8 |     unsafe {\n  |     ^^^^^^ add a `# Safety:` comment\n  |\n  = note: the block discharges a proof obligation the checker cannot; write the invariant down for\n    the auditors who will read this ring (`// # Safety: \u2026` above the block).\n\n"
+  },
+  {
+    "file": "principles/exercises/appx/exB-2.lu",
+    "claim": "run(exit=trap(div-zero))",
+    "status": "ran",
+    "exit": 134,
+    "seconds": 0.056,
+    "stdout": "",
+    "stderr": "wolf-trap: div-zero\n  at ./principles/exercises/appx/exB-2.lu:7:5\n"
+  },
+  {
+    "file": "principles/exercises/appx/exB-3.lu",
+    "claim": "run(exit=trap(bounds))",
+    "status": "ran",
+    "exit": 134,
+    "seconds": 0.062,
+    "stdout": "",
+    "stderr": "wolf-trap: bounds\n  at ./principles/exercises/appx/exB-3.lu:7:5\n"
+  },
+  {
+    "file": "principles/exercises/appx/exB-4.lu",
+    "claim": "lupin-run(exit=trap(use-after-move))",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.002,
+    "stdout": "",
+    "stderr": "error[E1001]: `s` is used here after its value moved away\n --> ./principles/exercises/appx/exB-4.lu:7:11\n  |\n6 |     let t = move s\n  |                  - `s` moved here\n7 |     print(s)\n  |           ^ used after the move\n  |\n  = note: re-initializing the place (assigning to it) also makes it usable again.\nhelp: to keep the original, copy it at the move\n  |\n6 |     let t = move copy s\n  |\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E1001` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/appx/exB-5.lu",
+    "claim": "lupin-run(exit=trap(exclusivity))",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.002,
+    "stdout": "",
+    "stderr": "warning[W1002]: `i` is `mut`, and the body never writes it\n --> ./principles/exercises/appx/exB-5.lu:6:9\n  |\n6 | fn wide(mut i: Inner, mut n: int) { n += 1 }\n  |         ^^^ writeback nothing uses\n  |\n  = note: every call site surrenders exclusive access for a write that never happens; the read\n    default is the honest mode.\nhelp: drop the `mut` here and at every call site \u2014 the parameter is never written\n  |\n6 | fn wide(i: Inner, mut n: int) { n += 1 }\n9 |     wide(p.a, mut p.a.n)\n  |\n\nerror[E1002]: `p.a.n` cannot go `mut` here: it overlaps `p.a`, already passed `mut` in this call\n --> ./principles/exercises/appx/exB-5.lu:9:23\n  |\n9 |     wide(mut p.a, mut p.a.n)\n  |              --- `p.a` is passed `mut` here\n  |                       ^^^^^ second exclusive claim on the same place\n  |\n  = note: `p.a.n` is inside `p.a` \u2014 a path and its prefix conflict [mem.model.path.disjoint].\n    Disjoint fields (`x.a` with `x.b`) are fine together.\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E1002` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/appx/exB-6.lu",
+    "claim": "lupin-run(exit=trap(region-fault))",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.002,
+    "stdout": "",
+    "stderr": "error[E0804]: `reserve` takes its receiver `mut`, but the call site does not say so\n --> ./principles/exercises/appx/exB-6.lu:9:13\n  |\n9 |     let h = p.reserve()\n  |             ^ write the mode here: `(mut \u2026)`\n  |               ------- `reserve` declares `mut self` here\n  |\n  = note: the receiver mirrors argument modes: exclusive or consuming access is spelled where the\n    reader can see it.\nhelp: spell the receiver mode: `(mut \u2026)`\n  |\n9 |     let h = (mut p).reserve()\n  |\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E0804` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/appx/exB-7.lu",
+    "claim": "lupin-run(exit=trap(stale-handle))",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.01,
+    "stdout": "",
+    "stderr": "error[E0804]: `reserve` takes its receiver `mut`, but the call site does not say so\n --> ./principles/exercises/appx/exB-7.lu:8:17\n  |\n8 |         let h = pool.reserve()\n  |                 ^^^^ write the mode here: `(mut \u2026)`\n  |                      ------- `reserve` declares `mut self` here\n  |\n  = note: the receiver mirrors argument modes: exclusive or consuming access is spelled where the\n    reader can see it.\nhelp: spell the receiver mode: `(mut \u2026)`\n  |\n8 |         let h = (mut pool).reserve()\n  |\n\nerror[E0804]: `init` takes its receiver `mut`, but the call site does not say so\n --> ./principles/exercises/appx/exB-7.lu:9:9\n  |\n9 |         pool.init(h, Node { value: 1 })\n  |         ^^^^ write the mode here: `(mut \u2026)`\n  |              ---- `init` declares `mut self` here\n  |\nhelp: spell the receiver mode: `(mut \u2026)`\n  |\n9 |         (mut pool).init(h, Node { value: 1 })\n  |\n\nerror[E0804]: `remove` takes its receiver `mut`, but the call site does not say so\n  --> ./principles/exercises/appx/exB-7.lu:10:9\n   |\n10 |         pool.remove(h)\n   |         ^^^^ write the mode here: `(mut \u2026)`\n   |              ------ `remove` declares `mut self` here\n   |\nhelp: spell the receiver mode: `(mut \u2026)`\n   |\n10 |         (mut pool).remove(h)\n   |\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E0804` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/appx/exB-8.lu",
+    "claim": "run(exit=trap(assert))",
+    "status": "ran",
+    "exit": 134,
+    "seconds": 0.062,
+    "stdout": "",
+    "stderr": "wolf-trap: assert\n  at ./principles/exercises/appx/exB-8.lu:6:5\n"
+  },
+  {
+    "file": "principles/exercises/appx/exB-9.lu",
+    "claim": "lupin-run(exit=trap(deadlock))",
+    "status": "timeout",
+    "exit": null,
+    "seconds": 8.01,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/appx/exC-2.lu",
+    "claim": "fail(E1001)",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.003,
+    "stdout": "",
+    "stderr": "warning[W1003]: `s` is taken, never touched, and returned\n --> ./principles/exercises/appx/exC-2.lu:5:10\n  |\n5 | fn claim(take s: str) -> str { s }\n  |          ^^^^ consumption that consumes nothing\n  |\n  = note: the caller gives the value up only to receive it back; if callers could reasonably keep\n    it, the signature is wrong.\nhelp: drop the `take` and hand back `copy s` (call sites drop theirs and keep their binding; a `read` parameter returned without the `copy` is E1002, #366)\n  |\n5 | fn claim(s: str) -> str { s }\n  |\n\nerror[E1001]: `d.name` is used here after its value moved away\n --> ./principles/exercises/appx/exC-2.lu:9:11\n  |\n8 |     let a = claim(take d.name)\n  |                        ------ `d.name` moved here\n9 |     print(d.name)\n  |           ^^^^^^ used after the move\n  |\n  = note: re-initializing the place (assigning to it) also makes it usable again.\nhelp: to keep the original, copy it at the move\n  |\n8 |     let a = claim(take copy d.name)\n  |\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E1001` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch01/ex1-1.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.056,
+    "stdout": "hello, wolf\nthe moon is up\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch01/ex1-10.lu",
+    "claim": "run(exit=8, stdout=\"counted\")",
+    "status": "ran",
+    "exit": 8,
+    "seconds": 0.062,
+    "stdout": "counted\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch01/ex1-11.lu",
+    "claim": "run(exit=0, stdout=\"26 the moon watches the ridge\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.054,
+    "stdout": "26 the moon watches the ridge\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch01/ex1-2.lu",
+    "claim": "run(exit=3)",
+    "status": "ran",
+    "exit": 3,
+    "seconds": 0.051,
+    "stdout": "working\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch01/ex1-3.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.048,
+    "stdout": "hello, reader \u2014 42 is still 42\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch01/ex1-5.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.056,
+    "stdout": "0\t-17\n20\t-6\n40\t4\n60\t15\n80\t26\n100\t37\n120\t48\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch01/ex1-6.lu",
+    "claim": "fail(E0202)",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.001,
+    "stdout": "",
+    "stderr": "error[E0202]: this `{` is never closed\n --> ./principles/exercises/ch01/ex1-6.lu:4:19\n  |\n4 | fn main() -> !int {\n  |                   ^ opened here\n...\n7 | \n  | - the parser expected the closing `}` by here\n  |\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E0202` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch01/ex1-9.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.05,
+    "stdout": " -20    -4\n -10    14\n   0    32\n  10    50\n  20    68\n  30    86\n  40   104\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch02/ex2-10.lu",
+    "claim": "run(exit=0, stdout=\"eht flow snur\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.055,
+    "stdout": "eht flow snur\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch02/ex2-11.lu",
+    "claim": "run(exit=0, stdout=\"hwlng t th mn\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.058,
+    "stdout": "hwlng t th mn\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch02/ex2-12.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.058,
+    "stdout": "******DEN LOG*******\n******DEN LOG*******\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch02/ex2-13.lu",
+    "claim": "run(exit=0, stdout=\"howl<tab>at<nl>the moon\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.05,
+    "stdout": "howl<tab>at<nl>the moon\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch02/ex2-14.lu",
+    "claim": "run(exit=0, stdout=\"[a   bb  ccc]\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.06,
+    "stdout": "[a   bb  ccc]\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch02/ex2-15.lu",
+    "claim": "run(exit=0, stdout=\"[a<tab>bb<tab>ccc]\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.06,
+    "stdout": "[a<tab>bb<tab>ccc]\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch02/ex2-2.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.051,
+    "stdout": "wolf         1\nmarmot       2\nelk          3\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch02/ex2-3.lu",
+    "claim": "run(exit=trap(bounds))",
+    "status": "ran",
+    "exit": 134,
+    "seconds": 0.055,
+    "stdout": "",
+    "stderr": "wolf-trap: bounds\n  at ./principles/exercises/ch02/ex2-3.lu:6:5\n"
+  },
+  {
+    "file": "principles/exercises/ch02/ex2-4.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.052,
+    "stdout": "6 words, 2 lines, 31 bytes\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch02/ex2-7.lu",
+    "claim": "run(exit=0, stdout=\"a3b1c2\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.049,
+    "stdout": "a3b1c2\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch02/ex2-9.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.123,
+    "stdout": "4 4\n2 1\n3 2\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch03/ex3-1.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.125,
+    "stdout": "many and odd\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch03/ex3-10.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.275,
+    "stdout": "  1      1\n  2     10\n  3     11\n  4    100\n  5    101\n  6    110\n  7    111\n  8   1000\n  9   1001\n 10   1010\n 11   1011\n 12   1100\n 13   1101\n 14   1110\n 15   1111\n 16  10000\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch03/ex3-11.lu",
+    "claim": "run(exit=0, stdout=\"low 4 high 31 mean 16\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.098,
+    "stdout": "low 4 high 31 mean 16\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch03/ex3-12.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.153,
+    "stdout": "161\n252\n343\n434\n525\n595\n616\n686\n707\n777\n868\n959\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch03/ex3-13.lu",
+    "claim": "lupin-run(exit=0, stdout=\"1024\")",
+    "status": "refused",
+    "exit": 4,
+    "seconds": 0.001,
+    "stdout": "",
+    "stderr": "wolf run: cannot compile this yet \u2014 `break` with a value (loop values) (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)\n --> ./principles/exercises/ch03/ex3-13.lu:9:30\n  |\n9 |         if p > limit { break p }\n  |                              ^\n  |\n"
+  },
+  {
+    "file": "principles/exercises/ch03/ex3-14.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.059,
+    "stdout": "1\n2\nfizz\n4\nbuzz\nfizz\n7\n8\nfizz\nbuzz\n11\nfizz\n13\n14\nfizzbuzz\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch03/ex3-14b.lu",
+    "claim": "run(exit=0, stdout=\"buzz\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.052,
+    "stdout": "buzz\n",
+    "stderr": "warning[E0802]: this arm can never match \u2014 the arms above already cover it\n --> ./principles/exercises/ch03/ex3-14b.lu:8:9\n  |\n7 |         (_, 0) => \"buzz\",\n  |         ------ this arm already matches those values\n8 |         (0, 0) => \"fizzbuzz\",\n  |         ^^^^^^ unreachable arm\n  |\n  = note: delete the arm, or reorder the arms so the more specific pattern comes first.\n\n"
+  },
+  {
+    "file": "principles/exercises/ch03/ex3-15.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.049,
+    "stdout": "31 29 28 30\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch03/ex3-2.lu",
+    "claim": "fail(E1001)",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.001,
+    "stdout": "",
+    "stderr": "warning[W1003]: `w` is taken, never touched, and returned\n --> ./principles/exercises/ch03/ex3-2.lu:6:10\n  |\n6 | fn adopt(take w: str) -> str { w }\n  |          ^^^^ consumption that consumes nothing\n  |\n  = note: the caller gives the value up only to receive it back; if callers could reasonably keep\n    it, the signature is wrong.\nhelp: drop the `take` and hand back `copy w` (call sites drop theirs and keep their binding; a `read` parameter returned without the `copy` is E1002, #366)\n  |\n6 | fn adopt(w: str) -> str { w }\n  |\n\nerror[E1001]: `p.lead` is used here after its value moved away\n  --> ./principles/exercises/ch03/ex3-2.lu:11:13\n   |\n 9 |     let a = adopt(take p.lead)\n   |                        ------ `p.lead` moved here\n10 |     let b = p.tail\n11 |     let c = p.lead\n   |             ^^^^^^ used after the move\n   |\n   = note: re-initializing the place (assigning to it) also makes it usable again.\nhelp: to keep the original, copy it at the move\n   |\n 9 |     let a = adopt(take copy p.lead)\n   |\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E1001` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch03/ex3-3.lu",
+    "claim": "run(exit=trap(overflow))",
+    "status": "ran",
+    "exit": 134,
+    "seconds": 0.059,
+    "stdout": "",
+    "stderr": "wolf-trap: overflow\n  at ./principles/exercises/ch03/ex3-3.lu:6:5\n"
+  },
+  {
+    "file": "principles/exercises/ch03/ex3-4.lu",
+    "claim": "run(exit=trap(div-zero))",
+    "status": "ran",
+    "exit": 134,
+    "seconds": 0.047,
+    "stdout": "",
+    "stderr": "wolf-trap: div-zero\n  at ./principles/exercises/ch03/ex3-4.lu:7:5\n"
+  },
+  {
+    "file": "principles/exercises/ch03/ex3-6.lu",
+    "claim": "run(exit=trap(overflow))",
+    "status": "ran",
+    "exit": 134,
+    "seconds": 0.046,
+    "stdout": "",
+    "stderr": "wolf-trap: overflow\n  at ./principles/exercises/ch03/ex3-6.lu:6:5\n"
+  },
+  {
+    "file": "principles/exercises/ch03/ex3-7.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.086,
+    "stdout": "-3 -1\n-7\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch03/ex3-8.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.256,
+    "stdout": "ada grace\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch03/ex3-8b.lu",
+    "claim": "fail(E0410)",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.001,
+    "stdout": "",
+    "stderr": "error[E0410]: `n` is bound with `let`, so it cannot be assigned again\n --> ./principles/exercises/ch03/ex3-8b.lu:7:5\n  |\n6 |     let n = 1\n  |     --- the binding is made immutable here\n7 |     n = 2\n  |     ^ this assignment needs a mutable binding\n  |\n  = note: `let` names a value once. Declare the binding with `var` to update it in place, or\n    shadow it with a second `let` if the next value is really a new thing.\nhelp: make the binding mutable: `var`\n  |\n6 |     var n = 1\n  |\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E0410` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch03/ex3-9.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.261,
+    "stdout": "1\n2\nhowl\n4\nscratch\nhowl\n7\n8\nhowl\nscratch\n11\nhowl\n13\n14\nhowlscratch\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch04/ex4-1.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.105,
+    "stdout": "40\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch04/ex4-10.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.101,
+    "stdout": "[howl]\n[den]\n[moon]\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch04/ex4-11.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.054,
+    "stdout": "monday\nsaturday\nsunday\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch04/ex4-2.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.047,
+    "stdout": "body\nsecond registered\nfirst registered\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch04/ex4-5.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.049,
+    "stdout": "21\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch04/ex4-6.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.057,
+    "stdout": "one\n10\ntwo\none\n20\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch04/ex4-7.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.052,
+    "stdout": "60 61\n365 366\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch04/ex4-8.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.05,
+    "stdout": "  1    0\n  2    1\n  3    7\n  4    2\n  5    5\n  6    8\n  7   16\n  8    3\n  9   19\n 10    6\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch04/ex4-9.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.056,
+    "stdout": "   40 -> 40\n  -12 -> 0\n  130 -> 100\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch05/ex5-1.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.051,
+    "stdout": "top=3 len=2\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch05/ex5-11.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.054,
+    "stdout": "wwwwoooolf -> w4o4l1f1 -> wwwwoooolf\naaaaaaaaaaab -> a11b1 -> aaaaaaaaaaab\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch05/ex5-12.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.063,
+    "stdout": " 1 #\n 2 \n 3 ###\n 4 #####\n 5 ##\n 6 #\n 7 #\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch05/ex5-13.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.056,
+    "stdout": "2\n-1\n-1\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch05/ex5-14.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.055,
+    "stdout": "drink        340\npastry       275\nstew         900\ntotal       1515\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch05/ex5-15.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.059,
+    "stdout": "the wolf\nruns the\nlong ridge\npast the\nfrozen creek\nat dusk\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch05/ex5-16.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.057,
+    "stdout": "espresso    340\npastry      275\ntip         100\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch05/ex5-17.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.055,
+    "stdout": "3 rows, 715 cents\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch05/ex5-2.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.056,
+    "stdout": "wolf      4\nmarmot    5\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch05/ex5-3.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.057,
+    "stdout": "awoo -1\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch05/ex5-4.lu",
+    "claim": "run(exit=trap(bounds))",
+    "status": "ran",
+    "exit": 134,
+    "seconds": 0.058,
+    "stdout": "",
+    "stderr": "wolf-trap: bounds\n  at ./principles/exercises/ch05/ex5-4.lu:7:5\n"
+  },
+  {
+    "file": "principles/exercises/ch05/ex5-6.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.113,
+    "stdout": "   3 howl\n   2 scratch\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch05/ex5-7.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.231,
+    "stdout": "top: ada 91\naverage: 81\nada       91  above\ngrace     78  below\nlinus     84  above\nmira      69  below\nno students in the block\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch05/ex5-8.lu",
+    "claim": "run(exit=0, stdout=\"marmot 5\")",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.008,
+    "stdout": "",
+    "stderr": "error[E0401]: this is `int`, but the closure's context needs `bool`\n --> ./principles/exercises/ch05/ex5-8.lu:9:47\n  |\n9 |     for (name, n) in scores.pairs().sorted_by(fn(a, b) b.1 <=> a.1).take(1) {\n  |                                               ^^^^^^^^^^^^^^^^^^^^ found `int` here\n  |                                               -------------------- the closure starts here\n  |\n  = note: expected `bool`, found `int`\n  = note: wolf has no truthiness: write the comparison out, e.g. `x != 0`.\n\nerror[E0403]: `List[(str, int)]` has no method named `take`\n --> ./principles/exercises/ch05/ex5-8.lu:9:69\n  |\n9 |     for (name, n) in scores.pairs().sorted_by(fn(a, b) b.1 <=> a.1).take(1) {\n  |                                                                     ^^^^ `take` is the ownership verb, never a method\n  |\n  = note: the first `n` elements are the slice `xs[..n]`, which faults `bounds` past the end, and\n    `xs[..min(n, xs.len)]` stops at it; the rest after them is `xs[n..]`\n    ([type.method.take]).\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E0401` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch06/ex6-1.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.1,
+    "stdout": "a=42 b=7\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch06/ex6-10.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.119,
+    "stdout": "8 words, 5 of length 4+\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch06/ex6-11.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.119,
+    "stdout": "340 -> 340\n0 -> 0\n-275 -> -275\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch06/ex6-12.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.059,
+    "stdout": "[w4o4l1f1] -> wwwwoooolf\n[] refused: empty\n[4w] refused: bad run\n[w0] refused: bad run\n[ab2] refused: bad run\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch06/ex6-13.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.059,
+    "stdout": "2026-08-31   ok: day 31 of month 8, 2026\n2024-02-29   ok: day 29 of month 2, 2024\n2026-02-29   refused: no such day\n2026-13-01   refused: no such month\nsoon         refused: not a date shape\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch06/ex6-14.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.059,
+    "stdout": "14\nshort stack: none\n-1\nnot a number: parse\n-1\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch06/ex6-15.lu",
+    "claim": "run(exit=0, stdout=\"7 -4 -99\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.051,
+    "stdout": "7 -4 -99\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch06/ex6-2.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.058,
+    "stdout": "a=43 b=-2\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch06/ex6-3.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.055,
+    "stdout": "v=-4\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch06/ex6-4.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.056,
+    "stdout": "bad digit `x` at byte 1\nv=-1\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch06/ex6-5.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.051,
+    "stdout": "a=2\ncleanup ran\nb=-1\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch06/ex6-6.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.055,
+    "stdout": "7 -4 -99\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch06/ex6-7.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.056,
+    "stdout": "alpha\nbeta\nwanted 5, file has 3\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch06/ex6-9.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.052,
+    "stdout": "0\nrefused: not a number\n-1\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch07/ex7-1.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.054,
+    "stdout": "ada lin grace\n",
+    "stderr": "warning[W1003]: `w` is taken, never touched, and returned\n --> ./principles/exercises/ch07/ex7-1.lu:5:10\n  |\n5 | fn adopt(take w: str) -> str { w }\n  |          ^^^^ consumption that consumes nothing\n  |\n  = note: the caller gives the value up only to receive it back; if callers could reasonably keep\n    it, the signature is wrong.\nhelp: drop the `take` and hand back `copy w` (call sites drop theirs and keep their binding; a `read` parameter returned without the `copy` is E1002, #366)\n  |\n5 | fn adopt(w: str) -> str { w }\n  |\n\n"
+  },
+  {
+    "file": "principles/exercises/ch07/ex7-13.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.055,
+    "stdout": "dot at 3\nring of 9\nstar of 5\n3 renders\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch07/ex7-15.lu",
+    "claim": "run(exit=0, stdout=\"2\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.056,
+    "stdout": "2\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch07/ex7-16.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.058,
+    "stdout": "  the wolf runs\n- the moon watches\n  the elk listens\n+ the river answers\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch07/ex7-17.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.057,
+    "stdout": "area 12\ntrue false\ntrue false\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch07/ex7-18.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.054,
+    "stdout": "HOWL SCRATCH\nHOWL SCRATCH\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch07/ex7-19.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.061,
+    "stdout": "the origin\n3 1\non the y axis\nanchored, 4 by 3\n3 by 4 at 3 1\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch07/ex7-2.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.056,
+    "stdout": "ada leads\nawoo still works\ngrace still here\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch07/ex7-20.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.061,
+    "stdout": "  host = kasumi\n- port = 80\n+ port = 8080\n  user = ada\n+ log = on\n3 of 5 lines changed; old still has 3\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch07/ex7-21.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.053,
+    "stdout": "2 -1 1 moves\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch07/ex7-22.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.234,
+    "stdout": "3: regions moves tokens\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch07/ex7-23.lu",
+    "claim": "fail(E1002)",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.002,
+    "stdout": "",
+    "stderr": "error[E1002]: `s` is the caller's value, and it is returned here while the caller still holds it\n  --> ./principles/exercises/ch07/ex7-23.lu:14:5\n   |\n 7 | fn longest(s: Shelf) -> Doc {\n   |            - `s` is declared without a mode \u2014 that spells `read`: lent for the call, and still the caller's after it\n...\n14 |     s.docs[best]\n   |     ^^^^^^^^^^^^ this would be a second live path to the value `s` was lent\n   |\n   = note: a `read` parameter is lent, never given [mem.tier0.mode.read]. Handing it on past the\n     call would leave two places able to write one value, with no `shared` spelled anywhere\n     [mem.tier0.excl.1]. Hand on an independent value with `copy`, or declare the parameter\n     `take` so the caller gives it up (call sites then spell `take`).\nhelp: to hand on an independent value, copy it at the move\n   |\n14 |     copy s.docs[best]\n   |\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E1002` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch07/ex7-23b.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.216,
+    "stdout": "moves, and the shelf still holds 3\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch07/ex7-3.lu",
+    "claim": "fail(E1001)",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.001,
+    "stdout": "",
+    "stderr": "warning[W1003]: `w` is taken, never touched, and returned\n --> ./principles/exercises/ch07/ex7-3.lu:5:8\n  |\n5 | fn eat(take w: str) -> str { w }\n  |        ^^^^ consumption that consumes nothing\n  |\n  = note: the caller gives the value up only to receive it back; if callers could reasonably keep\n    it, the signature is wrong.\nhelp: drop the `take` and hand back `copy w` (call sites drop theirs and keep their binding; a `read` parameter returned without the `copy` is E1002, #366)\n  |\n5 | fn eat(w: str) -> str { w }\n  |\n\nerror[E1001]: `s.a` is used here after its value moved away\n --> ./principles/exercises/ch07/ex7-3.lu:9:13\n  |\n8 |     let t = eat(take s.a)\n  |                      --- `s.a` moved here\n9 |     let u = s.a\n  |             ^^^ used after the move\n  |\n  = note: re-initializing the place (assigning to it) also makes it usable again.\nhelp: to keep the original, copy it at the move\n  |\n8 |     let t = eat(take copy s.a)\n  |\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E1001` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch07/ex7-4.lu",
+    "claim": "lupin-run(exit=trap(use-after-move))",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.001,
+    "stdout": "",
+    "stderr": "error[E1001]: `a.x` is used here after its value moved away\n --> ./principles/exercises/ch07/ex7-4.lu:8:13\n  |\n7 |     let b = a\n  |             - `a` moved here\n8 |     print(\"{a.x} {b.y}\")\n  |             ^^^ used after the move\n  |\n  = note: `a.x` is part of `a`; moving one empties the other. Disjoint fields stay usable.\n  = note: re-initializing the place (assigning to it) also makes it usable again.\nhelp: to keep the original, copy it at the move\n  |\n7 |     let b = copy a\n  |\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E1001` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch07/ex7-4b.lu",
+    "claim": "run(exit=0, stdout=\"1 2\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.128,
+    "stdout": "1 2\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch07/ex7-5.lu",
+    "claim": "fail(E1003)",
+    "status": "refused",
+    "exit": 4,
+    "seconds": 0.003,
+    "stdout": "",
+    "stderr": "wolf run: cannot compile this yet \u2014 borrow expressions (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)\n  --> ./principles/exercises/ch07/ex7-5.lu:10:13\n   |\n10 |     let p = &x\n   |             ^^\n   |\n"
+  },
+  {
+    "file": "principles/exercises/ch07/ex7-6.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.088,
+    "stdout": "1 2 -1\n3 of 4: 10 20 30\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch07/ex7-7.lu",
+    "claim": "run(exit=0, stdout=\"3 1\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.053,
+    "stdout": "3 1\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch07/ex7-8.lu",
+    "claim": "fail(E1002)",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.002,
+    "stdout": "",
+    "stderr": "error[E1002]: `n` cannot go `mut` here: it overlaps `n`, already passed `mut` in this call\n  --> ./principles/exercises/ch07/ex7-8.lu:10:22\n   |\n10 |     bump2(mut n, mut n)\n   |               - `n` is passed `mut` here\n   |                      ^ second exclusive claim on the same place\n   |\n   = note: the same place twice is never disjoint.\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E1002` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch07/ex7-9.lu",
+    "claim": "run(exit=0, stdout=\"16 18\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.052,
+    "stdout": "16 18\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch07/ex7-9b.lu",
+    "claim": "fail(E1002)",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.001,
+    "stdout": "",
+    "stderr": "error[E1002]: `p.a.n` cannot go `mut` here: it overlaps `p.a`, already passed `mut` in this call\n  --> ./principles/exercises/ch07/ex7-9b.lu:17:21\n   |\n17 |     f3(mut p.a, mut p.a.n)\n   |            --- `p.a` is passed `mut` here\n   |                     ^^^^^ second exclusive claim on the same place\n   |\n   = note: `p.a.n` is inside `p.a` \u2014 a path and its prefix conflict [mem.model.path.disjoint].\n     Disjoint fields (`x.a` with `x.b`) are fine together.\n\nerror[E1002]: `p.b` cannot go `mut` here: it overlaps `p`, already passed `mut` in this call\n  --> ./principles/exercises/ch07/ex7-9b.lu:18:19\n   |\n18 |     f4(mut p, mut p.b)\n   |            - `p` is passed `mut` here\n   |                   ^^^ second exclusive claim on the same place\n   |\n   = note: `p.b` is inside `p` \u2014 a path and its prefix conflict [mem.model.path.disjoint]. Disjoint\n     fields (`x.a` with `x.b`) are fine together.\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E1002` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch08/ex8-10.lu",
+    "claim": "lupin-run(exit=trap(region-fault))",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.002,
+    "stdout": "",
+    "stderr": "error[E0804]: `reserve` takes its receiver `mut`, but the call site does not say so\n --> ./principles/exercises/ch08/ex8-10.lu:9:13\n  |\n9 |     let h = p.reserve()\n  |             ^ write the mode here: `(mut \u2026)`\n  |               ------- `reserve` declares `mut self` here\n  |\n  = note: the receiver mirrors argument modes: exclusive or consuming access is spelled where the\n    reader can see it.\nhelp: spell the receiver mode: `(mut \u2026)`\n  |\n9 |     let h = (mut p).reserve()\n  |\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E0804` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch08/ex8-11.lu",
+    "claim": "run(exit=0, stdout=\"6\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.053,
+    "stdout": "6\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch08/ex8-12.lu",
+    "claim": "lupin-run(exit=trap(stale-handle))",
+    "status": "ran",
+    "exit": 134,
+    "seconds": 0.064,
+    "stdout": "",
+    "stderr": "wolf-trap: stale-handle\n  at ./principles/exercises/ch08/ex8-12.lu:11:9\n"
+  },
+  {
+    "file": "principles/exercises/ch08/ex8-15.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.061,
+    "stdout": "you are at the ridge\nyou are at the river bank\nyou are at the den\nyou are at the den\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch08/ex8-16.lu",
+    "claim": "run(exit=0, stdout=\"3 lines, 11 words\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.056,
+    "stdout": "3 lines, 11 words\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch08/ex8-17.lu",
+    "claim": "run(exit=0, stdout=\"seven eight nine\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.054,
+    "stdout": "seven eight nine\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch08/ex8-18.lu",
+    "claim": "run(exit=0, stdout=\"zero true | charged true | never down true | steady true\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.058,
+    "stdout": "zero true | charged true | never down true | steady true\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch08/ex8-19.lu",
+    "claim": "run(exit=trap(alloc-contract), stdout=\"at the measured budget: served\")",
+    "status": "ran",
+    "exit": 134,
+    "seconds": 0.051,
+    "stdout": "at the measured budget: served\n",
+    "stderr": "wolf-trap: alloc-contract\n"
+  },
+  {
+    "file": "principles/exercises/ch08/ex8-2.lu",
+    "claim": "run(exit=0, stdout=\"4950\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.051,
+    "stdout": "4950\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch08/ex8-3.lu",
+    "claim": "fail(E1010)",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.001,
+    "stdout": "",
+    "stderr": "error[E1010]: `keep` still holds a value allocated in region `tmp` when the region is freed\n --> ./principles/exercises/ch08/ex8-3.lu:8:9\n  |\n7 |     region tmp {\n  |            --- region `tmp` is created here\n8 |         keep = Node { value: 7, text: \"scratch\" }\n  |         ^^^^ the value flows out of the region here\n  |                ---------------------------------- allocated here, into region `tmp`\n9 |     }\n  |     - the region is freed here \u2014 everything in it is freed wholesale, as one unit\n  |\n  = note: a store into a value declared outside the block keeps nothing of the block when the\n    stored value names no region (a scalar, a literal) or is written `copy e` at the store:\n    that `copy` is a deep copy made in the outer value's region \u2014 the container's own for a\n    `push`, an index or `Map` store or a `List`/`Map` replaced, the region ambient where the\n    binding was declared for any other field [mem.region.outer-write].\n  = note: to keep the value, allocate it where it must live: build it outside the region block, or\n    aim the allocation at a longer-lived region explicitly (`let r = region()` \u2026 `in r { \u2026\n    }`); widening the region block to cover every use also works. When the block's own value\n    is what must outlive it, `copy region { \u2026 }` copies that value into the enclosing region\n    before the free ([mem.region.copyout]). Two keep-alive alternatives change the ownership\n    instead: `freeze` the region (immutable forever) or make the value a `shared` cell\n    (reference-counted, never dangles).\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E1010` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch08/ex8-5.lu",
+    "claim": "lupin-run(exit=trap(region-fault))",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.004,
+    "stdout": "",
+    "stderr": "error[E1005]: region `r` is open, so its handle cannot move or freeze\n  --> ./principles/exercises/ch08/ex8-5.lu:10:22\n   |\n 7 |     in r {\n   |     ------\n 8 |         var xs = List[int]()\n 9 |         (mut xs).push(1)\n10 |         ch.send(move r)?\n   |                      ^ the transfer happens inside the open window\n11 |         0\n12 |     }\n   | ----- region `r` is open here, until its block ends\n   |\n   = note: a region transfers or freezes as a closed subtree only \u2014 the open window pins its\n     handle. End the `region`/`in` block first, or move the value before opening the region.\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E1005` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch08/ex8-6.lu",
+    "claim": "run(exit=0, stdout=\"10 40\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.051,
+    "stdout": "10 40\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch08/ex8-7.lu",
+    "claim": "run(exit=0, stdout=\"c a\")",
+    "status": "refused",
+    "exit": 4,
+    "seconds": 0.006,
+    "stdout": "",
+    "stderr": "wolf run: cannot compile this yet \u2014 `==` on a container, tuple or handle (no `Eq` for these this edition) (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)\n  --> ./principles/exercises/ch08/ex8-7.lu:48:15\n   |\n48 |         while cur != tail {\n   |               ^^^\n   |\n"
+  },
+  {
+    "file": "principles/exercises/ch08/ex8-8.lu",
+    "claim": "fail(E1006)",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.001,
+    "stdout": "",
+    "stderr": "error[E1006]: `Node` holds a strong `shared` path back to itself\n --> ./principles/exercises/ch08/ex8-8.lu:4:27\n  |\n4 | struct Node { value: int, next: shared Node }\n  |                           ^^^^ this `shared` edge closes the cycle Node \u2192 Node\n  |\n  = note: strong `shared` references drop their target when the last count drops, so a strong\n    cycle would keep itself alive forever \u2014 and wolf has no cycle collector\n    ([mem.shared.rc.2]). Break the back-edge: make this field `weak Node` (upgrade to reach\n    the value without keeping it alive) or `handle Node` (a generational index that faults\n    if the target is gone). If the structure is genuinely cyclic, keep the whole graph in\n    one region instead \u2014 intra-region cycles are safe and freed wholesale\n    ([mem.region.intra.1]).\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E1006` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch08/ex8-9.lu",
+    "claim": "fail(E1012)",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.001,
+    "stdout": "",
+    "stderr": "error[E1012]: `cfg.limit` is frozen, so it cannot be assigned through\n --> ./principles/exercises/ch08/ex8-9.lu:7:5\n  |\n6 |     var cfg = freeze region { Config { limit: 42, name: \"shelf\" } }\n  |               ----------------------------------------------------- the freeze happens here \u2014 the promotion to `imm` is deep and permanent\n7 |     cfg.limit = 7\n  |     ^^^^^^^^^ this needs the data to be mutable\n  |\n  = note: `freeze` promotes the whole graph to `imm`: shareable from anywhere, forever, and never\n    writable again. Build the value completely before freezing it, or keep a mutable copy\n    (`copy`) alongside the frozen one.\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E1012` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch09/ex9-10.lu",
+    "claim": "run(exit=0, stdout=\"64 bytes out, declared\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.224,
+    "stdout": "64 bytes out, declared\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch09/ex9-13.lu",
+    "claim": "lupin-run(exit=trap(ub))",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.193,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch09/ex9-14.lu",
+    "claim": "lupin-run(exit=trap(ub))",
+    "status": "refused",
+    "exit": 4,
+    "seconds": 0.003,
+    "stdout": "",
+    "stderr": "wolf run: cannot compile this yet \u2014 indexing / generic application (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)\n  --> ./principles/exercises/ch09/ex9-14.lu:15:17\n   |\n15 |         words = counts[0] as int\n   |                 ^^^^^^^^^\n   |\n"
+  },
+  {
+    "file": "principles/exercises/ch09/ex9-15.lu",
+    "claim": "lupin-run(exit=0)",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.003,
+    "stdout": "",
+    "stderr": "error[E0415]: `305419896` does not fit `u8`\n --> ./principles/exercises/ch09/ex9-15.lu:7:13\n  |\n7 |     let n = 305419896\n  |             ^^^^^^^^^ u8 holds 0..=255\n  |\n  = note: an integer literal takes its type from context, and a binding without one defaults to\n    `i32` ([type.numlit.default]) \u2014 annotate a type that holds the value (`let n: i64 = \u2026`)\n\nerror[E0415]: `256` does not fit `u8`\n  --> ./principles/exercises/ch09/ex9-15.lu:15:20\n   |\n15 |         p[0] = n % 256\n   |                    ^^^ u8 holds 0..=255\n   |\n\nerror[E0415]: `256` does not fit `u8`\n  --> ./principles/exercises/ch09/ex9-15.lu:16:20\n   |\n16 |         p[1] = n / 256 % 256\n   |                    ^^^ u8 holds 0..=255\n   |\n\nerror[E0415]: `256` does not fit `u8`\n  --> ./principles/exercises/ch09/ex9-15.lu:16:26\n   |\n16 |         p[1] = n / 256 % 256\n   |                          ^^^ u8 holds 0..=255\n   |\n\nerror[E0415]: `65536` does not fit `u8`\n  --> ./principles/exercises/ch09/ex9-15.lu:17:20\n   |\n17 |         p[2] = n / 65536 % 256\n   |                    ^^^^^ u8 holds 0..=255\n   |\n\nerror[E0415]: `256` does not fit `u8`\n  --> ./principles/exercises/ch09/ex9-15.lu:17:28\n   |\n17 |         p[2] = n / 65536 % 256\n   |                            ^^^ u8 holds 0..=255\n   |\n\nerror[E0415]: `16777216` does not fit `u8`\n  --> ./principles/exercises/ch09/ex9-15.lu:18:20\n   |\n18 |         p[3] = n / 16777216 % 256\n   |                    ^^^^^^^^ u8 holds 0..=255\n   |\n\nerror[E0415]: `256` does not fit `u8`\n  --> ./principles/exercises/ch09/ex9-15.lu:18:31\n   |\n18 |         p[3] = n / 16777216 % 256\n   |                               ^^^ u8 holds 0..=255\n   |\n\nerror[E0401]: this is `u8`, but the other side of `==` makes it `int`\n  --> ./principles/exercises/ch09/ex9-15.lu:33:21\n   |\n33 |     print(\"{back == n}\")\n   |             ---- this operand fixed the type\n   |                     ^ found `u8` here\n   |\n   = note: expected `int`, found `u8`\n   = note: wolf never converts numbers implicitly; convert explicitly, e.g. `x as int`.\n\nerror[E0401]: this is `u8`, but the other side of `!=` makes it `int`\n  --> ./principles/exercises/ch09/ex9-15.lu:38:16\n   |\n38 |     if back != n { return 1 }\n   |        ---- this operand fixed the type\n   |                ^ found `u8` here\n   |\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E0415` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch09/ex9-2.lu",
+    "claim": "run(exit=0, stdout=\"5\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.179,
+    "stdout": "5\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch09/ex9-3.lu",
+    "claim": "lupin-run(exit=trap(ub))",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.057,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch09/ex9-4.lu",
+    "claim": "lupin-run(exit=trap(ub))",
+    "status": "ran",
+    "exit": 221,
+    "seconds": 0.055,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch09/ex9-5.lu",
+    "claim": "lupin-run(exit=trap(ub))",
+    "status": "ran",
+    "exit": 186,
+    "seconds": 0.056,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch09/ex9-6.lu",
+    "claim": "lupin-run(exit=trap(ub))",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.055,
+    "stdout": "0\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch09/ex9-7a.lu",
+    "claim": "lupin-run(exit=0)",
+    "status": "refused",
+    "exit": 4,
+    "seconds": 0.004,
+    "stdout": "",
+    "stderr": "wolf run: cannot compile this yet \u2014 indexing / generic application (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)\n  --> ./principles/exercises/ch09/ex9-7a.lu:13:17\n   |\n13 |         let v = b[0] as int\n   |                 ^^^^\n   |\n"
+  },
+  {
+    "file": "principles/exercises/ch09/ex9-7b.lu",
+    "claim": "lupin-run(exit=trap(ub))",
+    "status": "refused",
+    "exit": 4,
+    "seconds": 0.004,
+    "stdout": "",
+    "stderr": "wolf run: cannot compile this yet \u2014 indexing / generic application (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)\n  --> ./principles/exercises/ch09/ex9-7b.lu:13:17\n   |\n13 |         let v = b[0] as int\n   |                 ^^^^\n   |\n"
+  },
+  {
+    "file": "principles/exercises/ch09/ex9-8.lu",
+    "claim": "run(exit=0, stdout=\"64 bytes out, and not a pointer in sight\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.052,
+    "stdout": "64 bytes out, and not a pointer in sight\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch09/ex9-9.lu",
+    "claim": "lupin-run(exit=trap(ub))",
+    "status": "ran",
+    "exit": 5,
+    "seconds": 0.052,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch10/ex10-1.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.057,
+    "stdout": "total=42\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch10/ex10-2.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.053,
+    "stdout": "child speaks\nmain speaks\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch10/ex10-3.lu",
+    "claim": "run(exit=7)",
+    "status": "ran",
+    "exit": 7,
+    "seconds": 0.06,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch10/ex10-4.lu",
+    "claim": "lupin-run(exit=trap(deadlock))",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.003,
+    "stdout": "",
+    "stderr": "error[E0401]: this is `()`, but the closure's context needs `{integer}`\n  --> ./principles/exercises/ch10/ex10-4.lu:16:13\n   |\n14 |         s.spawn(fn() {\n   |                 ------\n15 |             let v = ch.recv() else |_| { return 0 }\n16 |             print(\"{v}\")\n   |             ^^^^^^^^^^^^ found `()` here\n17 |         })\n   | --------- the closure starts here\n   |\n   = note: expected `{integer}`, found `()`\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E0401` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch10/ex10-6.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.058,
+    "stdout": "join surfaced the error\n7\n",
+    "stderr": "warning[W0603]: the mark `Torn` is spelled CapCase\n --> ./principles/exercises/ch10/ex10-6.lu:4:28\n  |\n4 | fn risky(n: int) -> int ! {Torn} {\n  |                            ^^^^ reads as if there were data to destructure\n  |\n  = note: payload-free marks are lowercase bare words (`none`, `eof`, `parse`); CapCase is the\n    reader's signal that a payload waits inside.\n\n"
+  },
+  {
+    "file": "principles/exercises/ch10/ex10-7.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.057,
+    "stdout": "total=700\n",
+    "stderr": "warning[W0603]: the mark `Torn` is spelled CapCase\n --> ./principles/exercises/ch10/ex10-7.lu:5:28\n  |\n5 | fn risky(n: int) -> int ! {Torn} {\n  |                            ^^^^ reads as if there were data to destructure\n  |\n  = note: payload-free marks are lowercase bare words (`none`, `eof`, `parse`); CapCase is the\n    reader's signal that a payload waits inside.\n\n"
+  },
+  {
+    "file": "principles/exercises/ch10/ex10-8.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.055,
+    "stdout": "sibling cleanup ran\n42\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch10/ex10-9.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.053,
+    "stdout": "5 values through the pipeline\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch11/ex11-1.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.059,
+    "stdout": "60\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch11/ex11-2.lu",
+    "claim": "lupin-run(exit=trap(deadlock))",
+    "status": "timeout",
+    "exit": null,
+    "seconds": 8.009,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch11/ex11-4.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.053,
+    "stdout": "total=91\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch11/ex11-5.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.051,
+    "stdout": "worker 0 took job 1\nworker 0 took job 3\nworker 0 took job 4\nworker 1 took job 2\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch12/ex12-1.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.052,
+    "stdout": "total=30\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch12/ex12-10.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.048,
+    "stdout": "ok  when (a, b) { c[0] }\nBAD select { (a from q => { ) }\nok  ([{}])\nBAD ((\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch12/ex12-11.lu",
+    "claim": "run(exit=0, stdout=\"3 4 2 * + 6 3 / -\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.049,
+    "stdout": "3 4 2 * + 6 3 / -\n",
+    "stderr": "warning[W0601]: this `str ! {none}` result is discarded, error row and all\n  --> ./principles/exercises/ch12/ex12-11.lu:18:17\n   |\n18 |                 (mut ops).pop()\n   |                 ^^^^^^^^^^^^^^^ the block's value is `()`, so the value and its failure both vanish\n   |\n   = note: propagate it with `?`, handle it with `else`, or bind it away explicitly \u2014 `let _ = \u2026` \u2014\n     so the discard is visible.\n\nwarning[W0601]: this `str ! {none}` result is discarded, error row and all\n  --> ./principles/exercises/ch12/ex12-11.lu:27:9\n   |\n27 |         (mut ops).pop()\n   |         ^^^^^^^^^^^^^^^ the block's value is `()`, so the value and its failure both vanish\n   |\n\n"
+  },
+  {
+    "file": "principles/exercises/ch12/ex12-2.lu",
+    "claim": "lupin-run(exit=trap(deadlock))",
+    "status": "timeout",
+    "exit": null,
+    "seconds": 8.01,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch12/ex12-3.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.052,
+    "stdout": "timed out\ngot 9\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch12/ex12-4.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.047,
+    "stdout": "2\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch12/ex12-6.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.049,
+    "stdout": "evens 20, odds 16\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch12/ex12-8.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.047,
+    "stdout": "223\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch12/ex12-9.lu",
+    "claim": "fail(E0201)",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.003,
+    "stdout": "",
+    "stderr": "error[E0201]: `when` requires at least two operands \u2014 it acquires its whole set at once, so name every sync object the body touches in one `when` list\n  --> ./principles/exercises/ch12/ex12-9.lu:14:29\n   |\n14 |         s.spawn(fn() { when (a) { when (b) { a += 1 } } })\n   |                             ^^^\n   |\n\nerror[E0201]: `when` requires at least two operands \u2014 it acquires its whole set at once, so name every sync object the body touches in one `when` list\n  --> ./principles/exercises/ch12/ex12-9.lu:14:40\n   |\n14 |         s.spawn(fn() { when (a) { when (b) { a += 1 } } })\n   |                                        ^^^\n   |\n\nerror[E0201]: `when` requires at least two operands \u2014 it acquires its whole set at once, so name every sync object the body touches in one `when` list\n  --> ./principles/exercises/ch12/ex12-9.lu:15:29\n   |\n15 |         s.spawn(fn() { when (b) { when (a) { b += 1 } } })\n   |                             ^^^\n   |\n\nerror[E0201]: `when` requires at least two operands \u2014 it acquires its whole set at once, so name every sync object the body touches in one `when` list\n  --> ./principles/exercises/ch12/ex12-9.lu:15:40\n   |\n15 |         s.spawn(fn() { when (b) { when (a) { b += 1 } } })\n   |                                        ^^^\n   |\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E0201` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch13/ex13-1.lu",
+    "claim": "run(exit=0, stdout=\"285\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.046,
+    "stdout": "285\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch13/ex13-10.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.047,
+    "stdout": "3 2\n3\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch13/ex13-11.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.049,
+    "stdout": "4\n23\n-1\n28\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch13/ex13-2.lu",
+    "claim": "run(exit=0, stdout=\"285\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.045,
+    "stdout": "285\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch13/ex13-3.lu",
+    "claim": "fail(E1101)",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.003,
+    "stdout": "",
+    "stderr": "error[E1101]: this task writes to `hits`, which it captures from the enclosing function\n --> ./principles/exercises/ch13/ex13-3.lu:9:24\n  |\n9 |         s.spawn(fn() { hits += 1 })\n  |         --------------------------- the task's closure captures it at this spawn\n  |                        ^^^^ tasks cannot mutate captured state\n  |\n  = note: task captures are copies, `imm` shares, or region moves (D14) \u2014 never mutable windows\n    onto the parent's locals; two tasks writing one binding is the data race the memory\n    model forbids. Three ways out: send results over a `channel` and let one owner mutate;\n    guard truly shared state with a `Mutex` acquired in a `when` block; or give each task\n    its own copy and combine the results after the scope joins.\n\nwarning[W1101]: this write to `hits` stays inside the task\n --> ./principles/exercises/ch13/ex13-3.lu:9:24\n  |\n9 |         s.spawn(fn() { hits += 1 })\n  |                 ------------------ the closure captured it at spawn\n  |                        ^^^^ lands on the task's own copy\n  |\n  = note: task captures copy (or move); the enclosing binding never sees this assignment. Send the\n    result over a channel, or return it through the scope's join.\n\nerror[E1101]: this task writes to `hits`, which it captures from the enclosing function\n  --> ./principles/exercises/ch13/ex13-3.lu:10:24\n   |\n10 |         s.spawn(fn() { hits += 1 })\n   |         --------------------------- the task's closure captures it at this spawn\n   |                        ^^^^ tasks cannot mutate captured state\n   |\n\nwarning[W1101]: this write to `hits` stays inside the task\n  --> ./principles/exercises/ch13/ex13-3.lu:10:24\n   |\n10 |         s.spawn(fn() { hits += 1 })\n   |                 ------------------ the closure captured it at spawn\n   |                        ^^^^ lands on the task's own copy\n   |\n\nwarning[W1102]: the closure above captured `hits` by value, so it will not see this assignment\n  --> ./principles/exercises/ch13/ex13-3.lu:10:24\n   |\n 9 |         s.spawn(fn() { hits += 1 })\n   |                 ------------------ captured by value when this was created\n10 |         s.spawn(fn() { hits += 1 })\n   |                        ^^^^^^^^^ invisible to the closure\n   |\n   = note: closures copy their captures at creation; create the closure after the last assignment,\n     or pass the value as a call argument instead.\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E1101` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch13/ex13-4a.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.047,
+    "stdout": "1 then 2, sum 3\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch13/ex13-4b.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.049,
+    "stdout": "sum 3\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch13/ex13-5.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.049,
+    "stdout": "the wolf runs at dusk\na lone wolf watches\n2 match(es)\nempty pattern refused\n",
+    "stderr": "warning[W0603]: the mark `EmptyPattern` is spelled CapCase\n  --> ./principles/exercises/ch13/ex13-5.lu:15:50\n   |\n15 | fn grep(text: str, pattern: str) -> List[str] ! {EmptyPattern} {\n   |                                                  ^^^^^^^^^^^^ reads as if there were data to destructure\n   |\n   = note: payload-free marks are lowercase bare words (`none`, `eof`, `parse`); CapCase is the\n     reader's signal that a payload waits inside.\n\n"
+  },
+  {
+    "file": "principles/exercises/ch13/ex13-6.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.047,
+    "stdout": "2 match(es)\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch13/ex13-7.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.045,
+    "stdout": "x1=1 v1=1\nx2=9 v2=-1\nmomentum 0\n",
+    "stderr": "warning[W0402]: `0.0 - x` is not negation\n --> ./principles/exercises/ch13/ex13-7.lu:5:39\n  |\n5 | fn absf(x: f64) -> f64 { if x < 0.0 { 0.0 - x } else { x } }\n  |                                       ^^^^^^^ erases the sign of `-0.0`\n  |\n  = note: subtracting from zero maps `-0.0` to `+0.0`; unary minus negates every value, zeros\n    included.\nhelp: negate with unary minus\n  |\n5 | fn absf(x: f64) -> f64 { if x < 0.0 { -x } else { x } }\n  |\n\n"
+  },
+  {
+    "file": "principles/exercises/ch13/ex13-9.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.382,
+    "stdout": "wkh zroi uxqv dw gxvn\nthe wolf runs at dusk\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch14/ex14-1.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.292,
+    "stdout": "normal=true killed=false\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch14/ex14-10.lu",
+    "claim": "run(exit=0, stdout=\"stockroom closed: normal(12)\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.05,
+    "stdout": "stockroom closed: normal(12)\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch14/ex14-3.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.166,
+    "stdout": "proc down; its regions are gone\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch14/ex14-4.lu",
+    "claim": "run(exit=0, stdout=\"released\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.589,
+    "stdout": "released",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch14/ex14-5.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.379,
+    "stdout": "sibling cleanup ran\ncaught\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch14/ex14-6.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.203,
+    "stdout": "total=7\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch14/ex14-7.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.358,
+    "stdout": "before=7 after=3\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch14/ex14-9.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.348,
+    "stdout": "total=4\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch15/ex15-1.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.257,
+    "stdout": "normal=false killed=false\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch15/ex15-2.lu",
+    "claim": "run(exit=nonzero)",
+    "status": "ran",
+    "exit": 121,
+    "seconds": 0.394,
+    "stdout": "",
+    "stderr": "wolf-proc: root supervisor domain died (error): killing live procs\n"
+  },
+  {
+    "file": "principles/exercises/ch15/ex15-4.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.269,
+    "stdout": "attempt 1 failed; restarting\nattempt 2 succeeded\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch15/ex15-5.lu",
+    "claim": "run(exit=1)",
+    "status": "ran",
+    "exit": 1,
+    "seconds": 0.056,
+    "stdout": "attempt 1 failed\nattempt 2 failed\nattempt 3 failed\ngiving up after 3 attempts\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch15/ex15-6.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.216,
+    "stdout": "attempt 1 failed; restarting\nattempt 2 failed; restarting\nattempt 3 succeeded\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch16/ex16-1.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.336,
+    "stdout": "received\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch16/ex16-10.lu",
+    "claim": "run(exit=0, stdout=\"seat 4 survives\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.405,
+    "stdout": "seat 4 survives\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch16/ex16-2.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.504,
+    "stdout": "sum=42\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch16/ex16-3.lu",
+    "claim": "lupin-run(exit=trap(use-after-move))",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.003,
+    "stdout": "",
+    "stderr": "error[E1001]: `r` is used here after its value moved away\n --> ./principles/exercises/ch16/ex16-3.lu:9:16\n  |\n8 |     ch.send(move r)?\n  |                  - `r` moved here\n9 |     let m = in r { 1 }\n  |                ^ used after the move\n  |\n  = note: re-initializing the place (assigning to it) also makes it usable again.\nhelp: to keep the original, copy it at the move\n  |\n8 |     ch.send(move copy r)?\n  |\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E1001` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch16/ex16-4.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.349,
+    "stdout": "25\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch16/ex16-7.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.344,
+    "stdout": "distance=18\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch16/ex16-8.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.394,
+    "stdout": "distance=10\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch16/ex16-9.lu",
+    "claim": "fail(E1102)",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.001,
+    "stdout": "",
+    "stderr": "error[E1102]: `List[int]` cannot be sent through a channel\n --> ./principles/exercises/ch16/ex16-9.lu:7:22\n  |\n7 |     let ch = channel[List[int]](1)\n  |                      ^^^^^^^^^ not a sendable payload type\n  |\n  = note: channel payloads must be `Copy` data, `imm` data, a region value (the send is its affine\n    move), a `sync` type, or a struct, enum or tuple whose every field is one of those\n    ([conc.chan.type], [conc.chan.payload]) \u2014 sending anything else would give two tasks one\n    mutable value. D14's verbs are the ways out: `move` the data into a region and send the\n    region, `freeze` it into shareable `imm` data, or guard it with a `Mutex`.\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E1102` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch17/ex17-1.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.386,
+    "stdout": "balance=100\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch17/ex17-3.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.368,
+    "stdout": "12\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch17/ex17-6.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.193,
+    "stdout": "v=41\n",
+    "stderr": "warning[W0603]: the mark `Lost` is spelled CapCase\n --> ./principles/exercises/ch17/ex17-6.lu:7:38\n  |\n7 | fn fetch(ch: channel[int]) -> int ! {Lost} {\n  |                                      ^^^^ reads as if there were data to destructure\n  |\n  = note: payload-free marks are lowercase bare words (`none`, `eof`, `parse`); CapCase is the\n    reader's signal that a payload waits inside.\n\n"
+  },
+  {
+    "file": "principles/exercises/ch17/ex17-9.lu",
+    "claim": "lupin-run(exit=trap(deadlock))",
+    "status": "timeout",
+    "exit": null,
+    "seconds": 8.01,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch18/ex18-1.lu",
+    "claim": "fail(E0705)",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.001,
+    "stdout": "",
+    "stderr": "error[E0705]: `x` is a runtime value, so this cannot evaluate at compile time\n --> ./principles/exercises/ch18/ex18-1.lu:9:22\n  |\n9 |     const Y = double(x)\n  |               --------- while evaluating `main`, entered here\n  |                      ^ must be comptime-known\n  |\n  = note: a `comptime fn` runs during compilation: every argument must be a literal, a `const`, a\n    type, or the result of another comptime call.\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E0705` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch18/ex18-10.lu",
+    "claim": "fail(E0703)",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.069,
+    "stdout": "",
+    "stderr": "error[E0703]: comptime evaluation exceeded its heap budget of 65536 cells\n  --> ./principles/exercises/ch18/ex18-10.lu:13:15\n   |\n13 |     const N = flood()\n   |               ^^^^^^^ the allocation that went over happened here\n   |               ------- while evaluating `flood`, entered here\n   |               ------- while evaluating `main`, entered here\n   |\n   = note: the comptime heap is capped so evaluation cannot exhaust the machine compiling the\n     program (D33); most overruns are unbounded value growth in a loop.\nhelp: raise the budget here: `#[budget(heap = 131072)]`\n   |\n12 |     #[budget(heap = 131072)]\n   |\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E0703` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch18/ex18-11.lu",
+    "claim": "wolf-run(exit=0, stdout=\"A-B--A--A-B\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.216,
+    "stdout": "A-B--A--A-B\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch18/ex18-13.lu",
+    "claim": "fail(E0412)",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.001,
+    "stdout": "",
+    "stderr": "error[E0412]: `z` has no place in a format spec \u2014 the grammar is `[[fill]align][+][0][width][.precision][type]` with type one of `b o x X e E f`\n --> ./principles/exercises/ch18/ex18-13.lu:7:18\n  |\n7 |     print(\"{total:>9.2z}\")\n  |                  ^^^^^^ in this format spec\n  |\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E0412` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch18/ex18-14.lu",
+    "claim": "fail(E0707)",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.001,
+    "stdout": "",
+    "stderr": "error[E0707]: `Buf[N * 2]` and `Buf[2 * N]` may be equal, but proving it needs a witness\n --> ./principles/exercises/ch18/ex18-14.lu:6:51\n  |\n6 | fn double[N: type](b: Buf[N * 2]) -> Buf[2 * N] { b }\n  |                                   ------------- the return type is declared here\n  |                                                   ^ these const expressions differ beyond linear arithmetic\n  |\n  = note: const-expression equality is decided in three steps, and the line is fixed: (1) closed\n    expressions evaluate and compare by value; (2) `+`/`-` arithmetic over generic\n    parameters compares by ring normalization, so `N + 1` equals `1 + N`; (3) anything\n    beyond \u2014 `*`, `/`, `%`, shifts, bit operators \u2014 needs an explicit witness. This pair\n    sits at step 3.\n  = note: state the equality where the reader can see it: a comptime `assert` on the sizes\n    involved, or rewrite both spellings into the same `+`/`-` form.\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E0707` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch18/ex18-15.lu",
+    "claim": "wolf-run(exit=0, stdout=\"MCMXCIV 2026\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.164,
+    "stdout": "MCMXCIV 2026\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch18/ex18-2.lu",
+    "claim": "fail(E0706)",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.001,
+    "stdout": "",
+    "stderr": "error[E0706]: this `+` on `i32` faults at compile time: 2147483647 + 1 leaves `i32`'s range\n --> ./principles/exercises/ch18/ex18-2.lu:6:5\n  |\n6 |     big + 1\n  |     ^^^^^^^ checked arithmetic, comptime included\n...\n9 |     const B = brim()\n  |               ------ while evaluating `brim`, entered here\n  |               ------ while evaluating `main`, entered here\n  |\n  = note: checked arithmetic has one semantics everywhere: what would trap at runtime is an error\n    at comptime \u2014 intended wraparound is spelled `wrapping[T]`, never a mode.\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E0706` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch18/ex18-3.lu",
+    "claim": "wolf-run(exit=0, stdout=\"285\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.21,
+    "stdout": "285\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch18/ex18-4.lu",
+    "claim": "fail(E0708)",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.001,
+    "stdout": "",
+    "stderr": "error[E0708]: the layout of `Vec2` is not resolved until codegen lays it out\n --> ./principles/exercises/ch18/ex18-4.lu:9:15\n  |\n9 |     const S = size_of(Vec2)\n  |               ^^^^^^^^^^^^^ unresolved until codegen\n  |               ------------- while evaluating `main`, entered here\n  |\n  = note: `size_of`, `align_of` and `offset_of` answer at comptime for scalars and `#[repr(c)]`\n    structs, whose layout the clause fixes ([abi.layout.query]); any other type has the\n    native layout, which the code generator chooses ([abi.native.layout]) \u2014 mark the struct\n    `#[repr(c)]` to make its layout a fact.\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E0708` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch18/ex18-5.lu",
+    "claim": "wolf-run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.286,
+    "stdout": "3\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch18/ex18-7a.lu",
+    "claim": "fail(E0701)",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.001,
+    "stdout": "",
+    "stderr": "error[E0701]: `read_text` reaches the filesystem, which comptime code can never touch\n --> ./principles/exercises/ch18/ex18-7a.lu:5:5\n  |\n5 |     read_text(path)\n  |     ^^^^^^^^^^^^^^^ ambient IO at compile time\n...\n8 |     const BANNER = embed(\"banner.txt\")\n  |                    ------------------- while evaluating `embed`, entered here\n  |                    ------------------- while evaluating `main`, entered here\n  |\n  = note: why it is refused \u2014 confinement: a build must not read the machine it runs on \u2014 and the\n    same source would compile differently on different machines.\n  = note: the comptime sandbox is hermetic (D33): the intrinsics available at compile time are an\n    explicit allowlist, and nothing ambient is on it. Compute this value at runtime instead;\n    file contents belong in declared build inputs through the package manifest, never in an\n    evaluator capability.\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E0701` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch18/ex18-7b.lu",
+    "claim": "fail(E0701)",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.001,
+    "stdout": "",
+    "stderr": "error[E0701]: `clock_ms` reaches the clock, which comptime code can never touch\n --> ./principles/exercises/ch18/ex18-7b.lu:5:5\n  |\n5 |     clock_ms()\n  |     ^^^^^^^^^^ ambient IO at compile time\n...\n8 |     const STAMP = build_stamp()\n  |                   ------------- while evaluating `build_stamp`, entered here\n  |                   ------------- while evaluating `main`, entered here\n  |\n  = note: why it is refused \u2014 determinism: two identical builds must not observe different times.\n  = note: the comptime sandbox is hermetic (D33): the intrinsics available at compile time are an\n    explicit allowlist, and nothing ambient is on it. Compute this value at runtime instead;\n    file contents belong in declared build inputs through the package manifest, never in an\n    evaluator capability.\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E0701` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch18/ex18-7c.lu",
+    "claim": "fail(E0701)",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.001,
+    "stdout": "",
+    "stderr": "error[E0701]: `net_fetch` reaches the network, which comptime code can never touch\n --> ./principles/exercises/ch18/ex18-7c.lu:5:5\n  |\n5 |     net_fetch(url)\n  |     ^^^^^^^^^^^^^^ ambient IO at compile time\n...\n8 |     const SCHEMA = fetch_schema(\"https://example.test/schema.json\")\n  |                    ------------------------------------------------ while evaluating `fetch_schema`, entered here\n  |                    ------------------------------------------------ while evaluating `main`, entered here\n  |\n  = note: why it is refused \u2014 confinement: `wolf add` must never mean arbitrary code talks to the\n    network with your credentials.\n  = note: the comptime sandbox is hermetic (D33): the intrinsics available at compile time are an\n    explicit allowlist, and nothing ambient is on it. Compute this value at runtime instead;\n    file contents belong in declared build inputs through the package manifest, never in an\n    evaluator capability.\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E0701` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch18/ex18-8.lu",
+    "claim": "fail(E0709)",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.001,
+    "stdout": "",
+    "stderr": "error[E0709]: a comptime budget cannot be turned off \u2014 `fuel = 0` would disable the limit\n --> ./principles/exercises/ch18/ex18-8.lu:8:14\n  |\n8 |     #[budget(fuel = 0)]\n  |              ^^^^^^^^ budgets are raised, never removed\n  |\n  = note: the sandbox guarantee (D33) includes bounded evaluation: every budget has a default, a\n    per-site override, and a hard ceiling \u2014 there is no spelling that removes one.\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E0709` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch18/ex18-9a.lu",
+    "claim": "fail(E0704)",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.001,
+    "stdout": "",
+    "stderr": "error[E0704]: comptime evaluation recursed past 256 call frames\n --> ./principles/exercises/ch18/ex18-9a.lu:5:5\n  |\n5 |     dive(n + 1)\n  |     ^^^^^^^^^^^ the call that went over the limit\n  |     ----------- while evaluating `dive` \u2014 254 recursive frames\n...\n8 |     const D = dive(0)\n  |               ------- while evaluating `dive`, entered here\n  |               ------- while evaluating `main`, entered here\n  |\n  = note: call depth is a resource limit, not a host stack: deep recursion is refused with this\n    report instead of crashing the compiler (D33).\nhelp: raise the budget here: `#[budget(depth = 512)]`\n  |\n8 |     #[budget(depth = 512)]\n  |\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E0704` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch18/ex18-9b.lu",
+    "claim": "fail(E0702)",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.016,
+    "stdout": "",
+    "stderr": "error[E0702]: comptime evaluation ran out of fuel after 1000000 steps\n --> ./principles/exercises/ch18/ex18-9b.lu:9:15\n  |\n9 |     const N = spin()\n  |               ^^^^^^ evaluation stopped here\n  |               ------ while evaluating `spin`, entered here\n  |               ------ while evaluating `main`, entered here\n  |\n  = note: fuel bounds how long the compiler will evaluate before concluding the computation is\n    runaway \u2014 a build can be slow, never hung (D33).\nhelp: raise the budget here: `#[budget(fuel = 2000000)]`\n  |\n9 |     #[budget(fuel = 2000000)]\n  |\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E0702` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch19/ex19-1.lu",
+    "claim": "run(exit=0, stdout=\"5 words\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.33,
+    "stdout": "5 words\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch20/ex20-1.lu",
+    "claim": "run(exit=0, stdout=\"314\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.378,
+    "stdout": "314\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch20/ex20-13.lu",
+    "claim": "run(exit=0, stdout=\"45\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.332,
+    "stdout": "45\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch20/ex20-5.lu",
+    "claim": "fail(E0817)",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.011,
+    "stdout": "",
+    "stderr": "error[E0817]: `noalloc` is not implemented yet\n  --> ./principles/exercises/ch20/ex20-5.lu:10:3\n   |\n10 | #[noalloc]\n   |   ^^^^^^^ known, but nothing implements it\n   |\n   = note: an attribute nothing implements would compile and mean nothing, so it is refused by name\n     ([gram.item.attr], K13); the performance contracts (I15) have no checker yet\n     (wolf-lang#180), and an unchecked promise is worse than none. The attributes this\n     compiler implements: `trusted`, `consttime`, `allow`, `index`, `budget`, `repr(c)`,\n     `repr(c, packed)`, `repr(c, align(N))`, `section(\".name\")` and `cfg(target = \"\u2026\")`.\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E0817` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch20/ex20-8.lu",
+    "claim": "fail(E0817)",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.005,
+    "stdout": "",
+    "stderr": "error[E0817]: `noalloc` is not implemented yet\n --> ./principles/exercises/ch20/ex20-8.lu:9:3\n  |\n9 | #[noalloc]\n  |   ^^^^^^^ known, but nothing implements it\n  |\n  = note: an attribute nothing implements would compile and mean nothing, so it is refused by name\n    ([gram.item.attr], K13); the performance contracts (I15) have no checker yet\n    (wolf-lang#180), and an unchecked promise is worse than none. The attributes this\n    compiler implements: `trusted`, `consttime`, `allow`, `index`, `budget`, `repr(c)`,\n    `repr(c, packed)`, `repr(c, align(N))`, `section(\".name\")` and `cfg(target = \"\u2026\")`.\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E0817` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch21/ex21-2.lu",
+    "claim": "run(exit=0, stdout=\"12 20\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.152,
+    "stdout": "12 20\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch21/ex21-5.lu",
+    "claim": "run(exit=trap(overflow))",
+    "status": "ran",
+    "exit": 134,
+    "seconds": 0.11,
+    "stdout": "2000000000\n",
+    "stderr": "wolf-trap: overflow\n  at ./principles/exercises/ch21/ex21-5.lu:9:9\n"
+  },
+  {
+    "file": "principles/exercises/ch22/calc/main.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.348,
+    "stdout": "7 3 - = 4\n9 0 /: refused\n6 7 * = 42\n",
+    "stderr": "warning[W0314]: `ops` holds exactly one item\n --> ./principles/exercises/ch22/calc/ops/ops.lu:6:8\n  |\n6 | pub fn apply(op: str, a: int, b: int) -> int ! {BadOp, DivZero} {\n  |        ^^^^^ a directory of ceremony around it\n  |\n  = note: fold the item into the module that uses it, or grow the module into the family its name\n    promises; a deliberate seam says so with `#[allow(w0314)]` and a reason.\n\nwarning[W0602]: this `pub` signature spells a 2-tag error row anonymously\n --> ./principles/exercises/ch22/calc/ops/ops.lu:6:48\n  |\n6 | pub fn apply(op: str, a: int, b: int) -> int ! {BadOp, DivZero} {\n  |                                                ^^^^^^^^^^^^^^^^ this exact tag set is now API\n  |\n  = note: every caller depends on this row, and every later tag is a visible change at every\n    boundary; keep the row small \u2014 one tag per failure a caller can act on \u2014 and reuse one\n    spelling everywhere it flows.\n\nwarning[W0603]: the mark `BadOp` is spelled CapCase\n --> ./principles/exercises/ch22/calc/ops/ops.lu:6:49\n  |\n6 | pub fn apply(op: str, a: int, b: int) -> int ! {BadOp, DivZero} {\n  |                                                 ^^^^^ reads as if there were data to destructure\n  |\n  = note: payload-free marks are lowercase bare words (`none`, `eof`, `parse`); CapCase is the\n    reader's signal that a payload waits inside.\n\nwarning[W0603]: the mark `DivZero` is spelled CapCase\n --> ./principles/exercises/ch22/calc/ops/ops.lu:6:56\n  |\n6 | pub fn apply(op: str, a: int, b: int) -> int ! {BadOp, DivZero} {\n  |                                                        ^^^^^^^ reads as if there were data to destructure\n  |\n\n"
+  },
+  {
+    "file": "principles/exercises/ch22/clash/main.lu",
+    "claim": "fail(E0302)",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.003,
+    "stdout": "",
+    "stderr": "warning[W0314]: `labels` holds exactly one item\n --> ./principles/exercises/ch22/clash/labels/banner.lu:3:8\n  |\n3 | pub fn title(s: str) -> str { \"** {s} **\" }\n  |        ^^^^^ a directory of ceremony around it\n  |\n  = note: fold the item into the module that uses it, or grow the module into the family its name\n    promises; a deliberate seam says so with `#[allow(w0314)]` and a reason.\n\nerror[E0302]: the name `title` is defined twice in this module\n --> ./principles/exercises/ch22/clash/labels/upper.lu:3:8\n  |\n3 | pub fn title(s: str) -> str { \"== {s} ==\" }\n  |        ^^^^^ defined again here\n  |\n ::: ./principles/exercises/ch22/clash/labels/banner.lu:3:8\n  |\n3 | pub fn title(s: str) -> str { \"** {s} **\" }\n  |        ----- first defined here\n  |\n  = note: every `.lu` file in a directory is one module (D32), so a top-level name may be defined\n    only once across all of them; rename or remove one of the definitions.\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E0302` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch22/ex22-7.lu",
+    "claim": "wolf-run(exit=0, stdout=\"Ingest Report Purge Reindex\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.1,
+    "stdout": "Ingest Report Purge Reindex\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch22/leak/main.lu",
+    "claim": "fail(E0304)",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.003,
+    "stdout": "",
+    "stderr": "error[E0304]: `total` exists in `vault`, but it is private\n  --> ./principles/exercises/ch22/leak/main.lu:7:19\n   |\n 7 |     print(\"{vault.total()}\")\n   |                   ^^^^^ not visible from here\n   |\n  ::: ./principles/exercises/ch22/leak/vault/keys.lu:16:4\n   |\n16 | fn total() -> int { secrets() + 1 }\n   |    ----- defined here, without `pub`\n   |\n   = note: mark the fn `pub` to export it from the module, or `pub(pkg)` to share it within this\n     package \u2014 `pub(pkg)` is enough for this use.\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E0304` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch22/metrics/main.lu",
+    "claim": "run(exit=0, stdout=\"mean 6 of 3\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.241,
+    "stdout": "mean 6 of 3\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch22/scratch/sum.lu",
+    "claim": "run(exit=0, stdout=\"sum 15\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.202,
+    "stdout": "sum 15\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch22/scratch/widest.lu",
+    "claim": "run(exit=0, stdout=\"widest marmot\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.158,
+    "stdout": "widest marmot\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch22/tangle/main.lu",
+    "claim": "fail(E0303)",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.014,
+    "stdout": "",
+    "stderr": "error[E0303]: this import completes a cycle: `store` \u2192 `index` \u2192 `store`\n --> ./principles/exercises/ch22/tangle/index/index.lu:3:1\n  |\n3 | use store\n  | ^^^^^^^^^ the cycle closes here\n  |\n ::: ./principles/exercises/ch22/tangle/store/store.lu:3:1\n  |\n3 | use index\n  | --------- `store` enters the cycle here\n  |\n  = note: imports between modules must form a DAG (D32); extract what both sides need into a third\n    module they can each import.\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E0303` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch22/twice/main.lu",
+    "claim": "fail(E0302)",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.005,
+    "stdout": "",
+    "stderr": "error[E0302]: the name `describe` is defined twice in this module\n --> ./principles/exercises/ch22/twice/main.lu:4:4\n  |\n4 | fn describe() -> str { \"from main\" }\n  |    ^^^^^^^^ defined again here\n  |\n ::: ./principles/exercises/ch22/twice/extra.lu:2:4\n  |\n2 | fn describe() -> str { \"from extra\" }\n  |    -------- first defined here\n  |\n  = note: every `.lu` file in a directory is one module (D32), so a top-level name may be defined\n    only once across all of them; rename or remove one of the definitions.\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E0302` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch22/unclashed/main.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.122,
+    "stdout": "== wolf ==\n** wolf **\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch22/untangled/main.lu",
+    "claim": "run(exit=0, stdout=\"stored 0\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.282,
+    "stdout": "stored 0\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch22/unused/main.lu",
+    "claim": "fail(E0305)",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.001,
+    "stdout": "",
+    "stderr": "error[E0305]: the import `tools` is never used\n --> ./principles/exercises/ch22/unused/main.lu:4:5\n  |\n4 | use tools\n  |     ^^^^^ imported here, used nowhere in this file\n  |\n  = note: imports are file-scoped (D32): a name used only in a sibling file must be imported there\n    instead.\nhelp: delete the unused import\n  |\n4 | \n  |\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E0305` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch22/wordcount/main.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.327,
+    "stdout": "  3 the\n  2 wolf\n  1 runs\n  1 and\n  1 moon\n  1 watches\n  1 sleeps\n",
+    "stderr": "warning[W0314]: `tokens` holds exactly one item\n --> ./principles/exercises/ch22/wordcount/tokens/tokens.lu:5:8\n  |\n5 | pub fn split_words(text: str) -> List[str] {\n  |        ^^^^^^^^^^^ a directory of ceremony around it\n  |\n  = note: fold the item into the module that uses it, or grow the module into the family its name\n    promises; a deliberate seam says so with `#[allow(w0314)]` and a reason.\n\n"
+  },
+  {
+    "file": "principles/exercises/ch24/ex24-4.lu",
+    "claim": "fail(E0701)",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.006,
+    "stdout": "",
+    "stderr": "error[E0701]: `net_fetch` reaches the network, which comptime code can never touch\n --> ./principles/exercises/ch24/ex24-4.lu:6:5\n  |\n6 |     net_fetch(\"https://deps.example.test/banner\")\n  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ ambient IO at compile time\n...\n9 |     const AD = latest_ad()\n  |                ----------- while evaluating `latest_ad`, entered here\n  |                ----------- while evaluating `main`, entered here\n  |\n  = note: why it is refused \u2014 confinement: `wolf add` must never mean arbitrary code talks to the\n    network with your credentials.\n  = note: the comptime sandbox is hermetic (D33): the intrinsics available at compile time are an\n    explicit allowlist, and nothing ambient is on it. Compute this value at runtime instead;\n    file contents belong in declared build inputs through the package manifest, never in an\n    evaluator capability.\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E0701` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch24/ex24-5.lu",
+    "claim": "fail(E0701)",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.005,
+    "stdout": "",
+    "stderr": "error[E0701]: `env_var` reaches environment variables, which comptime code can never touch\n --> ./principles/exercises/ch24/ex24-5.lu:5:5\n  |\n5 |     env_var(\"CI_DEPLOY_TOKEN\")\n  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^ ambient IO at compile time\n...\n8 |     const T = exfil()\n  |               ------- while evaluating `exfil`, entered here\n  |               ------- while evaluating `main`, entered here\n  |\n  = note: why it is refused \u2014 determinism and confinement: environment contents differ per machine\n    and may hold secrets.\n  = note: the comptime sandbox is hermetic (D33): the intrinsics available at compile time are an\n    explicit allowlist, and nothing ambient is on it. Compute this value at runtime instead;\n    file contents belong in declared build inputs through the package manifest, never in an\n    evaluator capability.\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E0701` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch26/ex26-1.lu",
+    "claim": "run(exit=0, stdout=\"       2       6      31 one.txt\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.21,
+    "stdout": "       2       6      31 one.txt\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch26/ex26-2.lu",
+    "claim": "run(exit=0, stdout=\"       2       3       7 -\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.159,
+    "stdout": "       2       3       7 -\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch26/ex26-3.lu",
+    "claim": "run(exit=0, stdout=\"      31 one.txt\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.267,
+    "stdout": "      31 one.txt\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch26/ex26-4.lu",
+    "claim": "fail(E0602)",
+    "status": "rejected",
+    "exit": 2,
+    "seconds": 0.001,
+    "stdout": "",
+    "stderr": "error[E0602]: this can also fail with `io`, `utf8`, which `count_file`'s row does not include\n --> ./principles/exercises/ch26/ex26-4.lu:7:16\n  |\n6 | fn count_file(name: str) -> Tally ! {not_found, denied} {\n  |                          ------------------------------ the receiving row is declared here\n7 |     let text = fs_read_text(name)?\n  |                ^^^^^^^^^^^^^^^^^^^ the missing tags escape here\n  |\n  = note: rows compose by union: `?` re-tags errors into the wider row by injection \u2014 there is no\n    conversion to write, only tags to admit.\nhelp: extend the row with `io`, `utf8`\n  |\n6 | fn count_file(name: str) -> Tally ! {not_found, denied, io, utf8} {\n  |\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E0602` explains this code, or any other, by name)\n"
+  },
+  {
+    "file": "principles/exercises/ch27/ex27-1.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.345,
+    "stdout": "2\nerror: division by zero\n",
+    "stderr": "warning[W0603]: the mark `Empty` is spelled CapCase\n  --> ./principles/exercises/ch27/ex27-1.lu:23:60\n   |\n23 | fn eval(line: str) -> int ! {NotNumber(Bad), Unknown(Bad), Empty, DivZero} {\n   |                                                            ^^^^^ reads as if there were data to destructure\n   |\n   = note: payload-free marks are lowercase bare words (`none`, `eof`, `parse`); CapCase is the\n     reader's signal that a payload waits inside.\n\nwarning[W0603]: the mark `DivZero` is spelled CapCase\n  --> ./principles/exercises/ch27/ex27-1.lu:23:67\n   |\n23 | fn eval(line: str) -> int ! {NotNumber(Bad), Unknown(Bad), Empty, DivZero} {\n   |                                                                   ^^^^^^^ reads as if there were data to destructure\n   |\n\n"
+  },
+  {
+    "file": "principles/exercises/ch27/ex27-2.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.345,
+    "stdout": "error: the stack does not hold two operands\nerror: the stack does not hold two operands\nerror: the stack does not hold two operands\n",
+    "stderr": "warning[W0603]: the mark `Empty` is spelled CapCase\n  --> ./principles/exercises/ch27/ex27-2.lu:23:60\n   |\n23 | fn eval(line: str) -> int ! {NotNumber(Bad), Unknown(Bad), Empty, DivZero} {\n   |                                                            ^^^^^ reads as if there were data to destructure\n   |\n   = note: payload-free marks are lowercase bare words (`none`, `eof`, `parse`); CapCase is the\n     reader's signal that a payload waits inside.\n\nwarning[W0603]: the mark `DivZero` is spelled CapCase\n  --> ./principles/exercises/ch27/ex27-2.lu:23:67\n   |\n23 | fn eval(line: str) -> int ! {NotNumber(Bad), Unknown(Bad), Empty, DivZero} {\n   |                                                                   ^^^^^^^ reads as if there were data to destructure\n   |\n\n"
+  },
+  {
+    "file": "principles/exercises/ch27/ex27-3.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.287,
+    "stdout": "error: `+` wanted two operands and found 1\nerror: `end of line` wanted two operands and found 2\n5\n",
+    "stderr": "warning[W0603]: the mark `DivZero` is spelled CapCase\n  --> ./principles/exercises/ch27/ex27-3.lu:24:74\n   |\n24 | fn eval(line: str) -> int ! {NotNumber(Bad), Unknown(Bad), Empty(Short), DivZero} {\n   |                                                                          ^^^^^^^ reads as if there were data to destructure\n   |\n   = note: payload-free marks are lowercase bare words (`none`, `eof`, `parse`); CapCase is the\n     reader's signal that a payload waits inside.\n\n"
+  },
+  {
+    "file": "principles/exercises/ch27/ex27-4.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.169,
+    "stdout": "7\n0\nerror: the stack does not hold two operands\n",
+    "stderr": "warning[W0603]: the mark `Empty` is spelled CapCase\n  --> ./principles/exercises/ch27/ex27-4.lu:23:60\n   |\n23 | fn eval(line: str) -> int ! {NotNumber(Bad), Unknown(Bad), Empty, DivZero} {\n   |                                                            ^^^^^ reads as if there were data to destructure\n   |\n   = note: payload-free marks are lowercase bare words (`none`, `eof`, `parse`); CapCase is the\n     reader's signal that a payload waits inside.\n\nwarning[W0603]: the mark `DivZero` is spelled CapCase\n  --> ./principles/exercises/ch27/ex27-4.lu:23:67\n   |\n23 | fn eval(line: str) -> int ! {NotNumber(Bad), Unknown(Bad), Empty, DivZero} {\n   |                                                                   ^^^^^^^ reads as if there were data to destructure\n   |\n\n"
+  },
+  {
+    "file": "principles/exercises/ch27/ex27-6.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.152,
+    "stdout": "9\n-5\n",
+    "stderr": "warning[W0603]: the mark `Empty` is spelled CapCase\n  --> ./principles/exercises/ch27/ex27-6.lu:23:60\n   |\n23 | fn eval(line: str) -> int ! {NotNumber(Bad), Unknown(Bad), Empty, DivZero} {\n   |                                                            ^^^^^ reads as if there were data to destructure\n   |\n   = note: payload-free marks are lowercase bare words (`none`, `eof`, `parse`); CapCase is the\n     reader's signal that a payload waits inside.\n\nwarning[W0603]: the mark `DivZero` is spelled CapCase\n  --> ./principles/exercises/ch27/ex27-6.lu:23:67\n   |\n23 | fn eval(line: str) -> int ! {NotNumber(Bad), Unknown(Bad), Empty, DivZero} {\n   |                                                                   ^^^^^^^ reads as if there were data to destructure\n   |\n\n"
+  },
+  {
+    "file": "principles/exercises/ch28/ex28-1.lu",
+    "claim": "lupin-run(exit=0)",
+    "status": "refused",
+    "exit": 4,
+    "seconds": 0.006,
+    "stdout": "",
+    "stderr": "wolf run: cannot compile this yet \u2014 `copy` of a value nested this deep (pipeline is honest through `mem`; the conservatism ledger, not a bug in your program)\n  --> ./principles/exercises/ch28/ex28-1.lu:15:31\n   |\n15 |             (mut n.left).push(leaf(w))\n   |                               ^^^^^^^\n   |\n"
+  },
+  {
+    "file": "principles/exercises/ch28/ex28-2.lu",
+    "claim": "lupin-run(exit=0)",
+    "status": "refused",
+    "exit": 4,
+    "seconds": 0.005,
+    "stdout": "",
+    "stderr": "wolf run: cannot compile this yet \u2014 `copy` of a value nested this deep (pipeline is honest through `mem`; the conservatism ledger, not a bug in your program)\n  --> ./principles/exercises/ch28/ex28-2.lu:15:31\n   |\n15 |             (mut n.left).push(leaf(w))\n   |                               ^^^^^^^\n   |\n"
+  },
+  {
+    "file": "principles/exercises/ch28/ex28-3.lu",
+    "claim": "lupin-run(exit=0)",
+    "status": "refused",
+    "exit": 4,
+    "seconds": 0.006,
+    "stdout": "",
+    "stderr": "wolf run: cannot compile this yet \u2014 `copy` of a value nested this deep (pipeline is honest through `mem`; the conservatism ledger, not a bug in your program)\n  --> ./principles/exercises/ch28/ex28-3.lu:15:31\n   |\n15 |             (mut n.left).push(leaf(w))\n   |                               ^^^^^^^\n   |\n"
+  },
+  {
+    "file": "principles/exercises/ch28/ex28-4.lu",
+    "claim": "lupin-run(exit=trap(bounds))",
+    "status": "refused",
+    "exit": 4,
+    "seconds": 0.005,
+    "stdout": "",
+    "stderr": "wolf run: cannot compile this yet \u2014 `copy` of a value nested this deep (pipeline is honest through `mem`; the conservatism ledger, not a bug in your program)\n  --> ./principles/exercises/ch28/ex28-4.lu:15:31\n   |\n15 |             (mut n.left).push(leaf(w))\n   |                               ^^^^^^^\n   |\n"
+  },
+  {
+    "file": "principles/exercises/ch28/ex28-6.lu",
+    "claim": "lupin-run(exit=0)",
+    "status": "refused",
+    "exit": 4,
+    "seconds": 0.006,
+    "stdout": "",
+    "stderr": "wolf run: cannot compile this yet \u2014 `copy` of a value nested this deep (pipeline is honest through `mem`; the conservatism ledger, not a bug in your program)\n  --> ./principles/exercises/ch28/ex28-6.lu:15:31\n   |\n15 |             (mut n.left).push(leaf(w))\n   |                               ^^^^^^^\n   |\n"
+  },
+  {
+    "file": "principles/exercises/ch30/ex30-3.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.616,
+    "stdout": "a.log:1: 06:12 the wolf runs\na.log:3: 07:02 the wolf howls\nb.log:2: 08:52 the wolf sleeps\nb.log:4: 09:44 the wolf wakes\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch30/ex30-4.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.637,
+    "stdout": "arrive 0\narrive 2\narrive 5\narrive 7\na.log:1: 06:12 the wolf runs\na.log:3: 07:02 the wolf howls\nb.log:2: 08:52 the wolf sleeps\nb.log:4: 09:44 the wolf wakes\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch30/ex30-5.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.612,
+    "stdout": "a.log:1: 06:12 the wolf runs\na.log:3: 07:02 the wolf howls\nb.log:4: 09:44 the wolf wakes\nb.log:2: 08:52 the wolf sleeps\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch33/ex33-1.lu",
+    "claim": "run(exit=0, stdout=\"shelves: unknown\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.16,
+    "stdout": "shelves: unknown\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch33/ex33-2.lu",
+    "claim": "run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.205,
+    "stdout": "nobody there: 0 ready\nsomeone there: 1 ready, and it is the door: true\nlooking took nothing: 1 still ready\nstill nobody took it: 1 ready\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch33/ex33-3.lu",
+    "claim": "run(exit=0, stdout=\"served 2, dropped 2\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.231,
+    "stdout": "served 2, dropped 2\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch33/ex33-4.lu",
+    "claim": "run(exit=1, stdout=\"error: io\")",
+    "status": "ran",
+    "exit": 1,
+    "seconds": 0.275,
+    "stdout": "error: io\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch33/ex33-7.lu",
+    "claim": "run(exit=0, stdout=\"answered 4 questions on 2 connections\")",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.183,
+    "stdout": "answered 4 questions on 2 connections\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch34/ex34-1.lu",
+    "claim": "wolf-run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.943,
+    "stdout": "arrived: quit\nstill queued: 0\n",
+    "stderr": ""
+  },
+  {
+    "file": "principles/exercises/ch34/ex34-7.lu",
+    "claim": "wolf-run(exit=0)",
+    "status": "ran",
+    "exit": 0,
+    "seconds": 0.492,
+    "stdout": "28 meanings, 28 numbered here\n20 can be heard\ntwo at once: invalid\n",
+    "stderr": ""
+  }
+]

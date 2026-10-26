@@ -1,0 +1,9 @@
+Control 591cd5d0779764b7bf043ebe712ec52e1e356aa5
+wl70 scope: 240 fixtures; {'fail': 18, 'expects-fail': 32, 'pass': 175, 'refused': 10, 'error': 1, 'timeout': 4}
+bs73 direct native scope: 252 exercise roots; {'ran': 190, 'rejected': 47, 'timeout': 4, 'refused': 11}
+The full book rig covers all 252 exercise roots and 285 book blocks.
+All 33 wl70 anomalies are present in the fresh census. Native UB statuses need not repeat.
+Eleven anomaly rows exit 2; seven other fail rows compare native UB execution with a lupin oracle.
+All ten refusals repeat; the additional raw refusal is the existing pending ch07/ex7-5.
+Remaining direct exits 2 are deliberate fail directives (including five package roots).
+No new exercise failure: rig 534 pass, 3 existing pending, 0 fail, 0 flips.

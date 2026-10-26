@@ -1,0 +1,2258 @@
+[
+  {
+    "unit": "fixture:principles/exercises/appx/exB-5.lu",
+    "ok": false,
+    "status": "fail",
+    "rc": 2,
+    "secs": 0.002643201034516096,
+    "detail": "t p.a.n)\n  |\n\nerror[E1002]: `p.a.n` cannot go `mut` here: it overlaps `p.a`, already passed `mut` in this call\n --> ./principles/exercises/appx/exB-5.lu:9:23\n  |\n9 |     wide(mut p.a, mut p.a.n)\n  |              --- `p.a` is passed `mut` here\n  |                       ^^^^^ second exclusive claim on the same place\n  |\n  = note: `p.a.n` is inside `p.a` \u2014 a path and its prefix conflict [mem.model.path.disjoint].\n    Disjoint fields (`x.a` with `x.b`) are fine together.\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E1002` explains this code, or any other, by name)",
+    "counts": {
+      "codes": [
+        "E1002"
+      ]
+    }
+  },
+  {
+    "unit": "fixture:principles/exercises/appx/exB-4.lu",
+    "ok": false,
+    "status": "fail",
+    "rc": 2,
+    "secs": 0.0028182880487293005,
+    "detail": "error[E1001]: `s` is used here after its value moved away\n --> ./principles/exercises/appx/exB-4.lu:7:11\n  |\n6 |     let t = move s\n  |                  - `s` moved here\n7 |     print(s)\n  |           ^ used after the move\n  |\n  = note: re-initializing the place (assigning to it) also makes it usable again.\nhelp: to keep the original, copy it at the move\n  |\n6 |     let t = move copy s\n  |\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E1001` explains this code, or any other, by name)",
+    "counts": {
+      "codes": [
+        "E1001"
+      ]
+    }
+  },
+  {
+    "unit": "fixture:principles/exercises/appx/exB-6.lu",
+    "ok": false,
+    "status": "fail",
+    "rc": 2,
+    "secs": 0.002795548993162811,
+    "detail": "04]: `reserve` takes its receiver `mut`, but the call site does not say so\n --> ./principles/exercises/appx/exB-6.lu:9:13\n  |\n9 |     let h = p.reserve()\n  |             ^ write the mode here: `(mut \u2026)`\n  |               ------- `reserve` declares `mut self` here\n  |\n  = note: the receiver mirrors argument modes: exclusive or consuming access is spelled where the\n    reader can see it.\nhelp: spell the receiver mode: `(mut \u2026)`\n  |\n9 |     let h = (mut p).reserve()\n  |\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E0804` explains this code, or any other, by name)",
+    "counts": {
+      "codes": [
+        "E0804"
+      ]
+    }
+  },
+  {
+    "unit": "fixture:principles/exercises/appx/exB-7.lu",
+    "ok": false,
+    "status": "fail",
+    "rc": 2,
+    "secs": 0.011037326999939978,
+    "detail": " here\n  |\nhelp: spell the receiver mode: `(mut \u2026)`\n  |\n9 |         (mut pool).init(h, Node { value: 1 })\n  |\n\nerror[E0804]: `remove` takes its receiver `mut`, but the call site does not say so\n  --> ./principles/exercises/appx/exB-7.lu:10:9\n   |\n10 |         pool.remove(h)\n   |         ^^^^ write the mode here: `(mut \u2026)`\n   |              ------ `remove` declares `mut self` here\n   |\nhelp: spell the receiver mode: `(mut \u2026)`\n   |\n10 |         (mut pool).remove(h)\n   |\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E0804` explains this code, or any other, by name)",
+    "counts": {
+      "codes": [
+        "E0804"
+      ]
+    }
+  },
+  {
+    "unit": "fixture:principles/exercises/appx/exB-11.lu",
+    "ok": false,
+    "status": "fail",
+    "rc": 186,
+    "secs": 0.06583040696568787,
+    "detail": "claim trap(ub) observed exit(186): '' s invariant\n --> ./principles/exercises/appx/exB-11.lu:8:5\n  |\n8 |     unsafe {\n  |     ^^^^^^ add a `# Safety:` comment\n  |\n  = note: the block discharges a proof obligation the checker cannot; write the invariant down for\n    the auditors who will read this ring (`// # Safety: \u2026` above the block).",
+    "counts": {
+      "warnings": [
+        "W1301"
+      ]
+    }
+  },
+  {
+    "unit": "fixture:principles/exercises/appx/exC-2.lu",
+    "ok": false,
+    "status": "expects-fail",
+    "rc": null,
+    "secs": 0.0,
+    "detail": "fail(E1001)",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/appx/exB-3.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 134,
+    "secs": 0.075667958939448,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/appx/exB-8.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 134,
+    "secs": 0.06892115599475801,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/appx/exB-1.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 134,
+    "secs": 0.07879615796264261,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/appx/exB-2.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 134,
+    "secs": 0.08132525300607085,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch01/ex1-1.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06389904103707522,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch01/ex1-2.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 3,
+    "secs": 0.06010610889643431,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch01/ex1-6.lu",
+    "ok": false,
+    "status": "expects-fail",
+    "rc": null,
+    "secs": 0.0,
+    "detail": "fail(E0202)",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch01/ex1-10.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 8,
+    "secs": 0.06487808900419623,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch01/ex1-11.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06598853599280119,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch01/ex1-3.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.07494901691097766,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch01/ex1-5.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06307582894805819,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch01/ex1-9.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06132218393031508,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch02/ex2-10.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06946397700812668,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch02/ex2-11.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06925507995765656,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch02/ex2-12.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.07999244192615151,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch02/ex2-13.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06537823600228876,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch02/ex2-14.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.07998931803740561,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch02/ex2-2.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.07042318000458181,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch02/ex2-15.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.07864125992637128,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch02/ex2-3.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 134,
+    "secs": 0.0639909680467099,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch02/ex2-4.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.07190960505977273,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch02/ex2-9.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06326898094266653,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch02/ex2-7.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06713588803540915,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch03/ex3-13.lu",
+    "ok": false,
+    "status": "refused",
+    "rc": 4,
+    "secs": 0.00151459698099643,
+    "detail": "wolf run: cannot compile this yet \u2014 `break` with a value (loop values) (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)\n --> ./principles/exercises/ch03/ex3-13.lu:9:30\n  |\n9 |         if p > limit { break p }\n  |                              ^\n  |",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch03/ex3-1.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06398209009785205,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch03/ex3-10.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06126497604418546,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch03/ex3-11.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.061711409012787044,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch03/ex3-2.lu",
+    "ok": false,
+    "status": "expects-fail",
+    "rc": null,
+    "secs": 0.0,
+    "detail": "fail(E1001)",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch03/ex3-12.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06327444408088923,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch03/ex3-14.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.059758301940746605,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch03/ex3-14b.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06718931393697858,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch03/ex3-15.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.07074397301767021,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch03/ex3-3.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 134,
+    "secs": 0.06473027891479433,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch03/ex3-8b.lu",
+    "ok": false,
+    "status": "expects-fail",
+    "rc": null,
+    "secs": 0.0,
+    "detail": "fail(E0410)",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch03/ex3-6.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 134,
+    "secs": 0.06680989800952375,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch03/ex3-4.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 134,
+    "secs": 0.07288341200910509,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch03/ex3-7.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06308845605235547,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch03/ex3-8.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.062252086005173624,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch03/ex3-9.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06956110696773976,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch04/ex4-1.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06981069594621658,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch04/ex4-11.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06467129907105118,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch04/ex4-10.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06790582498069853,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch04/ex4-2.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.0618188880616799,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch04/ex4-6.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.05387934495229274,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch04/ex4-5.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06945568206720054,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch04/ex4-7.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06607394409365952,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch04/ex4-8.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06673876894637942,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch04/ex4-9.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06737039296422154,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch05/ex5-1.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06651629600673914,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch05/ex5-11.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.07163143903017044,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch05/ex5-14.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.0616878280416131,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch05/ex5-12.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.07468408008571714,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch05/ex5-13.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.07721344497986138,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch05/ex5-16.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06661841296590865,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch05/ex5-15.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.07470554509200156,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch05/ex5-17.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06363042502198368,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch05/ex5-2.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06838334898930043,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch05/ex5-8.lu",
+    "ok": false,
+    "status": "fail",
+    "rc": 2,
+    "secs": 0.008835814078338444,
+    "detail": "od named `take`\n --> ./principles/exercises/ch05/ex5-8.lu:9:69\n  |\n9 |     for (name, n) in scores.pairs().sorted_by(fn(a, b) b.1 <=> a.1).take(1) {\n  |                                                                     ^^^^ `take` is the ownership verb, never a method\n  |\n  = note: the first `n` elements are the slice `xs[..n]`, which faults `bounds` past the end, and\n    `xs[..min(n, xs.len)]` stops at it; the rest after them is `xs[n..]`\n    ([type.method.take]).\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E0401` explains this code, or any other, by name)",
+    "counts": {
+      "codes": [
+        "E0401"
+      ]
+    }
+  },
+  {
+    "unit": "fixture:principles/exercises/ch05/ex5-3.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.07385064091067761,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch05/ex5-6.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06274524494074285,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch05/ex5-4.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 134,
+    "secs": 0.06335091195069253,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch05/ex5-7.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.07687488000374287,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch06/ex6-10.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06858522503171116,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch06/ex6-1.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.07351002690847963,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch06/ex6-11.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.07144381094258279,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch06/ex6-12.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.0786905400454998,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch06/ex6-13.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06981890101451427,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch06/ex6-15.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06341026304289699,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch06/ex6-14.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.07053831801749766,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch06/ex6-2.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06926923897117376,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch06/ex6-3.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06895288196392357,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch06/ex6-4.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.0697654850082472,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch06/ex6-5.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06285547895822674,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch06/ex6-6.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06396126199979335,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch06/ex6-9.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06675103108864278,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch07/ex7-1.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.05925338703673333,
+    "detail": "",
+    "counts": {
+      "warnings": [
+        "W1003"
+      ]
+    }
+  },
+  {
+    "unit": "fixture:principles/exercises/ch06/ex6-7.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.08154417900368571,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch07/ex7-13.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06742464797571301,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch07/ex7-15.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.0692488009808585,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch07/ex7-18.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06542595196515322,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch07/ex7-17.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06628563499543816,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch07/ex7-16.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.0711420780280605,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch07/ex7-19.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06592195702251047,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch07/ex7-23.lu",
+    "ok": false,
+    "status": "expects-fail",
+    "rc": null,
+    "secs": 0.0,
+    "detail": "fail(E1002)",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch07/ex7-2.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06488872203044593,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch07/ex7-3.lu",
+    "ok": false,
+    "status": "expects-fail",
+    "rc": null,
+    "secs": 0.0,
+    "detail": "fail(E1001)",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch07/ex7-4.lu",
+    "ok": false,
+    "status": "fail",
+    "rc": 2,
+    "secs": 0.0012309259036555886,
+    "detail": "a.x` is used here after its value moved away\n --> ./principles/exercises/ch07/ex7-4.lu:8:13\n  |\n7 |     let b = a\n  |             - `a` moved here\n8 |     print(\"{a.x} {b.y}\")\n  |             ^^^ used after the move\n  |\n  = note: `a.x` is part of `a`; moving one empties the other. Disjoint fields stay usable.\n  = note: re-initializing the place (assigning to it) also makes it usable again.\nhelp: to keep the original, copy it at the move\n  |\n7 |     let b = copy a\n  |\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E1001` explains this code, or any other, by name)",
+    "counts": {
+      "codes": [
+        "E1001"
+      ]
+    }
+  },
+  {
+    "unit": "fixture:principles/exercises/ch07/ex7-20.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.05987336998805404,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch07/ex7-22.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.059609621996060014,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch07/ex7-5.lu",
+    "ok": false,
+    "status": "expects-fail",
+    "rc": null,
+    "secs": 0.0,
+    "detail": "fail(E1003)",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch07/ex7-4b.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.09523251000791788,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch07/ex7-8.lu",
+    "ok": false,
+    "status": "expects-fail",
+    "rc": null,
+    "secs": 0.0,
+    "detail": "fail(E1002)",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch07/ex7-23b.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.10160609008744359,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch07/ex7-9b.lu",
+    "ok": false,
+    "status": "expects-fail",
+    "rc": null,
+    "secs": 0.0,
+    "detail": "fail(E1002)",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch07/ex7-21.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.11283111397642642,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch08/ex8-10.lu",
+    "ok": false,
+    "status": "fail",
+    "rc": 2,
+    "secs": 0.002988373045809567,
+    "detail": "4]: `reserve` takes its receiver `mut`, but the call site does not say so\n --> ./principles/exercises/ch08/ex8-10.lu:9:13\n  |\n9 |     let h = p.reserve()\n  |             ^ write the mode here: `(mut \u2026)`\n  |               ------- `reserve` declares `mut self` here\n  |\n  = note: the receiver mirrors argument modes: exclusive or consuming access is spelled where the\n    reader can see it.\nhelp: spell the receiver mode: `(mut \u2026)`\n  |\n9 |     let h = (mut p).reserve()\n  |\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E0804` explains this code, or any other, by name)",
+    "counts": {
+      "codes": [
+        "E0804"
+      ]
+    }
+  },
+  {
+    "unit": "fixture:principles/exercises/ch07/ex7-7.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06344645807985216,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch07/ex7-6.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06516026903409511,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch08/ex8-11.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06434823700692505,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch07/ex7-9.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06963501090649515,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch08/ex8-16.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06766918301582336,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch08/ex8-12.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 134,
+    "secs": 0.0814378570066765,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch08/ex8-15.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.07102989207487553,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch08/ex8-3.lu",
+    "ok": false,
+    "status": "expects-fail",
+    "rc": null,
+    "secs": 0.0,
+    "detail": "fail(E1010)",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch08/ex8-5.lu",
+    "ok": false,
+    "status": "fail",
+    "rc": 2,
+    "secs": 0.004006658913567662,
+    "detail": " 7 |     in r {\n   |     ------\n 8 |         var xs = List[int]()\n 9 |         (mut xs).push(1)\n10 |         ch.send(move r)?\n   |                      ^ the transfer happens inside the open window\n11 |         0\n12 |     }\n   | ----- region `r` is open here, until its block ends\n   |\n   = note: a region transfers or freezes as a closed subtree only \u2014 the open window pins its\n     handle. End the `region`/`in` block first, or move the value before opening the region.\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E1005` explains this code, or any other, by name)",
+    "counts": {
+      "codes": [
+        "E1005"
+      ]
+    }
+  },
+  {
+    "unit": "fixture:principles/exercises/ch08/ex8-18.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06907133595086634,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch08/ex8-17.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.07300011301413178,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch08/ex8-8.lu",
+    "ok": false,
+    "status": "expects-fail",
+    "rc": null,
+    "secs": 0.0,
+    "detail": "fail(E1006)",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch08/ex8-9.lu",
+    "ok": false,
+    "status": "expects-fail",
+    "rc": null,
+    "secs": 0.0,
+    "detail": "fail(E1012)",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch08/ex8-2.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06274082500021905,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch08/ex8-19.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 134,
+    "secs": 0.06749170203693211,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch08/ex8-7.lu",
+    "ok": false,
+    "status": "refused",
+    "rc": 4,
+    "secs": 0.016331896069459617,
+    "detail": "wolf run: cannot compile this yet \u2014 `==` on a container, tuple or handle (no `Eq` for these this edition) (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)\n  --> ./principles/exercises/ch08/ex8-7.lu:48:15\n   |\n48 |         while cur != tail {\n   |               ^^^\n   |",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch08/ex8-6.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.0655801419634372,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch09/ex9-14.lu",
+    "ok": false,
+    "status": "refused",
+    "rc": 4,
+    "secs": 0.004062501015141606,
+    "detail": "wolf run: cannot compile this yet \u2014 indexing / generic application (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)\n  --> ./principles/exercises/ch09/ex9-14.lu:15:17\n   |\n15 |         words = counts[0] as int\n   |                 ^^^^^^^^^\n   |",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch09/ex9-15.lu",
+    "ok": false,
+    "status": "fail",
+    "rc": 2,
+    "secs": 0.004435237962752581,
+    "detail": "  |             ---- this operand fixed the type\n   |                     ^ found `u8` here\n   |\n   = note: expected `int`, found `u8`\n   = note: wolf never converts numbers implicitly; convert explicitly, e.g. `x as int`.\n\nerror[E0401]: this is `u8`, but the other side of `!=` makes it `int`\n  --> ./principles/exercises/ch09/ex9-15.lu:38:16\n   |\n38 |     if back != n { return 1 }\n   |        ---- this operand fixed the type\n   |                ^ found `u8` here\n   |\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E0415` explains this code, or any other, by name)",
+    "counts": {
+      "codes": [
+        "E0415"
+      ]
+    }
+  },
+  {
+    "unit": "fixture:principles/exercises/ch09/ex9-13.lu",
+    "ok": false,
+    "status": "fail",
+    "rc": 0,
+    "secs": 0.06260509602725506,
+    "detail": "claim trap(ub) observed exit(0): '' ",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch09/ex9-10.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.07315710093826056,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch09/ex9-4.lu",
+    "ok": false,
+    "status": "fail",
+    "rc": 181,
+    "secs": 0.06250228802673519,
+    "detail": "claim trap(ub) observed exit(181): '' ",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch09/ex9-2.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06742151000071317,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch09/ex9-3.lu",
+    "ok": false,
+    "status": "fail",
+    "rc": 0,
+    "secs": 0.06771610607393086,
+    "detail": "claim trap(ub) observed exit(0): '' ",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch09/ex9-7a.lu",
+    "ok": false,
+    "status": "refused",
+    "rc": 4,
+    "secs": 0.004195774090476334,
+    "detail": "wolf run: cannot compile this yet \u2014 indexing / generic application (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)\n  --> ./principles/exercises/ch09/ex9-7a.lu:13:17\n   |\n13 |         let v = b[0] as int\n   |                 ^^^^\n   |",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch09/ex9-7b.lu",
+    "ok": false,
+    "status": "refused",
+    "rc": 4,
+    "secs": 0.004546181997284293,
+    "detail": "wolf run: cannot compile this yet \u2014 indexing / generic application (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)\n  --> ./principles/exercises/ch09/ex9-7b.lu:13:17\n   |\n13 |         let v = b[0] as int\n   |                 ^^^^\n   |",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch09/ex9-6.lu",
+    "ok": false,
+    "status": "fail",
+    "rc": 0,
+    "secs": 0.06731460092123598,
+    "detail": "claim trap(ub) observed exit(0): '0' ",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch09/ex9-5.lu",
+    "ok": false,
+    "status": "fail",
+    "rc": 22,
+    "secs": 0.07260373805183917,
+    "detail": "claim trap(ub) observed exit(22): '' ",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch09/ex9-8.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06988571095280349,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch10/ex10-1.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06572382699232548,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch09/ex9-9.lu",
+    "ok": false,
+    "status": "fail",
+    "rc": 5,
+    "secs": 0.06636737193912268,
+    "detail": "claim trap(ub) observed exit(5): '' ",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch10/ex10-4.lu",
+    "ok": false,
+    "status": "fail",
+    "rc": 2,
+    "secs": 0.0045375460758805275,
+    "detail": "error[E0401]: this is `()`, but the closure's context needs `{integer}`\n  --> ./principles/exercises/ch10/ex10-4.lu:16:13\n   |\n14 |         s.spawn(fn() {\n   |                 ------\n15 |             let v = ch.recv() else |_| { return 0 }\n16 |             print(\"{v}\")\n   |             ^^^^^^^^^^^^ found `()` here\n17 |         })\n   | --------- the closure starts here\n   |\n   = note: expected `{integer}`, found `()`\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E0401` explains this code, or any other, by name)",
+    "counts": {
+      "codes": [
+        "E0401"
+      ]
+    }
+  },
+  {
+    "unit": "fixture:principles/exercises/ch10/ex10-2.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.07138784299604595,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch10/ex10-3.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 7,
+    "secs": 0.07094292901456356,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch10/ex10-7.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.0654331159312278,
+    "detail": "",
+    "counts": {
+      "warnings": [
+        "W0603"
+      ]
+    }
+  },
+  {
+    "unit": "fixture:principles/exercises/ch10/ex10-8.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.0674242649693042,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch10/ex10-6.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.07247159502003342,
+    "detail": "",
+    "counts": {
+      "warnings": [
+        "W0603"
+      ]
+    }
+  },
+  {
+    "unit": "fixture:principles/exercises/ch10/ex10-9.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06458717200439423,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch11/ex11-1.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.07254125701729208,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch11/ex11-5.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06297512503806502,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch11/ex11-4.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.07053984992671758,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch12/ex12-1.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06343991099856794,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch12/ex12-11.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.05841864296235144,
+    "detail": "",
+    "counts": {
+      "warnings": [
+        "W0601"
+      ]
+    }
+  },
+  {
+    "unit": "fixture:principles/exercises/ch12/ex12-10.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06286221800837666,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch12/ex12-4.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.050828182022087276,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch12/ex12-3.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.059261847054585814,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch12/ex12-6.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.050886524957604706,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch12/ex12-9.lu",
+    "ok": false,
+    "status": "expects-fail",
+    "rc": null,
+    "secs": 0.0,
+    "detail": "fail(E0201)",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch13/ex13-1.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.05235972593072802,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch13/ex13-10.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.05374714604113251,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch12/ex12-8.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.05455609492491931,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch13/ex13-3.lu",
+    "ok": false,
+    "status": "expects-fail",
+    "rc": null,
+    "secs": 0.0,
+    "detail": "fail(E1101)",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch13/ex13-2.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.04608333099167794,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch13/ex13-11.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.04951060004532337,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch13/ex13-4a.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.049325960921123624,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch13/ex13-5.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.04971199401188642,
+    "detail": "",
+    "counts": {
+      "warnings": [
+        "W0603"
+      ]
+    }
+  },
+  {
+    "unit": "fixture:principles/exercises/ch13/ex13-4b.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.05226162204053253,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch13/ex13-6.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.04944833798799664,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch13/ex13-9.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.04861067596357316,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch13/ex13-7.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.05414775898680091,
+    "detail": "",
+    "counts": {
+      "warnings": [
+        "W0402"
+      ]
+    }
+  },
+  {
+    "unit": "fixture:principles/exercises/ch14/ex14-1.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.05517720605712384,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch14/ex14-4.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.04781117395032197,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch14/ex14-3.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.05001522693783045,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch14/ex14-10.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.055539723951369524,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch14/ex14-6.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.04779822891578078,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch14/ex14-7.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.0567893780535087,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch14/ex14-5.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.05771472898777574,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch15/ex15-2.lu",
+    "ok": false,
+    "status": "error",
+    "rc": null,
+    "secs": 0.0,
+    "detail": "unrecognized check claim: 'run(exit=nonzero)'",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch14/ex14-9.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.051810006028972566,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch15/ex15-4.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.049363197991624475,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch15/ex15-1.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.04972411796916276,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch15/ex15-5.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 1,
+    "secs": 0.05397673090919852,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch16/ex16-1.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.050623573013581336,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch15/ex15-6.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.05514439707621932,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch16/ex16-3.lu",
+    "ok": false,
+    "status": "fail",
+    "rc": 2,
+    "secs": 0.003033809014596045,
+    "detail": "error[E1001]: `r` is used here after its value moved away\n --> ./principles/exercises/ch16/ex16-3.lu:9:16\n  |\n8 |     ch.send(move r)?\n  |                  - `r` moved here\n9 |     let m = in r { 1 }\n  |                ^ used after the move\n  |\n  = note: re-initializing the place (assigning to it) also makes it usable again.\nhelp: to keep the original, copy it at the move\n  |\n8 |     ch.send(move copy r)?\n  |\n\nwolf run: the package does not compile; fix the errors above (`wolf --explain E1001` explains this code, or any other, by name)",
+    "counts": {
+      "codes": [
+        "E1001"
+      ]
+    }
+  },
+  {
+    "unit": "fixture:principles/exercises/ch16/ex16-2.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.048593846964649856,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch16/ex16-10.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.055469178943894804,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch16/ex16-4.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.048533722991123796,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch16/ex16-9.lu",
+    "ok": false,
+    "status": "expects-fail",
+    "rc": null,
+    "secs": 0.0,
+    "detail": "fail(E1102)",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch16/ex16-7.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.05786582198925316,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch17/ex17-1.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.05207875499036163,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch16/ex16-8.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.05875733692664653,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch17/ex17-3.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.05023902398534119,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch18/ex18-1.lu",
+    "ok": false,
+    "status": "expects-fail",
+    "rc": null,
+    "secs": 0.0,
+    "detail": "fail(E0705)",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch18/ex18-10.lu",
+    "ok": false,
+    "status": "expects-fail",
+    "rc": null,
+    "secs": 0.0,
+    "detail": "fail(E0703)",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch17/ex17-6.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.052792579983361065,
+    "detail": "",
+    "counts": {
+      "warnings": [
+        "W0603"
+      ]
+    }
+  },
+  {
+    "unit": "fixture:principles/exercises/ch18/ex18-13.lu",
+    "ok": false,
+    "status": "expects-fail",
+    "rc": null,
+    "secs": 0.0,
+    "detail": "fail(E0412)",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch18/ex18-14.lu",
+    "ok": false,
+    "status": "expects-fail",
+    "rc": null,
+    "secs": 0.0,
+    "detail": "fail(E0707)",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch18/ex18-11.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.05393066490069032,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch18/ex18-2.lu",
+    "ok": false,
+    "status": "expects-fail",
+    "rc": null,
+    "secs": 0.0,
+    "detail": "fail(E0706)",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch18/ex18-15.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.05006504699122161,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch18/ex18-4.lu",
+    "ok": false,
+    "status": "expects-fail",
+    "rc": null,
+    "secs": 0.0,
+    "detail": "fail(E0708)",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch18/ex18-5.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.04493172897491604,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch18/ex18-7a.lu",
+    "ok": false,
+    "status": "expects-fail",
+    "rc": null,
+    "secs": 0.0,
+    "detail": "fail(E0701)",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch18/ex18-7b.lu",
+    "ok": false,
+    "status": "expects-fail",
+    "rc": null,
+    "secs": 0.0,
+    "detail": "fail(E0701)",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch18/ex18-7c.lu",
+    "ok": false,
+    "status": "expects-fail",
+    "rc": null,
+    "secs": 0.0,
+    "detail": "fail(E0701)",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch18/ex18-8.lu",
+    "ok": false,
+    "status": "expects-fail",
+    "rc": null,
+    "secs": 0.0,
+    "detail": "fail(E0709)",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch18/ex18-9a.lu",
+    "ok": false,
+    "status": "expects-fail",
+    "rc": null,
+    "secs": 0.0,
+    "detail": "fail(E0704)",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch18/ex18-9b.lu",
+    "ok": false,
+    "status": "expects-fail",
+    "rc": null,
+    "secs": 0.0,
+    "detail": "fail(E0702)",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch18/ex18-3.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.045750658959150314,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch20/ex20-1.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.0430643669096753,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch19/ex19-1.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.044079963001422584,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch20/ex20-5.lu",
+    "ok": false,
+    "status": "expects-fail",
+    "rc": null,
+    "secs": 0.0,
+    "detail": "fail(E0817)",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch20/ex20-8.lu",
+    "ok": false,
+    "status": "expects-fail",
+    "rc": null,
+    "secs": 0.0,
+    "detail": "fail(E0817)",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch21/ex21-2.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.04295736993663013,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch20/ex20-13.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.044489633990451694,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch22/ex22-7.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.040012400946579874,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch24/ex24-4.lu",
+    "ok": false,
+    "status": "expects-fail",
+    "rc": null,
+    "secs": 0.0,
+    "detail": "fail(E0701)",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch24/ex24-5.lu",
+    "ok": false,
+    "status": "expects-fail",
+    "rc": null,
+    "secs": 0.0,
+    "detail": "fail(E0701)",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch21/ex21-5.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 134,
+    "secs": 0.04204329999629408,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch26/ex26-1.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.048773108050227165,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch26/ex26-2.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.049081441946327686,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch26/ex26-4.lu",
+    "ok": false,
+    "status": "expects-fail",
+    "rc": null,
+    "secs": 0.0,
+    "detail": "fail(E0602)",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch26/ex26-3.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.04301473102532327,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch27/ex27-1.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.04760583199094981,
+    "detail": "",
+    "counts": {
+      "warnings": [
+        "W0603"
+      ]
+    }
+  },
+  {
+    "unit": "fixture:principles/exercises/ch27/ex27-2.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.048089424963109195,
+    "detail": "",
+    "counts": {
+      "warnings": [
+        "W0603"
+      ]
+    }
+  },
+  {
+    "unit": "fixture:principles/exercises/ch27/ex27-3.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.04798689007293433,
+    "detail": "",
+    "counts": {
+      "warnings": [
+        "W0603"
+      ]
+    }
+  },
+  {
+    "unit": "fixture:principles/exercises/ch27/ex27-4.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.049695522990077734,
+    "detail": "",
+    "counts": {
+      "warnings": [
+        "W0603"
+      ]
+    }
+  },
+  {
+    "unit": "fixture:principles/exercises/ch27/ex27-6.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.047822059015743434,
+    "detail": "",
+    "counts": {
+      "warnings": [
+        "W0603"
+      ]
+    }
+  },
+  {
+    "unit": "fixture:principles/exercises/ch28/ex28-1.lu",
+    "ok": false,
+    "status": "refused",
+    "rc": 4,
+    "secs": 0.006046627997420728,
+    "detail": "wolf run: cannot compile this yet \u2014 `copy` of a value nested this deep (pipeline is honest through `mem`; the conservatism ledger, not a bug in your program)\n  --> ./principles/exercises/ch28/ex28-1.lu:15:31\n   |\n15 |             (mut n.left).push(leaf(w))\n   |                               ^^^^^^^\n   |",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch28/ex28-2.lu",
+    "ok": false,
+    "status": "refused",
+    "rc": 4,
+    "secs": 0.005342304008081555,
+    "detail": "wolf run: cannot compile this yet \u2014 `copy` of a value nested this deep (pipeline is honest through `mem`; the conservatism ledger, not a bug in your program)\n  --> ./principles/exercises/ch28/ex28-2.lu:15:31\n   |\n15 |             (mut n.left).push(leaf(w))\n   |                               ^^^^^^^\n   |",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch28/ex28-3.lu",
+    "ok": false,
+    "status": "refused",
+    "rc": 4,
+    "secs": 0.007479584077373147,
+    "detail": "wolf run: cannot compile this yet \u2014 `copy` of a value nested this deep (pipeline is honest through `mem`; the conservatism ledger, not a bug in your program)\n  --> ./principles/exercises/ch28/ex28-3.lu:15:31\n   |\n15 |             (mut n.left).push(leaf(w))\n   |                               ^^^^^^^\n   |",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch28/ex28-4.lu",
+    "ok": false,
+    "status": "refused",
+    "rc": 4,
+    "secs": 0.00640047003980726,
+    "detail": "wolf run: cannot compile this yet \u2014 `copy` of a value nested this deep (pipeline is honest through `mem`; the conservatism ledger, not a bug in your program)\n  --> ./principles/exercises/ch28/ex28-4.lu:15:31\n   |\n15 |             (mut n.left).push(leaf(w))\n   |                               ^^^^^^^\n   |",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch28/ex28-6.lu",
+    "ok": false,
+    "status": "refused",
+    "rc": 4,
+    "secs": 0.006972644943743944,
+    "detail": "wolf run: cannot compile this yet \u2014 `copy` of a value nested this deep (pipeline is honest through `mem`; the conservatism ledger, not a bug in your program)\n  --> ./principles/exercises/ch28/ex28-6.lu:15:31\n   |\n15 |             (mut n.left).push(leaf(w))\n   |                               ^^^^^^^\n   |",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch30/ex30-3.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.056531673995777965,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch30/ex30-4.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.058622853946872056,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch30/ex30-5.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.05242799292318523,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch33/ex33-1.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.0464629860362038,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch33/ex33-3.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.05046672991011292,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch33/ex33-2.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.06534542597364634,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch33/ex33-4.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 1,
+    "secs": 0.04199906508438289,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch33/ex33-7.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.05434099899139255,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch34/ex34-1.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.10717094806022942,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch34/ex34-7.lu",
+    "ok": true,
+    "status": "pass",
+    "rc": 0,
+    "secs": 0.1047088720370084,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/appx/exB-9.lu",
+    "ok": false,
+    "status": "timeout",
+    "rc": null,
+    "secs": 120.10152978508268,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch11/ex11-2.lu",
+    "ok": false,
+    "status": "timeout",
+    "rc": null,
+    "secs": 120.05833765596617,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch12/ex12-2.lu",
+    "ok": false,
+    "status": "timeout",
+    "rc": null,
+    "secs": 120.10167812893633,
+    "detail": "",
+    "counts": {}
+  },
+  {
+    "unit": "fixture:principles/exercises/ch17/ex17-9.lu",
+    "ok": false,
+    "status": "timeout",
+    "rc": null,
+    "secs": 120.10236654500477,
+    "detail": "",
+    "counts": {}
+  }
+]
