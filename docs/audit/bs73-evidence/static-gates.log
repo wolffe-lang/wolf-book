@@ -1,0 +1,426 @@
+tiers: wrote principles/EXERCISES-INDEX.md — 352 rows; 239 read off their heads, 113 hand-kept with no program on disk (3 pending, 83 prose, 9 run (lupin REPL), 8 run (lupin), 2 run (wolf + lupin), 8 run (wolf)); Tier totals: 37 run (lupin) · 9 run (lupin REPL) · 43 run (wolf) · 174 run (wolf + lupin) · 83 prose · 6 pending. That is 352
+tiers: principles/EXERCISES-INDEX.md is generated — 352 rows; 239 read off their heads, 113 hand-kept with no program on disk (3 pending, 83 prose, 9 run (lupin REPL), 8 run (lupin), 2 run (wolf + lupin), 8 run (wolf)); Tier totals: 37 run (lupin) · 9 run (lupin REPL) · 43 run (wolf) · 174 run (wolf + lupin) · 83 prose · 6 pending. That is 352
+backmatter: 303 solution(s) published, 338 on file
+backmatter: book/back/appendix-a.md up to date
+backmatter: book/back/solutions.md up to date
+backmatter: SKIP spec drift check — no wolf-lang checkout beside this repo (set WOLF_LANG_PATH); the vendored copies under vendor/spec/ are what Appendix A and the clause checks read
+verify-docs: 10 line-count claim(s) recomputed
+verify-docs: 6 project program(s) match the chapters that print them
+verify-docs: 114 quoted solution fences on 33 exercise pages are their files (92 whole, 22 excerpts)
+verify-docs: 36 version literal(s) in reader-facing text, each audited against wolf 0.2.35 / lupin 0.1.56
+verify-docs: 681 wolf listing(s) scanned for interpolation the vendored grammar cannot paint (wolf-book#5)
+verify-docs: EXERCISES-INDEX.md agrees with the corpus — 352 exercises (303 printed); 6 pending · 83 prose · 9 run (lupin REPL) · 37 run (lupin) · 174 run (wolf + lupin) · 43 run (wolf); fingers 61 · comprehension 157 · extension 81 · spelunking 29 · design 38
+verify-docs: ok (corpus count 268, pins well-formed, TOC/stub numbering agrees)
+   Compiling xtask v0.1.0 (/home/mfwolffe/lanes/bs73/wolf-book/xtask)
+    Finished `test` profile [optimized + debuginfo] target(s) in 23.05s
+     Running unittests src/main.rs (target/debug/deps/xtask-edfbbe110e834bfc)
+
+running 211 tests
+test backmatter::tests::a_heading_that_is_not_a_code_is_not_a_code ... ok
+test backmatter::tests::a_catalog_missing_a_new_code_drifts ... ok
+test backmatter::tests::a_stale_catalog_naming_a_retired_code_drifts ... ok
+test backmatter::tests::an_unmoved_catalog_does_not_drift ... ok
+test backmatter::tests::a_reordered_catalog_drifts_too ... ok
+test backmatter::tests::derives_the_codes_in_document_order ... ok
+test console::tests::a_block_key_is_repo_relative_with_forward_slashes ... ok
+test console::tests::a_block_without_a_prompt_is_an_error ... ok
+test console::tests::a_declared_transcript_holds_when_the_host_says_it ... ok
+test console::tests::a_declared_transcript_is_stale_once_the_host_agrees_with_the_page ... ok
+test console::tests::a_third_answer_is_drift_not_a_shrug ... ok
+test console::tests::an_off_lane_decline_is_marked_as_one ... ok
+test console::tests::a_conform_run_naming_a_solution_is_admitted ... ok
+test console::tests::classify_reads_each_verb ... ok
+test console::tests::steps_split_on_prompts ... ok
+test backmatter::tests::a_batch_of_exercises_belongs_to_its_chapter ... ok
+test console::tests::the_corpus_rule_declines_what_it_cannot_conjure ... ok
+test console::tests::the_catalog_read_is_admitted_and_eval_is_not ... ok
+test console::tests::the_pinned_tools_are_replayable ... ok
+test console::tests::the_verdict_json_is_dropped_and_only_it ... ok
+test console::tests::trailing_blanks_are_not_compared_but_inner_ones_are ... ok
+test console::tests::unknown_commands_are_skipped_not_failed ... ok
+test console::tests::words_declines_shell_syntax ... ok
+test console::tests::words_honors_quotes ... ok
+test contrast::tests::a_c_fence_is_read_as_the_c_lane_and_rust_is_not ... ok
+test contrast::tests::a_transcript_is_derived_from_its_case_and_nothing_else ... ok
+test contrast::tests::a_stdin_case_prints_a_bare_prompt ... ok
+test contrast::tests::a_failing_case_carries_its_exit_status_into_the_transcript ... ok
+test contrast::tests::a_case_declares_argv_files_and_both_streams ... ok
+test contrast::tests::comparison_ignores_trailing_whitespace_only ... ok
+test contrast::tests::the_default_case_asserts_silence_and_success ... ok
+test declined::tests::a_declared_block_that_is_still_declined_is_quiet ... ok
+test declined::tests::a_declared_block_that_replays_is_stale ... ok
+test declined::tests::a_declined_block_with_no_row_is_a_failure ... ok
+test declined::tests::an_unknown_class_is_a_typo ... ok
+test declined::tests::the_classes_are_counted ... ok
+test diagrams::tests::ids_name_a_page_and_a_sample ... ok
+test diagrams::tests::paths_split_on_fields_and_elements ... ok
+test diagrams::tests::page_programs_number_like_the_samples_runner ... ok
+test diagrams::tests::a_copy_read_draws_the_source_still_live ... ok
+test diagrams::tests::a_take_marks_the_field_moved_and_the_new_binding ... ok
+test diagrams::tests::the_record_before_is_the_same_functions ... ok
+test dialects::tests::css_and_typst_carry_every_dialect ... ok
+test dialects::tests::fences_classify_and_label ... ok
+test diagrams::tests::the_svg_is_static_and_carries_its_text ... ok
+test dialects::tests::the_seven_dialects_have_distinct_frames ... ok
+test directives::tests::check_audit_code ... ok
+test directives::tests::check_fail ... ok
+test directives::tests::check_lupin_run_roundtrips ... ok
+test directives::tests::check_run_plain ... ok
+test directives::tests::check_run_stdout_with_comma ... ok
+test directives::tests::check_trap ... ok
+test directives::tests::check_ub_row ... ok
+test directives::tests::fence_carries_lupin_run ... ok
+test directives::tests::fence_carries_ub_and_audit ... ok
+test directives::tests::fence_carries_warns ... ok
+test directives::tests::fence_diagnostic_from ... ok
+test directives::tests::fence_memory_from_and_line ... ok
+test directives::tests::fence_part_cont_with_run ... ok
+test directives::tests::lu_header_carries_warns ... ok
+test directives::tests::lu_header_roundtrip ... ok
+test directives::tests::lupin_only_samples_stay_home ... ok
+test directives::tests::nonzero_parses_and_round_trips ... ok
+test directives::tests::nonzero_refuses_to_share_a_fence_with_a_number ... ok
+test directives::tests::warns_wants_catalog_shaped_codes ... ok
+test fence::tests::preserves_content_bytes ... ok
+test fence::tests::rewrite_roundtrips_text ... ok
+test fence::tests::walks_fences_and_text ... ok
+test highlight::tests::char_literal_is_string_green_but_escapes_stay_bronze ... ok
+test highlight::tests::console_prompt_decoration ... ok
+test highlight::tests::css_has_every_class ... ok
+test highlight::tests::diagnostic_decoration ... ok
+test highlight::tests::scope_mapping_is_restrained ... ok
+test console::tests::a_replayed_command_a_signal_ended_reports_128_plus_n ... ok
+test ledger::tests::chapter_without_ledger_is_none ... ok
+test ledger::tests::counts_filed_waived_unfiled_closed ... ok
+test ledger::tests::filed_requires_a_number ... ok
+test ledger::tests::last_row_before_close_is_counted ... ok
+test oslane::tests::a_refusal_row_round_trips ... ok
+test oslane::tests::a_transcript_row_keeps_its_backslashes ... ok
+test oslane::tests::the_host_name_is_one_of_the_three ... ok
+test oslane::tests::an_unknown_os_is_refused ... ok
+test oslane::tests::rows_for_another_host_are_inert_but_still_named ... ok
+test preprocess::tests::chapter_heading_anchor ... ok
+test preprocess::tests::a_memory_fence_becomes_a_static_figure ... ok
+test preprocess::tests::a_twin_run_renders_as_its_own_dialect_and_keeps_its_case_name_off_the_page ... ok
+test preprocess::tests::chapter_takes_its_own_number_not_its_position ... ok
+test preprocess::tests::explicit_id_wins ... ok
+test preprocess::tests::console_fence_renders ... ok
+test preprocess::tests::contrast_code_renders_labeled_and_escaped ... ok
+test console::tests::a_replayed_command_leads_its_own_process_group ... ok
+test preprocess::tests::own_number_is_the_first_heading ... ok
+test preprocess::tests::headings_inside_fences_untouched ... ok
+test highlight::tests::char_type_and_char_literal_paint ... ok
+test preprocess::tests::section_heading_anchor ... ok
+test preprocess::tests::unnumbered_heading_untouched ... ok
+test render::tests::a_markdown_table_becomes_a_typst_table ... ok
+test render::tests::a_numbered_heading_carries_the_label_the_backlink_names ... ok
+test render::tests::a_section_backlink_becomes_a_typst_cross_reference ... ok
+test render::tests::absolutize_roots_relative_links_only ... ok
+test render::tests::a_semicolon_after_inline_code_survives_into_typst ... ok
+test render::tests::an_offsite_anchor_stays_a_url ... ok
+test render::tests::details_wrappers_expand_for_print ... ok
+test render::tests::pages_redirect_to_the_same_path_home ... ok
+test render::tests::inline_scripts_are_counted_outside_comments ... ok
+test render::tests::strip_directives_leaves_lang ... ok
+test render::tests::summary_parses_in_order ... ok
+test render::tests::the_summary_line_carries_its_backlink_into_print ... ok
+test render::tests::typst_epigraph_sets_italic_and_flush_right_attribution ... ok
+test highlight::tests::wolf_hello_renders_spans ... ok
+test render::tests::typst_epigraph_without_attribution ... ok
+test render::tests::typst_escapes_specials ... ok
+test samples::tests::a_live_sample_s_diagnostic_block_is_held_to_the_run ... ok
+test samples::tests::a_pending_sample_s_diagnostic_block_is_reported_not_compared ... ok
+test samples::tests::exact_declared_host_graduation_holds ... ok
+test samples::tests::host_graduation_is_scoped_to_named_host ... ok
+test samples::tests::host_graduation_rejects_one_byte_drift ... ok
+test samples::tests::host_graduation_requires_both_exact_statuses_and_streams ... ok
+test samples::tests::ownership_lint_allows_the_take_combinator ... ok
+test samples::tests::ownership_lint_allows_the_write_marked_receiver ... ok
+test samples::tests::ownership_lint_catches_each_annotation ... ok
+test samples::tests::ownership_lint_ignores_lookalike_identifiers ... ok
+test samples::tests::ownership_lint_reports_every_token_present ... ok
+test samples::tests::plain_passing_refusal_without_probe_still_flips ... ok
+test samples::tests::raw_decline_line_sums_both_kinds_and_names_the_host ... ok
+test preprocess::tests::fences_render_to_pre_spans ... ok
+test tiers::tests::a_build_cache_is_not_a_package ... ok
+test tiers::tests::a_directory_mention_is_a_path_segment ... ok
+test tiers::tests::a_numbered_sibling_is_not_a_pair ... ok
+test tiers::tests::a_hand_edited_row_is_named_by_its_head ... ok
+test tiers::tests::a_program_no_row_claims_is_an_error ... ok
+test tiers::tests::each_head_names_the_machines_the_runner_asks ... ok
+test tiers::tests::rows_are_read_off_their_heads_and_hand_rows_are_kept ... ok
+test preprocess::tests::part_fences_carry_their_name_in_the_label ... ok
+test render::tests::every_dialect_sets_its_own_typst_frame ... ok
+test render::tests::typst_code_lines_color_keywords ... ok
+test tm::tests::comment_swallows_line ... ok
+test tm::tests::block_string_spans_lines ... ok
+test tm::tests::keywords_and_numbers ... ok
+test tm::tests::raw_string_backref_end ... ok
+test tiers::tests::the_real_index_is_generated ... ok
+test verify::tests::a_bare_name_is_the_page_directorys_file ... ok
+test verify::tests::a_brace_in_a_nested_literal_is_caught ... ok
+test verify::tests::a_catalog_that_shrank_under_the_sentence_is_caught ... ok
+test tm::tests::string_with_interpolation ... ok
+test verify::tests::a_chapter_heading_that_did_not_move_with_its_rows_is_caught ... ok
+test verify::tests::a_corpus_exercise_with_no_row_is_caught ... ok
+test verify::tests::a_count_that_drifted_and_a_literal_that_left_are_both_caught ... ok
+test tiers::tests::a_package_belongs_to_its_label_then_its_one_mention ... ok
+test verify::tests::a_dedented_window_is_not_an_excerpt ... ok
+test verify::tests::a_document_the_page_forgot_is_caught ... ok
+test verify::tests::a_header_total_that_drifted_from_the_table_is_caught ... ok
+test verify::tests::a_hybrid_counts_once_per_kind_and_a_vein_is_not_a_kind ... ok
+test verify::tests::a_label_pairs_with_the_fence_that_follows_it ... ok
+test verify::tests::a_label_whose_page_prints_only_output_pairs_with_nothing ... ok
+test verify::tests::a_new_literal_no_one_classified_is_caught ... ok
+test verify::tests::a_not_a_toolchain_entry_rides_no_clock ... ok
+test verify::tests::a_pin_that_moved_past_an_audit_is_caught ... ok
+test verify::tests::a_plain_escape_in_a_nested_literal_is_not_caught ... ok
+test verify::tests::a_quoted_solution_label_names_its_program_whatever_follows ... ok
+test verify::tests::a_raw_string_is_not_scanned ... ok
+test verify::tests::a_row_for_a_document_the_spec_does_not_publish_is_caught ... ok
+test verify::tests::a_row_naming_an_exercise_no_master_defines_is_caught ... ok
+test verify::tests::a_section_cell_carrying_its_own_pipe_is_still_one_row ... ok
+test verify::tests::a_solution_body_drops_the_rig_header_and_the_author_comment ... ok
+test verify::tests::a_stale_cited_count_is_caught ... ok
+test verify::tests::a_stale_printed_count_is_caught ... ok
+test verify::tests::a_table_row_added_without_recounting_is_caught ... ok
+test verify::tests::a_taxonomy_token_that_is_neither_kind_nor_vein_is_caught ... ok
+test verify::tests::a_two_clock_entry_holds_when_neither_pin_moved ... ok
+test verify::tests::a_two_clock_entry_is_re_read_when_either_pin_moves ... ok
+test verify::tests::a_wrapped_label_is_read_to_its_fence ... ok
+test verify::tests::a_wrapped_prose_claim_is_still_found ... ok
+test verify::tests::a_wrapped_tally_is_read_past_its_first_figure ... ok
+test verify::tests::a_wrong_document_count_in_prose_is_caught ... ok
+test verify::tests::a_wrong_namespace_count_in_prose_is_caught ... ok
+test verify::tests::an_annotated_id_cell_still_names_its_exercise ... ok
+test verify::tests::an_escaped_quote_in_a_nested_literal_is_caught ... ok
+test verify::tests::an_excerpt_is_a_window_and_not_a_different_program ... ok
+test verify::tests::an_excerpt_run_may_span_a_blank_line_of_the_file ... ok
+test verify::tests::an_exercise_id_names_its_lu_file ... ok
+test verify::tests::an_in_chapter_id_names_its_chapter_file ... ok
+test verify::tests::an_interpreter_only_bump_re_reads_the_interpreter_sentences ... ok
+test verify::tests::an_unparsable_entry_says_the_shape ... ok
+test verify::tests::appendix_c_control_passes ... ok
+test verify::tests::cited_documents_come_from_the_section_table_only ... ok
+test verify::tests::interpolation_control_passes ... ok
+test verify::tests::namespace_table_ignores_the_other_tables_on_the_page ... ok
+test verify::tests::namespace_table_reads_two_namespaces_in_one_row ... ok
+test verify::tests::not_a_toolchain_version_stands_alone ... ok
+test verify::tests::number_words_cover_the_counts_the_page_uses ... ok
+test verify::tests::one_clock_named_twice_is_a_parse_failure ... ok
+test verify::tests::one_drifted_tier_figure_is_named_and_the_sum_is_caught_separately ... ok
+test verify::tests::only_a_parenthetical_that_opens_with_excerpt_says_excerpt ... ok
+test verify::tests::the_audited_text_keeps_a_text_fence_and_drops_the_replayed_ones ... ok
+test verify::tests::the_control_passes ... ok
+test verify::tests::the_count_sentence_survives_the_page_wrap ... ok
+test verify::tests::the_index_control_passes ... ok
+test verify::tests::the_missing_diag_row_is_caught ... ok
+test tm::tests::tokens_cover_every_byte ... ok
+test verify::tests::every_real_solution_fence_is_the_file_ci_runs ... ok
+test verify::tests::the_real_appendix_c_agrees_with_the_vendored_catalog ... ok
+test verify::tests::the_real_index_agrees_with_the_real_corpus ... ok
+test verify::tests::the_scanner_reads_the_shapes_the_book_carries_and_not_the_ones_it_does_not ... ok
+test verify::tests::the_table_reader_takes_the_first_cell_only ... ok
+test verify::tests::the_version_literal_control_passes ... ok
+test verify::tests::the_real_page_agrees_with_the_vendored_anchors ... ok
+test verify::tests::the_real_book_paints_every_nested_literal ... ok
+test samples::tests::a_surviving_grandchild_does_not_hang_the_runner ... ok
+test verify::tests::a_corpus_page_fence_that_drifts_from_its_file_is_caught ... ok
+test verify::tests::a_body_that_drifts_from_its_file_is_caught ... ok
+
+test result: ok. 211 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 38.11s
+
+samples: lupin = /home/mfwolffe/lanes/bs73/release-lupin/lupin-0.1.56-x86_64-unknown-linux-gnu/lupin
+samples: wolf  = /home/mfwolffe/lanes/bs73/release-wolf/wolf-0.2.35-x86_64-unknown-linux-gnu/wolf
+samples: SKIP extraction book/back/solutions.md — generated from the two places solutions live, and this run reaches both directly: the exercise corpus under principles/exercises/ (chapters 7+) and principles/EXERCISES.md §5, the master for the chapter 1-6 exemplar batch (wolf-book#44). Every console block on both is replayed below; cargo xtask backmatter --check holds the page to them
+samples: self-test caught wrong-stdout.lu: lupin: stdout mismatch: expected "goodbye, wolf", got "hello, wolf"
+     wolf run: stdout mismatch: expected "goodbye, wolf", got "hello, wolf"
+samples: self-test caught wrong-exit.lu: lupin: exited Some(0), expected 7
+     wolf run: exited Some(0), expected 7
+samples: self-test caught wrong-code.lu: wolf verdict `fail(E1001)`, expected `fail(E9999)`
+samples: self-test caught one-machine.lu: lupin: exited Some(4), expected 0 — and 4 is one of `[conf.exit]`'s two reserved statuses (2 a rejection, 4 a refusal), so the program never ran and the status is the tool's rather than the program's (stderr: one-machine.lu: unsupported: `sum_squares` is a `comptime fn`; compile-time evaluation with its sandbox and budgets is the compiler's engine (s16), and nothing in `spec/` pins it — the `comptime` namespace is still a reserved forward one)
+samples: self-test caught never-compiled.lu: lupin: exited Some(2), expected 1 — and 2 is one of `[conf.exit]`'s two reserved statuses (2 a rejection, 4 a refusal), so the program never ran and the status is the tool's rather than the program's (stderr: never-compiled.lu: E0401: this binding's declared type is `int` and this is `str`: no conversion between the two happens implicitly — build the text with interpolation ("{value}"), compare to make a `bool`, or parse a `str` with `to_int()` [type.str] at 2:18)
+     wolf run: exited Some(2), expected 1 — and 2 is one of `[conf.exit]`'s two reserved statuses (2 a rejection, 4 a refusal), so the program never ran and the status is the tool's rather than the program's (stderr: error[E0401]: this is `str`, but `x` is declared as `int`
+ --> ./never-compiled.lu:2:18
+  |
+2 |     let x: int = "not an int"
+  |            --- the annotation is here
+  |                  ^^^^^^^^^^^^ found `str` here
+  |
+  = note: expected `int`, found `str`
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0401` explains this code, or any other, by name))
+samples: self-test caught never-compiled-nonzero.lu: lupin: exited 2, which `[conf.exit]` reserves for a rejection (2) or a refusal (4); this rig reads no record from the interpreter, so a reserved status is not credited to a program (stderr: never-compiled-nonzero.lu: E0401: this binding's declared type is `int` and this is `str`: no conversion between the two happens implicitly — build the text with interpolation ("{value}"), compare to make a `bool`, or parse a `str` with `to_int()` [type.str] at 2:18)
+     wolf run: exited 2, which `[conf.exit]` reserves for a rejection, and `wolf conform-run` answers `fail(E0401)` — so nothing ran, and the status is the compiler's rather than the program's
+samples: self-test caught refused-nonzero.lu: lupin: exited 4, which `[conf.exit]` reserves for a rejection (2) or a refusal (4); this rig reads no record from the interpreter, so a reserved status is not credited to a program (stderr: refused-nonzero.lu: unsupported: `sum_squares` is a `comptime fn`; compile-time evaluation with its sandbox and budgets is the compiler's engine (s16), and nothing in `spec/` pins it — the `comptime` namespace is still a reserved forward one)
+samples: self-test run(exit=nonzero) credits a program that really dies nonzero
+samples: self-test graduation probe is right about the `served` program (flip: true)
+samples: self-test graduation probe is right about the `declined` program (flip: false)
+samples: self-test corpus console lane replays a true transcript
+samples: self-test caught corpus-console drift: /home/mfwolffe/lanes/bs73/wolf-book/samples/selftest/corpus-console/EXERCISES.md:1: console block drifted from the real run
+samples: self-test pending console block reported by name, not compared
+samples: self-test caught the pending-console plant without its row: /home/mfwolffe/lanes/bs73/wolf-book/samples/selftest/pending.md:1: console block drifted from the real run
+samples: self-test warning ledger holds a true warns(W0601)
+samples: self-test caught planted warns(W0601): warns(W0601) declared, but the compiler printed [] — the fence asserts the exact set, in both directions
+samples: self-test caught an undeclared corpus decline: principles/exercises/ch00/EXERCISES.md:1
+samples: self-test holds the declined ledger the other way too: a row whose block replays is stale
+samples: self-test ok — 14/14 deliberate breakages caught
+tiers-test: PASS T1 the workflow's jobs: plan test samples render contents tier nightly-red
+tiers-test: PASS T1 a push to trunk: full, every job (4), the merge's legs
+tiers-test: PASS T1 the nightly: all, every job (4), every leg
+tiers-test: PASS T1 a dispatch, no tier: full, every job (4), the merge's legs
+tiers-test: PASS T1 a dispatch, tier full: full, every job (4), the merge's legs
+tiers-test: PASS T1 a dispatch, tier all: all, every job (4), every leg
+tiers-test: PASS T1 a dispatch's tier is full, all or pr, nothing else
+tiers-test: PASS T1 a pull request labelled full-matrix, prose only: full, every job (4), the merge's legs
+tiers-test: PASS T1 the full-matrix label added: full, every job (4), the merge's legs
+tiers-test: PASS T1 another label added: noop, no job
+tiers-test: PASS T1 another label added to a labelled pull request: noop, no job
+tiers-test: PASS T1 the tier input means nothing to a pull request: pr, test samples render contents
+tiers-test: PASS T2 book/ch01.md: pr, test samples render contents
+tiers-test: PASS T2 book/SUMMARY.md: pr, test samples render contents
+tiers-test: PASS T2 book/back/solutions.md: pr, test samples render contents
+tiers-test: PASS T2 book/diagrams/ch07-s3.svg: pr, test samples render contents
+tiers-test: PASS T2 book.toml: pr, test samples render contents
+tiers-test: PASS T2 xtask/src/render.rs: pr, test samples render contents
+tiers-test: PASS T2 xtask/src/samples.rs: pr, test samples render contents
+tiers-test: PASS T2 highlight/wolf.tmLanguage.json: pr, test samples render contents
+tiers-test: PASS T2 vendor/spec/anchors.json: pr, test samples render contents
+tiers-test: PASS T2 wolf-toolchain.toml: pr, test samples render contents
+tiers-test: PASS T2 Cargo.toml: pr, test samples render contents
+tiers-test: PASS T2 Cargo.lock: pr, test samples render contents
+tiers-test: PASS T2 .cargo/config.toml: pr, test samples render contents
+tiers-test: PASS T2 .github/workflows/book.yml: pr, test samples render contents
+tiers-test: PASS T2 .github/workflows/book-pages.yml: pr, test samples render contents
+tiers-test: PASS T2 .github/ISSUE_TEMPLATE/drift.yml: pr, test samples render contents
+tiers-test: PASS T2 ci/tiers.py: pr, test samples render contents
+tiers-test: PASS T2 ci/tiers-test.py: pr, test samples render contents
+tiers-test: PASS T2 ci/nightly-red.sh: pr, test samples render contents
+tiers-test: PASS T2 README.md: pr, test samples render contents
+tiers-test: PASS T2 STYLE.md: pr, test samples render contents
+tiers-test: PASS T2 PERMISSIONS.md: pr, test samples render contents
+tiers-test: PASS T2 LICENSE: pr, test samples render contents
+tiers-test: PASS T2 LICENSE-EXCEPTION: pr, test samples render contents
+tiers-test: PASS T2 LICENSE-TRAINING-DATA: pr, test samples render contents
+tiers-test: PASS T2 .gitignore: pr, test samples render contents
+tiers-test: PASS T2 .gitattributes: pr, test samples render contents
+tiers-test: PASS T2 samples/contrast/count.c: pr, test samples
+tiers-test: PASS T2 samples/extracted/console/x.txt: pr, test samples
+tiers-test: PASS T2 samples-pending.toml: pr, test samples
+tiers-test: PASS T2 samples-os.toml: pr, test samples
+tiers-test: PASS T2 samples-declined.toml: pr, test samples
+tiers-test: PASS T2 snapshots/traces/ch07-s3.json: pr, test samples
+tiers-test: PASS T2 principles/EXERCISES.md: pr, test samples
+tiers-test: PASS T2 principles/exercises/ch01/EXERCISES.md: pr, test samples
+tiers-test: PASS T2 principles/EXERCISES-INDEX.md: pr, test samples
+tiers-test: PASS T2 audit/version-literals.txt: pr, test samples
+tiers-test: PASS T2 theme/css/print.css: pr, test render contents
+tiers-test: PASS T2 theme/wolf-boot.js: pr, test render contents
+tiers-test: PASS T2 print/fonts/x.ttf: pr, test render
+tiers-test: PASS T2 PRINT.md: pr, test render
+tiers-test: PASS T2 tests/contents/contents.mjs: pr, render contents
+tiers-test: PASS T2 tests/contents/package.json: pr, render contents
+tiers-test: PASS T2 prose: docs/audit/bs69-prediction.md: noop, no job
+tiers-test: PASS T2 prose: CHANGELOG.md: noop, no job
+tiers-test: PASS T2 prose: docs/errata-policy.md: noop, no job
+tiers-test: PASS T2 prose: docs/review-checklist.md: noop, no job
+tiers-test: PASS T2 prose: docs/audit/bs69-evidence/draft/jobs.lu: noop, no job
+tiers-test: PASS T2 prose alone, several: noop, no job
+tiers-test: PASS T2 prose beside code: pr, test samples render contents
+tiers-test: PASS T2 samples/contrast/count.c + theme/css/print.css together: pr, test samples render contents
+tiers-test: PASS T2 print/fonts/x.ttf + tests/contents/serve.mjs together: pr, test render contents
+tiers-test: PASS T3 a path no rule names: full, every job (4), the merge's legs
+tiers-test: PASS T3 a new file at the root: full, every job (4), the merge's legs
+tiers-test: PASS T3 a markdown file at the root no rule names: full, every job (4), the merge's legs
+tiers-test: PASS T3 an unknown path beside prose: full, every job (4), the merge's legs
+tiers-test: PASS T3 an unknown path beside code: full, every job (4), the merge's legs
+tiers-test: PASS T3 no changed paths to read: full, every job (4), the merge's legs
+tiers-test: PASS T3 a change that names no path: full, every job (4), the merge's legs
+tiers-test: PASS T3 a merge that cannot be read (no repository there): full, every job (4), the merge's legs
+tiers-test: PASS T3 a dispatch, tier pr, an unknown path: full, every job (4), the merge's legs
+tiers-test: PASS T3 a dispatch, tier pr, a branch that cannot be read: full, every job (4), the merge's legs
+tiers-test: PASS T2 a dispatch, tier pr, code: pr, test samples render contents
+tiers-test: PASS T6 a green full run: exit 0
+tiers-test: PASS T6 a green all run: exit 0
+tiers-test: PASS T6 a full run on every leg (the merge before tl30): exit 1
+tiers-test: PASS T6 an all run on the merge's legs: exit 1
+tiers-test: PASS T6 an all run that chose less than every job: exit 1
+tiers-test: PASS T6 a green pr run: exit 0
+tiers-test: PASS T6 a noop run: exit 0
+tiers-test: PASS T6 a noop run whose jobs output is absent: exit 0
+tiers-test: PASS T6 a chosen job failed: exit 1
+tiers-test: PASS T6 a chosen job failed in a pr run: exit 1
+tiers-test: PASS T6 a chosen job was skipped: exit 1
+tiers-test: PASS T6 a chosen job was cancelled: exit 1
+tiers-test: PASS T6 a job ran in a noop run: exit 1
+tiers-test: PASS T6 a full run whose jobs output is absent: exit 1
+tiers-test: PASS T6 a full run that chose less than every job: exit 1
+tiers-test: PASS T6 a job ran unasked: exit 1
+tiers-test: PASS T6 a full run on the pull request's hosts: exit 1
+tiers-test: PASS T6 a pr run on every host: exit 1
+tiers-test: PASS T6 a full run whose matrix_samples is absent: exit 1
+tiers-test: PASS T6 a pr run that chose nothing: exit 1
+tiers-test: PASS T6 the plan failed: exit 1
+tiers-test: PASS T6 the plan named no tier: exit 1
+tiers-test: PASS T6 the plan named a tier that is none: exit 1
+tiers-test: PASS T6 the plan's jobs are no list: exit 1
+tiers-test: PASS T6 a chosen job the tier job does not need: exit 1
+tiers-test: PASS T4 the plan is the first job, the tier the last but the nightly's issue
+tiers-test: PASS T4 test needs the plan and runs only when the plan names it
+tiers-test: PASS T4 test takes its hosts from the plan
+tiers-test: PASS T4 samples needs the plan and runs only when the plan names it
+tiers-test: PASS T4 samples takes its hosts from the plan
+tiers-test: PASS T4 render needs the plan and runs only when the plan names it
+tiers-test: PASS T4 render has no matrix of hosts (ubuntu-latest)
+tiers-test: PASS T4 contents needs the plan and runs only when the plan names it
+tiers-test: PASS T4 contents has no matrix of hosts (ubuntu-latest)
+tiers-test: PASS T4 every plan output is read with a default (7 reads: jobs matrix_samples matrix_test tier)
+tiers-test: PASS T4 the plan job declares tier, jobs and each matrix
+tiers-test: PASS T4 the plan reads the merge commit (depth 2) or a dispatch's branch (the history), and the tier input
+tiers-test: PASS T4 the plan job runs this file before it plans
+tiers-test: PASS T4 the tier job needs every job (5 of 5)
+tiers-test: PASS T4 the tier job runs on !cancelled(), never always() (${{ !cancelled() }})
+tiers-test: PASS T4 the tier job is named for the tier
+tiers-test: PASS T4 the tier job's check is ci/tiers.py verdict over toJSON(needs)
+tiers-test: PASS T4 a red nightly, and only a red nightly, runs ci/nightly-red.sh with issues: write
+tiers-test: PASS T4 cancel-in-progress for pull requests only
+tiers-test: PASS T4 a run that is no pull request's has a concurrency group of its own run id
+tiers-test: PASS T4 a pull request's full and pr runs are separate groups, and another label's noop cancels nothing
+tiers-test: PASS T4 a push runs on trunk alone (a lane's push runs once, as its pull request)
+tiers-test: PASS T4 the nightly runs
+tiers-test: PASS T4 adding a label starts a run
+tiers-test: PASS T4 a dispatch takes the tier input, full, all or pr
+tiers-test: PASS T4 the all tier's (the nightly's) legs are the ones before tl28: {"matrix_test": [{"os": "ubuntu-latest"}, {"os": "macos-latest"}, {"os": "windows-latest"}], "matrix_samples": [{"os": "ubuntu-latest"}, {"os": "macos-latest"}, {"os": "windows-latest"}]}
+tiers-test: PASS T4 no host left the all tier (the nightly's)
+tiers-test: PASS T4 the full tier (the merge, a trunk push) runs the merge's legs: {"matrix_test": [{"os": "ubuntu-latest"}, {"os": "macos-latest"}, {"os": "windows-latest"}], "matrix_samples": [{"os": "ubuntu-latest"}, {"os": "windows-latest"}]}
+tiers-test: PASS T4 what the merge leaves is exactly tl30's move, and every leg of it runs in the nightly: {"matrix_samples": [{"os": "macos-latest"}]}
+tiers-test: PASS T4 the merge keeps a macOS smoke (tl30)
+tiers-test: PASS T7 a prose-only merge, the base moved on (its book/ch07.md.moved is not the pull request's): noop, no job
+tiers-test: PASS T7 the same merge, the head not given: noop, no job
+tiers-test: PASS T7 the merge's second parent is not the pull request's head: full, every job (4), the merge's legs
+tiers-test: PASS T7 HEAD is the branch, not a merge commit: full, every job (4), the merge's legs
+tiers-test: PASS T7 a merge that changes code and prose: pr, test samples render contents
+tiers-test: PASS T7 a merge that adds a path no rule names: full, every job (4), the merge's legs
+tiers-test: PASS T7 a dispatched prose-only branch, trunk moved on (its book/ch07.md.moved is not the branch's): noop, no job
+tiers-test: PASS T7 a dispatched branch that changes code: pr, test samples render contents
+tiers-test: PASS T7 a dispatched branch that adds a path no rule names (the plant): full, every job (4), the merge's legs
+tiers-test: PASS T7 a dispatch at trunk itself, tier pr (no change to read): full, every job (4), the merge's legs
+tiers-test: PASS T7 a dispatch with no origin/trunk to read: full, every job (4), the merge's legs
+tiers-test: PASS T8 no open issue: one is opened, labelled nightly-red, titled 'nightly red: book on trunk'
+tiers-test: PASS T8 the dedupe asks for an open nightly-red issue under the title
+tiers-test: PASS T8 an open issue: a comment on it, no new issue
+tiers-test: PASS T8 a label that already exists is no failure
+tiers-test: PASS T8 the script refuses to run without REPO, WORKFLOW and RUN_URL
+tiers-test: PASS T8 the workflow's name is book, the title's
+tiers-test: 1025 tracked paths are prose: CHANGELOG.md docs/audit/bs51-prediction-0216.md docs/audit/bs52-prediction.md docs/audit/bs52-results.md docs/audit/bs53-contract.md docs/audit/bs53-evidence/archive-digests.txt docs/audit/bs53-evidence/gate-summary.txt docs/audit/bs53-evidence/members.txt docs/audit/bs53-evidence/probes-new-checked.txt docs/audit/bs53-evidence/probes-new.txt ...
+tiers-test: PASS T5 the search fires: it finds what reads audit/version-literals.txt (xtask/src/verify.rs:1501), principles/EXERCISES-INDEX.md (xtask/src/verify.rs:2176), theme/highlight.css (xtask/src/highlight.rs:314)
+tiers-test: PASS T5 no line of 22 code file(s) that reads a file names a prose root (CHANGELOG.md docs/): none
+tiers-test: PASS T5 every tracked path under book/ and xtask/ names every job (74 paths)
+tiers-test: PASS T5 the audit ledger (audit/, 49 paths) is no prose
+tiers-test: PASS T5 every one of 1694 tracked paths has a rule
+tiers-test: PASS T4 the contents gate needs the plan and the render
+tiers-test: PASS T2 the contents gate alone brings the render it needs: pr, render contents
+tiers-test: PASS T4 the contents gate keeps its three engines in every tier
+tiers-test: PASS T4 a toolchain release still runs the book (all)
+tiers-test: PASS T1 a toolchain release, every job on every leg (tl30): all, every job (4), every leg
+tiers-test: PASS
