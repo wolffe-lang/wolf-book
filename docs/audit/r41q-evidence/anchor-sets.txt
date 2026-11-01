@@ -1,0 +1,29 @@
+before 693
+after 706
+removed: none
+retargeted: none
+added:
+abi.c.variadic
+abi.c.variadic.arg
+abi.c.variadic.builtins
+abi.c.variadic.call
+abi.c.variadic.checked
+abi.c.variadic.list
+abi.c.variadic.start
+abi.c.variadic.syntax
+abi.c.variadic.sysv
+abi.c.variadic.targets
+abi.target.main
+exec.checked.argv
+os.env.argv
+
+diagnostic codes before 187 after 192
+added: E0822, E0823, E0824, E0825, E0826
+removed: none
+order of the kept codes unchanged: True
+
+grammar.ebnf: one rule changed:
+- params    ::= param (',' param)* ','?
++ params    ::= param (',' param)* (',' '...' | ','?)
+
+source: wolf-lang 5adf3d91f75b3545ff8d38e5b6693b0b9f367a05 spec/anchors.json, spec/grammar.ebnf, docs/diagnostics.md (derived by the derive_diagnostic_codes rule); each vendored file byte-equal to the source (sha256 compared)
