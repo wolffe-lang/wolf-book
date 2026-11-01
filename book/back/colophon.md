@@ -15,11 +15,12 @@ lupin 0.1.56 (wolf-interp, reference interpreter at pin 294d626)
 The two lines name each other, and this printing both names are
 readable. Each tool reports the revision of the other it was
 differentially tested against, and the two projects are cut on their
-own schedules. The compiler names `lupin 0.1.56`, the interpreter
-under it and not a release older. The interpreter names `294d626`,
-a release tag of the compiler's from eleven releases back — reachable, on
-the branch, and an ancestor of the compiler's own revision, so the two
-clauses are a distance this printing: 1338 commits, eleven releases. An
+own schedules. The compiler names `lupin 0.1.58`, the interpreter
+under it and not a release older. The interpreter names `a5378e3`,
+a revision of the compiler's between its last two releases and no tag —
+reachable, on the branch, and an ancestor of the compiler's own revision,
+so the two clauses are a distance this printing: 123 commits, inside one
+release. An
 earlier printing was the other case, where the interpreter's
 clause named a rebased-away development head and no count between the
 two meant anything. §1.2 teaches the reader to check which case a pair
