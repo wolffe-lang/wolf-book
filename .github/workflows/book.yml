@@ -1,3 +1,5 @@
+# Local PR evidence is cheap unless ci/full-matrix opts in.
+# Existing nightly commands and publication jobs are preserved.
 # The Wolf Book — CI (bs00). The book cannot rot: every code sample is
 # executed on every commit against the pinned toolchain, the docs are
 # held to their claims, and all three render artifacts must build.
@@ -63,15 +65,25 @@ name: book
 on:
   push:
     branches: [trunk]
+    paths:
+      - '.github/**'
+      - 'ci/**'
+      - '!ci/*.md'
+      - '!ci/**/*.md'
+      - 'tools/**'
+      - 'spec/**'
+      - '**/wolf-toolchain.toml'
+      - '**/rust-toolchain.toml'
+      - '**/*.pin'
+      - '**/PAIRING'
+      - '**/STD-PIN'
+      - 'vendor/tools.toml'
+      - 'gnu-oracle.toml'
+      - '.gitmodules'
+      - 'Cargo.toml'
+      - 'Cargo.lock'
   pull_request:
-    # `labeled` so adding `full-matrix` starts the full run at once; any
-    # other label's run is a noop (the plan, then nothing).
     types: [opened, synchronize, reopened, labeled]
-  # A toolchain release re-verifies the book by construction: wolf-lang and
-  # wolf-interp fire this event on release, the whole suite runs at the pin,
-  # and the web edition at lupp.us/book/ redeploys if it passes
-  # (docs/errata-policy.md; GitHub Pages carries only redirects, bs55).
-  # `workflow_dispatch` is the dry run of that path.
   repository_dispatch:
     types: [toolchain-release]
   schedule:
@@ -125,14 +137,17 @@ jobs:
       # plan reads that commit against its first parent. A dispatch reads
       # its branch against trunk's merge base, so it takes the history.
       - uses: actions/checkout@v4
+        if: ${{ github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'full-matrix') || contains(github.event.pull_request.labels.*.name, 'ci') || contains(github.event.pull_request.labels.*.name, 'release-matrix') }}
         with:
           fetch-depth: ${{ github.event_name == 'workflow_dispatch' && '0' || '2' }}
       - name: the planner can say no (ci/tiers-test.py)
+        if: ${{ github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'full-matrix') || contains(github.event.pull_request.labels.*.name, 'ci') || contains(github.event.pull_request.labels.*.name, 'release-matrix') }}
         run: python3 ci/tiers-test.py
       - name: the plan
+        if: ${{ github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'full-matrix') || contains(github.event.pull_request.labels.*.name, 'ci') || contains(github.event.pull_request.labels.*.name, 'release-matrix') }}
         id: plan
         env:
-          EVENT: ${{ github.event_name }}
+          EVENT: ${{ github.event_name == 'pull_request' && !contains(github.event.pull_request.labels.*.name, 'release-matrix') && 'push' || github.event_name }}
           ACTION: ${{ github.event.action }}
           LABEL: ${{ github.event.label.name }}
           LABELS: ${{ join(github.event.pull_request.labels.*.name, ',') }}
@@ -141,9 +156,15 @@ jobs:
         run: python3 ci/tiers.py plan --merge --github-output "$GITHUB_OUTPUT"
 
   # Lane 1 — the rig itself: fmt, clippy -D warnings, unit tests. 3-OS.
+      - name: local gate wiring proof
+        if: ${{ github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'full-matrix') || contains(github.event.pull_request.labels.*.name, 'ci') || contains(github.event.pull_request.labels.*.name, 'release-matrix') }}
+        run: python3 -I ci/local-gate-test.py
+      - name: local evidence gate
+        if: ${{ !(github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'full-matrix') || contains(github.event.pull_request.labels.*.name, 'ci') || contains(github.event.pull_request.labels.*.name, 'release-matrix')) }}
+        run: echo 'Local gauntlet evidence is the gate; request ci or full-matrix for CI.'
   test:
     needs: plan
-    if: contains(fromJSON(needs.plan.outputs.jobs || '[]'), 'test')
+    if: ${{ (github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'full-matrix') || contains(github.event.pull_request.labels.*.name, 'ci') || contains(github.event.pull_request.labels.*.name, 'release-matrix')) && (contains(fromJSON(needs.plan.outputs.jobs || '[]'), 'test')) }}
     strategy:
       fail-fast: false
       matrix:
@@ -185,7 +206,7 @@ jobs:
   # then prove the rig catches deliberate breakage. 3-OS.
   samples:
     needs: plan
-    if: contains(fromJSON(needs.plan.outputs.jobs || '[]'), 'samples')
+    if: ${{ (github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'full-matrix') || contains(github.event.pull_request.labels.*.name, 'ci') || contains(github.event.pull_request.labels.*.name, 'release-matrix')) && (contains(fromJSON(needs.plan.outputs.jobs || '[]'), 'samples')) }}
     strategy:
       fail-fast: false
       matrix:
@@ -432,7 +453,7 @@ jobs:
   # build (DESIGN.md §4); typst comes from the release binary.
   render:
     needs: plan
-    if: contains(fromJSON(needs.plan.outputs.jobs || '[]'), 'render')
+    if: ${{ (github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'full-matrix') || contains(github.event.pull_request.labels.*.name, 'ci') || contains(github.event.pull_request.labels.*.name, 'release-matrix')) && (contains(fromJSON(needs.plan.outputs.jobs || '[]'), 'render')) }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -505,7 +526,7 @@ jobs:
   # with and without stored state.
   contents:
     needs: [plan, render]
-    if: contains(fromJSON(needs.plan.outputs.jobs || '[]'), 'contents')
+    if: ${{ (github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'full-matrix') || contains(github.event.pull_request.labels.*.name, 'ci') || contains(github.event.pull_request.labels.*.name, 'release-matrix')) && (contains(fromJSON(needs.plan.outputs.jobs || '[]'), 'contents')) }}
     strategy:
       fail-fast: false
       matrix:
@@ -552,7 +573,7 @@ jobs:
   # verdict). lane-audit.sh reads this job's name and conclusion.
   tier:
     name: tier ${{ needs.plan.outputs.tier || 'unplanned' }}
-    if: ${{ !cancelled() }}
+    if: ${{ (github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'full-matrix') || contains(github.event.pull_request.labels.*.name, 'ci') || contains(github.event.pull_request.labels.*.name, 'release-matrix')) && (!cancelled()) }}
     needs:
       - plan
       - test
