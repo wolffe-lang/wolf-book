@@ -151,6 +151,116 @@ of 3, so with the `both` test last, 15 prints `howl` and the
 `howlscratch` arm is unreachable — no diagnostic says so, because
 every arm is still type-correct. Order is logic here, not style.
 
+## §3.5 — Enums
+
+**Exercise 3-16** *(extension (break-it-on-purpose) · wolf)*. Add a
+fourth variant, `Refund`, to `Kind` in `kinds.lu`, and run the program
+under `wolf run`. Which function does the compiler send you to, and which
+does it leave alone? Give `kind` a string that answers `Refund`, and say
+why the compiler could not have found that edit for you.
+
+Solution. `ch03/ex3-16.lu` (excerpt — the one line that changed):
+
+```wolf
+enum Kind { Drink, Food, Gratuity, Refund }
+```
+
+```console
+$ wolf run ex3-16.lu
+$ echo $?
+```
+
+The compiler sends you to `label`, and only there. Its `match` names the
+variants one by one, so a fourth variant is a value it has no arm for,
+and E0801 names it, `Refund`, at the `match` that has to answer. `kind`
+compiles unchanged. Its `match` is over a `str`, and its `_` already
+answers every string there is, `"refund"` among them, with `Kind.Food`:
+the program is wrong and well typed. Nothing the compiler checks says
+which string means a refund. That is the receipt's decision, so the
+second edit is yours to find. `ch03/ex3-16b.lu` makes both:
+
+Solution. `ch03/ex3-16b.lu`:
+
+```wolf
+enum Kind { Drink, Food, Gratuity, Refund }
+fn kind(name: str) -> Kind {
+    match name {
+        "tip" => Kind.Gratuity,
+        "espresso" => Kind.Drink,
+        "refund" => Kind.Refund,
+        _ => Kind.Food,
+    }
+}
+fn label(k: Kind) -> str {
+    match k {
+        Drink => "drink",
+        Food => "food",
+        Gratuity => "gratuity",
+        Refund => "refund",
+    }
+}
+fn main() -> !int {
+    for name in "espresso pastry tip refund".words() {
+        let k = kind(name)
+        print("{name:<10}{label(k):<10}{k}")
+    }
+    0
+}
+```
+
+```console
+$ lupin ex3-16b.lu
+```
+
+**Exercise 3-17** *(comprehension · lupin)*. Predict the four lines.
+Then move the `Tip(_)` arm above the guarded `Tip` arm and run it again
+under `wolf run`. Which arm does the compiler warn about, and why does
+the order printed here, with the same two `Tip` arms, draw no warning?
+
+```wolf
+enum Line { Item(int), Tip(int), Void }
+fn say(l: Line) -> str {
+    match l {
+        Tip(c) if c > 200 => "generous",
+        Item(c) if c > 300 => "dear",
+        Tip(_) => "a tip",
+        _ => "other",
+    }
+}
+fn main() -> !int {
+    print(say(Line.Tip(250)))
+    print(say(Line.Tip(100)))
+    print(say(Line.Item(340)))
+    print(say(Line.Void))
+    0
+}
+```
+
+Solution: `generous`, `a tip`, `dear`, `other`. A guard is asked only
+after its pattern has matched. `Tip(250)` matches `Tip(c)` and passes
+`c > 200`. `Tip(100)` matches the same pattern and fails the guard, so
+it falls through, past the `Item` arm, whose variant is wrong, to
+`Tip(_)`. `Item(340)` passes its guard, and `Void` reaches `_`.
+
+```console
+$ lupin ex3-17.lu
+```
+
+Moved above, `Tip(_)` takes every tip before the guarded arm is asked,
+so the guarded arm can never run, and the compiler names it.
+`ch03/ex3-17b.lu` is that program, and it still runs:
+
+```console
+$ wolf run ex3-17b.lu
+```
+
+In the printed order the same two arms draw nothing. A guard is a
+question about the value, answered when the program runs, so the
+checker counts a guarded arm as covering no value at all: the `Tip(_)`
+below it can still be reached by every tip whose guard says no. An
+unguarded `Tip(_)` above covers every tip, and no `Tip` arm below it
+can ever be reached.
+
 ## Chapter batch
 
 **Exercise 3-10** *(extension · lupin)*. Print 1 through 16 with each

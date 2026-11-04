@@ -1,0 +1,26 @@
+//! check: fail(E0801)
+//! phase: typecheck
+// Exercise 3-16: `Refund` joins `Kind`, and the one `match` that names
+// the variants one by one stops compiling, at itself.
+enum Kind { Drink, Food, Gratuity, Refund }
+fn kind(name: str) -> Kind {
+    match name {
+        "tip" => Kind.Gratuity,
+        "espresso" => Kind.Drink,
+        _ => Kind.Food,
+    }
+}
+fn label(k: Kind) -> str {
+    match k {
+        Drink => "drink",
+        Food => "food",
+        Gratuity => "gratuity",
+    }
+}
+fn main() -> !int {
+    for name in "espresso pastry tip".words() {
+        let k = kind(name)
+        print("{name:<10}{label(k):<10}{k}")
+    }
+    0
+}

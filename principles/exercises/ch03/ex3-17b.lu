@@ -1,0 +1,21 @@
+//! check: run(exit=0)
+//! warns: E0802
+//! phase: run
+// Exercise 3-17, the moved arm: `Tip(_)` above the guarded `Tip` arm
+// takes every tip first. Runs; the compiler warns by name (E0802).
+enum Line { Item(int), Tip(int), Void }
+fn say(l: Line) -> str {
+    match l {
+        Tip(_) => "a tip",
+        Tip(c) if c > 200 => "generous",
+        Item(c) if c > 300 => "dear",
+        _ => "other",
+    }
+}
+fn main() -> !int {
+    print(say(Line.Tip(250)))
+    print(say(Line.Tip(100)))
+    print(say(Line.Item(340)))
+    print(say(Line.Void))
+    0
+}

@@ -1,0 +1,28 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 3-16, answered: `label` gets the arm the compiler asked for,
+// and `kind` the string it could not have asked for.
+enum Kind { Drink, Food, Gratuity, Refund }
+fn kind(name: str) -> Kind {
+    match name {
+        "tip" => Kind.Gratuity,
+        "espresso" => Kind.Drink,
+        "refund" => Kind.Refund,
+        _ => Kind.Food,
+    }
+}
+fn label(k: Kind) -> str {
+    match k {
+        Drink => "drink",
+        Food => "food",
+        Gratuity => "gratuity",
+        Refund => "refund",
+    }
+}
+fn main() -> !int {
+    for name in "espresso pastry tip refund".words() {
+        let k = kind(name)
+        print("{name:<10}{label(k):<10}{k}")
+    }
+    0
+}

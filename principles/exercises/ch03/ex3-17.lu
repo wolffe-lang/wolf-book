@@ -1,0 +1,20 @@
+//! check: run(exit=0)
+//! phase: run
+// Exercise 3-17: a guard is asked only after its pattern matches, and an
+// arm whose guard answers no falls through.
+enum Line { Item(int), Tip(int), Void }
+fn say(l: Line) -> str {
+    match l {
+        Tip(c) if c > 200 => "generous",
+        Item(c) if c > 300 => "dear",
+        Tip(_) => "a tip",
+        _ => "other",
+    }
+}
+fn main() -> !int {
+    print(say(Line.Tip(250)))
+    print(say(Line.Tip(100)))
+    print(say(Line.Item(340)))
+    print(say(Line.Void))
+    0
+}
