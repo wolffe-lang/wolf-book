@@ -1,0 +1,10 @@
+error[E0301]: `==` on `Kind` needs the trait `Eq`, and no `Eq` is in scope or reachable from this file
+ --> ./part-kind-eq.lu:7:8
+  |
+7 |     if k == Kind.Drink { print("a drink") }
+  |        ^ this is `Kind`, not a primitive
+  |
+  = note: an operator on a user type dispatches through its trait ([type.trait.op]): `==` is
+    `Eq.eq`. The trait is looked for under that name in scope, then in `Kind`'s own module,
+    then in the modules this file imports (std.ops and std.cmp declare the eight) — declare
+    it, or import the module that does, and give `Kind` an `impl Eq`.

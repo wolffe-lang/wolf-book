@@ -1,0 +1,16 @@
+error[E0301]: `Drink` is a variant of `Kind`, and a variant value is spelled with its enum
+ --> ./part-bare-variant.lu:6:13
+  |
+4 | enum Kind { Drink, Food, Gratuity }
+  |             ----- `Drink` is declared here, in `Kind`
+5 | fn main() -> !int {
+6 |     let k = Drink
+  |             ^^^^^ write `Kind.Drink`
+  |
+  = note: a variant belongs to its enum, so a value names both: `Kind.Drink`. A bare capitalized
+    name is how an error-row tag is spelled, which is why this one did not resolve. In a
+    `match` arm the bare name is fine: the scrutinee's type already says which enum.
+help: write `Kind.Drink`
+  |
+6 |     let k = Kind.Drink
+  |
