@@ -1,0 +1,13 @@
+error[E0801]: this `match` does not cover `Refund`
+  --> ./ex3-16.lu:14:5
+   |
+14 |     match k {
+   |     ^^^^^^^^^
+15 |         Drink => "drink",
+16 |         Food => "food",
+17 |         Gratuity => "gratuity",
+18 |     }
+   | ^^^^^ not every value is matched
+   |
+   = note: add arms for the missing cases, or end the `match` with a `_` arm to catch the rest
+     deliberately.

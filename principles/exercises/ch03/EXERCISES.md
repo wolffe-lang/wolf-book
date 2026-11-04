@@ -167,7 +167,23 @@ enum Kind { Drink, Food, Gratuity, Refund }
 
 ```console
 $ wolf run ex3-16.lu
+error[E0801]: this `match` does not cover `Refund`
+  --> ./ex3-16.lu:14:5
+   |
+14 |     match k {
+   |     ^^^^^^^^^
+15 |         Drink => "drink",
+16 |         Food => "food",
+17 |         Gratuity => "gratuity",
+18 |     }
+   | ^^^^^ not every value is matched
+   |
+   = note: add arms for the missing cases, or end the `match` with a `_` arm to catch the rest
+     deliberately.
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0801` explains this code, or any other, by name)
 $ echo $?
+2
 ```
 
 The compiler sends you to `label`, and only there. Its `match` names the
@@ -210,6 +226,10 @@ fn main() -> !int {
 
 ```console
 $ lupin ex3-16b.lu
+espresso  drink     Kind.Drink
+pastry    food      Kind.Food
+tip       gratuity  Kind.Gratuity
+refund    refund    Kind.Refund
 ```
 
 **Exercise 3-17** *(comprehension · lupin)*. Predict the four lines.
@@ -244,6 +264,10 @@ it falls through, past the `Item` arm, whose variant is wrong, to
 
 ```console
 $ lupin ex3-17.lu
+generous
+a tip
+dear
+other
 ```
 
 Moved above, `Tip(_)` takes every tip before the guarded arm is asked,
@@ -252,6 +276,19 @@ so the guarded arm can never run, and the compiler names it.
 
 ```console
 $ wolf run ex3-17b.lu
+a tip
+a tip
+dear
+other
+warning[E0802]: this arm can never match — the arms above already cover it
+  --> ./ex3-17b.lu:10:9
+   |
+ 9 |         Tip(_) => "a tip",
+   |         ------ this arm already matches those values
+10 |         Tip(c) if c > 200 => "generous",
+   |         ^^^^^^ unreachable arm
+   |
+   = note: delete the arm, or reorder the arms so the more specific pattern comes first.
 ```
 
 In the printed order the same two arms draw nothing. A guard is a
