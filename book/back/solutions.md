@@ -965,7 +965,7 @@ production and a style war; the book spends neither.
 </details>
 
 <details>
-<summary>Exercise 3-6. <a href="../ch03.md#3.4">§3.4</a></summary>
+<summary>Exercise 3-6. <a href="../ch03.md#3.5">§3.5</a></summary>
 
 **Exercise 3-6** *(extension (break-it-on-purpose) · lupin)*. Using one
 `i32` binding and one `*`, write the smallest program that traps with
@@ -1000,7 +1000,7 @@ gives it a type, and `let n: i32` is that something.
 </details>
 
 <details>
-<summary>Exercise 3-7. <a href="../ch03.md#3.4">§3.4</a></summary>
+<summary>Exercise 3-7. <a href="../ch03.md#3.5">§3.5</a></summary>
 
 **Exercise 3-7** *(comprehension · lupin)*. Predict both lines. If you
 arrived from Python, predict them twice:
@@ -1122,7 +1122,7 @@ every arm is still type-correct. Order is logic here, not style.
 </details>
 
 <details>
-<summary>Exercise 3-10. <a href="../ch03.md#3.4">§3.4</a></summary>
+<summary>Exercise 3-10. <a href="../ch03.md#3.5">§3.5</a></summary>
 
 **Exercise 3-10** *(extension · lupin)*. Print 1 through 16 with each
 number's binary spelling right-aligned beside it. No format spec you
@@ -1177,7 +1177,7 @@ your extension should, and should decide.
 </details>
 
 <details>
-<summary>Exercise 3-11. <a href="../ch03.md#3.4">§3.4</a></summary>
+<summary>Exercise 3-11. <a href="../ch03.md#3.5">§3.5</a></summary>
 
 **Exercise 3-11** *(fingers · lupin)*. One pass over a block of
 readings: lowest, highest, and mean, integer arithmetic throughout.
@@ -1231,7 +1231,7 @@ here, and chapter 2's precision specs are how a report would say
 </details>
 
 <details>
-<summary>Exercise 3-12. <a href="../ch03.md#3.4">§3.4</a></summary>
+<summary>Exercise 3-12. <a href="../ch03.md#3.5">§3.5</a></summary>
 
 **Exercise 3-12** *(fingers · lupin)*. Print every three-digit
 palindrome divisible by 7, using arithmetic only: `/` and `%` take
@@ -1280,7 +1280,7 @@ problem statement implied.
 </details>
 
 <details>
-<summary>Exercise 3-14. <a href="../ch03.md#3.4">§3.4</a></summary>
+<summary>Exercise 3-14. <a href="../ch03.md#3.5">§3.5</a></summary>
 
 **Exercise 3-14** *(fingers · lupin)*. 3-9's pack drill again, decided
 once instead of in a chain. That version's order was load-bearing and
@@ -1416,6 +1416,159 @@ arm as written. It never goes the other way: a braced `if` stays
 braced on every pass, however short its branches, because the rule is
 that no program which parses changes shape under the formatter, and
 the width break is the one exception, one direction only.
+</details>
+
+<details>
+<summary>Exercise 3-16. <a href="../ch03.md#3.5">§3.5</a></summary>
+
+**Exercise 3-16** *(extension (break-it-on-purpose) · wolf)*. Add a
+fourth variant, `Refund`, to `Kind` in `kinds.lu`, and run the program
+under `wolf run`. Which function does the compiler send you to, and which
+does it leave alone? Give `kind` a string that answers `Refund`, and say
+why the compiler could not have found that edit for you.
+
+Solution. `ch03/ex3-16.lu` (excerpt — the one line that changed):
+
+```wolf
+enum Kind { Drink, Food, Gratuity, Refund }
+```
+
+```console
+$ wolf run ex3-16.lu
+error[E0801]: this `match` does not cover `Refund`
+  --> ./ex3-16.lu:14:5
+   |
+14 |     match k {
+   |     ^^^^^^^^^
+15 |         Drink => "drink",
+16 |         Food => "food",
+17 |         Gratuity => "gratuity",
+18 |     }
+   | ^^^^^ not every value is matched
+   |
+   = note: add arms for the missing cases, or end the `match` with a `_` arm to catch the rest
+     deliberately.
+
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0801` explains this code, or any other, by name)
+$ echo $?
+2
+```
+
+The compiler sends you to `label`, and only there. Its `match` names the
+variants one by one, so a fourth variant is a value it has no arm for,
+and E0801 names it, `Refund`, at the `match` that has to answer. `kind`
+compiles unchanged. Its `match` is over a `str`, and its `_` already
+answers every string there is, `"refund"` among them, with `Kind.Food`:
+the program is wrong and well typed. Nothing the compiler checks says
+which string means a refund. That is the receipt's decision, so the
+second edit is yours to find. `ch03/ex3-16b.lu` makes both:
+
+Solution. `ch03/ex3-16b.lu`:
+
+```wolf
+enum Kind { Drink, Food, Gratuity, Refund }
+fn kind(name: str) -> Kind {
+    match name {
+        "tip" => Kind.Gratuity,
+        "espresso" => Kind.Drink,
+        "refund" => Kind.Refund,
+        _ => Kind.Food,
+    }
+}
+fn label(k: Kind) -> str {
+    match k {
+        Drink => "drink",
+        Food => "food",
+        Gratuity => "gratuity",
+        Refund => "refund",
+    }
+}
+fn main() -> !int {
+    for name in "espresso pastry tip refund".words() {
+        let k = kind(name)
+        print("{name:<10}{label(k):<10}{k}")
+    }
+    0
+}
+```
+
+```console
+$ lupin ex3-16b.lu
+espresso  drink     Kind.Drink
+pastry    food      Kind.Food
+tip       gratuity  Kind.Gratuity
+refund    refund    Kind.Refund
+```
+</details>
+
+<details>
+<summary>Exercise 3-17. <a href="../ch03.md#3.5">§3.5</a></summary>
+
+**Exercise 3-17** *(comprehension · lupin)*. Predict the four lines.
+Then move the `Tip(_)` arm above the guarded `Tip` arm and run it again
+under `wolf run`. Which arm does the compiler warn about, and why does
+the order printed here, with the same two `Tip` arms, draw no warning?
+
+```wolf
+enum Line { Item(int), Tip(int), Void }
+fn say(l: Line) -> str {
+    match l {
+        Tip(c) if c > 200 => "generous",
+        Item(c) if c > 300 => "dear",
+        Tip(_) => "a tip",
+        _ => "other",
+    }
+}
+fn main() -> !int {
+    print(say(Line.Tip(250)))
+    print(say(Line.Tip(100)))
+    print(say(Line.Item(340)))
+    print(say(Line.Void))
+    0
+}
+```
+
+Solution: `generous`, `a tip`, `dear`, `other`. A guard is asked only
+after its pattern has matched. `Tip(250)` matches `Tip(c)` and passes
+`c > 200`. `Tip(100)` matches the same pattern and fails the guard, so
+it falls through, past the `Item` arm, whose variant is wrong, to
+`Tip(_)`. `Item(340)` passes its guard, and `Void` reaches `_`.
+
+```console
+$ lupin ex3-17.lu
+generous
+a tip
+dear
+other
+```
+
+Moved above, `Tip(_)` takes every tip before the guarded arm is asked,
+so the guarded arm can never run, and the compiler names it.
+`ch03/ex3-17b.lu` is that program, and it still runs:
+
+```console
+$ wolf run ex3-17b.lu
+a tip
+a tip
+dear
+other
+warning[E0802]: this arm can never match — the arms above already cover it
+  --> ./ex3-17b.lu:10:9
+   |
+ 9 |         Tip(_) => "a tip",
+   |         ------ this arm already matches those values
+10 |         Tip(c) if c > 200 => "generous",
+   |         ^^^^^^ unreachable arm
+   |
+   = note: delete the arm, or reorder the arms so the more specific pattern comes first.
+```
+
+In the printed order the same two arms draw nothing. A guard is a
+question about the value, answered when the program runs, so the
+checker counts a guarded arm as covering no value at all: the `Tip(_)`
+below it can still be reached by every tip whose guard says no. An
+unguarded `Tip(_)` above covers every tip, and no `Tip` arm below it
+can ever be reached.
 </details>
 
 ## Chapter 4
@@ -2501,8 +2654,8 @@ a=42 b=7
 <summary>Exercise 6-2. <a href="../ch06.md#6.2">§6.2</a></summary>
 
 **Exercise 6-2** *(comprehension · lupin)*. `chain` calls `parse`
-through `?`. Predict `a` and `b`, and name which row variant `b`'s
-handler sees:
+through `?`. Predict `a` and `b`, and name which tag of the row
+`b`'s handler sees:
 
 ```wolf
 fn chain(s: str) -> int ! {empty, NotDigit(Bad)} {
@@ -2537,7 +2690,7 @@ a=43 b=-2
 <summary>Exercise 6-3. <a href="../ch06.md#6.1">§6.1</a></summary>
 
 **Exercise 6-3** *(extension · lupin)*. Grow the row: add a `too_long`
-variant for inputs over four bytes and handle it. What else did you have
+tag for inputs over four bytes and handle it. What else did you have
 to change, and what told you?
 
 Solution. `ch06/ex6-3.lu` (excerpt):
