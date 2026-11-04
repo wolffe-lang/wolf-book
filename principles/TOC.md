@@ -67,6 +67,9 @@ wolf, without hearing the word "lifetime."*
   division by zero in every build profile, and spell intentional
   wrapping.
 - 3.4 `match`, exhaustively — write a match the compiler proves total.
+- 3.5 Enums — declare a closed set of values, give a variant a payload
+  and the type a method, match it with no `_`, and let the compiler name
+  every `match` a new variant needs.
 - Exercises 3-1 … 3-5.
 
 ### Chapter 4 — Functions
