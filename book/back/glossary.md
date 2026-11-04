@@ -19,6 +19,9 @@ mutable windows onto the enclosing function's locals.
 **comptime** (18.0): wolf, evaluated during compilation. One tier, one
 language, no macro expander.
 
+**enum** (3.5): a type whose values are the variants its declaration
+lists, and no others. A value is written with its enum, `Kind.Drink`.
+
 **error kernel** (15.2): the part of a system whose failure is not
 recoverable, kept small on purpose.
 
@@ -42,6 +45,9 @@ every task it spawned. One arrow in, one arrow out.
 **listener** (33.1): a socket that accepts connections rather than
 carrying one. It is an `int` the runtime owns, and closing it is what
 ends the door.
+
+**method** (3.5): a function written inside an `impl` block and called
+with a dot. Its first parameter, `self`, is the value before the dot.
 
 **mode** (7.3): what a parameter says about the caller's value: read for
 the duration of the call, `mut` for exclusive access, `take` for
@@ -114,6 +120,11 @@ distinct from an OS thread.
 **trap** (3.3): the fault of a defined execution: the program was legal,
 it ran, and it hit a rule the language enforces at run time, in every
 build profile. Appendix B closes the set at twelve kinds.
+
+**variant** (3.5): one of an enum's values, written with its enum
+outside a `match` arm and bare inside one, carrying a payload when its
+declaration gives it one. A variant belongs to its enum; a tag belongs
+to a row.
 
 **view** (2.5): two machine words, a pointer and a length, aimed at
 bytes that already exist. Taking one copies nothing.
