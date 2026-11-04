@@ -48,7 +48,7 @@ post-ruling rows `56298aa`):
 ## Forbidden
 
 No merge, label, tag, release or deploy; no issue filed or closed by this lane (the
-six drafts were filed by the orchestrator); no attribution trailer. No compiler or
+six issue drafts were filed for it, not by it); no attribution trailer. No compiler or
 interpreter source read: the spec at wolf-lang `5adf3d91`, its corpus programs, the
 docs, and black-box runs of the published archives only. No console block, diagnostic
 block or snapshot typed by hand: the consoles were imported from the rig's drift log
