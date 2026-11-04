@@ -54,19 +54,19 @@ module 22.1 · `div-zero` (trap) 3.3
 
 ## E
 
-`else`, `else |err|` 6.2 · `env_args()` 26.5, 30.1 · `errdefer` 6.3 · error
+`else`, `else |err|` 6.2 · `enum` 3.5, 5.3, 5.6 · `env_args()` 26.5, 30.1 · `errdefer` 6.3 · error
 kernel 15.2 · error rows 6.1 · error-set aliases 6.1 · escape hatch, the three rings 9.1 ·
 exclusivity 7.4, 7.5 · `exclusivity` (trap) 7.5 · exercises, how they are
-numbered, Notation · exhaustiveness 3.4 · exit codes 1.5, Notation ·
+numbered, Notation · exhaustiveness 3.4, 3.5 · exit codes 1.5, Notation ·
 expressions, everything is one 3.2 · export hash 22.2
 
 `E0102` 2.2 · `E0103` 2.2 · `E0104` 2.2 · `E0105` 2.2 · `E0107` 2.3 ·
-`E0110` 2.4 · `E0201` 1.5, 4.1, 12.4, 14.1 · `E0202` 1.5 · `E0301` 10.1 ·
+`E0110` 2.4 · `E0201` 1.5, 4.1, 12.4, 14.1 · `E0202` 1.5 · `E0301` 3.5, 10.1 ·
 `E0302` 22.1 ·
 `E0303` 22.2 · `E0304` 22.1 · `E0305` 22.1 · `E0401` 3.2, 4.1 · `E0410` 3.1
 · `E0412` 18.3 · `E0419` 5.1 · `E0501` 5.3 · `E0602` 26.4, 26.5 · `E0701` 18.4, 24.2 ·
 `E0702` 18.4 · `E0703` 18.4 · `E0704` 18.4 · `E0705` 18.1 · `E0706` 18.1 ·
-`E0707` 18.3 · `E0709` 18.4 · `E0710` 18.1, 18.2, 22.3 · `E0801` 3.4 · `E0817` 20.1 ·
+`E0707` 18.3 · `E0709` 18.4 · `E0710` 18.1, 18.2, 22.3 · `E0801` 3.4, 3.5 · `E0817` 20.1 ·
 `E1001` 3.1, 7.1, 7.2, 7.6, 7.7, 9.8 · `E1002` 7.5 · `E1005` 8.3 · `E1006`
 8.5, 8.7 · `E1007` 7.4 · `E1008` 7.5 · `E1010` 8.2, 8.4, 8.6, 9.8, 15.3 · `E1011` 8.6 ·
 `E1012` 8.5, 8.8, 30.4, 30.5 · `E1101` 13.2 · `E1102` 13.2 · `E1301` 9.2 ·
@@ -111,7 +111,7 @@ K&R, the twins after it 26.1, 27.1, 28.1, 32.1
 ## M
 
 mailboxes 14.3 · `main`, what it returns 1.5, 6.3 · `Map` 5.1, 5.4 · `match`
-3.4 · `match`, on a dispatch byte 27.4 · milestones, the solo's 31.2 ·
+3.4 · `match`, on a dispatch byte 27.4 · methods 3.5 · milestones, the solo's 31.2 ·
 modules 22.1, 22.2, 22.3 · monitors 15.1 · moves 3.1, 7.1, 7.2 · `mut` 7.4,
 7.5
 
@@ -166,7 +166,7 @@ trusted code 9.7 · tuples 5.1 · `wolf test` 18.1
 
 ## V
 
-`var` 3.1 · views 2.5 · view sets 7.5
+`var` 3.1 · variants 3.5 · views 2.5 · view sets 7.5
 
 ## W
 
