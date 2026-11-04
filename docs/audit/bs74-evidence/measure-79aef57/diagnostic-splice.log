@@ -1,0 +1,3 @@
+book/ch03.md: book/ch03/part-bare-variant <- snapshots/diagnostics/book__ch03__part-bare-variant.txt
+book/ch03.md: book/ch03/part-kinds-cover <- snapshots/diagnostics/book__ch03__part-kinds-cover.txt
+book/ch03.md: book/ch03/part-kind-eq <- snapshots/diagnostics/book__ch03__part-kind-eq.txt

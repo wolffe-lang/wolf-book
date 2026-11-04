@@ -1,0 +1,11 @@
+enum Shape { Circle(int), Rect(int, int), Empty }
+fn wide(s: Shape) -> bool {
+    match s {
+        Rect(..) => true,
+        _ => false,
+    }
+}
+fn main() -> !int {
+    print("{wide(Shape.Rect(1, 2))}")
+    0
+}

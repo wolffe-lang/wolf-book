@@ -1,0 +1,11 @@
+enum Shape { Circle(int), Rect(int, int), Empty }
+fn round(s: Shape) -> bool {
+    match s {
+        Circle => true,
+        _ => false,
+    }
+}
+fn main() -> !int {
+    print("{round(Shape.Circle(1))}")
+    0
+}

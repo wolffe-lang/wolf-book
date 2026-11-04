@@ -1,0 +1,7 @@
+enum E { A(str), B(int) }
+fn show(e: E) -> str { "{e}" }
+fn main() -> !int {
+    print(show(E.A("x")))
+    print(show(E.B(7)))
+    0
+}

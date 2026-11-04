@@ -1,0 +1,221 @@
+wolf 0.2.36 (wolfgang, pin 5adf3d9)
+paired with lupin 0.1.58 (reference interpreter), pin a5378e3
+lupin 0.1.58 (wolf-interp, reference interpreter at pin a5378e3)
+=================== ch03-kinds
+--- lupin ch03-kinds.lu
+espresso  drink     Kind.Drink
+pastry    food      Kind.Food
+tip       gratuity  Kind.Gratuity
+[lupin exit=0]
+--- wolf run ch03-kinds.lu
+espresso  drink     Kind.Drink
+pastry    food      Kind.Food
+tip       gratuity  Kind.Gratuity
+[wolf run exit=0]
+--- wolf conform-run ./ch03-kinds.lu
+{"commit":"5adf3d9","diagnostics":[],"file":"./ch03-kinds.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[conform-run exit=0]
+=================== ch03-bare-variant
+--- lupin ch03-bare-variant.lu
+ch03-bare-variant.lu: E0301: a variant value is spelled with its enum: write `Kind.Drink`. A bare                          capitalized name in value position is an error row tag's spelling                          (`[gram.expr.tagident]`), and no local, item, import or module resolves                          `Drink` here [gram.expr.variant] at 3:13
+  Kind. at 3:13
+[lupin exit=2]
+--- wolf run ch03-bare-variant.lu
+error[E0301]: `Drink` is a variant of `Kind`, and a variant value is spelled with its enum
+ --> ./ch03-bare-variant.lu:3:13
+  |
+1 | enum Kind { Drink, Food, Gratuity }
+  |             ----- `Drink` is declared here, in `Kind`
+2 | fn main() -> !int {
+3 |     let k = Drink
+  |             ^^^^^ write `Kind.Drink`
+  |
+  = note: a variant belongs to its enum, so a value names both: `Kind.Drink`. A bare capitalized
+    name is how an error-row tag is spelled, which is why this one did not resolve. In a
+    `match` arm the bare name is fine: the scrutinee's type already says which enum.
+help: write `Kind.Drink`
+  |
+3 |     let k = Kind.Drink
+  |
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[wolf run exit=2]
+--- wolf conform-run ./ch03-bare-variant.lu
+error[E0301]: `Drink` is a variant of `Kind`, and a variant value is spelled with its enum
+ --> ./ch03-bare-variant.lu:3:13
+  |
+1 | enum Kind { Drink, Food, Gratuity }
+  |             ----- `Drink` is declared here, in `Kind`
+2 | fn main() -> !int {
+3 |     let k = Drink
+  |             ^^^^^ write `Kind.Drink`
+  |
+  = note: a variant belongs to its enum, so a value names both: `Kind.Drink`. A bare capitalized
+    name is how an error-row tag is spelled, which is why this one did not resolve. In a
+    `match` arm the bare name is fine: the scrutinee's type already says which enum.
+help: write `Kind.Drink`
+  |
+3 |     let k = Kind.Drink
+  |
+{"commit":"5adf3d9","diagnostics":[{"code":"E0301","severity":"error","span":[68,73]}],"file":"./ch03-bare-variant.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"typecheck","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[conform-run exit=0]
+=================== ch03-kinds-cover
+--- lupin ch03-kinds-cover.lu
+food
+[lupin exit=0]
+--- wolf run ch03-kinds-cover.lu
+error[E0801]: this `match` does not cover `Gratuity`
+ --> ./ch03-kinds-cover.lu:3:5
+  |
+3 |     match k {
+  |     ^^^^^^^^^
+4 |         Drink => "drink",
+5 |         Food => "food",
+6 |     }
+  | ^^^^^ not every value is matched
+  |
+  = note: add arms for the missing cases, or end the `match` with a `_` arm to catch the rest
+    deliberately.
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0801` explains this code, or any other, by name)
+[wolf run exit=2]
+--- wolf conform-run ./ch03-kinds-cover.lu
+error[E0801]: this `match` does not cover `Gratuity`
+ --> ./ch03-kinds-cover.lu:3:5
+  |
+3 |     match k {
+  |     ^^^^^^^^^
+4 |         Drink => "drink",
+5 |         Food => "food",
+6 |     }
+  | ^^^^^ not every value is matched
+  |
+  = note: add arms for the missing cases, or end the `match` with a `_` arm to catch the rest
+    deliberately.
+{"commit":"5adf3d9","diagnostics":[{"code":"E0801","severity":"error","span":[67,132]}],"file":"./ch03-kinds-cover.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"typecheck","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0801)","warnings":[]}
+[conform-run exit=0]
+=================== ch03-lines
+--- lupin ch03-lines.lu
+*Line.Item(Kind.Drink, 340)
+ Line.Item(Kind.Food, 275)
+ Line.Tip(100)
+ Line.Void
+ 715
+[lupin exit=0]
+--- wolf run ch03-lines.lu
+*Line.Item(Kind.Drink, 340)
+ Line.Item(Kind.Food, 275)
+ Line.Tip(100)
+ Line.Void
+ 715
+[wolf run exit=0]
+--- wolf conform-run ./ch03-lines.lu
+{"commit":"5adf3d9","diagnostics":[],"file":"./ch03-lines.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[conform-run exit=0]
+=================== ch03-kind-eq
+--- lupin ch03-kind-eq.lu
+a drink
+[lupin exit=0]
+--- wolf run ch03-kind-eq.lu
+error[E0301]: `==` on `Kind` needs the trait `Eq`, and no `Eq` is in scope or reachable from this file
+ --> ./ch03-kind-eq.lu:4:8
+  |
+4 |     if k == Kind.Drink { print("a drink") }
+  |        ^ this is `Kind`, not a primitive
+  |
+  = note: an operator on a user type dispatches through its trait ([type.trait.op]): `==` is
+    `Eq.eq`. The trait is looked for under that name in scope, then in `Kind`'s own module,
+    then in the modules this file imports (std.ops and std.cmp declare the eight) — declare
+    it, or import the module that does, and give `Kind` an `impl Eq`.
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[wolf run exit=2]
+--- wolf conform-run ./ch03-kind-eq.lu
+error[E0301]: `==` on `Kind` needs the trait `Eq`, and no `Eq` is in scope or reachable from this file
+ --> ./ch03-kind-eq.lu:4:8
+  |
+4 |     if k == Kind.Drink { print("a drink") }
+  |        ^ this is `Kind`, not a primitive
+  |
+  = note: an operator on a user type dispatches through its trait ([type.trait.op]): `==` is
+    `Eq.eq`. The trait is looked for under that name in scope, then in `Kind`'s own module,
+    then in the modules this file imports (std.ops and std.cmp declare the eight) — declare
+    it, or import the module that does, and give `Kind` an `impl Eq`.
+{"commit":"5adf3d9","diagnostics":[{"code":"E0301","severity":"error","span":[86,87]}],"file":"./ch03-kind-eq.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"typecheck","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[conform-run exit=0]
+=================== ch03-ex-tips
+--- lupin ch03-ex-tips.lu
+generous
+a tip
+dear
+other
+[lupin exit=0]
+--- wolf run ch03-ex-tips.lu
+generous
+a tip
+dear
+other
+[wolf run exit=0]
+--- wolf conform-run ./ch03-ex-tips.lu
+{"commit":"5adf3d9","diagnostics":[],"file":"./ch03-ex-tips.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[conform-run exit=0]
+=================== ch05-maybe
+--- lupin ch05-maybe.lu
+340 0
+[lupin exit=0]
+--- wolf run ch05-maybe.lu
+wolf run: cannot compile this yet — a generic enum's variants (generic data) (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)
+ --> ./ch05-maybe.lu:9:17
+  |
+9 |     let found = Maybe.Just(340)
+  |                 ^^^^^^^^^^^^^^^
+  |
+[wolf run exit=4]
+--- wolf conform-run ./ch05-maybe.lu
+wolf conform-run: unsupported — a generic enum's variants (generic data)
+ --> ./ch05-maybe.lu:9:17
+  |
+9 |     let found = Maybe.Just(340)
+  |                 ^^^^^^^^^^^^^^^
+  |
+{"commit":"5adf3d9","diagnostics":[],"file":"./ch05-maybe.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"unsupported","warnings":[],"x-unsupported-col":17,"x-unsupported-construct":"a generic enum's variants (generic data)","x-unsupported-file":"./ch05-maybe.lu","x-unsupported-line":9,"x-unsupported-span":[195,210]}
+[conform-run exit=0]
+=================== ch05-kind-eq
+--- lupin ch05-kind-eq.lu
+true false true
+[lupin exit=0]
+--- wolf run ch05-kind-eq.lu
+true false true
+[wolf run exit=0]
+--- wolf conform-run ./ch05-kind-eq.lu
+{"commit":"5adf3d9","diagnostics":[],"file":"./ch05-kind-eq.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[conform-run exit=0]
+=================== t5
+--- lupin t5.lu
+t5.lu: unsupported: no `match` arm applied; exhaustiveness is the type checker's
+[lupin exit=4]
+--- wolf run t5.lu
+error[E0801]: this `match` does not cover `K(Food)`, `K(Gratuity)`
+ --> ./t5.lu:4:5
+  |
+4 |     match w {
+  |     ^^^^^^^^^
+5 |         K(Drink) => "drink",
+6 |     }
+  | ^^^^^ not every value is matched
+  |
+  = note: add arms for the missing cases, or end the `match` with a `_` arm to catch the rest
+    deliberately.
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0801` explains this code, or any other, by name)
+[wolf run exit=2]
+--- wolf conform-run ./t5.lu
+error[E0801]: this `match` does not cover `K(Food)`, `K(Gratuity)`
+ --> ./t5.lu:4:5
+  |
+4 |     match w {
+  |     ^^^^^^^^^
+5 |         K(Drink) => "drink",
+6 |     }
+  | ^^^^^ not every value is matched
+  |
+  = note: add arms for the missing cases, or end the `match` with a `_` arm to catch the rest
+    deliberately.
+{"commit":"5adf3d9","diagnostics":[{"code":"E0801","severity":"error","span":[81,125]}],"file":"./t5.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"typecheck","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0801)","warnings":[]}
+[conform-run exit=0]

@@ -1,0 +1,10 @@
+enum Light { Red, Amber, Green }
+fn f(n: int) -> int ! {..} {
+    if n < 0 { return Red }
+    n
+}
+fn main() -> !int {
+    let v = f(-1) else |e| { print("{e}"); 0 }
+    print("{v}")
+    0
+}

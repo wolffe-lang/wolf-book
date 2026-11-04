@@ -1,0 +1,247 @@
+wolf 0.2.36 (wolfgang, pin 5adf3d9)
+paired with lupin 0.1.58 (reference interpreter), pin a5378e3
+lupin 0.1.58 (wolf-interp, reference interpreter at pin a5378e3)
+=================== p01
+--- lupin p01.lu
+Light.Red then Light.Green
+[lupin exit=0]
+--- wolf run p01.lu
+Light.Red then Light.Green
+[wolf run exit=0]
+--- wolf conform-run ./p01.lu
+{"commit":"5adf3d9","diagnostics":[],"file":"./p01.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[conform-run exit=0]
+=================== p02
+--- lupin p02.lu
+Light.Red
+[lupin exit=0]
+--- wolf run p02.lu
+Light.Red
+[wolf run exit=0]
+--- wolf conform-run ./p02.lu
+{"commit":"5adf3d9","diagnostics":[],"file":"./p02.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[conform-run exit=0]
+=================== p03
+--- lupin p03.lu
+p03.lu: E0301: a variant value is spelled with its enum: write `Light.Red`. A bare                          capitalized name in value position is an error row tag's spelling                          (`[gram.expr.tagident]`), and no local, item, import or module resolves                          `Red` here [gram.expr.variant] at 3:22
+  Light. at 3:22
+[lupin exit=2]
+--- wolf run p03.lu
+error[E0301]: `Red` is a variant of `Light`, and a variant value is spelled with its enum
+ --> ./p03.lu:3:22
+  |
+1 | enum Light { Red, Amber, Green }
+  |              --- `Red` is declared here, in `Light`
+2 | fn main() -> !int {
+3 |     let now: Light = Red
+  |                      ^^^ write `Light.Red`
+  |
+  = note: a variant belongs to its enum, so a value names both: `Light.Red`. A bare capitalized
+    name is how an error-row tag is spelled, which is why this one did not resolve. In a
+    `match` arm the bare name is fine: the scrutinee's type already says which enum.
+help: write `Light.Red`
+  |
+3 |     let now: Light = Light.Red
+  |
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[wolf run exit=2]
+--- wolf conform-run ./p03.lu
+error[E0301]: `Red` is a variant of `Light`, and a variant value is spelled with its enum
+ --> ./p03.lu:3:22
+  |
+1 | enum Light { Red, Amber, Green }
+  |              --- `Red` is declared here, in `Light`
+2 | fn main() -> !int {
+3 |     let now: Light = Red
+  |                      ^^^ write `Light.Red`
+  |
+  = note: a variant belongs to its enum, so a value names both: `Light.Red`. A bare capitalized
+    name is how an error-row tag is spelled, which is why this one did not resolve. In a
+    `match` arm the bare name is fine: the scrutinee's type already says which enum.
+help: write `Light.Red`
+  |
+3 |     let now: Light = Light.Red
+  |
+{"commit":"5adf3d9","diagnostics":[{"code":"E0301","severity":"error","span":[74,77]}],"file":"./p03.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"typecheck","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[conform-run exit=0]
+=================== p04
+--- lupin p04.lu
+Shape.Circle(2) 12
+Shape.Rect(3, 3) 9
+Shape.Rect(2, 5) 10 Shape.Empty 0
+[lupin exit=0]
+--- wolf run p04.lu
+Shape.Circle(2) 12
+Shape.Rect(3, 3) 9
+Shape.Rect(2, 5) 10 Shape.Empty 0
+[wolf run exit=0]
+--- wolf conform-run ./p04.lu
+{"commit":"5adf3d9","diagnostics":[],"file":"./p04.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[conform-run exit=0]
+=================== p05
+--- lupin p05.lu
+Light.Green
+[lupin exit=0]
+--- wolf run p05.lu
+error[E0801]: this `match` does not cover `Amber`
+ --> ./p05.lu:3:5
+  |
+3 |     match l {
+  |     ^^^^^^^^^
+4 |         Red => Light.Green,
+5 |         Green => Light.Amber,
+6 |     }
+  | ^^^^^ not every value is matched
+  |
+  = note: add arms for the missing cases, or end the `match` with a `_` arm to catch the rest
+    deliberately.
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0801` explains this code, or any other, by name)
+[wolf run exit=2]
+--- wolf conform-run ./p05.lu
+error[E0801]: this `match` does not cover `Amber`
+ --> ./p05.lu:3:5
+  |
+3 |     match l {
+  |     ^^^^^^^^^
+4 |         Red => Light.Green,
+5 |         Green => Light.Amber,
+6 |     }
+  | ^^^^^ not every value is matched
+  |
+  = note: add arms for the missing cases, or end the `match` with a `_` arm to catch the rest
+    deliberately.
+{"commit":"5adf3d9","diagnostics":[{"code":"E0801","severity":"error","span":[66,139]}],"file":"./p05.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"typecheck","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0801)","warnings":[]}
+[conform-run exit=0]
+=================== p06
+--- lupin p06.lu
+p06.lu: E0201: an open range is not a pattern — a range pattern has a literal at both ends, `lo..hi` or `lo..=hi`; the open ranges `..hi` and `lo..` are the slice spellings of `[gram.expr.primary]`, not patterns [gram.pat.range] at 4:14
+[lupin exit=2]
+--- wolf run p06.lu
+error[E0201]: an open range is not a pattern — a range pattern has a literal at both ends
+ --> ./p06.lu:4:14
+  |
+4 |         Rect(..) => true,
+  |              ^^
+  |
+  = note: a range pattern is `lo..hi` or `lo..=hi` with a literal at both ends (integer or
+    `char`); the open ranges `..hi` and `lo..` are slice spellings, not patterns
+    ([gram.pat.range])
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0201` explains this code, or any other, by name)
+[wolf run exit=2]
+--- wolf conform-run ./p06.lu
+error[E0201]: an open range is not a pattern — a range pattern has a literal at both ends
+ --> ./p06.lu:4:14
+  |
+4 |         Rect(..) => true,
+  |              ^^
+  |
+  = note: a range pattern is `lo..hi` or `lo..=hi` with a literal at both ends (integer or
+    `char`); the open ranges `..hi` and `lo..` are slice spellings, not patterns
+    ([gram.pat.range])
+{"commit":"5adf3d9","diagnostics":[{"code":"E0201","severity":"error","span":[105,107]}],"file":"./p06.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"parse","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0201)","warnings":[]}
+[conform-run exit=0]
+=================== p07
+--- lupin p07.lu
+10 3
+[lupin exit=0]
+--- wolf run p07.lu
+10 3
+[wolf run exit=0]
+--- wolf conform-run ./p07.lu
+{"commit":"5adf3d9","diagnostics":[],"file":"./p07.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[conform-run exit=0]
+=================== p08
+--- lupin p08.lu
+true
+[lupin exit=0]
+--- wolf run p08.lu
+error[E0301]: `==` on `Light` needs the trait `Eq`, and no `Eq` is in scope or reachable from this file
+ --> ./p08.lu:4:13
+  |
+4 |     print("{now == Light.Red}")
+  |             ^^^ this is `Light`, not a primitive
+  |
+  = note: an operator on a user type dispatches through its trait ([type.trait.op]): `==` is
+    `Eq.eq`. The trait is looked for under that name in scope, then in `Light`'s own module,
+    then in the modules this file imports (std.ops and std.cmp declare the eight) — declare
+    it, or import the module that does, and give `Light` an `impl Eq`.
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[wolf run exit=2]
+--- wolf conform-run ./p08.lu
+error[E0301]: `==` on `Light` needs the trait `Eq`, and no `Eq` is in scope or reachable from this file
+ --> ./p08.lu:4:13
+  |
+4 |     print("{now == Light.Red}")
+  |             ^^^ this is `Light`, not a primitive
+  |
+  = note: an operator on a user type dispatches through its trait ([type.trait.op]): `==` is
+    `Eq.eq`. The trait is looked for under that name in scope, then in `Light`'s own module,
+    then in the modules this file imports (std.ops and std.cmp declare the eight) — declare
+    it, or import the module that does, and give `Light` an `impl Eq`.
+{"commit":"5adf3d9","diagnostics":[{"code":"E0301","severity":"error","span":[89,92]}],"file":"./p08.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"typecheck","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[conform-run exit=0]
+=================== p09
+--- lupin p09.lu
+true true
+[lupin exit=0]
+--- wolf run p09.lu
+true true
+[wolf run exit=0]
+--- wolf conform-run ./p09.lu
+{"commit":"5adf3d9","diagnostics":[],"file":"./p09.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[conform-run exit=0]
+=================== p10
+--- lupin p10.lu
+true true false
+[lupin exit=0]
+--- wolf run p10.lu
+true true false
+[wolf run exit=0]
+--- wolf conform-run ./p10.lu
+{"commit":"5adf3d9","diagnostics":[],"file":"./p10.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[conform-run exit=0]
+=================== p11
+--- lupin p11.lu
+7 0
+[lupin exit=0]
+--- wolf run p11.lu
+wolf run: cannot compile this yet — a generic enum's variants (generic data) (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)
+ --> ./p11.lu:9:21
+  |
+9 |     print("{or_zero(Maybe.Just(7))} {or_zero(Maybe.Nothing)}")
+  |                     ^^^^^^^^^^^^^
+  |
+[wolf run exit=4]
+--- wolf conform-run ./p11.lu
+wolf conform-run: unsupported — a generic enum's variants (generic data)
+ --> ./p11.lu:9:21
+  |
+9 |     print("{or_zero(Maybe.Just(7))} {or_zero(Maybe.Nothing)}")
+  |                     ^^^^^^^^^^^^^
+  |
+{"commit":"5adf3d9","diagnostics":[],"file":"./p11.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"unsupported","warnings":[],"x-unsupported-col":21,"x-unsupported-construct":"a generic enum's variants (generic data)","x-unsupported-file":"./p11.lu","x-unsupported-line":9,"x-unsupported-span":[176,189]}
+[conform-run exit=0]
+=================== p12
+--- lupin p12.lu
+false
+[lupin exit=0]
+--- wolf run p12.lu
+error[E0808]: bare `Circle` names a variant that carries 1 value
+ --> ./p12.lu:4:9
+  |
+4 |         Circle => true,
+  |         ^^^^^^ this pattern
+  |
+  = note: match its payload too: `Circle(_)`.
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0808` explains this code, or any other, by name)
+[wolf run exit=2]
+--- wolf conform-run ./p12.lu
+error[E0808]: bare `Circle` names a variant that carries 1 value
+ --> ./p12.lu:4:9
+  |
+4 |         Circle => true,
+  |         ^^^^^^ this pattern
+  |
+  = note: match its payload too: `Circle(_)`.
+{"commit":"5adf3d9","diagnostics":[{"code":"E0808","severity":"error","span":[101,107]}],"file":"./p12.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"typecheck","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0808)","warnings":[]}
+[conform-run exit=0]

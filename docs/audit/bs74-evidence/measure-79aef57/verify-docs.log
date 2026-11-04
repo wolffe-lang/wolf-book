@@ -1,0 +1,9 @@
+verify-docs: 10 line-count claim(s) recomputed
+verify-docs: 6 project program(s) match the chapters that print them
+verify-docs: 116 quoted solution fences on 33 exercise pages are their files (93 whole, 23 excerpts)
+verify-docs: 36 version literal(s) in reader-facing text, each audited against wolf 0.2.36 / lupin 0.1.58
+verify-docs: 696 wolf listing(s) scanned for interpolation the vendored grammar cannot paint (wolf-book#5)
+verify-docs: FAIL EXERCISES-PENDING.md claims 268 directive-headed .lu files; the corpus has 272 — update the claim or the corpus
+verify-docs: FAIL EXERCISES-INDEX.md: the taxonomy spread says 157 `comprehension` and the table has 158
+verify-docs: FAIL EXERCISES-INDEX.md: the taxonomy spread says 81 `extension` and the table has 82
+error: 3 doc-truth failure(s)

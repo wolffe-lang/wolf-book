@@ -1,0 +1,142 @@
+wolf 0.2.36 (wolfgang, pin 5adf3d9)
+paired with lupin 0.1.58 (reference interpreter), pin a5378e3
+lupin 0.1.58 (wolf-interp, reference interpreter at pin a5378e3)
+=================== s1
+--- lupin s1.lu
+espresso  drink     Kind.Drink
+pastry    food      Kind.Food
+tip       gratuity  Kind.Gratuity
+[lupin exit=0]
+--- wolf run s1.lu
+espresso  drink     Kind.Drink
+pastry    food      Kind.Food
+tip       gratuity  Kind.Gratuity
+[wolf run exit=0]
+--- wolf conform-run ./s1.lu
+{"commit":"5adf3d9","diagnostics":[],"file":"./s1.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[conform-run exit=0]
+=================== s4
+--- lupin s4.lu
+*Line.Item(Kind.Drink, 340)
+ Line.Item(Kind.Food, 275)
+ Line.Tip(100)
+ Line.Void
+ 715
+[lupin exit=0]
+--- wolf run s4.lu
+*Line.Item(Kind.Drink, 340)
+ Line.Item(Kind.Food, 275)
+ Line.Tip(100)
+ Line.Void
+ 715
+[wolf run exit=0]
+--- wolf conform-run ./s4.lu
+{"commit":"5adf3d9","diagnostics":[],"file":"./s4.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[conform-run exit=0]
+=================== s6
+--- lupin s6.lu
+true false
+[lupin exit=0]
+--- wolf run s6.lu
+true false
+[wolf run exit=0]
+--- wolf conform-run ./s6.lu
+{"commit":"5adf3d9","diagnostics":[],"file":"./s6.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[conform-run exit=0]
+=================== s7
+--- lupin s7.lu
+true false true
+[lupin exit=0]
+--- wolf run s7.lu
+true false true
+[wolf run exit=0]
+--- wolf conform-run ./s7.lu
+{"commit":"5adf3d9","diagnostics":[],"file":"./s7.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[conform-run exit=0]
+=================== s8
+--- lupin s8.lu
+340 0
+[lupin exit=0]
+--- wolf run s8.lu
+wolf run: cannot compile this yet — a generic enum's variants (generic data) (pipeline is honest through `resolve`; the conservatism ledger, not a bug in your program)
+ --> ./s8.lu:9:17
+  |
+9 |     let found = Maybe.Just(340)
+  |                 ^^^^^^^^^^^^^^^
+  |
+[wolf run exit=4]
+--- wolf conform-run ./s8.lu
+wolf conform-run: unsupported — a generic enum's variants (generic data)
+ --> ./s8.lu:9:17
+  |
+9 |     let found = Maybe.Just(340)
+  |                 ^^^^^^^^^^^^^^^
+  |
+{"commit":"5adf3d9","diagnostics":[],"file":"./s8.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"unsupported","warnings":[],"x-unsupported-col":17,"x-unsupported-construct":"a generic enum's variants (generic data)","x-unsupported-file":"./s8.lu","x-unsupported-line":9,"x-unsupported-span":[195,210]}
+[conform-run exit=0]
+=================== s9
+--- lupin s9.lu
+0
+Line.Void
+3
+[lupin exit=0]
+--- wolf run s9.lu
+0
+0
+3
+[wolf run exit=0]
+--- wolf conform-run ./s9.lu
+{"commit":"5adf3d9","diagnostics":[],"file":"./s9.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[conform-run exit=0]
+=================== s10
+--- lupin s10.lu
+dear
+a drink
+an item
+not an item
+[lupin exit=0]
+--- wolf run s10.lu
+dear
+a drink
+a drink
+not an item
+[wolf run exit=0]
+--- wolf conform-run ./s10.lu
+{"commit":"5adf3d9","diagnostics":[],"file":"./s10.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[conform-run exit=0]
+=================== s11
+--- lupin s11.lu
+s11.lu: trap(use-after-move): `a` was moved out and is uninitialized here [mem.tier0.move.2] at 5:13; `a` moved here at 4:13
+[lupin exit=3]
+--- wolf run s11.lu
+error[E1001]: `a` is used here after its value moved away
+ --> ./s11.lu:5:13
+  |
+4 |     let b = a
+  |             - `a` moved here
+5 |     print("{a} {b}")
+  |             ^ used after the move
+  |
+  = note: re-initializing the place (assigning to it) also makes it usable again.
+help: to keep the original, copy it at the move
+  |
+4 |     let b = copy a
+  |
+wolf run: the package does not compile; fix the errors above (`wolf --explain E1001` explains this code, or any other, by name)
+[wolf run exit=2]
+--- wolf conform-run ./s11.lu
+error[E1001]: `a` is used here after its value moved away
+ --> ./s11.lu:5:13
+  |
+4 |     let b = a
+  |             - `a` moved here
+5 |     print("{a} {b}")
+  |             ^ used after the move
+  |
+  = note: re-initializing the place (assigning to it) also makes it usable again.
+help: to keep the original, copy it at the move
+  |
+4 |     let b = copy a
+  |
+{"commit":"5adf3d9","diagnostics":[{"code":"E1001","severity":"error","span":[101,102]}],"file":"./s11.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"mem","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E1001)","warnings":[]}
+[conform-run exit=0]

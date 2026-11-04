@@ -1,0 +1,11 @@
+enum Kind { Drink, Food, Gratuity }
+fn is_drink(k: Kind) -> bool {
+    match k {
+        Kind.Drink => true,
+        _ => false,
+    }
+}
+fn main() -> !int {
+    print("{is_drink(Kind.Drink)} {is_drink(Kind.Gratuity)}")
+    0
+}

@@ -1,0 +1,7 @@
+enum Light { Red, Amber, Green }
+fn main() -> !int {
+    let a = Light.Red
+    let b = a
+    print("{a} {b}")
+    0
+}

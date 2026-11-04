@@ -1,0 +1,6 @@
+enum Kind { Drink, Food, Gratuity }
+fn main() -> !int {
+    let k = Kind.Drink
+    if k == Kind.Drink { print("a drink") }
+    0
+}

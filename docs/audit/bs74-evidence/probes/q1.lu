@@ -1,0 +1,6 @@
+enum E { A(str), B(int) }
+fn main() -> !int {
+    let a = E.A("x")
+    print("{a}")
+    0
+}

@@ -1,0 +1,8 @@
+enum Kind { Drink, Food, Gratuity }
+enum Line { Item(Kind, int), Tip(int), Void }
+fn main() -> !int {
+    let a = Line.Item(Kind.Drink, 340)
+    let t = Line.Tip(100)
+    print("{a} {t} {Line.Void}")
+    0
+}

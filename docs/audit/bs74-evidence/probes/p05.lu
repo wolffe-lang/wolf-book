@@ -1,0 +1,11 @@
+enum Light { Red, Amber, Green }
+fn next(l: Light) -> Light {
+    match l {
+        Red => Light.Green,
+        Green => Light.Amber,
+    }
+}
+fn main() -> !int {
+    print("{next(Light.Red)}")
+    0
+}

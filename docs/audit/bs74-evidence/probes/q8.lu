@@ -1,0 +1,7 @@
+enum E { A(str), B(int) }
+fn main() -> !int {
+    var v = E.B(7)
+    v = E.A("x")
+    print("{v}")
+    0
+}

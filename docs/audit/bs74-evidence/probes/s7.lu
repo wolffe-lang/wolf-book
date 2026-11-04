@@ -1,0 +1,19 @@
+enum Kind { Drink, Food, Gratuity }
+trait Eq {
+    fn eq(self, other: Self) -> bool
+}
+impl Eq for Kind {
+    fn eq(self, other: Self) -> bool {
+        match (self, other) {
+            (Drink, Drink) => true,
+            (Food, Food) => true,
+            (Gratuity, Gratuity) => true,
+            _ => false,
+        }
+    }
+}
+fn main() -> !int {
+    let k = Kind.Drink
+    print("{k == Kind.Drink} {k == Kind.Food} {k != Kind.Gratuity}")
+    0
+}

@@ -1,0 +1,8 @@
+ M book/back/solutions.md
+ M book/ch03.md
+ M book/ch05.md
+ M principles/exercises/ch03/EXERCISES.md
+?? snapshots/diagnostics/book__ch03__part-bare-variant.txt
+?? snapshots/diagnostics/book__ch03__part-kind-eq.txt
+?? snapshots/diagnostics/book__ch03__part-kinds-cover.txt
+?? snapshots/diagnostics/ch03__ex3-16.txt

@@ -1,0 +1,431 @@
+wolf 0.2.36 (wolfgang, pin 5adf3d9)
+paired with lupin 0.1.58 (reference interpreter), pin a5378e3
+lupin 0.1.58 (wolf-interp, reference interpreter at pin a5378e3)
+=================== p13
+--- lupin p13.lu
+false true
+[lupin exit=0]
+--- wolf run p13.lu
+false true
+[wolf run exit=0]
+--- wolf conform-run ./p13.lu
+{"commit":"5adf3d9","diagnostics":[],"file":"./p13.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[conform-run exit=0]
+=================== p14
+--- lupin p14.lu
+false true
+[lupin exit=0]
+--- wolf run p14.lu
+false true
+[wolf run exit=0]
+--- wolf conform-run ./p14.lu
+{"commit":"5adf3d9","diagnostics":[],"file":"./p14.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[conform-run exit=0]
+=================== p15
+--- lupin p15.lu
+p15.lu: E0301: `==` on `Row` needs the trait `Eq`, and nothing named `Eq` is in scope — this is `Row`, not a primitive: an operator on a user type dispatches through its trait ([type.trait.op]): `==` is `Eq.eq`. Bring `Eq` into scope (std.ops and std.cmp declare the operator traits) and write `impl Eq for Row` [type.trait.op] at 5:13
+[lupin exit=2]
+--- wolf run p15.lu
+error[E0301]: `==` on `Row` needs the trait `Eq`, and no `Eq` is in scope or reachable from this file
+ --> ./p15.lu:5:13
+  |
+5 |     print("{a == b}")
+  |             ^ this is `Row`, not a primitive
+  |
+  = note: an operator on a user type dispatches through its trait ([type.trait.op]): `==` is
+    `Eq.eq`. The trait is looked for under that name in scope, then in `Row`'s own module,
+    then in the modules this file imports (std.ops and std.cmp declare the eight) — declare
+    it, or import the module that does, and give `Row` an `impl Eq`.
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[wolf run exit=2]
+--- wolf conform-run ./p15.lu
+error[E0301]: `==` on `Row` needs the trait `Eq`, and no `Eq` is in scope or reachable from this file
+ --> ./p15.lu:5:13
+  |
+5 |     print("{a == b}")
+  |             ^ this is `Row`, not a primitive
+  |
+  = note: an operator on a user type dispatches through its trait ([type.trait.op]): `==` is
+    `Eq.eq`. The trait is looked for under that name in scope, then in `Row`'s own module,
+    then in the modules this file imports (std.ops and std.cmp declare the eight) — declare
+    it, or import the module that does, and give `Row` an `impl Eq`.
+{"commit":"5adf3d9","diagnostics":[{"code":"E0301","severity":"error","span":[161,162]}],"file":"./p15.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"typecheck","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[conform-run exit=0]
+=================== p16
+--- lupin p16.lu
+6
+[lupin exit=0]
+--- wolf run p16.lu
+error[E0801]: this `match` does not cover `Empty`
+ --> ./p16.lu:3:5
+  |
+3 |     match s {
+  |     ^^^^^^^^^
+4 |         Circle(r) => 3 * r * r,
+5 |         Rect(w, h) => w * h,
+6 |     }
+  | ^^^^^ not every value is matched
+  |
+  = note: add arms for the missing cases, or end the `match` with a `_` arm to catch the rest
+    deliberately.
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0801` explains this code, or any other, by name)
+[wolf run exit=2]
+--- wolf conform-run ./p16.lu
+error[E0801]: this `match` does not cover `Empty`
+ --> ./p16.lu:3:5
+  |
+3 |     match s {
+  |     ^^^^^^^^^
+4 |         Circle(r) => 3 * r * r,
+5 |         Rect(w, h) => w * h,
+6 |     }
+  | ^^^^^ not every value is matched
+  |
+  = note: add arms for the missing cases, or end the `match` with a `_` arm to catch the rest
+    deliberately.
+{"commit":"5adf3d9","diagnostics":[{"code":"E0801","severity":"error","span":[81,157]}],"file":"./p16.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"typecheck","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0801)","warnings":[]}
+[conform-run exit=0]
+=================== p17
+--- lupin p17.lu
+espresso  drink     Kind.Drink
+pastry    food      Kind.Food
+tip       gratuity  Kind.Gratuity
+[lupin exit=0]
+--- wolf run p17.lu
+espresso  drink     Kind.Drink
+pastry    food      Kind.Food
+tip       gratuity  Kind.Gratuity
+[wolf run exit=0]
+--- wolf conform-run ./p17.lu
+{"commit":"5adf3d9","diagnostics":[],"file":"./p17.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[conform-run exit=0]
+=================== p18
+--- lupin p18.lu
+715 espresso, over three dollars / pastry / -
+Line.Item(espresso, 340) Line.Tip(100) Line.Void
+[lupin exit=0]
+--- wolf run p18.lu
+wolf build: ICE: lowered WIR failed verification
+wir verify error [type] in @main: b0: `%41 = agg.get %5, 0`: agg.get needs an aggregate operand
+--- offending function ---
+fn @main() -> i64 {
+b0:
+  %0 = data.addr @str.2
+  %1 = iconst.i64 8
+  %2 = agg.make %0, %1
+  %3 = iconst.i64 340
+  %4 = iconst.i64 0
+  %5: union{i64, {ptr, i64}} = union.make %2
+  %6 = agg.make %4, %5, %3
+  %7 = data.addr @str.3
+  %8 = iconst.i64 6
+  %9 = agg.make %7, %8
+  %10 = iconst.i64 275
+  %11: union{i64, {ptr, i64}} = union.make %9
+  %12 = agg.make %4, %11, %10
+  %13 = iconst.i64 100
+  %14 = iconst.i64 1
+  %15: union{i64, {ptr, i64}} = union.make %13
+  %16 = agg.make %14, %15, %4
+  %17 = call @Line.cents(%6)
+  %18 = call @Line.cents(%12)
+  %19 = iadd.chk %17, %18
+  %20 = call @Line.cents(%16)
+  %21 = iadd.chk %19, %20
+  %22 = call @note(%6)
+  %23 = call @note(%12)
+  %24 = call @note(%16)
+  call @__wolf_rt_print_begin()
+  call @__wolf_rt_print_i64(%21)
+  %25 = data.addr @str.4
+  call @__wolf_rt_print_str(%25, %14)
+  %26 = agg.get %22, 0
+  %27 = agg.get %22, 1
+  call @__wolf_rt_print_str(%26, %27)
+  %28 = data.addr @str.5
+  %29 = iconst.i64 3
+  call @__wolf_rt_print_str(%28, %29)
+  %30 = agg.get %23, 0
+  %31 = agg.get %23, 1
+  call @__wolf_rt_print_str(%30, %31)
+  call @__wolf_rt_print_str(%28, %29)
+  %32 = agg.get %24, 0
+  %33 = agg.get %24, 1
+  call @__wolf_rt_print_str(%32, %33)
+  %34 = data.addr @str.6
+  call @__wolf_rt_print_str(%34, %14)
+  call @__wolf_rt_print_end(%14)
+  %35 = iconst.i64 2
+  %36: union{i64, {ptr, i64}} = union.make %4
+  call @__wolf_rt_print_begin()
+  %37 = bconst true
+  %38 = data.addr @str.7
+  %39 = iconst.i64 9
+  call @__wolf_rt_print_str(%38, %39)
+  %40 = data.addr @str.8
+  call @__wolf_rt_print_str(%40, %14)
+  %41 = agg.get %5, 0
+  %42 = agg.get %5, 1
+  call @__wolf_rt_print_str(%41, %42)
+  %43 = data.addr @str.9
+  call @__wolf_rt_print_str(%43, %35)
+  call @__wolf_rt_print_i64(%3)
+  %44 = data.addr @str.10
+  call @__wolf_rt_print_str(%44, %14)
+  jmp b1
+b1:
+  call @__wolf_rt_print_str(%25, %14)
+  %45 = bconst false
+  %46 = data.addr @str.11
+  call @__wolf_rt_print_str(%46, %1)
+  call @__wolf_rt_print_str(%40, %14)
+  %47 = sext.i64 %15
+  call @__wolf_rt_print_i64(%47)
+  call @__wolf_rt_print_str(%44, %14)
+  jmp b2
+b2:
+  call @__wolf_rt_print_str(%25, %14)
+  %48 = data.addr @str.12
+  call @__wolf_rt_print_str(%48, %39)
+  jmp b3
+b3:
+  call @__wolf_rt_print_str(%34, %14)
+  call @__wolf_rt_print_end(%14)
+  ret %4
+}
+[wolf run exit=2]
+--- wolf conform-run ./p18.lu
+wolf conform-run: ICE: lowered WIR failed verification
+wir verify error [type] in @main: b0: `%41 = agg.get %5, 0`: agg.get needs an aggregate operand
+--- offending function ---
+fn @main() -> i64 {
+b0:
+  %0 = data.addr @str.2
+  %1 = iconst.i64 8
+  %2 = agg.make %0, %1
+  %3 = iconst.i64 340
+  %4 = iconst.i64 0
+  %5: union{i64, {ptr, i64}} = union.make %2
+  %6 = agg.make %4, %5, %3
+  %7 = data.addr @str.3
+  %8 = iconst.i64 6
+  %9 = agg.make %7, %8
+  %10 = iconst.i64 275
+  %11: union{i64, {ptr, i64}} = union.make %9
+  %12 = agg.make %4, %11, %10
+  %13 = iconst.i64 100
+  %14 = iconst.i64 1
+  %15: union{i64, {ptr, i64}} = union.make %13
+  %16 = agg.make %14, %15, %4
+  %17 = call @Line.cents(%6)
+  %18 = call @Line.cents(%12)
+  %19 = iadd.chk %17, %18
+  %20 = call @Line.cents(%16)
+  %21 = iadd.chk %19, %20
+  %22 = call @note(%6)
+  %23 = call @note(%12)
+  %24 = call @note(%16)
+  call @__wolf_rt_print_begin()
+  call @__wolf_rt_print_i64(%21)
+  %25 = data.addr @str.4
+  call @__wolf_rt_print_str(%25, %14)
+  %26 = agg.get %22, 0
+  %27 = agg.get %22, 1
+  call @__wolf_rt_print_str(%26, %27)
+  %28 = data.addr @str.5
+  %29 = iconst.i64 3
+  call @__wolf_rt_print_str(%28, %29)
+  %30 = agg.get %23, 0
+  %31 = agg.get %23, 1
+  call @__wolf_rt_print_str(%30, %31)
+  call @__wolf_rt_print_str(%28, %29)
+  %32 = agg.get %24, 0
+  %33 = agg.get %24, 1
+  call @__wolf_rt_print_str(%32, %33)
+  %34 = data.addr @str.6
+  call @__wolf_rt_print_str(%34, %14)
+  call @__wolf_rt_print_end(%14)
+  %35 = iconst.i64 2
+  %36: union{i64, {ptr, i64}} = union.make %4
+  call @__wolf_rt_print_begin()
+  %37 = bconst true
+  %38 = data.addr @str.7
+  %39 = iconst.i64 9
+  call @__wolf_rt_print_str(%38, %39)
+  %40 = data.addr @str.8
+  call @__wolf_rt_print_str(%40, %14)
+  %41 = agg.get %5, 0
+  %42 = agg.get %5, 1
+  call @__wolf_rt_print_str(%41, %42)
+  %43 = data.addr @str.9
+  call @__wolf_rt_print_str(%43, %35)
+  call @__wolf_rt_print_i64(%3)
+  %44 = data.addr @str.10
+  call @__wolf_rt_print_str(%44, %14)
+  jmp b1
+b1:
+  call @__wolf_rt_print_str(%25, %14)
+  %45 = bconst false
+  %46 = data.addr @str.11
+  call @__wolf_rt_print_str(%46, %1)
+  call @__wolf_rt_print_str(%40, %14)
+  %47 = sext.i64 %15
+  call @__wolf_rt_print_i64(%47)
+  call @__wolf_rt_print_str(%44, %14)
+  jmp b2
+b2:
+  call @__wolf_rt_print_str(%25, %14)
+  %48 = data.addr @str.12
+  call @__wolf_rt_print_str(%48, %39)
+  jmp b3
+b3:
+  call @__wolf_rt_print_str(%34, %14)
+  call @__wolf_rt_print_end(%14)
+  ret %4
+}
+[conform-run exit=2]
+=================== p19
+--- lupin p19.lu
+p19.lu: E0301: a variant value is spelled with its enum: write `Light.Red`. A bare                          capitalized name in value position is an error row tag's spelling                          (`[gram.expr.tagident]`), and no local, item, import or module resolves                          `Red` here [gram.expr.variant] at 3:23
+  Light. at 3:23
+[lupin exit=2]
+--- wolf run p19.lu
+error[E0301]: `Red` is a variant of `Light`, and a variant value is spelled with its enum
+ --> ./p19.lu:3:23
+  |
+1 | enum Light { Red, Amber, Green }
+  |              --- `Red` is declared here, in `Light`
+2 | fn f(n: int) -> int ! {..} {
+3 |     if n < 0 { return Red }
+  |                       ^^^ write `Light.Red`
+  |
+  = note: a variant belongs to its enum, so a value names both: `Light.Red`. A bare capitalized
+    name is how an error-row tag is spelled, which is why this one did not resolve. In a
+    `match` arm the bare name is fine: the scrutinee's type already says which enum.
+help: write `Light.Red`
+  |
+3 |     if n < 0 { return Light.Red }
+  |
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[wolf run exit=2]
+--- wolf conform-run ./p19.lu
+error[E0301]: `Red` is a variant of `Light`, and a variant value is spelled with its enum
+ --> ./p19.lu:3:23
+  |
+1 | enum Light { Red, Amber, Green }
+  |              --- `Red` is declared here, in `Light`
+2 | fn f(n: int) -> int ! {..} {
+3 |     if n < 0 { return Red }
+  |                       ^^^ write `Light.Red`
+  |
+  = note: a variant belongs to its enum, so a value names both: `Light.Red`. A bare capitalized
+    name is how an error-row tag is spelled, which is why this one did not resolve. In a
+    `match` arm the bare name is fine: the scrutinee's type already says which enum.
+help: write `Light.Red`
+  |
+3 |     if n < 0 { return Light.Red }
+  |
+{"commit":"5adf3d9","diagnostics":[{"code":"E0301","severity":"error","span":[84,87]}],"file":"./p19.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"typecheck","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[conform-run exit=0]
+=================== p20
+--- lupin p20.lu
+green
+[lupin exit=0]
+--- wolf run p20.lu
+warning[E0802]: this arm can never match — the arms above already cover it
+ --> ./p20.lu:7:9
+  |
+6 |         Green => "green",
+  |         ----- this arm already matches those values
+7 |         _ => "?",
+  |         ^ unreachable arm
+  |
+  = note: delete the arm, or reorder the arms so the more specific pattern comes first.
+green
+[wolf run exit=0]
+--- wolf conform-run ./p20.lu
+warning[E0802]: this arm can never match — the arms above already cover it
+ --> ./p20.lu:7:9
+  |
+6 |         Green => "green",
+  |         ----- this arm already matches those values
+7 |         _ => "?",
+  |         ^ unreachable arm
+  |
+  = note: delete the arm, or reorder the arms so the more specific pattern comes first.
+{"commit":"5adf3d9","diagnostics":[{"code":"E0802","severity":"warning","span":[156,157]}],"file":"./p20.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[{"code":"E0802","span":[156,157]}]}
+[conform-run exit=0]
+=================== p21
+--- lupin p21.lu
+p21.lu: unsupported: no `match` arm applied; exhaustiveness is the type checker's
+[lupin exit=4]
+--- wolf run p21.lu
+error[E0801]: this `match` does not cover `Gratuity`
+ --> ./p21.lu:3:5
+  |
+3 |     match k {
+  |     ^^^^^^^^^
+4 |         Drink => "drink",
+5 |         Food => "food",
+6 |     }
+  | ^^^^^ not every value is matched
+  |
+  = note: add arms for the missing cases, or end the `match` with a `_` arm to catch the rest
+    deliberately.
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0801` explains this code, or any other, by name)
+[wolf run exit=2]
+--- wolf conform-run ./p21.lu
+error[E0801]: this `match` does not cover `Gratuity`
+ --> ./p21.lu:3:5
+  |
+3 |     match k {
+  |     ^^^^^^^^^
+4 |         Drink => "drink",
+5 |         Food => "food",
+6 |     }
+  | ^^^^^ not every value is matched
+  |
+  = note: add arms for the missing cases, or end the `match` with a `_` arm to catch the rest
+    deliberately.
+{"commit":"5adf3d9","diagnostics":[{"code":"E0801","severity":"error","span":[67,132]}],"file":"./p21.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"typecheck","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0801)","warnings":[]}
+[conform-run exit=0]
+=================== p22
+--- lupin p22.lu
+a drink
+[lupin exit=0]
+--- wolf run p22.lu
+error[E0301]: `==` on `Kind` needs the trait `Eq`, and no `Eq` is in scope or reachable from this file
+ --> ./p22.lu:4:8
+  |
+4 |     if k == Kind.Drink { print("a drink") }
+  |        ^ this is `Kind`, not a primitive
+  |
+  = note: an operator on a user type dispatches through its trait ([type.trait.op]): `==` is
+    `Eq.eq`. The trait is looked for under that name in scope, then in `Kind`'s own module,
+    then in the modules this file imports (std.ops and std.cmp declare the eight) — declare
+    it, or import the module that does, and give `Kind` an `impl Eq`.
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[wolf run exit=2]
+--- wolf conform-run ./p22.lu
+error[E0301]: `==` on `Kind` needs the trait `Eq`, and no `Eq` is in scope or reachable from this file
+ --> ./p22.lu:4:8
+  |
+4 |     if k == Kind.Drink { print("a drink") }
+  |        ^ this is `Kind`, not a primitive
+  |
+  = note: an operator on a user type dispatches through its trait ([type.trait.op]): `==` is
+    `Eq.eq`. The trait is looked for under that name in scope, then in `Kind`'s own module,
+    then in the modules this file imports (std.ops and std.cmp declare the eight) — declare
+    it, or import the module that does, and give `Kind` an `impl Eq`.
+{"commit":"5adf3d9","diagnostics":[{"code":"E0301","severity":"error","span":[86,87]}],"file":"./p22.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"typecheck","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[conform-run exit=0]
+=================== p23
+--- lupin p23.lu
+true false
+[lupin exit=0]
+--- wolf run p23.lu
+true false
+[wolf run exit=0]
+--- wolf conform-run ./p23.lu
+{"commit":"5adf3d9","diagnostics":[],"file":"./p23.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[conform-run exit=0]

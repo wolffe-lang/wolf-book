@@ -1,0 +1,13 @@
+enum Light { Red, Amber, Green }
+fn name(l: Light) -> str {
+    match l {
+        Red => "red",
+        Amber => "amber",
+        Green => "green",
+        _ => "?",
+    }
+}
+fn main() -> !int {
+    print(name(Light.Green))
+    0
+}

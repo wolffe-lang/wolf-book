@@ -1,0 +1,7 @@
+struct Row { kind: str, cents: int }
+fn main() -> !int {
+    let a = Row { kind: "drink", cents: 340 }
+    let b = Row { kind: "drink", cents: 340 }
+    print("{a == b}")
+    0
+}

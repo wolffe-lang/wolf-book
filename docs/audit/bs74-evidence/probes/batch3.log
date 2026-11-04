@@ -1,0 +1,360 @@
+wolf 0.2.36 (wolfgang, pin 5adf3d9)
+paired with lupin 0.1.58 (reference interpreter), pin a5378e3
+lupin 0.1.58 (wolf-interp, reference interpreter at pin a5378e3)
+=================== q1
+--- lupin q1.lu
+E.A(x)
+[lupin exit=0]
+--- wolf run q1.lu
+wolf build: ICE: lowered WIR failed verification
+wir verify error [type] in @main: b0: `%9 = agg.get %4, 0`: agg.get needs an aggregate operand
+--- offending function ---
+fn @main() -> i64 {
+b0:
+  %0 = data.addr @str.0
+  %1 = iconst.i64 1
+  %2 = agg.make %0, %1
+  %3 = iconst.i64 0
+  %4: union{i64, {ptr, i64}} = union.make %2
+  call @__wolf_rt_print_begin()
+  %5 = bconst true
+  %6 = data.addr @str.1
+  %7 = iconst.i64 3
+  call @__wolf_rt_print_str(%6, %7)
+  %8 = data.addr @str.2
+  call @__wolf_rt_print_str(%8, %1)
+  %9 = agg.get %4, 0
+  %10 = agg.get %4, 1
+  call @__wolf_rt_print_str(%9, %10)
+  %11 = data.addr @str.3
+  call @__wolf_rt_print_str(%11, %1)
+  jmp b1
+b1:
+  %12 = data.addr @str.4
+  call @__wolf_rt_print_str(%12, %1)
+  call @__wolf_rt_print_end(%1)
+  ret %3
+}
+[wolf run exit=2]
+--- wolf conform-run ./q1.lu
+wolf conform-run: ICE: lowered WIR failed verification
+wir verify error [type] in @main: b0: `%9 = agg.get %4, 0`: agg.get needs an aggregate operand
+--- offending function ---
+fn @main() -> i64 {
+b0:
+  %0 = data.addr @str.0
+  %1 = iconst.i64 1
+  %2 = agg.make %0, %1
+  %3 = iconst.i64 0
+  %4: union{i64, {ptr, i64}} = union.make %2
+  call @__wolf_rt_print_begin()
+  %5 = bconst true
+  %6 = data.addr @str.1
+  %7 = iconst.i64 3
+  call @__wolf_rt_print_str(%6, %7)
+  %8 = data.addr @str.2
+  call @__wolf_rt_print_str(%8, %1)
+  %9 = agg.get %4, 0
+  %10 = agg.get %4, 1
+  call @__wolf_rt_print_str(%9, %10)
+  %11 = data.addr @str.3
+  call @__wolf_rt_print_str(%11, %1)
+  jmp b1
+b1:
+  %12 = data.addr @str.4
+  call @__wolf_rt_print_str(%12, %1)
+  call @__wolf_rt_print_end(%1)
+  ret %3
+}
+[conform-run exit=2]
+=================== q2
+--- lupin q2.lu
+E.B(7)
+[lupin exit=0]
+--- wolf run q2.lu
+wolf build: ICE: lowered WIR failed verification
+wir verify error [type] in @main: b0: `%9 = sext.i64 %2`: integer conversion needs integer types
+--- offending function ---
+fn @main() -> i64 {
+b0:
+  %0 = iconst.i64 7
+  %1 = iconst.i64 1
+  %2: union{i64, {ptr, i64}} = union.make %0
+  call @__wolf_rt_print_begin()
+  %3 = iconst.i64 0
+  %4 = bconst false
+  %5 = bconst true
+  %6 = data.addr @str.0
+  %7 = iconst.i64 3
+  call @__wolf_rt_print_str(%6, %7)
+  %8 = data.addr @str.1
+  call @__wolf_rt_print_str(%8, %1)
+  %9 = sext.i64 %2
+  call @__wolf_rt_print_i64(%9)
+  %10 = data.addr @str.2
+  call @__wolf_rt_print_str(%10, %1)
+  jmp b1
+b1:
+  %11 = data.addr @str.3
+  call @__wolf_rt_print_str(%11, %1)
+  call @__wolf_rt_print_end(%1)
+  ret %3
+}
+[wolf run exit=2]
+--- wolf conform-run ./q2.lu
+wolf conform-run: ICE: lowered WIR failed verification
+wir verify error [type] in @main: b0: `%9 = sext.i64 %2`: integer conversion needs integer types
+--- offending function ---
+fn @main() -> i64 {
+b0:
+  %0 = iconst.i64 7
+  %1 = iconst.i64 1
+  %2: union{i64, {ptr, i64}} = union.make %0
+  call @__wolf_rt_print_begin()
+  %3 = iconst.i64 0
+  %4 = bconst false
+  %5 = bconst true
+  %6 = data.addr @str.0
+  %7 = iconst.i64 3
+  call @__wolf_rt_print_str(%6, %7)
+  %8 = data.addr @str.1
+  call @__wolf_rt_print_str(%8, %1)
+  %9 = sext.i64 %2
+  call @__wolf_rt_print_i64(%9)
+  %10 = data.addr @str.2
+  call @__wolf_rt_print_str(%10, %1)
+  jmp b1
+b1:
+  %11 = data.addr @str.3
+  call @__wolf_rt_print_str(%11, %1)
+  call @__wolf_rt_print_end(%1)
+  ret %3
+}
+[conform-run exit=2]
+=================== q3
+--- lupin q3.lu
+E.A(x)
+[lupin exit=0]
+--- wolf run q3.lu
+E.A(x)
+[wolf run exit=0]
+--- wolf conform-run ./q3.lu
+{"commit":"5adf3d9","diagnostics":[],"file":"./q3.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[conform-run exit=0]
+=================== q4
+--- lupin q4.lu
+E.A(x, 1)
+[lupin exit=0]
+--- wolf run q4.lu
+E.A(x, 1)
+[wolf run exit=0]
+--- wolf conform-run ./q4.lu
+{"commit":"5adf3d9","diagnostics":[],"file":"./q4.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[conform-run exit=0]
+=================== q5
+--- lupin q5.lu
+715 espresso, over three dollars / pastry / -
+[lupin exit=0]
+--- wolf run q5.lu
+715 espresso, over three dollars / pastry / -
+[wolf run exit=0]
+--- wolf conform-run ./q5.lu
+{"commit":"5adf3d9","diagnostics":[],"file":"./q5.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[conform-run exit=0]
+=================== q6
+--- lupin q6.lu
+E.A(x)
+E.B(7)
+[lupin exit=0]
+--- wolf run q6.lu
+wolf build: ICE: lowered WIR failed verification
+wir verify error [type] in @show: b1: `%10 = agg.get %3, 0`: agg.get needs an aggregate operand
+--- offending function ---
+fn @show({i64, union{i64, {ptr, i64}}}) -> {ptr, i64} {
+  fact deref %21 16 : op
+  fact region %21 r0 : op
+b0(%0: {i64, union{i64, {ptr, i64}}}):
+  %1 = call @__wolf_rt_strbuf_new()
+  %2 = agg.get %0, 0
+  %3 = agg.get %0, 1
+  %4 = iconst.i64 0
+  %5 = icmp.eq %2, %4
+  br %5, b1, b2
+b1:
+  %6 = data.addr @str.0
+  %7 = iconst.i64 3
+  call @__wolf_rt_strbuf_str(%1, %6, %7, %4)
+  %8 = data.addr @str.1
+  %9 = iconst.i64 1
+  call @__wolf_rt_strbuf_str(%1, %8, %9, %4)
+  %10 = agg.get %3, 0
+  %11 = agg.get %3, 1
+  call @__wolf_rt_strbuf_str(%1, %10, %11, %4)
+  %12 = data.addr @str.2
+  call @__wolf_rt_strbuf_str(%1, %12, %9, %4)
+  jmp b5
+b2:
+  %13 = iconst.i64 1
+  %14 = icmp.eq %2, %13
+  br %14, b3, b4
+b3:
+  %15 = data.addr @str.3
+  %16 = iconst.i64 3
+  call @__wolf_rt_strbuf_str(%1, %15, %16, %4)
+  %17 = data.addr @str.1
+  call @__wolf_rt_strbuf_str(%1, %17, %13, %4)
+  %18 = sext.i64 %3
+  call @__wolf_rt_strbuf_i64(%1, %18, %4)
+  %19 = data.addr @str.2
+  call @__wolf_rt_strbuf_str(%1, %19, %13, %4)
+  jmp b5
+b4:
+  jmp b5
+b5:
+  %20 = iconst.i64 16
+  %21: ptr, %22: mem.r0 = stack.alloc %20
+  %23 = call @__wolf_rt_strbuf_finish(%1, %21, %22)
+  %24 = load.ptr %21, %23
+  %25 = iconst.i64 8
+  %26 = ptr.off %21, %25, 1
+  %27 = load.i64 %26, %23
+  %28 = agg.make %24, %27
+  ret %28
+}
+[wolf run exit=2]
+--- wolf conform-run ./q6.lu
+wolf conform-run: ICE: lowered WIR failed verification
+wir verify error [type] in @show: b1: `%10 = agg.get %3, 0`: agg.get needs an aggregate operand
+--- offending function ---
+fn @show({i64, union{i64, {ptr, i64}}}) -> {ptr, i64} {
+  fact deref %21 16 : op
+  fact region %21 r0 : op
+b0(%0: {i64, union{i64, {ptr, i64}}}):
+  %1 = call @__wolf_rt_strbuf_new()
+  %2 = agg.get %0, 0
+  %3 = agg.get %0, 1
+  %4 = iconst.i64 0
+  %5 = icmp.eq %2, %4
+  br %5, b1, b2
+b1:
+  %6 = data.addr @str.0
+  %7 = iconst.i64 3
+  call @__wolf_rt_strbuf_str(%1, %6, %7, %4)
+  %8 = data.addr @str.1
+  %9 = iconst.i64 1
+  call @__wolf_rt_strbuf_str(%1, %8, %9, %4)
+  %10 = agg.get %3, 0
+  %11 = agg.get %3, 1
+  call @__wolf_rt_strbuf_str(%1, %10, %11, %4)
+  %12 = data.addr @str.2
+  call @__wolf_rt_strbuf_str(%1, %12, %9, %4)
+  jmp b5
+b2:
+  %13 = iconst.i64 1
+  %14 = icmp.eq %2, %13
+  br %14, b3, b4
+b3:
+  %15 = data.addr @str.3
+  %16 = iconst.i64 3
+  call @__wolf_rt_strbuf_str(%1, %15, %16, %4)
+  %17 = data.addr @str.1
+  call @__wolf_rt_strbuf_str(%1, %17, %13, %4)
+  %18 = sext.i64 %3
+  call @__wolf_rt_strbuf_i64(%1, %18, %4)
+  %19 = data.addr @str.2
+  call @__wolf_rt_strbuf_str(%1, %19, %13, %4)
+  jmp b5
+b4:
+  jmp b5
+b5:
+  %20 = iconst.i64 16
+  %21: ptr, %22: mem.r0 = stack.alloc %20
+  %23 = call @__wolf_rt_strbuf_finish(%1, %21, %22)
+  %24 = load.ptr %21, %23
+  %25 = iconst.i64 8
+  %26 = ptr.off %21, %25, 1
+  %27 = load.i64 %26, %23
+  %28 = agg.make %24, %27
+  ret %28
+}
+[conform-run exit=2]
+=================== q7
+--- lupin q7.lu
+E.B(1, 2)
+[lupin exit=0]
+--- wolf run q7.lu
+E.B(1, 2)
+[wolf run exit=0]
+--- wolf conform-run ./q7.lu
+{"commit":"5adf3d9","diagnostics":[],"file":"./q7.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[conform-run exit=0]
+=================== q8
+--- lupin q8.lu
+E.A(x)
+[lupin exit=0]
+--- wolf run q8.lu
+wolf build: ICE: lowered WIR failed verification
+wir verify error [type] in @main: b0: `%11 = agg.get %6, 0`: agg.get needs an aggregate operand
+--- offending function ---
+fn @main() -> i64 {
+b0:
+  %0 = iconst.i64 7
+  %1 = iconst.i64 1
+  %2: union{i64, {ptr, i64}} = union.make %0
+  %3 = data.addr @str.0
+  %4 = agg.make %3, %1
+  %5 = iconst.i64 0
+  %6: union{i64, {ptr, i64}} = union.make %4
+  call @__wolf_rt_print_begin()
+  %7 = bconst true
+  %8 = data.addr @str.1
+  %9 = iconst.i64 3
+  call @__wolf_rt_print_str(%8, %9)
+  %10 = data.addr @str.2
+  call @__wolf_rt_print_str(%10, %1)
+  %11 = agg.get %6, 0
+  %12 = agg.get %6, 1
+  call @__wolf_rt_print_str(%11, %12)
+  %13 = data.addr @str.3
+  call @__wolf_rt_print_str(%13, %1)
+  jmp b1
+b1:
+  %14 = data.addr @str.4
+  call @__wolf_rt_print_str(%14, %1)
+  call @__wolf_rt_print_end(%1)
+  ret %5
+}
+[wolf run exit=2]
+--- wolf conform-run ./q8.lu
+wolf conform-run: ICE: lowered WIR failed verification
+wir verify error [type] in @main: b0: `%11 = agg.get %6, 0`: agg.get needs an aggregate operand
+--- offending function ---
+fn @main() -> i64 {
+b0:
+  %0 = iconst.i64 7
+  %1 = iconst.i64 1
+  %2: union{i64, {ptr, i64}} = union.make %0
+  %3 = data.addr @str.0
+  %4 = agg.make %3, %1
+  %5 = iconst.i64 0
+  %6: union{i64, {ptr, i64}} = union.make %4
+  call @__wolf_rt_print_begin()
+  %7 = bconst true
+  %8 = data.addr @str.1
+  %9 = iconst.i64 3
+  call @__wolf_rt_print_str(%8, %9)
+  %10 = data.addr @str.2
+  call @__wolf_rt_print_str(%10, %1)
+  %11 = agg.get %6, 0
+  %12 = agg.get %6, 1
+  call @__wolf_rt_print_str(%11, %12)
+  %13 = data.addr @str.3
+  call @__wolf_rt_print_str(%13, %1)
+  jmp b1
+b1:
+  %14 = data.addr @str.4
+  call @__wolf_rt_print_str(%14, %1)
+  call @__wolf_rt_print_end(%1)
+  ret %5
+}
+[conform-run exit=2]

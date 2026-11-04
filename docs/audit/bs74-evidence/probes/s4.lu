@@ -1,0 +1,29 @@
+enum Kind { Drink, Food, Gratuity }
+enum Line { Item(Kind, int), Tip(int), Void }
+impl Line {
+    fn cents(self) -> int {
+        match self {
+            Item(_, c) => c,
+            Tip(c) => c,
+            Void => 0,
+        }
+    }
+}
+fn mark(l: Line) -> str {
+    match l {
+        Item(_, c) if c > 300 => "*",
+        _ => " ",
+    }
+}
+fn main() -> !int {
+    let a = Line.Item(Kind.Drink, 340)
+    let b = Line.Item(Kind.Food, 275)
+    let t = Line.Tip(100)
+    let v = Line.Void
+    print("{mark(a)}{a}")
+    print("{mark(b)}{b}")
+    print("{mark(t)}{t}")
+    print("{mark(v)}{v}")
+    print(" {a.cents() + b.cents() + t.cents() + v.cents()}")
+    0
+}

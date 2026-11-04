@@ -1,0 +1,11 @@
+enum Maybe[T] { Just(T), Nothing }
+fn or_zero(m: Maybe[int]) -> int {
+    match m {
+        Just(n) => n,
+        Nothing => 0,
+    }
+}
+fn main() -> !int {
+    print("{or_zero(Maybe.Just(7))} {or_zero(Maybe.Nothing)}")
+    0
+}

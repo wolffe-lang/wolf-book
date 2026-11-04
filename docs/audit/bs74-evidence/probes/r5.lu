@@ -1,0 +1,12 @@
+enum Kind { Drink, Food, Gratuity }
+fn label(k: Kind) -> str {
+    match k {
+        Kind.Drink => "drink",
+        Food => "food",
+        Gratuity => "gratuity",
+    }
+}
+fn main() -> !int {
+    print(label(Kind.Drink))
+    0
+}

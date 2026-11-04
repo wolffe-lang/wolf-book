@@ -1,0 +1,5 @@
+enum Shape { Circle(int), Rect(int, int), Empty }
+fn main() -> !int {
+    print("{Shape.Circle(2)} {Shape.Rect(3, 4)} {Shape.Empty}")
+    0
+}

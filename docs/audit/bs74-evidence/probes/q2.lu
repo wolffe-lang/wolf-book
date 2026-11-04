@@ -1,0 +1,6 @@
+enum E { A(str), B(int) }
+fn main() -> !int {
+    let b = E.B(7)
+    print("{b}")
+    0
+}

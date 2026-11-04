@@ -1,0 +1,110 @@
+wolf 0.2.36 (wolfgang, pin 5adf3d9)
+paired with lupin 0.1.58 (reference interpreter), pin a5378e3
+lupin 0.1.58 (wolf-interp, reference interpreter at pin a5378e3)
+=================== r1
+--- lupin r1.lu
+Line.Item(Kind.Drink, 340) Line.Tip(100) Line.Void
+[lupin exit=0]
+--- wolf run r1.lu
+Line.Item(Kind.Drink, 340) Line.Tip(100) Line.Void
+[wolf run exit=0]
+--- wolf conform-run ./r1.lu
+{"commit":"5adf3d9","diagnostics":[],"file":"./r1.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[conform-run exit=0]
+=================== r2
+--- lupin r2.lu
+espresso: over three dollars / pastry / 
+r2.lu: unsupported: `+` is not defined on i64 and error Line.Void; operand types are the checker's
+[lupin exit=4]
+--- wolf run r2.lu
+espresso: over three dollars / pastry / 
+715
+[wolf run exit=0]
+--- wolf conform-run ./r2.lu
+{"commit":"5adf3d9","diagnostics":[],"file":"./r2.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[conform-run exit=0]
+=================== r3
+--- lupin r3.lu
+true
+[lupin exit=0]
+--- wolf run r3.lu
+error[E0301]: nothing named `nothere` is in scope
+ --> ./r3.lu:2:6
+  |
+2 | impl nothere.Eq for Light {
+  |      ^^^^^^^ not found
+  |
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[wolf run exit=2]
+--- wolf conform-run ./r3.lu
+error[E0301]: nothing named `nothere` is in scope
+ --> ./r3.lu:2:6
+  |
+2 | impl nothere.Eq for Light {
+  |      ^^^^^^^ not found
+  |
+{"commit":"5adf3d9","diagnostics":[{"code":"E0301","severity":"error","span":[38,45]}],"file":"./r3.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"resolve","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[conform-run exit=0]
+=================== r4
+--- lupin r4.lu
+Shape.Circle(2) Shape.Rect(3, 4) Shape.Empty
+[lupin exit=0]
+--- wolf run r4.lu
+Shape.Circle(2) Shape.Rect(3, 4) Shape.Empty
+[wolf run exit=0]
+--- wolf conform-run ./r4.lu
+{"commit":"5adf3d9","diagnostics":[],"file":"./r4.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[conform-run exit=0]
+=================== r5
+--- lupin r5.lu
+drink
+[lupin exit=0]
+--- wolf run r5.lu
+drink
+[wolf run exit=0]
+--- wolf conform-run ./r5.lu
+{"commit":"5adf3d9","diagnostics":[],"file":"./r5.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[conform-run exit=0]
+=================== r6
+--- lupin r6.lu
+r6.lu: E0301: a variant value is spelled with its enum: write `Kind.Drink`. A bare                          capitalized name in value position is an error row tag's spelling                          (`[gram.expr.tagident]`), and no local, item, import or module resolves                          `Drink` here [gram.expr.variant] at 3:13
+  Kind. at 3:13
+[lupin exit=2]
+--- wolf run r6.lu
+error[E0301]: `Drink` is a variant of `Kind`, and a variant value is spelled with its enum
+ --> ./r6.lu:3:13
+  |
+1 | enum Kind { Drink, Food, Gratuity }
+  |             ----- `Drink` is declared here, in `Kind`
+2 | fn main() -> !int {
+3 |     let k = Drink
+  |             ^^^^^ write `Kind.Drink`
+  |
+  = note: a variant belongs to its enum, so a value names both: `Kind.Drink`. A bare capitalized
+    name is how an error-row tag is spelled, which is why this one did not resolve. In a
+    `match` arm the bare name is fine: the scrutinee's type already says which enum.
+help: write `Kind.Drink`
+  |
+3 |     let k = Kind.Drink
+  |
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0301` explains this code, or any other, by name)
+[wolf run exit=2]
+--- wolf conform-run ./r6.lu
+error[E0301]: `Drink` is a variant of `Kind`, and a variant value is spelled with its enum
+ --> ./r6.lu:3:13
+  |
+1 | enum Kind { Drink, Food, Gratuity }
+  |             ----- `Drink` is declared here, in `Kind`
+2 | fn main() -> !int {
+3 |     let k = Drink
+  |             ^^^^^ write `Kind.Drink`
+  |
+  = note: a variant belongs to its enum, so a value names both: `Kind.Drink`. A bare capitalized
+    name is how an error-row tag is spelled, which is why this one did not resolve. In a
+    `match` arm the bare name is fine: the scrutinee's type already says which enum.
+help: write `Kind.Drink`
+  |
+3 |     let k = Kind.Drink
+  |
+{"commit":"5adf3d9","diagnostics":[{"code":"E0301","severity":"error","span":[68,73]}],"file":"./r6.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"typecheck","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0301)","warnings":[]}
+[conform-run exit=0]

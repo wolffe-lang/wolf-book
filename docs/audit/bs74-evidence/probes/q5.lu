@@ -1,0 +1,24 @@
+enum Line { Item(str, int), Tip(int), Void }
+impl Line {
+    fn cents(self) -> int {
+        match self {
+            Item(_, c) => c,
+            Tip(c) => c,
+            Void => 0,
+        }
+    }
+}
+fn note(l: Line) -> str {
+    match l {
+        Item(name, c) if c > 300 => "{name}, over three dollars",
+        Item(name, _) => name,
+        _ => "-",
+    }
+}
+fn main() -> !int {
+    let a = Line.Item("espresso", 340)
+    let b = Line.Item("pastry", 275)
+    let t = Line.Tip(100)
+    print("{a.cents() + b.cents() + t.cents()} {note(a)} / {note(b)} / {note(t)}")
+    0
+}

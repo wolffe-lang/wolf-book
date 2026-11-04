@@ -1,0 +1,101 @@
+wolf 0.2.36 (wolfgang, pin 5adf3d9)
+paired with lupin 0.1.58 (reference interpreter), pin a5378e3
+lupin 0.1.58 (wolf-interp, reference interpreter at pin a5378e3)
+=================== u1
+--- lupin u1.lu
+generous
+a tip
+dear
+other
+[lupin exit=0]
+--- wolf run u1.lu
+generous
+a tip
+dear
+other
+[wolf run exit=0]
+--- wolf conform-run ./u1.lu
+{"commit":"5adf3d9","diagnostics":[],"file":"./u1.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[conform-run exit=0]
+=================== u2
+--- lupin u2.lu
+a tip
+a tip
+dear
+other
+[lupin exit=0]
+--- wolf run u2.lu
+warning[E0802]: this arm can never match — the arms above already cover it
+ --> ./u2.lu:5:9
+  |
+4 |         Tip(_) => "a tip",
+  |         ------ this arm already matches those values
+5 |         Tip(c) if c > 200 => "generous",
+  |         ^^^^^^ unreachable arm
+  |
+  = note: delete the arm, or reorder the arms so the more specific pattern comes first.
+a tip
+a tip
+dear
+other
+[wolf run exit=0]
+--- wolf conform-run ./u2.lu
+warning[E0802]: this arm can never match — the arms above already cover it
+ --> ./u2.lu:5:9
+  |
+4 |         Tip(_) => "a tip",
+  |         ------ this arm already matches those values
+5 |         Tip(c) if c > 200 => "generous",
+  |         ^^^^^^ unreachable arm
+  |
+  = note: delete the arm, or reorder the arms so the more specific pattern comes first.
+{"commit":"5adf3d9","diagnostics":[{"code":"E0802","severity":"warning","span":[114,120]}],"file":"./u2.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[{"code":"E0802","span":[114,120]}]}
+[conform-run exit=0]
+=================== u3
+--- lupin u3.lu
+espresso  drink     Kind.Drink
+pastry    food      Kind.Food
+tip       gratuity  Kind.Gratuity
+[lupin exit=0]
+--- wolf run u3.lu
+error[E0801]: this `match` does not cover `Refund`
+  --> ./u3.lu:10:5
+   |
+10 |     match k {
+   |     ^^^^^^^^^
+11 |         Drink => "drink",
+12 |         Food => "food",
+13 |         Gratuity => "gratuity",
+14 |     }
+   | ^^^^^ not every value is matched
+   |
+   = note: add arms for the missing cases, or end the `match` with a `_` arm to catch the rest
+     deliberately.
+wolf run: the package does not compile; fix the errors above (`wolf --explain E0801` explains this code, or any other, by name)
+[wolf run exit=2]
+--- wolf conform-run ./u3.lu
+error[E0801]: this `match` does not cover `Refund`
+  --> ./u3.lu:10:5
+   |
+10 |     match k {
+   |     ^^^^^^^^^
+11 |         Drink => "drink",
+12 |         Food => "food",
+13 |         Gratuity => "gratuity",
+14 |     }
+   | ^^^^^ not every value is matched
+   |
+   = note: add arms for the missing cases, or end the `match` with a `_` arm to catch the rest
+     deliberately.
+{"commit":"5adf3d9","diagnostics":[{"code":"E0801","severity":"error","span":[219,316]}],"file":"./u3.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"typecheck","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"fail(E0801)","warnings":[]}
+[conform-run exit=0]
+=================== u4
+--- lupin u4.lu
+false
+[lupin exit=0]
+--- wolf run u4.lu
+false
+[wolf run exit=0]
+--- wolf conform-run ./u4.lu
+{"commit":"5adf3d9","diagnostics":[],"file":"./u4.lu","impl":"wolfgang","impl_version":"0.2.36","phase_reached":"wir","protocol":1,"seeded":false,"stdout_inline":null,"stdout_sha256":null,"verdict":"pass","warnings":[]}
+[conform-run exit=0]

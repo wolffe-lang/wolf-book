@@ -1,0 +1,105 @@
+bs74 submit2 block B sha 79aef5757ebaf1d50007fe74917c8146d9cb185e queued 2026-11-04T12:08:45Z
+bs74 locks held 2026-11-04T12:29:44Z
+bs74 measure2 wolf-book 79aef5757ebaf1d50007fe74917c8146d9cb185e start 2026-11-04T12:29:44Z cpus 6-11
+head 79aef5757ebaf1d50007fe74917c8146d9cb185e, tree clean, in <checkout>
+wolf 0.2.36 (wolfgang, pin 5adf3d9)
+paired with lupin 0.1.58 (reference interpreter), pin a5378e3
+lupin 0.1.58 (wolf-interp, reference interpreter at pin a5378e3)
+== STEP build-xtask 2026-11-04T12:29:44Z
+END build-xtask exit=0
+== STEP samples-bless 2026-11-04T12:31:29Z
+END samples-bless exit=1
+samples: blessed snapshot for ch03/ex3-16
+samples: blessed snapshot for book/ch03/part-bare-variant
+samples: blessed snapshot for book/ch03/part-kinds-cover
+samples: blessed snapshot for book/ch03/part-kind-eq
+samples: 124 corpus file(s) held back from the export — one-machine directives the other runner cannot spell (principles/TWO-MACHINES.md)
+samples: 549 samples (256 corpus roots + 16 corpus members on disk, 293 book blocks)
+samples: 546 passed, 3 pending (report-only), 11 failed, 0 flips in 383.4s
+samples: 506 of 534 console block(s) replayed against the pinned tools
+samples: of those, 249 of 255 book block(s) and 257 of 279 exercise-corpus block(s) (wolf-book#24)
+samples: 3 warning set(s) asserted by warns(…); 30 sample(s) warn with no warns(…) directive (report-only, wolf-book#21)
+samples: FAIL <checkout>/book/ch03.md: diagnostic,from(book/ch03/part-bare-variant) drifted from the captured diagnostic — update the block from the real run
+samples: FAIL <checkout>/book/ch03.md: diagnostic,from(book/ch03/part-kinds-cover) drifted from the captured diagnostic — update the block from the real run
+samples: FAIL <checkout>/book/ch03.md: diagnostic,from(book/ch03/part-kind-eq) drifted from the captured diagnostic — update the block from the real run
+samples: FAIL <checkout>/book/ch03.md:824: console block drifted from the real run
+samples: FAIL <checkout>/book/ch03.md:940: console block drifted from the real run
+samples: FAIL <checkout>/book/ch05.md:526: console block drifted from the real run
+samples: FAIL <checkout>/book/ch05.md:965: console block drifted from the real run
+samples: FAIL <checkout>/principles/exercises/ch03/EXERCISES.md:168: console block drifted from the real run
+samples: FAIL <checkout>/principles/exercises/ch03/EXERCISES.md:211: console block drifted from the real run
+samples: FAIL <checkout>/principles/exercises/ch03/EXERCISES.md:245: console block drifted from the real run
+samples: FAIL <checkout>/principles/exercises/ch03/EXERCISES.md:253: console block drifted from the real run
+error: 11 failure(s), 0 flip(s)
+== STEP import-consoles 2026-11-04T12:37:53Z
+book/ch03.md
+book/ch03.md
+book/ch05.md
+book/ch05.md
+principles/exercises/ch03/EXERCISES.md
+principles/exercises/ch03/EXERCISES.md
+principles/exercises/ch03/EXERCISES.md
+principles/exercises/ch03/EXERCISES.md
+END import-consoles exit=0
+== STEP splice-diagnostics 2026-11-04T12:37:56Z
+book/ch03.md: book/ch03/part-bare-variant <- snapshots/diagnostics/book__ch03__part-bare-variant.txt
+book/ch03.md: book/ch03/part-kinds-cover <- snapshots/diagnostics/book__ch03__part-kinds-cover.txt
+book/ch03.md: book/ch03/part-kind-eq <- snapshots/diagnostics/book__ch03__part-kind-eq.txt
+END splice-diagnostics exit=0
+== STEP tiers-regen 2026-11-04T12:38:04Z
+tiers: wrote principles/EXERCISES-INDEX.md — 354 rows; 241 read off their heads, 113 hand-kept with no program on disk (3 pending, 83 prose, 9 run (lupin REPL), 8 run (lupin), 2 run (wolf + lupin), 8 run (wolf)); Tier totals: 37 run (lupin) · 9 run (lupin REPL) · 43 run (wolf) · 176 run (wolf + lupin) · 83 prose · 6 pending. That is 354
+END tiers-regen exit=0
+== STEP backmatter-regen 2026-11-04T12:38:04Z
+backmatter: 305 solution(s) published, 340 on file
+backmatter: book/back/appendix-a.md up to date
+backmatter: wrote book/back/solutions.md
+backmatter: vendored spec artifacts match the sibling wolf-lang checkout
+END backmatter-regen exit=0
+import patch: 491 lines; status:
+ M book/back/solutions.md
+ M book/ch03.md
+ M book/ch05.md
+ M principles/exercises/ch03/EXERCISES.md
+?? snapshots/diagnostics/book__ch03__part-bare-variant.txt
+?? snapshots/diagnostics/book__ch03__part-kind-eq.txt
+?? snapshots/diagnostics/book__ch03__part-kinds-cover.txt
+?? snapshots/diagnostics/ch03__ex3-16.txt
+== STEP samples-2 2026-11-04T12:38:04Z
+END samples-2 exit=0
+samples: 124 corpus file(s) held back from the export — one-machine directives the other runner cannot spell (principles/TWO-MACHINES.md)
+samples: 549 samples (256 corpus roots + 16 corpus members on disk, 293 book blocks)
+samples: 546 passed, 3 pending (report-only), 0 failed, 0 flips in 282.8s
+samples: 514 of 534 console block(s) replayed against the pinned tools
+samples: of those, 253 of 255 book block(s) and 261 of 279 exercise-corpus block(s) (wolf-book#24)
+samples: 3 warning set(s) asserted by warns(…); 30 sample(s) warn with no warns(…) directive (report-only, wolf-book#21)
+== STEP verify-docs 2026-11-04T12:42:48Z
+verify-docs: FAIL EXERCISES-PENDING.md claims 268 directive-headed .lu files; the corpus has 272 — update the claim or the corpus
+verify-docs: FAIL EXERCISES-INDEX.md: the taxonomy spread says 157 `comprehension` and the table has 158
+verify-docs: FAIL EXERCISES-INDEX.md: the taxonomy spread says 81 `extension` and the table has 82
+error: 3 doc-truth failure(s)
+END verify-docs exit=1
+== STEP ledger-check 2026-11-04T12:42:49Z
+ledger: ch23.md    open   3 (filed   3, waived 0, UNFILED 0) closed   4
+ledger: ch24.md    open   2 (filed   2, waived 0, UNFILED 0) closed   3
+ledger: ch25.md    open   1 (filed   1, waived 0, UNFILED 0) closed   0
+ledger: ch26.md    open   3 (filed   2, waived 1, UNFILED 0) closed   0
+ledger: ch27.md    open   4 (filed   4, waived 0, UNFILED 0) closed   3
+ledger: ch28.md    open   2 (filed   2, waived 0, UNFILED 0) closed   2
+ledger: ch30.md    open   5 (filed   4, waived 1, UNFILED 0) closed   5
+ledger: ch31.md    open   1 (filed   1, waived 0, UNFILED 0) closed   1
+ledger: ch32.md    open   0 (filed   0, waived 0, UNFILED 0) closed   5
+ledger: ch33.md    open   1 (filed   1, waived 0, UNFILED 0) closed   0
+ledger: ch34.md    open   3 (filed   0, waived 3, UNFILED 0) closed   1
+ledger: 33 chapter ledger(s) — 134 open (120 filed, 14 waived, 0 unfiled), 112 closed
+END ledger-check exit=0
+== STEP tiers-check 2026-11-04T12:42:50Z
+tiers: principles/EXERCISES-INDEX.md is generated — 354 rows; 241 read off their heads, 113 hand-kept with no program on disk (3 pending, 83 prose, 9 run (lupin REPL), 8 run (lupin), 2 run (wolf + lupin), 8 run (wolf)); Tier totals: 37 run (lupin) · 9 run (lupin REPL) · 43 run (wolf) · 176 run (wolf + lupin) · 83 prose · 6 pending. That is 354
+END tiers-check exit=0
+== STEP backmatter-check 2026-11-04T12:42:50Z
+backmatter: 305 solution(s) published, 340 on file
+backmatter: book/back/appendix-a.md up to date
+backmatter: book/back/solutions.md up to date
+backmatter: vendored spec artifacts match the sibling wolf-lang checkout
+END backmatter-check exit=0
+BS74_MEASURE2_EXIT 0 2026-11-04T12:42:50Z
+bs74 submit2 done rc=0 2026-11-04T12:42:54Z

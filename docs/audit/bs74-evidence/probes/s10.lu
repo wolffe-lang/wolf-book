@@ -1,0 +1,17 @@
+enum Kind { Drink, Food, Gratuity }
+enum Line { Item(Kind, int), Tip(int), Void }
+fn say(l: Line) -> str {
+    match l {
+        Item(_, c) if c > 300 => "dear",
+        Item(Drink, _) => "a drink",
+        Item(_, _) => "an item",
+        _ => "not an item",
+    }
+}
+fn main() -> !int {
+    print(say(Line.Item(Kind.Drink, 340)))
+    print(say(Line.Item(Kind.Drink, 200)))
+    print(say(Line.Item(Kind.Food, 275)))
+    print(say(Line.Tip(500)))
+    0
+}

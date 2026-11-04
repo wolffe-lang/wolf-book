@@ -1,0 +1,15 @@
+enum Shape { Circle(int), Rect(int, int), Empty }
+impl Shape {
+    fn area(self) -> int {
+        match self {
+            Circle(r) => 3 * r * r,
+            Rect(w, h) => w * h,
+            Empty => 0,
+        }
+    }
+}
+fn main() -> !int {
+    let s = Shape.Rect(2, 5)
+    print("{s.area()} {Shape.Circle(1).area()}")
+    0
+}

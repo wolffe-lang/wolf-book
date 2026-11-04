@@ -1,0 +1,22 @@
+enum Kind { Drink, Food, Gratuity }
+fn kind(name: str) -> Kind {
+    match name {
+        "tip" => Kind.Gratuity,
+        "espresso" => Kind.Drink,
+        _ => Kind.Food,
+    }
+}
+fn label(k: Kind) -> str {
+    match k {
+        Drink => "drink",
+        Food => "food",
+        Gratuity => "gratuity",
+    }
+}
+fn main() -> !int {
+    for name in "espresso pastry tip".words() {
+        let k = kind(name)
+        print("{name:<10}{label(k):<10}{k}")
+    }
+    0
+}

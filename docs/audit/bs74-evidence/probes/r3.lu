@@ -1,0 +1,8 @@
+enum Light { Red, Amber, Green }
+impl nothere.Eq for Light {
+    fn eq(self, other: Self) -> bool { true }
+}
+fn main() -> !int {
+    print("{Light.Red == Light.Green}")
+    0
+}

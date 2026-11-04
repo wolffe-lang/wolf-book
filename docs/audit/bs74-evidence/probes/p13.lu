@@ -1,0 +1,15 @@
+use std.cmp
+enum Light { Red, Amber, Green }
+impl cmp.Eq for Light {
+    fn eq(self, other: Self) -> bool {
+        match (self, other) {
+            (Red, Red) => false,
+            _ => true,
+        }
+    }
+}
+fn main() -> !int {
+    let now = Light.Red
+    print("{now == Light.Red} {now == Light.Green}")
+    0
+}
