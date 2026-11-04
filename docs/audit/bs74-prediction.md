@@ -81,6 +81,10 @@ moves and no snapshot or `diagnostic,from(…)` reference elsewhere is touched.
   never typed. The second run replays it byte-for-byte.
 - Nothing else in the book moves: 0 flips, the pending count unchanged, no existing
   sample, console or snapshot changes.
+- The counts, against r41q's green run at 0.2.36 (537 samples, 285 of them book
+  blocks, 534 passed, 3 pending; 506 of 526 console blocks replayed, 249 of 251 on
+  book pages): 545 samples, 293 book blocks, 542 passed, 3 pending, 0 failed, 0
+  flips; 510 of 530 console blocks, 253 of 255 on book pages.
 - Left for the turn after the ruling, named here so the record can say whether they
   moved: the exercise solutions and their index rows (`cargo xtask tiers`), Appendix
   C's sections column for E0301 and E0801 (`verify-docs`), the chapter ledgers' rows
