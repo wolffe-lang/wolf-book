@@ -111,7 +111,7 @@ let chapter 1 teach a call the compiler does not carry: a `run(…)`
 directive is a claim about both machines, and a sample only one machine
 serves says which one (`principles/TWO-MACHINES.md`).
 Taxonomy spread (tags, hybrids counted once per kind): fingers 61 ·
-comprehension 157 · extension 81 · spelunking 29 · design 38.
+comprehension 158 · extension 82 · spelunking 29 · design 38.
 
 Four stems are printed under a section other than the one this index
 assigns them, each deliberately: 13-2 (printed in §13.2, where the race
