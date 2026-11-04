@@ -1,6 +1,6 @@
 # EXERCISES-INDEX.md — the corpus ledger
 
-Ledger of every exercise in the corpus: 352 total. The rows, the
+Ledger of every exercise in the corpus: 354 total. The rows, the
 type · checker column and the notes are hand-kept; the **tier column
 and the totals line are generated** by `cargo xtask tiers` from each
 exercise's `//! check:` head (ruling #40, wolf-book#43), and CI runs
@@ -52,7 +52,7 @@ are met by CI today, so the column says so; what keeps each unprinted
 is its stem's subject, and EXERCISES-PENDING.md carries it. Two more are master-only by curation
 rather than blockage, from the bs21 ladder: 2-15 (entab — the printed
 page carries detab, the master holds the mirror) and 3-13 (a
-`loop`/`break`-value drill beside §3.2's own example). **303 of the 352
+`loop`/`break`-value drill beside §3.2's own example). **305 of the 354
 are printed**, and
 `cargo xtask verify-docs` fails the build if a printed stem has no
 published solution.
@@ -86,7 +86,7 @@ filesystem until lupin 0.1.36; since bs49 a choice the chapter makes),
 so several of its stems are tagged `· wolf` while the distilled
 solution program on disk is a `run(…)` file both machines execute.
 
-Tier totals: 37 run (lupin) · 9 run (lupin REPL) · 43 run (wolf) · 174 run (wolf + lupin) · 83 prose · 6 pending. That is 352.
+Tier totals: 37 run (lupin) · 9 run (lupin REPL) · 43 run (wolf) · 176 run (wolf + lupin) · 83 prose · 6 pending. That is 354.
 (The totals and the tables were recounted mechanically against the
 masters at bs21 — the previous header said 276/231 while the tables
 had drifted from the marker count, ch05's 5-9 and 5-10 among the
@@ -160,7 +160,7 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | §2.4 — Iterating meaning | 2-14 | fingers · lupin | run (wolf + lupin) |
 | §2.4 — Iterating meaning (master only, not printed) | 2-15 | extension · lupin | run (wolf + lupin) |
 
-## ch03 — 15 exercises
+## ch03 — 17 exercises
 
 | section | exercise | type · checker | tier |
 |---|---|---|---|
@@ -179,6 +179,8 @@ ahead of 24-7; the batch is the chapter's last two either way.
 | Chapter batch (master only, not printed) | 3-13 | comprehension · lupin | run (lupin) |
 | Chapter batch | 3-14 | fingers · lupin | run (wolf + lupin) |
 | §3.2 — Everything is an expression | 3-15 | fingers · lupin | run (wolf + lupin) |
+| §3.5 — Enums | 3-16 | extension (break-it-on-purpose) · wolf | run (wolf + lupin) |
+| §3.5 — Enums | 3-17 | comprehension · lupin | run (wolf + lupin) |
 
 ## ch04 — 9 exercises
 
