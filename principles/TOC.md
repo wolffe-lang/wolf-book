@@ -87,14 +87,14 @@ wolf, without hearing the word "lifetime."*
 - 5.2 The combinator style — chain `.pairs().sorted_by(…).take(n)` and
   then see what it desugars to.
 - 5.3 Generics in square brackets — write `fn top[T](…)`, get errors at
-  the definition site, and never type a turbofish.
+  the definition site, read a generic enum, and never type a turbofish.
 - 5.4 Indexing that traps — predict `xs[10]` on a one-element list.
 - 5.5 Structs — give the receipt's row names: the declaration, the
   literal, a field read, a field write through `var`, and when a tuple
   is the better shape.
 - 5.6 Traits — fix §5.3's refused `total[T]` with a bound, put a `Line`
   on a `Row` and a `Header` with one default body, read `==` on a
-  struct as the `Eq` impl it dispatches to, write `best[T: Ord]` with
+  struct or an enum as the `Eq` impl it dispatches to, write `best[T: Ord]` with
   no comparison function, `-` through `Neg`, a two-trait bound in one
   body, and leave knowing every operator a bound grants and the three
   it cannot.
@@ -1558,3 +1558,23 @@ sprint files remain the implementation contracts for everything else.
     false (the listen, wait and raise, signal 0's words, §34.6's five).
   - **A console replay reads a signal's end as `128 + N`** (wolf-book#87),
     as a shell's `$?` does; §34.6 gains the row that shows it.
+- **bs74 (the enum primer, 2026-11-04):** the book declared its first enum
+  inside §5.6's `Ord` block and explained it in one sentence, and no page
+  showed a payload, a bare arm, exhaustiveness over an enum, a method on
+  one, its printed form, or its `==`.
+  - **§3.5 Enums is new, at chapter 3's end and before its closing
+    batch**, directly after §3.4's exhaustiveness lesson, which its own
+    ledger had wanted taught over a closed set of names. It is the next
+    free number, so nothing renumbers, and every fence in it is a
+    `part(name)` fence, so no positional sample id in the chapter moves.
+    The opening's `kind` answers a `Kind`; `Line` carries payloads, a
+    guard and a method; E0301 and E0801 are each shown once, and `==` is
+    shown refused. Exercises 3-16 and 3-17 are the next free numbers.
+  - **Two pieces sit at the homes of what they need**: a generic enum in
+    §5.3, where brackets are taught (a `lupin-run(…)` block with the
+    per-machine note), and an enum's `impl Eq` in §5.6 beside `Row`'s,
+    spelled with the page's local `trait Eq` as its other traits are.
+    §3.4 keeps `int`.
+  - **"Variant" is an enum's word now.** Three places that called a
+    row's member a variant (6-2, 6-3, §27.3) say tag, and the glossary
+    carries *enum*, *variant* and *method* at 3.5.
