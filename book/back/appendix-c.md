@@ -1,7 +1,7 @@
 # Appendix C — Diagnostics
 
 Every diagnostic the book shows, with the one-line summary the compiler's
-own catalog carries for it. The catalog holds 192 codes; these 60 are the
+own catalog carries for it. The catalog holds 192 codes; these 61 are the
 ones a page in this edition names. A code is stable: it identifies a
 rule, not a message, and `wolf --explain E1001` prints the whole entry
 for any of them (the summary, the reasoning, and the fix) whether or
@@ -25,7 +25,7 @@ shows both readings of it side by side.
 | `E0201` | the parser expected a different token or construct here | both | 1.5, 4.1, 12.4, 14.1 |
 | `E0202` | an opening delimiter is never closed | both | 1.5, Notation |
 | `E0203` | expected a declaration at the top level | wolf | Solutions |
-| `E0301` | nothing with this name is in scope | wolf | 10.1 |
+| `E0301` | nothing with this name is in scope | wolf | 3.5, 10.1 |
 | `E0302` | the same name is defined twice in one module | lupin | 22.1 |
 | `E0303` | modules import each other in a cycle | lupin | 22.2 |
 | `E0304` | the item exists but is not visible from here | lupin | 22.1 |
@@ -48,7 +48,8 @@ shows both readings of it side by side.
 | `E0708` | layout is unresolved until codegen | wolf | Solutions |
 | `E0709` | invalid comptime budget attribute | wolf | 18.4 |
 | `E0710` | a comptime assertion failed | wolf | 18.1, 18.2, 22.3 |
-| `E0801` | this `match` does not cover every case | wolf | 3.4, 6.6 |
+| `E0801` | this `match` does not cover every case | wolf | 3.4, 3.5, 6.6 |
+| `E0802` | this `match` arm can never match | wolf | Solutions |
 | `E0817` | an attribute this compiler does not know or does not implement | wolf | 20.1 |
 | `E1001` | this value was moved away (or never given one) before this use | wolf | 3.1, 7.1, 7.2, 7.6, 7.7, 9.8, Notation |
 | `E1002` | this needs exclusive access, but the value is in use here | wolf | 7.5 |
