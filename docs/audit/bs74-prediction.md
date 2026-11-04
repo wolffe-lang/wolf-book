@@ -89,3 +89,28 @@ moves and no snapshot or `diagnostic,from(…)` reference elsewhere is touched.
   moved: the exercise solutions and their index rows (`cargo xtask tiers`), Appendix
   C's sections column for E0301 and E0801 (`verify-docs`), the chapter ledgers' rows
   (`ledger --check`), the TOC delta, and the plant.
+
+## After the ruling (written 2026-11-04, before the post-ruling measure runs)
+
+The placement is B, §3.5, as drafted; `Eq` is the page's local trait; the generic
+enum stays in §5.3 with its ledger row on wolf-lang#881; "variant" for a row's
+member becomes "tag" at 6-2, 6-3 and §27.3. Six issues were filed from the
+drafts and the ledger rows cite them. The changes since the draft measure, and
+what each should show:
+
+- §3.5 gains one sentence: a variant nested in a payload is written with its
+  enum. No fence changes, so no console or snapshot moves for it.
+- Exercises 3-16 and 3-17 enter the corpus with four programs: `ex3-16.lu`
+  `fail(E0801)` (a fourth snapshot, naming `Refund`), `ex3-16b.lu`,
+  `ex3-17.lu` and `ex3-17b.lu` (`run(exit=0)`, the last declaring
+  `warns: E0802`). Four corpus console blocks, imported from the run like the
+  book's. Both rows read `run (wolf + lupin)` when `cargo xtask tiers` writes
+  the column.
+- The counts move to 549 samples (256 corpus roots, 293 book blocks), 546
+  passed, 3 pending, 0 failed, 0 flips; 514 of 534 console blocks, 253 of 255
+  on book pages and 261 of 279 in the corpus.
+- The back matter: the Solutions page regenerates with 3-16 and 3-17 under
+  §3.5; Appendix C names E0301 and E0801 at 3.5 and gains E0802 (61 codes);
+  the index and the glossary gain the primer's terms. The index's 352 becomes
+  354 and its printed 303 becomes 305. `verify-docs` is expected to find any
+  hand-kept figure this list misses, and the record will say which.
