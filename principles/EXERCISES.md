@@ -779,8 +779,8 @@ a=42 b=7
 ```
 
 **Exercise 6-2** *(comprehension · lupin)*. `chain` calls `parse`
-through `?`. Predict `a` and `b`, and name which row variant `b`'s
-handler sees:
+through `?`. Predict `a` and `b`, and name which tag of the row
+`b`'s handler sees:
 
 ```wolf
 fn chain(s: str) -> int ! {empty, NotDigit(Bad)} {
@@ -811,7 +811,7 @@ a=43 b=-2
 ```
 
 **Exercise 6-3** *(extension · lupin)*. Grow the row: add a `too_long`
-variant for inputs over four bytes and handle it. What else did you have
+tag for inputs over four bytes and handle it. What else did you have
 to change, and what told you?
 
 Solution. `ch06/ex6-3.lu` (excerpt):
