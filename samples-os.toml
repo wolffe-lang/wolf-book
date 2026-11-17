@@ -312,7 +312,7 @@ retires = "windows permission bits ([os.fs.create.mode]) and a directory's sync 
 note = "bs72, 2026-10-23: §34.8's `save.lu` runs on both machines on unix. On windows both wolf 0.2.35 and lupin 0.1.56 end at `fs_open_perm`, `unsupported` by name (no permission bits), creating nothing and never reaching `fs_sync_dir` (also `unsupported` there). Spec [os.fs.create.mode], [os.fs.sync]; lupin v0.1.56 tests/editor_calls_is79.rs::the_atomic_save_runs_whole."
 
 [[transcript]]
-block = "book/ch34.md:263"
+block = "book/ch34.md:264"
 os = "windows"
 filed = "[os.signal.platform]"
 retires = "a windows `os_signal_send` ([os.signal.platform])"
