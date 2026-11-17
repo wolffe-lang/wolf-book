@@ -304,6 +304,7 @@ book/ch04.md 0.1.36 1 audited-at-lupin=0.1.58
 book/ch06.md 0.1.36 1 audited-at-lupin=0.1.58
 book/ch27.md 0.1.36 1 audited-at-lupin=0.1.58
 book/ch30.md 0.1.36 1 audited-at-lupin=0.1.58
+book/ch34.md 0.1.58 1 audited-at-lupin=0.1.58
 # §5.6's paragraph names both tools in one sentence (the lend rule
 # arrived in the compiler at 0.2.15; the list literals its blocks use
 # arrived in the interpreter at 0.1.37), so it rides both clocks.
