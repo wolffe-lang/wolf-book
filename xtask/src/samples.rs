@@ -2851,9 +2851,15 @@ mod tests {
     #[cfg(unix)]
     #[test]
     fn a_surviving_grandchild_does_not_hang_the_runner() {
+        let scratch = tempfile::tempdir().unwrap();
+        let pid_file = scratch.path().join("grandchild.pid");
         let mut cmd = Command::new("sh");
         // The backgrounded `sleep` inherits stdout and outlives `sh`.
-        cmd.arg("-c").arg("sleep 45 & echo started; wait");
+        // Record its pid independently of the pipes that it keeps open.
+        cmd.arg("-c")
+            .arg("sleep 45 & echo $! > \"$1\"; wait")
+            .arg("grandchild-cleanup")
+            .arg(&pid_file);
         let started = Instant::now();
         let r = run_within(cmd, Duration::from_secs(2));
         assert!(r.is_err(), "expected a timeout, got {r:?}");
@@ -2862,6 +2868,33 @@ mod tests {
             "timed out but only after {:?} — the readers are blocking again",
             started.elapsed()
         );
+        let grandchild = std::fs::read_to_string(pid_file)
+            .unwrap()
+            .trim()
+            .parse::<u32>()
+            .expect("the fixture recorded its grandchild pid")
+            .to_string();
+        // Returning promptly is not enough: a wrong group operand used
+        // to leave this process alive and pass only on the pipe drains.
+        // Give init time to reap the orphan after the whole group dies.
+        let reaped_by = Instant::now() + Duration::from_secs(5);
+        loop {
+            let alive = Command::new("kill")
+                .args(["-0", "--", &grandchild])
+                .stdout(std::process::Stdio::null())
+                .stderr(std::process::Stdio::null())
+                .status()
+                .expect("the grandchild existence check runs")
+                .success();
+            if !alive {
+                break;
+            }
+            assert!(
+                Instant::now() < reaped_by,
+                "grandchild {grandchild} survived timeout cleanup"
+            );
+            std::thread::sleep(Duration::from_millis(20));
+        }
     }
 
     #[test]
