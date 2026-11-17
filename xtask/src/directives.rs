@@ -1,7 +1,8 @@
 //! The directive language — deliberately identical in spirit to
 //! wolf-lang s01's corpus directives. One grammar, two carriers: the
 //! `//! check:` headers on corpus `.lu` files and the fence info
-//! strings in book markdown.
+//! strings in book markdown. Quoted stdout values use the corpus escape
+//! set: `\n`, `\r`, `\t`, `\\` and `\"`; other escapes stay literal.
 
 use anyhow::{bail, Result};
 
@@ -116,23 +117,23 @@ impl std::fmt::Display for Check {
         match self {
             Check::RunNonzero { stdout: None } => write!(f, "run(exit=nonzero)"),
             Check::RunNonzero { stdout: Some(s) } => {
-                write!(f, "run(exit=nonzero, stdout=\"{s}\")")
+                write!(f, "run(exit=nonzero, stdout=\"{}\")", escape_stdout(s))
             }
             Check::Run { exit, stdout: None } => write!(f, "run(exit={exit})"),
             Check::Run {
                 exit,
                 stdout: Some(s),
-            } => write!(f, "run(exit={exit}, stdout=\"{s}\")"),
+            } => write!(f, "run(exit={exit}, stdout=\"{}\")", escape_stdout(s)),
             Check::WolfRun { exit, stdout: None } => write!(f, "wolf-run(exit={exit})"),
             Check::WolfRun {
                 exit,
                 stdout: Some(s),
-            } => write!(f, "wolf-run(exit={exit}, stdout=\"{s}\")"),
+            } => write!(f, "wolf-run(exit={exit}, stdout=\"{}\")", escape_stdout(s)),
             Check::LupinRun { exit, stdout: None } => write!(f, "lupin-run(exit={exit})"),
             Check::LupinRun {
                 exit,
                 stdout: Some(s),
-            } => write!(f, "lupin-run(exit={exit}, stdout=\"{s}\")"),
+            } => write!(f, "lupin-run(exit={exit}, stdout=\"{}\")", escape_stdout(s)),
             Check::Trap { kind } => write!(f, "run(exit=trap({kind}))"),
             Check::LupinTrap { kind } => write!(f, "lupin-run(exit=trap({kind}))"),
             Check::Fail { code } => write!(f, "fail({code})"),
@@ -141,6 +142,39 @@ impl std::fmt::Display for Check {
             Check::Compile => write!(f, "compile"),
         }
     }
+}
+
+fn escape_stdout(value: &str) -> String {
+    value
+        .replace('\\', "\\\\")
+        .replace('"', "\\\"")
+        .replace('\n', "\\n")
+        .replace('\r', "\\r")
+        .replace('\t', "\\t")
+}
+
+fn unescape_stdout(value: &str) -> String {
+    let mut out = String::with_capacity(value.len());
+    let mut chars = value.chars();
+    while let Some(c) = chars.next() {
+        if c != '\\' {
+            out.push(c);
+            continue;
+        }
+        match chars.next() {
+            Some('n') => out.push('\n'),
+            Some('r') => out.push('\r'),
+            Some('t') => out.push('\t'),
+            Some('\\') => out.push('\\'),
+            Some('"') => out.push('"'),
+            Some(other) => {
+                out.push('\\');
+                out.push(other);
+            }
+            None => out.push('\\'),
+        }
+    }
+    out
 }
 
 /// Parse the value of a `check:` directive, e.g.
@@ -222,7 +256,7 @@ fn parse_run_args(inner: &str) -> Result<Check> {
                 .strip_prefix('"')
                 .and_then(|r| r.strip_suffix('"'))
                 .with_context_str("stdout= wants a double-quoted string")?;
-            stdout = Some(unquoted.to_string());
+            stdout = Some(unescape_stdout(unquoted));
         } else if !arg.is_empty() {
             bail!("unrecognized run() argument: `{arg}`");
         }
@@ -247,7 +281,18 @@ fn split_args(s: &str) -> Vec<String> {
     let mut cur = String::new();
     let mut depth = 0usize;
     let mut in_str = false;
+    let mut escaped = false;
     for c in s.chars() {
+        if in_str && escaped {
+            escaped = false;
+            cur.push(c);
+            continue;
+        }
+        if in_str && c == '\\' {
+            escaped = true;
+            cur.push(c);
+            continue;
+        }
         match c {
             '"' => {
                 in_str = !in_str;
@@ -599,6 +644,32 @@ mod tests {
                 stdout: Some("literal \\n and \\q and final \\".into())
             }
         );
+    }
+
+    #[test]
+    fn chapter34_stdout_claims_match_the_measured_lines() {
+        let fences: Vec<_> = crate::fence::segments(include_str!("../../book/ch34.md"))
+            .into_iter()
+            .filter_map(|segment| match segment {
+                crate::fence::Segment::Fence(fence) => Some(fence),
+                _ => None,
+            })
+            .collect();
+        for (compiler_only, stdout) in [
+            (false, "quit is in the set: true\nreload is not: true\na set with kill in it: io\nan empty set: io"),
+            (false, "canonical false, echo false, signals true\nflow false, extended false, min 1\nround trip: true"),
+            (true, "ended by terminate(): true\nand with a core: false\nchildren left: 0, core: false"),
+        ] {
+            let prefix = format!("stdout=\"{}", stdout.lines().next().unwrap());
+            let matching: Vec<_> = fences.iter().filter(|f| f.info.contains(&prefix)).collect();
+            assert_eq!(matching.len(), 1, "{prefix}");
+            let expected = if compiler_only {
+                Check::WolfRun { exit: 0, stdout: Some(stdout.into()) }
+            } else {
+                Check::Run { exit: 0, stdout: Some(stdout.into()) }
+            };
+            assert_eq!(parse_fence_info(&matching[0].info).unwrap().check, Some(expected));
+        }
     }
 
     #[test]
