@@ -1168,6 +1168,7 @@ fn kill_group(child: &mut std::process::Child) {
     let pid = child.id();
     let _ = Command::new("kill")
         .arg("-9")
+        .arg("--")
         .arg(format!("-{pid}"))
         .stdout(std::process::Stdio::null())
         .stderr(std::process::Stdio::null())
