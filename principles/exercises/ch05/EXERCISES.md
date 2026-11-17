@@ -426,10 +426,9 @@ that a formatter is a policy wearing a loop.
 
 ## §5.2 — The combinator style
 
-**Exercise 5-8** *(comprehension · pending — blocker: `sorted_by` /
-`take` absent from the interp std subset; owner: s37-core-types (std
-surface pinning))*. The chapter's signature chain, applied to a score
-table:
+**Exercise 5-8** *(comprehension · pending — blocker: comparator and
+prefix spelling; owner: wolf-book#58)*. A proposed query chain, applied
+to a score table:
 
 ```wolf
 for (name, n) in scores.pairs().sorted_by(fn(a, b) b.1 <=> a.1).take(1) {
@@ -437,34 +436,31 @@ for (name, n) in scores.pairs().sorted_by(fn(a, b) b.1 <=> a.1).take(1) {
 }
 ```
 
-With `wolf → 4`, `marmot → 5`, `elk → 2` in the map, state what this
-prints, then desugar the chain by hand: write the loop-and-locals
-version that produces the same line using only `pairs()`, a `var`
-best-so-far, and one comparison. Which of the two versions says *what*
-it wants, and which says *how* to get it?
+With `wolf → 4`, `marmot → 5`, `elk → 2` in the map, state the line this
+chain intends to produce, then desugar that query by hand: write the
+loop-and-locals version using only `pairs()`, a `var` best-so-far, and
+one comparison. Which version says *what* it wants, and which says *how*
+to get it?
 
-Solution (prose, pending the combinator surface): it prints
-`marmot 5`: sort descending by the pair's second element, keep one.
-The desugared version walks `pairs()` holding the best pair seen and
-compares as it goes; it allocates nothing and sorts nothing, which for
-top-1 is strictly less work than the chain performs. That is the
-trade the combinator style makes on purpose: the chain states the
-result's shape and lets the library choose the work; the loop states
-the work and leaves the reader to infer the shape. The solution
-program is on disk with its expected output in the header.
+Solution (the pending program's goal): `marmot 5`, the highest score.
+The loop scans the pairs and keeps the best one instead of sorting a
+copy and selecting its prefix. `pairs()` itself builds a list, so this
+is a choice of the work after that walk, not a claim of no allocation.
+The solution program remains on disk with its intended outcome in the
+header; that outcome is not yet a successful run of this spelling.
 
-It is still pending at wolf 0.2.15 / lupin 0.1.37, and for two reasons
-that have both changed since this row was written. `sorted_by` exists
-now — it is one of `[type.comb.set]`'s ten — but it is a `std.list`
-function, and a combinator has to reach its home module, which needs a
-std root neither tool is given here (wolf-book#39). And `.take(1)` can
-never arrive at all: `take` is a keyword, so `fn take` is E0008 and no
-std function may carry the name (wolf-book#58). The message says the
-first half:
+At wolf 0.2.36 and lupin 0.1.58, both tools have the matching std tree.
+`sorted_by` resolves, but its comparator must answer `bool`, while
+`b.1 <=> a.1` answers an int. The compiler reports E0401 there and E0403
+at `.take(1)`: `take` is the ownership verb, never a method. A prefix is
+spelled with a slice. Lupin reaches the comparator first and refuses
+its non-bool condition; replacing only that comparator with a bool
+predicate then reaches the separate `take` refusal. These are the
+remaining exercise blockers (wolf-book#58), not an absent std root.
 
 ```console
 $ lupin ex5-8.lu
-ex5-8.lu: unsupported: `List.sorted_by` is no builtin, so it reaches `List`'s home module `std.list` ([type.method.resolve] step 2), and no std root is configured: pass `--std-root DIR`, set `LUPIN_STD`, or put a `std/` beside the `lupin` binary (the compiler reads `WOLF_STD`, a `std` path dependency in `wolf.pkg`, or the `std/` its release archive ships beside `wolf`) — the counterparty's E0301 ([type.method.root])
+ex5-8.lu: unsupported: an `if` condition must be a bool, got i32
 $ echo $?
 4
 ```

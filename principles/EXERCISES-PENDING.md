@@ -20,12 +20,22 @@ verdict for a feature that does not exist yet.
 |---|---|---|---|
 | 7-5 (static half) | `fail(E1003)` | borrow-escape checking reaches no static verdict: wolf 0.2.21 answers «borrow expressions» at `resolve`, lupin 0.1.44 runs it (bs58, unchanged since bs53) | s33-channels-select, then s18-tier0-exclusivity |
 | 8-7 | `run(exit=0, stdout="c a")` | two blockers, one per machine (bs51's bisection, unchanged at bs53, bs54 and bs55; at bs58 the whole program answers both halves in the same words on wolf 0.2.21 / lupin 0.1.44): `pool[h].next = k` runs on wolf and is `[type.map.key]` `unsupported` on lupin; `while cur != tail` runs on lupin and is "no `Eq` for these this edition" on wolf | wolf-book#60 |
-| 5-8 | `run(exit=0, stdout="marmot 5")` | two blockers, re-measured at bs50 and neither as written: `sorted_by` EXISTS (one of `[type.comb.set]`'s ten) but is a `std.list` function and this repo configures no std root, so both machines decline at `[type.method.root]`; and `.take(1)` can never arrive, because `take` is a keyword and `fn take` is E0008 | wolf-book#45 (std root; #39 closed) + wolf-book#58 (the unspellable `take`) |
+| 5-8 | `run(exit=0, stdout="marmot 5")` (goal) | std roots are configured for both tools. wolf 0.2.36 rejects the comparator with E0401 and `.take(1)` with E0403; lupin 0.1.58 reaches the comparator and refuses its non-bool condition. A bool-comparator probe then reaches the separate `take` refusal. | wolf-book#58 (exercise rewrite) |
 | 17-6 | `run(exit=0)` | `--chaos` fault injection at declared effect points — and with it §17.3 of chapter 17, which is why this stem is written and **not printed** (TOC.md §Deltas, bs07) | s36-deterministic-scheduler |
 | 20-5 (was 19-1 until bs18) | a static rejection for the body, its code unassigned; the file reads `fail(E0817)` today (bs59: since wolf 0.2.22 the attribute itself is refused by name, «`noalloc` is not implemented yet»; since lupin 0.1.46 the interpreter refuses it by name too, E0817, where 0.1.45 read no attribute and printed `3`) | perf-contract verification (I15, wolf-lang#180) | s24–s26 WIR fact sprints |
 | 21-8 | none — measurement exercise | bench rigs and CI perf gates | s44-perf-validation |
 | 23-7 | none — workflow exercise | script-mode dependency resolution | s51-package-manager with s31-driver-v0 |
 | B-10 | none — the absence is the exercise | `race` needs the dynamic race machine observing a real conflict; `alloc-contract` needs the wolf_rt quarantine allocator | s36-deterministic-scheduler; s23-memory-conformance / wolf_rt |
+
+## Current std staging measurement
+
+With the matching std tree beside both pinned binaries, 5-8 no longer
+has a missing-root blocker. Its code remains pending: `sorted_by` takes
+a bool comparator, while the exercise returns an int, and `take` is not
+a method. The compiler reports E0401 and E0403; lupin reaches the
+comparator and exits 4 with its non-bool-condition refusal. The expected
+`marmot 5` in the header is the exercise's goal, not its current output.
+The dated measurements below describe earlier configurations.
 
 ## What today's tools say
 
