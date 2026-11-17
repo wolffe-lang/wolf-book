@@ -509,6 +509,99 @@ mod tests {
     }
 
     #[test]
+    fn stdout_escapes_decode_on_every_run_machine() {
+        let value = "first\nsecond\r\tpath\\new \"quoted, (x)\" — wolf";
+        for (spelling, expected) in [
+            (
+                "run(exit=0",
+                Check::Run {
+                    exit: 0,
+                    stdout: Some(value.into()),
+                },
+            ),
+            (
+                "wolf-run(exit=0",
+                Check::WolfRun {
+                    exit: 0,
+                    stdout: Some(value.into()),
+                },
+            ),
+            (
+                "lupin-run(exit=0",
+                Check::LupinRun {
+                    exit: 0,
+                    stdout: Some(value.into()),
+                },
+            ),
+            (
+                "run(exit=nonzero",
+                Check::RunNonzero {
+                    stdout: Some(value.into()),
+                },
+            ),
+        ] {
+            let directive = format!(
+                r#"{spelling}, stdout="first\nsecond\r\tpath\\new \"quoted, (x)\" — wolf")"#
+            );
+            assert_eq!(parse_check(&directive).unwrap(), expected);
+            assert_eq!(
+                parse_fence_info(&format!("wolf,{directive},warns(W0601)"))
+                    .unwrap()
+                    .check,
+                Some(expected.clone())
+            );
+            let header = format!("//! check: {directive}\n//! phase: run\nfn main() {{}}\n");
+            assert_eq!(parse_lu_header(&header).unwrap().check, Some(expected));
+        }
+    }
+
+    #[test]
+    fn stdout_escapes_round_trip_and_export_on_one_line() {
+        let value = "first\nsecond\r\tpath\\new \"quoted, (x)\" — wolf";
+        for check in [
+            Check::Run {
+                exit: 0,
+                stdout: Some(value.into()),
+            },
+            Check::WolfRun {
+                exit: 0,
+                stdout: Some(value.into()),
+            },
+            Check::LupinRun {
+                exit: 0,
+                stdout: Some(value.into()),
+            },
+            Check::RunNonzero {
+                stdout: Some(value.into()),
+            },
+        ] {
+            let rendered = check.to_string();
+            assert!(!rendered.contains(['\n', '\r', '\t']), "{rendered:?}");
+            assert_eq!(parse_check(&rendered).unwrap(), check);
+            if let Some(exported) = check.corpus_directive() {
+                assert_eq!(
+                    parse_check(&exported).unwrap(),
+                    Check::Run {
+                        exit: 0,
+                        stdout: Some(value.into())
+                    }
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn stdout_escapes_keep_literal_and_unknown_backslashes() {
+        assert_eq!(
+            parse_check(r#"run(exit=0, stdout="literal \\n and \q and final \\")"#).unwrap(),
+            Check::Run {
+                exit: 0,
+                stdout: Some("literal \\n and \\q and final \\".into())
+            }
+        );
+    }
+
+    #[test]
     fn check_trap() {
         assert_eq!(
             parse_check("run(exit=trap(use-after-move))").unwrap(),
