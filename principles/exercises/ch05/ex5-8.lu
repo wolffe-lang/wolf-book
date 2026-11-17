@@ -1,6 +1,6 @@
 //! check: run(exit=0, stdout="marmot 5")
 //! phase: run
-// Exercise 5-8: the combinator chain, awaiting the std surface.
+// Exercise 5-8: pending a bool comparator and valid prefix spelling.
 fn main() -> !int {
     var scores = Map[str, int]()
     scores["wolf"] = 4
