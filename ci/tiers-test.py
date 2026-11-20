@@ -79,7 +79,7 @@ FULL_JOBS = ["test", "samples", "render", "contents"]
 PUSH_BRANCHES = "trunk"
 OTHER_HOST_JOBS = ()
 # The hosts before tl28 (.github/workflows/book.yml at trunk e9862f6).
-_H = [{"os": "ubuntu-latest"}, {"os": "macos-latest"}, {"os": "windows-latest"}]
+_H = [{"os": "ubuntu-24.04"}, {"os": "macos-latest"}, {"os": "windows-latest"}]
 BEFORE_HOSTS = {"matrix_test": _H, "matrix_samples": _H}
 ALL_HOSTS = BEFORE_HOSTS
 PR_HOSTS = {"matrix_test": _H[:1], "matrix_samples": _H[:1]}

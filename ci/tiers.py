@@ -112,7 +112,7 @@ WORKFLOW = ".github/workflows/book.yml"
 # hosts, as before tl28). The full tier runs them all; every other tier the
 # legs PR_LEG keeps. `contents` keeps its engine matrix in the workflow: its
 # three engines are three ubuntu jobs, in every tier it runs.
-HOSTS = [{"os": "ubuntu-latest"}, {"os": "macos-latest"}, {"os": "windows-latest"}]
+HOSTS = [{"os": "ubuntu-24.04"}, {"os": "macos-latest"}, {"os": "windows-latest"}]
 MATRIX = {
     "test": list(HOSTS),
     "samples": list(HOSTS),
@@ -121,7 +121,7 @@ MATRIX = {
 
 def pr_leg(job, leg):
     """Whether the pull-request tier runs this leg of a matrix job."""
-    return leg.get("os") == "ubuntu-latest"
+    return leg.get("os") == "ubuntu-24.04"
 
 
 def full_leg(job, leg):
