@@ -231,10 +231,10 @@ path is code like any other code; untested, it is where the bugs
 retire to. Chaos runs it deterministically, on a seed, before an
 outage runs it in production without one.
 
-Today, honestly: there is no `--chaos`. `lupin run ex17-6.lu --chaos`
+Today, honestly: there is no `--chaos`. `lupin run --chaos ex17-6.lu`
 answers `error: unexpected argument '--chaos' found` and stops at
-argument parsing, without reaching the program. What runs is the
-baseline:
+argument parsing; after the file, `--chaos` is the program's own
+argument, and this program ignores it. What runs is the baseline:
 
 ```console
 $ lupin ex17-6.lu
