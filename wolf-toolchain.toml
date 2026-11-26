@@ -1651,11 +1651,10 @@ repo = "wolffe-lang/wolf-lang"
 # `os_term_restore_at_exit`; §34.8: `os_signal_wait_fds`, `os_clock_ns`,
 # `fs_sync`, `fs_sync_dir`, `fs_realpath`). Spec: anchors 664 -> 672
 # (none dropped), catalogue unchanged, grammar unchanged.
-# bs72: wolf 0.2.35, published archive SHA-256 read twice and compared
-# with wolf/sprints/release/r40-evidence.md:
+# bs72: wolf 0.2.35, published archive SHA-256 read twice:
 # linux x86-64 4cc4045bbbb605c07835bc4f32685953c784eeef4cd3139a48b457dfc90dad1a
 # r41q: wolf 0.2.36 (tag object 86d61559), published archive SHA-256 read
-# twice and compared with wolf/sprints/release/r41-evidence.md:
+# twice:
 # linux x86-64 d383c74c8cd123b9d9dfaa268271d4f004294f85c2b230237d0ef07027d9500d
 # wolf 0.2.41 (tag object 3bd13cc3), release 458496472; each archive's
 # SHA-256 hashed twice and equal to the published digest:
