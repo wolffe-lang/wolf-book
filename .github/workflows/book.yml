@@ -376,6 +376,15 @@ jobs:
           command -v ld.lld
           ld.lld --version
 
+      # Since wolf 0.2.39 (wolf-lang#1082) a linux `wolf build` that selects
+      # no linker names the one it links with, once, on stderr, lld found
+      # or not: the program's bytes depend on it. So on linux the two
+      # sample steps select the system linker with `WOLF_LD=cc`, the
+      # override the note itself names, and the build says nothing, as the
+      # pages print it. ch01 §1.2 tells a linux reader both: their own
+      # build prints the note, and this is how the book's runs are made.
+      # Empty elsewhere, which selects nothing: macOS and windows link as
+      # before and note nothing.
       - name: run every sample
         if: steps.acquire.outputs.toolchain == 'full'
         shell: bash
@@ -383,6 +392,7 @@ jobs:
         env:
           WOLF: ${{ github.workspace }}/wolf-lang/target/release/wolf${{ runner.os == 'Windows' && '.exe' || '' }}
           LUPIN: ${{ github.workspace }}/wolf-interp/target/release/lupin${{ runner.os == 'Windows' && '.exe' || '' }}
+          WOLF_LD: ${{ runner.os == 'Linux' && 'cc' || '' }}
         run: cargo xtask samples
       - name: self-test (a deliberately-broken sample must fail)
         if: steps.acquire.outputs.toolchain == 'full'
@@ -391,6 +401,7 @@ jobs:
         env:
           WOLF: ${{ github.workspace }}/wolf-lang/target/release/wolf${{ runner.os == 'Windows' && '.exe' || '' }}
           LUPIN: ${{ github.workspace }}/wolf-interp/target/release/lupin${{ runner.os == 'Windows' && '.exe' || '' }}
+          WOLF_LD: ${{ runner.os == 'Linux' && 'cc' || '' }}
         run: cargo xtask samples --self-test
       # bs62: the memory diagrams in chapter 7 are drawn from lupin's place
       # trace (`--trace-places`, wolf-interp is72). The trace lupin is the
