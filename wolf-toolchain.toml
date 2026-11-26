@@ -2420,8 +2420,13 @@ version = "lupin 0.1.63 (wolf-interp, reference interpreter at pin 5f1f1c9)"
 # against it, 6 diagrams from 4 traces, checked, byte-identical
 # (docs/audit/r41q-evidence/trace-lupin-0.1.58.log). CI builds no second
 # lupin.
+# 0.1.63: follows [lupin].rev (src/eval/placetrace.rs is blob 60b8866b at
+# v0.1.58 and at v0.1.63), and the traces were re-taken anyway with the
+# 0.1.63 macOS arm64 release archive: `cargo xtask diagrams --check` with
+# LUPIN_TRACE set, 6 diagrams from 4 traces, checked, byte-identical. CI
+# builds no second lupin.
 repo = "wolffe-lang/wolf-interp"
-rev = "6240efe5570dba1a33ba6269e3ba44bae33dd972"
+rev = "2becebc40bfb897de99c8e38f972566a5ae3059b"
 [wolf-lsp]
 # Source of the vendored tmLanguage grammars under highlight/.
 # `cargo xtask grammar-sync --check` fails on drift against this pin.
