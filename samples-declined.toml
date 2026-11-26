@@ -101,7 +101,7 @@
 #     exercise is about.
 
 [[declined]]
-block = "principles/exercises/ch01/EXERCISES.md:145"
+block = "principles/exercises/ch01/EXERCISES.md:146"
 class = "file"
 needs = "`ch01/hello.lu` — the one genuinely missing file of the eight — AND a warm cache the fixture cannot carry: the transcript is the SECOND build's (`reused object`), while a staged copy starts cold because `.lu-cache/` is gitignored, and the key the line prints is the one the page itself tells the reader will differ"
 filed = "wolf-book#29 §2 (premise sharpened at bs44)"
@@ -211,9 +211,9 @@ retires = "wolf-interp is08 (the REPL replay lane)"
 # substitution and a pipeline are a shell, and this module is not one.
 
 [[declined]]
-block = "principles/exercises/ch01/EXERCISES.md:198"
+block = "principles/exercises/ch01/EXERCISES.md:199"
 class = "binary-or-shell"
-needs = "a shell — `diff <(./hello) <(lupin hello.lu)` is process substitution, which `words()` declines by design (and the `hello.lu` of ch01:145 besides)"
+needs = "a shell — `diff <(./hello) <(lupin hello.lu)` is process substitution, which `words()` declines by design (and the `hello.lu` of ch01:146 besides)"
 filed = "wolf-book#29 §5"
 retires = "nothing planned; the exercise compares the two machines by hand and that is the point of it"
 
