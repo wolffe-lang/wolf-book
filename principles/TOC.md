@@ -1465,7 +1465,7 @@ sprint files remain the implementation contracts for everything else.
     that page"); it is not a rewrite, so the box stays, and the page
     that was promised carries the accounting.
   - **The section states the book's own numbers and they are not the
-    compiler's.** On nomad-1 (Apple M5 Pro, 18 logical cores, 12
+    compiler's.** On the macOS development machine (Apple M5 Pro, 18 logical cores, 12
     performance and 6 efficiency) the word counter parallelized by one
     call is **2.3x slower**, because `word.lower()` allocates per word
     and tasks contend on the native root arena's lock
