@@ -171,7 +171,7 @@ Solution. `ch01/ex1-6.lu` (broken on purpose):
 
 ```console
 $ lupin ex1-6.lu
-ex1-6.lu: E0202: the file ends where `}` was required [gram.expr.block] at 6:6
+ex1-6.lu: E0202: this delimiter is never closed: the group it opens ends before its closer — at a closer of another kind, a statement keyword, the end of its interpolation or the end of the file [gram.lex.newline] at 4:19
 $ echo $?
 2
 ```
@@ -179,9 +179,10 @@ $ echo $?
 Exit 2 is a static-phase rejection: the program never ran. A trap exits
 3 and can only happen to a program that was legal and started: the two
 codes divide "wolf refused" from "wolf obeyed, and the program hit a
-rule." The clause tag `[gram.expr.block]` names the grammar rule the
-file broke, and the span points at the end of the file, which is where
-the absence lives.
+rule." The clause tag `[gram.lex.newline]` names the rule the file
+broke: a group runs until its closer, and this one runs into the end of
+the file. The span, `4:19`, points at the `{` that opens it, the half of
+the pair that is there to point at.
 </details>
 
 <details>
@@ -5967,7 +5968,7 @@ the child has finished, under any seed. This is structure, not luck:
 $ lupin ex10-2.lu
 child speaks
 main speaks
-$ lupin run ex10-2.lu --seed=2024
+$ lupin run --seed=2024 ex10-2.lu
 child speaks
 main speaks
 ```
@@ -6218,7 +6219,7 @@ fn main() -> !int {
 ```console
 $ lupin ex10-9.lu
 5 values through the pipeline
-$ lupin run ex10-9.lu --seed=2024
+$ lupin run --seed=2024 ex10-9.lu
 5 values through the pipeline
 ```
 
@@ -6404,12 +6405,12 @@ Solution. `ch11/ex11-5.lu` (excerpt):
 ```
 
 ```console
-$ lupin run ex11-5.lu --seed=1
+$ lupin run --seed=1 ex11-5.lu
 worker 1 took job 1
 worker 1 took job 2
 worker 1 took job 3
 worker 1 took job 4
-$ lupin run ex11-5.lu --seed=2024
+$ lupin run --seed=2024 ex11-5.lu
 worker 0 took job 1
 worker 0 took job 2
 worker 0 took job 3
@@ -6656,9 +6657,9 @@ Solution: `1` and `2` are both conforming: two simultaneously ready
 arms make the pick a recorded scheduler decision, drawn from the seed.
 
 ```console
-$ lupin run ex12-4.lu --seed=1
+$ lupin run --seed=1 ex12-4.lu
 2
-$ lupin run ex12-4.lu --seed=2024
+$ lupin run --seed=2024 ex12-4.lu
 1
 ```
 
@@ -7723,13 +7724,13 @@ Solution. `ch14/ex14-9.lu` (excerpt — `main`):
 ```
 
 ```console
-$ lupin run ex14-9.lu --seed=0
+$ lupin run --seed=0 ex14-9.lu
 total=4
-$ lupin run ex14-9.lu --seed=1
+$ lupin run --seed=1 ex14-9.lu
 total=4
-$ lupin run ex14-9.lu --seed=5
+$ lupin run --seed=5 ex14-9.lu
 total=4
-$ lupin run ex14-9.lu --seed=9
+$ lupin run --seed=9 ex14-9.lu
 total=4
 ```
 
@@ -8337,7 +8338,7 @@ never allocated.
 
 **Exercise 16-8** *(comprehension + schedule play · lupin)*. Change the
 carve seed to 2 and run the program three times, including once under
-`lupin run … --seed=7`. Predict: which of the two seeds in play changes
+`lupin run --seed=7 …`. Predict: which of the two seeds in play changes
 the printed distance, and which cannot, and why does this program print
 the same distance under every scheduler seed?
 
@@ -8348,7 +8349,7 @@ $ lupin ex16-8.lu
 distance=10
 $ lupin ex16-8.lu
 distance=10
-$ lupin run ex16-8.lu --seed=7
+$ lupin run --seed=7 ex16-8.lu
 distance=10
 ```
 
@@ -8574,17 +8575,17 @@ produce the correct answer, and what had to happen in the schedule for
 Solution:
 
 ```console
-$ lupin run ex17-1.lu --seed=0
+$ lupin run --seed=0 ex17-1.lu
 balance=50
-$ lupin run ex17-1.lu --seed=1
+$ lupin run --seed=1 ex17-1.lu
 balance=100
-$ lupin run ex17-1.lu --seed=2
+$ lupin run --seed=2 ex17-1.lu
 balance=50
-$ lupin run ex17-1.lu --seed=3
+$ lupin run --seed=3 ex17-1.lu
 balance=50
-$ lupin run ex17-1.lu --seed=4
+$ lupin run --seed=4 ex17-1.lu
 balance=100
-$ lupin run ex17-1.lu --seed=5
+$ lupin run --seed=5 ex17-1.lu
 balance=100
 ```
 
@@ -8641,13 +8642,13 @@ seed 0 selects. `--seed=3` carries no guarantee relative to the
 others; it happens to choose the other order:
 
 ```console
-$ lupin run ex17-3.lu --seed=0
+$ lupin run --seed=0 ex17-3.lu
 12
-$ lupin run ex17-3.lu --seed=0
+$ lupin run --seed=0 ex17-3.lu
 12
-$ lupin run ex17-3.lu --seed=3
+$ lupin run --seed=3 ex17-3.lu
 21
-$ lupin run ex17-3.lu --schedule=ev:0,0,0
+$ lupin run --schedule=ev:0,0,0 ex17-3.lu
 12
 ```
 
@@ -10140,7 +10141,7 @@ Solution. Both runs, one item and one number between them:
 ```console
 $ wolf interface ./wordcount/tokens/tokens.lu
 module pkg :: (root)
-  wolfi v0 · toolchain 0.2.36 · edition v1
+  wolfi v0 · toolchain 0.2.41 · edition v1
   export_hash 05a012a2ca47c85fc47f13e7e2c80930951ae8c59a84d1631ca8844e71669f3c
   pkg_hash    05a012a2ca47c85fc47f13e7e2c80930951ae8c59a84d1631ca8844e71669f3c
   deps: (none)
