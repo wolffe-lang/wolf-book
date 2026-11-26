@@ -1657,8 +1657,12 @@ repo = "wolffe-lang/wolf-lang"
 # r41q: wolf 0.2.36 (tag object 86d61559), published archive SHA-256 read
 # twice and compared with wolf/sprints/release/r41-evidence.md:
 # linux x86-64 d383c74c8cd123b9d9dfaa268271d4f004294f85c2b230237d0ef07027d9500d
-rev = "5adf3d91f75b3545ff8d38e5b6693b0b9f367a05"
-impl_version = "0.2.36"
+# wolf 0.2.41 (tag object 3bd13cc3), release 458496472; each archive's
+# SHA-256 hashed twice and equal to the published digest:
+# linux x86-64 e7ec4cde06db2f2235ae82e3dff1db06f6b8e37249c883a3a35bdee8c86b8c34
+# macOS arm64 979dbb22b59268fb552081cfc5666da1f8e4adea831a286b396f78161cb893d5
+rev = "0261597230b46f17f7a894c5558452c19fa31b96"
+impl_version = "0.2.41"
 
 [lupin]
 # wolf-interp at the v0.1.30 release tag (is42): the stamped line names
@@ -2370,13 +2374,17 @@ impl_version = "0.2.36"
 # so no lupin answer in the sweep moves and no lupin transcript in the
 # book moves; §34.4 says what it now answers.
 repo = "wolffe-lang/wolf-interp"
-rev = "6240efe5570dba1a33ba6269e3ba44bae33dd972"
+rev = "2becebc40bfb897de99c8e38f972566a5ae3059b"
 # bs72: lupin 0.1.56 linux x86-64 archive, read twice against r40:
 # ad703550ac4787e8e4bb26989d591a731410274d7332f2b4e8b9a64c878822cc
 # r41q: lupin 0.1.58 (tag object dc4689e3, spec pin a5378e3) linux x86-64
 # archive, read twice against r41:
 # 34f52792bb59bc7565e0edc1235cd47d9a6ad13d5e6528993627f2e699b62193
-version = "lupin 0.1.58 (wolf-interp, reference interpreter at pin a5378e3)"
+# lupin 0.1.63 (tag object 0c0f47d3, spec pin 5f1f1c9), release 456389804;
+# each archive's SHA-256 hashed twice and equal to the published digest:
+# linux x86-64 45e71c6f8f577f045312d58be28e70abd5f94f2160740043976da041501df554
+# macOS arm64 8e6a14d7192170275af558f7258f1705c70ea9b7b7721ef87db9949d20d4482a
+version = "lupin 0.1.63 (wolf-interp, reference interpreter at pin 5f1f1c9)"
 
 [lupin-trace]
 # bs62: chapter 7's memory diagrams are drawn from lupin's place trace
