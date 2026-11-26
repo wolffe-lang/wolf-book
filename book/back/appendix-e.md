@@ -114,7 +114,9 @@ usage: wolf fmt [--check] <file.lu|dir|->...
 
 Files and directories (recursing into `*.lu`) are rewritten in place;
 `-` formats stdin to stdout; `--check` rewrites nothing and exits
-nonzero listing what is not canonical. There are no other options,
+nonzero listing what is not canonical. Both modes report parser errors
+and exit nonzero on invalid source; write mode can still format clean
+parts of a damaged file. There are no other options,
 deliberately (D34): the style is fixed by the specification, not
 configured per project.
 $ wolf fmt --check aligned/widths.lu
