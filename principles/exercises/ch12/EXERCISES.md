@@ -3,7 +3,7 @@
 Commands run from this directory; outputs are pasted from real runs.
 Every checker in this chapter is lupin except 12-9, whose rejection is
 a parse-rung error both implementations report; seeded runs use
-`lupin run FILE --seed=N` and exploration uses
+`lupin run --seed=N FILE` and exploration uses
 `lupin conform-run FILE --explore=N`.
 
 ## §12.1 — Typed channels
@@ -125,9 +125,9 @@ Solution: `1` and `2` are both conforming: two simultaneously ready
 arms make the pick a recorded scheduler decision, drawn from the seed.
 
 ```console
-$ lupin run ex12-4.lu --seed=1
+$ lupin run --seed=1 ex12-4.lu
 2
-$ lupin run ex12-4.lu --seed=2024
+$ lupin run --seed=2024 ex12-4.lu
 1
 ```
 

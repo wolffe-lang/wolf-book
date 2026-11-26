@@ -224,7 +224,7 @@ never allocated.
 
 **Exercise 16-8** *(comprehension + schedule play · lupin)*. Change the
 carve seed to 2 and run the program three times, including once under
-`lupin run … --seed=7`. Predict: which of the two seeds in play changes
+`lupin run --seed=7 …`. Predict: which of the two seeds in play changes
 the printed distance, and which cannot, and why does this program print
 the same distance under every scheduler seed?
 
@@ -235,7 +235,7 @@ $ lupin ex16-8.lu
 distance=10
 $ lupin ex16-8.lu
 distance=10
-$ lupin run ex16-8.lu --seed=7
+$ lupin run --seed=7 ex16-8.lu
 distance=10
 ```
 

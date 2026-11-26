@@ -2,8 +2,8 @@
 
 Commands run from this directory; outputs are pasted from real runs.
 lupin is the interpreter `wolf-toolchain.toml` pins; scheduler controls are
-`lupin run FILE --seed=N | --schedule=…` and
-`lupin conform-run FILE --explore=N`. The compiler answers
+`lupin run --seed=N FILE` or `lupin run --schedule=… FILE`,
+and `lupin conform-run FILE --explore=N`. The compiler answers
 `unsupported` at `resolve` for every program here, so every verdict
 below is lupin's.
 
@@ -66,17 +66,17 @@ produce the correct answer, and what had to happen in the schedule for
 Solution:
 
 ```console
-$ lupin run ex17-1.lu --seed=0
+$ lupin run --seed=0 ex17-1.lu
 balance=50
-$ lupin run ex17-1.lu --seed=1
+$ lupin run --seed=1 ex17-1.lu
 balance=100
-$ lupin run ex17-1.lu --seed=2
+$ lupin run --seed=2 ex17-1.lu
 balance=50
-$ lupin run ex17-1.lu --seed=3
+$ lupin run --seed=3 ex17-1.lu
 balance=50
-$ lupin run ex17-1.lu --seed=4
+$ lupin run --seed=4 ex17-1.lu
 balance=100
-$ lupin run ex17-1.lu --seed=5
+$ lupin run --seed=5 ex17-1.lu
 balance=100
 ```
 
@@ -131,13 +131,13 @@ seed 0 selects. `--seed=3` carries no guarantee relative to the
 others; it happens to choose the other order:
 
 ```console
-$ lupin run ex17-3.lu --seed=0
+$ lupin run --seed=0 ex17-3.lu
 12
-$ lupin run ex17-3.lu --seed=0
+$ lupin run --seed=0 ex17-3.lu
 12
-$ lupin run ex17-3.lu --seed=3
+$ lupin run --seed=3 ex17-3.lu
 21
-$ lupin run ex17-3.lu --schedule=ev:0,0,0
+$ lupin run --schedule=ev:0,0,0 ex17-3.lu
 12
 ```
 

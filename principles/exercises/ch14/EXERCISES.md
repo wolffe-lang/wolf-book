@@ -268,13 +268,13 @@ Solution. `ch14/ex14-9.lu` (excerpt — `main`):
 ```
 
 ```console
-$ lupin run ex14-9.lu --seed=0
+$ lupin run --seed=0 ex14-9.lu
 total=4
-$ lupin run ex14-9.lu --seed=1
+$ lupin run --seed=1 ex14-9.lu
 total=4
-$ lupin run ex14-9.lu --seed=5
+$ lupin run --seed=5 ex14-9.lu
 total=4
-$ lupin run ex14-9.lu --seed=9
+$ lupin run --seed=9 ex14-9.lu
 total=4
 ```
 

@@ -3,7 +3,7 @@
 Commands run from this directory; outputs are pasted from real runs.
 lupin is the interpreter `wolf-toolchain.toml` pins; wolf conform-run reports
 `unsupported` for this chapter's surface, so every checker here is
-lupin. Seeded runs use `lupin run FILE --seed=N`.
+lupin. Seeded runs use `lupin run --seed=N FILE`.
 
 ## §10.1 — The task tree
 
@@ -60,7 +60,7 @@ the child has finished, under any seed. This is structure, not luck:
 $ lupin ex10-2.lu
 child speaks
 main speaks
-$ lupin run ex10-2.lu --seed=2024
+$ lupin run --seed=2024 ex10-2.lu
 child speaks
 main speaks
 ```
@@ -291,7 +291,7 @@ fn main() -> !int {
 ```console
 $ lupin ex10-9.lu
 5 values through the pipeline
-$ lupin run ex10-9.lu --seed=2024
+$ lupin run --seed=2024 ex10-9.lu
 5 values through the pipeline
 ```
 

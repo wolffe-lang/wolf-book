@@ -139,12 +139,12 @@ Solution. `ch11/ex11-5.lu` (excerpt):
 ```
 
 ```console
-$ lupin run ex11-5.lu --seed=1
+$ lupin run --seed=1 ex11-5.lu
 worker 1 took job 1
 worker 1 took job 2
 worker 1 took job 3
 worker 1 took job 4
-$ lupin run ex11-5.lu --seed=2024
+$ lupin run --seed=2024 ex11-5.lu
 worker 0 took job 1
 worker 0 took job 2
 worker 0 took job 3
