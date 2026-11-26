@@ -122,7 +122,7 @@ Solution. `ch01/ex1-6.lu` (broken on purpose):
 
 ```console
 $ lupin ex1-6.lu
-ex1-6.lu: E0202: the file ends where `}` was required [gram.expr.block] at 6:6
+ex1-6.lu: E0202: this delimiter is never closed: the group it opens ends before its closer — at a closer of another kind, a statement keyword, the end of its interpolation or the end of the file [gram.lex.newline] at 4:19
 $ echo $?
 2
 ```
@@ -130,9 +130,10 @@ $ echo $?
 Exit 2 is a static-phase rejection: the program never ran. A trap exits
 3 and can only happen to a program that was legal and started: the two
 codes divide "wolf refused" from "wolf obeyed, and the program hit a
-rule." The clause tag `[gram.expr.block]` names the grammar rule the
-file broke, and the span points at the end of the file, which is where
-the absence lives.
+rule." The clause tag `[gram.lex.newline]` names the rule the file
+broke: a group runs until its closer, and this one runs into the end of
+the file. The span, `4:19`, points at the `{` that opens it, the half of
+the pair that is there to point at.
 
 **Exercise 1-8** *(comprehension · wolf + lupin)*. Build the greeting,
 then run `wolf build hello.lu --verbose` a second time without editing
